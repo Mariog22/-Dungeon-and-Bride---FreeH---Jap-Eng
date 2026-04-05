@@ -4020,44 +4020,62 @@ class GameMaster extends KAGPlugin
 
 	function drawDocumentTitle(lay, itemData)
 	{
-	// 手紙・巻物・魔法書の名称を画像に書き込む
+		// 手紙・巻物・魔法書の名称を画像に書き込む
 		if(itemData.type == "letter")
 		{
 			// 手紙
 			lay.font.height = 10;
 			lay.font.angle = 63;
 
-			var text = itemData.name;
-			if(itemData.displayName != void){
-				text = itemData.displayName;
+			var text;
+			try
+			{
+			text = itemData.displayName;
 			}
+			catch(e)
+			{
+			text = itemData.name;
+			}
+
 			lay.drawText(45, 36, text, 0x402020);
 		}
 		else if(itemData.type == "scroll" && itemData.cmdParam != void)
 		{
-		// 巻物
-		lay.font.height = 9;
-		lay.font.angle = 0;
+			// 巻物
+			lay.font.height = 9;
+			lay.font.angle = 0;
 
-		var obj = o[itemData.cmdParam];
-		var text = restoreName(obj.name);
-		if(obj.displayName != void){
-			text = restoreName(obj.displayName);
-		}
-		lay.drawText(11, 25, text, 0x200000);
+			var obj = o[itemData.cmdParam];
+			var text;
+			try
+			{
+				text = restoreName(obj.displayName);
+			}
+			catch(e)
+			{
+				text = restoreName(obj.name);
+			}
+
+			lay.drawText(11, 25, text, 0x200000);
 		}
 		else if(itemData.type == "book" && itemData.cmdParam != void)
 		{
-		// 魔法書
-		lay.font.height = 9;
-		lay.font.angle = 0;
+			// 魔法書
+			lay.font.height = 9;
+			lay.font.angle = 0;
 
-		var obj = o[itemData.cmdParam];
-		var text = restoreName(obj.name);
-		if(obj.displayName != void){
-			text = restoreName(obj.displayName);
-		}
-		lay.drawText(82 - lay.font.getTextWidth(text) \ 2, 40, text, 0xFFF0C0);
+			var obj = o[itemData.cmdParam];
+			var text;
+			try
+			{
+				text = restoreName(obj.displayName);
+			}
+			catch(e)
+			{
+				text = restoreName(obj.name);
+			}
+
+			lay.drawText(82 - lay.font.getTextWidth(text) \ 2, 40, text, 0xFFF0C0);
 		}
 	}
 
