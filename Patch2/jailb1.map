@@ -1,0 +1,123 @@
+﻿; 牢獄
+
+name = 牢獄Ｂ１
+insideName = Ｂ１
+lower = 牢獄Ｂ２
+level = 44
+bgm = bad
+margin = 1
+roof = stone
+shadow = dark
+sky = black
+outfield = soil
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = stone
+　 = marble
+／ = door
+〆 = key
+☗ = gate
+︻ = panel
+┯ = button
+⑹ = box
+⑺ = box
+⑻ = box
+⑼ = box
+
+; 敵情報
+maxGroups = 2
+monsters = ウインターコボルド
+
+; 移動ポイント
+(A) = map:フーラ雪原・南の森, x:14, y:13, way:s, symbol:exit ,ask:Leave the dungeon?
+
+; 宝箱
+box[1] = 罠はない,学びのメダル
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  ┏━━━━━┳━━━━━━━━━┓
+ 5┃　　　　　〆⑤　②　②　　　Ⓐ☗
+  ┃　　　　　┗━┳━━━━━━━┫
+ 4┃　　　　　　　┃　　　　　　　┃
+  ┣━┓　　　　　┃　　　　　　　┃
+ 3┠①／　　　　　／④　　　　　　┃
+  ┣━┛　　　　　┃　　　　　　　┃
+ 2┃　　　　　　③】　　　　　　　┃
+  ┣━━━━━━━┻━━━━━━〆┫
+ 1┃❶　　　　　　　　　　　　　　┃
+  ┗━━━━━━━━━━━━━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[2][5].e.key = o.看守の鍵;
+pos[7][2].s.key = o.看守の鍵;
+setElevator(0, 3);
+
+[endmap]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="Ｂ２" exp='tf.result = ["牢獄Ｂ２", "down"]'
+@select text="Ｂ３" exp='tf.result = ["牢獄Ｂ３", "down"]'
+@select text="Ｂ４" exp='tf.result = ["牢獄Ｂ４", "down"]'
+@select text="No" exp='tf.result = []'
+[ask]
+@elevator map=&'tf.result[0]' lift=&'tf.result[1]' cond='tf.result.count > 0'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@delevent
+@jump storage="main10.scn" target=*jail_01
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text=Guardhouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] f.partyPrisonerNums.count == 0
+
+@wait time=500
+@fg c=devil_yellow left=450 top=-15
+[texton]
+[name n="Chief Guard"]「How the hell did you guys escape from jail?」[k]
+[name n="Chief Guard"]「Damn it, if it comes to this, I'll finish you all off right here!」[k]
+[textoff]
+@clf
+@monster pos=3 name=レッサーデビル
+@callbattle bgm=boss gameover=true escape=false
+@delevent
+@treasure item=看守の鍵
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@delevent
+@jump storage="main10.scn" target=*jail_05 cond='game.isFreeMode || game.waitingMembers.count > 0'
+
+[eventoff]
+;-------------------------------------------------------------------------------

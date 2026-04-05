@@ -1,0 +1,186 @@
+﻿; 鉱山
+
+name = 鉱山Ｂ５
+insideName = Ｂ５
+upper = 鉱山Ｂ４
+lower = 鉱山Ｂ６
+level = 44
+bgm = anxiety
+roof = stone
+shadow = dark
+sky = black
+outfield = soil
+blank = rock
+
+; パーツ画像
+━ = soil
+　 = soil
+／ = door
+︻ = mineral
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+④ = zodiac
+
+; 敵情報
+maxGroups = 2
+monsters = デーモンインプ,シャドウインプ
+
+; 宝箱
+box[1] = 聖なるハンドベル_u,パワーヒールの魔法書_u,シルバーリング_u,女の秘薬_u,経験のコイン（小）,精力剤
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  		┏━━━┳━┳━━━━━━━━━━━┓
+ 6		┃　　敵／　┃㊦　　　　　　　　　　┃
+  		┃　　　┃　┗━┳━━━━━━━┓　┃
+ 5		【⑤　　┃　　　┃　　　　　　　┃㊤┃
+  		┣━━━┫　┏／╋／┓　┏━━／┻━┫
+ 4		┃　　❶┃　┃①┃②┨　┃　　③　　┃
+  		┃　　　┃　┗／╋／┛　┃　　　　　┃
+ 3		┃　　　┃　　　┃　　　┃　　　　　┃
+  		┣↓━━┛　　　┃　　　┃　　　　　┃
+ 2		┃　　　　　　　┃　　　┃　　　　　┃
+  		┣━━━━━━━┻━━━╋／━━━━┫
+ 1		┃㊦　　　　　　　　　㊤┃　　　　④┃
+  		┗━━━━━━━━━━━┻━━━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[5][4].n.img = "marble";
+pos[5][4].s.img = "marble";
+pos[5][4].w.img = "marble";
+pos[5][4].e.img = "marble";
+pos[4][4].f = %[type: "air", trap: "air"];
+pos[5][4].f = %[type: "floor", img: "marble", info: "昇降機", icon: 69];
+pos[4][4].f.noCount = true;
+pos[5][4].f.noCount = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading && events.has(4)) events.push2(3);
+if(o.鉱山のインプ軍団.flag == 1) monsters = [m.バンパイアバット];
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command type=mini title="Which button will you press?" cancel=true
+@select text="Ｂ１" exp='tf.result = ["鉱山Ｂ１", "鉱山Ｂ５", "up"]'
+@select text="Ｂ２" exp='tf.result = ["鉱山Ｂ２", "鉱山Ｂ４", "up"]'
+@select text="Ｂ３" exp='tf.result = ["鉱山Ｂ３", "鉱山Ｂ３", "up"]'
+@select text="Ｂ４" exp='tf.result = ["鉱山Ｂ４", "鉱山Ｂ２", "up"]'
+@select text="No" exp='tf.result = void'
+[ask]
+@call storage="mineb1.map" target=*change_lift cond='tf.result !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@command type=mini title="Which button will you press?" cancel=true
+@select text="Ｂ１" exp='tf.result = ["鉱山Ｂ５", "鉱山Ｂ１", "up"]'
+@select text="Ｂ２" exp='tf.result = ["鉱山Ｂ４", "鉱山Ｂ２", "up"]'
+@select text="Ｂ３" exp='tf.result = ["鉱山Ｂ３", "鉱山Ｂ３", "up"]'
+@select text="Ｂ４" exp='tf.result = ["鉱山Ｂ２", "鉱山Ｂ４", "up"]'
+@select text="No" exp='tf.result = void'
+[ask]
+@call storage="mineb1.map" target=*change_lift cond='tf.result !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@wait time=500
+@se f=roar
+@fgf c=9014 left=450 top=80
+@wait time=500
+
+[if exp='! o.鉱山のインプ軍団.accepted']
+	[texton]
+	I went into the room and found an enormous number of imps gathered there! That really is a small army!
+	 [k]
+	[textoff]
+	@clf
+	@eval exp='game.party.escape(true)'
+	@wait time=500
+	[texton]
+	Sensing danger, I hurriedly escaped from the room and closed the door.[k]
+	[textoff]
+	[eventoff]
+[endif]
+
+[texton]
+I went into the room and found an enormous number of imps gathered there![k]
+The imps suddenly attacked![k]
+[textoff]
+@clf
+
+@monster pos=0 name=デーモンインプ
+@monster pos=1 name=デーモンインプ
+@monster pos=2 name=デーモンインプ
+@monster pos=3 name=デーモンインプ
+@monster pos=4 name=デーモンインプ
+@monster pos=5 name=デーモンインプ
+@monster pos=6 name=デーモンインプ
+@monster pos=7 name=シャドウインプ
+@monster pos=8 name=シャドウインプ
+@monster pos=9 name=シャドウインプ
+@monster pos=10 name=シャドウインプ
+@monster pos=11 name=シャドウインプ
+@monster pos=12 name=シャドウインプ
+@monster pos=13 name=シャドウインプ
+@monster pos=16 name=シャドウインプ
+@monster pos=17 name=ナイトインプ
+@monster pos=18 name=シャドウインプ
+@callbattle bgm=boss gameover=true
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+[texton]
+There was a magic circle in the room. It was probably a portal to the magical world, from which the imps had come.[k]
+[textoff]
+@call storage="anime.ks" target=*erase_magic
+@btmes off
+@changefloor pimg=void
+[texton]
+With its source of power destroyed, the magic circle was extinguished. Now the imps will no longer be able to come here.[k]
+[textoff]
+@eval exp='o.鉱山のインプ軍団.flag = 1'
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger || onUseEventItem
+
+[if exp='game.onUseEventItem && game.curItem == o.つるはし']
+	@delevent
+	@changewall himg=void click=false
+	@getitem item=オリハルコンの砂
+[else]
+	@notice text="Grains of ore sparkle and shine in the clay wall in front of me."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,396 @@
+﻿; マップグループ                      ←グループ名はここまで
+
+name	森の中の廃屋
+displayName	Abandoned Forest House
+map	森の中の廃屋２Ｆ	cottage2f	false
+map	森の中の廃屋１Ｆ	cottage1f	true
+map	森の中の廃屋Ｂ１	cottageb1	true
+
+name	町外れの遺跡
+displayName	Outskirts Ruins
+map	町外れの遺跡Ｂ１	fortb1	true
+map	町外れの遺跡Ｂ２	fortb2	false
+map	町外れの遺跡Ｂ３	fortb3	true
+
+name	コリンズの森
+displayName	Collins Wood
+map	コリンズの森	forest	true
+
+name	ランドン渓谷
+displayName	Landon Canyon
+map	ハーピーの山・山頂	valley3f	true
+map	ハーピーの山・中腹	valley2f	true
+map	ランドン渓谷・崖上	valley1f	true
+map	ランドン渓谷・谷底	valleyb1	true
+map	谷底の洞窟	valleyb2	true
+
+name	デールコインの森
+displayName	Dale Coin Forest
+map	デールコインの森	maze	true
+
+name	ヤネクの森
+displayName	Yanek Forest
+map	ヤネクの森・西	woods1f_w	true
+map	ヤネクの森・東	woods1f_e	true
+map	ヤネクの森・トンネル	woods1f_t	false
+map	ヤネクの森・霧の谷	woods1f_ee	false
+map	オークの巣穴	woodsb1	true
+
+name	ペンスキー峠
+displayName	Penske Pass
+map	ペンスキー峠・高台	pass4f	false
+map	ペンスキー峠・崖	pass3f	false
+map	ペンスキー峠・峠道	pass2f	true
+map	ジョセフの森	pass1f_n	true
+map	パワーの森	pass1f_s	false
+
+name	ポラリスの神殿
+displayName	Temple of Polaris
+map	ポラリスの神殿	oracle	true
+
+name	古代の迷宮
+displayName	Ancient Labyrinth
+map	古代の迷宮１Ｆ	labyrinth1f	true
+map	古代の迷宮Ｂ１	labyrinthb1	true
+map	古代の迷宮Ｂ２	labyrinthb2	true
+
+name	コボルドの砦
+displayName	Kobold Fortress
+map	コボルドの砦３Ｆ	outpost3f	true
+map	コボルドの砦２Ｆ	outpost2f	true
+map	コボルドの砦１Ｆ	outpost1f	true
+
+name	下水道
+displayName	Sewer
+map	下水道・通路	sewer	true
+map	下水道・水路内	sewer_w	true
+
+name	ホテルの地下
+displayName	Hotel Basement
+map	ホテルの地下Ｂ１	hotelb1	true
+map	ホテルの地下Ｂ２	hotelb2	true
+
+name	伯爵の屋敷
+displayName	Count's Mansion
+map	伯爵の屋敷２Ｆ	residence2f	false
+map	伯爵の屋敷１Ｆ	residence1f	true
+
+name	ブルーのアジト
+displayName	Blue's Hideout
+map	ブルーのアジト２Ｆ	den2f	true
+map	ブルーのアジト１Ｆ	den1f	true
+
+name	ワイルド・ブルのアジト
+displayName	Wild Bull's Hideout
+map	ワイルドブルのアジト２Ｆ	hideout2f	true
+map	ワイルドブルのアジト１Ｆ	hideout1f	true
+
+name	ワイルド・ブルの砦
+displayName	Wild Bull's Fort
+map	ワイルド・ブルの砦５Ｆ	keep5f	false
+map	ワイルド・ブルの砦４Ｆ	keep4f	false
+map	ワイルド・ブルの砦３Ｆ	keep3f	false
+map	ワイルド・ブルの砦２Ｆ	keep2f	false
+map	ワイルド・ブルの砦１Ｆ	keep1f	false
+
+name	ワイルド・ブルの隠れ家
+displayName	Wild Bull's Den
+map	ワイルド・ブルの隠れ家	nest	true
+
+name	アマゾネスの砦
+displayName	Amazoness Fortress
+map	アマゾネスの砦２Ｆ	barrack2f	false
+map	アマゾネスの砦１Ｆ	barrack1f	true
+
+name	魔女の隠れ家
+displayName	Witch's Lair
+map	魔女の隠れ家Ｂ１	hermitb1	true
+map	魔女の隠れ家Ｂ２	hermitb2	true
+map	魔女の隠れ家Ｂ３	hermitb3	true
+map	魔女の隠れ家Ｂ３水中	hermitb3_w	true
+map	魔女の隠れ家Ｂ４	hermitb4	true
+map	魔女の隠れ家Ｂ５	hermitb5	true
+map	魔女の隠れ家Ｂ６	hermitb6	true
+map	魔女の隠れ家Ｂ７	hermitb7	true
+map	魔女の隠れ家Ｂ７水中	hermitb7_w	true
+
+name	愚者の倉庫
+displayName	Fool's Warehouse
+map	愚者の倉庫１	warehouse1	true
+map	愚者の倉庫２	warehouse2	true
+map	愚者の倉庫３	warehouse3	true
+map	愚者の倉庫４	warehouse4	true
+map	愚者の倉庫５	warehouse5	true
+map	愚者の倉庫６	warehouse6	true
+map	愚者の倉庫７	warehouse7	true
+
+name	試練の迷宮
+displayName	Labyrinth of Trials
+map	試練の迷宮Ｂ１	dungeonb1	true
+map	試練の迷宮Ｂ２	dungeonb2	true
+map	試練の迷宮Ｂ３	dungeonb3	true
+map	試練の迷宮Ｂ４	dungeonb4	true
+map	試練の迷宮Ｂ５	dungeonb5	true
+map	試練の迷宮Ｂ６	dungeonb6	true
+
+name	森の城塞
+displayName	Forest Fortress
+map	森の城塞４Ｆ	fortress4f	true
+map	森の城塞３Ｆ	fortress3f	true
+map	森の城塞２Ｆ	fortress2f	true
+map	森の城塞１Ｆ	fortress1f	true
+
+name	ノームの洞窟
+displayName	Gnome Cave
+map	ノームの洞窟	cave	true
+
+name	神の山
+displayName	Mountain of God
+map	神の山４Ｆ	mountain4f	false
+map	神の山３Ｆ	mountain3f	false
+map	神の山２Ｆ	mountain2f	false
+map	神の山１Ｆ	mountain1f	true
+
+name	温泉
+displayName	Hot Spring
+map	温泉・脱衣所	spa_locker	true
+map	温泉・浴場	spa_bath	true
+map	温泉・岩場	spa_wall	true
+map	温泉・洞窟Ｂ１	spa_cave1	true
+map	温泉・洞窟Ｂ２	spa_cave2	true
+
+name	フーラ雪原
+displayName	Fura Snowfield
+map	フーラ雪原・山奥	snow3f	true
+map	フーラ雪原・氷の池	snow2f	true
+map	フーラ雪原・北の森	snow1f_n	true
+map	フーラ雪原・南の森	snow1f_s	true
+
+name	鉱山
+displayName	Mine
+map	鉱山Ｂ１	mineb1	true
+map	鉱山Ｂ２	mineb2	true
+map	鉱山Ｂ３	mineb3	true
+map	鉱山Ｂ４	mineb4	true
+map	鉱山Ｂ５	mineb5	false
+map	鉱山Ｂ６	mineb6	true
+
+name	牢獄
+displayName	Prison
+map	牢獄Ｂ１	jailb1	true
+map	牢獄Ｂ２	jailb2	true
+map	牢獄Ｂ３	jailb3	true
+map	牢獄Ｂ４	jailb4	true
+
+name	モイーズ湿地帯
+displayName	Moise Swamp
+map	モイーズ湿地帯・果樹園	swamp_n	true
+map	モイーズ湿地帯・地下	swampb1	true
+map	モイーズ湿地帯・西の沼地	swamp_w	true
+map	モイーズ湿地帯・水中	swamp_w_w	true
+map	モイーズ湿地帯・東の沼地	swamp_e	true
+map	モイーズ湿地帯・死霊の森	swamp_s	true
+
+name	水の宮殿
+displayName	Water Palace
+map	水の宮殿１Ｆ	palace1f	true
+map	水の宮殿１Ｆ水中	palace1f_w	true
+map	水の宮殿Ｂ１	palaceb1	true
+
+name	沼地の廃墟
+displayName	Swamp Ruins
+map	沼地の廃墟Ｂ１	ruinb1	true
+map	沼地の廃墟Ｂ１水中	ruinb1_w	true
+map	沼地の廃墟Ｂ２	ruinb2	true
+map	沼地の廃墟Ｂ２水中	ruinb2_w	true
+map	沼地の廃墟Ｂ３	ruinb3	true
+map	沼地の廃墟Ｂ３水中	ruinb3_w	true
+map	沼地の廃墟Ｂ４	ruinb4	true
+map	沼地の廃墟Ｂ４水中	ruinb4_w	true
+
+name	水竜の神殿
+displayName	Water Dragon Temple
+map	水竜の神殿Ｂ１	damb1	true
+map	水竜の神殿Ｂ２	damb2	true
+map	水竜の神殿Ｂ３	damb3	true
+map	水竜の神殿Ｂ４	damb4	true
+map	水竜の神殿Ｂ５	damb5	true
+
+name	常闇の城
+displayName	Castle of Eternal Darkness
+map	常闇の城４Ｆ	castle4f	false
+map	常闇の城３Ｆ	castle3f	false
+map	常闇の城２Ｆ	castle2f	false
+map	常闇の城１Ｆ	castle1f	false
+
+name	死者の沼
+displayName	Swamp of the Dead
+map	モイーズ湿地帯・死者の沼	swamp_ss	true
+
+name	南海岸地域
+displayName	South Coast Region
+map	エミール平原	plain	true
+map	海岸	seashore	true
+
+name	大峡谷
+displayName	Grand Canyon
+map	大峡谷・崖上	canyon1f	true
+map	大峡谷・谷底	canyonb1	true
+
+name	霧の島
+displayName	Island of Mist
+map	霧の島・地上	island1f	true
+map	霧の島の洞窟Ｂ１	islandb1	true
+map	霧の島の洞窟Ｂ２	islandb2	true
+
+name	火山島
+displayName	Volcanic Island
+map	火山島２Ｆ	volcano2f	true
+map	火山島１Ｆ	volcano1f	true
+map	火山島Ｂ１	volcanob1	true
+map	火山島Ｂ２	volcanob2	true
+map	火山島Ｂ３	volcanob3	true
+map	火山島Ｂ４	volcanob4	true
+map	火山島Ｂ５	volcanob5	true
+map	火山島Ｂ６	volcanob6	true
+map	火山島Ｂ７	volcanob7	false
+map	火山島Ｂ８	volcanob8	false
+map	火山島Ｂ９	volcanob9	false
+
+name	タルハ砂漠
+displayName	Talha Desert
+map	タルハ砂漠・北	desert1f_n	true
+map	タルハ砂漠・峡谷	desert1f_v	false
+map	タルハ砂漠・南	desert1f_s	false
+map	タルハ砂漠地下	desertb1	true
+
+name	砂漠の民のほこら
+displayName	Desert Shrine
+map	砂漠の民のほこら	crypt	false
+
+name	王の墓
+displayName	King's Tomb
+map	王の墓１Ｆ	tomb1f	true
+map	王の墓Ｂ１	tombb1	true
+map	王の墓Ｂ２	tombb2	true
+map	王の墓Ｂ３	tombb3	true
+map	王の墓Ｂ４	tombb4	true
+map	王の墓Ｂ５	tombb5	true
+map	王の墓Ｂ６	tombb6	true
+map	王の墓Ｂ７	tombb7	true
+map	王の墓Ｂ８	tombb8	true
+
+name	縦穴
+displayName	Pit
+map	縦穴Ｂ１	pitb1	true
+map	縦穴Ｂ２	pitb2	true
+map	縦穴Ｂ３	pitb3	true
+map	縦穴Ｂ４	pitb4	true
+map	縦穴Ｂ５	pitb5	true
+map	縦穴Ｂ６	pitb6	true
+
+name	死の荒野
+displayName	Deadly Wasteland
+map	死の荒野	wilds	true
+map	死の荒野・水中	wilds_w	true
+
+name	井戸
+displayName	Well
+map	井戸・水上	well	true
+map	井戸・水中	well_w	true
+map	井戸・水路	well_t	true
+
+name	ラドミラの塔
+displayName	Radmira Tower
+map	ラドミラの塔25Ｆ	tower25f	true
+map	ラドミラの塔24Ｆ	tower24f	true
+map	ラドミラの塔23Ｆ	tower23f	true
+map	ラドミラの塔22Ｆ	tower22f	true
+map	ラドミラの塔21Ｆ	tower21f	true
+map	ラドミラの塔20Ｆ	tower20f	true
+map	ラドミラの塔19Ｆ	tower19f	true
+map	ラドミラの塔18Ｆ	tower18f	true
+map	ラドミラの塔17Ｆ	tower17f	false
+map	ラドミラの塔16Ｆ	tower16f	true
+map	ラドミラの塔15Ｆ	tower15f	true
+map	ラドミラの塔14Ｆ	tower14f	true
+map	ラドミラの塔13Ｆ	tower13f	true
+map	ラドミラの塔12Ｆ	tower12f	true
+map	ラドミラの塔11Ｆ	tower11f	true
+map	ラドミラの塔10Ｆ	tower10f	true
+map	ラドミラの塔９Ｆ	tower9f	true
+map	ラドミラの塔８Ｆ	tower8f	true
+map	ラドミラの塔７Ｆ	tower7f	true
+map	ラドミラの塔６Ｆ	tower6f	true
+map	ラドミラの塔５Ｆ	tower5f	true
+map	ラドミラの塔４Ｆ	tower4f	true
+map	ラドミラの塔３Ｆ	tower3f	true
+map	ラドミラの塔２Ｆ	tower2f	true
+map	ラドミラの塔１Ｆ	tower1f	false
+map	ラドミラの塔Ｂ１	towerb1	false
+
+name	大洞窟上層
+displayName	Upper Cave
+map	大洞窟Ｂ１	cavernb1	true
+map	大洞窟Ｂ２	cavernb2	true
+map	大洞窟Ｂ３	cavernb3	false
+map	大洞窟Ｂ４	cavernb4	true
+map	大洞窟Ｂ５	cavernb5	false
+
+name	大洞窟中層
+displayName	Middle Cave
+map	大洞窟Ｂ６	cavernb6	true
+map	大洞窟Ｂ７	cavernb7	true
+map	大洞窟Ｂ８	cavernb8	true
+map	大洞窟Ｂ９	cavernb9	true
+map	大洞窟Ｂ10	cavernb10	true
+map	大洞窟Ｂ11	cavernb11	true
+map	大洞窟Ｂ12	cavernb12	true
+map	大洞窟Ｂ13	cavernb13	true
+map	大洞窟Ｂ14	cavernb14	true
+map	大洞窟Ｂ15	cavernb15	true
+map	大洞窟Ｂ16	cavernb16	true
+map	大洞窟Ｂ17	cavernb17	true
+map	大洞窟Ｂ18	cavernb18	true
+map	大洞窟Ｂ19	cavernb19	true
+map	大洞窟Ｂ20	cavernb20	true
+map	大洞窟Ｂ21	cavernb21	true
+map	大洞窟Ｂ22	cavernb22	true
+map	大洞窟Ｂ23	cavernb23	true
+map	大洞窟Ｂ24	cavernb24	true
+map	大洞窟Ｂ25	cavernb25	true
+map	大洞窟Ｂ26	cavernb26	true
+map	大洞窟Ｂ27	cavernb27	true
+map	大洞窟Ｂ28	cavernb28	true
+map	大洞窟Ｂ29	cavernb29	true
+map	大洞窟Ｂ30	cavernb30	true
+map	大洞窟Ｂ31	cavernb31	true
+map	大洞窟Ｂ32	cavernb32	true
+map	大洞窟Ｂ33	cavernb33	true
+map	大洞窟Ｂ34	cavernb34	true
+
+name	奈落
+displayName	Hell
+map	大洞窟Ｂ35	cavernb35	true
+map	大洞窟Ｂ36	cavernb36	true
+map	大洞窟Ｂ37	cavernb37	true
+map	大洞窟Ｂ38	cavernb38	true
+map	大洞窟Ｂ39	cavernb39	true
+map	大洞窟Ｂ40	cavernb40	true
+map	大洞窟Ｂ41	cavernb41	true
+map	大洞窟Ｂ42	cavernb42	true
+map	大洞窟Ｂ43	cavernb43	true
+map	大洞窟Ｂ44	cavernb44	true
+map	大洞窟Ｂ45	cavernb45	true
+map	大洞窟Ｂ46	cavernb46	true
+map	大洞窟Ｂ47	cavernb47	true
+map	大洞窟Ｂ48	cavernb48	true
+map	大洞窟Ｂ49	cavernb49	true
+map	大洞窟Ｂ50	cavernb50	true
+
+; ※体験版専用マップ
+name	体験の洞窟
+displayName	Experience Cave
+map	体験の洞窟Ｂ１	trialb1	true
+map	体験の洞窟Ｂ２	trialb2	true
+map	体験の洞窟Ｂ３	trialb3	true

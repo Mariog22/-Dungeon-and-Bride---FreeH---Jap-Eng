@@ -1,0 +1,158 @@
+﻿; 水の宮殿
+
+name = 水の宮殿１Ｆ水中
+insideName = 1F Underwater
+upper = 水の宮殿１Ｆ
+lower = 水の宮殿Ｂ１
+level = 44
+bgm = shrine
+underWater = true
+isOutdoor = true
+margin = 1
+shadow = dark
+sky = deepwater
+roof = stone
+effect = PE_water_bubble
+blank = rock
+
+; パーツ画像
+━ = stone
+… = half
+－ = black
+﹃ = ladder
+　 = marble
+☐ = marble
+／ = door
+☖ = gate
+⧻ = fenceg
+︻ = panel
+┯ = button
+上 = ladderu
+㊦ = ladderd
+
+; 敵情報
+maxGroups = 2
+monsters = ニクサー,マーメイド,ウンディーネ,アネモネ
+traps = 石つぶて,毒針,しびれ針
+
+; 宝箱
+box[1] = 精霊の縫い糸,精霊の縫い糸,麻痺治療薬,金貨（大）,ポラリスの宝珠
+box[2] = 経験のコイン（小）,金貨（超特大）,アウラの宝珠,アウラの宝珠
+box[3] = 麻痺治療薬,シルバースケイル・下_u,コールポラリスの魔法書_u
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  
+  										┏━━━━━┓
+19										┃☐☐☐☐☐┃
+  				┏﹃━━┓	┃☐☐☐☐☐┣━━━━━┓
+18				┃　　　┃	┃☐☐⓸☐⓸⧻　　　　　┃
+  		┏━┛　　　┃	┃☐☐☐☐☐┃　　　　　┃
+17		【①　　　　┃	┃上☐☐☐☐┃　　　　　┃
+  		┃　　　　　┃	┗━━━━━┫　┏━━━┛
+16		┃　　　　　┃							┃　┃
+  		┗━┓　　　┗━━━━━━━┛　┃			┏━┓
+15				┃　　　　　　　　　　　　　┃			┃　┃
+  				┃　　　┏━━━━━┓　　　┗━━━┛　┃
+14				┃　　　┃					┃　　　　　　　　　┃
+  				┃　　　┃					┗━━━━━━━━━┛
+13				┃　　　┃
+  ┏━┳－┫　　　┗━━━━━━━━━┓	┏━━━━﹃┓
+12┃　☖Ｅ☖　　　　　　　　　　　　　┃	┃　　　　　┃
+  ┃　┣－┻━━━━━┓　　　　　　　┃	┃　┏━━━┛
+11┃　┃							┃　　　　　　②】	┃　┃
+  ┃　┃							┃　┏━━━━━┛	┃　┃
+10┃　┃							┃　┃							┃　┃
+  ┃　┃							┃　┣－┳━━━┓	┃　┗━━━┓
+ 9┃　┃							┃　☖Ｅ☖　　　┃	┃　　　　　┃
+  ┃　┗━━━━━┓	┗━┻－┫　　　┃	┗━━━┓　┃
+ 8┃　　　　　　　┃					┃　　　┃					┃　┃
+  ┗━━━┓　　　┃					┗━┓　┗━━━┓	┃　┃
+ 7				┃　　　』							┃　　　　❶┃	┃　┃
+  				┗━━━┛							┗━━━━━┛	┣⧻┫
+ 6																								ⅼ☐ⅼ
+  ┏﹃━━┳━━━┓									┏━━━━━╋☖┫
+ 5┃　　　￤　　　┃									┃　　　　❷￤　┃
+  ┃　┏…┛　　　┗━━━━﹃━━━━┛　　　┏…┛　┃
+ 4┃　￤　　　　　　　　　　　　　　　　　　　￤　　　┃
+  ┃　┗…┓　　　　　　　┏━┓　　　　　　　￤　　　┃
+ 3┃　　㊦￤　　　　　　　┃	┃　　　　　　　￤　　　┃
+  ┃　┏…┛　　　　　　　┗━┛　　　　　　　￤　　　┃
+ 2┃　￤　　　　　　　　　　　　　　　　　　　￤❸　　┃
+  ┃　┗…┓　　　┏━━━━﹄━━━━┓　　　┗…┓　┃
+ 1┃　　　￤　　　┃									┃　　　　　￤③┃
+  ┗━━━┻━━━┛									┗━━━━━┻┷┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[1][12].w.img = pos[1][12].e.img = pos[1][12].f.img = "black";
+pos[1][12].w.himg = pos[1][12].e.himg = void;
+pos[6][9].w.img = pos[6][9].e.img = pos[6][9].f.img = "black";
+pos[6][9].w.himg = pos[6][9].e.himg = void;
+pos[12][6].n.img = pos[12][6].s.img = pos[12][6].f.img = "black";
+pos[12][6].n.himg = pos[12][6].s.himg = void;
+pos[5][17].event = 5;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="There are various types of water area. Some are too deep, and inaccessible even to those wearing shell equipment."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="When entering the water, first look for a ladder and secure an escape route."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=8 y=18 way=w arch=gate mode=open
+@wait time=1000
+@notice text="I heard a door open somewhere!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@monster pos=1 name=セイレーン
+@monster pos=3 name=セイレーン
+@monster pos=5 name=セイレーン
+@callbattle bgm=boss gameover=true
+@treasure item=貝のネックレス,クラムボトムズ
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] ! party.isSwimming()
+
+@notice text="<y>The floor was completely flooded!<r>Some members couldn't dive, so we hurriedly went up to the upper floor!"
+@eval exp='game.moveToFloorVertically(%[map: "水の宮殿１Ｆ", lift: "up"])'
+
+[eventoff]
+;-------------------------------------------------------------------------------

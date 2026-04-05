@@ -1,0 +1,236 @@
+﻿; 水竜の神殿
+
+name = 水竜の神殿Ｂ４
+insideName = Ｂ４
+upper = 水竜の神殿Ｂ３
+lower = 水竜の神殿Ｂ５
+pool = 水竜の神殿Ｂ５
+level = 35
+bgm = labyrinth
+external = e:2
+isOutdoor = true
+shadow = dark
+sky = deepwater
+roof = stone
+underWater = true
+effect = PE_water_bubble
+outfield = marble
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = stone_h
+－ = stone
+　 = marble
+☐ = marble
+／ = door
+﹃ = ladder
+︻ = panel
+┯ = button
+
+; 敵情報
+maxGroups = 2
+monsters = ブルースライム,電気ねずみ,サンダーウィスプ,ウンディーネ,セイレーン,ラミア
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  +1  +2  
+  							━━━┳━━━━━━━━━━━┓
+19										ⅼ　　　　　■■■■■■┃
+  										ⅼ　　　　　■■■■■■┃
+18										『　　　　　■■■■■■┃
+  							━┳━┻━━━━━━━━━━━┛
+17		┃					┃
+  		┃					┃
+16		┃					┃
+  ┏━┻－－－－－┻━┓
+15┃　　　　　　　　　┃
+  ┃　　　　　　　　　┃
+14┃　　　　　　　　　┃
+  ┃　　　　　　　　　┃
+13┃　　　　③　　　　┃
+  ┣－－－－﹄－－－－┫
+12┃									┃
+  ┃									┃
+11┃									┃
+  				┏━━┯┓
+10				┃☐☐⓵┃
+  ┏━━━┛☐☐☐┃
+ 9┃☐☐☐☐☐☐☐┃
+  ┃☐☐☐☐☐☐☐┃			┏━━━┓
+ 8┃☐☐☐☐☐☐☐┃			┠⓶☐☐┃	┃			┃
+  ┃☐☐☐☐☐┏━┛			┃☐☐☐┃	┃			┃
+ 7┃☐☐Ｅ☐☐┃					┃☐☐☐┃	┃			┃
+  ┣━━／━━┻━━━┓	┃☐☐☐┃	┣﹃－－┫
+ 6┃　　　　　　　　④┃	┃☐☐Ｅ┃	┃　　　┃
+  ┃　　　　　　　　　┃	┗━┳／┫	┃　　　┃
+ 5┃　　　　　　　　　┃			┃☐┃	┃　　　┃
+  ┃␣␣␣┏━┳－－－┫			┃☐┃	┃　　　┃
+ 4┃␣␣␣┃	┃			┃			┃☐┃	┃　　　┃
+  ┃␣␣␣┃	┃			┃			┃☐┗━┫　　　┃
+ 3┃␣␣␣┃	┃			┃			┃☐☐☐／　　　┃
+  ┃␣␣␣┃									┗━━━┫　　　┃
+ 2┃␣␣␣┃													┃　　　┃
+  ┃␣␣␣┗━━━━━━━━━━━━━┛　　　┣━┛
+ 1┃␣␣␣␣␣␣␣␣␣␣␣␣　　　　　　　　　ⅼ
+  ┃␣␣␣␣␣␣␣␣␣␣␣␣　　　　　　　　　ⅼ
+ 0┃␣␣␣␣␣␣␣␣␣␣␣␣　　　　　　　　　ⅼ
+  ┗━━━━━━━━━━━━━━━━━━━━━┻━━━
+;    0   1   2   3   4   5   6   7   8   9  10  +1  +2  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[9][6].n.img = "stone";
+pos[2][13].s.img = "stone";
+pos[5][18].w.img = "stone";
+pos[3][10].n.himg = "bt_water";
+pos[6][8].w.himg = "bt_water";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(f.filledEast_4F === void) f.filledEast_4F = true;
+if(! f.filledEast_4F || (! f.filledWest_4F && game.party.curX <= 4 && game.party.curY >= 13))
+{
+	underWater = false;
+	sky = "black";
+	effect = void;
+	pos[4][6].f.pimg = "human";
+	events.push2(4);
+}
+else if(! f.filledEast_3F || (! f.filledWest_3F && game.party.curX <= 4 && game.party.curY >= 13))
+{
+	underWater = true;
+	sky = "deepwater";
+	effect = "PE_water_bubble";
+	pos[4][6].f.pimg = void;
+	events.remove(4);
+}
+else
+{
+	underWater = true;
+	sky = "black";
+	effect = "PE_water_bubble";
+	pos[4][6].f.pimg = void;
+	events.remove(4);
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+[if exp='game.map.pos[0][0].f.type == "water"']
+	@notice text="Nothing happened."
+	[eventoff]
+[endif]
+
+@eval exp='o.水竜の神殿Ｂ２.underWater = false'
+@eval exp='o.水竜の神殿Ｂ４.underWater = false'
+@eval exp='f.filledEast_3F = false'
+@eval exp='f.filledWest_3F = false'
+@eval exp='f.filledEast_4F = false'
+@eval exp='f.filledWest_4F = false'
+
+@eval exp='tf.temp = %[type: "air", img: void, trap: "drained"]'
+@call storage=&'o.水竜の神殿Ｂ１.mapFile' target=*_change_waterway_b1
+@call storage=&'o.水竜の神殿Ｂ２.mapFile' target=*_change_waterway_b2
+@call storage=&'o.水竜の神殿Ｂ３.mapFile' target=*_change_waterway_b3
+
+@eval exp='tf.temp = %[type: "water", img: "pond", trap: "water"]'
+@call storage=&'o.水竜の神殿Ｂ４.mapFile' target=*_change_waterway_b4
+
+@se f=bashan1
+@wait time=500
+@notice text="I heard the sound of water flowing somewhere."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_change_waterway_b4
+
+[iscript]
+o.水竜の神殿Ｂ４.changeFloorsOfWideArea(tf.temp,  0,  0,  1,  4);
+o.水竜の神殿Ｂ４.changeFloorsOfWideArea(tf.temp,  2,  0,  5,  1);
+if(game.map == o.水竜の神殿Ｂ４)
+{
+	game.map.sky = "black";
+	game.map.effect = void;
+	game.map.pos[4][6].f.pimg = "human";
+	game.map.events.push2(4);
+	game.view.setEnvironmentInfo(game.map);
+	game.updateView();
+}
+[endscript]
+
+@return
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=500
+@se f=kacha
+@wait time=500
+@notice text="Nothing happened.<r>The switch seems to be broken."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] WAY == "s"
+
+[texton]
+[リーダー f=06]「...!」[k]
+Suddenly, I sensed something moving behind me![k]
+[textoff]
+@wait time=500
+@walk turn=n
+@wait time=500
+[texton]
+When I hurriedly turned around, monsters attacked me![k]
+[textoff]
+@monster pos=0 name=アネモネ
+@monster pos=1 name=アネモネ
+@monster pos=2 name=アネモネ
+@monster pos=3 name=アネモネ
+@monster pos=4 name=アネモネ
+@monster pos=5 name=アネモネ
+@monster pos=6 name=アネモネ
+@monster pos=7 name=アネモネ
+@monster pos=8 name=アネモネ
+@monster pos=9 name=アネモネ
+@monster pos=10 name=アネモネ
+@monster pos=11 name=アネモネ
+@monster pos=12 name=アネモネ
+@monster pos=13 name=アネモネ
+@callbattle escape=false gameover=true
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] ! map.underWater && party.lastIsMove
+
+@fg c=9016 left=450
+[texton w=1]
+[ドナ f=06]「...I am a wandering peddler. Traveler, would you like to take a look at my wares?」[k]
+[textoff]
+@question title="Take a look?"
+@clf
+[eventoff cond='! tf.result']
+@shop name=ドナの行商２
+[texton w=0]
+[ドナ]「Visit again～!」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,2146 @@
+﻿; シナリオ・ノーム編・Ａパート
+
+
+
+;■主人公編・前半
+
+;◇主人公イベント01
+*theo_01
+
+; 宿屋の一室
+@saveon
+@fg c=ミューズ e=通常 f=05 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ e=通常 f=02]「It's nice to see you, [ミューズ].」[k]
+[ミューズ f=05]「...」[k]
+[テオ f=01]「Um... I'm sorry, you're in the same room with me. I was actually going to give you a girls-only room, but...」[k]
+[ミューズ f=05]「...」[k]
+[ミューズ v=vg165 f=05]「...It's okay.」[k]
+[テオ f=13]「O-oh. That's fine then.」[k]
+[ミューズ] is always so quiet... What do you really think?[k]
+[ミューズ v=vg166 f=06]「...With the captain...」[k]
+[テオ f=05]「Eh?」[k]
+@fg c=ミューズ f=16
+[ミューズ v=vg167 f=05]「If it's with the captain... that's fine...」[k]
+[テオ f=05]「...」[k]
+You're relieved, is that what you're saying?[k]
+If I've gained the trust of the members, that's good. It shows I'm recognized as a leader.[k]
+@fg c=ミューズ f=05
+[ミューズ v=vg168 f=05]「More importantly, Captain.」[k]
+[ミューズ] rummages through her luggage and pulls out a bag of snacks.[k]
+[ミューズ v=vg169 f=25]「Together... Would you like to eat?」[k]
+[ミューズ] asked me, while spreading out a lot of sweets on the table.[k]
+When did she accumulate so many... Is this candy from a store in Sapphire City?[k]
+[テオ f=05]「You're giving it to me?」[k]
+[ミューズ f=06]「... ∗nod∗」[k]
+[テオ f=01]「Thank you. I'll have some then.」[k]
+@clf
+I ate sweets with [ミューズ], just the two of us.[k]
+[ミューズ f=26]「... ∗chew∗」[k]
+[テオ f=06]「...」[k]
+[ミューズ] eats her sweets silently, expressionless.[k]
+[テオ f=02]「They're good. What do you think?」[k]
+[ミューズ f=25]「... ∗nod∗」[k]
+[ミューズ] nods with an expressionless face. Since her expression doesn't change, I can't tell if she's actually enjoying it, but I can only assume so.[k]
+[ミューズ f=26]「... ∗chew∗」[k]
+[テオ f=02]「They're really tasty. I'll buy some next time too.」[k]
+And so the two of us spent the evening together, eating sweets.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント02
+*theo_02
+
+; 宿屋の一室
+@saveon
+@fg c=ミューズ e=通常 f=06 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[ミューズ v=vg170 f=06]「Captain, thanks for your support today...」[k]
+[テオ e=通常 f=02]「Yeah, nice to be here.」[k]
+[ミューズ v=vg171 f=06]「I'm... glad I'm in the same room as you...」[k]
+; ↑ 静かに淡々と
+[テオ f=12]「What...?」[k]
+I was taken aback to hear [ミューズ] say she's happy to see me.[k]
+@fg c=ミューズ f=26
+[ミューズ v=vg172 f=26]「I... feel comfortable when I'm with you...」[k]
+[テオ f=01]「Oh, yeah... That's good to know.」[k]
+If she feels safe, that means she trusts me, so that's great for a leader.[k]
+Still, I was surprised. Depending on how you listen to it, it could be taken as a confession of love, but she said it without any such intent.[k]
+@fg c=ミューズ f=05
+[ミューズ v=vg173 f=05]「Umm... I have some snacks, let's eat them together...」[k]
+[テオ f=02]「Whenever I'm with you, you're always eating sweets.」[k]
+[ミューズ v=vg174 f=25]「Eh... Is that weird?」[k]
+[テオ f=02]「I don't think so, but I still feel like you do always eat them.」[k]
+@fg c=ミューズ f=30
+[ミューズ f=29]「... (Kyaa)」[k]
+[ミューズ v=vg175 f=56]「Not always... Sometimes I don't eat them...」[k]
+; ↑ 少しムッとする
+[ミューズ] sounded a little reproachful. Maybe she thought I was calling her a glutton?[k]
+[テオ f=02]「Hahaha, sorry. No, I just thought you must really like sweets.」[k]
+@fg c=ミューズ f=05
+[ミューズ f=05]「...」[k]
+[ミューズ v=vg176 f=06]「In my home village, we didn't often get the chance to eat sweets... In town, there are so many delicious sweets, so it all feels very fresh...」[k]
+[テオ f=02]「I know what you mean. When you go to a town for the first time, it's easy to get caught up in all the sights and sounds.」[k]
+Come to think of it, what village did [ミューズ] live in?[k]
+[テオ f=01]「Hey, [ミューズ]. What's the village you used to live in like?」[k]
+[ミューズ v=vg177 f=05]「Ehh...」[k]
+[テオ f=01]「Gnomes live in caves, right? What kind of cave did you live in?」[k]
+@fg c=ミューズ f=30
+[ミューズ f=30]「...」[k]
+[ミューズ v=vg178 f=30]「Huh... It's an ordinary village... There's nothing special...」[k]
+[テオ f=01]「If you don't mind, could you show me around some time? I'd like to see what it's like.」[k]
+[ミューズ f=30]「...」[k]
+[ミューズ v=vg179 f=29]「You shouldn't... Because it's in the middle of nowhere...」[k]
+[テオ f=05]「[ミューズ]...?」[k]
+[ミューズ v=vg180 f=55]「Let's have some snacks...」[k]
+[テオ f=06]「...」[k]
+Unusually, [ミューズ] interrupted me. Is it a subject she wants to avoid...?[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント03
+*theo_03
+
+; 宿屋の一室
+@saveon
+@fg c=ミューズ e=通常 f=02 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[ミューズ v=vg181 f=02]「I'm with the captain today too...」[k]
+With a faint smile, [ミューズ] speaks to me.[k]
+[テオ e=通常 f=02]「Y-yes, it's nice to see you.」[k]
+@fg c=ミューズ f=06
+[ミューズ f=06]「...」[k]
+[ミューズ]'s smile fades.[k]
+[テオ f=05]「What's wrong?」[k]
+[ミューズ v=vg182 f=06]「Well...」[k]
+[テオ f=05]「Hmm?」[k]
+@fg c=ミューズ f=05
+[ミューズ v=vg183 f=05]「Umm... you're... not going to force yourself on me...?」[k]
+[テオ f=12]「I'm sorry?!」[k]
+I was taken aback at the unexpected remark.[k]
+[テオ f=13]「Umm... did something strange happen?」[k]
+@fg c=ミューズ f=10
+[ミューズ v=vg184 f=10]「...[マックス] said before... hey, do it with me...」[k]
+[テオ f=12]「What?!」[k]
+That [マックス]...! Even though he has Maria, he's making advances on [ミューズ]...?[k]
+[ミューズ v=vg185 f=10]「Of course, I did my best to refuse... Then he backed off...」[k]
+[テオ f=10]「A-ah, I see.」[k]
+@fg c=ミューズ f=05
+[ミューズ v=vg186 f=09]「But, is that what men want...? When a man and a woman are alone together in the middle of the night...」[k]
+[テオ f=06]「...」[k]
+Even [ミューズ], who always seems detached from the world, can understand such things...[k]
+[テオ f=10]「W-well, some guys, perhaps...」[k]
+@fg c=ミューズ f=26
+[ミューズ v=vg187 f=26]「And you... Would you like to?」[k]
+[テオ f=05]「Eh?」[k]
+[ミューズ v=vg188 f=26]「It's okay... not with [マックス], but... with the captain...」[k]
+[テオ f=12]「No, no, no! It's okay! You don't have to go that far!」[k]
+[ミューズ v=vg189 f=25]「You don't like me...?」[k]
+[テオ f=12]「No, that's not what I meant. Anyway, you shouldn't be so careless with your body...!」[k]
+[ミューズ f=26]「...」[k]
+@fg c=ミューズ f=22
+[ミューズ f=22]「... (Hehe)」[k]
+[テオ f=05]「[ミューズ]?」[k]
+[ミューズ v=vg190 f=21]「...I understand. I'll do that... 」[k]
+[テオ f=10]「...」[k]
+I wasn't sure about the expression on her face, but I'm glad she seemed to understand anyway.[k]
+But still, [ミューズ] is kind of dangerous. She should be careful so she doesn't get taken advantage of by a bad guy.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント04
+*theo_04
+
+; 宿屋の一室
+@saveon
+@w05
+@bgf f=0001
+[texton w=0]
+[テオ e=通常 f=05]「Oh... [ミューズ] is...?」[k]
+I'm supposed to be sharing a room with [ミューズ] tonight, but she is nowhere to be found.[k]
+Where did she go...?[k]
+[textoff]
+[hoteloff]
+
+
+;◇主人公イベント05
+*theo_05
+
+; 宿の外
+@saveon
+@mu f=hideout
+[texton w=0]
+[テオ e=通常 f=05]「...Found her!」[k]
+[ミューズ] was outside the inn.[k]
+However, she is surrounded by three strange men.[k]
+They look shady. What the hell are they doing to [ミューズ]?![k]
+[textoff]
+@out
+@w05
+@fg c=ミューズ e=通常 f=09 b
+@fg l=thief_black_default1 b left=200
+@fg r=thief_green_default1 b
+@bg f=0014
+[texton w=1]
+[ミューズ v=vg191 f=09]「P-please let go...」[k]
+[男 f=thief_green_01]「Hmm～? What did you say?」[k]
+[男 f=thief_black_01]「I can't hear you!」[k]
+[男 f=thief_red_01]「Let's do something that feels good! Here!」[k]
+@fg r=thief_green_default1 b left=600
+@fg c=ミューズ f=95
+[ミューズ v=vg192 f=95]「Ah...!」[k]
+One of the men began stroking [ミューズ]'s butt.[k]
+[ミューズ] is clearly unwilling, however seems unable to speak up.[k]
+But as she doesn't resist, she's at the mercy of the men.[k]
+@fg c=ミューズ f=38
+[ミューズ v=vg193 f=38]「No... Please don't...」[k]
+[男 f=thief_green_01]「Huh?! I can't hear you at all!」[k]
+[男 f=thief_black_01]「Kukuku, you look so cute, shaking.」[k]
+[テオ f=06]「...!」[k]
+Oh no, I have to stop them...![k]
+[テオ f=05]「Hey! You guys!」[k]
+@fg c=ミューズ f=54
+[ミューズ f=54]「...!」[k]
+@fg l=thief_black_default2 b left=200
+@fg r=thief_green_default2
+[テオ f=05]「You guys! Get away from her!」[k]
+[男 f=thief_green_02]「Huh?! The hell do you want?!」[k]
+[男 f=thief_black_02]「Get lost, we're in the middle of something!」[k]
+[テオ f=07]「That girl is a member of my party! If you lay a hand on one of our members, I won't forgive you!」[k]
+[男 f=thief_green_02]「Eh...」[k]
+[男 f=thief_black_02]「Tsk... her friends are here...」[k]
+[男 f=thief_red_02]「Let's go, guys.」[k]
+@cl r b
+@cl l
+The men did not seem to be interested in fighting us, and they left quietly.[k]
+@fg c=ミューズ f=38
+[ミューズ v=vg194 f=38]「Captain...!」[k]
+@se f=dosa
+@clf
+@quake time=200 hmax=5 vmax=5
+[テオ f=05]「Oh... [ミューズ]...!」[k]
+[ミューズ] ran over to me and hugged me.[k]
+[ミューズ v=vg195 f=38]「Captain... I was scared...」[k]
+[テオ f=02]「[ミューズ]... It's all right now.」[k]
+[ミューズ] is trembling. I gently stroke her hair.[k]
+I was worried, but I'm glad she's okay now. However... [k]
+[テオ f=05]「Hey, [ミューズ]. Why didn't you call for help?」[k]
+@fg c=ミューズ f=54
+[ミューズ v=vg196 f=54]「Eh...」[k]
+[テオ f=05]「We were inside the inn and could have come running if you called for help.」[k]
+@fg c=ミューズ f=30
+[ミューズ f=30]「...」[k]
+[テオ f=06]「I know you were scared, but you need to be brave and call for help.」[k]
+[ミューズ f=30]「...」[k]
+[ミューズ v=vg197 f=30]「It's... I know, but...」[k]
+[テオ f=06]「...」[k]
+I knew [ミューズ] was a quiet girl, but her being so withdrawn is really dangerous...[k]
+We need to come up with some countermeasures... Before something irreversible happens.[k]
+[textoff]
+@out
+@w1
+@markopt chara=ミューズ visible=true
+@eval exp='f.surroundedGnomeID = void'
+@deleventbtn map=冒険者の宿 label=宿の外_1
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+@mu f=inn
+[hoteloff]
+
+
+
+
+;■マックス編
+
+;◇マックスイベント01
+*max_01
+
+; 宿屋の一室
+@saveon
+@bg f=0002
+@mu f=guild
+[texton w=0]
+[テオ e=通常 f=05]「I wonder if [ミューズ] is okay?」[k]
+I visit her room to talk to [ミューズ]. Then...[k]
+[textoff]
+@w05
+
+@se f=door1
+@fg l=ミューズ e=通常 f=10 b
+@fg r=マックス e=通常 b
+@bgf f=0001
+[texton w=1]
+[ミューズ v=vg387 f=10]「Ah... Captain...」[k]
+[マックス f=01]「Yo, [テオ].」[k]
+[テオ f=05]「Ah, [マックス]...!」[k]
+[マックス] was in the room. Why is he here...?[k]
+@fg r=マックス f=01
+[マックス f=01]「I've not talked to [ミューズ] much, so here I am...」[k]
+[テオ f=06]「I see...」[k]
+Well, they did only meet recently. So as members of the same party, it's good for them to get to know each other.[k]
+@fg l=ミューズ f=29
+[ミューズ v=vg388 f=29]「Um... Captain...!」[k]
+Suddenly, [ミューズ]'s sullen eyes turned to me.[k]
+[テオ f=05]「Hmm? What's wrong?」[k]
+@fg l=ミューズ f=29
+[ミューズ v=vg389 f=29]「Captain... can you stay here...?」[k]
+[テオ f=06]「Y-yeah, that's fine, but...」[k]
+@fg l=ミューズ f=22
+[ミューズ v=vg390 f=22]「Thank you...」[k]
+[テオ f=06]「...」[k]
+Maybe she's scared to be alone with [マックス]? I'll stay then.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇マックスイベント02
+*max_02
+
+; 宿屋の一室
+@saveon
+@fg c=マックス e=通常 f=06 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ e=通常 f=01]「Hey, [マックス].」[k]
+[マックス f=06]「[テオ]...」[k]
+When I visited [ミューズ]'s room, [マックス] was there alone.[k]
+[テオ f=05]「Huh? Where's [ミューズ]?」[k]
+[マックス f=06]「She went to get you.」[k]
+[テオ f=05]「Me?」[k]
+[マックス f=06]「She wanted the three of us to eat sweets together. Looks like she didn't find you.」[k]
+@fg c=マックス f=09
+[マックス f=09]「You're so popular with [ミューズ]. She still avoids me.」[k]
+[テオ f=05]「Is that so?」[k]
+[マックス f=09]「Yeah, she's so wary all the time, it's hard to get through. I envy you.」[k]
+[テオ f=02]「She's just shy. She'll warm to you eventually.」[k]
+[マックス f=06]「I hope so.」[k]
+@cl c b
+@fg l=マックス f=06 b
+@fg r=ミューズ e=通常 f=01
+[ミューズ v=vg391 f=01]「Oh, captain... you were here...」[k]
+[ミューズ] is back. The moment she sees my face, she looks relieved.[k]
+@fg r=ミューズ f=04
+[ミューズ v=vg392 f=04]「Would you like to eat with us?」[k]
+[テオ f=02]「Yes, okay.」[k]
+After that, the three of us talked about various things while eating sweets. [ミューズ] stayed by my side the whole time.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇マックスイベント03
+*max_03
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=sad
+[texton w=1]
+[ミューズ e=通常 f=10]「...」[k]
+I... I couldn't be in the same room with the captain today...[k]
+Today the captain is with another woman... I wish I could be with him...[k]
+[ミューズ f=10]「...」[k]
+Does the captain hate me...?[k]
+I want to believe it's not true, but anxiety spreads through my mind...[k]
+@fg c=マックス e=通常 f=01
+[マックス f=01]「Yo! [ミューズ]! What's going on? You look worried.」[k]
+[ミューズ f=10]「...」[k]
+The captain is always nice to me and I feel safe with him...[k]
+...Maybe I am too dependent on the captain. Still, I can't help but wish to be with him...[k]
+@fg c=マックス f=13
+[マックス f=13]「Oh～ hey, [ミューズ]! Can you hear me～?」[k]
+[ミューズ f=10]「...」[k]
+That day, I went to sleep with a hazy feeling in my heart...[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇マックスイベント04
+*max_04
+@jump target=*_max_04_freemode cond='game.isFreeMode'
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=guild
+@fg r=マックス e=通常 f=01 b
+@fg l=ミューズ e=通常 f=10
+[texton w=1]
+[ミューズ f=10]「...」[k]
+[マックス f=01]「Huh? [ミューズ], you're looking down!」[k]
+[ミューズ f=10]「...」[k]
+[マックス f=01]「I know, I know, you're thinking about [テオ], right?」[k]
+@fg l=ミューズ f=11
+[ミューズ f=11]「...!」[k]
+[マックス f=03]「Now you're thinking "how did he know that?" Well, it's because I see that look all the time.」[k]
+@fg l=ミューズ f=30
+[ミューズ f=30]「...」[k]
+[マックス f=01]「You like him, don't you? Let's talk about it. It should be easy for you to snag him, right?」[k]
+[ミューズ v=vg393 f=10]「But... he's the whole party's captain... I can't make him mine alone...」[k]
+@fg r=マックス f=05
+[マックス f=05]「Oh, come on, if you keep talking like that, you're going to lose [テオ] to another woman, aren't you?」[k]
+@fg l=ミューズ f=29
+[ミューズ f=29]「...!」[k]
+@fg r=マックス f=01
+[マックス f=01]「Oh? That face says it's a problem! [ミューズ] is easy to read ♪」[k]
+@fg l=ミューズ f=56
+[ミューズ f=56]「... (Hmph)」[k]
+@fg r=マックス f=03
+[マックス f=03]「I'm sorry, don't be angry. But those are your honest feelings, right? Don't ignore them!」[k]
+@fg l=ミューズ f=25
+[ミューズ v=vg394 f=25]「[マックス]...」[k]
+@fg r=マックス f=01
+[マックス f=01]「Come on, come on, go hang out with [テオ]! Go tell him.」[k]
+@fg l=ミューズ f=30
+[ミューズ v=vg395 f=30]「...But will he go out with me? I'm quiet, childish looking, and not attractive at all...」[k]
+[マックス f=15]「That's not true! You're a woman, so use a woman's weapon and seduce him! At least, I'd fall for that!」[k]
+[ミューズ v=vg396 f=05]「Woman's weapon ...?」[k]
+@fg r=マックス f=06
+[マックス f=06]「Hmm... that's right.」[k]
+@fg r=マックス f=03
+[マックス f=03]「[ミューズ]! Why don't you show your chest a little in front of me!」[k]
+@mu f=tiptoe
+@fg l=ミューズ f=31
+[ミューズ v=vg397 f=31]「E-eeeeeeh?!」[k]
+[マックス f=03]「Show me your tits and come a little closer. If I get excited, [ミューズ] is attractive enough!」[k]
+@fg l=ミューズ f=30
+[ミューズ v=vg398 f=30]「But that's embarrassing...」[k]
+@fg r=マックス f=53
+[マックス f=53]「If you're shy, you won't win the man you like! Be brave!」[k]
+[ミューズ v=vg399 f=30]「But...」[k]
+[マックス f=53]「Do you want [テオ] to be taken by another woman?」[k]
+[ミューズ f=30]「...」[k]
+@fg r=マックス f=22
+[マックス f=22]「Go on, try it. Call it practice.」[k]
+[ミューズ f=30]「...」[k]
+[ミューズ v=vg400 f=30]「...O-okay, I understand...」[k]
+[textoff]
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+@out
+
+@bg f=0001 b
+@fg r=マックス e=勃起 f=22 b
+@fg l=ミューズ e=白いパンツ,手ブラ left=420 f=30
+[texton w=1]
+[ミューズ v=vg401 f=30]「H-how's this...」[k]
+@fg r=マックス f=07
+[マックス f=07]「Come on! Don't hide your chest! You can do better than that!」[k]
+[ミューズ v=vg402 f=30]「Y-yes...」[k]
+@fg r=マックス f=22 b
+@fg l=ミューズ e=白いパンツ f=30 fix
+[マックス f=22]「Alright! Good, that's it! Come on, give me a closer look.」[k]
+[ミューズ v=vg403 f=29]「Is this really all right...?」[k]
+@fg r=マックス f=03
+[マックス f=03]「Oh no doubt! Look, I've got proof!」[k]
+@fg r=マックス e=硬い革鎧,勃起 f=03 b
+@fgf l=ミューズ e=白いパンツ,手ブラ f=31 fix
+[ミューズ v=vg404 f=31]「Kya...! [マックス]...!」[k]
+[マックス f=03]「You see my cock standing up? That's proof that you're attractive! If you confessed to him in this state, even the staunchest [テオ] wouldn't be able to resist!」[k]
+@fgf l=ミューズ f=30 fix
+[ミューズ f=30]「...」[k]
+@fg r=マックス f=03 left=600
+[マックス f=03]「Look, look! You're so erotic, my dick is really hard! It's not every day I get a full erection like this!」[k]
+@fgf l=ミューズ f=38 fix
+@shake layer=2 loop=5 time=20 length=2
+[ミューズ v=vg405 f=38]「Hey, stay over there...!」[k]
+[マックス f=22]「But I didn't realize you had such an erotic body! That would definitely make [テオ] fall for you! At least, if it were me, I'd definitely push you down!」[k]
+[ミューズ v=vg406 f=38]「No... no...!」[k]
+[マックス f=22]「Hey, show me more of your body, [ミューズ]!」[k]
+@fgf l=ミューズ f=31 fix
+[ミューズ v=vg407 f=31]「I'm getting dressed! Stay away...!」[k]
+@fgf r=マックス f=36 fix
+[マックス f=36]「Ugh! I can't take it anymore!」[k]
+@mu f=action
+@fgf r=マックス f=36 e=硬い革鎧,勃起,腕上げ left=450 b
+@fg l=ミューズ e=裸 ,手ブラ f=31 fix
+∗swiiish!∗[k]
+[ミューズ f=31]「...!」[k]
+[マックス] grabbed my panties and slid them down in one motion![k]
+@fgf l=ミューズ f=37 fix
+@shake layer=2 loop=5 time=20 length=2
+[ミューズ v=vg408 f=37]「No, no!... [マックス], don't...!」[k]
+@fg r=マックス f=36 fix b
+@fgf l=ミューズ e=裸 f=37 fix
+[マックス f=36]「There's no stopping now! [ミューズ], let me be your partner.」[k]
+@clf
+[マックス] strips naked and grabs me by both wrists![k]
+[ミューズ v=vg409 f=37]「Kya!」[k]
+[textoff]
+@w05
+
+@bgf f=0044
+@quake hmax=10 time=500
+[texton w=0]
+I'm being pushed down on the bed by [マックス]![k]
+[ミューズ v=vg410 f=31]「Wait, [マックス]... stop...」[k]
+[マックス e=裸 f=27]「We've come this far, so you can't refuse me. It was you who showed me your tits, right?」[k]
+[ミューズ v=vg411 f=29]「W-wait, but you told me to...」[k]
+[マックス f=27]「We're on the bed with each other, naked... Isn't it too cruel not let me fuck you?」[k]
+[マックス f=36]「Now, get ready for this. Hey, you'll feel better in no time!」[k]
+Saying that, [マックス] pushed my legs apart![k]
+[ミューズ v=vg412 f=37]「Oh no...!」[k]
+[マックス f=21]「Oh this is another cute pussy!」[k]
+[ミューズ v=vg413 f=37]「No... No... Don't look at it...!」[k]
+[マックス f=03]「I've already seen it fully! It's too late to try to hide it now!」[k]
+∗liick!∗[k]
+[ミューズ v=vg414 f=37]「Ah...!」[k]
+I felt some kind of strange slimy sensation in my crotch...![k]
+∗lick lick lick lick lick lick∗[k]
+[ミューズ v=vg415 f=37]「Ah... ah... no... no...!」[k]
+[マックス] began to lick around my vagina with his tongue![k]
+[マックス f=03]「Heh heh, how do you feel?」[k]
+No... I can feel it...![k]
+It's kind of... a naughty feeling...![k]
+∗lick lick lick lick lick lick∗[k]
+[ミューズ v=vg416 f=38]「Ah... ahh... stop... please...!」[k]
+[マックス f=01]「Oh? You're getting wet.」[k]
+Too much stimulation...![k]
+I feel too much... I can't take it...![k]
+[マックス f=03]「Come on, come on, I'll make you feel even better.」[k]
+∗lick lick lick lick lick lick∗[k]
+[ミューズ v=vg417 f=37]「An... No... Don't... [マックス]... ahhh...!」[k]
+I'm going crazy...![k]
+I'm... I'm cumming...![k]
+[マックス f=22]「Well, I guess it's time to go.」[k]
+[ミューズ f=52]「...?」[k]
+[マックス] stopped attacking my vagina with his tongue.[k]
+What is he going to do next...?[k]
+[マックス f=15]「Well, it's time for this guy to go.」[k]
+[ミューズ f=31]「...!」[k]
+Saying that, [マックス] thrust his large penis right in front of me, as if showing it off![k]
+[マックス f=22]「Now, I'm gonna put it in that wet pussy of yours.」[k]
+[ミューズ v=vg418 f=31]「No... No...!」[k]
+I have to call for help...! Somebody help me...![k]
+[ミューズ f=32]「...! (Ah!)」[k]
+But... If I call for help now...[k]
+I'll be seen in such an embarrassing state... And my vagina is all wet... If the captain sees me like this...![k]
+[ミューズ f=66]「...」[k]
+[マックス f=01]「Hmm? What's up, [ミューズ]?」[k]
+[ミューズ f=66]「...」[k]
+I can't find my voice...! I need to call for help... I'm shaking... and I can't make a sound...![k]
+[マックス f=03]「I don't really get it, but I guess it means you're fine with me putting my dick in!」[k]
+∗sluurp∗[k]
+[マックス] makes me get on all fours, then pushes the tip of his big penis against my entrance![k]
+[ミューズ v=vg419 f=64]「S-stop...!」[k]
+[マックス f=03]「Here I go then!」[k]
+[textoff]
+
+@bgf chara=ミューズ f=event19 p2=hair p3=02
+@quake hmax=10 time=500
+[texton w=2]
+∗sluurp!∗[k]
+[ミューズ v=vg420 f=43]「Hiaaaaaah...!」[k]
+[マックス]'s penis suddenly entered me![k]
+[マックス f=21]「Woohoo! Feels good～!」[k]
+[ミューズ v=vg421 f=49]「Ah... ah... ah...!」[k]
+[マックス]'s thing was going deeper and deeper into me![k]
+[マックス f=01]「Hmm... it won't go all the way in... Well, my dick is big after all!」[k]
+[ミューズ v=vg422 f=50]「Ugh... That's terrible... [マックス]...」[k]
+[マックス f=21]「Kuu～! It's slippery and feels too good! I can't get enough of this!」[k]
+@bg chara=ミューズ f=event19 p2=hair p3=03
+∗sluurp sluurp sluurp∗[k]
+[ミューズ v=vg423 f=50]「Ah... stop... it hurts...!」[k]
+[マックス f=03]「Does it hurt? Sorry, I can't help it, I have a big dick! I'll fuck you gently, so just bear with me a little!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg424 f=50]「Oh... Please... It hurts... Slowly...」[k]
+[マックス f=55]「Well... I know, but...」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[マックス f=57]「Your pussy... It feels so good... I can't stop my hips, oh!」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[ミューズ v=vg425 f=49]「Ah...!」[k]
+I told him it hurt, but [マックス]'s hip movements only got more intense.[k]
+I gritted my teeth and held on desperately, hoping it would be over soon.[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[マックス f=58]「I can't get enough of this～!」[k]
+[ミューズ v=vg426 f=49]「An, an, an, an, an, an, an!」[k]
+[マックス f=57]「I can't take it anymore! I'm going to cum!」[k]
+[textoff]
+@bgf chara=ミューズ f=event19 p2=hair p3=02
+@flash on=1000 t=500 off=500
+[texton w=2]
+∗spurt! spurt!∗[k]
+[ミューズ v=vg427 f=49]「Aaahhh...!」[k]
+[マックス] let it out inside me! Then he finally stopped moving...[k]
+[textoff]
+@out
+@w05
+
+@bg f=0001
+[texton w=0]
+[ミューズ v=vg428 f=50]「Ugh... ∗sob∗」[k]
+[マックス e=裸 f=55]「Don't cry! I should have fucked you more gently, I'm sorry!」[k]
+I-it's not that...[k]
+I didn't want to have sex with [マックス] in the first place... Him forcing me into it like this... It's too much.[k]
+[マックス f=23]「Sorry! I'll buy you some candy or something later! So don't cry!」[k]
+[ミューズ f=50]「...」[k]
+[マックス] didn't seem to understand why I was crying at all...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント05
+*max_05
+
+; 宿屋の一室
+@saveon
+@bgf f=0002
+@mu f=inn
+[texton w=0]
+[ミューズ e=通常 f=10]「...」[k]
+[マックス] is in my room today...[k]
+I opened the door to my room, feeling depressed.[k]
+[textoff]
+@out
+@w05
+
+@fg c=マックス e=下着・勃起 f=03 b
+@bgf f=0001
+@mu f=adult
+[texton w=1]
+[マックス f=03]「[ミューズ]! Let's have fun tonight!」[k]
+[ミューズ f=31]「...!」[k]
+When I entered the room, [マックス] was already in his underwear![k]
+And... His penis is swollen.[k]
+[マックス f=22]「Come on, [ミューズ]! Let's have sex soon! I can't wait any longer!」[k]
+@fg c=マックス e=裸・勃起 f=03
+Saying this, [マックス] pulled down his underwear![k]
+He came towards me, his penis growing![k]
+[ミューズ v=vg429 f=31]「No... no...!」[k]
+[マックス f=22]「Come on, take it off quickly...!」[k]
+[ミューズ v=vg430 f=65]「Wait a minute... I don't want to do that any more...」[k]
+[マックス f=03]「What are you talking about? You were so excited last time!」[k]
+[ミューズ v=vg431 f=66]「I wasn't excited...!」[k]
+[マックス f=22]「After your pussy got so wet? You really liked it, didn't you? You should be honest with me!」[k]
+[ミューズ v=vg432 f=66]「It wasn't good at all... Please put it away...」[k]
+[マックス f=01]「Oh come on, I've already taken my dick out. There's no way I can stop now!」[k]
+[ミューズ v=vg433 f=66]「O-oh, no...!」[k]
+[マックス f=33]「Hey, please. Let me fuck you again! The last time I had sex with you, it felt really good. I really want to taste that again!」[k]
+[ミューズ v=vg434 f=63]「Even if you say that, I don't want to...」[k]
+[マックス f=33]「One more time! Just one more time! Please, [ミューズ]!」[k]
+[ミューズ f=63]「...」[k]
+[textoff]
+@out
+@w05
+
+@bgf chara=ミューズ f=event19 p2=hair p3=03
+[texton w=2]
+[ミューズ v=vg435]「Ah... Ah... Ah... Ah...」[k]
+[マックス]「Muhyo～～! Your pussy feels so good, [ミューズ]!」[k]
+No matter how many times I refused, [マックス] persisted in his demands. I finally gave in and allowed myself to be taken.[k]
+[マックス] thrusts into me furiously from behind.[k]
+I tried my best to hold back as [マックス]'s big penis flailed around inside my pussy.[k]
+[ミューズ v=vg436]「Ahhh... Please... That's enough... ah ah ah.」[k]
+[マックス]「So why's it so slippery inside your pussy? You really want me to screw you more, don't you?」[k]
+∗thrust thrust thrust thrust thrust thrust thrust thrust!∗[k]
+[ミューズ v=vg437]「Ah... Ah... Aaaaah...! Ahh...!」[k]
+[マックス]「Oh, no! I can't take it anymore!」[k]
+[textoff]
+@flash t=100
+@wait time=200
+@bgf chara=ミューズ f=event19 p2=hair p3=02
+@flash t=100
+[texton w=2]
+∗spuurt! spuurt!∗[k]
+[ミューズ v=vg438]「Ohhhh...」[k]
+[マックス]「Ahhh～ that felt great! Your pussy is the best!」[k]
+@bg chara=ミューズ f=event19 p2=hair p3=01
+[ミューズ]「...」[k]
+White liquid is dripping from between my legs...[k]
+[マックス] ejaculated inside me...[k]
+[マックス]「Thanks to that, I was able to ejaculate comfortably! It was so refreshing～!」[k]
+[textoff]
+
+@bgf f=0001
+[texton w=0]
+[マックス e=汗だく f=71]「Oops, I just came, and already my dick is getting hard! [ミューズ], one more time!」[k]
+[ミューズ v=vg439 e=汗だく f=31]「Ehh... Oh no...!」[k]
+[マックス f=65]「I'm just going to cum one more time and then I'll be done! So, lift your butt...!」[k]
+[ミューズ v=vg440 f=37]「No... No, ah...」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=ミューズ f=event19 p2=hair p3=03
+[texton w=2]
+[ミューズ v=vg441]「Ah... Ah... Ah... Ah...」[k]
+[マックス]「Phew... It feels so good... No matter how many times I do it, it's still great...!」[k]
+[ミューズ v=vg442]「Ahhh... Ohhh... [マックス]... ah...」[k]
+[マックス]「Oh? You're getting better and better, aren't you?」[k]
+[マックス] made me have sex with him four times.[k]
+I've given up and will continue to accept it until [マックス] gets tired of it.[k]
+[マックス]'s big hot penis never stops...[k]
+As he kept thrusting into me, pleasure enveloped my whole body.[k]
+[ミューズ v=vg443]「Oh, no... [マックス]... Aaaan... Aaan...」[k]
+[マックス]「You're starting to sound good, [ミューズ], and you're wiggling your hips! Erotic!」[k]
+Feels good...![k]
+I shouldn't think that, but I can't resist the sweet sensation.[k]
+[ミューズ v=vg444]「Oh... [マックス]... More... More!」[k]
+[マックス]「Oh! I'm going to thrust harder!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg445]「An... ahh... Aaaaahhh...! Aaahhh...!」[k]
+The cock is... Too good... Aaahhh...![k]
+I can't handle it anymore... Aaahhh...![k]
+[ミューズ v=vg446]「Ah... [マックス]... I... I'm... Aaahhh...!」[k]
+[マックス]「Are you gonna cum? I'm going to make you cum as hard as I can!」[k]
+@quake hmax=10 time=500
+∗thrust thrust thrust thrust thrust thrust thrust thrust!∗[k]
+[ミューズ v=vg447]「Aah, aah, aaah!」[k]
+[マックス]「Noooooooooooo! I'm cumming!」[k]
+[textoff]
+@flash on=1000
+[texton w=2]
+I ended up cumming with [マックス]...[k]
+[textoff]
+@out
+@w1
+
+@bgf f=0001
+[texton w=0]
+[ミューズ v=vg448 e=汗だく f=39]「Haa, haa...」[k]
+[マックス e=汗だく f=23]「Whew～ I finally feel refreshed! Good job today, [ミューズ]!」[k]
+[ミューズ f=52]「...」[k]
+[マックス f=79]「Phew... After five times in a row, I'm getting sleepy.」[k]
+After saying that, [マックス] quickly fell asleep on my bed, still naked.[k]
+[ミューズ f=94]「...」[k]
+[マックス] snores as he sleeps, and I bask in the afterglow of our earlier sex.[k]
+My pussy was a little sore, but I was pleasantly languid and didn't feel bad.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント06
+*max_06
+
+; 宿屋の廊下
+@saveon
+@out
+@bg f=0002
+[texton w=0]
+[テオ e=通常 f=05]「Huh...?」[k]
+As I walked down the dark corridor late at night, I saw light spilling from [ミューズ]'s room.[k]
+[テオ f=06]「Is she still awake...?」[k]
+But the light is faint. Maybe she's already sleeping... If so, I shouldn't wake her up...[k]
+[テオ f=06]「...」[k]
+I decided to take a peek inside through the keyhole.[k]
+[textoff]
+@out
+@w05
+
+@bgf chara=ミューズ f=event19 p0=hair p1=01
+@mu f=adult
+[texton w=1]
+[テオ f=12]「...!」[k]
+[ミューズ]'s pale ass was visible in the dimly lit room![k]
+I wonder if she was changing clothes... I shouldn't have looked, let's go.[k]
+But why crawl on the bed on all fours...?[k]
+@bgf chara=ミューズ f=event19 p0=hair p1=02
+@quake time=500
+[テオ f=10]「...?!」[k]
+Behind [ミューズ], a man suddenly appears with his lower body exposed![k]
+I-is that [マックス]...?![k]
+And then... [マックス] and [ミューズ]'s bodies were joined from behind![k]
+[テオ f=12]「What...?!」[k]
+Why, why are [マックス] and [ミューズ]?![k]
+[ミューズ v=vg449 e=汗だく f=37]「Ah... Ah... [マックス]... Aaahhh...! Aahhh...!」[k]
+[マックス e=汗だく f=23]「Kuu～! Your pussy feels so good, [ミューズ]～!」[k]
+[マックス] crazily thrusts into [ミューズ] from behind.[k]
+[ミューズ] accepts it with troubled panting.[k]
+They had intense sex in front of my eyes.[k]
+[ミューズ v=vg450 f=37]「Haa, haa.. I'm... I'm cumming...!」[k]
+[マックス f=63]「I'm gonna cum too! Take my hot sperm!」[k]
+∗spuurt! spuuurt!∗[k]
+[マックス f=69]「Woohooooo!」[k]
+[ミューズ v=vg451 f=37]「Ahhhhhhh... I'm cumming...!」[k]
+[textoff]
+@out
+@w05
+
+@bgf f=0002
+[texton w=0]
+[テオ f=10]「[ミューズ]...」[k]
+I can't believe [ミューズ] had that kind of relationship with [マックス]...[k]
+Feeling sad, I had no choice but to leave the place in silence.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント07
+*max_07
+
+; 宿屋のロビー・朝
+@saveon
+@bg f=0003
+[texton w=1]
+It's morning. I have to work hard as an adventurer today...![k]
+[テオ e=通常 f=05]「...Hmm? Where's [ミューズ]?」[k]
+[テオ f=05]「Speaking of which, [マックス] isn't here either... Wait here, I'll go and check!」[k]
+[textoff]
+@out
+
+; 宿屋の一室
+@fg c=ミューズ e=汗だく f=39 b
+@fg r=マックス e=裸 f=03 left=500 b
+@bgf f=0001
+[texton w=1]
+[マックス f=03]「Mmmm, it felt good. You're great at waking a man up, [ミューズ]!」[k]
+[ミューズ v=vg452 f=39]「Haa, haa...」[k]
+@fg r=マックス f=22 left=500
+[マックス f=22]「Hey, [ミューズ], let's go one more time!」[k]
+@fg c=ミューズ f=52 b
+[ミューズ v=vg453 f=52]「Huh...? But it's time to go...」[k]
+[マックス f=22]「Just one more time! This morning I was strangely horny. Please!」[k]
+[ミューズ v=vg454 f=57]「Well... wait, [マックス]...!」[k]
+@se f=door1
+∗slam∗[k]
+[テオ f=05]「[マックス], it's time to go, get to the lounge...!」[k]
+@fg c=ミューズ f=31 b
+@fgf r=マックス f=11 left=500
+[ミューズ v=vg455 f=31]「Kyaa...!」[k]
+[マックス f=11]「[テオ]...!」[k]
+@clf c
+Opening the door revealed two naked people. [ミューズ] hurriedly hid behind some furniture.[k]
+@fg r=マックス f=13 left=500
+[マックス f=13]「Well, this is... Ahahaha...」[k]
+[テオ f=10]「...」[k]
+Sex in the morning... I can't help but be dismayed.[k]
+[マックス f=13]「A-anyway, we'll be right down, so can you close the door?」[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ライナス編
+
+;◇ライナスイベント01
+*linus_01
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=tiptoe
+@fg c=ミューズ e=通常 f=05
+[texton w=1]
+[ミューズ f=05]「...?」[k]
+On entering the room, I noticed a strange bottle on the table.[k]
+The bottle contains a strange colored liquid.[k]
+@fg c=ミューズ f=19
+[ミューズ f=19]「... ∗sniff∗」[k]
+It smells really sweet... It's good... What could that smell be?[k]
+@fg c=ミューズ f=06
+I picked up the bottle to try and find out. What in the world is in it...?[k]
+@se f=door1
+@cl b
+@fg l=ミューズ f=05 b
+@fg r=ライナス e=通常 f=07
+[ライナス f=07]「Hey! Don't touch that bottle!」[k]
+@fgf l=ミューズ f=11
+[ミューズ v=vg456 f=11]「What? ...Kya!」[k]
+Then the bottle slid out of my hand![k]
+@se f=glassbreak
+@flash
+Clash![k]
+@fg l=ミューズ f=31
+[ミューズ f=31]「...!」[k]
+[ライナス f=11]「Ahhhh...!」[k]
+Oh no, I dropped the bottle...![k]
+The bottle shattered and all the liquid inside poured out.[k]
+[ライナス f=07]「Hey! What the hell are you doing?! That bottle had some precious liquid in it!」[k]
+@fgf l=ミューズ f=18
+[ミューズ v=vg457 f=18]「Eh... oh... sorry...!」[k]
+Apparently, the bottle and the liquid belonged to Linus.[k]
+It seems that the bottle was important to him, and he was very upset when it was broken.[k]
+[ライナス f=07]「Well?! What are you doing?!」[k]
+[ミューズ v=vg458 f=18]「Sorry... sorry, Linus...!」[k]
+What should I do?... I've done something terrible...![k]
+Anyway, I have to apologize. Somehow I have to get Linus to forgive me...![k]
+@fg l=ミューズ f=09
+[ミューズ v=vg459 f=09]「I'm so sorry... I will replace it...」[k]
+[ライナス f=07]「It's not something you can just replace! It's a precious chemical used in alchemy that I had to make myself!」[k]
+It was such an important thing... and I ruined it...[k]
+[ライナス f=08]「Damn... now I'm back to square one in this key experiment...」[k]
+@fgf l=ミューズ f=50
+[ミューズ v=vg460 f=50]「Ugh... sorry...」[k]
+@fgf r=ライナス f=06
+[ライナス f=06]「...」[k]
+[ライナス f=06]「...Well, I'll only forgive you if you help me with my research.」[k]
+@fgf l=ミューズ f=47
+[ミューズ v=vg461 f=47]「What...? ∗sniff∗」[k]
+; ↑ 「え？」と言った後少し鼻をすする
+[ライナス f=06]「Help me with my alchemy research. Then I'll let you off the hook for that medicine. How about it?」[k]
+@fgf l=ミューズ f=11
+[ミューズ v=vg462 f=11]「Yes! I will help! Anything I can do to help, please let me know!」[k]
+[ライナス f=06]「Okay! If you insist, let's let bygones be bygones.」[k]
+@fgf l=ミューズ f=01
+[ミューズ v=vg463 f=01]「Thank you!」[k]
+@fgf r=ライナス f=02
+[ライナス f=02]「I may need some help in the near future. I'll let you know.」[k]
+[textoff]
+@out
+@w1
+
+; ライナスの心の中
+[texton w=0]
+[ライナス f=01]「Kukuku... success!」[k]
+[ライナス f=01]「That liquid is just syrup used in pastry making, with a little intoxicating aroma added. The bottle was deliberately made slippery by waxing it.」[k]
+[ライナス f=01]「As I hoped, she panicked after dropping it and getting accused. She seems to be weak-minded, so with a little pressure, she should meekly do whatever I say.」[k]
+[ライナス f=21]「Now, I wonder what kind of experiments I can get [ミューズ] to go along with... ehehehehehehehe...」[k]
+[textoff]
+[hoteloff]
+
+
+;◇ライナスイベント02
+*linus_02
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=tiptoe
+@fg l=ミューズ e=通常 f=05 b
+@fg r=ライナス e=通常 f=02
+[texton w=1]
+[ライナス f=03]「Hey, [ミューズ]!」[k]
+[ミューズ v=vg464 f=05]「Ah... Linus...」[k]
+[ライナス f=02]「I'd like to ask you to help me with the research I mentioned the other day, as soon as you can...」[k]
+[ミューズ v=vg465 f=05]「What is it?」[k]
+[ライナス f=02]「Actually, it's this...」[k]
+With that, Linus pulled out a piece of bikini armor.[k]
+[ミューズ v=vg466 f=05]「What's that...?」[k]
+@fgf r=ライナス f=22
+[ライナス f=21]「It's new bikini armor I developed. I want you to try it.」[k]
+@fgf l=ミューズ f=29
+[ミューズ v=vg467 f=29]「Try it...? You want me to... wear that...?」[k]
+[ライナス f=22]「Yeah! And I'd love to know how you feel about using it.」[k]
+[ミューズ v=vg468 f=29]「Using...?」[k]
+That sounds embarrassing... Wearing bikini armor in front of Linus...[k]
+[ライナス f=21]「It's got magic powers that make you move 20% faster than normal! Give it a try!」[k]
+[ミューズ f=30]「...」[k]
+[ライナス f=05]「You said you'd help me with my research.」[k]
+[ミューズ f=30]「...」[k]
+[ミューズ v=vg469 f=30]「I understand... I'll put it on...」[k]
+[textoff]
+@out
+@w05
+[texton w=1]
+I received the bikini armor from Linus and began to change.[k]
+I asked Linus to turn around, then removed my clothes.[k]
+Start with the top...[k]
+This top has a bumpy interior, which is kind of weird... Is it poorly made?[k]
+Then, I put my leg through the bottoms.[k]
+[ミューズ e=裸 f=25]「...?」[k]
+Umm... these have a weird raised area on the inside...[k]
+[ミューズ v=vg470 f=37]「Ah...!」[k]
+Oh no... it hit my sensitive spot...! I couldn't help but make a funny noise...![k]
+[textoff]
+@out
+@w05
+@fg c=ミューズ e=特製ビキニ鎧 f=30 b
+@bg f=0001
+[texton w=1]
+[ミューズ v=vg471 f=30]「I did it...」[k]
+[ライナス f=21]「I love it! [ミューズ], it looks good on you!」[k]
+[ミューズ v=vg472 f=29]「So... your research?」[k]
+[ライナス f=22]「Yes. Well, let's get going.」[k]
+[ミューズ v=vg473 f=29]「What...?! You want to go outside...?」[k]
+[ライナス f=21]「I'll have to measure how fast you can go. Let's go for a spin around town!」[k]
+[textoff]
+@out
+@w05
+
+@bg f=0006 b
+@mu f=bad
+@fg l=ライナス f=01 b
+@fg r=ミューズ f=29
+[texton f=1]
+[ミューズ v=vg474 f=29]「Umm... Where in town...」[k]
+[ライナス f=01]「We'll go to the park. At night in the park, you can move around as much as you want!」[k]
+The park... It's pretty far...[k]
+I have to wear this armor all the way there...?[k]
+@fg l=ライナス f=05
+[ライナス f=05]「Hey! What are you waiting for? Hurry up!」[k]
+[ミューズ v=vg475 f=29]「Y-yes...」[k]
+I want to walk fast, but... My armor...[k]
+It touches me where it feels good... I can't move easily...![k]
+@fg r=ミューズ f=37
+[ミューズ v=vg476 f=37]「Ahh...!」[k]
+@fg l=ライナス f=22
+[ライナス f=22]「Hmm? What's the matter, [ミューズ]? What's wrong with you?」[k]
+@fg r=ミューズ f=66
+[ミューズ v=vg477 f=66]「Oh, it's nothing...」[k]
+I feel... It feels so good...![k]
+Oh no... I'm getting a little wet...![k]
+[name n=Resident]「Hey, bro!」[k]
+Suddenly, a passing citizen spoke to us.[k]
+[name n=Resident]「You have a date for the night?」[k]
+@fg l=ライナス f=01
+[ライナス f=01]「Well, something like that!」[k]
+[name n=Resident]「Wow, she's cute, isn't she?」[k]
+[name n=Resident]「A girlfriend who'll wear bikini armor? I'm so jealous～!」[k]
+Passersby stare at me.[k]
+Embarrassing...! And my vagina is so wet right now...![k]
+@se f=kucha
+∗slurp∗[k]
+@fgf r=ミューズ f=37
+@shake layer=1 loop=5 time=20 length=2
+[ミューズ v=vg478 f=37]「Uh... Ah...!」[k]
+@fg r=ミューズ f=38
+Ahhhhh... It's gonna rub again...![k]
+I can't...! I can't make a sound...! They'll know what I'm feeling...![k]
+I tried hard to ignore my crotch and managed to walk along with Linus.[k]
+[textoff]
+@out
+@w05
+
+@bg f=0029 b
+@fg l=ライナス e=戦闘 f=02 left=250 b
+@fg r=ミューズ f=30 left=800
+[texton f=1]
+[ライナス f=02]「Well, here we are. Let's have a light mock battle here.」[k]
+[ミューズ f=30]「...」[k]
+Linus confronts me with his preferred weapon, the boomerang.[k]
+[ライナス f=02]「Dodge the boomerangs I throw. I'm sure you can dodge them in that armor.」[k]
+[ミューズ f=30]「...」[k]
+I don't think so. I don't feel any lighter at all.[k]
+On the contrary, the protrusion on the armor hits my crack at odd angles, so movement only becomes more awkward.[k]
+@fg l=ライナス f=55 fix
+[ライナス f=55]「I'll throw it a little sloppily at first. Here we go! [ミューズ]!」[k]
+@fg r=ミューズ f=31 fix
+[ミューズ v=vg479 f=31]「Hey, wait a minute...」[k]
+@se f=swing2
+@flash t=100
+@fgf l=ライナス e=武装 f=55 fix
+[ライナス f=55]「Ha!」[k]
+@se f=swing4 loop=true
+[ミューズ f=31]「...!」[k]
+Linus threw a boomerang at me! I have to dodge...[k]
+@fgf r=ミューズ f=38 fix
+@shake layer=1 loop=5 time=20 length=2
+[ミューズ f=38]「...!」[k]
+The armor is touching... My vagina...![k]
+@fgf r=ミューズ f=37 fix
+@shake layer=1 loop=5 time=20 length=2
+[ミューズ v=vg480 f=37]「Yaaa!」[k]
+Pleasure runs through my whole body! It numbs the lower half of my body like an electric shock between my legs.[k]
+@se f=swing2
+@clf r
+[ミューズ v=vg481 f=37]「Kya!」[k]
+I dodged the boomerang in the nick of time, losing my balance.[k]
+@fg r=ミューズ f=65 fix
+[ミューズ v=vg482 f=65]「Phew...」[k]
+@fg l=ライナス e=戦闘 f=21 fix
+[ライナス f=21]「Oh, that was a great move! That's my newly developed armor![r]I can't believe you dodged the boomerang just now!」[k]
+[ミューズ f=66]「...」[k]
+It really didn't feel like that...[k]
+@fg r=ミューズ f=65 fix
+[ミューズ v=vg483 f=65]「Um... Was I really moving better...? I'm not sure...」[k]
+@fg l=ライナス f=01 fix
+[ライナス f=01]「Much better! The fact that you were able to dodge the boomerang just now is solid proof!」[k]
+[ライナス f=01]（Well, I deliberately avoided hitting you.）[k]
+[ミューズ v=vg484 f=65]「Um... Can we stop now?」[k]
+@fg l=ライナス f=55 fix
+[ライナス f=55]「What are you talking about? We've only just begun! Come on, let's move on.」[k]
+@se f=swing2
+@fgf l=ライナス e=武装 f=55 fix
+@flash t=100
+Ya![k]
+@se f=swing4 loop=true
+@fg r=ミューズ f=31 left=850
+[ミューズ v=vg485 f=31]「Wait, wait, Linus...」[k]
+I move sideways in a hurry to avoid the boomerang! Suddenly...[k]
+@se f=kucha
+∗sluurp∗[k]
+@fg r=ミューズ f=38 fix
+[ミューズ f=38]「...!」[k]
+Suddenly the protruding part of the armor rubbed roughly against my crack![k]
+[ミューズ v=vg486 f=37]「Aaahhh...!」[k]
+Oh no...! That feels good...![k]
+I'm losing strength... I can't do it anymore...![k]
+@shake layer=1 loop=5 time=20 length=2
+[ミューズ v=vg487 f=38]「Mmmmmm...! Ahh!」[k]
+@se f=dosa
+@clf r
+@quake hmax=10 time=500
+∗thud∗[k]
+@cl b
+@fg c=ライナス f=21
+[ライナス f=21]「Hmm? What's the matter? Suddenly you're crouching down.」[k]
+I'm cumming...![k]
+Outside... In front of Linus... I'm cumming...![k]
+It's embarrassing...![k]
+[ミューズ v=vg488 f=65]「Phew...」[k]
+[ライナス f=22]「What's wrong, [ミューズ]? Your face is all red, are you okay?」[k]
+[ミューズ v=vg489 f=66]「Um... I'm sorry... I'm not feeling well... I'd like to go home...」[k]
+[ライナス f=21]「What, did you catch a cold? What can I do?」[k]
+[textoff]
+@out
+@w05
+[texton w=0]
+I returned to the inn on Linus' back...[k]
+[textoff]
+@out
+@w05
+
+; ライナスの心の中
+[texton w=0]
+[ライナス f=01]（Uh-huh... Looks like she felt pretty good... Did you cum by any chance?）[k]
+[ライナス f=22]（I honestly didn't think it would work that well. Seems like [ミューズ] is pretty sensitive.）[k]
+[ライナス f=21]（Well, let's do something naughtier next time.）[k]
+[textoff]
+@w05
+[hoteloff]
+
+
+;◇ライナスイベント03
+*linus_03
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=bad
+@fg l=ミューズ e=通常 f=10 b
+@fg r=ライナス e=通常 f=01
+[texton w=1]
+[ライナス f=03]「[ミューズ], thank you for assisting my research the other day.」[k]
+[ミューズ v=vg490 f=10]「Y-yes...」[k]
+[ライナス f=22]「Actually, there's one more piece of armor I'd like you to try.」[k]
+@fgf l=ミューズ f=29
+[ミューズ v=vg491 f=29]「H-here we go again...」[k]
+@fgf r=ライナス f=28
+[ライナス f=28]「You said you'd help with my research, right?」[k]
+@fgf l=ミューズ f=30
+[ミューズ f=30]「...」[k]
+[ライナス f=28]「Hey, you didn't forget that you ruined the chemical, did you?」[k]
+[ミューズ v=vg492 f=30]「Sorry, I'll do it...」[k]
+@fgf r=ライナス f=21
+[ライナス f=21]「That's better. Just be honest from the start. Hey, it's not that big of a deal.」[k]
+With that, Linus takes out another piece of clothing that looks like a woman's bathing suit.[k]
+[ミューズ v=vg493 f=30]「A-a bikini again...?」[k]
+[ライナス f=05]「I can't help it. If it wasn't a bikini, I would try it on myself, but it needs a girl to wear it. That's why I asked you.」[k]
+[ミューズ f=30]「...」[k]
+[ライナス f=03]「Well, put it on. I'll be facing that way.」[k]
+[textoff]
+@out
+
+[texton w=0]
+[ミューズ f=30]「...」[k]
+This time, the armor is a thick leather bikini. The bottoms are a strange color.[k]
+When you touch it, it's a strangely soft material that feels squishy. Something different from normal leather... Yes, like animal mucous membranes.[k]
+At any rate, I stripped naked and tried on the bottoms first.[k]
+[ミューズ e=裸 f=29]「...」[k]
+It feels... kind of weird... slimy and a bit cold... Oh no... isn't this leather still wet?[k]
+Now I'm going to try on the top.[k]
+[ミューズ e=サハギンの鎧 f=30]「...」[k]
+This one is also made of a mucous membrane-like material. It sticks snugly to the breast, tightening the skin and nipple like a suction cup.[k]
+It feels a little wet again... Is this really something I can wear as armor?[k]
+[ライナス f=01]「[ミューズ]! Did you put it on yet?」[k]
+[ミューズ v=vg494 f=11]「Oh, yes, it's okay. Please turn around.」[k]
+[textoff]
+@out
+
+@bg f=0001
+@fg r=ミューズ e=サハギンの鎧 f=30 b
+@fg l=ライナス e=通常 f=21 left=250
+[texton w=1]
+[ライナス f=21]「Oh～! It's a perfect fit! How do you like it?」[k]
+[ミューズ v=vg495 f=30]「Well... not really... it's kind of disgusting...」[k]
+[ライナス f=21]「Is that so? But, that is great armor that holds the mysterious power of a certain demon, you know?」[k]
+@fg r=ミューズ f=25
+[ミューズ v=vg496 f=25]「Mysterious power?」[k]
+@fg l=ライナス f=01 fix
+[ライナス f=01]「It's special armor made from parts of a Sahagin's body. Just by wearing that armor, you can dive freely into water and completely protect yourself from water-based attacks.」[k]
+[ミューズ v=vg497 f=25]「Ah...」[k]
+If so, Linus, is right, and it's great armor.[k]
+@fg l=ライナス f=03 fix
+[ライナス f=03]「If you like it, it's yours.」[k]
+[ミューズ v=vg498 f=25]「Ah, are you sure...? Thank you...」[k]
+This slimey Sahagin material is disgusting, but with effects like that, it might be worth using...[k]
+@fgf r=ミューズ f=37
+@shake layer=1 loop=5 time=20 length=2
+[ミューズ v=vg499 f=37]「Ah...!」[k]
+Oh... now the armor is...[k]
+@fg l=ライナス f=21 fix
+[ライナス f=21]「Hmm? What's wrong?」[k]
+[ミューズ v=vg500 f=37]「Nothing, nothing... ah!」[k]
+What, what is this![k]
+The flipper-like thing that hides my breasts is squirming around! It's as if it's squeezing them![k]
+Oh, no...! Stop it...![k]
+@shake layer=1 loop=5 time=20 length=2
+[ミューズ v=vg501 f=37]「Ah... ah... No...!」[k]
+[ライナス f=22]「Hmm? What's wrong?」[k]
+[ミューズ v=vg502 f=37]「Oh, uh, the armor moves on its own... Aaaah!」[k]
+Now the place that hides the crotch began to move![k]
+The tongue-like part wiggles and undulates, rippling like a living creature![k]
+@shake layer=1 loop=5 time=20 length=2
+@fgf r=ミューズ f=50
+[ミューズ v=vg503 f=50]「Ah... Ahhh... Stop... Ahh...!」[k]
+Please... Don't move... Stop...![k]
+It makes me feel... I feel so good...![k]
+[ライナス f=22]「Hmm? What's wrong, [ミューズ]? Are you shaking?」[k]
+@fg r=ミューズ f=44
+[ミューズ f=44]「...! (Ah!)」[k]
+Ah, Linus is watching. If he finds out what I'm feeling, I'll be so embarrassed...![k]
+@fg r=ミューズ f=48
+[ミューズ v=vg504 f=48]「No... It's nothing...」[k]
+[ライナス f=22]「Really? Your face is all red, though? Are you sure you're okay?」[k]
+@fgf r=ミューズ f=49
+@shake layer=1 loop=5 time=20 length=2
+[ミューズ v=vg505 f=49]「I'm really okay... Hiaah!」[k]
+Suddenly, the tongue part of the crotch stimulated my nub![k]
+[ミューズ v=vg506 f=49]「Ahhhhhhhhh...」[k]
+I can't... I'm losing strength... I can't stand... I can't stand up...![k]
+[textoff]
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+@outf
+@w05
+
+@mu f=action
+@se f=dosa
+@quake time=200 hmax=5 vmax=5
+@bgf chara=ミューズ f=event55 p0=hair p1=01 p2=05
+[texton w=2]
+∗thud!∗[k]
+I fell down on the spot.[k]
+[ライナス]「Hey, hey, what's up, [ミューズ]?」[k]
+[ミューズ v=vg507]「Ah... Ah... Mmmm... ah... Stop... Ahhhh!」[k]
+The tongue no longer covers my crotch, but instead pokes my vaginal hole, now I'm on all fours.[k]
+[ライナス]「Oooh, [ミューズ]'s pussy is fully showing!」[k]
+[ミューズ v=vg508]「Oh no... Don't look at me... Please... Ah!」[k]
+Embarrassing...! I want to escape, but the naughty stimulation is so great that I can't even move...![k]
+@bg chara=ミューズ f=event55 p0=hair p1=02 p2=05
+∗sluurp!∗[k]
+[ミューズ v=vg509]「Hee!」[k]
+Then, the tail part of the armor entered my vagina![k]
+The tip of the tail wiggles inside and stirs my insides![k]
+[ミューズ v=vg510]「Oh no... No, no, no... Aaah!」[k]
+[ライナス]「Yeah, I can't get enough of this! It's so sexy, [ミューズ]!」[k]
+The tip of the tail rubs against and stimulates the sensitive spots in my vagina, making me feel better and better![k]
+No more... No more...![k]
+I'm... I'm cumming...![k]
+[ライナス]「What a disgusting and outrageous piece of armor! I'm sorry, [ミューズ]. I'll take it off now.」[k]
+@bg chara=ミューズ f=event55 p0=hair p1=03 p2=02
+[ミューズ v=vg511]「Oh...」[k]
+Linus removed my lower body armor.[k]
+[ライナス]「Wow, your pussy is so wet already! I'm going to have to comfort you with this.」[k]
+Then he grabs my behind.[k]
+Linus had his pants down before I knew it, and between his legs was his growing penis...![k]
+[ミューズ v=vg512]「Ah... Wait! Linus!」[k]
+[ライナス]「Let's go! [ミューズ]!」[k]
+@bg chara=ミューズ f=event55 p0=hair p1=04 p2=05
+∗sluurp!∗[k]
+[ミューズ v=vg513]「Nngh!」[k]
+Linus put it inside me![k]
+Just when I thought it was fully in, it pushes deeper and deeper without hesitation![k]
+[ライナス]「Come on, I'm going to put all my dick in you!」[k]
+@bg chara=ミューズ f=event55 p0=hair p1=05 p2=04
+∗sliiip∗[k]
+[ミューズ v=vg514]「Oh no...!」[k]
+[ライナス]「No ahhh...!」[k]
+[ミューズ v=vg515]「That's horrible, Linus... I didn't want to...」[k]
+[ライナス]「What are you talking about? Your pussy was so wet. You really wanted my cock, didn't you?」[k]
+[ミューズ v=vg516]「I don't want it... Ahhh!」[k]
+@bg chara=ミューズ f=event55 p0=hair p1=04 p2=05 t=500
+@bg chara=ミューズ f=event55 p0=hair p1=05 p2=05 t=500
+@bg chara=ミューズ f=event55 p0=hair p1=04 p2=05 t=500
+@bg chara=ミューズ f=event55 p0=hair p1=05 p2=05 t=500
+∗squish squish squish squish∗[k]
+Linus began to move his hips.[k]
+[ミューズ v=vg517]「Ah... Oh... No... No...!」[k]
+[ライナス]「Come on, [ミューズ], let's feel good together.」[k]
+He grabbed my hips forcefully and slammed his hips against me.[k]
+[ライナス]「Woo hoo! This feels so good...!」[k]
+[ミューズ v=vg518]「Haaah... Aaan... Linus... I... Ohhhhh...!」[k]
+Linus's penis... is so thick... and hot.[k]
+Such a penis is rampaging around inside me while I'm soaking wet...[k]
+To be honest, Linus's thing is painful. But I had no choice but to accept what he did.[k]
+[ミューズ v=vg519]「An... An... Ahhh... Stop it...」[k]
+[ライナス]「Why stop? It really feels good, doesn't it? You want me to do more, don't you?」[k]
+@bg chara=ミューズ f=event55 p0=hair p1=04 p2=04 t=300
+@bg chara=ミューズ f=event55 p0=hair p1=05 p2=04 t=300
+@bg chara=ミューズ f=event55 p0=hair p1=04 p2=04 t=300
+@bg chara=ミューズ f=event55 p0=hair p1=05 p2=04 t=300
+∗squish squish squish squish!∗[k]
+[ミューズ v=vg520]「Ah... Ah... Nooooo...!」[k]
+Linus began to shake his hips violently![k]
+I clenched my teeth and endured the furious thrusting.[k]
+[ライナス]「Argh! I'm about to cum... I'm cumming!」[k]
+@flash
+∗spurt spurt spuuurt!∗[k]
+Linus ejaculates! His semen is poured into me![k]
+@bg chara=ミューズ f=event55 p0=hair p1=06 p2=05
+[ミューズ v=vg521]「Ahhhh...!」[k]
+The inside of my vagina was completely soiled with Linus' semen.[k]
+I... had sex... With Linus...[k]
+[ライナス]「Phew... That felt good.」[k]
+[ミューズ v=vg522]「Ugh... It's terrible... ∗sob∗」[k]
+Linus sighs in satisfaction. I told him I didn't want to...[k]
+[ライナス]「You enjoyed it, didn't you? Be honest with me.」[k]
+[ミューズ v=vg523]「I didn't...」[k]
+Linus didn't understand my feelings at all. I resented him, smiling without any sense of apology.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスイベント04
+*linus_04
+
+; 宿屋の一室
+@saveon
+@bg f=0001 b
+@mu f=adult
+@fg l=ミューズ e=通常 f=58 b
+@fg r=ライナス e=下着・勃起 f=03
+[texton w=1]
+[ライナス f=03]「Come on, [ミューズ]! Let's have sex as soon as possible.」[k]
+[ミューズ f=58]「...」[k]
+Once Linus was alone with me, he immediately took off his clothes.[k]
+His penis is already growing.[k]
+@fg r=ライナス f=22
+[ライナス f=22]「Come on, take it off quickly! I can't wait!」[k]
+@fg l=ミューズ f=31
+[ミューズ v=vg524 f=31]「Wait a minute, I don't want to do that with you, Linus...」[k]
+@fg r=ライナス f=05
+[ライナス f=05]「Come on, you're in no position to refuse.」[k]
+@fg r=ライナス f=19
+[ライナス f=19]「...Well, too bad. I'll just have to ask you to go along with my armor experiment again...」[k]
+@fg l=ミューズ f=50
+[ミューズ v=vg525 f=50]「I don't want to...! I don't want to wear that armor anymore...!」[k]
+@fg r=ライナス f=02
+[ライナス f=02]「Then have sex with me. You've got to do something for me at least.」[k]
+@fg l=ミューズ f=48
+[ミューズ f=48]「...」[k]
+[ライナス f=02]「You can experiment with the armor again, or you can have sex with me. It's your choice.」[k]
+[ミューズ f=48]「...」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=ミューズ f=event55 p0=hair p1=05 p2=05
+[texton w=2]
+[ミューズ v=vg526]「Ah... Ah... Ah... Ah...」[k]
+[ライナス]「Kuku, does my dick feel good?」[k]
+I chose to have sex with Linus.[k]
+I hated it last time, but it was even more worse to be humiliated by his weird armor.[k]
+Anyway, I have sex with Linus. I accepted his insertion without real protest.[k]
+∗squish squish squish∗[k]
+[ミューズ v=vg527]「Ahhh... Ahhh... Linus'... It hit me in the back... Ahhh...! Oh!」[k]
+[ライナス]「Huh, you seem to be feeling it. Very erotic, [ミューズ].」[k]
+Linus's hot penis moves slickly inside me.[k]
+Each time he thrusts deep into me, a sensation of weakness throbs through my lower body.[k]
+[ライナス]「It's getting a lot slipperier. Well, let's pick up the pace!」[k]
+∗thrust thrust thrust thrust thrust!∗[k]
+@bg chara=ミューズ f=event55 p0=hair p1=05 p2=04
+[ミューズ v=vg528]「Ah! Ah! Nooooo...! Not so violently... Ahh!」[k]
+Linus was thrusting hard and deep into me![k]
+Pleasure repeatedly assaulted my entire body, and I felt myself getting more and more excited![k]
+It feels so good... I feel like I'm going to lose my mind...![k]
+[ライナス]「Come on, I'm about to cum! [ミューズ], cum too!」[k]
+∗slurp slurp slurp slurp slurp slurp!∗[k]
+[ミューズ v=vg529]「Ahhh... ahh... ahh... Linus...!」[k]
+I'm... I'm cumming...![k]
+[ライナス]「Come on! Let's get it out!」[k]
+@flash t=100
+@wait time=200
+@flash t=100
+∗spuurt! spuurt!∗[k]
+[ミューズ v=vg530]「Aaaaahhh...! Ahh!」[k]
+[textoff]
+@flash on=1000
+@bgf chara=ミューズ f=event55 p0=hair p1=06 p2=05
+@flash off=1000
+[texton w=2]
+[ライナス]「Phew... I feel so much better now.」[k]
+[ミューズ]「...」[k]
+I came... during sex with Linus...[k]
+I thought... it felt good.[k]
+But I don't like Linus at all...[k]
+[ライナス]「From now on, when you share a room with me, you will be my sex partner.」[k]
+[ミューズ]「...」[k]
+[ライナス]「It felt good to you, too, right? So there's no problem, right?」[k]
+[ミューズ]「...」[k]
+[textoff]
+@out
+@w05
+
+[texton w=0]
+As usual, Linus is self-indulgent.[k]
+I could no longer muster the energy to deny him...[k]
+[textoff]
+@w1
+[hoteloff]
+
+
+;◇ライナスイベント05
+*linus_05
+
+; 宿屋の廊下
+@saveon
+@out
+@bg f=0002
+[texton w=0]
+[テオ e=通常 f=06]「...Huh?」[k]
+A small amount of light is leaking through the gap in the door of [ミューズ]'s room.[k]
+[ミューズ], are you awake...?[k]
+I was about to call out to [ミューズ], who was probably inside, when...[k]
+[ミューズ v=vg531 e=裸 f=17]「No... uh... stop... oh...!」[k]
+[テオ f=12]「...!」[k]
+I heard [ミューズ]'s troubled panting.[k]
+What on earth is she doing? I look in through the keyhole. Then...[k]
+[textoff]
+@out
+@w05
+
+; 宿屋のベッド
+@bg chara=ミューズ f=event55 p0=hair p1=05 p2=04
+@mu f=adult
+[texton w=2]
+[ミューズ v=vg532 e=汗だく f=37]「Ah... ah... no... ha...!」[k]
+[テオ]「...!」[k]
+[ライナス e=汗だく f=21]「Haaaaah... That's a nice tight fit, [ミューズ].」[k]
+[ライナス f=22]「It looks like you're feeling good too, [ミューズ]. Your pussy is so wet!」[k]
+∗sluurp!∗[k]
+[ミューズ v=vg533 f=38]「Ahh...! Oh! Linus... I...!」[k]
+[ライナス f=61]「Are you about to cum? Then I'll make you cum, take this!」[k]
+[textoff]
+@fa
+@out
+@w05
+
+; 宿屋の廊下
+@bgf f=0002
+[texton w=0]
+[テオ f=10]「[ミューズ]...!」[k]
+When did Linus and [ミューズ] start having that sort of relationship...?![k]
+I was shocked to see them getting physical with each other, but I have no right to say anything about it.[k]
+I had no choice but to walk away without saying a word... I just had to walk away...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ワイルド・ブル編
+
+;◇ワイルド・ブルイベント01
+*wildbull_01
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*gno_wildbull_01 cond='game.isFreeMode'
+@saveon
+@bgf f=0022 cond='f.replayMode'
+[texton w=0]
+[テオ f=05]「Hey, Alex! It's [テオ]!」[k]
+We went into Wild Bull's hideout.[k]
+...They have [ミューズ] here. Where is she?[k]
+[テオ f=12]「...!」[k]
+[ミューズ] was right there. But when I saw her, I was astonished.[k]
+[textoff]
+@out
+
+@bg chara=ミューズ f=event10 p0=hair p1=01 p2=01 p3=01
+[texton w=2]
+[ミューズ v=vg534]「Um... Please give it back...」[k]
+[アレックス]「No. I told you we're confiscating everything you have.」[k]
+[ミューズ v=vg535]「At least... Just a pair of panties...」[k]
+[アレックス]「Not so fast. When you join Wild Bull, you play by our rules, no matter what.」[k]
+[ミューズ v=vg536]「Oh no...」[k]
+[ミューズ] is stripped naked and complains with a tearful look on her face. But Alex and the others only laugh with amusement at her.[k]
+[男]「Hee hee hee, you have a cute ass.」[k]
+@bg chara=ミューズ f=event10 p0=hair p1=01 p2=01 p3=02
+[ミューズ v=vg537]「Hyah!」[k]
+[テオ f=12]「[ミューズ]!」[k]
+One of the Wild Bull guys touched [ミューズ]'s butt, which were fully exposed![k]
+[男]「Come on, don't hide your boobs. It's a rule here that women don't hide their boobs!」[k]
+Then he pulls [ミューズ]'s arm forcefully![k]
+[ミューズ v=vg538]「No, please don't...!」[k]
+[男]「Come on, show us your boobs! Don't be shy!」[k]
+[ミューズ v=vg539]「No, no...!」[k]
+[textoff]
+@bgf f=0022 cond='f.replayMode'
+@gameon cond='! f.replayMode'
+[texton w=0]
+[テオ f=07]「Stop it!」[k]
+[ミューズ e=裸 f=95]「...! (Ah!)」[k]
+[男 f=thief_green_04]「Who's that?」[k]
+I couldn't help but yell. I couldn't stand to see [ミューズ] being tortured any longer.[k]
+[テオ f=07]「If you do any more of that to our precious friend, I won't forgive you!」[k]
+[ミューズ f=25]「...」[k]
+[textoff]
+
+@fg c=アレックス e=通常 f=07
+[texton w=1]
+[アレックス f=07]「Aah! What the hell are you doing?」[k]
+Alex noticed our presence and came toward us.[k]
+[アレックス f=07]「What the hell are you doing here?」[k]
+[テオ f=05]「I came to check on [ミューズ]. I wanted to see if you guys had done something bad to her.」[k]
+[テオ f=05]「I cannot allow you to humiliate our friend [ミューズ] like that! If you do any more terrible things we'll have to stop you!」[k]
+[アレックス f=06]「...」[k]
+[アレックス f=05]「...You're mistaken. She's not one of you.」[k]
+[テオ f=12]「What?!」[k]
+[アレックス f=02]「We took that girl from you in a duel. We own her. I hope you haven't forgotten that!」[k]
+[テオ f=09]「Damn...!」[k]
+Alex is right. [ミューズ] can't rejoin us unless we take her back in a duel after the period of captivity.[k]
+[テオ f=12]「I understand that, but... I just don't want you to do anything terrible to her.」[k]
+[アレックス f=01]「Shut up. I'm free to do whatever I want with her. That's the rule. You have no right to interfere!」[k]
+[テオ f=10]「...」[k]
+[ミューズ v=vg540 f=29]「Captain...」[k]
+I can't talk back to Alex...! I don't know what to do...![k]
+[アレックス f=02]「If you want to hate someone, hate yourselves for losing the duel. So get the hell out of here.」[k]
+[アレックス f=02]「...Or you can fight us. If you want to fight, we'll fight.」[k]
+[テオ f=10]「...」[k]
+[textoff]
+@return cond='f.replayMode'
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=05]「What the hell?」[k]
+[アレックス f=02]「...Huh, all right. But you might not like the result! Hey, [ミューズ], fight hard!」[k]
+[ミューズ v=vg541 f=29]「L-like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+[ミューズ] gets into a fighting stance, despite her outfit.[k]
+I don't want to fight [ミューズ]...! But she's a member of Wild Bull now, so I can't go against the rules...![k]
+[アレックス f=01]「Here we go! Bastards!」[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 2'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*wildbull_02
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*gno_wildbull_02 cond='game.isFreeMode'
+@saveon
+@bgf f=0022 cond='f.replayMode'
+[texton w=1]
+[テオ f=05]「Hey, Alex! It's [テオ]!」[k]
+We went into Wild Bull's hideout.[k]
+...[ミューズ] is being held captive here. I wonder how she is doing now.[k]
+[テオ f=06]「...」[k]
+There's no one in the room. Are the Wild Bull guys in the back room?[k]
+[テオ f=05]「Alex! I need you! Come out!」[k]
+[textoff]
+@se f=door1
+@fg c=ミューズ e=奴隷の鎧・上,奴隷の鎧・下 f=05
+[texton w=1]
+[ミューズ v=vg542 f=05]「Yes, who is it...」[k]
+@fgf c=ミューズ e=穴あき鎧・手ブラ f=31
+[ミューズ v=vg543 f=31]「A-ah, captain...!」[k]
+[テオ f=12]「[ミューズ]!」[k]
+Suddenly, we were reunited. However, I was shocked at her appearance.[k]
+To my surprise, [ミューズ] came out with a completely bare chest.[k]
+@fgf c=ミューズ f=30
+[ミューズ v=vg544 f=30]「It's embarrassing... don't look too much...」[k]
+[テオ f=12]「[ミューズ]... This is...?!」[k]
+Alex and the others... what the hell did they do to [ミューズ]...?![k]
+@cl b
+@fgf c=ミューズ f=30 b
+@fg r=アレックス e=上半身裸 f=05
+[アレックス f=05]「Hey, [ミューズ], what are you doing there?」[k]
+@fg r=アレックス f=00
+[アレックス f=00]「...What the hell do you want?」[k]
+[テオ f=11]「Oi! What are you doing making [ミューズ] walk around like that! Stop right now!」[k]
+@fg r=アレックス f=05
+[アレックス f=05]「What?! It's up to me how all the women here dress.」[k]
+[テオ f=12]「W-what...! Please stop! [ミューズ] is shy!」[k]
+@fg r=アレックス f=00
+[アレックス f=00]「Don't you know who you're talking to? I'm the chief of Wild Bull. What I say is absolute here, so shut your mouth!」[k]
+[テオ f=09]「Damn...!」[k]
+Sadly I can't argue with that. For adventurers, the duel rules are absolute. I knew this would happen after they took [ミューズ].[k]
+Damn...! If I hadn't lost that duel...![k]
+@fg r=アレックス f=02
+[アレックス f=02]「Hey, take a look.」[k]
+@cl b
+@fg a=アレックス e=つまみ left=706 f=02 b
+@fg c=ミューズ e=穴あき鎧・つまみ f=30
+∗lift∗[k]
+@fg c=ミューズ f=31
+[ミューズ f=31]「Ah...!」[k]
+[テオ f=11]「[ミューズ]!」[k]
+Alex lifted off [ミューズ]'s lower covering![k]
+Underneath, her secret place was fully exposed. To my surprise, she wasn't wearing anything else.[k]
+[アレックス f=02]「See, no panties!」[k]
+@fg c=ミューズ f=38
+[ミューズ f=38]「... (Kyaa)」[k]
+[ミューズ]'s face turns red as her crotch is exposed.[k]
+[テオ f=12]「S-stop it, Alex!」[k]
+[アレックス f=02]「In this outfit, you can pee and shit anytime you want. Convenient, right?」[k]
+[アレックス f=02]「And, of course, it's quick to stick a cock in.」[k]
+@cl b
+@fg r=アレックス e=上半身裸 left=600 f=00 b
+@fg c=ミューズ e=穴あき鎧・手ブラ f=29
+With that, Alex nudged [ミューズ].[k]
+[アレックス f=00]「Hey, [ミューズ]. What do you think, isn't it about time you had sex with me?」[k]
+[ミューズ v=vg545 f=29]「That... I don't want to do that...!」[k]
+[アレックス f=00]「What's wrong with you? You've already shown me everything. All you have to do now is give up your pussy, right?」[k]
+[ミューズ v=vg546 f=38]「I really don't want to... Please forgive me...!」[k]
+[アレックス f=00]「You're a stubborn one, aren't you? Sooner or later, I'm going to fuck you. Hurry up and make up your mind.」[k]
+@cl b
+@fg a=alex_touch_hand left=520 b
+@fg r=アレックス e=触り left=520 f=02 b
+@fg c=ミューズ e=奴隷の鎧・上,奴隷の鎧・下 f=37
+With that said, he reached down to [ミューズ]'s chest and began to play with her exposed nipples.[k]
+[ミューズ v=vg547 f=37]「Oh... No...!」[k]
+[テオ f=07]「Stop!」[k]
+I saw the way [ミューズ] felt for a moment, and I couldn't resist.[k]
+@cl b
+@fg r=アレックス e=上半身裸 left=600 f=06 b
+@fg c=ミューズ f=38
+[アレックス f=06]「Hunh... She's getting there. Well, it's only a matter of time.」[k]
+[アレックス f=00]「So what are you going to do? You gonna fight? If you want to fight, I'll fight you.」[k]
+[textoff]
+@return cond='f.replayMode'
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+@fg r=アレックス left=600 f=05
+[texton]
+[アレックス f=05]「What the hell?」[k]
+[アレックス f=05]「...Huh, all right. But you might not like the result! Hey, [ミューズ], fight hard!」[k]
+@fg c=ミューズ f=29
+[ミューズ v=vg548 f=29]「Y-yes...」[k]
+Alex and [ミューズ] went straight into battle stance![k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント03
+*wildbull_03
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*gno_wildbull_03 cond='game.isFreeMode'
+@saveon
+@bgf f=0022 cond='f.replayMode'
+[texton w=1]
+[テオ f=07]「Alex! I need to talk to you!」[k]
+I call out to Alex in a loud voice.[k]
+I know it's useless, but I'm worried about the captured [ミューズ].[k]
+[textoff]
+@se f=door1
+[if exp='o.ワイルド・ブル.members.has(o.エリック)']
+	; エリックがすでに加入している場合
+	@fg c=エリック e=裸 f=05
+	[texton w=1]
+	[エリック f=05]「What the hell, [テオ]?! You've been yelling for a while now!」[k]
+	The door to the back room opened and Eric stepped out.[k]
+	Eric is totally naked. He doesn't seem to care about it as he greets me.[k]
+	[エリック f=05]「We're having an orgy right now. Go home.」[k]
+	[テオ f=12]「Orgy?!」[k]
+	Are they really doing that...[k]
+	[エリック f=05]「Yeah. So go home, we're busy!」[k]
+	[テオ f=12]「Ah, then [ミューズ] is...」[k]
+	Eric was about to go back into the back room, but I stopped him and persisted.[k]
+	[エリック f=06]「[ミューズ]?」[k]
+	@fg c=エリック e=裸 f=02
+	[エリック f=02]「Yeah, she's with Alex right now...」[k]
+[else]
+	; エリック未加入の場合
+	@fg c=thief_green_nude2
+	[texton w=1]
+	[男 f=thief_green_04]「What's the matter with you? You've been making a racket for a while now!」[k]
+	The door to the back room opened and a man from Alex's group stepped out.[k]
+	The man was completely naked. He didn't seem to pay any attention to that and greeted me when I suddenly barged in.[k]
+	[男 f=thief_green_04]「We're in the middle of an orgy. Get lost.」[k]
+	[テオ f=12]「Orgy?!」[k]
+	Are they really doing that...[k]
+	[男 f=thief_green_04]「Yeah. So go home, we're busy!」[k]
+	[テオ f=12]「Ah, then [ミューズ] is...」[k]
+	I stopped the man who was about to return to the back room, and persisted.[k]
+	[男 f=thief_green_04]「[ミューズ]?」[k]
+	@fg c=thief_green_nude1
+	[男 f=thief_green_03]「Yeah, she's with Alex right now...」[k]
+[endif]
+[textoff]
+@cl b
+
+@fg c=0022 index=900 b
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=03 p6=01 left=200 top=-20
+[texton w=1]
+[アレックス e=裸 f=00]「What is it? You wanted to see me?」[k]
+[テオ f=12]「...!」[k]
+Alex strolled out of the back room.[k]
+And shockingly, he had [ミューズ] held up to his chest with her legs spread widely![k]
+[テオ f=12]「What... [ミューズ]...!」[k]
+[ミューズ v=vg549 e=汗だく f=30]「Don't look at me...!」[k]
+[ミューズ] is completely undressed. Her breasts and crotch are both exposed.[k]
+And Alex's ferocious cock was nestled in her bare, wet crotch.[k]
+[アレックス f=03]「Gahahaha! What do you think of the sight of your former comrade swallowing my cock?!」[k]
+[テオ f=09]「Alex, you...!」[k]
+Alex shows off their union.[k]
+[ミューズ] turned red in the face, teary-eyed and embarrassed.[k]
+[アレックス f=03]「The other day, I finally got to fuck her. With my big dick, I [if exp='o.ミューズ.firstPartnerKey == "alex"']made her a woman[else]penetrated her pussy[endif].」[k]
+[アレックス f=00]「This one was so cute in bed. She had her eyes closed and her body was shaking...」[k]
+[アレックス f=03]「The first time I inserted my cock into her, she grabbed the sheets and held on desperately while trying to withstand it. Well, it's not my fault that my dick is so big! Gahahahahaha!」[k]
+[テオ f=09]「Damn...!」[k]
+[アレックス f=06]「...Now she's getting excited by my dick. Like this.」[k]
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=01 left=200 top=-30 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=01 left=200 top=-20 t=500
+∗sluurp∗[k]
+[ミューズ v=vg550 f=37]「Oh... Aaaaahhh...!」[k]
+Alex lowered his arms and let [ミューズ] drop a bit! He also thrusts upwards from below![k]
+The penis between [ミューズ]'s legs enters her vagina more deeply, and she involuntarily lets out a sweet sigh.[k]
+[アレックス f=00]「Kuku, doesn't that feel good?」[k]
+Alex further rocked [ミューズ]'s body up and down, thrusting his pole into her soaking wet honey pot.[k]
+[ミューズ v=vg551 f=37]「Oh... oh... oh... oh...!」[k]
+With the tip of Alex plunging deep inside, [ミューズ] lets out a wistful moan every time she's lowered.[k]
+[アレックス f=00]「You love my dick, don't you? There you go.」[k]
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=01 left=200 top=-30 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=01 left=200 top=-20 t=500
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=01 left=200 top=-30 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=01 left=200 top=-20 t=500
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg552 f=37]「Anh, ah, cuuh, ah, ah, ah, ah, ah, ah... ah...!」[k]
+A black, shiny, tough penis slides in and out of [ミューズ]'s pink hole.[k]
+As her excitement grew, [ミューズ]'s breathing became ever rougher and more shameful.[k]
+[ミューズ v=vg553 f=38]「Hmmm...!」[k]
+[textoff]
+@flash on=500
+@bgf chara=ミューズ f=event35 p0=hair p1=01 p2=05 p6=01 left=200 top=-20 t=500
+@flash off=500
+[texton w=1]
+Suddenly, [ミューズ]'s wet skin convulses and her whole body goes rigid.[k]
+[アレックス f=00]「Oh, you're cumming? Well, me too.」[k]
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=02 left=200 top=-40 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=02 left=200 top=-20 t=500
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=02 left=200 top=-40 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=02 left=200 top=-20 t=500
+Alex shook his ass hard and thrust wildly inside [ミューズ]![k]
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=02 left=200 top=-50 t=500
+[アレックス f=04]「Ugh!」[k]
+[ミューズ v=vg554 f=37]「Hah... no eh...!」[k]
+[textoff]
+@flash
+@flash
+@bg chara=ミューズ f=event35 p3=hair p4=03 p5=02 p6=01 left=200 top=-20
+[texton w=1]
+Alex also stiffens up. He ejaculated inside [ミューズ]'s vagina.[k]
+[テオ f=09]「Damn... [ミューズ]...!」[k]
+Witnessing their sex, and seeing [ミューズ] tainted by Alex's evil desires, was a reminder of a fact I didn't want to admit.[k]
+[ミューズ v=vg555 f=51]「Ha... ha... ha... ha...」[k]
+With a sullen look on her face, and still connected to Alex, [ミューズ]'s shoulders rise and fall with her heavy breathing.[k]
+Her crotch, which accepted a penis to its depths is on full display and is dripping white fluid from the conjuncture. But despite that, or perhaps because she's still in ecstasy, she shows no signs of shame.[k]
+[アレックス f=00]「Kukukuku, you're a dirty girl to orgasm with people watching.」[k]
+[アレックス f=01]「Get it now? This girl is completely mine, body and soul! Gahahahahahahaha!」[k]
+Alex's triumphant full-bodied laugh echoed through the room. All I could do was stand there, biting my teeth.[k]
+[テオ f=08]「Damn it...! Alex...!」[k]
+[アレックス f=00]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+[textoff]
+@return cond='f.replayMode'
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton w=1]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result. Hey, [ミューズ], battle.」[k]
+[textoff]
+@gameon
+@layopt layer=0 page=back visible=false left=0 top=0
+@cl b
+@fg l=アレックス e=汗だく・勃起 b
+@fg r=ミューズ e=汗だく f=51
+[texton w=1]
+Alex pulled his penis out of [ミューズ] and lowered her to the floor. The semen that had poured into her spilled out.[k]
+[ミューズ f=51]「...」[k]
+[テオ f=12]「[ミューズ]...!」[k]
+[ミューズ] is dizzy on her feet, perhaps because she just reached climax.[k]
+[アレックス f=05]「Hey, you okay? Fight hard.」[k]
+[ミューズ v=vg556 f=52]「Y-yes...」[k]
+Alex and [ミューズ] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 2'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 2'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント04
+*wildbull_04
+
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*gno_wildbull_04 cond='game.isFreeMode'
+@saveon
+@fg r=thief_red_nude1 x=500 y=-40 b
+@fg l=bandit_red_nude x=100 b
+@fg c=ミューズ e=汗だく f=37
+[texton w=1]
+[ミューズ v=vg557 f=37]「Ahh ahh ahh ahh ahh...」[k]
+[男 f=bandit_red_02]「[ミューズ]! I had a lot of sex today! But, it's late at night, so we'd better stop!」[k]
+[男 f=thief_red_03]「Hey, I'm still hard, don't give me that.」[k]
+[男 f=bandit_red_02]「Actually, me too! ...All right! Let's both go one more round today!」[k]
+[ミューズ v=vg558 f=29]「Please forgive me... I can't stand any more...」[k]
+
+[男 f=bandit_red_02]「Shut up! I said I'd do it, so I'm gonna do it! Now spread your legs!」[k]
+[テオ f=10]「[ミューズ]...!」[k]
+Today too, [ミューズ] is being treated like a sex toy by the Wild Bull guys.[k]
+I can't let her stay like this...! I have to hurry and rescue her soon...![k]
+[textoff]
+@cl
+@eval exp='game.party.escape(true)'
+[eventoff]
+
+
+;◇ワイルド・ブル救出イベント・懐妊直後
+*wildbull_pregnant
+
+; 救出した直後
+@saveon
+@fg c=ミューズ e=穴あき鎧・妊娠 f=09
+[texton w=1]
+[ミューズ v=vg559 f=09]「Captain...」[k]
+[テオ f=02]「[ミューズ], I'm sorry it took me so long to come help you. Come on, let's go home together.」[k]
+[ミューズ v=vg560 f=09]「Captain... I...」[k]
+[テオ f=05]「Hmm? What's wrong, [ミューズ]?」[k]
+@fg c=ミューズ e=穴あき鎧・妊娠 f=10
+[ミューズ v=vg561 f=10]「Well, there's... a baby... in my belly...」[k]
+[テオ f=12]「What?! Whose?!」[k]
+[ミューズ v=vg562 f=10]「I don't know... I've.. been with a lot of guys, so I'm sure it's someone from Wild Bull...」[k]
+[テオ f=10]「...」[k]
+Damn, Wild Bull doesn't even use birth control...! What do they think they're doing with [ミューズ]'s body...?![k]
+@fg c=ミューズ e=穴あき鎧・妊娠 f=38
+[ミューズ v=vg563 f=38]「I... don't know what to do anymore...」[k]
+[テオ f=05]「Anyway, let's go back to Sapphire City! If we talk to the guild, we might be able to work something out.」[k]
+[textoff]
+@out
+@w05
+[texton]
+I took [ミューズ] back to Sapphire City.[k]
+After consulting with the guild, [ミューズ] was able to rest for a while on the second floor of the waiting area.[k]
+@call storage="stay.ks" target=*describe_support
+[textoff]
+@w05
+
+; 待合所のベッド
+@bg f=0007
+[texton]
+[テオ f=02]「You can stay here until the baby is safely delivered.」[k]
+[ミューズ v=vg564 e=マタニティドレス f=10]「Sorry...」[k]
+[テオ f=02]「Don't be in a hurry, [ミューズ]. Think about your child and your body. We're waiting for you.」[k]
+[textoff]
+@out
+@return
+
+
+;◇ワイルド・ブル救出イベント・臨月間近
+*wildbull_bigbelly
+
+; 救出した直後
+@saveon
+@fg c=ミューズ e=穴あき鎧・ボテ腹 f=09
+[texton w=1]
+[ミューズ v=vg559 f=09]「Captain...」[k]
+[テオ f=02]「[ミューズ], I'm sorry I'm late helping you. Come on, let's go home together.」[k]
+[ミューズ v=vg565 f=09]「Um, Captain...!」[k]
+[テオ f=02]「What?」[k]
+[ミューズ v=vg566 f=09]「I don't think I can fight for a while because my belly is getting too big... so...」[k]
+[テオ f=02]「Don't worry. If you go to Sapphire City, there is a facility where you can rest and recuperate. You can stay there for a while.」[k]
+[ミューズ v=vg567 f=09]「Am I allowed to take a break...?」[k]
+[テオ f=02]「Obviously. Come on, let's go home together.」[k]
+[textoff]
+@out
+@w05
+[texton]
+I took [ミューズ] back to Sapphire City.[k]
+After consulting with the guild, [ミューズ] was able to rest for a while on the second floor of the waiting area.[k]
+@call storage="stay.ks" target=*describe_support
+[textoff]
+@w05
+
+; 待合所のベッド
+@bg f=0007
+[texton]
+[テオ f=02]「You can stay here until the baby is safely delivered.」[k]
+[ミューズ v=vg568 e=マタニティドレス　 f=10]「I'm sorry... after I've been away so long...」[k]
+[テオ f=02]「Right now, your first priority is your baby. I look forward to the day you return.」[k]
+[textoff]
+@out
+@return
+
+
+
+
+;■背徳の鎧イベント
+
+;◇背徳の鎧イベント
+*sexy_armor
+
+@fg c=ミューズ f=37
+@saveon
+[texton w=1]
+[ミューズ v=vg569 f=37]「Ahhh...!」[k]
+The armor forced on [ミューズ] by the power of a curse contained a shocking surprise![k]
+An object resembling a male penis extended from within the pants and penetrated all the way into [ミューズ]'s vagina.[k]
+[ミューズ v=vg570 f=38]「Don't look at me...!」[k]
+[ミューズ] was embarrassed, but she couldn't help but feel it.[k]
+She moaned and clear juices trickled down her thighs from the pleasure of insertion.[k]
+[ミューズ v=vg571 f=37]「Ahh... someone... take this off... aaah...!」[k]
+[ミューズ]'s movements are very awkward, as if she can sense even the slightest movement.[k]
+...I can't leave her like this. We have to get it off her as soon as possible.[k]
+[textoff]
+@cl
+@w05
+[eventoff]
+
+
+
+
+
+
+;■フリーモード
+
+*_max_04_freemode
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=guild
+@fg r=マックス e=通常 f=01 b
+@fg l=ミューズ e=通常 f=10
+[texton w=1]
+[ミューズ f=10]「...」[k]
+[マックス f=01]「Huh? [ミューズ], you're looking down!」[k]
+[ミューズ f=10]「...」[k]
+[マックス f=01]「Could it be love troubles? Hmm?」[k]
+@fg l=ミューズ f=11
+[ミューズ f=11]「...!」[k]
+[マックス f=03]「Oh, that reaction feels like a hit! So, [ミューズ] has a guy she likes...」[k]
+@fg l=ミューズ f=30
+[ミューズ f=30]「...」[k]
+[マックス f=01]「You like him, don't you? So just go and hit on him! He might fall for you easier than you think.」[k]
+[ミューズ v=vg572 f=10]「But...」[k]
+@fg r=マックス f=01
+[マックス f=01]「What's wrong? Can't you muster the courage?」[k]
+[マックス f=67]「I get it! But listen, if you keep dawdling, some other woman might snatch him up!」[k]
+@fg l=ミューズ f=29
+[ミューズ f=29]「...!」[k]
+@fg r=マックス f=01
+[マックス f=01]「Oh? That face says it's a problem! [ミューズ] is easy to read ♪」[k]
+@fg l=ミューズ f=56
+[ミューズ f=56]「... (Hmph)」[k]
+@fg r=マックス f=03
+[マックス f=03]「I'm sorry, don't be angry. But those are your honest feelings, right? Don't ignore them!」[k]
+@fg l=ミューズ f=25
+[ミューズ v=vg394 f=25]「[マックス]...」[k]
+@fg r=マックス f=01
+[マックス f=01]「Go on, hurry up and ask him out!」[k]
+@fg l=ミューズ f=30
+[ミューズ v=vg395 f=30]「...But will he go out with me? I'm quiet, childish looking, and not attractive at all...」[k]
+[マックス f=15]「That's not true! You're a woman, so use a woman's weapon and seduce him! At least, I'd fall for that!」[k]
+[ミューズ v=vg396 f=05]「Woman's weapon ...?」[k]
+@fg r=マックス f=06
+[マックス f=06]「Hmm... that's right.」[k]
+@fg r=マックス f=03
+[マックス f=03]「[ミューズ]! Why don't you show your chest a little in front of me!」[k]
+@mu f=tiptoe
+@fg l=ミューズ f=31
+[ミューズ v=vg397 f=31]「E-eeeeeeh?!」[k]
+[マックス f=03]「Show me your tits and come a little closer. If I get excited, [ミューズ] is attractive enough!」[k]
+@fg l=ミューズ f=30
+[ミューズ v=vg398 f=30]「But that's embarrassing...」[k]
+@fg r=マックス f=53
+[マックス f=53]「If you're shy, you won't win the man you like! Be brave!」[k]
+[ミューズ v=vg399 f=30]「But...」[k]
+[マックス f=53]「Is it okay to let another woman take the guy you like?」[k]
+[ミューズ f=30]「...」[k]
+@fg r=マックス f=22
+[マックス f=22]「Go on, try it. Call it practice.」[k]
+[ミューズ f=30]「...」[k]
+[ミューズ v=vg400 f=30]「...O-okay, I understand...」[k]
+[textoff]
+@out
+
+@bg f=0001 b
+@fg r=マックス e=勃起 f=22 b
+@fg l=ミューズ e=白いパンツ,手ブラ left=420 f=30
+[texton w=1]
+[ミューズ v=vg401 f=30]「H-how's this...」[k]
+@fg r=マックス f=07
+[マックス f=07]「Come on! Don't hide your chest! You can do better than that!」[k]
+[ミューズ v=vg402 f=30]「Y-yes...」[k]
+@fg r=マックス f=22 b
+@fg l=ミューズ e=白いパンツ f=30 fix
+[マックス f=22]「Alright! Good, that's it! Come on, give me a closer look.」[k]
+[ミューズ v=vg403 f=29]「Is this really all right...?」[k]
+@fg r=マックス f=03
+[マックス f=03]「Oh no doubt! Look, I've got proof!」[k]
+@fg r=マックス e=硬い革鎧,勃起 f=03 b
+@fgf l=ミューズ e=白いパンツ,手ブラ f=31 fix
+[ミューズ v=vg404 f=31]「Kya...! [マックス]...!」[k]
+[マックス f=03]「You see my cock standing up? That's proof that you're attractive! If you confessed to him in this state, even the staunchest man wouldn't be able to resist!」[k]
+@fgf l=ミューズ f=30 fix
+[ミューズ f=30]「...」[k]
+@fg r=マックス f=03 left=600
+[マックス f=03]「Look, look! You're so erotic, my dick is really hard! It's not every day I get a full erection like this!」[k]
+@fgf l=ミューズ f=38 fix
+@shake layer=2 loop=5 time=20 length=2
+[ミューズ v=vg405 f=38]「Hey, stay over there...!」[k]
+[マックス f=22]「But I didn't realize you had such an erotic body! That would definitely make a guy fall for you! At least, if it were me, I'd definitely push you down!」[k]
+[ミューズ v=vg406 f=38]「No... no...!」[k]
+[マックス f=22]「Hey, show me more of your body, [ミューズ]!」[k]
+@fgf l=ミューズ f=31 fix
+[ミューズ v=vg407 f=31]「I'm getting dressed! Stay away...!」[k]
+@fgf r=マックス f=36 fix
+[マックス f=36]「Ugh! I can't take it anymore!」[k]
+@mu f=action
+@fgf r=マックス f=36 e=硬い革鎧,勃起,腕上げ left=450 b
+@fg l=ミューズ e=裸 ,手ブラ f=31 fix
+∗swiiish!∗[k]
+[ミューズ f=31]「...!」[k]
+[マックス] grabbed my panties and slid them down in one motion![k]
+@fgf l=ミューズ f=37 fix
+@shake layer=2 loop=5 time=20 length=2
+[ミューズ v=vg408 f=37]「No, no!... [マックス], don't...!」[k]
+@fg r=マックス f=36 fix b
+@fgf l=ミューズ e=裸 f=37 fix
+[マックス f=36]「There's no stopping now! [ミューズ], let me be your partner.」[k]
+@clf
+[マックス] strips naked and grabs me by both wrists![k]
+[ミューズ v=vg409 f=37]「Kya!」[k]
+[textoff]
+@w05
+
+@bgf f=0044
+@quake hmax=10 time=500
+[texton w=0]
+I'm being pushed down on the bed by [マックス]![k]
+[ミューズ v=vg410 f=31]「Wait, [マックス]... stop...」[k]
+[マックス e=裸 f=27]「We've come this far, so you can't refuse me. It was you who showed me your tits, right?」[k]
+[ミューズ v=vg411 f=29]「W-wait, but you told me to...」[k]
+[マックス f=27]「We're on the bed with each other, naked... Isn't it too cruel not let me fuck you?」[k]
+[マックス f=36]「Now, get ready for this. Hey, you'll feel better in no time!」[k]
+Saying that, [マックス] pushed my legs apart![k]
+[ミューズ v=vg412 f=37]「Oh no...!」[k]
+[マックス f=21]「Oh this is another cute pussy!」[k]
+[ミューズ v=vg413 f=37]「No... No... Don't look at it...!」[k]
+[マックス f=03]「I've already seen it fully! It's too late to try to hide it now!」[k]
+∗liick!∗[k]
+[ミューズ v=vg414 f=37]「Ah...!」[k]
+I felt some kind of strange slimy sensation in my crotch...![k]
+∗lick lick lick lick lick lick∗[k]
+[ミューズ v=vg415 f=37]「Ah... ah... no... no...!」[k]
+[マックス] began to lick around my vagina with his tongue![k]
+[マックス f=03]「Heh heh, how do you feel?」[k]
+No... I can feel it...![k]
+It's kind of... a naughty feeling...![k]
+∗lick lick lick lick lick lick∗[k]
+[ミューズ v=vg416 f=38]「Ah... ahh... stop... please...!」[k]
+[マックス f=01]「Oh? You're getting wet.」[k]
+Too much stimulation...![k]
+I feel too much... I can't take it...![k]
+[マックス f=03]「Come on, come on, I'll make you feel even better.」[k]
+∗lick lick lick lick lick lick∗[k]
+[ミューズ v=vg417 f=37]「An... No... Don't... [マックス]... ahhh...!」[k]
+I'm going crazy...![k]
+I'm... I'm cumming...![k]
+[マックス f=22]「Well, I guess it's time to go.」[k]
+[ミューズ f=52]「...?」[k]
+[マックス] stopped attacking my vagina with his tongue.[k]
+What is he going to do next...?[k]
+[マックス f=15]「Well, it's time for this guy to go.」[k]
+[ミューズ f=31]「...!」[k]
+Saying that, [マックス] thrust his large penis right in front of me, as if showing it off![k]
+[マックス f=22]「Now, I'm gonna put it in that wet pussy of yours.」[k]
+[ミューズ v=vg418 f=31]「No... No...!」[k]
+I have to call for help...! Somebody help me...![k]
+[ミューズ f=32]「...! (Ah!)」[k]
+But... If I call for help now...[k]
+I'll be seen in such an embarrassing state... And my vagina is all wet... I can't let anyone see me like this...![k]
+[ミューズ f=66]「...」[k]
+[マックス f=01]「Hmm? What's up, [ミューズ]?」[k]
+[ミューズ f=66]「...」[k]
+I can't find my voice...! I need to call for help... I'm shaking... and I can't make a sound...![k]
+[マックス f=03]「I don't really get it, but I guess it means you're fine with me putting my dick in!」[k]
+∗sluurp∗[k]
+[マックス] makes me get on all fours, then pushes the tip of his big penis against my entrance![k]
+[ミューズ v=vg419 f=64]「S-stop...!」[k]
+[マックス f=03]「Here I go then!」[k]
+[textoff]
+
+@bgf chara=ミューズ f=event19 p2=hair p3=02
+@quake hmax=10 time=500
+[texton w=2]
+∗sluurp!∗[k]
+[ミューズ v=vg420 f=43]「Hiaaaaaah...!」[k]
+[マックス]'s penis suddenly entered me![k]
+[マックス f=21]「Woohoo! Feels good～!」[k]
+[ミューズ v=vg421 f=49]「Ah... ah... ah...!」[k]
+[マックス]'s thing was going deeper and deeper into me![k]
+[マックス f=01]「Hmm... it won't go all the way in... Well, my dick is big after all!」[k]
+[ミューズ v=vg422 f=50]「Ugh... That's terrible... [マックス]...」[k]
+[マックス f=21]「Kuu～! It's slippery and feels too good! I can't get enough of this!」[k]
+@bg chara=ミューズ f=event19 p2=hair p3=03
+∗sluurp sluurp sluurp∗[k]
+[ミューズ v=vg423 f=50]「Ah... stop... it hurts...!」[k]
+[マックス f=03]「Does it hurt? Sorry, I can't help it, I have a big dick! I'll fuck you gently, so just bear with me a little!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg424 f=50]「Oh... Please... It hurts... Slowly...」[k]
+[マックス f=55]「Well... I know, but...」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[マックス f=57]「Your pussy... It feels so good... I can't stop my hips, oh!」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[ミューズ v=vg425 f=49]「Ah...!」[k]
+I told him it hurt, but [マックス]'s hip movements only got more intense.[k]
+I gritted my teeth and held on desperately, hoping it would be over soon.[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[マックス f=58]「I can't get enough of this～!」[k]
+[ミューズ v=vg426 f=49]「An, an, an, an, an, an, an!」[k]
+[マックス f=57]「I can't take it anymore! I'm going to cum!」[k]
+[textoff]
+@bgf chara=ミューズ f=event19 p2=hair p3=02
+@flash on=1000 t=500 off=500
+[texton w=2]
+∗spurt! spurt!∗[k]
+[ミューズ v=vg427 f=49]「Aaahhh...!」[k]
+[マックス] let it out inside me! Then he finally stopped moving...[k]
+[textoff]
+@out
+@w05
+
+@bg f=0001
+[texton w=0]
+[ミューズ v=vg428 f=50]「Ugh... ∗sob∗」[k]
+[マックス e=裸 f=55]「Don't cry! I should have fucked you more gently, I'm sorry!」[k]
+I-it's not that...[k]
+I didn't want to have sex with [マックス] in the first place... Him forcing me into it like this... It's too much.[k]
+[マックス f=23]「Sorry! I'll buy you some candy or something later! So don't cry!」[k]
+[ミューズ f=50]「...」[k]
+[マックス] didn't seem to understand why I was crying at all...[k]
+[textoff]
+@out
+@w05
+[hoteloff]

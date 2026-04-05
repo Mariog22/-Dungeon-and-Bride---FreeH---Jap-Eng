@@ -1,0 +1,263 @@
+﻿; 魔女の隠れ家
+
+name = 魔女の隠れ家Ｂ６
+insideName = Ｂ６
+upper = 魔女の隠れ家Ｂ５
+lower = 魔女の隠れ家Ｂ７
+level = 23
+bgm = hideout
+roof = stone
+shadow = dark
+sky = black
+blank = rock
+antiWarp = true
+
+; 各パーツ
+━ = stoney
+✜ = stoney
+　 = marble
+☆ = soilr
+❑ = cube
+／ = door
+☖ = arch
+⧻ = fence
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+⑬ = human
+
+; 移動ポイント
+(A) = map:魔女の隠れ家Ｂ１, x:1, y:0
+
+; 宝箱
+box[1] = 罠はない,アメジストの魔石
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  ┏━━━━︻━━┳━━━━━━━┓
+ 5┃③　　　❑　　┃④　⑤　❶　⑦┃
+  ┃　　　　　　　┃　　　　　　　┃
+ 4┃☆　③　③　　┃⑧　⑨　⑩　⑪┃
+  ┃　　　　　　　┃　　　　　　　┃
+ 3┃③　　　　　　┃⑫　⑫　⑫　⑫┃
+  ┃　　　　　　　┣━┓　　　　　┃
+ 2┃③　　　　　　⧻　┃　　　　　┃
+  ┃　　　　　　　┃　┃　　　　　┃
+ 1┃　　　　　　　✜　┃　　⑬　　┃
+  ┣／━━━━┳━┛　┗━━／━━┫
+ 0┃　　　　㊤┃　　　　　　　　　┃
+  ┗━━━━━┻━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[2][5].event = 1;
+pos[0][4].event = 2;
+pos[6][5].event = 6;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="If you only consider this floor, the door won't open."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove && ! party.isFloating() && map.getWallInfo(3, 2, "e").type == "wall"
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=3 y=2 way=e mode=open
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove
+
+@eval exp='tf.temp = game.map.getWallInfo(3, 2, "e")'
+[if exp='game.map.getFloorInfo(0, 4).type == "movable"']
+	[if exp='tf.temp.type == "wall"']
+		@wait time=800
+		@se f=fence
+		@switchfence x=3 y=2 way=e mode=open
+	[endif]
+[elsif exp='tf.temp.type == "space"']
+	@wait time=800
+	@se f=fence
+	@switchfence x=3 y=2 way=e mode=close
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] party.lastIsMove
+
+@call target=*load_macro
+@boxrun cx=5 cy=5 nx=6 ny=5
+@boxrun cx=4 cy=4 nx=5 ny=4
+@eval exp='game.updateView()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] party.lastIsMove
+
+@call target=*load_macro
+@boxrun cx=4 cy=5 nx=4 ny=4
+@boxrun cx=6 cy=5 nx=7 ny=5
+@boxrun cx=5 cy=4 nx=6 ny=4
+@eval exp='game.updateView()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] party.lastIsMove
+
+@call target=*load_macro
+@boxrun cx=5 cy=5 nx=4 ny=5
+@boxrun cx=7 cy=5 nx=7 ny=4
+@boxrun cx=6 cy=4 nx=5 ny=4
+@eval exp='game.updateView()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] party.lastIsMove
+
+@call target=*load_macro
+@boxrun cx=6 cy=5 nx=5 ny=5
+@boxrun cx=7 cy=4 nx=6 ny=4
+@eval exp='game.updateView()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] party.lastIsMove
+
+@call target=*load_macro
+@boxrun cx=4 cy=5 nx=5 ny=5
+@boxrun cx=5 cy=4 nx=6 ny=4
+@eval exp='game.updateView()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] party.lastIsMove
+
+@call target=*load_macro
+@boxrun cx=4 cy=4 nx=4 ny=5
+@boxrun cx=5 cy=5 nx=6 ny=5
+@boxrun cx=6 cy=4 nx=7 ny=4
+@eval exp='game.updateView()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] party.lastIsMove
+
+@call target=*load_macro
+@boxrun cx=5 cy=4 nx=4 ny=4
+@boxrun cx=6 cy=5 nx=5 ny=5
+@boxrun cx=7 cy=4 nx=7 ny=5
+@eval exp='game.updateView()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] party.lastIsMove
+
+@call target=*load_macro
+@boxrun cx=7 cy=5 nx=6 ny=5
+@boxrun cx=6 cy=4 nx=5 ny=4
+@eval exp='game.updateView()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] party.lastIsMove
+
+@call target=*load_macro
+@boxrun cx=&'game.party.curX' cy=4 nx=&'game.party.curX' ny=5
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_13
+;[exp] party.lastIsMove
+
+@wait time=200
+[texton]
+[if exp='game.events.has(61)']
+	[name n="Purple Witch" f=oldwoman_02]「How's it going? Did you get the treasure chest? Heeheehee.」[k]
+[elsif exp='game.map.pos[7][0].f.warp !== void']
+	[name n="Purple Witch" f=oldwoman_01]「Do you still want something from me?」[k]
+[elsif exp='game.map.pos[3][0].f.warp !== void']
+	[name n="Purple Witch" f=oldwoman_01]「What is it, you still want something?」[k]
+	[name n="Purple Witch" f=oldwoman_01]「...」[k]
+	[name n="Purple Witch" f=oldwoman_02]「...Perhaps you've not had enough? There are some other rooms that are even more challenging.
+	 」[k]
+	[textoff]
+	@question title="Will you try a difficult room?"
+	[if exp='tf.result']
+		[texton]
+		[name n="Purple Witch" f=oldwoman_02]「Very well. I've prepared a new staircase outside. You can go from there.」[k]
+		@changefloor x=7 y=0 warp=down pimg=ladderd
+		[textoff]
+	[endif]
+[elsif exp='! game.map.events.has(4)']
+	[name n="Purple Witch" f=oldwoman_02]「Oh, you got the magic stone. You are quite good, aren't you?」[k]
+	[name n="Purple Witch" f=oldwoman_02]「I've prepared a warp zone for you outside. You can return to the surface from there.」[k]
+	@changefloor x=3 y=0 warp=A pimg=warp
+[else]
+	When I entered the room, I saw an old woman clad in a simple robe.[k]
+	[name n="Purple Witch" f=oldwoman_01]「Oh? How did you get here?」[k]
+	[name n="Purple Witch" f=oldwoman_01]「I am the master of this dungeon, the Purple Witch. You did well to solve my puzzles. I commend you.
+	 」[k]
+	[name n="Purple Witch" f=oldwoman_01]「Eh? You want a magic stone? Fine, I'll give it to you. That piece of rock is nothing to a high ranking mage like me.
+	 」[k]
+	[name n="Purple Witch" f=oldwoman_01]「Look, it's in the treasure chest over there. Take it.」[k]
+	@changefloor x=6 y=5 pimg=box box=1
+	@addevent name=全般 num=61
+[endif]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*load_macro
+
+@macro name="boxrun"
+	[if exp='game.map.getTreasureBox(+mp.cx, +mp.cy) !== void']
+		@changefloor x=%cx y=%cy pimg=void box=void
+		@changefloor x=%nx y=%ny pimg=box box=1
+	[endif]
+@endmacro
+
+@return
+;-------------------------------------------------------------------------------
+*reset_floor
+
+[if exp='game.party.curX >= 4']
+	@btmes
+	But nothing happened!
+	@wait time=1000
+	@btmes off
+[else]
+	@jump storage=&'o.魔女の隠れ家Ｂ５.mapFile' target=*reset_floor
+[endif]
+
+[eventoff]
+;===============================================================================

@@ -1,0 +1,113 @@
+﻿; シナリオ・リーゼル編（ヒューマンＢ）
+
+
+
+;◇イベント01・リーゼルその後
+*after_1
+
+; リーゼルその後
+; このイベントを見るとマリア絡みのクエストが発生するようになる
+
+; サファイアシティ・マリアの自宅
+@saveon
+[texton w=0]
+[テオ f=06]「Speaking of which, I wonder how Riselle is doing...」[k]
+Suddenly concerned about Riselle, I decided to visit the house where she and Maria lived.[k]
+[textoff]
+@out
+@w1
+@fg c=マリア e=通常 f=01 b
+@bgf f=0005
+[texton w=1]
+[マリア v=va180 f=01]「Oh, long time no see! How have you been?」[k]
+[テオ f=05]「Umm... how's Riselle?」[k]
+@fg c=マリア f=10
+[マリア f=10]「...」[k]
+Suddenly, Maria's face darkens.[k]
+[テオ f=05]「Is something wrong?」[k]
+[マリア v=va181 f=10]「...Well, Riselle isn't here anymore.」[k]
+[テオ f=12]「What...?! Then where is Riselle...?」[k]
+[マリア v=va182 f=09]「She went back to her parents' house recently. With her newborn baby.」[k]
+[テオ f=05]「She went back...?」[k]
+[マリア v=va183 f=02]「I have a letter for you. Please read it.」[k]
+Saying that, Maria handed me a letter.[k]
+[textoff]
+@out
+@w05
+
+; 手紙の中身
+@fg c=6001
+@mu f=calm
+[texton w=2]
+I'm sorry for leaving without saying anything. I've decided to go back to my parents' house where my grandmother lives.[k]
+I have a lot to apologize to you for, Captain. I don't know where to start.[k]
+Even though I had you, I fell in love with Blue. I'm not going to make excuses for that. I'm sorry for betraying you.[k]
+At that time, I couldn't control my feelings for Blue. Please forgive me.[k]
+Even though I was like that, I've sorted out my feelings for Blue and decided to move on from him.[k]
+I knew deep down that I was just a fling for Blue, and I also knew that I couldn't compete with other girls when it came to my feelings for him.[k]
+Blue would never be mine alone. I felt that somewhere in my heart.[k]
+At that time, a life was conceived in my womb.[k]
+When Blue found out that I was pregnant, his attitude toward me quickly became cold.[k]
+I was sad for a while, but then I suddenly came to my senses. And I realized that I shouldn't be with Blue.[k]
+Eventually, I gave birth to a child, and as I took care of her, I began to feel that as long as I had her, that was all I needed.[k]
+Suddenly, my grandmother, the archmage Zelma, found me and came to take me home.[k]
+I thought my grandmother would be angry that I had had a child with some man, but her reaction was unexpected. She was very happy that I had a child.[k]
+According to my grandmother, my child seemed to have inherited very good bloodlines. She said she could tell this through her magical powers. She said that this child would surely become a talented mage in the future.[k]
+So, instead, I was praised for giving birth to such a fine successor. She also praised me for growing as a mage during my long adventures.[k]
+So I decided to take my daughter back to my hometown with my grandmother.[k]
+I'm sorry for leaving without saying anything. I feel bad about it. But I didn't want to get in the way as you started your new path as an adventurer.[k]
+Forget about me. Captain [テオ], you'll surely become a great adventurer. I'll be rooting for you from the sidelines.[k]
+Goodbye, my dear captain.[k]
+[textoff]
+@out
+@w05
+
+; マリアの自宅に場面が戻る
+@fg c=マリア f=14 b
+@bg f=0005
+[texton w=1]
+[テオ f=06]「...」[k]
+[マリア v=va184 f=14]「Riselle seemed to feel bad about it. So please forgive her.」[k]
+[テオ f=05]「I don't blame Riselle... Besides, I'm also responsible for what happened to her...」[k]
+[マリア v=va185 f=02]「It wasn't mentioned in the letter, but Riselle is going to marry the man Zelma introduced her to when she returns to her parents' house. So I'm sure she's living happily over there right now.」[k]
+[テオ f=06]「I see...」[k]
+Riselle is also starting a new life...[k]
+[テオ f=02]「Thank you, Maria. Thanks to you, I feel like a weight has been lifted off my chest.」[k]
+@fg c=マリア f=03
+[マリア v=va186 f=03]「No, no. Keep up the good work as an adventurer!」[k]
+[テオ f=01]「Ah!」[k]
+@fg c=マリア f=01
+[マリア v=va187 f=01]「Well, I guess it's about time I returned to being an adventurer.」[k]
+[テオ f=02]「I'm looking forward to it. If you like, come visit us. We'll welcome you with open arms.」[k]
+[textoff]
+@fa
+@out
+@w05
+[townoff]
+
+
+
+
+;◇イベント02・リーゼル復帰
+*after_2
+
+@saveon
+@fg c=リーゼル f=01
+[texton w=1]
+[リーゼル v=vl486 f=01]「Oh, Captain. Long time no see.」[k]
+[テオ f=12]「Riselle...!」[k]
+Surprisingly, I ran into Riselle in town. I thought she had returned to her parents' house with her newborn child...[k]
+[リーゼル v=vl487 f=01]「My grandmother told me to join your party again and fight.」[k]
+[テオ f=05]「Zelma...?」[k]
+
+[リーゼル v=vl488 f=02]「My grandmother said that at a time like this, when a great demon has been revived and things are so difficult, we must not let the power of magic go to waste. We must use that power wisely.」[k]
+[リーゼル v=vl489 f=01]「Captain, you're fighting the Great Demon right now, aren't you? I'll help you too. If you don't mind, I'd like you to make use of my power.」[k]
+[テオ f=05]「Riselle...」[k]
+[テオ f=02]「I understand. If I need your help, I'll let you know.」[k]
+[リーゼル v=vl490 f=01]「Thank you. I'll be at the [b]waiting room[/b] in town, so come get me if anything happens.」[k]
+[textoff]
+@clf
+@se f=period
+@notice text="<y>Riselle can now be added to the party!"
+[eventoff]
+

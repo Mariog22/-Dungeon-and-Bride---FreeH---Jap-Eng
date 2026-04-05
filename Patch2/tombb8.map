@@ -1,0 +1,198 @@
+﻿; 王の墓
+
+name = 王の墓Ｂ８
+insideName = Ｂ８
+upper = 王の墓Ｂ７
+level = 44
+bgm = tomb
+roof = stone
+shadow = dark
+sky = black
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = stoney
+ᆖ = stoney_h
+－ = stoney_h
+＝ = coffin
+　 = marble
+☐ = marble
+／ = door
+∫ = pick
+☖ = arch
+⧻ = stonegate
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+⑵ = monument
+
+; 敵情報
+maxGroups = 3
+monsters = ナイトスケルトン,ゴースト,リッチ
+traps = 石つぶて,毒針,毒ガス,しびれ針,酸スプレー,ラミアの瞳,スモーク,亡霊の群れ,警報
+
+; 宝箱
+box[1] = 金貨（超特大）,金貨（超特大）,エクスガリバー,魔法の盾,輝く鎖かたびら,ゴールドバックラー,回復の指輪
+box[2] = コールアウラの魔法書_u,強力眠気ざまし,アウラの宝珠,アウラの宝珠
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  
+  						┏━━━┳━━━━━┳━━━┓
+16						┃　　　ⅱ					ⅱ　　❶┃
+  						┃　　　┗＝＝＝＝＝┛　　　┃
+15						┃　　　　　　⑵　　　　　⑧】
+  						┃　　　　　　　　　　　　　┃
+14						┃　　　　　　　　　　　　　┃
+  						┃　　　　　　　　　　　　　┃
+13						┃　　　　　　⑤　　　　　　┃
+  ┏－－－－－┻－－－－－－⧻－－－－－－┻－－－－－┓
+12‖☐☐☐☐☐☐☐☐☐☐☐☐⓸☐☐☐☐☐☐☐☐☐☐☐☐‖
+  ‖☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐‖
+11‖☐☐☐☐⓷☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐‖
+  ‖☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐‖
+10‖☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐‖
+  ‖☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐‖
+ 9‖☐☐☐☐☐☐☐☐☐☐☐☐⓺☐☐☐☐☐☐☐☐☐☐☐☐‖
+  ┣━━━━━━━━━━━┳／┳━━━━━━━━━━━┫
+ 8ⅼ											┃　┃											ⅼ
+  ⅼ											┃　┃											ⅼ
+ 7ⅼ											┃　┃											ⅼ
+  								┏━━━┛　┗━━━┓
+ 6								┃　　　　　　　　　┃
+  								┃　┏／━━━━┓　┃
+ 5								┃　┃　　　　⑦】　┃
+  						┏━┛　┃　　　┏━┛　┗━┓
+ 4						┃㊤　　┃　　　┃　　　　　┃
+  						┣━┳━┻━┳━┛　┏━━∬┫
+ 3						┃㊤┃　　①／　　　┃　　敵┃
+  						┃　┃　　　┣━━━┛　　　┃
+ 2						┃　／①　　┃❷　　　　　　┃
+  						┗━┻━━━┻━━━━━━━┛
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[6][12].n.img = "stoney_h";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(1);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="November 2, the great King passes away."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] inSearching
+
+@delevent
+@getitem item=王の鍵
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] WAY == "n"
+
+@wait time=500
+@playse storage=tremble
+@quake time=3000 hmax=5 vmax=0
+@wq
+@playse storage=rockdrop
+@changewall himg=arch type=space behind=true
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] map.pos[9][16].f.box === void
+
+[texton]
+[？？？]「The King's treasure must not be taken away.」[k]
+@walk turn=n
+Something attacked the party![k]
+[textoff]
+@monster pos=0 name=ナイトスケルトン
+@monster pos=1 name=ナイトスケルトン
+@monster pos=2 name=ナイトスケルトン
+@monster pos=3 name=ナイトスケルトン
+@monster pos=4 name=ナイトスケルトン
+@monster pos=5 name=ナイトスケルトン
+@monster pos=6 name=ナイトスケルトン
+@monster pos=8 name=怒りの霊魂
+@monster pos=9 name=怒りの霊魂
+@monster pos=10 name=怒りの霊魂
+@monster pos=11 name=怒りの霊魂
+@monster pos=12 name=怒りの霊魂
+@monster pos=16 name=パワーリッチ
+@monster pos=17 name=パワーリッチ
+@monster pos=18 name=パワーリッチ
+@callbattle bgm=crisis gameover=true escape=false
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] WAY == "s"
+
+[texton]
+[？？？]「Those who desecrate graves... not a single one will be spared!」[k]
+@walk turn=n
+Something attacked the party![k]
+[textoff]
+@monster pos=2 name=ナイトスケルトン
+@monster pos=3 name=パワーリッチ
+@monster pos=4 name=ナイトスケルトン
+@callbattle bgm=crisis gameover=true escape=false
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+[if exp='game.party.hasItem(o.古代語の辞書)']
+	@notice text="Written in ancient language, it reads:<r><y>The queen hid the key to the King's tomb somewhere on this floor."
+[else]
+	@notice text="<y>There are characters written on it, but they are in an ancient language and cannot be read."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+[if exp='game.party.hasItem(o.古代語の辞書)']
+	@notice text="Written in ancient language, it reads:<r><y>The guard will never let those who steal the treasure escape."
+[else]
+	@notice text="<y>There are characters written on it, but they are in an ancient language and cannot be read."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

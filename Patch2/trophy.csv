@@ -1,0 +1,31 @@
+﻿name	cup	hyper	exp	displayName
+ゲームクリア	silver		sf.gameCleared	Game Complete
+ハイパーボム未使用クリア	gold	true	sf.clearWithoutHyperBombs	Hyper Bomb Unused Clear
+歩行距離10,000歩達成	bronze		sf.walkCount >= 10000	10,000 Steps Taken
+歩行距離50,000歩達成	gold		sf.walkCount >= 50000	50,000 Steps Taken
+所持金99,999,999G達成	silver		sf.gotMaxGold	99,999,999G Accumulated
+全職業冒険者作成	bronze		sf.usedJobsByCreating.count >= game.job.count	All Jobs Created
+レベル50冒険者育成	silver		sf.mostLevelOfCharas >= 50	Level 50 Adventurer
+レベル100冒険者育成	gold		sf.mostLevelOfCharas >= 100	Level 100 Adventurer
+全雇用キャラ契約	bronze		sf.numContractedHirings >= game.hiring.count	All Mercenaries Recruited
+全召喚モンスター契約	silver		sf.numContractedMonsters >= game.smagic.count	All Summons Contracted
+全スターカード取得	gold		sf.completedStarCards	All Star Cards Acquired
+全魔法習得	gold		sf.numLearnedMagics >= game.mmagic.count * 3 + game.smagic.count	All Spells Acquired
+マップ踏破率50%	bronze		sf.rateOfCoveringMaps >= 50	50% Map Completion
+マップ踏破率80%	silver		sf.rateOfCoveringMaps >= 80	80% Map Completion
+マップ踏破率100%	gold		sf.rateOfCoveringMaps >= 100	100% Map Completion
+30クエスト達成	bronze		sf.numClearedQuests >= 30	30 Quests Completed
+40クエスト達成	silver		sf.numClearedQuests >= 40	40 Quests Completed
+全クエスト達成	gold	true	sf.clearAllQuestsWithoutHyperBombs	All Quests Completed
+全グルメ制覇	bronze		sf.numEatenDishes >= 30	All Dishes Eaten
+アイテム300種発見	bronze		game.getNumFoundItems() >= 300	300 Items Discovered
+アイテム400種発見	silver		game.getNumFoundItems() >= 400	400 Items Discovered
+全アイテム発見	gold		game.getNumFoundItems() >= 516	All Items Discovered
+バトル1,000勝達成	gold		sf.winCount >= 1000	1000 Battles Won
+敵5,000体撃破	silver		sf.totalMarks >= 5000	5000 Enemies Slain
+敵10,000体撃破	gold		sf.totalMarks >= 10000	10,000 Enemies Slain
+３大魔公討伐	silver	true	sf.huntedThreeLordsWithoutHyperBombs	3 Great Demon Lords Slain
+アースドラゴン討伐	gold	true	sf.huntedEarthDragonWithoutHyperBombs	Earth Dragon Slain
+モンスター100種討伐	bronze		game.getNumhuntedMonsters() >= 100	100 Monster Types Slain
+モンスター150種討伐	silver		game.getNumhuntedMonsters() >= 150	150 Monster Types Slain
+モンスター全種討伐	gold	true	game.getNumhuntedMonsters() >= 174	All Monster Types Slain

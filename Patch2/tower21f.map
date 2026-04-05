@@ -1,0 +1,107 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔21Ｆ
+insideName = 21Ｆ
+upper = ラドミラの塔22Ｆ
+lower = ラドミラの塔20Ｆ
+level = 70
+margin = 3
+bgm = tower
+shadow = dark
+sky = nightforest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+… = half
+　 = marble
+☐ = marble
+／ = door
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+⑵ = fountain
+
+; 敵情報
+monsters = ナイトインプ,インキュバス,マウンテンデビル,アビスデーモン,エリートトロール,エルダーサキュバス
+
+; 宝箱
+box[1] = 青りんご,青りんご,カマンベール,カマンベール,カマンベール,特効薬,復活の粉,復活の粉
+box[2] = エーテル,ハイエーテル,修理の巻物,修理の巻物,ミスティックアイの巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  		┏━━━━━━━┳━┳━━━┓
+ 8		┃　　　　　　　／　←　　❷┃
+  		┃　　　　　┏━┛　┃　　　┃
+ 7		┃　　　　　┃　　　┃　　　┃
+  		┃　　　　　┃　　　┃　　　┃
+ 6		┃　　　　　┃㊤　　┃　　　┃
+  		┃　　　　　┣━┳━┻━━━┫
+ 5		┃　　③　　┠①／　　　　　┃
+  		┣━━／━━╋━┛　┏━━／┫
+ 4		┃⑵　　　■┃　　　┃　　敵┃
+  		┃　　　　■┃　┏━┛　　　┃
+ 3		┃㊦　　　■┃　┃❶　　　　┃
+  		┣━━━━━┻／┻━━━━━┛
+ 2		￤☐☐☐☐☐☐☐☐☐☐☐☐☐
+  		┗…………………………………
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(4, 5);
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="23Ｆ" exp='tf.result = ["ラドミラの塔23Ｆ", "up"]'
+@select text="17Ｆ" exp='tf.result = ["ラドミラの塔17Ｆ", "down"]'
+@select text="No" exp='tf.result = []'
+[ask]
+@elevator map=&'tf.result[0]' lift=&'tf.result[1]' cond='tf.result[0] !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@question title="<y>Will you drink water from the gushing spring?" cancel=true
+[if exp='tf.result']
+	@eval exp='o.噴水.doDamage = o.グランドヒール.doDamage'
+	@eval exp='o.噴水.resultMessage = o.グランドヒール.resultMessage'
+	@btcmd name=噴水
+	@notice text="Party's HP restored!"
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+; 戦闘
+@monster pos=3 name=ミスリルゴーレム
+@callbattle bgm=boss
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------

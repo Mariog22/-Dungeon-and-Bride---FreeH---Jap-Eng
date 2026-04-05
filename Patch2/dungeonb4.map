@@ -1,0 +1,203 @@
+﻿; 試練の迷宮
+
+name = 試練の迷宮Ｂ４
+insideName = Ｂ４
+upper = 試練の迷宮Ｂ３
+lower = 試練の迷宮Ｂ５
+pool = 試練の迷宮Ｂ５
+level = 50
+bgm = labyrinth
+roof = stone
+shadow = dark
+sky = black
+antiWarp = true
+
+; 各パーツ
+━ = stoner
+　 = marble
+☆ = soilr
+⃞ = cubew
+❑ = cube
+❐ = cube
+／ = door
+☖ = arch
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+
+; 敵情報
+maxGroups = 1
+monsters = ゴーストスライム,マジカルスライム,サンダーウィスプ,ミスティック,アークメイジ
+
+; 宝箱
+box[1] = ジャンプの巻物,ジャンプの巻物,ジャンプの巻物
+box[2] = 罠はない,強者のメダル
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━━━━━━━━━━━━━━━┳━━━━━━━┓
+11【☆　⑥　　　　　③　③　　　①⧻①　　　　　㊤┃
+  ┃　　　　　　　　　　　┏⧻━┯┻━━━━━━━┫
+10┃☆　❑　　　❑　❑　　┃　　④␣␣␣␣␣␣␣❶┃
+  ┃　　　　　　　　　　　┃　　　␣␣␣␣␣␣␣　┃
+ 9┃⑥　　　❑　❑　　　　┃　　　␣␣␣␣␣␣␣　┃
+  ┃␣␣␣␣␣␣␣␣␣␣␣┃　　　␣␣␣␣␣␣␣　┃
+ 8┃␣␣␣␣␣␣␣␣␣␣␣┃　　　␣␣␣␣␣␣␣　┃
+  ┃␣␣␣␣␣␣␣␣␣␣␣┃　　　␣␣␣␣␣␣␣　┃
+ 7┃␣␣␣␣␣␣␣␣␣␣␣┃　　　␣␣␣␣␣␣␣　┃
+  ┃␣␣␣␣␣␣␣␣␣┏━┛　　　␣␣␣␣␣␣␣　┃
+ 6┃␣␣␣␣␣␣␣␣␣┃㊦　　　　␣␣␣␣␣␣␣　┃
+  ┃␣␣␣␣␣␣␣␣␣┣━━━┓　␣␣␣␣␣␣␣　┃
+ 5┃␣␣␣␣␣␣␣␣␣【⑤　　┃　␣❑␣❑␣❑␣　┃
+  ┃␣␣␣␣␣␣␣␣␣┃　　　┃　␣␣␣␣␣␣␣　┃
+ 4┃␣␣␣␣␣␣␣␣␣┃　　敵／　␣␣␣␣␣␣␣　┃
+  ┃␣␣␣␣␣␣␣␣␣┣━━━┫　␣␣␣␣␣␣␣　┃
+ 3┃␣␣␣␣␣␣␣␣␣┃　　　┃　␣␣␣␣␣␣␣　┃
+  ┃␣␣␣␣␣␣␣␣␣┃　　　┃　␣␣␣␣␣␣␣　┃
+ 2┃␣␣␣␣␣␣␣␣␣⧻　　❷┃　␣␣␣␣␣␣␣　┃
+  ┃␣␣␣␣␣␣␣␣␣┃　　　┃　␣␣␣␣␣␣␣　┃
+ 1┃␣␣␣␣␣␣␣␣␣┃　　　┃　　　　　　　　⑦┃
+  ┃␣␣␣␣␣␣␣␣␣┗━━━┻━━━━━━━━／┫
+ 0┃　　　　　　　　　　　　　　　　　　　　　　　┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+for(var i = 8; i <= 10; i++)
+{
+	pos[i][5].f.img = "cube";
+	pos[i][5].f.cubeTop = "air";
+}
+pos[0][11].event = 2;
+pos[1][10].event = 6;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(8, 11, "w", "close");
+f.saveIsForbidden = false;
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] map.isPartition(8, 11, "w")
+
+[if exp='! game.party.hasItem(o.時のスイッチ)']
+	@notice text="I hear a voice from somewhere:<y><r>This door will not be opened to those without a <p>Time Switch<y>."
+	[eventoff]
+[endif]
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=8 y=11 way=w mode=open
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Arrange the rocks to build a bridge to the other side. If you want treasure as well, place two rocks here."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@delevent
+[iscript]
+for(var x = 0; x <= 4; x++)
+{
+	for(var y = 1; y <= 8; y++)
+	{
+		o.試練の迷宮Ｂ４.recordAreaOpened(x, y);
+		o.試練の迷宮Ｂ５.recordAreaOpened(x, y);
+	}
+}
+[endscript]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=6 y=10 way=n mode=open
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Consider how to free the rock in the lower center."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] party.lastIsMove
+
+@eval exp='tf.num = 0'
+@eval exp='tf.num ++' cond='game.map.getFloorInfo(0, 11).type == "movable"'
+@eval exp='tf.num ++' cond='game.map.getFloorInfo(0, 10).type == "movable"'
+
+[if exp='tf.num == 2 && game.map.getWallInfo(4, 2, "e").type == "wall"']
+	@wait time=800
+	@se f=fence
+	@switchfence x=4 y=2 way=e mode=open
+	@notice text="I heard a door open somewhere!"
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+@delevent
+[iscript]
+for(var x = 8; x <= 10; x++)
+{
+	for(var y = 2; y <= 10; y++)
+	{
+		o.試練の迷宮Ｂ４.recordAreaOpened(x, y);
+		o.試練の迷宮Ｂ５.recordAreaOpened(x, y);
+	}
+}
+[endscript]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+@se f=dragstone
+@eval exp='o.試練の迷宮Ｂ４.reset()'
+@eval exp='o.試練の迷宮Ｂ５.reset()'
+@eval exp='o.試練の迷宮Ｂ６.reset()'
+@switchfence map=試練の迷宮Ｂ４ x=6 y=10 way=n mode=open cond='! o.試練の迷宮Ｂ４.events.has(4)'
+@switchfence map=試練の迷宮Ｂ６ x=3 y=10 way=w mode=open cond='! o.試練の迷宮Ｂ６.events.has(6)'
+[if exp='! o.試練の迷宮Ｂ５.events.has(3)']
+	@switchfence map=試練の迷宮Ｂ５ x=1 y=11 way=s mode=open
+	@switchfence map=試練の迷宮Ｂ５ x=3 y=11 way=s mode=open
+	@switchfence map=試練の迷宮Ｂ５ x=5 y=11 way=s mode=open
+	@switchfence map=試練の迷宮Ｂ５ x=7 y=11 way=s mode=open
+[endif]
+@wait time=800
+@warp map=試練の迷宮Ｂ４ x=6 y=11 way=w
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

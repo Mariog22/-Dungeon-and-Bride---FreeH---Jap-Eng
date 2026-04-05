@@ -1,0 +1,150 @@
+﻿;  ペンスキー峠
+
+name = パワーの森
+insideName = Forest of Power
+level = 10
+bgm = forest
+isOutdoor = true
+shadow = dark
+sky = forest
+blank = rock
+
+; 画像パーツ
+━ = stone
+‥ = soil
+　 = soil
+❖ = soil
+⏃ = woods
+／ = door
+☗ = gate
+︻ = panel
+﹃ = ladder
+⑴ = bulletin
+
+; 移動ポイント
+(A) = map:モイーズ湿地帯・果樹園, x:13 ,y:39, way:s, symbol:movev, ask:Go to the next map?
+(B) = map:ペンスキー峠・峠道, x:8, y:1, climb:true
+(C) = map:ペンスキー峠・峠道, x:9, y:1, climb:true
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+  															‥‥‥‥‥‥‥
+ 9															⏃⏃Ⓑ　Ⓒ⏃⏃			⏃⏃❖⏃⏃
+  															⏃⏃　　　⏃⏃			⏃⏃	⏃⏃
+ 8															⏃⏃⑤　⑤⏃⏃			⏃⏃❖⏃⏃
+  															⏃⏃　　　⏃⏃			⏃⏃	⏃⏃
+ 7															⏃⏃　　　⏃⏃			⏃⏃❖⏃⏃
+  															⏃⏃　　　⏃⏃			⏃⏃	⏃⏃
+ 6													⏃⏃⏃⏃　　　⏃⏃			⏃⏃❖⏃⏃
+  													⏃⏃⏃⏃　　　⏃⏃
+ 5			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃
+  			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃
+ 4	⏃⏃⏃⏃　　　　　　　　　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃
+ 3	⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⑴　　　　　　　　　　⏃⏃
+  	⏃⏃　　　　　⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+ 2	⏃⏃　　④　②⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃┏━━／━︼┓⏃															⏃⏃　⏃⏃
+ 1	⏃┃		③		┃⏃															⏃⏃　⏃⏃
+  	⏃┃					┃⏃															⏃⏃　⏃⏃
+ 0	⏃┃					┃⏃															⏃⏃Ⓐ⏃⏃
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setHouse(2, 1);
+pos[8][9].event = pos[9][9].event = 5;
+pos[13][0].event = 6;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@roadguide n="Sapphire City" e=Orchard
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Foster family"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@enterhouse img=interior_01
+[texton]
+There is no one in the room.[k]
+[textoff]
+@exithouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@wait time=500 cond='WAY != "s"'
+@walk turn=s cond='WAY != "s"'
+@wait time=500
+@walk move=n
+@wait time=500
+@eval exp='game.curChara = game.chara[f.kidnappedElfID]'
+@jump storage="heroine02b.scn" target=*theo_08
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+; 救出が成功するルート
+@call target=*_rescue_elf
+@eval exp='f.wayOfRescuingElf = "a"' cond='f.wayOfRescuingElf === void'
+@walk turn=s cond='WAY != "s"'
+@walk move=s
+@walk move=s cond='game.party.curY > 7'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+; 救出が失敗するルート
+@call target=*_rescue_elf
+@eval exp='f.wayOfRescuingElf = "b"' cond='f.wayOfRescuingElf === void'
+@walk turn=n cond='WAY != "n"'
+@walk move=n
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_rescue_elf
+
+@eval exp='game.curChara = game.chara[f.kidnappedElfID]'
+[if exp='f.wayOfRescuingElf === void']
+	[texton]
+	[テオ]「Okay, almost there!」[k]
+	The mansion where [クレア] is being held captive must be somewhere in the Forest of Power.[k]
+	[textoff]
+[else]
+	[texton]
+	There's no turning back now. We must rescue [クレア] as soon as possible.
+	 [k]
+	[textoff]
+[endif]
+@return
+;-------------------------------------------------------------------------------

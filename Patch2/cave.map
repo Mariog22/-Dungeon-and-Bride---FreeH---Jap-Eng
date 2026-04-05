@@ -1,0 +1,256 @@
+﻿; ノームの洞窟
+
+name = ノームの洞窟
+insideName = Cave
+level = 16
+bgm = hideout
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+outfield = soil
+antiWarp = true
+showAllArea = true
+
+; 画像パーツ
+━ = soil
+　 = soil
+☗ = upstair
+☖ = gate
+︻ = panel
+⑵ = bulletin
+⑤ = human
+⑥ = human
+⑦ = human
+⑧ = human
+
+; 移動ポイント
+(A) = map:ランドン渓谷・谷底, x:25, y:31, way:w, symbol:exit, ask:Leave the dungeon?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+  						┏━━━━━━━━━━━━━━━━︻┓	┏━━━━━━━┓
+13						┃　　　　　　　　　　　　　　　　⑫┃	┃　　　　　　　┃
+  						┃　┏━━━━━━━━━━━━━┓　┃	┃　┏━┓　　　┃
+12						┃　┃													┃　┃	┃　┃	┃　　⑦┃
+  						┃　┃	┏━━━┓							┃　┃	┃　┃	┗━━━┛
+11						┃　┃	┃⑥　　┃							┃　┃	┃　┃
+  						┃　┃	┃　　　┗━━━━━┓	┣☖┻━┻☖┻━┓
+10						┃　┃	┃　　　　　　　　　┃	┃　　　　　　　┃
+  						┃　┃	┗━━━━━━━┳☖┻━┛　　　　　　　┗━━━┓
+ 9						┃　┃									┃　　　　　　　　　　　　　　　┃
+  				┏━┛　┗━┓					┏━┛　　　　　　　　　　　　　　　┃
+ 8				┃　　⑧　　┃					┃⑪　　　　　　　　　⑨　　　　　　┃
+  				┃　　　　　┃	┏━━━┫　　　　　　　　　　　　　　　　　┗━┓
+ 7				┃　　　　　┃	┃　　　☖　　　　　　　　　　　　⑵　　　③　③┃
+  				┗━━━━━┛	┃　┏━┫　　　　　　　　　　　　　　　　　　　┃
+ 6												┃　┃	┃　　　　⑩　　　　　　　　　　　③　③┃
+  								┏━━━┛　┃	┗━┓　　　　　　　　　┏━━━┓　　　┃
+ 5								┃　　　　　┃			┃　　　　　　　　　┃			┃　　　┃
+  								┃　　　┏━┛			┗━━━━━━━━━┛	┏━┛　　　┃
+ 4								┃　　⑤┃																	┃④　　　　┃
+  								┗━━━┛											┏━━━━━┛　┏━━━┛
+ 3																								┃⑵　　　　　　┃
+  																		┏━━━━━┛　┏━━━━━┛
+ 2																		┃　　　　　　①┃
+  																		┃　┏━━━━━┛
+ 1																		┃　┃
+  ┏━━━━━━━━━━━━━━━━━┛　┃
+ 0☗Ⓐ　　　　　　　　　　　　　　　　　　┃
+  ┗━━━━━━━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [2, 5, 6, 7, 8, 12]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] f.returningGnomeID === void || ! party.members.has(chara[f.returningGnomeID])
+
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+@wait time=500
+[texton]
+There was a sign saying "Gnome Village"[k]
+...I've heard that gnomes are very timid. If we entered their village unnecessarily, we might scare them, so it would be best not to do so.[k]
+[textoff]
+@walk move=w
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Gnome Village"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@delevent
+@eval exp='o.ノームの洞窟.events = [2, 4, 5, 6, 7, 8, 12]'
+@changefloor pimg=human x=16 y=12
+@changefloor pimg=human x=5 y=11
+@changefloor pimg=human x=3 y=8
+@changefloor pimg=human x=5 y=4
+@changefloor pimg=void x=13 y=8
+@changefloor pimg=void x=10 y=6
+@changefloor pimg=void x=8 y=8
+@wait time=500
+@walk move=n cond='game.party.curY == 6'
+@walk move=w cond='game.party.curX == 17'
+@walk turn=w cond='WAY != "w"'
+@wait time=500
+@eval exp='game.curChara = game.chara[f.returningGnomeID]'
+@jump storage="heroine04b.scn" target=*theo_08
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+[texton]
+We haven't helped the rest of the gnomes yet. We shouldn't leave just yet.[k]
+[textoff]
+@walk move=e
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] party.lastIsMove
+
+@jump target=*_battle_against_bandits cond='! game.isFreeMode'
+
+[texton]
+[name n=Gnome]「Now we can live in peace. thanks to the Sapphire City Guard and Guild.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] party.lastIsMove
+
+@jump target=*_battle_against_bandits cond='! game.isFreeMode'
+
+[texton]
+[name n=Gnome]「There were difficult times after bandits raided our village.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] party.lastIsMove
+
+@jump target=*_battle_against_bandits cond='! game.isFreeMode'
+
+[texton]
+[name n=Gnome]「Gnomes like to build settlements in caves and live in seclusion.」[k]
+[if exp='! f.presentForGnomeMember && game.party.members.has(o.ミューズ)']
+	[name n=Gnome]「I see you have a gnome with you. In that case, I will give you this as a special gift.」[k]
+	[textoff]
+	@getitem item=信仰心の秘薬
+	@eval exp='f.presentForGnomeMember = true'
+[endif]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] party.lastIsMove && (isFreeMode || f.returningGnomeID !== void)
+
+@jump target=*event_11 cond='game.isFreeMode'
+
+@delevent
+@changefloor pimg=void
+@eval exp='game.curChara = game.chara[f.returningGnomeID]'
+@jump storage="heroine04b.scn" target=*theo_09
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_battle_against_bandits
+
+[texton]
+[name n=Bandit f=bandit_yellow_01]「What the hell are you guys doing?」[k]
+The bandits suddenly attacked![k]
+[textoff]
+
+; 戦闘
+@monster pos=1 name=バンディット
+@monster pos=2 name=バンディット
+@monster pos=3 name=バンディット
+@monster pos=4 name=バンディット
+@monster pos=5 name=バンディット
+@monster pos=9 name=キャプテン
+@monster pos=10 name=キャプテン
+@monster pos=11 name=キャプテン
+@callbattle gameover=true
+@delevent
+@changefloor pimg=void
+
+; すべての山賊を倒していたら次のイベントへ
+@jump storage="heroine04b.scn" target=*theo_10
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] party.lastIsMove
+
+[texton]
+[if exp='f.returningGnomeID !== void']
+	@eval exp='game.curChara = game.chara[f.returningGnomeID]'
+	[name n=Gnome]「Hey [ミューズ], are you visiting? Take your time.」[k]
+[else]
+	[name n=Gnome]「Thank you for your help the other day.」[k]
+[endif]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Gnome]「Now we are living in peace. This is all thanks to you.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Gnome]「We gnomes make our living by mining ore and crafting.」[k]
+[if exp='! f.presentedStoneByGnome']
+	[name n=Gnome]「I will give you some if you like.[if exp='! game.isFreeMode'] I owe you all a debt of gratitude[endif].」[k]
+	[textoff]
+	@eval exp='f.presentedStoneByGnome = true'
+	@getitem item=アダマンタイト鉱石
+[endif]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] onObjectTrigger
+
+[if exp='! game.isFreeMode && ! game.map.events.has(9)']
+	@notice text="←  Fun Room"
+[else]
+	@notice text="← Workshop"
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

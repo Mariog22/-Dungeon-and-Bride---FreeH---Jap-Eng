@@ -1,0 +1,250 @@
+﻿; ヤネクの森
+
+name = ヤネクの森・東
+insideName = East
+lower = オークの巣穴
+level = 10
+bgm = field
+isOutdoor = true
+shadow = dark
+sky = snowy
+blank = rock
+outfield = soil
+effect = PE_snow1
+
+; 画像パーツ
+━ = rock
+ᆖ = rock
+　 = soil
+❖ = soil
+〓 = wood
+⏃ = woods
+△ = rock
+〰 = water
+／ = door
+⑊ = door
+☗ = gate
+㊦ = ladderd
+⑴ = bulletin
+⑵ = bulletin
+⑶ = bulletin
+
+; 敵情報
+maxGroups = 2
+monsters = ポイズンスライム,コールドウィスプ,シニアコボルド,オークソルジャー,シューター,ウィッチ
+traps = 毒針,毒ガス,酸スプレー,しびれ針,魔力吸収,爆弾,スモーク
+
+; 移動ポイント
+(A) = map:ヤネクの森・西, x:49, y:6, way:w, symbol:moveh, ask:Go to the next map?
+(B) = map:ヤネクの森・トンネル, x:8, y:0, way:n, symbol:cave, ask:Go to the next map?
+(C) = map:ヤネクの森・トンネル, x:3, y:0, way:n, symbol:cave, ask:Go to the next map?
+(D) = map:温泉・脱衣所, x:3, y:5, way:s, symbol:cave, ask:Go to the dungeon?
+
+; 宝箱
+box[1] = 魔法使いの弓_u,レンジャーブーツ_u,ブロンズバックラー,経験のコイン（小）,経験のコイン（小）,ジャンプの巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+  					ᆖᆖ☗ᆖᆖ			ᆖᆖᆖᆖ☗ᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖ
+39					⏃⏃Ⓒ⏃⏃			⏃⏃　　Ⓑ　　　　　　　　　　　　　　　　⏃⏃
+  					⏃⏃　⏃⏃			⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+38					⏃⏃　⏃⏃			⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃									⏃⏃　⏃⏃
+37					⏃⏃　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃									⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃																					⏃⏃　⏃⏃
+36					⏃⏃　⏃⏃																			⏃⏃⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃																			⏃⏃⏃⏃　⏃⏃
+35	⏃⏃⏃⏃⏃⏃　⏃⏃							⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃							⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃
+34	⏃⏃　　　　　⏃⏃							⏃⏃　　　　　　　　　　　　　　⑵⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃							⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃
+33	⏃⏃　⏃⏃⏃⏃⏃⏃					⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃
+  	⏃⏃　⏃⏃									⏃⏃⏃⏃　⏃⏃							⏃⏃⏃⏃　⏃⏃
+32	⏃⏃　⏃⏃					⏃⏃⏃⏃⏃⏃　　　⏃⏃							⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃					⏃⏃⏃⏃⏃⏃　　　⏃⏃									⏃⏃　⏃⏃
+31	⏃⏃　⏃⏃			⏃⏃⏃⏃　　　　　　　⏃⏃									⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃			⏃⏃⏃⏃　　　　　⏃⏃⏃⏃									⏃⏃　⏃⏃
+30	⏃⏃　⏃⏃			⏃⏃　　　　⑶　　⏃⏃⏃⏃									⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃			⏃⏃　　　　　　　⏃⏃											⏃⏃　⏃⏃
+29	⏃⏃　⏃⏃			⏃⏃　　④　　　　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃			ᆖᆖᆖᆖ⑊ᆖᆖᆖᆖᆖᆖ	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+28	⏃⏃　⏃⏃															⏃⏃⑤　　　⑤　　　⑤　　⏃⏃
+  	⏃⏃　⏃⏃															⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+27	⏃⏃　⏃⏃															⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃　⏃⏃															⏃⏃　⏃⏃
+26	⏃⏃　⏃⏃															⏃⏃⑤⏃⏃			⏃⏃⏃⏃⏃
+  	⏃⏃　⏃⏃															⏃⏃　⏃⏃			⏃⏃⏃⏃⏃
+25	⏃⏃　⏃⏃															⏃⏃　⏃⏃			⏃⏃❶⏃⏃
+  	⏃⏃　⏃⏃															⏃⏃　⏃⏃			⏃⏃　⏃⏃
+24	⏃⏃　⏃⏃															⏃⏃⑤⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃															⏃⏃　⏃⏃			⏃⏃　⏃⏃
+23	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃			⏃⏃⏆⏃⏃
+22	⏃⏃　⏃⏃	⏃⏃　　敵　　　⑤　　　⑤　　　⑤⏃⏃			⏃⏃⏆⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃　　　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃⏆⏃⏃
+21	⏃⏃　⏃⏃	⏃⏃　　　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏆⏃⏃⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃									⏃⏃⏃⏃⏆⏃⏃⏃⏃
+20	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⑤⏃⏃									⏃⏃〰〰〰〰〰⏃⏃
+  	⏃⏃　⏃⏃							⏃⏃　⏃⏃									⏃⏃〰〰〰〰〰⏃⏃
+19	⏃⏃　⏃⏃							⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃〰〰〰〰〰⏃⏃
+  	⏃⏃　⏃⏃							⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃〰〰〰〰〰⏃⏃
+18	⏃⏃　⏃⏃⏃⏃⏃⏃			⏃⏃⑤　　　　⑤　　　　⑤　　　〓　　　　⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃∨⏃⏃⏃　⏃⏃
+17	⏃⏃　　　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃∨⏃⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃																	⏃⏃∨⏃⏃⏃　⏃⏃
+16	⏃⏃⏃⏃⏃⏃　⏃⏃													⏃⏃⏃⏃⏃⏃∨⏃⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃													⏃⏃⏃⏃⏃⏃∨⏃⏃⏃　⏃⏃
+15					⏃⏃　⏃⏃													⏃⏃∨≪≪≪≪⏃⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃													⏃⏃∨⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+14					⏃⏃　⏃⏃							⏃⏃⏃⏃⏃⏃⏃⏃∨⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃							⏃⏃⏃⏃⏃⏃⏃⏃∨⏃⏃			⏃⏃　⏃⏃
+13					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　∨⏃⏃			⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃∨⏃⏃			⏃⏃　⏃⏃
+12					⏃⏃　　　　　　　　　　　　　⏃⏃⏃⏃⏃∨⏃⏃			⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃∨⏃⏃			⏃⏃　⏃⏃
+11					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃∨⏃⏃			⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃													⏃⏃∨⏃⏃			⏃⏃　⏃⏃
+10			⏃⏃⏃⏃　⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃	⏃⏃∨⏃⏃⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃⏃⏃　⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃	⏃⏃∨⏃⏃⏃⏃	⏃⏃　⏃⏃
+ 9			⏃⏃　　⑥　＋⏃⏃			⏃⏃　　　⏃⏃	⏃⏃∨　　⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃　　　　　⏃⏃			⏃⏃　　　⏃⏃	⏃⏃∨　　⏃⏃	⏃⏃　⏃⏃
+ 8			⏃⏃　　⑥　＋⏃⏃			⏃⏃　　敵⏃⏃	⏃⏃∨　㊦⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃　　　　　⏃⏃			⏃⏃⏃⏃　⏃⏃	⏃⏃∨⏃⏃⏃⏃	⏃⏃　⏃⏃
+ 7			⏃⏃　　　　　⏃⏃			⏃⏃⏃⏃　⏃⏃	⏃⏃∨⏃⏃⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃⏃⏃⏃⏃⏃⏃⏃					⏃⏃　⏃⏃	⏃⏃∨⏃⏃			⏃⏃　⏃⏃
+ 6			⏃⏃⏃⏃⏃⏃⏃⏃⏃					⏃⏃　⏃⏃	⏃⏃∨⏃⏃	⏃⏃⏃⏃　⏃⏃
+  																	⏃⏃　⏃⏃	⏃⏃∨⏃⏃	⏃⏃⏃⏃　⏃⏃
+ 5							⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃∨⏃⏃⏃⏃⏃⑴　　⏃⏃
+  							⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃∨⏃⏃⏃⏃⏃　　　⏃⏃
+ 4							⏃⏃　　　　　　　　　　　　　　　　〓　　　　　　　　⏃⏃
+  							⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃∧⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+ 3	⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃∧⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃											⏃⏃∧⏃⏃	⏃⏃⏃⏃⏃⏃⏃
+ 2▲Ⓐ　　　　　　　　⏃⏃											⏃⏃∧⏃⏃	❖	❖	❖	❖
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃											⏃⏃∧⏃⏃	⏃⏃⏃⏃⏃⏃⏃
+ 1	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃											⏃⏃∧⏃⏃	⏃⏃⏃⏃⏃⏃⏃
+  																									∧
+ 0							❖									❖							∧
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+for(var i = 4; i <= 9; i++) pos[i][29].s.img = "wood";
+pos[12][6].f.img = pos[12][5].f.img = "water";
+pos[12][7].f.noCount = pos[12][1].f.noCount = pos[12][0].f.noCount = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Orc gathering spot nearby."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@roadguide n="Northrop Village" s="Sapphire City" w="Yanek Hot Spring"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Welcome to Yanek Hot Springs!<r>Please present your ticket at the entrance."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] WAY == "s" || WAY == "n"
+
+[if exp='game.protectHeroines']
+	@notice text="Temporarily closed"
+	@walk move=n
+	[eventoff]
+[endif]
+
+[if exp='WAY == "n"']
+	; ロッカーの中に預けたままのアイテムは一時保管所へ移送される
+	[iscript]
+	tf.result = false;
+	for(var i = 0; i < game.lockerRoom.trunk.count; i++)
+	{
+		var item = game.lockerRoom.trunk[i];
+		if(item !== void)
+		{
+			tf.result = true;
+			game.storeItemSomewhere(item, game.temporaryBox);
+		}
+	}
+	game.lockerRoom.trunk = [];
+	[endscript]
+	@notice text="<y>Items left in the locker were transferred to the temporary storage area of the Item Warehouse." cond='tf.result'
+	[eventoff]
+[endif]
+
+@question title="This is Yanek Hot Springs. Would you like to enter?<r><y> (Requires one hot spring ticket)"
+[if exp='tf.result && game.party.ejectItem(o.温泉チケット)']
+	@warp map=温泉・脱衣所 x=3 y=5 way=s sound=door1 cond='tf.result'
+	[eventoff]
+[endif]
+
+[if exp='tf.result']
+	@notice text="<y>You cannot enter the hot springs without a ticket."
+[endif]
+@walk move=n
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] o.スライム軍団の討伐.flag != 1 && o.スライム軍団.interruption == 0 && random < 0.2
+
+; スライム軍団との決闘
+@jump storage="duel.ks" target=*slimes_encounter
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@wait time=500
+@walk turn=s cond='WAY != "s"'
+@wait time=500 cond='WAY != "s"'
+@fg l=orc_red left=250 top=45 b
+@fg c=orc_red left=450 top=45 b
+@fgf r=orc_red left=650 top=45
+[texton]
+[name n=Orc]「What the hell are you guys doing?」[k]
+[name n=Orc]「This is our orc territory! Guys! Get 'em!」[k]
+[textoff]
+@clf
+
+@monster pos=2 name=オークソルジャー
+@monster pos=3 name=オークソルジャー
+@monster pos=4 name=オークソルジャー
+@callbattle gameover=true
+@treasure item=ボム,ボム,たいまつ
+@delevent
+
+@wait time=300
+[texton]
+The orcs we just killed were probably guards. Their den must be nearby.
+ [k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------

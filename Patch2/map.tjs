@@ -1,0 +1,2552 @@
+﻿// map.tjs
+// マップデータ作成他マップ関連
+
+
+//----------------------------------------------------------------------------------------
+class MapData
+{
+	// ダンジョンマップを作るクラス
+
+	var name;	// 名前
+	var pos = [];		// 座標
+	var mapWidth  = 9;	// 最大幅
+	var mapHeight = 9;	// 最大高さ
+	var mapMarginW = 0;	// 幅に追加される領域の長さ（非ループマップで反対側を見せないため）
+	var mapMarginH = 0;	// 高さに追加される領域の長さ（非ループマップで反対側を見せないため）
+	var defWall;	// 指定がない時の壁
+	var defFloor;	// 指定がない時の床
+	var defDoor;	// 指定がない時のドア
+	var shadow;	// 影色 "dark" or "light"   "auto"を指定すると屋外かどうかで影色が変わる
+	var roof;	// 屋根
+	var sky;	// 空
+	var bgm;	// 音楽
+	var effect;	// 演出
+	var sound;	// 効果音
+	var blind;	// ダンジョンの目隠し。照明を付けると消える
+	var upper;	// 上の階となるマップの名前
+	var lower;	// 下の階となるマップの名前
+	var pool;	// プール（水中・浅い穴）となるマップの名前
+	var underWater = false;	// 水中かどうか
+	var level = 1;	// マップレベル
+	var noBattle = false;	// 戦闘が起こるかどうか。true だと固定敵も含め一切敵が出現しない
+	var battleRate = 0.005;	// 出現率
+	var maxGroups = 3;	// 出現モンスターの最大グループ数
+	var antiWarp = false;	// フロア全体がアンチワープゾーンかどうか
+	var antiSpell = false;	// フロア全体がアンチスペルゾーンかどうか
+	var isOutdoor = false;	// 屋外マップかどうか
+	var loop = false;	// マップがループするかどうか。ミニマップに影響する
+	var showAllArea = false;	// オートマップを最初から全開にするか
+	var group;	// 所属する同一ダンジョングループへの参照。オートマップ等で使用する
+	var insideName = "１Ｆ";	// 同一ダンジョングループ内での名称。階数などを表示する
+	var monsters = [];	// 出現モンスター
+	var traps = [];	// 出現する宝箱の罠
+	var events = [];	// イベント
+	var conditions = [];	// イベント発生条件
+	var box = [];		// 宝箱の中身
+	var record = [];	// 踏破したかどうかを記録
+	var changed = [];	// すでに開けたり発見したオブジェクト
+	var killed = [];	// すでに倒した固定敵の情報
+	var warp = [];	// 他のフロア・座標に移動するポイント
+	var mapFile;	// 読み込んだファイル
+	var initialScript = "";	// マップを開いた時に実行するスクリプト文字列
+	var loaded = false;	// ゲームを起動してからすでにマップファイル読み込んだかどうか
+	var firstLoad = false;	// 新しくゲームを開始してからこのマップを一度でも読み込んだかどうか
+	var visited = false;	// 新しくゲームを開始してからすでにこのマップに到達したかどうか
+	var allBlocks = 0;	// 踏破可能な総ブロック数（やり込み用）
+	var openedBlocks = 0;	// 踏破したブロック数（やり込み用）
+	var openedAllBlocks = false;	// すべてのエリアを踏破したフラグ
+	var viewImg = "cave";	// イベントなどで表示される風景の画像キー
+	var kind = "dungeon";	// 識別用の種類名
+	var restoreOnReplay = false;	// 再プレイ時に一部記録を復帰させるかどうか
+
+	function MapData(master, file)
+	{
+		this.master = master;
+		mapFile = file;	// ファイルを登録
+
+		// 名前とグループだけ先に取得
+		var temp = [];
+		temp.load(file);
+		for(var i = 0; i < temp.count; i++)
+		{
+			if(temp[i].indexOf("name =") != 0) continue;
+			name = temp[i].substr(temp[i].indexOf("=") + 1).trim();
+			return;
+		}
+	}
+
+	property displayName
+	{
+		getter { return group.displayName; }
+	}
+
+	property inPool
+	{
+		// プール内かどうか（水はないときもある。上のマップに影響）
+		getter{ return upper !== void && o[upper].pool == name; }
+	}
+
+	function open(loading)
+	{
+		// このマップを開く
+		loadMapGroup();	// オンデマンド式・グループになっているマップは全て読み込む
+		execInitialScript(loading);	// 初期スクリプトを実行
+		master.view.loadInitialParts(this);	// 事前にパーツ画像をある程度読み込み
+		master.view.setEnvironmentInfo(this);	// 周囲の画像の情報を読み込み（反映は次回更新時）
+		if(! loading) killed.clear();	// マップ上のすべての固定敵を復活させる
+		visited = true;	// 訪問フラグ
+		recordAreaOpened(master.party.curX, master.party.curY, true);	// 記録
+	}
+
+	function loadMapGroup()
+	{
+		// 関係するグループのマップデータをすべて読み出す
+		// すでに読み込み済みなら何もしない
+		for(var i = 0; i < group.count; i++)
+		{
+			if(! group[i].loaded) group[i].loadMap();
+		}
+	}
+
+	function execInitialScript(loading = false)
+	{
+		// 初期スクリプトを実行する
+		// 演算子 ! は this コンテキスト上で文字列を実行する
+		// ロード時に実行させたくない場合は初期スクリプト内で loading 変数を使って判定すること
+		if(initialScript != "") ("var loading = " + loading + ";" + initialScript) !;
+	}
+
+	function loadMap(resetMap = false)
+	{
+		// マップファイルをこのオブジェクト内に読み込んで使えるデータに変換する
+
+		// 各種変数を初期化
+		var line = [];
+		var temp = [];
+		var maxLength = 0;	// 行の最大長さ
+		var mapArea = false;		// マップを描く場所かどうか
+		var correctArea = false;	// マップの修正情報部分かどうか
+		var eventArea = false;	// イベント情報部分かどうか（ファイルの後半に書くことになっている）
+		var initialArea = false;	// 初期条件情報部分かどうか
+		var correctScript = "";	// マップを一部補正するスクリプト
+		var data = %[];	// マップ補助情報
+		allBlocks = 0;	// 総エリア数（やり込み用）
+
+		// マップ読み込み
+		temp.load(mapFile);
+
+		// 各行をパース
+		for(var i = 0; i < temp.count; i++)
+		{
+			// コメントと空行を回避
+			if(temp[i][0] == ";" || temp[i].length == 0) continue;
+
+			// 初期実行スクリプトを取り込む（１行に結合する）
+			if(temp[i].indexOf("[initial]") == 0)
+			{
+				initialArea = true;
+				initialScript = "";	// 初期実行文字列を初期化
+				continue;
+			}
+			if(temp[i].indexOf("[endinitial]") == 0)
+			{
+				initialArea = false;
+				continue;
+			}
+			if(initialArea)
+			{
+				var len = temp[i].indexOf("\/\/");	// コメントがあるかどうか
+				if(len != -1) temp[i] = temp[i].substr(0, len);	// コメントを除去
+				initialScript += temp[i];
+				continue;
+			}
+
+			// イベント条件を取り込む
+			if(temp[i].indexOf("*event_") == 0)
+			{
+				eventArea = true;
+				var num = +temp[i].substring(7);
+				if(conditions[num] !== void)
+				{
+					// ロード時にもう一度読み込むのでここでエラーは出さない
+					// System.inform("イベント番号が重複しています  " + num);
+					continue;
+				}
+				if(temp[i + 1].indexOf(";[exp]") != 0)
+				{
+					System.inform("条件式が正しく設定されていません  " + mapFile + " : " + num);
+					continue;
+				}
+				conditions[num] = (temp[i + 1].substr(6)).trim();
+				continue;
+			}
+			if(eventArea) continue;	// イベントエリアより下にはイベント情報以外書かない
+
+			// 地図を取り込む
+			if(temp[i].indexOf("[map]") == 0)
+			{
+				mapArea = true;
+				continue;
+			}
+			if(temp[i].indexOf("[endmap]") == 0)
+			{
+				mapArea = false;
+				correctArea = false;
+				continue;
+			}
+			if(temp[i].indexOf("[correct]") == 0)
+			{
+				mapArea = false;
+				correctArea = true;
+				correctScript = "";	// 補正文字列を初期化
+				continue;
+			}
+			if(mapArea)
+			{
+				// マップを取り込む
+				if(temp[i][0] == "\t" || #temp[i][0] > 256)
+				{
+					System.inform("マップエリアの先頭は半角文字２つでなければなりません  " + mapFile);
+					// 先頭にタブや全角文字があると正しく字数が数えられないので
+				}
+				var str = temp[i].substring(2);	// 先頭のＹ座標軸の数字をはぶく
+				line.unshift(str);
+				if(str.length > maxLength) maxLength = str.length;
+			}
+			if(correctArea)
+			{
+				// マップの補正情報を取り込む（１行に結合する）
+				var len = temp[i].indexOf("\/\/");	// コメントがあるかどうか
+				if(len != -1) temp[i] = temp[i].substr(0, len);	// コメントを除去
+				correctScript += temp[i];
+				continue;
+			}
+
+			// マップ情報を登録
+			if(temp[i].indexOf("=") != -1)
+			{
+				var str = [];
+				str.split("=;", temp[i]);
+				data[str[0].trim()] = str[1].trim();
+				continue;
+			}
+		}
+
+		// マップの補助情報を書き込み
+		insideName = data["insideName"] !== void ? data["insideName"] : name;
+		upper = data["upper"];
+		lower = data["lower"];
+		pool = data["pool"];
+		level = +data["level"];
+		bgm = data["bgm"];
+		sound = data["sound"];
+		isOutdoor = +data["isOutdoor"];
+		shadow = data["shadow"];
+		roof = data["roof"];
+		blind = data["blind"];
+		loop = +data["loop"];
+		showAllArea = +data["showAllArea"];
+		restoreOnReplay = +data["restoreOnReplay"];
+
+		if(data["maxGroups"] !== void) maxGroups = +data["maxGroups"];
+		if(! firstLoad)
+		{
+			// 初回読み込んだら二度と戻さないもの（セーブに記録される）
+			underWater = data["underWater"];
+			sky = data["sky"];
+			effect = data["effect"];
+			noBattle = +data["noBattle"];
+			antiWarp = +data["antiWarp"];
+			antiSpell = +data["antiSpell"];
+			if(data["battleRate"] !== void) battleRate = +data["battleRate"];
+			if(data["events"] !== void)
+			{
+				// イベント番号に限り、未ロード時に外から与えた値に追加する
+				var arr = data["events"] !;
+				for(var i = 0; i < arr.count; i++)
+				{
+					events.push2(arr[i]);
+				}
+			}
+			firstLoad = true;	// 初回読み込みを記録
+		}
+
+		// 標準画像パーツを設定
+		defWall = data["━"];
+		defFloor = data["　"];
+		defDoor = data["／"];
+
+		// マップの寸法を決定
+		mapWidth  = maxLength \ 2;
+		mapHeight = line.count \ 2;
+
+		// ループしないマップで反対側を見せたくない場合ブランク・マージンエリアを追加する
+		// ・margin   マップの外側に余白のエリアが指定数だけ追加される
+		// ・external マップ図の指定方向の端から指定数だけ欄外扱いになる
+		// margin は external より必ず多くなるようにすること
+		var ex, mr;
+		mapMarginW = mapMarginH = 0;
+		if(data["external"] !== void)
+		{
+			ex = strToDic(data["external"]);
+			mapMarginW = ex.w + ex.e;
+			mapMarginH = ex.n + ex.s;
+			mapWidth  -= mapMarginW;
+			mapHeight -= mapMarginH;
+		}
+		if(data["margin"] !== void)
+		{
+			mr = +data["margin"] * 2;	// 両サイド
+
+			// 欄外記述も含めて余白を指定数に決める
+			for(var i = 0; i < mr - mapMarginH; i++) line.push("", "");
+			maxLength += (mr - mapMarginW) * 2;	// 床＋壁
+			mapMarginW = mr;
+			mapMarginH = mr;
+		}
+
+		// pos を (x, y) 形式に初期化
+		// ここで余白の座標を少し足して、範囲を超えた座標を指した場合に情報を返せるようにする
+		// なお、負の数が指定された場合、吉里吉里は配列を逆から数えた要素を見る
+		// 結果的にここで多数側に足した余白が指されることになるので少数側の余白は必要はない
+		// ※マップの幅が13（0～12）、余分に足される長さが4の場合
+		//  [(13, 14, 15, 16), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, (13, 14, 15, 16)]
+		//  ↑-4, -3, -2, -1 と同じ
+		pos = [];
+		pos.count = mapWidth + mapMarginW;
+		for(var i = 0; i < pos.count; i++)
+		{
+			pos[i] = [];
+			pos[i].count = mapHeight + mapMarginH;
+		}
+
+		// 足りない座標データを補完
+		if(line.count % 2 == 0) line.add("");	// 列が偶数はだめ
+		if(maxLength % 2 == 0) maxLength ++;	// 長さが偶数はだめ
+		for(var i = 0; i < line.count; i++)
+		{
+			if(line[i].length < maxLength)
+			{
+				line[i] += "\t".repeat(maxLength - line[i].length);
+			}
+		}
+
+		// 両端に欄外記述がある場合、整合性がとれるようにデータを編集
+		if(ex !== void)
+		{
+			if(ex.s > 0)
+			{
+				line.shift();
+				for(var i = 0; i < ex.s * 2 - 1; i++)
+				{
+					line.add(line.shift());
+				}
+				line.add(line[0]);
+			}
+			if(ex.w > 0)
+			{
+				for(var i = 0; i < line.count; i++)
+				{
+					line[i] = line[i].substr(ex.w * 2) + line[i].substr(1, ex.w * 2) + line[i][0];
+				}
+			}
+		}
+
+		// 移動ポイントを登録
+		warp[0] = %[map: data["upper"], lift: "up"];
+		warp[1] = %[map: data["lower"], lift: "down"];
+		for(var i = 2; i <= 20; i++)
+		{
+			warp[i] = strToDic(data["(" + $(i + 63) + ")"]);
+			if(warp[i] === void) break;
+		}
+
+		// 出現モンスターを登録
+		monsters = master.getObjArrayByText(data["monsters"], m);
+		if(monsters.count == 0) battleRate = 0;
+
+		// 出現する宝箱の罠を登録
+		traps = master.getObjArrayByText(data["traps"]);
+		if(monsters.count == 0 && traps.has(o.警報))
+		{
+			System.inform("モンスターのいないマップに警報の罠が設定されています   " + name);
+		}
+		if(traps.count == 0) traps.assign(master.traps);
+		if(monsters.count == 0) traps.remove(o.警報);
+		traps.add(o.罠はない);
+
+		// 宝箱
+		var boxCount = 0;	// チェック用
+		for(var i = 1; i <= 20; i++)
+		{
+			var str = data["box[" + i + "]"];
+			if(str === void) continue;
+			dm("宝箱登録   " + str);
+			boxCount ++;
+			box[i] = master.getItemObjArrayByText(str);
+			box[i].trap = void;
+			if(box[i][0].itemData.category != "item") box[i].trap = box[i].shift().itemData;
+			if(monsters.count == 0 && box[i].trap == o.警報)
+			{
+				System.inform("モンスターのいないマップに警報の罠が設定されています   " + name);
+			}
+		}
+
+		// pos にマップ情報を書き込み
+		var p, markN, markS, markW, markE, markF;
+		for(var x = 0; x < pos.count; x++)
+		{
+			for(var y = 0; y < pos[x].count; y++)
+			{
+				p = pos[x][y] = %[];
+
+				// 地図上のマーク
+				markN = line[y * 2 + 2][x * 2 + 1];
+				markS = line[y * 2 + 0][x * 2 + 1];
+				markW = line[y * 2 + 1][x * 2 + 0];
+				markE = line[y * 2 + 1][x * 2 + 2];
+				markF = line[y * 2 + 1][x * 2 + 1];
+
+				// 各ブロックの種類を設定（移動できるかどうかなど）
+				p.n = getWallDataByMark(markN, "n", data);
+				p.s = getWallDataByMark(markS, "s", data);
+				p.w = getWallDataByMark(markW, "w", data);
+				p.e = getWallDataByMark(markE, "e", data);
+				p.f = getFloorDataByMark(markF, data);
+				p.event = getEventNumByMark(markF);
+				p.f.warp = getWarpAreaNumByMark(markF);
+				p.f.box = getTreasureNumByMark(markF);
+				if(p.f.box !== void) boxCount --;
+			}
+		}
+		if(boxCount > 0) System.inform("宝箱の登録数と設置数が一致していません   " + name);
+
+		//（今回のゲームプレイ中に）読み込んだことを記録
+		loaded = true;
+
+		// 補正（ここで他のマップを読み込むことがあるので loaded は先に true に）
+		if(correctScript != "") correctScript !;
+
+		// スコープを設定。壁の向こうの進入不可エリアは見えないようにする
+		for(var y = 0; y < mapHeight; y++)
+		{
+			for(var x = 0; x < mapWidth; x++)
+			{
+				p = pos[x][y];
+				p.n.antiScope = getAntiScopeForVacantArea(x, y, "n", data);
+				p.s.antiScope = getAntiScopeForVacantArea(x, y, "s", data);
+				p.w.antiScope = getAntiScopeForVacantArea(x, y, "w", data);
+				p.e.antiScope = getAntiScopeForVacantArea(x, y, "e", data);
+
+				// 踏破可能なエリア数をカウント
+				if(isWalkableArea(x, y))
+				{
+					allBlocks ++;
+					// dm(allBlocks + ":  " + x + " , " + y);
+				}
+			}
+		}
+
+		// 記録された情報をもとに変化のあった場所をすべて再現する
+		if(! resetMap) rebuildByChangedInfo();
+
+		dm("マップを登録  " + mapFile + "：  W: " + mapWidth + "  H: " + mapHeight
+			 + "  総ブロック数: " + allBlocks);
+	}
+
+	function getWallDataByMark(mark, way, data)
+	{
+		// 地図上の壁のマークからその壁（その方向への移動を制御するもの）の属性を返す
+
+		switch(mark){
+
+		case "\t": return %[type: "space"];
+		case "━": return %[type: "wall", img: defWall];
+		case "┃": return %[type: "wall", img: defWall];
+		case "－": return %[type: "wall", img: data["－"]];
+		case "ⅼ": return %[type: "wall", img: data["－"]];
+		case "…": return %[type: "wall", img: data["…"], short: true];
+		case "￤": return %[type: "wall", img: data["…"], short: true];
+		case "ᆖ": return %[type: "wall", img: data["ᆖ"], antiScope: "rock"];
+		case "‖": return %[type: "wall", img: data["ᆖ"], antiScope: "rock"];
+		case "＝": return %[type: "wall", img: data["＝"], antiScope: "short", short: true];
+		case "ⅱ": return %[type: "wall", img: data["＝"], antiScope: "short", short: true];
+		case "‥": return %[type: "climb", img: data["‥"]];	// はしごで登れる壁
+		case "：": return %[type: "climb", img: data["‥"]];	// はしごで登れる壁
+		case "﹣": return %[type: "wall", secret: "wall", hide: true];	// 見えない壁
+		case "︲": return %[type: "wall", secret: "wall", hide: true];	// 見えない壁
+		case "＋": return %[type: "wall", img: data["＋"], himg: "crack", breakable: true];
+		case "✜": return %[type: "wall", img: data["✜"], himg: "hyper", breakable: true, hyper: true];
+		case "―": return %[type: "space", img: data["―"], secret: "illusion"];	// 幻の壁
+		case "｜": return %[type: "space", img: data["―"], secret: "illusion"];	// 幻の壁
+		case "⏆": return %[type: "space", secret: "path"];	// 隠された森の小道
+		case "☁": return %[type: "space", img: data["☁"]];
+		case "／": return %[type: "door", img: defWall, himg: defDoor];
+		case "ノ": return %[type: "door", img: defWall, himg: data["ノ"], sound: "door3"];
+		case "⑊": return %[type: "door", img: data["ᆖ"], himg: data["⑊"], antiScope: "door"];
+		case "∮": return %[type: "door", img: defWall, himg: data["∮"], key: o.銀の鍵];
+		case "√": return %[type: "door", img: defWall, himg: data["√"], key: o.金の鍵];
+		case "メ": return %[type: "door", img: defWall, himg: data["メ"], key: o.牢屋の鍵
+			, released: data["ノ"], sound: "door3"];
+		case "〆": return %[type: "door", img: defWall, himg: data["〆"], key: "other"];
+		case "∫": return %[type: "door", img: defWall, himg: data["∫"], key: "pickable", level: 1];
+		case "∬": return %[type: "door", img: defWall, himg: data["∫"], key: "pickable", level: 2];
+		case "≠": return %[type: "wall", img: defWall, secret: "door"];
+		case "☖": return %[type: "space", img: defWall, himg: data["☖"], mask: "arch"];
+		case "⧻": return %[type: "wall", img: defWall, himg: data["⧻"], mask: "arch"];
+		case "☗": return %[type: "wall", img: defWall, himg: data["☗"], mask: "arch", antiScope: "gate"];
+		case "♜": return %[type: "wall", img: defWall, himg: data["♜"], mask: "arch", antiScope: "gate"];
+		case "︻": return %[type: "wall", img: defWall, himg: way == "n" ? data["︻"] : void, click: way == "n"];
+		case "︼": return %[type: "wall", img: defWall, himg: way == "s" ? data["︻"] : void, click: way == "s"];
+		case "【": return %[type: "wall", img: defWall, himg: way == "w" ? data["︻"] : void, click: way == "w"];
+		case "】": return %[type: "wall", img: defWall, himg: way == "e" ? data["︻"] : void, click: way == "e"];
+		case "﹃": return %[type: way == "n" ? "ladder" : "wall", img: defWall, himg: way == "n" ? data["﹃"] : void];
+		case "﹄": return %[type: way == "s" ? "ladder" : "wall", img: defWall, himg: way == "s" ? data["﹃"] : void];
+		case "『": return %[type: way == "w" ? "ladder" : "wall", img: defWall, himg: way == "w" ? data["﹃"] : void];
+		case "』": return %[type: way == "e" ? "ladder" : "wall", img: defWall, himg: way == "e" ? data["﹃"] : void];
+		case "┯": return %[type: "wall", img: defWall, himg: way == "n" ? data["┯"] : void, button: way == "n"];
+		case "┷": return %[type: "wall", img: defWall, himg: way == "s" ? data["┯"] : void, button: way == "s"];
+		case "┠": return %[type: "wall", img: defWall, himg: way == "w" ? data["┯"] : void, button: way == "w"];
+		case "┨": return %[type: "wall", img: defWall, himg: way == "e" ? data["┯"] : void, button: way == "e"];
+		case "☟": return way == "n" ? %[type: "wall", img: defWall] : %[type: "space"];
+		case "☝": return way == "s" ? %[type: "wall", img: defWall] : %[type: "space"];
+		case "☞": return way == "w" ? %[type: "wall", img: defWall] : %[type: "space"];
+		case "☜": return way == "e" ? %[type: "wall", img: defWall] : %[type: "space"];
+		case "↓": return %[type: way == "n" ? "wall" : "door", img: defWall, himg: way == "n" ? void : defDoor];
+		case "↑": return %[type: way == "s" ? "wall" : "door", img: defWall, himg: way == "s" ? void : defDoor];
+		case "→": return %[type: way == "w" ? "wall" : "door", img: defWall, himg: way == "w" ? void : defDoor];
+		case "←": return %[type: way == "e" ? "wall" : "door", img: defWall, himg: way == "e" ? void : defDoor];
+		case "▲": return %[type: "wall", hide: true];	// 絶壁。絶対に通れない穴や崖地形の周囲に配置する
+		default  : return %[type: "space"];
+
+		}
+	}
+
+	function getFloorDataByMark(mark, data)
+	{
+		// 地図上の床のマークからそのブロックの属性を返す
+		// 床・その座標に移動したことによって様々な効果が生じる
+
+		switch(mark){
+
+		case "\t": return %[type: data["blank"] !== void ? "block" : "air", img: data["outfield"]
+			, trap: data["blank"] !== void ? void : "air", outdoor: data["blank"] === void, hide: true];
+		case "　": return %[type: "floor", img: defFloor];
+		case "◇": return %[type: "floor", img: data["◇"]];
+		case "〓": return %[type: "floor", img: data["〓"], icon: 7];	// 橋
+		case "☆": return %[type: "floor", img: data["☆"], icon: 8];	// オートマップで赤く表示される床
+		case "❐": return %[type: "floor", img: data["❐"], cubeTop: "air"];	// 下階に置かれた箱の上
+		case "⃞": return %[type: "floor", img: data["⃞"], cubeTop: "water"];	// 水面に沈んだ箱の上
+		case "☐": return %[type: "floor", img: data["☐"]
+			, indoor: +data["isOutdoor"], outdoor: ! +data["isOutdoor"]];	// 屋外⇔屋内  マップの標準と違う方
+		case "〼": return %[type: "floor", img: data["〼"], pimg: "collapse", trap: "collapse"];
+		case "☒": return %[type: "floor", img: data["☒"], pimg: "collapse", trap: "collapse", eraseMagic: true];
+		case "＋": return %[type: "floor", img: defFloor, pimg: "crack", breakable: true, noCount: true];
+		case "■": return %[type: "air", trap: "air"];	// 空中・浮遊でも落ちる
+		case "☰": return %[type: "air", trap: "air"
+			, indoor: +data["isOutdoor"], outdoor: ! +data["isOutdoor"]];	// 屋外⇔屋内  マップの標準と違う方
+		case "␣": return %[type: "air", trap: "drained"];	// 枯れたプール・浮遊でも落ちる
+		case "⏃": return %[type: "block", img: +data["isOutdoor"] ? defFloor : data["☐"]
+			, pimg: data["⏃"], info: "Forest", outdoor: true];
+		case "⏆": return %[type: "floor", img: defFloor, pimg: data["⏃"], info: "Forest"];
+		case "△": return %[type: "hurdle", img: defFloor, pimg: data["△"], info: "Rock"];
+		case "❑": return %[type: "movable", img: defFloor, pimg: data["❑"]];
+		case "～": return %[type: "water", img: data["～"], trap: "water"];
+		case "〰": return %[type: "water", img: data["〰"]];
+		case "и": return %[type: "water", img: data["и"], trap: "water"
+			, indoor: +data["isOutdoor"], outdoor: ! +data["isOutdoor"]];	// 屋外⇔屋内  マップの標準と違う方
+		case "ｗ": return %[type: "water", img: data["ｗ"]
+			, indoor: +data["isOutdoor"], outdoor: ! +data["isOutdoor"]];	// 屋外⇔屋内  マップの標準と違う方
+		case "∴": return %[type: "floor", img: defFloor, antiWarp: true];
+		case "×": return %[type: "floor", img: defFloor, antiSpell: true];
+		case "※": return %[type: "floor", img: defFloor, antiWarp: true, antiSpell: true];
+		case "敵": return %[type: "floor", img: defFloor, enemy: "fix"];
+		case "Ｅ": return %[type: "floor", img: data["☐"], enemy: "fix"
+			, indoor: +data["isOutdoor"], outdoor: ! +data["isOutdoor"]];	// 屋外⇔屋内  マップの標準と違う方
+		case "棲": return %[type: "water", img: data["〰"], enemy: "fix"];
+		case "断": return %[type: "floor", img: defFloor, enemy: "fix", antiWarp: true];
+		case "黙": return %[type: "floor", img: defFloor, enemy: "fix", antiSpell: true];
+		case "無": return %[type: "floor", img: defFloor, enemy: "none"];
+		case "☁": return %[type: "floor", img: defFloor, darkZone: "smoke"];
+		case "回": return %[type: "floor", img: defFloor, trap: "turnByForce"];
+		case "⤴": return %[type: "floor", img: defFloor, trap: "turnByForce", way: "left"];
+		case "⤵": return %[type: "floor", img: defFloor, trap: "turnByForce", way: "right"];
+		case "♻": return %[type: "floor", img: defFloor, darkZone: "smoke", trap: "turnByForce"];
+		case "Λ": return %[type: "floor", img: defFloor, trap: "moveByForce", way: "n"];
+		case "Ｖ": return %[type: "floor", img: defFloor, trap: "moveByForce", way: "s"];
+		case "＜": return %[type: "floor", img: defFloor, trap: "moveByForce", way: "w"];
+		case "＞": return %[type: "floor", img: defFloor, trap: "moveByForce", way: "e"];
+		case "∧": return %[type: "stream", img: data["〰"], trap: "moveByForce", way: "n"];
+		case "∨": return %[type: "stream", img: data["〰"], trap: "moveByForce", way: "s"];
+		case "≪": return %[type: "stream", img: data["〰"], trap: "moveByForce", way: "w"];
+		case "≫": return %[type: "stream", img: data["〰"], trap: "moveByForce", way: "e"];
+		case "槍": return %[type: "floor", img: defFloor, trap: "spear"];
+		case "炎": return %[type: "floor", img: defFloor, trap: "fire"];
+		case "酸": return %[type: "floor", img: defFloor, trap: "acid"];
+		case "眠": return %[type: "floor", img: defFloor, trap: "sleep"];
+		case "消": return %[type: "floor", img: defFloor, eraseMagic: true];
+		case "崩": return %[type: "floor", img: defFloor, trap: "collapse"];
+		case "穴": return %[type: "floor", img: defFloor, trap: "chute"];
+		case "＊": return %[type: "floor", img: data["＊"], trap: "frozenFloor"];
+		case "毒": return %[type: "floor", img: data["毒"], trap: "poisonSwamp"];
+		case "♨": return %[type: "water", img: data["♨"], trap: "lava"];
+		case "☷": return %[type: "block", img: defFloor, pimg: data["☷"], hide: true];
+		case "❖": return %[type: "block", img: data["❖"], hide: true];
+		case "▼": return %[type: "height", noCount: true];
+		default:
+			if(getTreasureNumByMark(mark) !== void)
+			{
+				// 宝箱のある床
+				var num = getTreasureNumByMark(mark);
+				var boxImg = box[num].trap == o.鍵付き宝箱 ? "boxb" : "box";
+				if(#mark <= 0x277F)
+				{
+					return %[type: "floor", img: defFloor, pimg: boxImg];
+				}
+				else
+				{
+					return %[type: "floor", img: data["☐"], pimg: boxImg
+									, indoor: +data["isOutdoor"], outdoor: ! +data["isOutdoor"]];
+				}
+			}
+			else if((#mark >= 0x2474 && #mark <= 0x2487) || (#mark >= 0x2488 && #mark <= 0x249B))
+			{
+				// クリックオブジェクトのある床（進入可）
+				var str, img = data[mark];
+				if(img == "bulletin") str = "Sign";
+				if(img == "fountain") str = "Fountain";
+				if(img == "grave") str = "Grave";
+				if(#mark <= 0x2487)
+				{
+					return %[type: "floor", img: defFloor, pimg: img, click: true, info: str];
+				}
+				else
+				{
+					return %[type: "floor", img: data["☐"], pimg: img, click: true, info: str
+									, indoor: +data["isOutdoor"], outdoor: ! +data["isOutdoor"]];
+				}
+			}
+			else if((#mark >= 0x24F5 && #mark <= 0x24FE) || (#mark >= 0x24D0 && #mark <= 0x24E9)
+				 || mark == "上" || mark == "下")
+			{
+				// 屋外⇔屋内 マップの標準と違う方のイベント床
+				return %[type: "floor", img: data["☐"], pimg: data[mark]
+								, indoor: +data["isOutdoor"], outdoor: ! +data["isOutdoor"]];
+			}
+			else
+			{
+				// その他・ただのオブジェが乗っているだけで自由に移動できる
+				return %[type: "floor", img: defFloor, pimg: data[mark]];
+			}
+
+		}
+	}
+
+	function getInfoText(x, y)
+	{
+		// 指定した座標の付加情報を得る
+		var res = [];
+		var info = getFloorInfo(x, y);
+		if(info.hide) return res;
+		if(! getAreaOpened(x, y)) return res;
+		var w = getWarpInfo(x, y);
+		if(w !== void)
+		{
+			if(w.enter !== void) res.push("Exit");
+			else if(w.symbol == "cave") res.push("Entrance");
+			else if(w.symbol !== void && w.symbol != "none") res.push("Exit");
+			else if(w.lift !== void) res.push("Stairs");
+			else res.push("Warp");
+		}
+		if(info.type == "height") res.push("Cliff (no fall)");
+		if(info.trap == "air" || info.trap == "drained") res.push("Air");
+		if(info.trap == "water") res.push("<c>Water (Diveable)");
+		if(info.trap != "water" && info.type == "water") res.push("Water");
+		if(info.trap == "collapse") res.push("Collapsing");
+		if(info.type == "stream") res.push("Stream");
+		if(info.trap == "turnByForce") res.push("Rotation");
+		if(info.trap == "moveByForce") res.push("Movement");
+		if(info.trap == "chute") res.push("Pit");
+		if(info.darkZone == "smoke") res.push("Smoke");
+		if(info.trap == "spear") res.push("Spear");
+		if(info.trap == "fire") res.push("Burner");
+		if(info.trap == "acid") res.push("Acid Spray");
+		if(info.trap == "sleep") res.push("Sleeping Gas");
+		if(info.trap == "frozenFloor") res.push("Ice", "Anti-float");
+		if(info.trap == "poisonSwamp") res.push("Poison");
+		if(info.trap == "lava") res.push("Lava");
+		if(info.eraseMagic) res.push("Erase-magic");
+		if(antiSpell || info.antiSpell) res.push("Anti-magic");
+		if(antiWarp || info.antiWarp) res.push("Anti-warp");
+		if(info.info !== void) res.push2(master.getTranslation(info.info)); // Sometimes this seems to duplicate what the above would already do, so only add if unique.
+		return res;
+	}
+
+	function getEventNumByMark(mark)
+	{
+		// マークに対応したイベント番号を取得する
+		if(#mark >= 0x2460 && #mark <= 0x2473) return #mark - 0x245F;	// １～20
+		if(#mark >= 0x3251 && #mark <= 0x325F) return #mark - 0x323C;	// 21～35
+		if(#mark >= 0x32B1 && #mark <= 0x32BF) return #mark - 0x328D;	// 36～50
+		if(#mark >= 0x2474 && #mark <= 0x2487) return #mark - 0x2473;	// クリックあり１～20
+		if(#mark >= 0x24F5 && #mark <= 0x24FE) return #mark - 0x24F4;	// マップの標準と違う床 １～10
+		if(#mark >= 0x2488 && #mark <= 0x249B) return #mark - 0x2487;	// クリックあり標準と違う床 １～20
+	}
+
+	function getTreasureNumByMark(mark)
+	{
+		// マークに対応した宝箱番号を取得する
+		if(#mark >= 0x2776 && #mark <= 0x277F) return #mark - 0x2775;	// １～10
+		if(#mark >= 0x24EB && #mark <= 0x24F4) return #mark - 0x24E0;	// 11～20
+		if(#mark >= 0x278A && #mark <= 0x2793) return #mark - 0x2789;	// マップの標準と違う床 １～10
+	}
+
+	function getWarpAreaNumByMark(mark)
+	{
+		// マークに対応した座標移動エリア番号を取得する
+		if(#mark >= 0x24B6 && #mark <= 0x24CF) return $(#mark - 0x24B5 + 0x0040);
+		if(#mark >= 0x24D0 && #mark <= 0x24E9) return $(#mark - 0x24CF + 0x0040);	// マップの標準と違う床
+		if(mark == "㊤" || mark == "上") return "?";	// 上はしご
+		if(mark == "㊦" || mark == "下") return "@";	// 下はしご
+	}
+
+	function getAntiScopeForVacantArea(x, y, way, data)
+	{
+		// 指定した位置の壁に設定すべきスコープガードがあるなら返す
+		var wall = pos[x][y][way];	// 現在地の壁
+		if(wall.antiScope !== void) return wall.antiScope;	// すでに設定されているならそのまま
+		if(! ["wall", "climb", "ladder"].has(wall.type)) return;	// 壁がないなら見える
+		var nx = x + (way == "e" ? 1 : (way == "w" ? -1 : 0));
+		var ny = y + (way == "n" ? 1 : (way == "s" ? -1 : 0));
+		if(! isKeepOut(nx, ny)) return;	// 進入不可でないなら見える
+		if(nx >= 0 && ny >= 0 && nx < pos.count && ny < pos[0].count)
+		{
+			if(pos[nx][ny].f.pimg !== void) return;	// 何か置いてあったら見える
+		}
+		return data["blank"];
+	}
+
+	function getWallInfo(x, y, way)
+	{
+		// 壁（側面）に関する情報を返す
+		if(! loaded) loadMap();	// まだ読み込んでなかったら
+		if(x === void) x = master.party.curX;
+		if(y === void) y = master.party.curY;
+		if(pos[x] === void) return;
+		if(pos[x][y] === void) return;
+		if(way === void) way = master.party.curFront;
+		return pos[x][y][way];
+	}
+
+	function getFloorInfo(x, y)
+	{
+		// 床面に関する情報を返す
+		return getWallInfo(x, y, "f");
+	}
+
+	function getPosRelatively(x, y, way, length = 1)
+	{
+		// 指定座標から指定方向へ指定した距離移動したブロックの座標を返す
+		if(! loaded) loadMap();	// まだ読み込んでなかったら
+		if(x === void) x = master.party.curX;
+		if(y === void) y = master.party.curY;
+		if(way === void) way = master.party.curFront;
+		x += way == "e" ? length : (way == "w" ? -length : 0);
+		y += way == "n" ? length : (way == "s" ? -length : 0);
+		if(x < 0) x += pos.count;
+		else if(x >= pos.count) x -= pos.count;
+		if(y < 0) y += pos[0].count;
+		else if(y >= pos[0].count) y -= pos[0].count;
+		return %[x: x, y: y];
+	}
+
+	function getNextFloorInfo(x, y, way)
+	{
+		// 指定箇所の隣の床面に関する情報を返す
+		var p = getPosRelatively(x, y, way);
+		return pos[p.x][p.y].f;
+	}
+
+	function getNextBlankPos(x, y, tryCount = 4)
+	{
+		// 指定箇所の隣で移動可能な空間の座標を返す
+		if(tryCount == 0) return;
+		var p, np, info, way = ["e", "w", "n", "s"];
+		for(var i = 0; i < 4; i++)
+		{
+			if(isPartition(x, y, way[i])) continue;
+			p = getPosRelatively(x, y, way[i]);
+			info = getFloorInfo(p.x, p.y);
+			if(info.type == "floor") return p;
+			if(info.type == "movable") np = p;
+		}
+		// movable は元々 floor だから地続きになっているはずなのでもう少し調べる
+		if(np !== void) return getNextBlankPos(np.x, np.y, tryCount - 1);
+	}
+
+	function getLowerFloorHasGround(x, y)
+	{
+		// 下方のフロアの中で地面（落下の止まる場所）のある一番上のフロアを返す
+		var info = getFloorInfo(x, y);	// この階の座標の情報
+		var mapName = info.trap == "water" || info.trap == "drained" ? pool : lower;
+		if(mapName === void)
+		{
+			dm("ここより下層のマップが存在しません   " + name);
+			return;
+		}
+		var mapObj = o[mapName];	// 新たな対象マップ
+		info = mapObj.getFloorInfo(x, y);	// 下層の同座標の情報
+		if(info === void)
+		{
+			dm("下層マップに指定座標が存在しません   " + mapObj.name + ": " + x + " , " + y);
+			return;
+		}
+		if(info.type == "air" || info.trap == "water") return mapObj.getLowerFloorHasGround(x, y);
+		else return mapObj;
+	}
+
+	function getClickableObject(x, y, way)
+	{
+		// クリックできるオブジェクトの情報を返す
+
+		// 壁（側面）
+		var wall = getWallInfo(x, y, way);
+		if(wall.key !== void) return %[img: wall.himg];	// ドアの鍵
+		if(wall.click) return %[img: wall.himg];	// クリック（看板など）
+		if(wall.button) return %[img: wall.himg, button: true];	// 押しボタン
+
+		// 床面
+		var floor = getFloorInfo(x, y);
+		if(floor.click) return %[img: floor.pimg];	// クリック（立て札など）
+		if(getTreasureBox(x, y) !== void) return %[img: floor.pimg];	// 宝箱
+		var wp = getWarpInfo(x, y);
+		if(wp !== void && wp.click !== void) return %[img: floor.pimg];	// はしご
+	}
+
+	function getSecretObject(x, y, way)
+	{
+		// 汎用の隠しオブジェクトがあればその種類と方向を返す
+		var ways = way === void ? ["n", "s", "e", "w"] : [way];
+		for(var i = 0; i < ways.count; i++)
+		{
+			var wall = getWallInfo(x, y, ways[i]);
+			if(wall.secret !== void) return %[name: wall.secret, way: ways[i]];
+		}
+	}
+
+	function getEvent(x, y)
+	{
+		// イベントがあるならその番号を返す
+		return pos[x][y].event;
+	}
+
+	function getWarpInfo(x, y)
+	{
+		// ワープエリアならその情報を返す
+		var key = pos[x][y].f.warp;
+		if(key === void) return;
+		var info = warp[#(key.toUpperCase()) - 0x0041 + 2];	// はしごの都合で２足す
+		if(info.lift == "up")
+		{
+			if(info.ask === void) info.ask = "Climb up the ladder?";
+			info.click = info.ask;
+		}
+		if(info.lift == "down")
+		{
+			if(info.ask === void) info.ask = "Climb down the ladder?";
+			info.click = info.ask;
+		}
+		return info;
+	}
+
+	function getTreasureBox(x, y)
+	{
+		// 宝箱があったらその中身を返す
+		var num = pos[x][y].f.box;
+		if(num !== void) return box[num];
+	}
+
+	function eraseTreasureBox(x, y)
+	{
+		// 宝箱をマップ上から消す
+		if(pos[x][y].f.box === void) return;
+		changeObject(%[box: void, pimg: void], x, y, "f");
+		master.placedBoxCount ++;	// 記録
+	}
+
+	function eraseFixedEnemy(x, y)
+	{
+		// 固定敵をマップ上から消す
+		if(pos[x][y].f.enemy == "fix") killed.push2(x + "," + y);
+	}
+
+	function getBattle(x, y)
+	{
+		// 戦闘に入るならその種類を返す
+		if(noBattle) return;
+		if(pos[x][y].f.warp !== void) return;
+		if(pos[x][y].f.box !== void) return;
+		if(pos[x][y].event !== void) return;
+		if(pos[x][y].f.enemy == "none") return;
+		if(master.party.lastWalk == "jumpForward") return;
+		if(pos[x][y].f.type != "floor" && ! master.party.isWaterWalking()) return;
+		if(pos[x][y].f.enemy == "fix" && ! killed.has(x + "," + y)) return "fix";	// 固定モンスター
+		if(random < battleRate) return "ramdom";	// ランダムバトル
+	}
+
+	function getMagicPermission()
+	{
+		// 現在の魔法の許可状態を調べ、使用不可ならメッセージを返す
+		if(antiSpell || getFloorInfo().antiSpell) return "Magic is forbidden here.";
+	}
+
+	function isValidMalorTarget(x, y)
+	{
+		// ワープ先として有効かどうかを返す
+		if(isKeepOut(x, y)) return false;	// 進入不可
+		if(! isGround(x, y)) return false;	// 地面がない
+		if(underWater) return false;	// 水中
+		if(getWarpInfo(x, y) !== void) return false;	// 移動エリア
+		if(pos[x][y].f.trap == "frozenFloor") return false;	// 滑る床
+		if(pos[x][y].f.hide) return false;	// 見えないようにしている場所
+		if(isAntiWarpZone(x, y)) return false;	// アンチワープゾーン
+		if(! getAreaOpened(x, y)) return false;	// 未踏破
+		return true;
+	}
+
+	function isAntiWarpZone(x, y)
+	{
+		// アンチワープゾーンかどうかを返す
+		if(antiWarp) return true;
+		if(x === void) x = master.party.curX;
+		if(y === void) y = master.party.curY;
+		return pos[x][y].f.antiWarp;
+	}
+
+	function isPartition(x, y, way, visionIsEntity = false, shortWallIsSpace = false)
+	{
+		// 壁、ドア、岩、フェンスなど何らかの仕切りがあるかどうかを返す
+		// visionIsEntity が true なら幻は壁とみなす
+		// shortWallIsSpace が true なら低い壁は仕切りではないとみなす
+		var info = pos[x][y][way];
+		if(visionIsEntity && info.secret == "illusion") return true;
+		if(shortWallIsSpace && info.short) return false;
+		return info.type != "space";
+	}
+
+	function isKeepOut(x, y)
+	{
+		// 侵入不可エリアかどうかを返す
+		if(! loop)
+		{
+			if(x < 0 || x >= pos.count || y < 0 || y >= pos[0].count) return true;
+		}
+		if(x < 0) x += pos.count;
+		else if(x >= pos.count) x -= pos.count;
+		if(y < 0) y += pos[0].count;
+		else if(y >= pos[0].count) y -= pos[0].count;
+		return pos[x][y].f.type == "block";
+	}
+
+	function isGround(x, y)
+	{
+		// 地面があるかどうかを返す
+		if(x === void) x = master.party.curX;
+		else if(x < 0) x += pos.count;
+		else if(x >= pos.count) x -= pos.count;
+		if(y === void) y = master.party.curY;
+		else if(y < 0) y += pos[0].count;
+		else if(y >= pos[0].count) y -= pos[0].count;
+		return pos[x][y].f.type == "floor";
+	}
+
+	function isCeiling(x, y)
+	{
+		// 天井があるかどうかを返す
+		if(roof === void) return false;
+		if(x === void) x = master.party.curX;
+		if(y === void) y = master.party.curY;
+		if(pos[x][y].f.indoor) return true;
+		if(pos[x][y].f.outdoor) return false;
+		return ! isOutdoor;
+	}
+
+	function isUnderSurface()
+	{
+		// 水面の直下かどうかを返す
+		if(! underWater) return false;
+		if(upper === void) return true;
+		if(o[upper].underWater) return false;	// 上階も水中なので水面には遠い
+		return true;
+	}
+
+	function isCurFieldWide()
+	{
+		// 現在の場所が横に広がりがあるかどうかを返す。モンスターの数に影響する
+		var pt = master.party;
+		if(isPartition(pt.curX, pt.curY, pt.curLeft, true)) return false;
+		if(isPartition(pt.curX, pt.curY, pt.curRight, true)) return false;
+		var p = getPosRelatively(,, pt.curLeft);
+		if(isKeepOut(p.x, p.y)) return false;
+		if(! isGround(p.x, p.y)) return false;
+		p = getPosRelatively(,, pt.curRight);
+		if(isKeepOut(p.x, p.y)) return false;
+		if(! isGround(p.x, p.y)) return false;
+		return true;
+	}
+
+	function isCurFieldDeep()
+	{
+		// 現在の場所が奥に広がりがあるかどうかを返す。モンスターのグループ数に影響する
+		var pt = master.party;
+		if(isPartition(pt.curX, pt.curY, pt.curFront, true)) return false;
+		var p = getPosRelatively();
+		if(isKeepOut(p.x, p.y)) return false;
+		if(! isGround(p.x, p.y)) return false;
+		return true;
+	}
+
+	function getDarkZoneName(x, y)
+	{
+		// ダークゾーン（目隠し）だったら目隠しに用いる画像のキー名を返す
+
+		// マップにダークゾーンの情報があればそれを返す
+		if(pos[x][y].f.darkZone !== void) return pos[x][y].f.darkZone;
+
+		// 煙ステータスになっていたら消えるまで
+		if(master.party.status.has(o.煙)) return "smoke";
+	}
+
+	function getPimgUnderCube(x, y)
+	{
+		// 移動できる物体の下にあった画像がなんだったかを返す
+		var info = getFloorInfo(x, y);
+		if(info.breakable) return "crack";	// ひび割れ
+	}
+
+	function unlockDoor(x, y, way)
+	{
+		// 扉のカギをはずす
+		var doorImg = getWallInfo(x, y, way).released;
+		if(doorImg === void) doorImg = defDoor;
+		changeObject(%[himg: doorImg, key: void], x, y, way, true);
+		if(this == master.map && master.dungeonView.visible) master.updateView();
+	}
+
+	function switchFence(x, y, way, mode, fenceImg = "fence", archImg = "arch")
+	{
+		// 扉（鉄格子）を開閉する
+		var wall = getWallInfo(x, y, way);
+		if((wall.type == "space" && mode == "switch") || mode == "close")
+		{
+			changeObject(%[himg: fenceImg, type: "wall"], x, y, way, true);
+		}
+		else
+		{
+			changeObject(%[himg: archImg, type: "space"], x, y, way, true);
+		}
+		if(this == master.map && master.dungeonView.visible) master.updateView();
+	}
+
+	function setWarp(x, y, key, img)
+	{
+		// ワープ（移動）ポイントを設定・解除する
+		if(key === void) changeObject(%[pimg: void, warp: void], x, y, "f");
+		else changeObject(%[pimg: img, warp: key], x, y, "f");
+		if(this == master.map && master.dungeonView.visible) master.updateView();
+	}
+
+	function setHouse(x, y)
+	{
+		// 指定した座標を家にする
+		pos[x][y].f = %[type: "floor", darkZone: "black", icon: 68, antiWarp: true, hide: true];
+		var p, ways = ["n", "e", "s", "w"];
+		for(var i = 0; i < 4; i++)
+		{
+			p = getPosRelatively(x, y, ways[i]);
+			var wall = pos[p.x][p.y][ways[i - 2]];
+			if(wall.type == "door") wall.antiScope = "door";
+			else if(wall.type == "wall") wall.antiScope = "block";
+		}
+	}
+
+	function setElevator(x, y, material = "marble")
+	{
+		// 指定した座標をエレベーターにする
+		var p = pos[x][y];
+		p.f = %[type: "floor", img: "marble", icon: 69, info: "Elevator", indoor: true];
+		var ways = ["n", "e", "s", "w"];
+		for(var i = 0; i < 4; i++) p[ways[i]].img = material;
+	}
+
+	function recordAreaOpened(x, y, afterWarp = false, writeHiddenArea = false)
+	{
+		// エリアが開いたどうかを記録する
+
+		if(showAllArea) return;
+		if(pos[x][y].f.hide && ! writeHiddenArea) return;
+
+		// 現在の座標を記録
+		writeOpenedAreaRecord(x, y);
+
+		// 隣接地の座標も記録
+		var wp = getWarpInfo(x, y);
+
+		// ワープということは隣接地に行けないということなので隣をオープンにしない
+		if(wp !== void && wp.ask === void && ! wp.climb && ! wp.fall && ! afterWarp) return;
+
+		var hiddenTraps = ["collapse", "turnByForce", "chute", "spear", "fire", "acid"];	// 隠す罠
+		var movingBytrapNow = (pos[x][y].f.trap == "moveByForce");	// 現在移動の罠にかかっているか
+		var p, p2, info, ways = ["n", "s", "w", "e"];
+
+		for(var i = 0; i < 4; i++)
+		{
+			// 壁で仕切られていたら記録しない
+			if(isPartition(x, y, ways[i], true)) continue;
+
+			// 隣接地の座標を調べる
+			p = getPosRelatively(x, y, ways[i]);
+			info = pos[p.x][p.y].f;
+
+			// 隠されている場所だった
+			if(info.hide) continue;
+
+			// 飛び降りによってエリアがオープンになりワープで渡れるようになったら意味ないのでオープンにしない
+			if(pos[x][y].f.type == "air" && info.type == "floor") continue;
+
+			// トラップがあることを知られたら意味がないので隣をオープンにしない
+			if(hiddenTraps.has(info.trap)) continue;
+
+			// 移動のトラップに限り、かかったら隣をオープンにしても良いことにする
+			if(! movingBytrapNow && info.trap == "moveByForce") continue;
+
+			// 記録
+			writeOpenedAreaRecord(p.x, p.y);
+
+			// もう１つ先の座標に木などが置かれていたらそれも記録
+
+			// 現在の場所がすでにふさがれているなら調べない
+			if(info.type == "block") continue;
+
+			for(var j= 0; j < 4; j++)
+			{
+				// 壁で仕切られていたら記録しない
+				if(isPartition(p.x, p.y, ways[j], true)) continue;
+
+				// 再度隣接地の座標を調べる
+				p2 = getPosRelatively(p.x, p.y, ways[j]);
+				info = pos[p2.x][p2.y].f;
+
+				// 隠されている場所だった
+				if(info.hide) continue;
+
+				// 何か置かれていたので記録
+				if(["block", "hurdle", "movable"].has(info.type) && info.pimg !== void)
+				{
+					record[p2.x + mapWidth * p2.y] = true;
+				}
+			}
+		}
+	}
+
+	function writeOpenedAreaRecord(x, y)
+	{
+		// エリアオープンの記録を実際に書き込む
+		if(! record[x + mapWidth * y] && isWalkableArea(x, y)) openedBlocks ++;	// 踏破数を記録
+		record[x + mapWidth * y] = true;
+	}
+
+	function informBoxPos()
+	{
+		// 残っている宝箱の位置を表示する（開発用）
+		var p, num;
+		for(var y = 0; y < mapHeight; y++)
+		{
+			for(var x = 0; x < mapWidth; x++)
+			{
+				p = pos[x][y];
+				if(getTreasureBox(x, y) !== void)
+				{
+					dm(name + "  box:  " + x + "," + y);
+					num ++;
+				}
+			}
+		}
+		return num;
+	}
+
+	function openAllNoFieldArea()
+	{
+		// 空中エリアをすべてオープンにする
+		var p;
+		for(var y = 0; y < mapHeight; y++)
+		{
+			for(var x = 0; x < mapWidth; x++)
+			{
+				p = pos[x][y];
+				if(p.f.type == "air" || p.f.type == "height") writeOpenedAreaRecord(x, y);
+			}
+		}
+	}
+
+	function isWalkableArea(x, y)
+	{
+		// 踏破可能なエリアかどうかを見る
+		if(x >= mapWidth || y >= mapHeight) return false;
+		var p = pos[x][y];
+		if(p.f === void || p.f.hide || p.f.noCount) return false;
+		if(p.f.type == "block" || p.f.type == "hurdle" || p.f.type == "height") return false;
+		if(p.f.type == "air" && p.f.trap != "drained") return false;
+		return true;
+	}
+
+	function getAreaOpened(x, y)
+	{
+		// 踏破したかどうかを得る
+		if(x < 0 || y < 0 || x >= mapWidth || y >= mapHeight) return false;
+		return showAllArea || record[x + mapWidth * y];
+	}
+
+	function changeObject(elm, x, y, way, changeBehind)
+	{
+		// 壁・床オブジェクトを変化させ、その記録を残す
+		// マップを開き直したときにその記録情報を使って変化済み状態にしておく
+
+		if(x === void) x = master.party.curX;
+		if(y === void) y = master.party.curY;
+		if(way === void) way = master.party.curFront;
+		var info = getWallInfo(x, y, way);
+		if(info === void) return;
+
+		var val, params = [];
+		var ignore = ["find", "map", "x", "y", "way", "behind"];
+			// 除外項目（ mp には find というメンバが追加されている模様）
+		params.assign(elm);
+		for(var i = 0; i < params.count; i += 2)
+		{
+			if(ignore.has(params[i])) continue;
+			val = params[i + 1];
+			if(typeof val == "String" && /0-9/.test(val[0])) val = +val;
+			else if(val == "false") val = false;
+			else if(val == "void") val = void;
+			info[params[i]] = val;
+			dm("変更 " + "map:" + name + " x:" + x + " y:" + y + " way:" + way + " " + params[i] + ":" + val);
+		}
+
+		recordChangedInfo([info, x, y, way]);	// 変化した情報を保存
+
+		if(changeBehind)
+		{
+			// 壁のウラ面も変更する
+			var p = getPosRelatively(x, y, way, 1);	// 壁の向こう側の座標
+			way = way == "n" ? "s" : (way == "s" ? "n" : (way == "e" ? "w" : "e"));	// 逆向き
+			changeObject(elm, p.x, p.y, way, false);	// こちら側と同じように処理する
+		}
+	}
+
+	function changeFloorsOfWideArea(dic, x1, y1, x2, y2)
+	{
+		// 広い範囲の床面の情報をまとめて設定する
+		for(var x = x1; x <= x2; x++)
+		{
+			for(var y = y1; y <= y2; y++)
+			{
+				changeObject(dic, x, y, "f");
+			}
+		}
+	}
+
+	function recordChangedInfo(arr)
+	{
+		// オブジェクトを変化させた情報を記録する
+		for(var i = 0; i < changed.count; i++)
+		{
+			var dat = changed[i];
+			if(dat[1] == arr[1] && dat[2] == arr[2] && dat[3] == arr[3])
+			{
+				// すでに記録された箇所があるか探し、あればそこを更新する
+				changed[i] = arr;
+				return;
+			}
+		}
+		changed.add(arr);	// 完全に新規の情報なら追加するだけ
+	}
+
+	function eraseChangedInfo(x, y, way = "f")
+	{
+		// 指定した座標のオブジェクトを変化させた情報を消去する（元に戻す）
+		for(var i = changed.count - 1; i >= 0; i--)
+		{
+			var rec = changed[i];
+			if(rec[1] == x && rec[2] == y && rec[3] == way) changed.erase(i);
+		}
+	}
+
+	function rebuildByChangedInfo()
+	{
+		// 記録された情報をもとに変化のあった場所をすべて再現する
+		for(var i = changed.count - 1; i >= 0; i--)
+		{
+			var rec = changed[i];
+			dm("再現箇所  x:" + rec[1] + "  y:" + rec[2] + "  way:" + rec[3] + "  => " + rec[0].type);
+			if(pos[rec[1]] === void || pos[rec[1]][rec[2]] === void)
+			{
+				// マップの変更等により座標が消失していた場合、再現はせず記録を消去する
+				changed.erase(i);
+				continue;
+			}
+			pos[rec[1]][rec[2]][rec[3]] = rec[0];
+		}
+	}
+
+	function reset(clearRecord = false, restoreChest = false)
+	{
+		// このマップをリセットする
+		// 踏破記録もすべて消したい時は clearRecord を true にする
+		// 宝箱も元に戻したい時は restoreChest を true にする
+		loaded = false;
+		if(clearRecord) firstLoad = false;
+		loadMap(true);
+		var arr = [];
+		if(! restoreChest)
+		{
+			for(var i = changed.count - 1; i >= 0; i--)
+			{
+				var rec = changed[i];
+				if(rec[3] != "f") continue;
+				var info = pos[rec[1]][rec[2]].f;
+				if(info.box !== void && rec[0].box === void)
+				{
+					info.box = void;
+					info.pimg = void;
+					arr.add(rec);
+				}
+			}
+		}
+		changed.assign(arr);
+		if(clearRecord) record = [];
+		master.updateView();
+	}
+
+	function isTreasureBoxExist(x, y)
+	{
+		// 指定座標の宝箱が残っているかどうかを返す
+		for(var i = changed.count - 1; i >= 0; i--)
+		{
+			var rec = changed[i];
+			if(rec[3] != "f") continue;
+			if(rec[1] != x || rec[2] != y) continue;
+			return rec[0].box !== void;
+		}
+		return true;
+	}
+
+	function initialize()
+	{
+		// マップ情報を初期化
+		loaded = false;	// これを false にすることでマップが再読み込みされる
+		noBattle = false;
+		events = [];
+		record = [];
+		changed = [];
+		killed = [];
+		firstLoad = false;
+		visited = false;
+		openedBlocks = 0;
+		openedAllBlocks = false;
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.name = name;
+		dic.sky = sky;
+		dic.effect = effect;
+		dic.underWater = underWater;
+		dic.noBattle = noBattle;
+		dic.battleRate = battleRate;
+		dic.maxGroups = maxGroups;
+		dic.antiWarp = antiWarp;
+		dic.antiSpell = antiSpell;
+		dic.showAllArea = showAllArea;
+		dic.events = events;
+		dic.record = record;
+		dic.changed = changed;
+		dic.killed = killed;
+		dic.firstLoad = firstLoad;
+		dic.visited = visited;
+		dic.openedBlocks = openedBlocks;
+		dic.openedAllBlocks = openedAllBlocks;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		sky = dic.sky;
+		effect = dic.effect;
+		underWater = dic.underWater;
+		noBattle = dic.noBattle;
+		battleRate = dic.battleRate;
+		maxGroups = dic.maxGroups;
+		antiWarp = dic.antiWarp;
+		antiSpell = dic.antiSpell;
+		showAllArea = dic.showAllArea;
+		events.assign(dic.events);
+		record.assign(dic.record);
+		changed.assignStruct(dic.changed);
+		killed.assign(dic.killed);
+		firstLoad = dic.firstLoad;
+		visited = dic.visited;
+		openedBlocks = dic.openedBlocks;
+		openedAllBlocks = dic.openedAllBlocks;
+	}
+
+	function restoreRecord(dic)
+	{
+		// マップの踏破記録だけ読み出す
+		if(! restoreOnReplay) return;
+		record.assign(dic.record);
+		openedBlocks = dic.openedBlocks;
+		openedAllBlocks = dic.openedAllBlocks;
+		dm("再プレイ : " + name + " の踏破記録を読み出しました");
+	}
+}
+
+
+class AutoMap extends Layer
+{
+	// オートマップ
+
+	var rockColor  = 0xFF606868;	// 岩の色・背景・隠された部分
+	var wallColor  = 0xFF504048;	// 壁の色
+	var halfColor  = 0xFFA08880;	// 半分の高さの壁の色
+	var doorColor  = 0xFFF1DAC7;	// ドアの色
+	var floorColor = 0xFFD6C3B3;	// 床の色の平均
+	var fakeColor  = 0xFFB0A0A8;	// 幻の壁の色
+	var viewWidth = 824;	// マップの大きさ
+	var viewHeight = 768;	//    〃
+	var marginH = 50;	// マージン
+	var marginV = 50;	//   〃
+	var master;	// 管理オブジェクト
+	var frameLayer;	// 横の枠（各種情報を表示する）
+	var infoLayer;	// グリッド情報レイヤー
+	var rateLayer;	// 踏破率表示レイヤー
+	var levelBoard;	// 他の階層を選択するレイヤー
+	var scaleLayer;	// 目盛りを乗せるレイヤー
+	var scaleH;	// 目盛り
+	var scaleV;	//  〃
+	var partsLayer;	// 各種パーツを読み込んでおくレイヤー
+	var partyMark;	// パーティーの現在位置表示
+	var gridCursor;	// 座標を指定するためのレイヤー
+	var dragged = false;	// 左クリック中にドラッグが行われたかどうか
+	var onSelectAction;	// グリッドをクリックした時に呼ばれる関数への参照
+	var loadMapAfterMalor = false;	// マロールの直後に新たなマップを開くかどうか
+	var curMap;	// 現在参照しているマップ
+
+	// スクロール動作に利用する変数
+	var leftButtonPressed = false;
+	var beforeX, beforeY, beforeLeft, beforeTop;
+
+	function AutoMap(par, master)
+	{
+		super.Layer(par.window, par);
+		name = "マップビュー";
+		this.master = master;
+		focusable = true;
+
+		frameLayer = new TextWindow(parent, master);
+		with(frameLayer)
+		{
+			.loadImages("map_frame");
+			.setPos(viewWidth, 0);
+			.hitThreshold = 0;	// 隠れたマップを操作させないため
+			//.font.face = "ＭＳ 明朝";
+			.font.height = 24;
+			.font.bold = true;
+			.marginL = 22;
+			.marginR = 22;
+			.marginT = 28;
+			.onMouseUp = function(x, y, button, shift)
+			{
+				if(button == mbRight) close();
+			} incontextof this;
+		}
+
+		scaleLayer = new DecoLayer(parent);
+		scaleLayer.loadImages("map_scale");
+
+		scaleH = new DecoLayer(scaleLayer);
+		with(scaleH)
+		{
+			.top = viewHeight - 20;
+			.absolute = 1;
+			.visible = true;
+			.font.height = 20;
+		}
+
+		scaleV = new DecoLayer(scaleLayer);
+		with(scaleV)
+		{
+			.absolute = 2;
+			.visible = true;
+			.font.height = 20;
+		}
+
+		gridCursor = new CommandButton(this);
+		with(gridCursor)
+		{
+			.loadImages("map_cursor");
+			.setSize(30, 30);
+			.hitThreshold = 256;
+			.focusable = false;
+			.visible = true;
+			.onSelectAction = onClickGrid;
+		}
+
+		infoLayer = new TextWindow(frameLayer, master);
+		with(infoLayer)
+		{
+			.loadImages("map_info_ne");
+			.setPos(20, 530);
+			.visible = true;
+			//.font.face = "ＭＳ 明朝";
+			.font.height = 20;
+			.font.bold = true;
+			.marginL = -10;
+			.marginR = -10;
+			.edge = false;
+			.align = "center";
+		}
+
+		rateLayer = new TextWindow(frameLayer, master);
+		with(rateLayer)
+		{
+			.loadImages("map_rate");
+			.setPos(24, 710);
+			.visible = true;
+			//.font.face = "ＭＳ Ｐ明朝";
+			.font.height = 20;
+			.font.bold = true;
+			.edge = false;
+		}
+
+		levelBoard = new LevelSelectBoard(frameLayer, master);
+		levelBoard.setPos(13, 170);
+
+		partyMark = new PartyMark(this);
+
+		partsLayer = new DecoLayer(par);
+		partsLayer.loadImages("map_parts");
+	}
+
+	function finalize()
+	{
+		invalidate frameLayer;
+		invalidate infoLayer;
+		invalidate levelBoard;
+		invalidate scaleLayer;
+		invalidate scaleH;
+		invalidate scaleV;
+		invalidate partsLayer;
+		invalidate partyMark;
+		invalidate gridCursor;
+		super.finalize();
+	}
+
+	property absolute
+	{
+		setter(v)
+		{
+			super.absolute = v;
+			frameLayer.absolute = v + 1;
+			scaleLayer.absolute = v + 2;
+		}
+		getter{ return super.absolute; }
+	}
+
+	property curX
+	{
+		getter{ return (gridCursor.left - marginH) \ 30; }
+	}
+
+	property curY
+	{
+		getter{ return curMap.mapHeight - (gridCursor.top - marginV) \ 30 - 1; }
+	}
+
+	function open(map, func)
+	{
+		curMap = map;
+		onSelectAction = func;
+		var res;	// 描画ブロック数
+
+		// マップの描画。失敗することがあるのでその対処をする
+		try
+		{
+			res = drawMap(map);
+			if(res > map.allBlocks) res = map.allBlocks;
+			if(! map.openedAllBlocks && map.allBlocks == res)
+			{
+				playSound("period");
+				map.openAllNoFieldArea();
+				drawMap(map);	// 再描画
+				map.openedAllBlocks = true;
+			}
+			map.openedBlocks = res;	// マップの修正等を考慮しついでに更新しておく
+		}
+		catch(e)
+		{
+			dm("マップの描画に失敗しました");
+			return;
+		}
+
+		setScale(map);
+		scaleLayer.visible = true;
+		centeringMapView(master.party.curX, master.party.curY);
+		setPartyMark();
+		if(KEY_PRESSED) gridCursor.setPos(partyMark.left, partyMark.top);
+		else setGridCursorPos(cursorX - left, cursorY - top);
+		frameLayer.visible = true;
+		frameLayer.clear();
+		frameLayer.write(map.displayName);
+		writeCoveringRate(res);
+		writeInfo();
+		levelBoard.open(curMap.group, curMap);
+		visible = true;
+		focus();	// キーボード操作はこのオブジェクトで全て処理する
+	}
+
+	function close(noRestart = false)
+	{
+		visible = false;
+		frameLayer.visible = false;
+		scaleLayer.visible = false;
+		if(! noRestart) master.enterTravelMode();
+		master.miniMap.update(true);	// いる？
+	}
+
+	function openAnotherLevel(map)
+	{
+		// 違う階層のマップを開く
+		var x = gridCursor.left + left + 15;	// 現在の画面上のカーソル位置中心を取得
+		var y = gridCursor.top + top + 15;
+		open(map, onSelectAction);
+		if(KEY_PRESSED) setGridCursorPos(x - left, y - top);	// カーソルを近い位置に
+	}
+
+	function openUpperLevelMap()
+	{
+		// 上の階層のマップを開く（キーボード用）
+		if(levelBoard.openMaps.count == 1) return;
+		var idx = levelBoard.openMaps.find(curMap);
+		idx --;
+		if(idx == -1) idx = levelBoard.openMaps.count - 1;
+		openAnotherLevel(levelBoard.openMaps[idx]);
+	}
+
+	function openLowerLevelMap()
+	{
+		// 下の階層のマップを開く（キーボード用）
+		if(levelBoard.openMaps.count == 1) return;
+		var idx = levelBoard.openMaps.find(curMap);
+		idx ++;
+		if(idx == levelBoard.openMaps.count) idx = 0;
+		openAnotherLevel(levelBoard.openMaps[idx]);
+	}
+
+	function writeCoveringRate(openedBlocks)
+	{
+		// マップの踏破率を描画する
+		rateLayer.clear();
+		// var rate = "%.1f".sprintf(openedBlocks / curMap.allBlocks * 100);
+		var rate = int(openedBlocks / curMap.allBlocks * 1000);
+		var str = rate \ 10 + "." + rate % 10;
+		// rateLayer.drawText(130 - rate.length * 11, 5, rate, rate >= 100 ? 0xF080E0 : 0xE4F8FF);
+		rateLayer.drawText(130 - str.length * 11, 5, str, rate >= 1000 ? 0xF080E0 : 0xE4F8FF);
+	}
+
+	function writeInfo()
+	{
+		// 座標などの付加情報を描画する
+		var x = curX;
+		var y = curY;
+		infoLayer.loadImages("map_info_" + (sf.putEastBeforeNorth ? "en" : "ne"));
+		if(x < 0 || x >= curMap.mapWidth || y < 0 || y >= curMap.mapHeight) return;
+		infoLayer.drawText(43 +   sf.putEastBeforeNorth * 77, 7, "%2d".sprintf(y), 0xE4F8FF);
+		infoLayer.drawText(43 + ! sf.putEastBeforeNorth * 77, 7, "%2d".sprintf(x), 0xFFFEDC);
+		var arr = curMap.getInfoText(x, y);
+		for(var i = 0; i < arr.count; i++)
+		{
+			infoLayer.writeCentered(arr[i], void, void, i * 22 + 33);
+			if(i === 2) return;	// ３行を越える時は描画を諦める
+		}
+		if(! curMap.isValidMalorTarget(x, y)){
+			var prevColor = infoLayer.chColor;
+			infoLayer.chColor = 0xFF8080;
+		 	infoLayer.writeCentered("No warp", void, void, 78);
+		 	infoLayer.chColor = prevColor;
+		}
+	}
+
+	function setScale(map)
+	{
+		// スケールを設定する
+		scaleH.setSize(map.mapWidth * 30, 20);
+		scaleH.clear();
+		for(var i = 0; i < map.mapWidth; i++)
+		{
+			scaleH.drawText(i * 30 + (i < 10) * 5 + 5, 0, i, 0x000000);
+		}
+		scaleV.setSize(20, map.mapHeight * 30);
+		scaleV.clear();
+		for(var i = 0; i < map.mapHeight; i++)
+		{
+			scaleV.drawText((i < 10) * 5, (map.mapHeight - i) * 30 - 25, i, 0x000000);
+		}
+	}
+
+	function setPartyMark()
+	{
+		// パーティーマークを設定
+		if(curMap != master.map)
+		{
+			partyMark.visible = false;
+			return;
+		}
+		partyMark.left = master.party.curX * 30 + marginH;
+		partyMark.top = height - marginV - master.party.curY * 30 - 30;
+		partyMark.set(master.party.curFront);
+	}
+
+	function centeringMapView(x, y)
+	{
+		// 指定した座標を中心にスクロールする
+		var px = x * 30 + marginH;
+		var py = height - marginV - y * 30 - 30;
+		left = cap(viewWidth \ 2 - px, 0, viewWidth - width);
+		top = cap(viewHeight \ 2 - py, 0, viewHeight - height);
+		scaleH.left = left + marginH;
+		scaleV.top = top + marginV;
+	}
+
+	function enterMalorMode()
+	{
+		// マロールを唱える
+		master.exitTravelMode();
+		master.clearWindows();
+		master.autoMap.open(master.map, confirmMalor);
+	}
+
+	function confirmMalor(x, y)
+	{
+		// マロールを唱えるか確認
+		if(! curMap.isValidMalorTarget(x, y))
+		{
+			playSound("buzzer");
+			return;
+		}
+		master.setPrev(cancelMalor);
+		master.setPrev();
+		enabled = false;
+		gridCursor.visible = true;
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: spellMalor, param: %[x: x, y: y]]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "Teleport to " + x + "," + y + "?");
+	}
+
+	function cancelMalor()
+	{
+		// マロールをキャンセルする
+		master.yesNoWin.close();
+		enabled = true;
+		gridCursor.hitThreshold = 256;
+	}
+
+	function spellMalor(pos)
+	{
+		// マロール実行
+		master.curFighter.useResource();	// 消費。キャンプ画面からなので使えないという事はないはず
+		enabled = true;
+		gridCursor.hitThreshold = 256;
+		master.yesNoWin.close();
+		var info = master.map.getFloorInfo();
+		if(info.pimg == "bridge") info.pimg = void;	// 浮き橋を消去
+
+		// マップを開く命令実行だけで自動的に移動後の状態に更新されるようにするため
+		// 先にマップや座標の情報だけを変えておく
+		// マップを開く命令はアニメの中で行う
+		// master.map = curMap;	// マップの情報を変更（状態の更新はあとで）
+		master.party.setCurPos(pos.x, pos.y);	// 座標変更
+
+		close(true);
+		kag.trigger("closeAutoMap");	// マロール実行へ
+	}
+
+	function randomMalor()
+	{
+		// ランダムでマロール実行（戦闘時）
+		master.curFighter.useResource();	// 消費
+		if(master.isNeverEscapeBattle || master.inDuelBattle || master.inEventBattle) return false;
+		if(master.map.isAntiWarpZone()) return false;
+		var arrX = [], arrY = [];
+		while(arrX.count < master.map.mapWidth - 1) arrX.add(arrX.count);
+		while(arrY.count < master.map.mapHeight - 1) arrY.add(arrY.count);
+		arrX.shuffle();
+		arrY.shuffle();
+		for(var j = 0; j < arrY.count; j++)
+		{
+			for(var i = 0; i < arrX.count; i++)
+			{
+				if(master.party.curX == arrX[i] && master.party.curY == arrY[j]) continue;
+				if(! master.map.isValidMalorTarget(arrX[i], arrY[j])) continue;
+				var info = master.map.getFloorInfo();
+				if(info.pimg == "bridge") info.pimg = void;	// 浮き橋を消去
+				master.party.setCurPos(arrX[i], arrY[j]);
+				return true;
+			}
+		}
+		return false;	// 失敗
+	}
+
+	function onClickGrid()
+	{
+		// グリッドがクリックされた時に呼ばれる（ドラッグ時を除く）
+		if(onSelectAction === void) return;
+		onSelectAction(curX, curY);
+	}
+
+	function drawMap(map, fullOpen = false, drawObject = true)
+	{
+		// マップを描画する
+
+		System.doCompact();	// 一応メモリを圧縮してみる
+		var p, px, py, idx, on, os, ow, oe;
+		var openedBlocksCount = 0;
+		var allBlocksCount = map.allBlocks;
+
+		// マップの大きさを決定
+		marginH = marginV = 50;
+		width = map.mapWidth * 30 + marginH * 2;
+		height = map.mapHeight * 30 + marginV * 2;
+		if(width < viewWidth) marginH += (viewWidth - width) \ 2, width = viewWidth;
+		if(height < viewHeight) marginV += (viewHeight - height) \ 2, height = viewHeight;
+		fillRect(0, 0, width, height, rockColor);	// とりあえず全部塗りつぶす
+
+		// 視界が遮られていたら何も描写しない
+		if(master.party.isBlind()) return 0;
+
+		// 床面だけ先に描画
+		for(var y = 0; y < map.mapHeight; y++)
+		{
+			for(var x = 0; x < map.mapWidth; x++)
+			{
+				p = map.pos[x][y];
+				if(! fullOpen && ! map.getAreaOpened(x, y)) continue;
+				px = x * 30 + marginH;
+				py = height - marginV - y * 30 - 30;
+				if(p.f === void || p.f.hide) continue;
+				if(p.f.type == "air" || p.f.type == "height" || p.f.cubeTop == "air")
+				{
+					// 空中
+					var ny = y < map.pos[0].count - 1 ? y + 1 : 0;
+					if((map.pos[x][ny].f.cubeTop === void && map.pos[x][ny].f.img !== void
+						 && map.pos[x][ny].f.img != "wood") || map.pos[x][y].n.img !== void)
+					{
+						if(map.pos[x - 1][y].f.cubeTop === void && map.pos[x - 1][y].f.img !== void) idx = 1;
+						else idx = 2;
+					}
+					else idx = 0;
+					copyRect(px, py, partsLayer, idx * 30, 30, 30, 30);
+					if(map.isWalkableArea(x, y))
+					{
+						openedBlocksCount ++;
+						// drawText(px, py, openedBlocksCount, 0xFF0000);
+					}
+					continue;
+				}
+				if(p.f.icon !== void && p.f.icon <= 8) idx = p.f.icon;	// 任意の床面アイコン
+				else if(drawObject && p.f.trap == "frozenFloor") idx = 6;	// 氷（つるつる床）
+				else if(drawObject && p.f.trap == "poisonSwamp") idx = 4;	// 毒沼
+				else if(drawObject && p.f.darkZone == "smoke") idx = 5;	// スモークゾーン
+				else if(p.f.trap == "lava") idx = 3;	// 溶岩
+				else if(p.f.trap == "water" || p.f.cubeTop == "water") idx = 1;	// 水面（プール内に落ちる）
+				else if(p.f.type == "stream" || p.f.type == "water") idx = 2;	// 水面（深）
+				else if(p.f.type == "floor" || p.f.img == map.defFloor) idx = 0;	// 通常床
+				else continue;	// idx === void でも↓の画像処理は行ってしまうので
+				copyRect(px, py, partsLayer, idx * 30, 0, 30, 30);
+
+				// 描画した数を記録
+				if(map.isWalkableArea(x, y))
+				{
+					openedBlocksCount ++;
+					// drawText(px, py, openedBlocksCount, 0xFF0000);
+				}
+			}
+		}
+
+		// その他を描画
+		for(var y = 0; y < map.mapHeight; y++)
+		{
+			for(var x = 0; x < map.mapWidth; x++)
+			{
+				if(! fullOpen && ! map.getAreaOpened(x, y)) continue;
+				p = map.pos[x][y];
+				px = x * 30 + marginH;
+				py = height - marginV - y * 30 - 30;
+
+				// 任意の床マーク（マップごとに指定・先に描く必要がある）
+				if(p.f.icon !== void)
+				{
+					operateRect(px, py, partsLayer, p.f.icon % 10 * 30, p.f.icon \ 10 * 30, 30, 30);
+				}
+
+				// 立方体の上面
+				if(p.f.cubeTop !== void) operateRect(px, py, partsLayer, 7 * 30, 30, 30, 30);
+
+				// アンチワープゾーン・魔法禁止空間・魔法効果消去空間（先に描く必要がある）
+				if(drawObject)
+				{
+					if((map.antiWarp || p.f.antiWarp) && ! p.f.hide)
+					{
+						operateRect(px, py, partsLayer, (p.f.darkZone === void ? 4 : 5) * 30, 30, 30, 30);
+					}
+					if(map.antiSpell || p.f.antiSpell) operateRect(px, py, partsLayer, 3 * 30, 30, 30, 30);
+					if(p.f.eraseMagic) operateRect(px, py, partsLayer, 6 * 30, 30, 30, 30);
+				}
+
+				// 壁とアーチ
+				on = os = ow = oe = 0;
+				if(! map.isKeepOut(x, y))	// ← この判定がないとミニマップ上で格子が出来てしまう
+				{
+					if(! map.getAreaOpened(x, y + 1) || map.isKeepOut(x, y + 1)) on = 2;
+					if(! map.getAreaOpened(x, y - 1) || map.isKeepOut(x, y - 1)) os = 2;
+					if(! map.getAreaOpened(x - 1, y) || map.isKeepOut(x - 1, y)) ow = 2;
+					if(! map.getAreaOpened(x + 1, y) || map.isKeepOut(x + 1, y)) oe = 2;
+
+					if(p.n.mask == "arch")
+					{
+						fillRect(px -  2, py - on, 9, 2 + on, wallColor);
+						fillRect(px + 23, py - on, 9, 2 + on, wallColor);
+						if(p.n.type == "wall") fillRect(px + 7, py - on \ 2, 16, 1 + on \ 2, halfColor);
+					}
+					else if((p.n.type == "wall" && ! p.n.hide) || p.n.type == "door" || p.n.type == "climb")
+					{
+						fillRect(px -  2, py - on, 34, 2 + on, p.n.type == "climb" ? halfColor : wallColor);
+					}
+					if(p.s.mask == "arch")
+					{
+						fillRect(px -  2, py + 28, 9, 2 + os, wallColor);
+						fillRect(px + 23, py + 28, 9, 2 + os, wallColor);
+						if(p.s.type == "wall") fillRect(px + 7, py + 29, 16, 1 + os \ 2, halfColor);
+					}
+					else if((p.s.type == "wall" && ! p.s.hide) || p.s.type == "door" || p.s.type == "climb")
+					{
+						fillRect(px -  2, py + 28, 34, 2 + os, p.s.type == "climb" ? halfColor : wallColor);
+					}
+					if(p.w.mask == "arch")
+					{
+						fillRect(px - ow, py -  2, 2 + ow, 9, wallColor);
+						fillRect(px - ow, py + 23, 2 + ow, 9, wallColor);
+						if(p.w.type == "wall") fillRect(px - ow \ 2, py + 7, 1 + ow \ 2, 16, halfColor);
+					}
+					else if((p.w.type == "wall" && ! p.w.hide) || p.w.type == "door" || p.w.type == "climb")
+					{
+						fillRect(px - ow, py -  2, 2 + ow, 34, p.w.type == "climb" ? halfColor : wallColor);
+					}
+					if(p.e.mask == "arch")
+					{
+						fillRect(px + 28, py -  2, 2 + oe, 9, wallColor);
+						fillRect(px + 28, py + 23, 2 + oe, 9, wallColor);
+						if(p.e.type == "wall") fillRect(px + 29, py + 7, 1 + oe \ 2, 16, halfColor);
+					}
+					else if((p.e.type == "wall" && ! p.e.hide) || p.e.type == "door" || p.e.type == "climb")
+					{
+						fillRect(px + 28, py -  2, 2 + oe, 34, p.e.type == "climb" ? halfColor : wallColor);
+					}
+				}
+
+				// 幻の壁・両側がオープンになった場合のみ表示
+				if(p.n.secret == "illusion")
+				{
+					if(map.getAreaOpened(x, y + 1)) fillRect(px + 2, py, 26, 1, fakeColor);
+					else fillRect(px - 2, py - 2, 34, 4, wallColor);
+				}
+				if(p.s.secret == "illusion")
+				{
+					if(map.getAreaOpened(x, y - 1)) fillRect(px + 2, py + 29, 26, 1, fakeColor);
+					else fillRect(px - 2, py + 28, 34, 4, wallColor);
+				}
+				if(p.w.secret == "illusion")
+				{
+					if(map.getAreaOpened(x - 1, y)) fillRect(px, py + 2, 1, 26, fakeColor);
+					else fillRect(px - 2, py - 2, 4, 34, wallColor);
+				}
+				if(p.e.secret == "illusion")
+				{
+					if(map.getAreaOpened(x + 1, y)) fillRect(px + 29, py + 2, 1, 26, fakeColor);
+					else fillRect(px + 28, py - 2, 4, 34, wallColor);
+				}
+
+				// ドア
+				if(p.n.type == "door")
+				{
+					fillRect(px + 5, py - on, 20, 4 + on, wallColor);
+					fillRect(px + 6, py - on, 18, 3 + on, doorColor);
+				}
+				if(p.s.type == "door")
+				{
+					fillRect(px + 5, py + 26, 20, 4 + os, wallColor);
+					fillRect(px + 6, py + 27, 18, 3 + os, doorColor);
+				}
+				if(p.w.type == "door")
+				{
+					fillRect(px - ow, py + 5, 4 + ow, 20, wallColor);
+					fillRect(px - ow, py + 6, 3 + ow, 18, doorColor);
+				}
+				if(p.e.type == "door")
+				{
+					fillRect(px + 26, py + 5, 4 + oe, 20, wallColor);
+					fillRect(px + 27, py + 6, 3 + oe, 18, doorColor);
+				}
+
+				// 床設置物（ミニマップ描画対象）
+				idx = void;
+				if(/woods/.test(p.f.pimg)) idx = 0;	// 木
+				else if(p.f.pimg == "rock") idx = 1;	// 飛び越えられる岩
+				else if(p.f.pimg == "bulletin") idx = 2;	// 立て札
+				if(idx !== void) operateRect(px, py, partsLayer, idx * 30, 150, 30, 30);
+
+				if(! drawObject) continue;	// ミニマップ用はここまで
+
+				// 建てかけばしご
+				idx = void;
+				if(p.n.type == "ladder") idx = 6;
+				else if(p.s.type == "ladder") idx = 7;
+				else if(p.w.type == "ladder") idx = 8;
+				else if(p.e.type == "ladder") idx = 9;
+				if(idx !== void) operateRect(px, py, partsLayer, idx * 30, 90, 30, 30);
+
+				if(p.f.hide) continue;	// オートマップから隠す
+
+				// ワープ・出入り口
+				var w = map.getWarpInfo(x, y);
+				if(w !== void)
+				{
+					if(w.stealth || w.climb || w.fall || w.symbol == "none") continue;
+					if(w.enter !== void) idx = 9;	// 町の入口
+					else if(w.symbol == "exit") idx = 5;	// 出口
+					else if(w.symbol == "cave") idx = 6;	// 洞窟への入口
+					else if(w.symbol == "movev") idx = 7;	// 次のマップへの入口・縦
+					else if(w.symbol == "moveh") idx = 8;	// 次のマップへの入口・横
+					else if(w.symbol == "upstair") idx = 3;	// 上り階段
+					else if(w.symbol == "downstair") idx = 4;	// 下り階段
+					else if(w.lift == "up") idx = 1;	// 上りばしご
+					else if(w.lift == "down") idx = 2;	// 下りばしご
+					else idx = 0;	// 普通のワープ
+					operateRect(px, py, partsLayer, idx * 30, 60, 30, 30);
+					continue;
+				}
+
+				// 床設置物
+				idx = void;
+				if(p.f.pimg == "box" || p.f.pimg == "boxb") idx = 3;	// 宝箱
+				else if(p.f.pimg == "fountain") idx = 4;	// 噴水
+				else if(p.f.type == "movable") idx = 5;	// 押せる石
+				else if(p.f.pimg == "barrel" || p.f.pimg == "empty"
+					 || (p.f.pimg !== void && p.f.pimg.substr(0, 3) == "br_")) idx = 6;	// たる
+				else if(p.f.pimg == "grave") idx = 7;	// 墓石
+				else if(p.f.pimg == "trash") idx = 8;	// ごみの山
+				else if(p.f.pimg == "human") idx = 9;	// 人物
+				else if(p.f.pimg == "monument") idx = 10;	// 墓石
+				else if(/pd_/.test(p.f.pimg) || p.f.pimg == "pedestal") idx = 11;	// 台座
+				else if(p.f.pimg == "candle") idx = 12;	// 台座・玉付き
+				else if(p.f.pimg == "lighten") idx = 13;	// 台座・光る玉付き
+				if(idx !== void) operateRect(px, py, partsLayer, (idx % 10) * 30, 150 + (idx \ 10) * 30, 30, 30);
+
+				// 回転床
+				if(p.f.trap == "turnByForce")
+				{
+					operateRect(px, py, partsLayer, (p.f.darkZone !== void) * 30, 90, 30, 30);
+					continue;
+				}
+
+				// 移動床
+				if(p.f.trap == "moveByForce")
+				{
+					if(p.f.way == "n") idx = 2;
+					if(p.f.way == "s") idx = 3;
+					if(p.f.way == "w") idx = 4;
+					if(p.f.way == "e") idx = 5;
+					operateRect(px, py, partsLayer, idx * 30, 90, 30, 30);
+					continue;
+				}
+
+				// その他の罠・障害物
+				idx = void;
+				if(p.f.trap == "collapse") idx = 0;	// 崩落する床
+				else if(p.f.trap == "chute") idx = 1;	// 落とし穴
+				else if(p.f.trap == "fire") idx = 2;	// 火炎放射
+				else if(p.f.trap == "spear") idx = 3;	// 槍
+				else if(p.f.trap == "acid") idx = 4;	// 酸の噴水
+				else if(p.f.trap == "sleep") idx = 5;	// 酸の噴水
+				if(idx !== void) operateRect(px, py, partsLayer, idx * 30, 120, 30, 30);
+			}
+		}
+
+		dm("openedBlocksCount   " + openedBlocksCount);
+		return openedBlocksCount;
+	}
+
+	function setGridCursorPos(x, y)
+	{
+		// グリッドをマップにフィットするように配置する
+		gridCursor.setPos(x - (x - marginH) % 30, y - (y - marginV) % 30);
+	}
+
+	function onMouseEnter()
+	{
+		gridCursor.visible = true;
+		super.onMouseEnter();
+	}
+
+	function onMouseLeave()
+	{
+		gridCursor.visible = false;
+		infoLayer.clear();
+		super.onMouseLeave();
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(button == mbLeft)
+		{
+			beforeX = master.gameBase.cursorX;
+			beforeY = master.gameBase.cursorY;
+			beforeLeft = left;
+			beforeTop  = top;
+			leftButtonPressed = true;
+			if(gridCursor.visible) gridCursor.drawState(1);
+		}
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbLeft)
+		{
+			if(! dragged) onClickGrid();
+			dragged = leftButtonPressed = false;
+			gridCursor.drawState(0);
+		}
+		else if(button == mbRight) close();
+		super.onMouseUp(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		if(leftButtonPressed)
+		{
+			dragged = true;
+			var _left = beforeLeft + window.fore.base.cursorX - beforeX;
+			var _top  = beforeTop  + window.fore.base.cursorY - beforeY;
+			if(_left > 0) _left = 0;
+			else if(_left < - width + viewWidth) _left = viewWidth - width;
+			if(_top > 0) _top = 0;
+			else if(_top < - height + viewHeight) _top = viewHeight - height;
+			setPos(_left, _top);
+			scaleH.left = left + marginH;
+			scaleV.top = top + marginV;
+		}
+		else if(gridCursor.visible)
+		{
+			if(abs(gridCursor.left + 15 - x) >= 15 || abs(gridCursor.top + 15 - y) >= 15)
+			{
+				playSound("point");
+				setGridCursorPos(x, y);
+				writeInfo();
+			}
+		}
+		super.onMouseMove(...);
+	}
+
+	function onKeyDown(key, shift)
+	{
+		window.hideMouseCursor();
+		if(key == BT_CANCEL || key == BT_CANCEL2 || key == BT_MAP || key == BT_MAP2)
+		{
+			close();
+			return;
+		}
+		else if(key == BT_LEFT || key == BT_LEFT2)
+		{
+			if(gridCursor.left < 220 - left) left = min(left + 30, 0);
+			gridCursor.left = max(gridCursor.left - 30, marginH);
+		}
+		else if(key == BT_RIGHT || key == BT_RIGHT2)
+		{
+			if(gridCursor.left > 600 - left) left = max(left - 30, viewWidth - width);
+			gridCursor.left = min(gridCursor.left + 30, width - marginH - 30);
+		}
+		else if(key == BT_UP || key == BT_UP2)
+		{
+			if(gridCursor.top < 200 - top) top = min(top + 30, 0);
+			gridCursor.top = max(gridCursor.top - 30, marginV);
+		}
+		else if(key == BT_DOWN || key == BT_DOWN2)
+		{
+			if(gridCursor.top > 520 - top) top = max(top - 30, viewHeight - height);
+			gridCursor.top = min(gridCursor.top + 30, height - marginV - 30);
+		}
+		else if(key == BT_LSTEP || key == BT_LSTEP2)
+		{
+			openUpperLevelMap();
+			return;
+		}
+		else if(key == BT_RSTEP || key == BT_RSTEP2)
+		{
+			openLowerLevelMap();
+			return;
+		}
+		else if(key == BT_OK || key == BT_OK2)
+		{
+			if(gridCursor.visible)
+			{
+				gridCursor.drawState(1);
+				onClickGrid();
+			}
+			return;
+		}
+		else
+		{
+			window.preProcessKeys(key, shift);
+			super.onKeyDown(...);
+		}
+
+		// 方向キー押下だったらカーソルと情報を表示
+		scaleH.left = left + marginH;
+		scaleV.top = top + marginV;
+		gridCursor.visible = true;
+		writeInfo();
+	}
+
+	function onKeyUp(key, shift)
+	{
+		gridCursor.drawState(0);
+		super.onKeyUp(...);
+	}
+
+	function onMouseWheel(shift, delta, x, y)
+	{
+		if(x > viewWidth + levelBoard.left && x < viewWidth + levelBoard.left + levelBoard.width
+			 && y > levelBoard.top && y < levelBoard.top + levelBoard.height)
+		{
+			if(delta > 0) levelBoard.scrollUp();
+			else if(delta < 0) levelBoard.scrollDown();
+		}
+		super.onMouseWheel(...);
+	}
+}
+
+
+class LevelSelectBoard extends CommandBoard
+{
+	// 階層選択レイヤー
+
+	var maxLines = 7;
+	var firstLine = 0;
+	var upButton;
+	var downButton;
+	var curGroup;
+	var curMap;
+	var openMaps;
+
+	function LevelSelectBoard(par, master)
+	{
+		super.CommandBoard(par, master);
+		loadImages("map_levelselect");
+		visible = true;
+		hitThreshold = 256;
+
+		upButton = new LevelSelectButton(this);
+		upButton.loadImages("btn_cmd_uparrow");
+		upButton.onSelectAction = scrollUp;
+		upButton.setPos(width - upButton.width >> 1, -1);
+		upButton.hitThreshold = 0;
+
+		downButton = new LevelSelectButton(this);
+		downButton.loadImages("btn_cmd_downarrow");
+		downButton.onSelectAction = scrollDown;
+		downButton.setPos(width - downButton.width >> 1, height - downButton.height - 4);
+		downButton.hitThreshold = 0;
+	}
+
+	function finalize()
+	{
+		invalidate upButton;
+		invalidate downButton;
+		super.finalize();
+	}
+
+	function scrollUp()
+	{
+		if(! upButton.visible) return;
+		firstLine --;
+		update();
+	}
+
+	function scrollDown()
+	{
+		if(! downButton.visible) return;
+		firstLine ++;
+		update();
+	}
+
+	function open(group, map)
+	{
+		// 階層移動コマンドを表示
+		if(curGroup != group) firstLine = 0;	// 新しいマップを開いた
+		curGroup = group;
+		curMap = map;
+		openMaps = [];
+		for(var i = 0; i < group.count; i++)
+		{
+			if(group[i].visited) openMaps.add(group[i]);
+		}
+		var curMapIndex = openMaps.find(map);
+		if(curMapIndex >= firstLine + maxLines) firstLine = curMapIndex - maxLines + 1;
+		else if(curMapIndex < firstLine) firstLine = curMapIndex;
+		update();
+	}
+
+	function update()
+	{
+		// 階層移動コマンドを更新
+		clear();
+		upButton.visible = (firstLine > 0);
+		downButton.visible = (openMaps.count - firstLine > maxLines);
+		for(var i = 0; i < maxLines; i ++)
+		{
+			var num = i + firstLine;
+			if(num >= openMaps.count) return;
+			var cmd = new LevelSelectButton(this);
+			cmd.loadImages("btn_cmd_maplevel");
+			cmd.onSelectAction = master.autoMap.openAnotherLevel;
+			cmd.onSelectActionParam = openMaps[num];
+			cmd.cond = (openMaps[num] != curMap);
+			if(! cmd.cond) cmd.drawState(3);
+			cmd.setPos(5, i * 34 + 30);
+			var colour = cmd.cond ? 0xFFFFFF : 0xFFA0A0;
+			var fontSizeOrig = font.height;
+			var text = openMaps[num].insideName;
+			var yAdjust = global.TextWindow.adjustFontSizeToFit(text, font, cmd.left + 5, cmd.left + cmd.width - 5);
+			var l = (cmd.width - font.getTextWidth(text)) \ 2;
+			drawText(cmd.left + l, cmd.top + 4 + yAdjust, text, colour,,, 2048,, 3);
+			commands.add(cmd);
+			font.height = fontSizeOrig;
+		}
+	}
+}
+
+
+class LevelSelectButton extends CommandButton
+{
+	// 階層選択ボタン。マウス操作だけ受け付ける
+
+	function LevelSelectButton(par)
+	{
+		super.CommandButton(par);
+		visible = true;
+		focusable = false;
+		type = ltDodge;
+	}
+
+	function onMouseEnter()
+	{
+		if(MOUSE_HIDDEN) return;
+		drawState(2);
+		global.Layer.onMouseEnter();
+	}
+
+	function onMouseLeave()
+	{
+		if(MOUSE_HIDDEN) return;
+		drawState(cond ? 0 : 3);
+		global.Layer.onMouseLeave();
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbRight)
+		{
+			parent.parent.onMouseUp(...);
+			return;
+		}
+		super.onMouseUp(...);
+	}
+}
+
+
+class PartyMark extends Layer
+{
+	// パーティーマーク
+
+	var timer;	// アニメーションタイマー
+	var direct = -1;	// アニメーションの方向
+
+	function PartyMark(par, master)
+	{
+		super.Layer(par.window, par);
+		name = "パーティーマーク";
+		this.master = master;
+		loadImages("map_partysymbol");
+		setSize(30, 30);
+		hitThreshold = 256;
+		timer = new Timer(anime, "");
+		timer.interval = 50;
+	}
+
+	function finalize()
+	{
+		invalidate timer;
+		super.finalize();
+	}
+
+	property visible
+	{
+		setter(v){ timer.enabled = super.visible = v; }
+		getter{ return super.visible; }
+	}
+
+	function set(way)
+	{
+		if(way == "n") imageTop = 0;
+		else if(way == "s") imageTop = -30;
+		else if(way == "w") imageTop = -60;
+		else imageTop = -90;
+		visible = true;
+	}
+
+	function anime()
+	{
+		if(! parent.visible) visible = false;
+		if(imageLeft == 0) direct = -1;
+		else if(imageLeft == width - imageWidth) direct = 1;
+		imageLeft = imageLeft + direct * 30;
+	}
+}
+
+
+class MiniMap extends Layer
+{
+	// ミニマップ
+
+	var master;			// 管理オブジェクト
+	var partyMark;	// パーティーの現在位置表示
+
+	function MiniMap(par, master)
+	{
+		super.Layer(par.window, par);
+		name = "ミニマップ";
+		this.master = master;
+		loadImages("frame_minimap");
+		setSizeToImageSize();
+		setPos(window.scWidth - width, 0);
+		hitThreshold = 0;
+		partyMark = new PartyMark(this);
+		partyMark.setPos(65, 65);
+	}
+
+	function finalize()
+	{
+		invalidate partyMark;
+		super.finalize();
+	}
+
+	function open(map)
+	{
+		visible = true;
+		update(true);
+		setPartyMark();
+	}
+
+	function close()
+	{
+		visible = false;
+	}
+
+	function update(updateData)
+	{
+		if(! visible) return;
+		try
+		{
+			if(updateData)
+			{
+				master.autoMap.drawMap(master.map, true, false);	// フルマップを書き直しておく
+				setPartyMark();
+			}
+			pasteMap();
+		}
+		catch(e)
+		{
+			dm("マップの描画に失敗しました");
+		}
+	}
+
+	function pasteMap()
+	{
+		// オートマップから指定した範囲を貼り付ける
+		// 踏破済みかどうかは反映されない
+		var px = (master.party.curX - 2) * 30 + master.autoMap.marginH;
+		var py = master.autoMap.height - (master.party.curY + 3) * 30 - master.autoMap.marginV;
+		fillRect(4, 4, 150, 150, master.autoMap.rockColor);
+		copyRect(4, 4, master.autoMap, px, py, 150, 150);
+	}
+
+	function drawMap()
+	{
+		// 踏破済みの座標のみオートマップから貼り付ける
+		// 当然、速度はまとめて貼り付けるより遅くなる
+		// なお、下のコードでは背景は画像読み直しより塗りつぶした方が速度が速い
+		var cx, cy, px, py;
+		var partyX = master.party.curX, partyY = master.party.curY;
+		var mapWidth = master.map.mapWidth;
+		var mapHeight = master.map.mapHeight;
+		var amap = master.autoMap;
+		var test = master.map.getAreaOpened;
+		fillRect(4, 4, 150, 150, amap.rockColor);
+		for(var y = 0; y < 5; y++)
+		{
+			for(var x = 0; x < 5; x++)
+			{
+				cx = partyX + x - 2;
+				cy = partyY - y + 2;
+				if(master.map.loop)
+				{
+					if(cx < 0) cx = mapWidth + cx;
+					else if(cx >= mapWidth) cx = cx - mapWidth;
+					if(cy < 0) cy = mapHeight + cy;
+					else if(cy >= mapHeight) cy = cy - mapHeight;
+				}
+				if(test(cx, cy))
+				{
+					px = cx * 30 + amap.marginH;
+					py = amap.height - cy * 30 - 30 - amap.marginV;
+					copyRect(x * 30 + 3, y * 30 + 3, amap, px, py, 30, 30);
+				}
+			}
+		}
+	}
+
+	function setPartyMark()
+	{
+		partyMark.set(master.party.curFront);
+	}
+
+	function onMouseUp(x, y, button)
+	{
+		if(button == mbRight) window.onPrimaryRightClick();
+		super.onMouseUp(...);
+	}
+}
+//----------------------------------------------------------------------------------------

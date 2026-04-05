@@ -1,0 +1,286 @@
+﻿; 雪原
+
+name = フーラ雪原・北の森
+insideName = North Forest
+level = 22
+bgm = snow
+isOutdoor = true
+shadow = dark
+sky = snowy
+roof = wood
+outfield = snow
+blank = rock
+effect = PE_snow3
+
+; 画像パーツ
+━ = wood
+－ = soil
+　 = snow
+☐ = wood
+❖ = snow
+△ = rock
+⏃ = woodsw
+〰 = water
+＊ = ice
+〓 = wood
+／ = door
+☗ = gate
+﹃ = ladder
+Ⓓ = warp
+⑵ = bulletin
+⑸ = bulletin
+⑹ = bulletin
+⑺ = bulletin
+⑻ = br_maxhp
+⑼ = monument
+⑾ = monument
+
+; 敵情報
+maxGroups = 2
+monsters = ウインターコボルド,ウォーロック,ハーピーウィッチ
+traps = 毒針,毒ガス,しびれ針,酸スプレー,爆弾,ラミアの瞳
+
+; 移動ポイント
+(A) = map:ノースロップ村, enter:ノースロップ村・北門, ask:Enter town?
+(B) = map:フーラ雪原・氷の池, x:1, y:1, climb:true
+(C) = map:鉱山Ｂ１, x:1, y:2, way:e, symbol:cave, ask:Go to the dungeon?
+(D) = x:18, y:13
+(E) = x:14, y:38
+
+; 宝箱
+box[1] = クレイモア_u,氷結の鈴_u,レイズデッドの魔法書_u,ライトストリームの魔法書_u,復活の粉_u,金貨（特大）
+box[2] = 媚薬の霧,つるはし,アダマンタイト鉱石
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  
+  											－－－－☗－－－－																			－－﹃－－
+39	⏃⏃❖⏃⏃					⏃⏃　　Ⓒ　　⏃⏃					⏃⏃⏃⏃⏃⏃⏃							⏃⏃Ⓑ⏃⏃
+  	⏃⏃	⏃⏃					⏃⏃　　　　　⏃⏃					⏃⏃⏃⏃⏃⏃⏃							⏃⏃　⏃⏃
+38	⏃⏃❖⏃⏃					⏃⏃　　　　　⏃⏃					⏃⏃⑾　　⏃⏃							⏃⏃　⏃⏃
+  	⏃⏃	⏃⏃					⏃⏃　⏃⏃⏃⏃⏃⏃					⏃⏃　　　⏃⏃							⏃⏃　⏃⏃
+37	⏃⏃❖⏃⏃					⏃⏃　⏃⏃⏃⏃⏃⏃					⏃⏃　　　⏃⏃							⏃⏃　⏃⏃
+  	⏃⏃	⏃⏃					⏃⏃　⏃⏃									⏃⏃　⏃⏃⏃⏃							⏃⏃　⏃⏃
+36	⏃⏃❖⏃⏃	⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+  							⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+35							⏃⏃　　　　　⏃⏃	⏃⏃　　　　　　　　　　　　　　　　　⏃⏃	⏃⏃　⏃⏃
+  							⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃
+34							⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃
+  							⏃⏃　⏃⏃					⏃⏃　⏃⏃											⏃⏃　⏃⏃⏃⏃⏃　⏃⏃
+33							⏃⏃　⏃⏃					⏃⏃　⏃⏃											⏃⏃　　　　　　　⏃⏃
+  							⏃⏃　⏃⏃					⏃⏃　⏃⏃											⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+32							⏃⏃　⏃⏃					⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  							⏃⏃　⏃⏃					⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃
+31							⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃⏃⏃　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  							⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃⏃⏃　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+30							⏃⏃　⏃⏃					⏃⏃　　　　　　敵　　⏃⏃			⏃⏃　　　　　　　⏃⏃
+  							⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃　┏━━━┓　⏃⏃
+29							⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃　┃➋☐☐┃　⏃⏃
+  							⏃⏃　⏃⏃					⏃⏃　⏃⏃											⏃⏃　┃☐☐☐┃　⏃⏃
+28							⏃⏃　⏃⏃					⏃⏃　⏃⏃											⏃⏃　┃☐☐⓷┃　⏃⏃
+  							⏃⏃　⏃⏃					⏃⏃　⏃⏃											⏃⏃　┗━━／┛　⏃⏃
+27					⏃⏃⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃⏃					⏃⏃⏃⏃⏃⏃　　　　④　　⏃⏃
+  					⏃⏃⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃⏃					⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃
+26					⏃⏃⑹　　⏃⏃					⏃⏃　　⑺⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃
+  					⏃⏃　　　⏃⏃					⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃
+25					⏃⏃　　　⏃⏃					⏃⏃　　　　　　　　　　　　　　　⏃⏃⏃⏃
+  					⏃⏃　⏃⏃⏃⏃					⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃
+24					⏃⏃　⏃⏃⏃⏃					⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃
+  					⏃⏃　⏃⏃																			⏃⏃　　　⏃⏃⏃⏃
+23					⏃⏃　⏃⏃									⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　　　　　⏃⏃
+  					⏃⏃　⏃⏃									⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　　　　　⏃⏃
+22	⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃⏃⏃⏃⏃〓⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃〰〰〰〰〰⏃⏃⏃⏃⏃〰〰〰〰〰⏃⏃⏃⏃⏃⏃⏃⏃
+21	≫〰∨〰≪〰〓〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪
+  	〰〰〰〰〰〰〓〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰
+20	≫〰∨〰≪〰〓〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪
+  	〰〰〰〰〰〰〓〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰
+19	≫〰∨〰≪〰〓〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪
+  	〰〰〰〰〰〰〓〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰
+18	≫〰∨〰≪〰〓〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰≪〰〓〰≪〰≪〰≪〰≪〰≪
+  	⏃⏃〰〰〰〰〓⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃〰⏃⏃⏃〰△△△△△〰〰〓〰〰⏃⏃⏃⏃⏃⏃⏃⏃
+17	⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃❶△△△△△　　　　　⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃⏃⏃　　　⏃⏃									⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃
+16	⏃⏃⏃⏃　　　⏃⏃	⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃
+  			⏃⏃⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃					⏃⏃⏃⏃⏃⏃　⏃⏃
+15			⏃⏃⏃⏃　⏃⏃	⏃⏃　　　⏃⏃⏃⏃⏃　⏃⏃					⏃⏃⏃⏃⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃	⏃⏃　　　⏃⏃⏃⏃⏃　⏃⏃									⏃⏃　⏃⏃
+14					⏃⏃　⏃⏃	⏃⏃　　敵　　　　　　⏃⏃									⏃⏃　⏃⏃⏃⏃
+  					⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃									⏃⏃　⏃⏃⏃⏃
+13					⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃
+  					⏃⏃　⏃⏃									⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃
+12					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　　　　　　　　　　　⑸⏃⏃
+  					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃
+11					⏃⏃　　　　　　　　　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃
+  					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃							⏃⏃　⏃⏃⏃⏃
+10	⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃							⏃⏃　⏃⏃⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃																							⏃⏃　⏃⏃
+ 9	⏃⏃　　　　敵⏃⏃																							⏃⏃　⏃⏃
+  	⏃⏃　　　　　⏃⏃																							⏃⏃　⏃⏃
+ 8	⏃⏃⑻　　　　⏃⏃					⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃					⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃
+ 7	⏃⏃⏃⏃⏃⏃⏃⏃⏃					⏃⏃　　　　　　　　　　　　　　　　　　　　　　　　　⏃⏃
+  															⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+ 6			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃																			⏃⏃　⏃⏃
+ 5			⏃⏃　　　　　　　　　　　　　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  			⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+ 4			⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　　　⏆⏆⏆≫〰≫〰≫〰　　　　　　　⏃⏃
+  			⏃⏃　⏃⏃	⏃⏃　⏃⏃							⏃⏃　　　⏆⏆⏆〰〰〰〰〰〰　　　　　　　⏃⏃
+ 3	⏃⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃							⏃⏃⑼　　⏆⏆⏆≫〰≫〰≫〰　　　　　　　⏃⏃
+  	⏃⏃⏃⏃　⏃⏃	━━／━━							⏃⏃　　　⏆⏆⏆〰〰〰〰〰〰　　　　　⏃⏃⏃⏃
+ 2	⏃⏃　　　⏃⏃			①									⏃⏃　　　⏆⏆⏆≫〰≫〰≫〰　　　　　⏃⏃⏃⏃
+  	⏃⏃　　　⏃⏃													⏃⏃⏃⏃⏃⏃⏃⏃〰〰〰〰〰〰　⏃⏃⏃⏃⏃⏃
+ 1	⏃⏃　　⑵⏃⏃													⏃⏃⏃⏃⏃⏃⏃⏃≫〰≫〰≫〰　⏃⏃⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃⏃																			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+ 0	⏃⏃Ⓐ⏃⏃⏃⏃																			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  			▲
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setHouse(5, 2);
+pos[20][39].n.img = "soil";
+pos[7][39].n.img = "soil";
+pos[1][0].event = 10;
+pos[18][29].f.antiWarp = pos[19][29].f.antiWarp = pos[18][28].f.antiWarp = pos[19][28].f.antiWarp = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(loading) return;
+sky = (game.date - f.arrivalDayToNorthrop) % 3 == 0 ? "snowblue" : "snowy";
+if(f.arrivalDayToNorthrop !== void && (game.date - f.arrivalDayToNorthrop) % 3 == 2)
+{
+	effect = getFloorInfo().indoor ? void : "PE_snow3";
+	tf.temp = %[img: "ice", icon: 6];
+	tf.temp2 = %[type: "floor", img: "ice", trap: "frozenFloor"];
+}
+else
+{
+	effect = void;
+	tf.temp = %[img: "water", icon: 2];
+	tf.temp2 = %[type: "stream", img: "water", trap: "moveByForce"];
+}
+changeFloorsOfWideArea(tf.temp, 0, 18, 0, 21);	// 左端
+changeFloorsOfWideArea(tf.temp, 21, 18, 21, 21);	// 右端
+changeFloorsOfWideArea(tf.temp2, 1, 18, 2, 21);	// 川・橋の西側
+changeFloorsOfWideArea(tf.temp2, 4, 18, 20, 21);	// 川・橋の東側
+changeFloorsOfWideArea(tf.temp2, 14, 1, 16, 4);	// 南の池
+changeObject(%[type: "floor", img: "wood", trap: void, icon: 7], 16, 18, "f");	// 東の川辺の小さな桟橋
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@enterhouse img=interior_01
+[texton]
+[name n="Weather Expert"]「It is very cold in this area. It often snows and the rivers and lakes freeze over.」[k]
+[if exp='game.map.pos[16][3].f.trap == "frozenFloor"']
+	[name n="Weather Expert"]「It's cold again today... Maybe the water has frozen nearby.」[k]
+[elsif exp='(game.date - f.arrivalDayToNorthrop) % 3 == 2']
+	[name n="Weather Expert"]「...」[k]
+	[name n="Weather Expert"]「...The way the weather is now, it looks like it's going to start snowing soon. The lake may freeze over.
+	 」[k]
+	@eval exp='game.map.execInitialScript()'
+[else]
+	[name n="Weather Expert"]「...」[k]
+	[name n="Weather Expert"]「...Looking at the sky, it will likely snow in [emb exp='2 - (game.date - f.arrivalDayToNorthrop) % 3'] days. I think I'll go do some laundry on the shore while it's still warm.
+	 
+	 」[k]
+[endif]
+[textoff]
+@exithouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Northrop Village"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] game.map.effect !== void
+
+@eval exp='game.map.effect = void'
+@eval exp='game.view.stopEffect()'
+
+[eventoff]
+;------------------------------------------------------------------------------
+*event_4
+;[exp] game.map.effect != "PE_snow3"
+
+@eval exp='game.map.effect = "PE_snow3"'
+@eval exp='game.view.startEffect(game.map.effect)'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@roadguide n="Great Northern River" w=Mine s="Northrop Village"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@roadguide n=Mine
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@notice text="Beware of accidents in the snowy mountains ahead."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 20)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 20!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] onObjectTrigger || (onUseEventItem && [o.エレメントプレート・土, o.エレメントプレート・水, o.エレメントプレート・火, o.エレメントプレート・風].has(game.curItem))
+
+@eval exp='tf.temp = "northSlotOnMonument"'
+@jump storage="maze.map" target=*_set_plate_on_monument
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] true
+
+@delevent
+@eval exp='f.arrivalDayToNorthrop = game.date'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] onObjectTrigger
+
+@question title="There is a stone monument. Would you like to touch it?"
+[eventoff cond='! tf.result']
+@se f=period
+@eval exp='o.フーラ雪原・北の森.setWarp(14, 38, "D", "warp")'
+@eval exp='o.フーラ雪原・北の森.setWarp(18, 13, "E", "warp")'
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------

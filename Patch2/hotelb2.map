@@ -1,0 +1,134 @@
+﻿; ホテルの地下
+
+name = ホテルの地下Ｂ２
+insideName = Ｂ２
+upper = ホテルの地下Ｂ１
+level = 44
+bgm = hideout
+margin = 1
+roof = wood
+shadow = dark
+sky = black
+blank = rock
+outfield = soil
+antiWarp = true
+
+; パーツ画像
+━ = plasterp
+　 = wood
+△ = rock
+／ = door
+〆 = heart
+㊤ = ladderu
+㊦ = ladderd
+⑸ = barrel
+⑹ = barrel
+⑺ = barrel
+⑻ = barrel
+
+; 敵情報
+maxGroups = 2
+monsters = ハイウェイマン,ブッシュワッカー
+
+; 宝箱
+box[1] = 媚薬の霧,男の秘薬,女の秘薬,フェロモンの粉,５連泊券
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━┳━━━┳━━━┳━━━┳━━━┳━━━┓
+ 4┃　┃　　　┃⑺　　┃　　　┃　　　┃❶　　┃
+  ┃　┃　　　┃　　　┃　　　┃　　　┃　　　┃
+ 3┃　┃　　敵┃　　　┃　　③┃　　　┃　　　┃
+  ┃　┗━━／┻━━／┻━━／┻━━／┻━━〆┫
+ 2┃　　　　　　　　　　　　　　①　　　①　　┃
+  ┃　┏／━━┳／━━┳／━━┳／━━━／━━┫
+ 1┃　┃　　　┃④　　┃敵　　┃△　　　△　　┃
+  ┃　┃　　　┃　　　┃　　　┃　　　　　　　┃
+ 0┃㊤┃⑸　⑹┃　　　┃　　　≠②　　　　　⑻┃
+  ┗━┻━━━┻━━━┻━━━┻━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[10][2].n.key = o.ハートの鍵;
+
+[endmap]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] WAY == "s" && ! party.lastIsMove && ! party.lastIsTurn
+
+@notice text="I can't open the door. Maybe there's something on the other side."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@delevent
+@jump storage="main11.scn" target=*hotel_7
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+*event_4
+;[exp] true
+
+@jump storage=&'o.ホテルの地下Ｂ１.mapFile' target=*event_2
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+*event_6
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+[if exp='game.curTarget.isHiring']
+	@notice text="But nothing happened!"
+	[eventoff]
+[endif]
+@eval exp='game.curTarget.heat += 100'
+@notice text=&'"<p>" + game.curTarget.displayName + "’s<w> lust increased by 100!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@se f=woodbreak
+@changefloor pimg=void click=false
+@wait time=1000
+@se f=bashan1
+@image layer=e5 storage=9999
+@anime_fadein layer=e5
+@wait time=1000
+[iscript]
+for(var i = 0; i < game.party.allMembers.count; i++)
+{
+	game.party.allMembers[i].heat += 100;
+}
+[endscript]
+@anime_fadeout layer=e5
+@wait time=500
+@notice text="I accidentally broke the barrel! It contained stimulants!<r> Everyone's lust increased by 100!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

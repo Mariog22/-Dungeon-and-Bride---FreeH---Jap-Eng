@@ -1,0 +1,134 @@
+﻿; 廃屋
+
+name = 森の中の廃屋２Ｆ
+insideName = ２Ｆ
+lower = 森の中の廃屋１Ｆ
+bgm = hideout
+margin = 3
+level = 6
+shadow = dark
+sky = forest
+roof = wood
+
+; パーツ画像
+━ = wood
+　 = woodb
+☐ = woodb
+／ = door
+︻ = panel
+㊦ = ladderd
+⑷ = br_hp
+⑸ = br_hp
+⑹ = barrel
+
+; 敵情報
+maxGroups = 1
+monsters = スライム,大ねずみ,ジャイアントバット
+traps = 石つぶて,毒針
+
+; 宝箱
+box[1] = 毒針,毒消しの花,毒消しの花,スリープの巻物,革のブーツ,バックラー,ふっくらパン
+box[2] = 罠はない,赤いネックレス
+box[3] = 罠はない,ふっくらパン,金貨（小）,金貨（小）,金貨（中）
+box[4] = 罠はない,金貨（中）,スリング,革の手袋,布のズボン
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  						┏━━━━━━━━━━━━━━━┓
+ 6						┃⑸　　　　　　　　　　　　　　┃
+  						┃　　　┏━┳━━━┓　┏━━／┫
+ 5						┃⑹　　┃❹┃　　　┃　┃　　敵┃
+  						┗━┓　┃　┃　　　┃　┃　　　┃
+ 4							☐┃　┃　┃　　敵／　┃⑷　　┃
+  							☐┃　┣／┻━━━┫　┣━━━┫
+ 3							☐┃①】　　　　❷┃　／　　　┃
+  							☐┃　┃　　　　　┃　┃　　　┃
+ 2							☐┃　／②　　　❸┃　┃　　❶┃
+  						┏／┛　┃　　　　　┃　┣━━━┫
+ 1						┃　　　┃　　　　　┃　／敵　　┃
+  						┃　　　┣━━━━━┛　┃　　　┃
+ 0						【③　　┃㊦　　　　　　┃　　　┃
+  						┗━━━┻━━━━━━━┻━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="No Trespassing!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] ! events.has(45) || WAY == "w"
+
+[if exp='game.isFreeMode']
+	[texton]
+	[name n=Thief]「What the hell are you guys doing?」[k]
+	The bandits attack![k]
+	[textoff]
+	@clf
+	@monster pos=1 name=ブッシュワッカー
+	@monster pos=2 name=ブッシュワッカー
+	@monster pos=3 name=ブッシュワッカー
+	@monster pos=4 name=ブッシュワッカー
+	@monster pos=5 name=ブッシュワッカー
+	@callbattle gameover=true
+	@delevent
+	[eventoff]
+[endif]
+
+[if exp='! game.events.has(45)']
+	@addevent name=全般 num=45
+	@jump storage="main01.scn" target=*cottage_2
+[endif]
+
+[texton]
+I haven't collected the necklace yet. It must be in this room, so let's find it.[k]
+[textoff]
+@walk move=e
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Be careful of falling when going out to the balcony."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+*event_5
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("life", 50)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP restored!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel
+@eval exp='game.curTarget.setStatus(o.倍加, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had attack count temporarily doubled!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,178 @@
+﻿; ワイルド・ブルの砦
+
+name = ワイルド・ブルの砦４Ｆ
+insideName = ４Ｆ
+upper = ワイルド・ブルの砦５Ｆ
+lower = ワイルド・ブルの砦３Ｆ
+level = 58
+bgm = bad
+shadow = dark
+sky = mountain
+roof = wood
+margin = 3
+
+; パーツ画像
+━ = stone
+　 = marble
+／ = door
+∫ = pick
+︻ = panel
+㊦ = ladderd
+⑹ = br_str
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4  
+  ┏━━━━━┳━━━┓
+ 4┃　　　　　┃　　⑹┃
+  ┃　　　　　┣／━━┫
+ 3┃　　　　　【②　　┃
+  ┃　　　　　┃　　　┃
+ 2┃③　　　①／　　㊦┃
+  ┃　　　　　┃　　　┃
+ 1┃④　③　　┃　　　┃
+  ┃　　　　　┣∬━━┫
+ 0┃③　　　　┃　　⑤】
+  ┗━━━━━┻━━━┛
+;    0   1   2   3   4  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@wait time=500
+@fg l=bandit_yellow left=300 top=80 b
+@fg c=thief_black left=450 top=80 b
+@fgf r=bandit_yellow left=600 top=80
+[texton]
+[name n="Wild Bull Member" f=thief_black_02]「You guys know this is Wild Bull's hideout, right?」[k]
+The Wild Bull members attacked all at once![k]
+[textoff]
+@clf
+
+@monster pos=0 name=バーグラー
+@monster pos=1 name=バーグラー
+@monster pos=2 name=バーグラー
+@monster pos=3 name=バーグラー
+@monster pos=4 name=バーグラー
+@monster pos=5 name=バーグラー
+@monster pos=6 name=バーグラー
+@monster pos=8 name=キャプテン
+@monster pos=9 name=キャプテン
+@monster pos=10 name=キャプテン
+@monster pos=11 name=キャプテン
+@monster pos=12 name=キャプテン
+@callbattle gameover=true escape=false
+
+@se f=period
+@notice text="We successfully captured the fort!"
+
+[texton]
+We've defeated most of the enemies.[r]Are there no more Wild Bull members here?[k]
+[警備隊長 f=02]「It seems that this fort has been successfully captured.」[k]
+The security chief who was leading the separate unit came over to us.[k]
+[警備隊長 f=03]「We have secured all other bases, but no one has seen Alex, who is crucial to our operation. Is he here?」[k]
+[if exp='game.isFreeMode']
+	[リーダー] shakes their head at the security chief's question.[k]
+[else]
+	[テオ]「No, I didn't see him here...」[k]
+[endif]
+[警備隊長 f=01]「Hmm... Where did he go...」[k]
+If Alex isn't arrested, the problem is likely to flare up again. If possible, I'd like to find him and arrest him.[k]
+[textoff]
+
+@eval exp='o.ワイルド・ブル壊滅作戦.flag = 1'
+@delevent
+@delevent name=全般 num=67
+@delevent map=ワイルドブルのアジト２Ｆ num=1
+
+; ４Ｆでの戦闘後いったん外に出て再び侵入した時にはアレックスはもういなくなっている
+@addevent map=ワイルド・ブルの砦１Ｆ num=1
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Boss' Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] (party.lastIsMove || party.lastIsTurn)&& ! game.inSearching
+
+@se f=woodcreak
+@eval exp='tf.temp = game.map.getPosRelatively(,, game.party.curFront)'
+@eval exp='dm("front"   + tf.temp.x + "," + tf.temp.y)'
+[if exp='tf.temp.x == 0 && tf.temp.y == 1']
+	@eval exp='game.view.stopEffect()'
+	@eval exp='game.view.emitLayer.loadImages(%[storage: "PE_base_view", visible: true])'
+	@eval exp='particle_object.start(game.view.emitLayer, 12, "PE_dustfall_f.pee", 0.2)'
+[endif]
+
+@eval exp='tf.temp = game.map.getPosRelatively(,, game.party.curLeft)'
+@eval exp='dm("left"   + tf.temp.x + "," + tf.temp.y)'
+[if exp='tf.temp.x == 0 && tf.temp.y == 1']
+	@eval exp='game.view.stopEffect()'
+	@eval exp='game.view.emitLayer.loadImages(%[storage: "PE_base_view", visible: true])'
+	@eval exp='particle_object.start(game.view.emitLayer, 12, "PE_dustfall_l.pee", 0.2)'
+[endif]
+
+@eval exp='tf.temp = game.map.getPosRelatively(,, game.party.curRight)'
+@eval exp='dm("right"   + tf.temp.x + "," + tf.temp.y)'
+[if exp='tf.temp.x == 0 && tf.temp.y == 1']
+	@eval exp='game.view.stopEffect()'
+	@eval exp='game.view.emitLayer.loadImages(%[storage: "PE_base_view", visible: true])'
+	@eval exp='particle_object.start(game.view.emitLayer, 12, "PE_dustfall_r.pee", 0.2)'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] party.lastIsMove || party.lastIsTurn
+
+[if exp='! game.inSearching']
+	@se f=woodcreak
+	@eval exp='game.view.stopEffect()'
+	@eval exp='game.view.emitLayer.loadImages(%[storage: "PE_base_view", visible: true])'
+	@eval exp='particle_object.start(game.view.emitLayer, 12, "PE_dustfall_c.pee", 0.4)'
+	[eventoff]
+[endif]
+
+@delevent
+@changefloor pimg=ladderu warp=up
+@se f=period
+@notice text="The hidden ladder to the upper floor was revealed!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="There was graffiti on the wall that read:<r>Hide all the collected treasures in the attic."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("power", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Strength permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

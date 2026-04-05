@@ -1,0 +1,170 @@
+﻿; 鉱山
+
+name = 鉱山Ｂ１
+insideName = Ｂ１
+lower = 鉱山Ｂ２
+level = 44
+bgm = anxiety
+isOutdoor = true
+roof = stone
+shadow = dark
+sky = black
+outfield = soil
+blank = rock
+
+; パーツ画像
+━ = soil
+　 = soil
+☐ = soil
+／ = door
+︻ = panel
+┯ = button
+㊦ = ladderd
+下 = ladderd
+Ⓐ = ladderu
+
+; 敵情報
+maxGroups = 2
+monsters = バンパイアバット,デーモンインプ
+
+; 移動ポイント
+(A) = map:フーラ雪原・北の森, x:7, y:39, way:s, lift:up
+
+; 宝箱
+box[1] = 麻痺治療薬,麻痺治療薬,精神の指輪_u,グレートソード_u,キュアパラライズの魔法書_u,ファイアストームの巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  		┏━━━┳━━━━━━━━━━━┓
+ 6		┃☐☐Ｅ／　　　　　　　　　　㊦┃
+  		┃☐☐☐┃　　　　　　　┏━━━┫
+ 5		┃☐☐☐┃　　　　　　　┃☐☐➊┃
+  		┣━━━┫　┏／┳／┓　┃☐☐☐┃
+ 4		┃☰☐☐／　┠①┃②┃　／Ｅ☐☐┃
+  		┃☰☐☐┃　┗／┻／┛　┣━━━┫
+ 3		┃☰☐☐┃　　　　　　　┃☐☐☐┃
+  		┣━━━┛　　　　　　　┃☐☐☐┃
+ 2		┃　　　　　　③　　　　／Ｅ☐☐┃
+  		┃　　　┏━━︼━━━━┻━━━┫
+ 1		┃Ⓐ　　／☐☐☐☐☐☐☐☐☐☐下┃
+  		┗━━━┻━━━━━━━━━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[4][4].n.img = "marble";
+pos[4][4].s.img = "marble";
+pos[4][4].w.img = "marble";
+pos[4][4].e.img = "marble";
+pos[4][4].f = %[type: "floor", img: "marble", pimg: "rope5", info: "昇降機", icon: 69, indoor: true];
+pos[5][4].f = %[type: "air", trap: "air", pimg: "rope3"];
+pos[4][4].f.noCount = true;
+pos[5][4].f.noCount = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(o.鉱山のインプ軍団.flag == 1) monsters = [m.バンパイアバット];
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command type=mini title="Which button will you press?" cancel=true
+@select text="Ｂ２" exp='tf.result = ["鉱山Ｂ２", "鉱山Ｂ４", "down"]'
+@select text="Ｂ３" exp='tf.result = ["鉱山Ｂ３", "鉱山Ｂ３", "down"]'
+@select text="Ｂ４" exp='tf.result = ["鉱山Ｂ４", "鉱山Ｂ２", "down"]'
+@select text="Ｂ５" exp='tf.result = ["鉱山Ｂ５", "鉱山Ｂ１", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+@call storage="mineb1.map" target=*change_lift cond='tf.result !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@command type=mini title="Which button will you press?" cancel=true
+@select text="Ｂ２" exp='tf.result = ["鉱山Ｂ４", "鉱山Ｂ２", "down"]'
+@select text="Ｂ３" exp='tf.result = ["鉱山Ｂ３", "鉱山Ｂ３", "down"]'
+@select text="Ｂ４" exp='tf.result = ["鉱山Ｂ２", "鉱山Ｂ４", "down"]'
+@select text="Ｂ５" exp='tf.result = ["鉱山Ｂ１", "鉱山Ｂ５", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+@call storage="mineb1.map" target=*change_lift cond='tf.result !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="<y>Worker notice:<w><r>The two lifts are connected by a pulley. Please be sure to consider this when moving them."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*change_lift
+
+[iscript]
+
+function setBlocksOnLiftMoving(floorWithLift, floors, x, y)
+{
+	// リフトを動かしたときリフトの動く全ブロックの状態を設定する
+	// floors はリフトが移動するすべての階。上階から順に並べる
+
+	var liftNum = floors.find(floorWithLift);	// リフトのあるフロアのインデックス
+
+	for(var i = 0; i < floors.count; i++)
+	{
+		var p = floors[i].pos[x][y];
+		if(i == liftNum)
+		{
+			p.n = %[type: "door", img: "marble", himg: "door"];
+			p.s = %[type: "door", img: "marble", himg: "door"];
+			p.w = %[type: "wall", img: "marble", himg: x == 4 ? "button" : void, button: x == 4];
+			p.e = %[type: "wall", img: "marble", himg: x == 5 ? "button" : void, button: x == 5];
+			p.f = %[type: "floor", img: "marble", pimg: i == 0 ? "rope5": void, info: "Elevator", icon: 69];
+			if(i == 0) p.f.indoor = true;
+		}
+		else
+		{
+			p.n = %[type: "door", img: "soil", himg: "door"];
+			p.s = %[type: "door", img: "soil", himg: "door"];
+			p.w = %[type: "wall", img: "soil"];
+			p.e = %[type: "wall", img: "soil"];
+			if(i == liftNum - 1) p.f = %[type: "floor", img: "marble", pimg: i == 0 ? "rope4": "rope2"];
+			// else if(i == floors.count - 1) p.f = %[type: "floor", img: "soil"];
+			else if(i > liftNum) p.f = %[type: "air", trap: "air"];
+			else p.f = %[type: "air", trap: "air", pimg: i == 0 ? "rope3": "rope1"];
+		}
+		p.f.noCount = true;	// 床が常に変化するので数えない
+
+		floors[i].recordChangedInfo([p.n, x, y, "n"]);
+		floors[i].recordChangedInfo([p.s, x, y, "s"]);
+		floors[i].recordChangedInfo([p.w, x, y, "w"]);
+		floors[i].recordChangedInfo([p.e, x, y, "e"]);
+		floors[i].recordChangedInfo([p.f, x, y, "f"]);
+	}
+}
+
+tf.arr = [o.鉱山Ｂ１, o.鉱山Ｂ２, o.鉱山Ｂ３, o.鉱山Ｂ４, o.鉱山Ｂ５];
+setBlocksOnLiftMoving(o[tf.result[0]], tf.arr, 4, 4);
+setBlocksOnLiftMoving(o[tf.result[1]], tf.arr, 5, 4);
+delete setBlocksOnLiftMoving;
+
+[endscript]
+
+@elevator map=&'tf.result[game.party.curX == 4 ? 0 : 1]' lift=&'tf.result[2]'
+@return
+;-------------------------------------------------------------------------------

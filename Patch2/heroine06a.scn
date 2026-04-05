@@ -1,0 +1,151 @@
+﻿; シナリオ・リーゼル編（ヒューマンＢ）
+
+
+
+
+;■ワイルド・ブル編  ※フリーモードのみ
+
+;◇ワイルド・ブルイベント01
+*wildbull_01
+
+; ワイルド・ブルのアジト
+@saveon
+@mu f=duel
+@fg l=リーゼル e=奴隷の鎧・上,奴隷の鎧・下 f=58 b left=400
+@fg r=アレックス e=上半身裸 f=02 left=600
+[texton w=1]
+[アレックス f=00]「Hey you guys. You came.」[k]
+[リーゼル f=58]「...」[k]
+[アレックス f=00]「Isn't it good? With this outfit, you can look at her boobs and ass whenever you want.」[k]
+@fg r=アレックス e=つまみ f=02 left=550
+Saying this, Alex rubbed [リーゼル]'s butt with dirty hands.[k]
+@fg l=リーゼル f=63 fix
+[リーゼル v=vl475 f=63]「Ahh...」[k]
+[アレックス f=00]「Hehe, did you feel it?」[k]
+@fg l=リーゼル f=62 fix
+[リーゼル v=vl476 f=62]「Ah... Ah...」[k]
+[アレックス f=00]「Hehehe, what a cutie.」[k]
+[textoff]
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+[if exp='isDemoVersion']
+	@call storage="hevent.ks" target=*trial_version_return
+	@gameon
+[endif]
+;-----------------------------------------------------------------------
+
+@fg l=リーゼル f=61 b left=400
+@fg r=アレックス e=上半身裸 f=02 left=600
+[texton w=1]
+[リーゼル f=61]「... ∗sob∗」[k]
+[アレックス f=00]「So what are you gonna do? Fight us?」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [リーゼル], fight hard!」[k]
+Alex and [リーゼル] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*wildbull_02
+
+; ワイルド・ブルのアジト
+@saveon
+@se f=door1
+@mu f=duel
+; @bg f=event70 chara=リーゼル p0=hair p1=01
+[texton w=0]
+[リーゼル v=vl477 e=汗だく f=37]「Ah... Ah... Ahh... Ahh...!」[k]
+[アレックス e=汗だく f=00]「Hehe, this is a great pussy. It feels so good.」[k]
+[リーゼル v=vl478 f=37]「Ahh... Stop it already...!」[k]
+[アレックス f=01]「Here we go! I'm gonna cum inside you!」[k]
+[リーゼル] was being roughly violated by Alex.[k]
+Alex forcibly pinned down the unwilling [リーゼル] and violates her. [k]
+She can't offer any resistance. In this hideout, Alex's base of operations, she has no choice but to obey his wishes...[k]
+[textoff]
+; @out
+@clf
+
+@w05
+; @gameon
+@fg l=アレックス e=汗だく f=02 b
+@fg r=リーゼル e=汗だく f=40
+[texton w=1]
+[アレックス f=00]「Whew, that felt good.」[k]
+[リーゼル f=40]「...」[k]
+[アレックス f=00]「Oh, you guys are here. Did you want to fight?」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [リーゼル], fight hard!」[k]
+Alex and [リーゼル] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 2'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 2'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント03
+*wildbull_03
+
+; ワイルド・ブルのアジト
+; @bg f=event70 chara=リーゼル p0=hair p1=02
+[texton w=0]
+[リーゼル v=vl479 e=汗だく・開き f=37]「Ah... Ah... Ah... Ah...」[k]
+[男 f=bandit_red_02]「Ahhh, this is the best sex ever! I'm gonna cum!」[k]
+[男 f=thief_red_04]「Hey, hurry up and bring her over here too!」[k]
+Today too, [リーゼル] is being treated like a sex toy by the Wild Bull guys...[k]
+[textoff]
+@clf
+@eval exp='game.party.escape(true)'
+[eventoff]
+
+
+
+
+;■リーゼル背徳の鎧イベント
+
+;◇リーゼル背徳の鎧イベント
+*sexy_armor
+
+@fg c=リーゼル f=37
+[texton w=1]
+[リーゼル v=vl480 f=37]「Ahhh...!」[k]
+The armor forced on [リーゼル] by the power of a curse contained a shocking surprise![k]
+An object resembling a male penis extended from within the pants and penetrated all the way into [リーゼル]'s vagina.[k]
+[if exp='o.リーゼル.getTotalSexCount() == 0']
+	; まだ処女だった場合
+	@fg c=リーゼル f=49
+	[リーゼル v=vl481 f=49]「It... hurts...!」[k]
+	[リーゼル] was still a virgin. Her hymen was penetrated and she was in a lot of pain.[k]
+	[リーゼル v=vl482 f=47]「Ugh... Please... Someone take this off... Please!」[k]
+	[リーゼル] looked like she was having a hard time even walking. All she could do was complain with tears in her eyes.[k]
+[else]
+	; 非処女だった場合
+	@fg c=リーゼル f=38
+	[リーゼル v=vl483 f=38]「I'm so embarrassed... Ahhh...!」[k]
+	[リーゼル] was penetrated deeply and feels pleasure. Even though everyone is watching, her crotch is already wet.[k]
+	@fg c=リーゼル f=37
+	[リーゼル v=vl484 f=37]「Haaa...![k]
+	[リーゼル] can barely walk, and her breathing is troubled. If this continues, I won't be able to concentrate.[k]
+	@fg c=リーゼル f=47
+	[リーゼル v=vl485 f=47]「Ha ha ha... If this keeps up... I... ah...!」[k]
+	[リーゼル] couldn't resist the pleasure of insertion, and she was writhing around, her eyes moist.[k]
+[endif]
+[textoff]
+@cl
+[eventoff]
+
+; 終わり

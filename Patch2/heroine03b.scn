@@ -1,0 +1,2651 @@
+﻿; シナリオ・ドワーフ編・Ｂパート
+
+
+
+;■主人公編・後半
+
+;◇主人公イベント07
+*theo_07
+
+; 宿屋の一室
+@saveon
+@fg c=フレデリカ e=通常 f=03 b
+@bg f=0001
+@mu f=happy
+[texton w=1]
+[テオ e=通常 f=02]「Well, let's have dinner together today.」[k]
+[フレデリカ v=vd211 f=03]「Yes, I want to eat steak today!」[k]
+I enjoyed a pleasant dinner with [フレデリカ].[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント08
+*theo_08
+; ある程度魔石あつめが進んだら
+
+; 宿屋の一室
+@saveon
+@fg c=フレデリカ e=通常 f=10 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+I feel like I've gotten to know [フレデリカ] much better lately.[k]
+It means that we are building trust as friends. I hope to continue to get along with her at this rate.[k]
+[テオ e=通常 f=01]「Hi, [フレデリカ].」[k]
+@fg c=フレデリカ f=11
+[フレデリカ f=11]「...!」[k]
+[テオ f=02]「I'll be your roommate today, good to see you.」[k]
+@fg c=フレデリカ f=10
+[フレデリカ f=10]「...」[k]
+Huh? She's not responding. Usually she greets me cheerfully.[k]
+[テオ f=02]「You haven't had dinner yet, have you?」[k]
+[フレデリカ f=10]「...」[k]
+[テオ f=02]「I found a very nice looking steak place in town today, would you like to go with me now?」[k]
+@fg c=フレデリカ f=21
+[フレデリカ v=vd212 f=21]「What, steak?」[k]
+; ↑ 一瞬嬉しそうな声で
+@fg c=フレデリカ f=31
+[フレデリカ f=31]「... (Ah!)」[k]
+@fg c=フレデリカ f=52
+[フレデリカ v=vd213 f=52]「No, I'm not going! Why don't you go by yourself, captain?」[k]
+; ↑ 急に不機嫌になった風に
+[テオ f=05]「What...?」[k]
+[フレデリカ v=vd214 f=52]「I'm going to have dinner alone! Good bye!」[k]
+@cl
+[テオ f=12]「Oh, [フレデリカ]...」[k]
+@se f=door1
+∗bang!∗[k]
+[テオ f=10]「...」[k]
+That was blunt... Did I do something to offend her?[k]
+I'll ask her later... I hope it's nothing.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント09・告白イベント
+*theo_09
+
+; 宿屋の一室
+@saveon
+@fg c=フレデリカ e=通常 f=10 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[フレデリカ f=10]「...」[k]
+[テオ e=通常 f=10]「...」[k]
+Today, [フレデリカ] is being curt again. When I greeted her earlier, she was silent.[k]
+Did I do something wrong? If so, I owe her an apology...[k]
+[テオ f=12]「Hey, [フレデリカ], what's going on? You've been acting strangely distant towards me for a while now...」[k]
+[フレデリカ f=10]「...」[k]
+[テオ f=12]「Did I do something wrong? If so, I apologize. So tell me why.」[k]
+[フレデリカ f=10]「...」[k]
+[テオ f=12]「Hey, [フレデリカ]?」[k]
+@fg c=フレデリカ f=57
+[フレデリカ v=vd215 f=52]「You didn't!」[k]
+[テオ f=12]「Then why did you...」[k]
+[フレデリカ v=vd216 f=57]「I think that about you, I...」[k]
+[テオ f=05]「Me?」[k]
+@fa
+[フレデリカ v=vd217 f=52]「I... I h-h-hate you!」[k]
+; ↑ 言いづらそうに、最後はキッパリ
+[テオ f=12]「Ehh...」[k]
+[フレデリカ v=vd218 f=57]「...So that's why...」[k]
+; ↑ 少ししょんぼりしながら、自分に言い聞かせるように
+[テオ f=12]「[フレデリカ]...」[k]
+I see... so [フレデリカ] has come to hate me...[k]
+I'm shocked, to be honest. I felt like I was getting to know her...[k]
+@fg c=フレデリカ f=50
+[フレデリカ v=vd219 f=50]「Um...」[k]
+; ↑ 泣きそうになる
+[テオ f=05]「[フレデリカ]?」[k]
+@fg c=フレデリカ f=49
+[フレデリカ v=vd220 f=49]「Ugh... Uaahhh... Ugh... ∗hic∗」[k]
+; ↑ 嗚咽を漏らす
+[テオ f=12]「[フレデリカ], what's wrong?」[k]
+Suddenly, [フレデリカ] began to sob.[k]
+She turned her back to me, shook her shoulders and cried quietly. What's going on...?[k]
+[フレデリカ v=vd221 f=49]「Captain!」[k]
+@mu f=calm
+@clf
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+∗thud!∗[k]
+[テオ f=05]「[フレデリカ]...!」[k]
+Suddenly, the crying [フレデリカ] hugged me![k]
+[フレデリカ v=vd222 f=50]「Uhhhh...」[k]
+[テオ f=50]「[フレデリカ]...」[k]
+[フレデリカ], who had told me earlier that she hated me, was wet with tears as she nuzzled her face into my chest.[k]
+I gently hugged her shoulders.[k]
+What on earth is going on...? I don't understand what she's thinking...[k]
+[フレデリカ v=vd223 f=50]「What I said earlier is a lie...」[k]
+[テオ f=05]「Eh?」[k]
+[フレデリカ v=vd224 f=49]「How can I... How can I hate you? Of course it's impossible...」[k]
+[テオ f=05]「[フレデリカ]...」[k]
+So you lied, and the coldness was all an act?[k]
+[テオ f=05]「Hey, you had reason for that, didn't you? Tell me.」[k]
+[フレデリカ f=48]「...」[k]
+[フレデリカ v=vd225 f=47]「...We dwarves have a code.」[k]
+[テオ f=05]「A code?」[k]
+[フレデリカ v=vd226 f=48]「I'll tell you about the code that we, as a clan, must never transgress.」[k]
+[textoff]
+@out
+@w05
+[texton w=1]
+We dwarves have strict restrictions on marrying other races, in order to keep our bloodlines alive.[k]
+It is especially strict for girls, who must obtain special permission from the chief to marry a man from the outside world.[k]
+It also isn't allowed to remain single forever. At a certain age, we must return and marry a man from our village.[k]
+To live in a village and bear children... That is the role of us dwarf women...[k]
+[textoff]
+@w05
+@fg c=フレデリカ f=48 b
+@bg f=0001
+[texton w=1]
+[テオ f=06]「...」[k]
+[フレデリカ v=vd227 f=48]「So I have to go back to the village sooner or later... I can't stay with you forever...」[k]
+[テオ f=05]「...」[k]
+[フレデリカ v=vd228 f=50]「But the more time I spent with you, the more I fell in love...」[k]
+[テオ f=05]「...!」[k]
+[フレデリカ]... loves me?[k]
+[フレデリカ v=vd229 f=47]「But that will make it hard for me to go back to the village. So I tried to hate you... But I couldn't.」[k]
+[テオ f=05]「[フレデリカ]...」[k]
+[フレデリカ v=vd230 f=48]「But I will do my best to forget about it. So please don't be too nice to me... Please...」[k]
+[テオ f=06]「...」[k]
+[textoff]
+
+; 選択肢・告白するかどうか
+@command type=short
+@select text="It's been fun so far" target=*_theo_09_n
+@select text=&'"But " + o.フレデリカ.name + ", I love you"' target=*_theo_09_y
+[s]
+
+*_theo_09_n
+; 選択肢１・あきらめる
+
+[texton w=1]
+[テオ f=06]「I understand what you're going through, [フレデリカ].」[k]
+[フレデリカ f=48]「...」[k]
+[テオ f=06]「I see it's been very hard on you. So I respect your feelings.」[k]
+[テオ f=05]「...But that doesn't change the fact that you're part of our party.」[k]
+[テオ f=06]「That's why I want to continue to treat you as a valued friend. Until the day I say goodbye to you...」[k]
+@fg c=フレデリカ f=47
+[フレデリカ v=vd231 f=47]「Captain...」[k]
+[テオ f=02]「Also... I get anxious when you're cold with me...」[k]
+@fg c=フレデリカ f=60
+[フレデリカ v=vd232 f=60]「Yeah. From now on, I'll treat you normally.」[k]
+[テオ f=02]「Keep up the good work, [フレデリカ].」[k]
+[textoff]
+@out
+@eval exp='o.リム.moveHeart(o.テオ, -20)'
+[hoteloff]
+
+*_theo_09_y
+; 選択肢２・告白する
+
+[texton w=1]
+[テオ f=05]「Wait! [フレデリカ]!」[k]
+@fg c=フレデリカ f=45
+[フレデリカ v=vd233 f=45]「Captain?」[k]
+[テオ f=12]「I love you too, [フレデリカ]! So don't say that!」[k]
+@mu f=love
+[フレデリカ v=vd234 f=45]「Eh...!」[k]
+[テオ f=06]「I was really happy that you said you loved me. Because I love you too.」[k]
+@fg c=フレデリカ f=58
+[フレデリカ f=58]「...!」[k]
+[テオ f=06]「So don't say something lonely like you'll forget me. I want you to be my lover.」[k]
+@fg c=フレデリカ f=47
+[フレデリカ v=vd235 f=47]「But... We'll have to say goodbye one day...」[k]
+[テオ f=06]「I don't care. I want to love you until the day we part.」[k]
+[フレデリカ v=vd236 f=47]「Cap...tain...!」[k]
+@clf
+@se f=dosa
+@quake time=200 hmax=2
+Following my instincts, I embraced [フレデリカ].[k]
+[テオ f=05]「I love you, [フレデリカ]...」[k]
+[フレデリカ v=vd237 f=59]「I'm happy to hear it... Captain...!」[k]
+[フレデリカ] hugged me back, her shoulders shaking.[k]
+Then we hugged each other for a while.[k]
+[フレデリカ v=vd238 f=59]「Though... this is going to make saying goodbye even more difficult...」[k]
+[テオ f=02]「Yes...」[k]
+She is right, it will be hard to say goodbye.[k]
+But I didn't want to regret it. I couldn't not tell her how I felt, even if it would end sadly.[k]
+[テオ f=06]「[フレデリカ]...!」[k]
+Feeling [フレデリカ]'s warmth, I vowed to cherish every day with her from now on.[k]
+[textoff]
+@fa
+@out
+@w05
+@addevent name=フレデリカ num=8
+@addevent name=フレデリカ num=9
+@addevent name=フレデリカ num=10
+@eval exp='o.フレデリカ.moveHeart(o.テオ, 20)'
+[hoteloff]
+
+
+;◇主人公イベント10・恋人イベント
+*theo_10
+
+; 宿屋の一室
+@saveon
+@fg c=フレデリカ e=通常 f=03 b
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[テオ e=通常 f=05]「Will we... have to part ways someday...?」[k]
+[フレデリカ v=vd239 e=通常 f=03]「Let's enjoy the present to the fullest!」[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント11・一度仲良くなったが、その後疎遠になった場合
+*theo_11
+
+; 宿屋のロビー
+@saveon
+@fg c=フレデリカ e=通常 f=05 b
+@bg f=0003
+[texton]
+[フレデリカ v=vd240 e=通常 f=05]「Ah... Good morning, Captain.」[k]
+[テオ f=12]「Oh, good morning...」[k]
+[フレデリカ v=vd241 f=10]「Excuse me...」[k]
+[テオ f=06]「...」[k]
+Recently, [フレデリカ] had become very distant. We weren't doing anything that lovers would normally do.[k]
+Perhaps it is impossible to continue a relationship between two people who are destined to part ways.[k]
+[textoff]
+@out
+@w05
+[texton]
+Later, [フレデリカ] and I decided to end our relationship. It was unfortunate, but it was for the best for both of us.[k]
+[textoff]
+@w05
+[hoteloff]
+
+
+;◇主人公イベント12
+*theo_12
+
+; サファイアシティ
+@saveon
+@w05
+@bg f=0019
+@mu f=calm
+[texton w=1]
+[テオ e=通常 f=06]「...」[k]
+I remember when I confessed my feelings to [フレデリカ].[k]
+[テオ f=06]「[フレデリカ]...」[k]
+We expressed our feelings for each other and became lovers.[k]
+But at the same time, I knew that this love would eventually end.[k]
+[テオ f=06]「...」[k]
+Do we really have to part ways? Can't I stay with [フレデリカ] forever?[k]
+[textoff]
+@fg c=マリア e=通常 f=01
+[texton w=1]
+[マリア v=va238 f=01]「Hey there! What a coincidence to see you!」[k]
+[テオ f=05]「Maria...」[k]
+[マリア v=va239 f=08]「Hmm? Are you worried about something?」[k]
+[テオ f=06]「Y-yeah...」[k]
+My gloomy mood must have been pretty obvious...[k]
+...Come to think of it, Maria is a dwarf like [フレデリカ].[k]
+[テオ f=05]「Hey, Maria. Can I ask you something?」[k]
+[マリア v=va240 f=02]「What? What? You can tell me!」[k]
+[textoff]
+@out
+[texton w=0]
+I told Maria all about [フレデリカ].[k]
+[textoff]
+@fg c=マリア f=08 b
+@bg f=0019
+[texton w=1]
+[マリア v=va241 f=08]「I see... You fell in love with a dwarf. That's a tough one.」[k]
+[テオ f=05]「Hey, do I really have to break up with her?」[k]
+[マリア f=08]「...」[k]
+[マリア v=va242 f=08]「...It's not like you can't avoid breaking up.」[k]
+[テオ f=12]「What?!」[k]
+@fg c=マリア f=02
+[マリア v=va243 f=01]「I mean, this town is full of dwarven women. They decided to live here rather than going back to their villages.」[k]
+[テオ f=05]「Then what [フレデリカ] was talking about...?」[k]
+[マリア v=va244 f=02]「She isn't wrong. Dwarf girls, myself included, must eventually return to their villages to keep their bloodlines alive. But...」[k]
+[テオ f=05]「But?」[k]
+[マリア v=va245 f=02]「As long as you fulfill your duty as a dwarven daughter, after that you can do whatever you want.」[k]
+[テオ f=12]「That means...」[k]
+[マリア v=va246 f=02]「So as long as I fulfill my obligation to marry a man from my village and have children with him, I'd be able to leave again afterwards.」[k]
+[テオ f=06]「...」[k]
+[textoff]
+@out
+@w05
+[townoff]
+
+
+;◇主人公イベント13・プロポーズイベント
+*theo_13
+
+; 宿屋の一室
+@saveon
+@fg c=フレデリカ e=通常 f=10 b
+@bg f=0001
+@mu f=calm
+[texton w=1]
+[フレデリカ v=vd242 f=10]「...Maria is right. We dwarf girls can be free if we fulfill our duty of having children...」[k]
+[テオ e=通常 f=05]「Then...」[k]
+[フレデリカ v=vd243 f=10]「But that would take at least a year... I can't keep you waiting that long...」[k]
+[テオ f=06]「At least one year...」[k]
+[textoff]
+
+; 選択肢・プロポーズするか否か
+@command type=short
+@select text="I can wait" target=*_theo_13_y
+@select text="I can't wait that long" target=*_theo_13_n
+[s]
+
+*_theo_13_n
+; 選択肢１・あきらめる
+
+[texton w=1]
+[テオ f=06]「...」[k]
+A year... After that much time has passed, our feelings for each other may have changed...[k]
+...Maybe I got a little too heated.[k]
+[テオ f=02]「I understand, [フレデリカ]. I'm sorry for asking something unreasonable of you.」[k]
+[フレデリカ v=vd244 f=14]「It's okay...」[k]
+[フレデリカ] looked a little sad.[k]
+...But it was for the best. For the sake of each of our happiness, I'm sure this was the right choice.[k]
+[textoff]
+@out
+[hoteloff]
+
+*_theo_13_y
+; 選択肢２・プロポーズする
+
+@mu f=wedding
+[texton w=1]
+[テオ f=12]「What are you talking about?」[k]
+@fg c=フレデリカ f=05
+[フレデリカ v=vd245 f=05]「What...?」[k]
+[テオ f=12]「I will wait! I'll wait forever! If I can be with you, that's nothing!」[k]
+@fg c=フレデリカ f=31
+[フレデリカ v=vd246 f=31]「Captain...!」[k]
+[テオ f=10]「So come back to me! I'll be waiting for you to come back.」[k]
+@fg c=フレデリカ f=58
+[フレデリカ v=vd247 f=58]「Cap...tain...!」[k]
+; ↑ 涙ぐむ
+@fg c=フレデリカ f=41
+[フレデリカ v=vd248 f=41]「Yes...! I'll come back to you...!」[k]
+[textoff]
+@out
+@w1
+@addevent name=テオ num=1
+@eval exp='game.wife = o.フレデリカ'
+[hoteloff]
+
+
+;◇主人公イベント14・ムールムールを倒した直後
+*theo_14
+
+; ブレイブタウンの広場（メインシナリオの続き）
+[textoff]
+
+@mu f=wedding
+@fg c=ヒロイン e=&'game.wife.isHipNaked() ? "バスタオル" : "現在の装備"' f=22
+[texton w=1]
+[フレデリカ v=vd249 f=21]「Captain, now we can...」[k]
+[テオ f=02]「...Yeah, we're going to be together.」[k]
+If we defeat Murmur, we will get married. That's what we decided.[k]
+[フレデリカ v=vd250 f=09]「But... Before that, I...」[k]
+[テオ f=02]「I know. You have to do your duty as a dwarven daughter.」[k]
+[フレデリカ v=vd251 f=21]「Captain... Please wait for me.」[k]
+[テオ f=01]「Yes, I'll wait as long as it takes. You're the only one for me, [フレデリカ].」[k]
+Once [フレデリカ] has fulfilled her duty, we will be able to get married.[k]
+It's a long road, but we will get through it together. We promised each other.[k]
+[textoff]
+@fa
+@out
+@w05
+
+@gameon
+@mu f=town
+@fg c=ヒロイン e=&'game.wife.isHipNaked() ? "バスタオル" : "現在の装備"' f=01 b
+[texton w=0]
+[フレデリカ v=vd252 f=01]「Why not choose our wedding rings? That will symbolize our vows to each other.」[k]
+[テオ f=02]「Okay, let's do that.」[k]
+[b][nw]
+Decide on the wedding rings.[r]
+Please equip [テオ] and [フレデリカ] with two identical rings.[k]
+[/nw][/b]
+[textoff]
+@addevent name=全般 num=82
+[eventoff]
+
+
+
+;◇主人公イベント・結婚イベント（指輪が２つそろうと発生）
+*theo_wedding
+
+; ドワーフ村
+@out
+@w05
+@bg f=0028
+@mu f=highland
+@saveon
+[texton w=1]
+A few days later.[k]
+I visited a dwarf village with [フレデリカ].[k]
+In order to stay with [フレデリカ] as long as possible, I accompanied her on her trip back home.[k]
+The village of the dwarves was located deep in inhospitable remote mountains, and it took many days to reach it.[k]
+In the village, I also greeted the chief as [フレデリカ]'s fiancé. The chief agreed to our future marriage on the condition that [フレデリカ] first give birth to a dwarf child.[k]
+Surprisingly, I was welcomed by the dwarven villagers and allowed to stay in the village for one night.[k]
+And on the same day, [フレデリカ] was to marry a dwarf man.[k]
+[textoff]
+@out
+@w05
+
+@fg c=フレデリカ e=通常 f=29 b
+@bgf f=0010
+[texton w=1]
+[テオ e=通常 f=12]「Not one, but six?!」[k]
+[フレデリカ v=vd253 f=29]「Yes, in order to have children quickly and reliably, temporary brides marry six men at once...」[k]
+[テオ f=10]「...」[k]
+To my surprise, [フレデリカ] suddenly married several men.[k]
+With certain partners, it may be difficult to conceive. Therefore, it is the practice in this village to have them marry more than one man.[k]
+The marriage period is until a child is conceived and delivered. In the event that a woman fails to conceive a child after six months of procreation here, she is to be released from her obligation at that time.[k]
+[テオ f=10]「Well... are you okay with suddenly marrying several men?」[k]
+@fg c=フレデリカ f=34
+[フレデリカ v=vd254 f=34]「It's okay. All the girls in this village do it. Besides, all the husbands are very kind people.」[k]
+[テオ f=10]「...」[k]
+From now on, [フレデリカ] will live with her six husbands in a large common house in the village.[k]
+There are other girls here in similar circumstances, so multiple men and women will be trying to procreate on a daily basis.[k]
+The six husbands who married [フレデリカ] are all grown men with a track record of impregnating a number of women already.[k]
+They are very practiced with women. So they'll surely safely make a baby with her. But...[k]
+[テオ f=09]「Damn...!」[k]
+My chest is pounding. My heart is stirred with anxiety.[k]
+From now on, [フレデリカ] will have to take turns with her dwarven husbands on a daily basis in order to procreate.[k]
+But that's the role she has to play, for the survival of her people.[k]
+[テオ f=10]「...」[k]
+It is very painful, but I have to endure it. I have to wait until the day she comes back to me.[k]
+@fg c=フレデリカ f=01
+[フレデリカ v=vd255 f=01]「It's okay. Captain!」[k]
+[テオ f=05]「What...?」[k]
+@fg c=フレデリカ f=02
+[フレデリカ v=vd256 f=02]「I will never forget you. So, please believe in me and wait for me.」[k]
+[テオ f=05]「[フレデリカ]...」[k]
+[テオ f=02]「Okay. I'll be waiting for you.」[k]
+[フレデリカ v=vd257 f=02]「Okay, I'm off...」[k]
+[textoff]
+@cl
+@w05
+[texton w=1]
+[テオ f=05]「[フレデリカ]...」[k]
+[フレデリカ] entered her new home. The residence where her six husbands were waiting for her.[k]
+[テオ f=06]「...」[k]
+I silently watched her back as she left, then departed from the dwarf village...[k]
+[textoff]
+@fa
+@out
+@w1
+
+; １週間後・サファイアシティの宿屋
+@bg f=0001
+@mu f=calm
+[texton w=0]
+It's been a week since I returned from the dwarf village.[k]
+[テオ f=06]「...」[k]
+I want to see [フレデリカ]. I couldn't hold back that feeling anymore.[k]
+No man of another race is allowed to meet a dwarf girl who is aiming for a baby. If they had sex, a pure blooded dwarf may not be born.[k]
+But my feelings for her drove me to her dwarf village.[k]
+I don't care if I can't talk to her. I want to see [フレデリカ], at least for a moment. I want to burn her image into my eyes.[k]
+[textoff]
+@out
+@w1
+
+; ドワーフ村
+@bg f=0010
+[texton w=0]
+[テオ f=06]「...」[k]
+When I arrived at the dwarf village, I approached the residence where [フレデリカ] and her six husbands lived.[k]
+Then, avoiding the eyes of dwarves, I went around to the back of the house.[k]
+Is there anywhere I can get a glimpse of what's going on inside...?[k]
+[テオ f=06]「...」[k]
+I look around carefully.[k]
+[テオ f=05]「...!」[k]
+Then I found a small window![k]
+I might be able to see inside from there...![k]
+[textoff]
+@out
+@w05
+
+@bg f=0011
+[texton w=1]
+[テオ f=06]「...」[k]
+I approach the window.[k]
+[フレデリカ] should be inside, living with her six husbands.[k]
+I want to see my beloved girlfriend soon![k]
+[テオ f=06]「...」[k]
+I checked again to make sure no one was around, then cautiously peered inside...[k]
+[textoff]
+@out
+@w05
+*_replay_theo_wedding1a
+@bg f=event103
+@mu f=anxiety
+@w05
+[texton w=2]
+[name n="Dwarf Girl"]「Aah... aah... aah... aah...」[k]
+[name n="Dwarf Girl"]「Ahh... if you do that to me... ahhh」[k]
+[name n="Dwarf Girl"]「Aaahh... I'm cumming...!」[k]
+[name n="Dwarf Husband"]「I'm about to cum... Ugh!」[k]
+[name n="Dwarf Husband"]「Phew... I did it. Now, who should I do it with next?」[k]
+[テオ f=12]「This is...!」[k]
+Inside, several pairs of naked male and female dwarves were engaged in frenzied sex.[k]
+Sweating profusely and breathing heavily, they relentlessly collide with each other's bodies.[k]
+Of course, all ejaculations were internal. The men inserted themselves deep into their vaginas and poured seed into them without leaving a drop behind. A large amount of semen dripped from between the women's legs.[k]
+The temporary husbands are all extremely virile. After finishing with one woman, they rest for a while and then move on to the next.[k]
+Once again, the women gazed with anticipation at the giant penises, which were once again filled with power and standing tall.[k]
+[name n="Dwarf Husband"]「Next up is you! Here we go!」[k]
+∗sluuurp!∗[k]
+[name n="Dwarf Girl"]「Aaah... that's good...!」[k]
+The dwarves who are temporarily wives let out indecent cries as they are roughly prodded.[k]
+Their purpose was to fulfill their obligation as dwarves. However, they were clearly enjoying sex.[k]
+@jump target=*_another_dwarf_route cond='o.フレデリカ.love.theo >= 70 && o.フレデリカ.getTotalSexCount() == 0 && ! f.replayMode'
+@bgf f=0011
+[texton w=1]
+[テオ f=12]「Where is [フレデリカ]...?」[k]
+I look for [フレデリカ]. Is she not here?[k]
+[テオ f=12]「...!」[k]
+Suddenly, I noticed a familiar girl with pigtails lying on the floor in the distance. It was [フレデリカ]![k]
+[テオ f=10]「...」[k]
+I searched around for a window with a better view of her.[k]
+[textoff]
+@out
+@w05
+@bg chara=フレデリカ f=event65 p3=hair p4=01 p5=01
+@w05
+[texton w=2]
+[フレデリカ v=vd258]「Ahh... husband...」[k]
+[name n="Dwarf Husband"]「How does it feel?」[k]
+[テオ]「[フレデリカ]...!」[k]
+There, [フレデリカ] lay on her back on the floor, receiving caresses from her temporary husband.[k]
+The man caressed [フレデリカ]'s body carefully with his lewd hands.[k]
+He fondled her impressive breasts, ran his tongue over her smooth white skin, and caressed her stomach, neck, butt, and thighs with practiced ease.[k]
+@bg chara=フレデリカ f=event65 p3=hair p4=01 p5=05
+[フレデリカ v=vd259]「Ah... there... ahh...!」[k]
+[name n="Dwarf Husband"]「This is the best spot for you. See, you feel good, right?」[k]
+[フレデリカ] seemed to be quite aroused by her husband's caresses.[k]
+Her face flushed, she fidgeted with her feet and continued to let out pitiful moans.[k]
+Her nipples were engorged and hard.[k]
+[name n="Dwarf Husband"]「Now, the moment you've been waiting for...」[k]
+@bg chara=フレデリカ f=event65 p3=hair p4=02 p5=04
+[フレデリカ v=vd260]「Ahh...!」[k]
+When the dwarf husband ran his hand over [フレデリカ]'s private parts, her body jerked and she moaned in agony.[k]
+[name n="Dwarf Husband"]「Come on, it feels good, doesn't it?」[k]
+[フレデリカ v=vd261]「Ahh... ahh... no... I'm going crazy...!」[k]
+The dwarf husband persistently touches [フレデリカ]'s slit with his thick fingers.[k]
+[フレデリカ] must have been feeling it deeply, as she writhed her hips and squirmed.[k]
+[フレデリカ v=vd262]「Phew...」[k]
+[name n="Dwarf Husband"]「You're soaking wet. You're a really wet wife, aren't you?」[k]
+[テオ]「...」[k]
+[フレデリカ], who has been thoroughly explored physically by her dwarf husband, has become so wet that her crotch is soaked.[k]
+With sex every day, she had become completely developed.[k]
+[フレデリカ v=vd263]「Ah... ahh... husband...!」[k]
+@bg chara=フレデリカ f=event65 p3=hair p4=01 p5=05
+[name n="Dwarf Husband"]「Oops, I almost made you cum with just my fingers. Before that, I have to put this in and make sure to cum inside you.」[k]
+The dwarf husband kneels down and moves behind [フレデリカ].[k]
+Between his legs stood a large, impressive penis, typical of a dwarf man, standing proudly erect.[k]
+Are you going to put something so outrageous into [フレデリカ]...?![k]
+[name n="Dwarf Husband"]「Well then, let's get started.」[k]
+[フレデリカ v=vd264]「...Yes, please, husband...」[k]
+[フレデリカ] boldly spreads her legs wide open. She proudly shows her wet secret place to her erect husband.[k]
+[フレデリカ] was truly lewd. It was a [フレデリカ] I had never seen before.[k]
+[name n="Dwarf Husband"]「Here we go... Haa!」[k]
+@bg chara=フレデリカ f=event65 p3=hair p4=03 p5=04
+∗sluurp∗[k]
+[フレデリカ v=vd265]「Ahhhhh...!」[k]
+Her husband's penis entered her easily. His large penis slid smoothly into [フレデリカ].[k]
+[フレデリカ], now penetrated, couldn't help but moan in a sweet voice. It was as if the moment she had been waiting for had finally arrived.[k]
+[name n="Dwarf Husband"]「Now, let's make a baby! I'm going to fill you up with my semen!」[k]
+[フレデリカ v=vd266]「Yes... please fill me up inside... aaaahhh...!」[k]
+The dwarf husband begins to sway his hips rhythmically. Still deeply connected to [フレデリカ], he thrusts his hips forward with a thumping motion.[k]
+∗slurp slurp slurp slurp∗[k]
+[フレデリカ v=vd267]「Aaah... Aaah... Husband... Aaah!」[k]
+[フレデリカ] writhed in pleasure. She took her dwarf husband's huge cock into her lower mouth and moaned shamelessly.[k]
+∗slurp slurp slurp slurp∗[k]
+[フレデリカ v=vd268]「Ah, ah, ah, ah!」[k]
+[フレデリカ]'s moans grow louder. She writhes in ecstasy, her large breasts bouncing up and down.[k]
+She no longer felt any shame and surrendered herself completely to the pleasures of sex.[k]
+[フレデリカ v=vd269]「Ahhh...! I'm cumming...!」[k]
+[フレデリカ]'s body jerked! Her eyes moistened, she let out a troubled sigh, and her whole body trembled.[k]
+[name n="Dwarf Husband"]「I'm going to do it too! Come on, get pregnant with my child!」[k]
+∗spurt! spurt!∗[k]
+The dwarf husband also ejaculates. Shaking his hips, he pours his dwarven seed into [フレデリカ]'s vagina.[k]
+@bg chara=フレデリカ f=event65 p3=hair p4=04 p5=03
+[フレデリカ v=vd270]「Ahh... That's good... Husband...」[k]
+[name n="Dwarf Husband"]「That's great. Let's take a break and then have another go.」[k]
+[フレデリカ v=vd271]「Yes, husband...」[k]
+[フレデリカ] smiles and gazes dreamily at her dwarf husband.[k]
+In her gaze, I sensed something like trust and affection for her older husband, who satisfies her sexually...[k]
+[textoff]
+@fa
+@out
+@w1
+; ドワーフ村共用住居の外
+@bgf f=0011
+[texton w=1]
+[テオ f=12]「[フレデリカ]...」[k]
+I had hope that she might show signs of hesitation due to her feelings for me and her guilty conscience.[k]
+However, there was no sign of that. She enjoyed her relationship with her husband as if it were the most natural thing in the world.[k]
+Come to think of it, it's only natural. [フレデリカ] is a married woman. That's what married life is like. She wouldn't think about her feelings for me, who is not her husband, during sex.[k]
+[テオ f=06]「Let's go home...」[k]
+I returned from the dwarf village feeling deflated.[k]
+[textoff]
+@out
+@w1
+@return cond='f.replayMode'
+;-------------------------------------------------------------------------------
+; セックス記録と時間経過
+[iscript]
+
+game.date += 185;
+
+if(o.フレデリカ.firstPartnerKey === void) o.フレデリカ.firstPartnerKey = "ドワーフ夫";
+o.フレデリカ.desire += intrandom(100, 120);
+o.フレデリカ.moral -= intrandom(50, 60);
+o.フレデリカ.expose += intrandom(10, 15);
+o.フレデリカ.feel += intrandom(120, 140);
+o.フレデリカ.sexCount.other += intrandom(620, 630);
+o.フレデリカ.pourCount += intrandom(600, 610);
+tf.num = o.フレデリカ.loversCount;
+
+// ドワーフたちとのセックス履歴
+for(var i = 12; i >= 6; i--)
+{
+	game.elapse(1);
+	var rec = o.フレデリカ.getSexRecord(o.ドワーフ夫, intrandom(2, 4),,, game.date - i);
+	o.フレデリカ.addSexRecordAndChangeHeart(rec);
+}
+o.フレデリカ.loversCount = tf.num + 6;	// ６人追加
+o.フレデリカ.affairCount = 0;	// 不貞行為ではないので０に
+
+// 主人公のセックス履歴
+game.wife.strip.theo = "裸・幸せ";
+tf.temp = game.wife.getSexRecord(o.テオ, 2, 0, "乳揉み,正常位", game.date - 3);
+game.wife.addSexRecordAndChangeHeart(tf.temp);
+tf.temp = game.wife.getSexRecord(o.テオ, 2, 0, "パイズリ,正常位", game.date - 2);
+game.wife.addSexRecordAndChangeHeart(tf.temp);
+tf.temp = game.wife.getSexRecord(o.テオ, 3, 0, "パイズリ,正常位,騎乗位", game.date - 1);
+game.wife.addSexRecordAndChangeHeart(tf.temp);
+tf.temp = game.wife.getSexRecord(o.テオ, 0, 0, "パイズリ,フェラチオ", game.date - 0);
+game.wife.addSexRecordAndChangeHeart(tf.temp);
+
+[endscript]
+;-------------------------------------------------------------------------------
+
+[texton w=0]
+Six months have passed.[k]
+[textoff]
+@w1
+
+; 半年後・サファイアシティ
+@mu f=wedding
+@fg c=フレデリカ e=通常 f=03 b
+@bgf f=0007
+[texton w=1]
+[フレデリカ v=vd272 f=03]「I'm back, Captain!」[k]
+[テオ f=01]「[フレデリカ]...!」[k]
+After completing her six-month obligation as a dwarven woman, [フレデリカ], who had already taken her first steps into adulthood, returned to me.[k]
+[フレデリカ] could not conceive in the end, perhaps because she was not compatible with her six husbands. Children are a gift from heaven, or so it would seem.[k]
+Whatever the outcome, [フレデリカ] has done her part. From now on, she can live the life she wants.[k]
+[フレデリカ v=vd273 f=02]「Now I am free! From now on, I can be with you all the time!」[k]
+This is the moment I have been waiting for. Of course, my feelings did not change even after six months had passed.[k]
+[テオ f=05]「...I'll ask again. [フレデリカ], please marry me.」[k]
+[フレデリカ v=vd274 f=03]「Yes, I will! With pleasure!」[k]
+[textoff]
+@out
+@w05
+;■寝取られなしルートから復帰
+*_return_from_another_route
+@bg f=0028
+[texton w=1]
+My wedding with [フレデリカ] was to take place in the dwarf village.[k]
+We went back to the village to hold the ceremony.[k]
+[textoff]
+@out
+@w05
+; ドワーフ村の教会
+@bg chara=フレデリカ f=event31 p0=hair p1=&'o.テオ.color' p2=01
+[texton w=1]
+[name n=Dwarf]「Congratulations! [フレデリカ]!」[k]
+[name n=Dwarf]「[フレデリカ], be happy!」[k]
+The ceremony was blessed by [フレデリカ]'s family and many other dwarves.[k]
+I was dressed in traditional dwarven clothes, despite being a human. I solemnly greet [フレデリカ], who is also dressed in her people's traditional bridal attire.[k]
+[マックス f=03]「Good for you! [テオ]! [フレデリカ]!」[k]
+[マリア v=va247 f=01]「Congratulations! Both of you!」[k]
+[テオ noface]「Thank you, [マックス] and Maria. I'm so happy.」[k]
+[マックス] and the others rushed all the way to the dwarf village to celebrate our wedding. We are truly grateful.[k]
+[フレデリカ v=vd275 noface]「Now we'll be together forever...」[k]
+[テオ noface]「[フレデリカ], I will take care of you forever.」[k]
+After a ceremony performed by a dwarven priest, [フレデリカ] and I officially became husband and wife.[k]
+It has been a really long wait, but my wish has finally come true.[k]
+[フレデリカ v=vd276 noface]「It's been... It's been a really long time.」[k]
+[テオ noface]「Let's be happy, to make up for all the trouble we've been through.」[k]
+I made a firm vow to myself that I would never let her go.[k]
+[textoff]
+@fa
+@out
+@w2
+
+; 結婚式の３日後
+[texton w=0]
+Three days later.[k]
+[textoff]
+@w05
+*_replay_theo_wedding2
+; 朝・宿屋の一室・ベッドの上
+@bg f=0044
+@w05
+@mu f=guild
+[texton w=1]
+...[k]
+...Morning...?[k]
+@fg c=フレデリカ e=裸・大 f=02
+[フレデリカ v=vd277 f=02]「Good morning, dear.」[k]
+[テオ e=裸 f=05]「Hey, good morning.」[k]
+In the morning, I woke up in bed to find [フレデリカ], still naked, smiling beside me.[k]
+@fg c=フレデリカ f=03
+[フレデリカ v=vd278 f=03]「It's been a long time since I went on an adventure with the party!」[k]
+[テオ f=02]「Ah, yes, it has.」[k]
+@fg c=フレデリカ f=04
+[フレデリカ v=vd279 f=04]「It's been six months since I've seen you all... I'm looking forward to it.」[k]
+[テオ f=05]「Ah, that aside...」[k]
+I thrust my hardened penis in front of my wife's eyes.[k]
+@mu f=love
+@fg c=フレデリカ f=25
+[フレデリカ v=vd280 f=25]「Oh no... Dear...」[k]
+[テオ f=05]「[フレデリカ], do it with your chest.」[k]
+@fg c=フレデリカ f=29
+[フレデリカ v=vd281 f=29]「Honestly... So early in the morning...」[k]
+[textoff]
+@fg c=フレデリカ e=パイズリ・大 f=68
+@w05
+[texton w=1]
+[フレデリカ] placed my object between her ample breasts and began squeezing it.[k]
+[テオ f=05]「Ahh...」[k]
+[フレデリカ]'s soft and voluptuous tits gently envelop my penis.[k]
+Her smooth skin moves and stimulates my entire pole, and it feels so good.[k]
+@fg c=フレデリカ f=21
+[フレデリカ v=vd282 f=21]「Do you feel good?」[k]
+[テオ f=05]「Oh, very good... [フレデリカ]...」[k]
+@fg c=フレデリカ f=22
+[フレデリカ v=vd283 f=22]「I'll suck the tip too...」[k]
+@cl
+∗suck∗[k]
+[テオ f=10]「Ugh...! [フレデリカ]...!」[k]
+Her small mouth takes in my cock and sucks it up![k]
+She also stimulates the underside of the calyx with her cute tongue. My sexual senses are heightened at once.[k]
+My penis is surrounded by lush flesh while the tip is attacked by a pretty mouth... It's like heaven.[k]
+My wonderful wife was loving my penis so much that I was reaching climax.[k]
+[テオ f=10]「Ugh... I'm cumming...!」[k]
+∗spuurt! spuurt!∗[k]
+@fg c=フレデリカ e=パイズリ・射精・大 f=69
+[フレデリカ v=vd284 e=パイズリ・射精 f=69]「Kyaa...! Dear...!」[k]
+I couldn't help but pour it on [フレデリカ]'s face.[k]
+@fg c=フレデリカ e=パイズリ・精子・大 f=70
+[フレデリカ v=vd285 e=パイズリ・精子 f=70]「You had a lot today, dear...」[k]
+[テオ f=02]「That was great, [フレデリカ].」[k]
+My libido finally subsided after the first shot of the morning was generously poured on my beloved wife's face.[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+@eval exp='game.party.recovery()'
+@eval exp='game.party.supplyClothesToNakedMembers()'
+
+@eval exp='tf.temp = ""'
+[if exp='o.フレデリカ.equip.waist !== void']
+	@eval exp='tf.temp = o.フレデリカ.equip.waist.name'
+[elsif exp='o.フレデリカ.equip.hip !== void']
+	@eval exp='tf.temp = o.フレデリカ.equip.hip.name'
+[elsif exp='o.フレデリカ.equip.chest !== void']
+	@eval exp='tf.temp = o.フレデリカ.equip.chest.name'
+[endif]
+@fg c=フレデリカ e=&'tf.temp' f=09 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[フレデリカ v=vd286 f=09]「Honestly... if you don't get ready quickly, everyone will come up here!」[k]
+[フレデリカ] gently chastises me as she wipes the semen from her face and puts on her clothes.[k]
+[テオ f=13]「I'm sorry. I was just looking at you and I got so horny.」[k]
+@cl
+It's been two weeks since [フレデリカ] and I got married. I've has been with her every day and night, but my sexual desire for my wife still shows no sign of abating.[k]
+That's how attractive [フレデリカ] is. To be honest, I didn't realize she was a wife with such an erotic body.[k]
+[フレデリカ] has responded to my requests without a single look of disapproval. She is truly a kind woman.[k]
+@fg c=フレデリカ e=現在の装備 f=01
+[フレデリカ v=vd287 f=01]「Somehow we managed to get ready in time. Well then, let's get going.」[k]
+[テオ e=現在の装備 f=02]「Ah, yes.」[k]
+Together, [フレデリカ] and I went to the lobby where [マックス] and the others were waiting.[k]
+[textoff]
+@fa
+@out
+@w05
+@mu f=enjoy
+@jump storage="main12.scn" target=*wedding_02
+;  → メインシナリオ・結婚後のパーティー再結成へ
+
+
+;◇主人公イベント20・冒険再開後、最初の日の宿の夜
+*theo_20
+
+; 宿屋の一室
+@w1
+@out
+@fg c=フレデリカ e=通常 f=03 b
+@bg f=0001
+@mu f=peace
+@w05
+@saveon
+[texton w=1]
+[フレデリカ v=vd288 f=03]「I'm glad to see that everyone's doing well!」[k]
+[テオ e=通常 f=02]「Ah, yeah.」[k]
+[フレデリカ] and I were spending a night together as a married couple.[k]
+[フレデリカ v=vd289 f=03]「I'm really looking forward to the adventure with you all tomorrow～!」[k]
+My wife [フレデリカ] is happy to see everyone in the party again.[k]
+But I had other things on my mind.[k]
+[テオ f=05]「[フレデリカ]...」[k]
+@clf
+I hug [フレデリカ] from behind and reach for her breasts and the inside of her thighs.[k]
+@fg c=フレデリカ e=通常・大 f=29
+[フレデリカ v=vd290 f=29]「Honestly...! Dear, it's too early...」[k]
+[テオ f=05]「I can't wait, [フレデリカ].」[k]
+@fg c=フレデリカ f=37
+[フレデリカ v=vd291 f=37]「Ah... no...!」[k]
+I put my hands inside her underwear and groped her body with a dirty hand.[k]
+[テオ f=05]「Hey, you know what? I want it now.」[k]
+@fg c=フレデリカ f=29
+[フレデリカ v=vd292 f=29]「Ahh... Oh, all right, dear.」[k]
+@fg c=フレデリカ e=裸・大 f=22
+[フレデリカ] begins to undress quickly, revealing her voluptuous body.[k]
+I took off my shirt and pants at once and covered my wife with my crotch.[k]
+[textoff]
+@out
+@w05
+@bg chara=フレデリカ f=event50 p0=hair p1=01 p2=04
+@w05
+[texton w=2]
+[フレデリカ v=vd293]「An... Ah... Dear...!」[k]
+[テオ]「Great... Your body feels so good.」[k]
+I had sex with [フレデリカ] from the front.[k]
+She lay on her back on the bed, and I pushed her slightly thick, soft thighs open and inserted myself into her eager vagina.[k]
+Her vagina was moist and wet, and when I plunged my hard penis into her, I heard an obscene churning sound.[k]
+I can taste the feeling of [フレデリカ]'s inner walls entwined with my penis.[k]
+[テオ]「Phew... This is nice...」[k]
+@bg chara=フレデリカ f=event50 p0=hair p1=01 p2=05
+[フレデリカ v=vd294]「Ah... Ah... Dear...!」[k]
+[フレデリカ] makes a distressed noise when I poke her inside.[k]
+She seems to feel it too.[k]
+[テオ]「Your boobs are really soft.」[k]
+I grab [フレデリカ]'s large breasts, which sway sensuously in front of my eyes, and enjoy the feel of them.[k]
+@bg chara=フレデリカ f=event50 p0=hair p1=01 p2=04
+[フレデリカ v=vd295]「Ah...!」[k]
+[テオ]「I love your body.」[k]
+My penis is squeezed in her sticky honey pot while I rub her ample breasts and savor the sensation of them.[k]
+As a man, I am blessed. My [フレデリカ] is truly the best wife.[k]
+@bg chara=フレデリカ f=event50 p0=hair p1=01 p2=01
+[フレデリカ v=vd296]「Ahhh... ahh... Dear... More... Go deeper...!」[k]
+[テオ]「Ugh...! I'm cumming...!」[k]
+[フレデリカ v=vd297]「Ah... Wait, dear... More... I want more...!」[k]
+@bg chara=フレデリカ f=event50 p0=hair p1=01 p2=05
+@flash on=500 off=500
+∗spuurt! spuurt!∗[k]
+[フレデリカ v=vd298]「Ah...」[k]
+[フレデリカ] begged for more thrusting, but I couldn't hold back any longer and shot my load inside her.[k]
+[テオ e=裸 f=12]「Sorry... I came first...」[k]
+@bg chara=フレデリカ f=event50 p0=hair p1=02 p2=06
+[フレデリカ v=vd299 e=裸 f=04]「It's okay. I don't mind.」[k]
+@bg chara=フレデリカ f=event50 p0=hair p1=02 p2=03
+@jump target=*_another_theo_20 cond='o.フレデリカ.firstPartnerKey == "テオ"'
+Although she said that, she's clearly not satisfied.[k]
+It's been a while since I started having sex with [フレデリカ] but I haven't made her cum once.[k]
+I'm trying my best, but it seems that sex with me is not very pleasurable for her.[k]
+The cause is... probably six months of sex with six dwarf husbands in her village.[k]
+She was penetrated by six dwarves with their burly penises, one after the other, day after day, for six months.[k]
+There is no way that [フレデリカ], who has tasted the adult penis of a dwarf, would obtain similar pleasure from my member in comparison.[k]
+Moreover, those six husbands are veterans who have sired a number of dwarf children in the past. They know all about the female body.[k]
+After experiencing such sensuality with her husbands, there was no way that [フレデリカ] would feel comfortable having sex with me.[k]
+Still, [フレデリカ] is dedicated to making me feel good, and she is always willing to do what I ask of her. I am truly grateful to my wonderful wife.[k]
+To respond to her feelings, I should work harder too...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント21・２日目以降・満足
+*theo_21
+
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[フレデリカ v=vd300 e=汗だく f=37]「Ah... Dear... Dear...!」[k]
+[テオ e=裸 f=05]「[フレデリカ], do you feel good?」[k]
+[フレデリカ v=vd301 f=37]「Yes... it's... really... good...!」[k]
+Today [フレデリカ] was feeling much better during sex with me than I used to think was possible.[k]
+[フレデリカ v=vd302 f=37]「Ah... I'm going to cum...!」[k]
+[テオ f=09]「I'm with you... I'm cumming...!」[k]
+[フレデリカ v=vd303 f=39]「Ha ha... Dear... That's good...」[k]
+[テオ f=02]「I'm glad you're happy.」[k]
+[フレデリカ] seemed to have started cumming when she had sex with me. I was proud as a husband to be able to satisfy my wife.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント22・２日目以降・不満
+*theo_22
+
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[フレデリカ v=vd304 e=裸 f=37]「Oh... Dear... More...!」[k]
+[テオ e=裸 f=09]「Ah... I'm cumming...!」[k]
+[フレデリカ v=vd305 f=29]「Wait... I'm not ready yet... Ahhh...」[k]
+Tonight I had sex with [フレデリカ] again, and did my best to meet her needs. But...[k]
+[テオ f=12]「Sorry... I came first...」[k]
+[フレデリカ v=vd306 f=02]「It's okay... As long as you're happy...」[k]
+Even though she said that, [フレデリカ] seems somewhat dissatisfied.[k]
+Sorry, [フレデリカ]. I'll do my best to satisfy you next time...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント23・２日目以降・拒絶
+*theo_23
+
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[テオ e=通常 f=12]「Hey, [フレデリカ], I want you.」[k]
+[フレデリカ v=vd307 e=寝室のキャミソール f=97]「I'm sorry, honey... I'm too tired today...」[k]
+[テオ f=13]「I see... Then, good night.」[k]
+As usual, I asked for [フレデリカ]'s body, but tonight she refused me.[k]
+I had no choice but to fall asleep with agonizing thoughts.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント24・ブルーと浮気後
+*theo_24
+
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+∗slurp slurp slurp slurp!∗[k]
+[テオ e=裸 f=12]「Damn! How is it? [フレデリカ], does it feel good?」[k]
+[フレデリカ v=vd308 e=裸 f=10]「Umm... well... not really...」[k]
+[テオ f=09]「Ugh... No...! I can't hold it in...!」[k]
+I reached the point where I couldn't make [フレデリカ] cum.[k]
+[テオ f=12]「I'm sorry... I couldn't make you feel good...」[k]
+[フレデリカ v=vd309 f=02]「It's okay. As long as it makes you feel good.」[k]
+[フレデリカ f=02]（It seems like I just can't cum from having sex with you after all...）[k]
+[フレデリカ f=02]（But dear, the best thing about you is that you're kind, unlike Blue. That's enough for me.）[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇グッドエンディング・主人公の子を出産エンド
+*good_ending
+
+@bg f=0007 b
+@mu f=wedding
+@fg c=フレデリカ e=タンクトップ・太り f=03
+[texton w=1]
+[フレデリカ v=vd310 f=03]「Come on, little Melodia, eat lots and grow up healthy!」[k]
+[テオ e=通常 f=02]「I'm home.」[k]
+@fg c=フレデリカ f=01
+[フレデリカ v=vd311 f=01]「Ah, dear, welcome home.」[k]
+After returning from an adventure, I return home to my wife [フレデリカ].[k]
+At home, [フレデリカ] was feeding our daughter Melodia.[k]
+The child born to [フレデリカ] and I was a girl. She is half dwarf and half human, but she has small whiskers on her cheeks like her mother.[k]
+Although she is only two years old, she has a voracious appetite and will surely grow up to be big and healthy in the future.[k]
+[テオ f=02]「I'm sorry for leaving her to you, [フレデリカ].」[k]
+@fg c=フレデリカ f=04
+[フレデリカ v=vd312 f=04]「It's fine. Thanks to you working so hard, we don't have to worry about food expenses ♪」[k]
+[テオ f=06]「...」[k]
+Hmm. That said, she's showing clear signs of postpartum weight gain...[k]
+[テオ f=06]「... ∗stare∗」[k]
+I look at her belly, almost as if she could be pregnant with our second child.[k]
+@fg c=フレデリカ f=57
+[フレデリカ v=vd313 f=57]「...I-I get it! I am careful not to overeat!」[k]
+[テオ f=05]「Maybe you should exercise a little? If you keep this up...」[k]
+@fg c=フレデリカ f=53
+[フレデリカ f=53]「...」[k]
+[フレデリカ v=vd314 f=53]「...I want to go on an adventure with you too... Then my belly will...」[k]
+[フレデリカ] entreats me with desperate eyes. Since I've entrusted her with my child, I feel sorry for her.[k]
+She's an adventurer too. I guess she wants to go on an adventure...[k]
+[テオ f=02]「When this child gets a little older...」[k]
+@fg c=フレデリカ f=05
+[フレデリカ v=vd315 f=05]「Eh?」[k]
+[テオ f=01]「...Shall we go together, all three of us? Well, we can't take on any dangerous quests though...」[k]
+@fg c=フレデリカ f=25
+[フレデリカ f=25]「...!」[k]
+@fg c=フレデリカ e=タンクトップ・太り・大 f=23
+[フレデリカ v=vd316 f=23]「Yes! I'll go! You, this child, and me... all three of us!」[k]
+[フレデリカ] ran toward me happily. Her eyes were filled with anticipation for a new adventure.[k]
+[textoff]
+@fa
+@out
+@jump storage="main13.scn" target=*staff_roll
+
+
+
+
+;■ブルー編１・結婚前にブルーと宿泊を強制される
+
+;◇ブルーイベント01
+*blue_01
+@saveon
+@call storage="stay.ks" target=*kick_out_by_blue
+@jump target=*_blue_01_freemode cond='game.isFreeMode'
+@jump target=*_blue_01_case1 cond='game.curChara.inSameRoom(o.テオ)'
+@jump target=*_blue_01_case2
+
+;＜主人公とヒロインが同室かつ好感度が高い場合＞
+*_blue_01_case1
+
+; 宿屋の一室
+@bg f=0001
+@mu f=guild
+@fg c=フレデリカ e=タンクトップ f=22
+[texton w=1]
+[テオ e=通常 f=02]「Nice to see you tonight, [フレデリカ].」[k]
+[フレデリカ v=vd317 f=21]「Yes... Thank you...」[k]
+For some reason, [フレデリカ] looks at me with feverish eyes. Her moist eyes are very sexy.[k]
+[フレデリカ v=vd318 f=22]「Captain...」[k]
+As soon as she sits on the bed, she comes closer to me.[k]
+I couldn't keep my composure either, as she was dressed in light clothing that showed off her cleavage.[k]
+[テオ f=13]「H-hey, [フレデリカ], what's wrong with you today?」[k]
+[フレデリカ f=22]「...」[k]
+[フレデリカ v=vd319 f=21]「Umm... Captain, I, about you...!」[k]
+@st
+@se f=door1
+@fgf c=フレデリカ f=05
+∗bang!∗[k]
+[テオ f=05]「...!」[k]
+Suddenly, the door to the room suddenly opened with a loud bang.[k]
+@mu f=darkside
+@fg r=ブルー e=通常 f=06
+[ブルー f=06]「[テオ], you're here?」[k]
+[テオ f=12]「Blue...!」[k]
+Blue came into the room. What on earth does he want...?[k]
+@fg r=ブルー f=02
+[ブルー f=02]「Is that dwarf in here...? Yeah, there she is.」[k]
+[フレデリカ f=05]「...!」[k]
+Blue sets his sights on [フレデリカ].[k]
+@fg c=フレデリカ f=09
+[フレデリカ v=vd320 f=09]「Um... What can I do for you?」[k]
+[ブルー f=02]「Ha, that's obvious.」[k]
+With that, Blue reached out to [フレデリカ]![k]
+@se f=tear
+@flash on time=500
+@wait time=200
+@fg c=フレデリカ e=布のスカート f=05
+@flash off
+∗riiiiiiip!∗[k]
+[テオ f=12]「...!」[k]
+Blue ripped [フレデリカ]'s tank top off with great force![k]
+@fg c=フレデリカ e=布のスカート,手ブラ f=37
+[フレデリカ v=vd321 f=37]「Kya!」[k]
+[フレデリカ]'s breasts are exposed! She hurriedly covered her chest.[k]
+[ブルー f=02]「Hmph, they really are nice breasts.」[k]
+@fg c=フレデリカ f=47
+[フレデリカ v=vd322 f=47]「W-what are you doing all of a sudden...?」[k]
+@fg r=ブルー f=01
+[ブルー f=01]「It's obvious, isn't it? I'm gonna get dirty with you.」[k]
+@fg c=フレデリカ e=布のスカート f=39 b
+@fg r=ブルー e=触り f=02 left=472 b
+@fg a=blue_default_hand left=472
+Saying that, Blue pushed [フレデリカ]'s hand away and squeezed her breasts![k]
+[フレデリカ v=vd323 f=39]「No... Please stop...」[k]
+[テオ f=12]「Stop it, Blue!」[k]
+@fg r=ブルー f=05 fix
+[ブルー f=05]「Hey, [テオ], we agreed that I could do whatever I wanted with the girls in this party. You haven't forgotten that, have you?」[k]
+[テオ f=12]「W-well, that's...」[k]
+@fg c=フレデリカ f=47
+[フレデリカ f=47]「...」[k]
+[ブルー f=05]「Got it? Then, it's time to get dirty.」[k]
+@fg c=フレデリカ e=白いパンツ f=47
+∗swish∗[k]
+[フレデリカ v=vd324 f=47]「Ah...!」[k]
+Blue reached for [フレデリカ]'s skirt, unfastened it, and let it fall to the floor.[k]
+@fg r=ブルー f=02 fix
+[ブルー f=02]「I'll take good care of you, heh heh.」[k]
+Blue stood [フレデリカ] in front of the bed and began to caress her large breasts carefully.[k]
+@fg c=フレデリカ f=37
+[フレデリカ v=vd325 f=37]「A-ha-ha...! Ahh! Blue... No...!」[k]
+Now [フレデリカ] was wearing only a small piece of underwear. Through the thin fabric, he roughly rubbed her erogenous zones with his fingers.[k]
+@jump target=*_blue_01_common
+;  → 共通ルート１へ
+
+
+;＜主人公とヒロインが別室でブルーがヒロインのいる部屋に入った場合＞
+*_blue_01_case2
+
+; 宿屋の廊下
+@bg f=0002
+@fg c=ブルー e=通常 f=06
+@w05
+@cl
+@w05
+[texton w=0]
+[テオ e=通常 f=05]「Ah...!」[k]
+Just now I saw Blue enter [フレデリカ]'s room.[k]
+No way, you're going after [フレデリカ] now...?![k]
+[テオ f=09]「...!」[k]
+Feeling anxious, I decided to go to [フレデリカ]'s room.[k]
+[textoff]
+@out
+@w05
+
+; 宿屋の一室
+@se f=door1
+@fg c=フレデリカ e=白いパンツ f=39 b
+@fg r=ブルー e=触り f=02 left=472 b
+@fg a=blue_default_hand left=472 b
+@bgf f=0001
+@mu f=darkside
+[texton w=1]
+[フレデリカ v=vd326 f=39]「Ah... Ah...!」[k]
+[ブルー f=94]「Kuku, does it feel good?」[k]
+[テオ f=12]「Blue...! [フレデリカ]...!」[k]
+My bad feeling was correct. Blue had already started caressing [フレデリカ].[k]
+He sat her on the bed, stripped her upper body bare, and carefully caresses her large breasts.[k]
+@fg c=フレデリカ f=37
+[フレデリカ v=vd325 f=37]「A-ha-ha...! Ahh! Blue... No...!」[k]
+The lower half of her body is covered by just her panties. With his hand, he roughly plays with what's underneath.[k]
+@jump target=*_blue_01_common
+;  → 共通ルート１へ
+
+
+;＜共通ルート１＞
+*_blue_01_common
+[ブルー f=02]「Kuku, you're starting to feel it.」[k]
+[フレデリカ f=39]「...」[k]
+[フレデリカ] fidgets with her legs and gasps, as if she is feeling something.[k]
+Her nipples were hard and pointed.[k]
+[ブルー f=94]「Kukukuku...」[k]
+Blue puts his hand on [フレデリカ]'s panties![k]
+@fg c=フレデリカ f=54
+[フレデリカ v=vd327 f=54]「Aaaah...!」[k]
+@se f=whip
+@flash time=100
+@cl b
+@fg l=フレデリカ f=47 left=400 b
+@fgf r=ブルー e=通常 f=05 left=550
+Suddenly, [フレデリカ] brushed Blue's hand away![k]
+[フレデリカ v=vd328 f=47]「Blue, I really don't want to do this. Please stop at this...」[k]
+[ブルー f=05]「What are you talking about? You guys have to accommodate me if you want me along. That's the deal.」[k]
+[フレデリカ v=vd329 f=48]「But...」[k]
+[テオ f=12]「Hey! Blue!」[k]
+@fg r=ブルー f=05 b
+@fg l=フレデリカ f=45
+Seeing that [フレデリカ] clearly didn't like it, I stepped in between the two of them.[k]
+[フレデリカ v=vd330 f=45]「Captain...!」[k]
+[ブルー f=05]「What the hell?」[k]
+[テオ f=12]「Please stop! [フレデリカ] doesn't want to! I can't let you force someone to do something they don't want to do!」[k]
+@fg r=ブルー f=08
+[ブルー f=08]「[テオ]... You...!」[k]
+@clf r a
+@beat
+@se f=beat
+@quake time=100 hmax=60 vmax=60
+@flash time=100
+∗bang!∗[k]
+[テオ f=09]「Guh!」[k]
+Blue punches me in the stomach! I crumple to the floor![k]
+[テオ f=09]「Damn... Blue, you...!」[k]
+@fg l=フレデリカ f=43
+[フレデリカ v=vd331 f=43]「Captain!」[k]
+@fg r=ブルー f=08
+[ブルー f=08]「Hey, [テオ]! Did you forget your promise to me?」[k]
+[テオ f=09]「Damn...」[k]
+[ブルー f=05]「I'm going to fuck her now. I won't allow anything to get in my way.」[k]
+@fg l=フレデリカ f=49 b
+@fg r=ブルー e=上半身裸 f=94 left=400
+With that, Blue took off his shirt and headed toward [フレデリカ] again.[k]
+[フレデリカ v=vd332 f=49]「Oh, no...!」[k]
+[textoff]
+@out
+
+@bgf chara=フレデリカ f=event73 p0=hair p1=01 p2=01
+[texton w=2]
+Blue forcefully stripped off [フレデリカ]'s panties, then removed his own pants and straddled her.[k]
+Blue's throbbing hot penis pops out. It is stands tall, ready to fuck [フレデリカ].[k]
+[フレデリカ v=vd333 f=505]「No...! No! That's not allowed...!」[k]
+[フレデリカ] trembles with fear at the sight of Blue's vicious object. She backs away behind the bed to escape from Blue.[k]
+But Blue doesn't let her get away with that. He holds her legs and forces them open.[k]
+[フレデリカ v=vd334 f=49]「Oh no...!」[k]
+[テオ f=12]「Stop... Stop it...!」[k]
+[ブルー f=02]「Come on, let's fuck...」[k]
+He pressed the tip against her entrance. Then...[k]
+[textoff]
+
+@bg chara=フレデリカ f=event73 p0=hair p1=02 p2=04
+@w05
+[texton w=2]
+∗thrust∗[k]
+[フレデリカ v=vd335]「Ah... Ah... Ahhh!」[k]
+As Blue pushes forward, his meat pole sinks into [フレデリカ].[k]
+[ブルー]「Kukukuku...」[k]
+And then, his penis was completely buried up to the root.[k]
+[フレデリカ v=vd336]「Ugh... ∗slurp∗」[k]
+[ブルー]「You girls take care of my dick. That was the deal. So give it up and enjoy sex with me.」[k]
+@en f=kuchaslow
+@bg chara=フレデリカ f=event73 p0=hair p1=03 p2=05
+Blue started thrusting.[k]
+He shakes [フレデリカ]'s body and lets his penis slide in and out of her with a slurp, slurp, slurp.[k]
+[フレデリカ v=vd337]「Ah... Ah... Ahhh...!」[k]
+[フレデリカ]'s large breasts bounce around. A nasty slurping sound came from where they were joined.[k]
+[フレデリカ] struggles to bear the thrusting, sweat beading on her forehead.[k]
+[フレデリカ v=vd338]「Ahh... no... ahh... mmm... ahhh...!」[k]
+She is made to moan both adorably and sensually. Blue's penis makes her perform a lascivious act that she does not want to perform.[k]
+[ブルー]「Kukuku... You have a dirty body. I should have done this sooner.」[k]
+∗squish squish squish squish∗[k]
+[フレデリカ v=vd339]「Huh... No... Ah... ahh... Aaah... Ah...!」[k]
+[フレデリカ] wriggles her hips and writhes, as if she is gradually feeling the sensation.[k]
+Her panting had clearly become more agonizing.[k]
+She's feeling good... Having sex with Blue...[k]
+[フレデリカ v=vd340]「Phew...」[k]
+[ブルー]「What is it? Are you getting excited?」[k]
+[フレデリカ v=vd341]「Ahh... I'm not excited... I'm not... Hiaaaah..! I... I don't feel good...」[k]
+∗squish squish squish squish squish squish!∗[k]
+@en f=kuchafast
+@bg chara=フレデリカ f=event73 p0=hair p1=03 p2=04
+[フレデリカ v=vd342]「Ah, ah, ah, ahhh!」[k]
+Blue quickly increases the speed of his thrusting and violently attacks [フレデリカ]![k]
+[ブルー]「Liar! You're really feeling it, aren't you? It's making you feel good, isn't it? Huh?」[k]
+∗squish squish squish squish squish squish!∗[k]
+[フレデリカ v=vd343]「Ah, ah, ah, ah, ah, ah.」[k]
+[ブルー]「I'm going to punish you for lying! I'm going to put a lot of cum inside you!」[k]
+[フレデリカ v=vd344]「Noooo, don't do that!」[k]
+@flash
+@enst
+∗spurt! spuuurt!∗[k]
+@bg chara=フレデリカ f=event73 p0=hair p1=04 p2=05
+Blue ejaculated without hesitation with his meat stick firmly inserted into her vagina...[k]
+[ブルー]「Phew... That was pretty good, you know.」[k]
+[textoff]
+@out
+@w1
+
+@bgf f=0001
+[texton w=1]
+[フレデリカ v=vd345 e=裸 f=50]「Ugh... It's too much... I didn't want to have sex with you...」[k]
+[テオ f=12]「[フレデリカ]...」[k]
+@fg c=ブルー e=汗だく f=02
+[ブルー f=02]「You can't refuse what I want. That's the position you're in. You have to give up.」[k]
+@fg c=ブルー e=汗だく f=03
+[ブルー f=03]「You were good to fuck, so I'll do it again! Hahahahahaha!」[k]
+@cl
+[フレデリカ e=裸 f=48]「... ∗sob∗」[k]
+[テオ f=09]「...Damn!」[k]
+Blue left the room with a roaring laugh and a satisfied look on his face. A tear-stained [フレデリカ] was left behind...[k]
+[textoff]
+@out
+@w05
+@recordsex guy=ブルー sex=1 orgasm=0 acts=乳揉み,手マン,正常位
+[hoteloff]
+
+
+;◇ブルーイベント02
+*blue_02
+@saveon
+@call storage="stay.ks" target=*kick_out_by_blue
+@jump target=*_blue_02_freemode cond='game.isFreeMode'
+@jump target=*_blue_02_case1 cond='game.curChara.inSameRoom(o.テオ)'
+@jump target=*_blue_02_case2
+
+;＜主人公とヒロインが同室の場合＞
+*_blue_02_case1
+
+; 宿屋の一室
+@saveon
+@se f=door1
+@bg f=0001
+@mu f=shadow
+[texton w=1]
+∗slam∗[k]
+@fg c=ブルー e=通常 f=02
+[ブルー f=02]「Hey!」[k]
+[フレデリカ e=通常 f=09]「...!」[k]
+[テオ e=通常 f=12]「Blue...!」[k]
+[フレデリカ] and I were in the room together when Blue suddenly came in again.[k]
+[ブルー f=05]「Hey, [フレデリカ], you'll have to deal with me again today.」[k]
+[フレデリカ f=30]「...」[k]
+@jump target=*_blue_02_common
+;  → 共通ルート２へ
+
+
+;＜主人公とヒロインが別室でブルーがヒロインのいる部屋に入った場合＞
+*_blue_02_case2
+
+; 宿屋の廊下
+@saveon
+@bg f=0002
+@fg c=ブルー e=通常 f=06
+@w05
+@cl
+@w05
+[texton w=0]
+[テオ e=通常 f=05]「Ah...!」[k]
+Just now I saw Blue enter [フレデリカ]'s room.[k]
+Are you going to rape [フレデリカ] again...?[k]
+[テオ f=09]「...!」[k]
+For now, let's go to [フレデリカ]'s room.[k]
+[textoff]
+@out
+@w05
+
+; 宿屋の一室
+@fg c=ブルー e=通常 f=02 b
+@bgf f=0001
+@mu f=shadow
+[texton w=1]
+[ブルー f=05]「Hey, [フレデリカ], you'll have to deal with me again today.」[k]
+[フレデリカ e=通常 f=30]「...」[k]
+[テオ f=12]「Blue...!」[k]
+When I went into the room, sure enough, Blue was closing in on [フレデリカ].[k]
+@jump target=*_blue_02_common
+;  → 共通ルート２へ
+
+
+;＜共通ルート２＞
+*_blue_02_common
+[テオ f=12]「Hey, Blue! Don't humiliate [フレデリカ] any further...!」[k]
+@fg c=ブルー f=08
+[ブルー f=08]「...! ∗glare∗」[k]
+[テオ f=09]「Gah...!」[k]
+[ブルー f=05]「You have no right to refuse. Don't you understand that yet?」[k]
+[テオ f=12]「B-but...」[k]
+[フレデリカ v=vd346 f=13]「...It's okay, Captain. I'm fine...」[k]
+[テオ f=12]「[フレデリカ]...!」[k]
+@fg c=ブルー f=02
+[ブルー f=02]「That's a good mindset. Well, then, get your ass in bed.」[k]
+[textoff]
+@out
+
+@bg chara=フレデリカ f=event73 p0=hair p1=03 p2=04
+@mu f=darkside
+[texton w=2]
+∗sluurp sluurp sluurp sluurp∗[k]
+[フレデリカ v=vd347]「Oh... Aaaan... Blue... Aaan...」[k]
+Blue takes off all of [フレデリカ]'s clothes. After a light caress, he takes out his erect penis and inserts it without hesitation.[k]
+[ブルー]「Kuku, how do you feel? Can you feel it?」[k]
+∗sluurp!∗[k]
+[フレデリカ v=vd348]「Huuuu...!」[k]
+[フレデリカ]'s whole body shudders as Blue thrusts in deeply.[k]
+[ブルー]「How does this cock feel?」[k]
+Blue shoves his penis up to the base of [フレデリカ]'s vagina and then thrusts deeply![k]
+∗slurp slurp slurp slurp!∗[k]
+[フレデリカ v=vd349]「Aaaan... Blue... That's... No! Ah... I'm... going crazy...!」[k]
+[フレデリカ] writhed in ecstasy. She was clearly in a state of considerable pleasure.[k]
+She feel it...! She feels Blue's penis...![k]
+[フレデリカ v=vd350]「Anh, anh, hah...! Ahhh!」[k]
+Under the intense attack she arched her back, her whole body jolting.[k]
+[ブルー]「It looks like you're cumming. Then I'm going to cum too.」[k]
+∗slurp slurp slurp slurp!∗[k]
+[フレデリカ v=vd351]「Ah... Ahh...! Nooo...!」[k]
+∗spurt spurt spurt spurt spurt!∗[k]
+Blue also came inside [フレデリカ]. The two collapsed on the bed in a heap...[k]
+[textoff]
+@out
+@w05
+
+@bgf f=0001
+[texton w=0]
+[フレデリカ v=vd352 e=汗だく f=39]「Ahh ahh ahh ahh ahh...」[k]
+[テオ f=10]「[フレデリカ]...」[k]
+[フレデリカ], perhaps tired, lounges in bed.[k]
+But... She seems to enjoy the afterglow.[k]
+[ブルー e=裸 f=01]「Kuku, you were having a lot of fun too, weren't you? Did my dick feel good?」[k]
+[フレデリカ f=98]「...」[k]
+She didn't answer. But she didn't deny it either.[k]
+[ブルー f=01]「You have big boobs and a nice pussy, so I'm going to keep fucking you. Look forward to it! Wahahahaha!」[k]
+[フレデリカ f=98]「...」[k]
+[テオ f=09]「Damn...! Blue...!」[k]
+I had no choice but to bite my lip in front of Blue, who was smiling with amusement...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+;◇ブルーイベント03
+*blue_03
+
+@jump target=*_blue_03_freemode cond='game.isFreeMode'
+; 宿屋の一室
+@saveon
+@se f=door1
+@bg f=0002
+@mu f=worry
+[texton w=1]
+[フレデリカ v=vd353 e=汗だく f=37]「An... An... Blue...」[k]
+[ブルー e=汗だく f=01]「Hehe, your boobs are bouncing around like crazy. It's exciting.」[k]
+[フレデリカ v=vd354 f=38]「Ah... Blue's penis... It feels so good... My hips won't stop!」[k]
+[テオ e=通常 f=10]「...」[k]
+From inside the room, I can hear the sound of skin against skin.[k]
+Inside, [フレデリカ] is probably shaking her hips frantically on top of Blue.[k]
+Another one of us was captivated by Blue... I wonder if Blue will continue to steal them away...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーイベント04
+*blue_04
+
+; 朝のロビー
+@saveon
+@bg f=0003
+@w05
+[texton w=1]
+[テオ f=05]「Huh...?」[k]
+We're about to leave, but Blue and [フレデリカ] aren't here yet.[k]
+[テオ f=06]「They're late... What's going on...?」[k]
+@fg c=フレデリカ f=29 e=中立の胸当て,ひものパンツ,革の手袋,サンダル
+[フレデリカ v=vd355 f=29]「I'm sorry to keep you waiting...」[k]
+; ↑ おずおずと
+[テオ f=12]「[フレデリカ]...!」[k]
+Suddenly, [フレデリカ] appeared.[k]
+That's a pretty revealing outfit... Why are you dressed like that...?[k]
+@mu f=anxiety
+@fg r=ブルー e=通常 f=02 left=745
+[ブルー e=通常 f=02]「Ah, you like it?」[k]
+[テオ f=12]「Blue!」[k]
+Then Blue came up behind her. Was this his doing?![k]
+[ブルー f=94]「I made her dress like that. I like looking at women's asses.」[k]
+[テオ f=10]「Blue...!」[k]
+What on earth...! Come to think of it, Riselle was dressed like this too...[k]
+@fg c=フレデリカ f=31
+@fg r=4002 left=705
+[フレデリカ v=vd356 f=31]「Hyah!」[k]
+[ブルー f=02]「Kukuku... This way, I can touch her ass anytime I want.」[k]
+[テオ f=12]「Blue! Stop it!」[k]
+[ブルー f=02]「But look at the size of it. It's worth touching.」[k]
+@fg c=フレデリカ f=40
+[フレデリカ f=40]「... ∗sob∗」[k]
+Blue persistently caresses [フレデリカ]'s butt.[k]
+However, [フレデリカ] just endured it silently. Her body was trembling slightly.[k]
+Blue shamelessly rubs [フレデリカ]'s butt in front of everyone. However, no one can stop him. She has no choice but to remain silent and endure it.[k]
+@fg r=4001 left=705
+[ブルー f=01]「Hey, what's wrong? Aren't you going out now?」[k]
+[テオ f=10]「...」[k]
+I couldn't say anything back... I held back my anger toward Blue.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ブルー編２・妻としてブルーとの宿泊を求められる
+
+;◇ブルー人妻イベント01・妻としてブルーとの宿泊を求められた最初の夜
+*married_01
+
+; 宿屋の一室
+@call storage="main12.scn" target=*revive_4
+@bg f=0001 b
+@mu f=shadow
+@fg l=フレデリカ e=通常 f=10 b
+@fgf r=ブルー e=上半身裸 f=02
+[texton w=1]
+@se f=door1
+∗slam∗[k]
+[ブルー f=02]「Well, let's do it, [フレデリカ].」[k]
+[フレデリカ v=vd357 f=10]「Oh...」[k]
+@se f=dosa
+@clf
+@quake time=500 hmax=10 vmax=10
+∗thud!∗[k]
+Blue locked the door and pushed me down on the bed![k]
+[フレデリカ v=vd358 f=29]「Wait, wait, Blue... It's so sudden...!」[k]
+[ブルー f=01]「Come on, let's see those tits of yours.」[k]
+∗swiiish!∗[k]
+[フレデリカ v=vd359 e=裸 f=37]「Kyaa!」[k]
+Blue slipped my clothes down, exposing my boobs![k]
+[ブルー f=02]「Damn, so big!」[k]
+[フレデリカ f=30]「... (Kyaa)」[k]
+As soon as Blue sees my breasts, his eyes glaze over.[k]
+[ブルー f=02]「Those are really big boobs. I wonder if [テオ]'s dick rubs these big boobs every night.」[k]
+[フレデリカ v=vd361 f=38]「Oh...」[k]
+Blue began to massage my breasts carefully.[k]
+He grabbed my breasts with his big hands and slowly kneaded them.[k]
+[フレデリカ v=vd362 f=37]「Huh...!」[k]
+Along the way, he doesn't forget to stimulate my nipples.[k]
+Blue is very skilled at caressing... Perhaps it is because he is accustomed to handling girls...?[k]
+Oh no... I'm starting to feel good...![k]
+[フレデリカ v=vd363 f=37]「Ahh... Aahhhhh... Blue...」[k]
+@fg c=ブルー e=裸・勃起 f=02
+[ブルー f=02]「Kuku, are you feeling it? It seems like you're not so bad.」[k]
+[ブルー f=02]「You're pretty sexy too. Look at my dick, it's gotten this big.」[k]
+Saying that, Blue took off his pants and showed me his penis.[k]
+[フレデリカ f=58]「...!」[k]
+It's huge... It's amazing...![k]
+Long, thick, and sturdy...! It's just as impressive as a dwarf's would be.[k]
+Blue was this amazing...?![k]
+[フレデリカ f=94]「...∗badump∗ ∗badump∗ ∗badump∗ ∗badump∗ ∗badump∗ ∗badump∗」[k]
+[ブルー f=02]「Now, let's insert it. [フレデリカ], lie down there, raise your legs, and show us your pussy.」[k]
+[フレデリカ v=vd364 f=94]「Y-yes...」[k]
+[textoff]
+@out
+
+@bg chara=フレデリカ f=event73 p0=hair p1=01 p2=03
+@mu f=anxiety
+[texton w=2]
+As Blue instructed, I raised my legs high.[k]
+[フレデリカ]「...∗badump∗ ∗badump∗ ∗badump∗ ∗badump∗ ∗badump∗ ∗badump∗」[k]
+Now,the penis... Blue's big penis is going to go inside...[k]
+It's much bigger than my husband's...![if exp='o.フレデリカ.firstPartnerKey != "テオ"'] It's been a while since I've seen such a big dick...![endif][k]
+For the first time since I'm about to be fucked with the biggest dick since leaving the dwarf village...!
+[if exp='o.フレデリカ.firstPartnerKey != "テオ"']For the first time since returning from my village, a[else]This[endif] massive cock is about to churn up my insides...![k]
+Oh no... I'm so excited...![k]
+@bg chara=フレデリカ f=event73 p0=hair p1=02 p2=05
+∗sluurp∗[k]
+[フレデリカ v=vd365]「Haaaaan...!」[k]
+[ブルー]「Oh, come on, this is just the tip of the iceberg.」[k]
+I made a weird noise! He's not even in yet...![k]
+Am I getting excited...? Am I looking forward to a big penis...?[k]
+[ブルー]「...Let's get it in.」[k]
+@bg chara=フレデリカ f=event73 p0=hair p1=03 p2=04
+∗slurp!∗[k]
+[フレデリカ v=vd366]「Ah... Ah... Ahhhhh!」[k]
+He's coming in... Ahhh! Blue's hot and strong cock entered me so deeply...![k]
+Very... good...![k]
+My husband's doesn't even compare... It's amazing![k]
+[if exp='o.フレデリカ.firstPartnerKey != "テオ"']久しぶりすぎて忘れてた。オチンチンって、こんなに気持ち良かったんだっけ……？[else]オチンチンって、こんなに気持ち良かったんだ……！[endif][k]
+[フレデリカ v=vd367]「Ah... Ah... Uh... Blue... Ahh...! Oh!」[k]
+[ブルー]「You seem to be feeling pretty good. It looks like you really wanted my dick.」[k]
+[フレデリカ v=vd368]「Please... give me a lot...!」[k]
+[ブルー]「Oh, it will be my pleasure!」[k]
+∗slurp! slurp! slurp!∗[k]
+[フレデリカ v=vd369]「Ah...! Ah...! Ahhhhh...!」[k]
+Blue attacked my vagina![k]
+It's completely filled with his hot meat rod, and I feel it all over.[k]
+Ah... That feels good...![k]
+It reaches deep inside...! It hits me where it feels good...![k]
+[フレデリカ v=vd370]「Ah, ah, ah, ah, ahhhhhhh!」[k]
+I couldn't feel it when I had sex with my husband. I never knew being penetrated from behind could feel so good...![k]
+It feels so good... I can't take it anymore...![k]
+Ahhh... I'm cumming...![k]
+@flash on=1000 t=500 off=500
+@bgf chara=フレデリカ f=event73 p0=hair p1=02 p2=06
+[フレデリカ v=vd371]「Mmmmmm...! Ahh!」[k]
+[ブルー]「Hmm? What, did you come already?」[k]
+@bg chara=フレデリカ f=event73 p0=hair p1=02 p2=03
+[フレデリカ]「...」[k]
+I already came... It felt so good...[k]
+[ブルー]「Kuku, was my dick that good?」[k]
+[ブルー]「...Or were you not enjoying [テオ]'s dick at all, and getting very frustrated?」[k]
+[フレデリカ]「...」[k]
+[ブルー]「...Yeah, that hit the nail on the head. I feel sorry for him. You've got such a dirty body.」[k]
+I'm sorry, dear... It's not that I don't love you... But...![k]
+[ブルー]「Want me to fuck you one more time? You still want to feel good, don't you?」[k]
+[フレデリカ]「...」[k]
+[フレデリカ v=vd372]「...Yes, please.」[k]
+[textoff]
+@out
+@w05
+[texton w=0]
+I couldn't control my rising sexual desire. I ended up having sex with Blue five times...[k]
+[textoff]
+@w1
+[hoteloff]
+
+
+;◇ブルー人妻イベント02
+*married_02
+
+; 宿屋の一室
+@saveon
+@bg chara=フレデリカ f=event73 p3=hair p4=01 p5=02
+@mu f=shadow
+[texton w=2]
+[フレデリカ v=vd373]「Ah... Blue!」[k]
+Today, Blue suddenly stripped me naked, laid me down on the bed, and climbed on top of me.[k]
+Then, he took out his hard penis and placed it between my breasts.[k]
+[ブルー]「So soft... I love the way these boobs feel.」[k]
+[フレデリカ]「...」[k]
+His hot cock is hard between my breasts...[k]
+It's still big...! Even when I squeeze it between my breasts, it still sticks out...! My husband's is completely hidden when I squeeze it, but...[k]
+I haven't had such a big cock in a really long time... I'm so sorry...[k]
+[ブルー]「Get to work. Let me enjoy your tits.」[k]
+[フレデリカ v=vd374]「Yes, Blue...」[k]
+@bg chara=フレデリカ f=event73 p3=hair p4=01 p5=01
+I held Blue's penis between my breasts and moved them back and forth.[k]
+Using my breasts, I stroke Blue's penis.[k]
+[ブルー]「Phew... Feels good...」[k]
+[フレデリカ]「...」[k]
+[ブルー]「You're used to this, huh?」[k]
+@bg chara=フレデリカ f=event73 p3=hair p4=01 p5=02
+[フレデリカ v=vd375]「Eh...」[k]
+[ブルー]「I'm asking if you sandwich [テオ]'s dick in here too. Well?」[k]
+[フレデリカ v=vd376]「I... sandwich it...」[k]
+[ブルー]「I bet. You're good at this. I bet you've given a lot of titty fucks.」[k]
+[フレデリカ]「...」[k]
+My husband definitely likes it when I do this... Blue knows everything...[k]
+[ブルー]「Hey, put more feeling into it. Lick it as well.」[k]
+@bg chara=フレデリカ f=event73 p3=hair p4=01 p5=03
+[フレデリカ v=vd377]「Y-yes...」[k]
+I caress the tip of Blue's penis, which is peeking out from between my breasts, using my tongue as well.[k]
+Blue's taking a long time to cum... My husband would have cum already...[k]
+[ブルー]「Try poking it more with your tongue and sucking on the tip.」[k]
+[フレデリカ v=vd378]「Yes, Blue...」[k]
+I continued to service his penis while following Blue's instructions.[k]
+Blue's rod is big, so it's quite difficult to jerk off... But it's so exciting...![k]
+[ブルー]「Ugh...!」[k]
+@flash
+@bgf chara=フレデリカ f=event73 p3=hair p4=02 p5=03
+∗spurt! spurt! spurt!∗[k]
+@bg chara=フレデリカ f=event73 p3=hair p4=02 p5=04
+[フレデリカ v=vd379]「Kya!」[k]
+Suddenly sperm shot out from Blue's tip![k]
+[ブルー]「Well... It wasn't bad.」[k]
+@bg chara=フレデリカ f=event73 p3=hair p4=03 p5=02
+[フレデリカ]「...」[k]
+It got all over my face...[k]
+If it were my husband, he would just ejaculate between my breasts at the end...[k]
+[ブルー]「Well, don't you want it too? I'll give it to you.」[k]
+[フレデリカ]「...」[k]
+[フレデリカ v=vd380]「Yes... Please...」[k]
+[textoff]
+@out
+@bg chara=フレデリカ f=event73 p0=hair p1=03 p2=04
+[texton w=2]
+[フレデリカ v=vd381]「Ahh, ahh, ahh, ahh.」[k]
+[ブルー]「You're pretty horny today, huh? Did you get excited looking at my dick?」[k]
+[フレデリカ v=vd382]「Ahhhhh, Blue! Blue!」[k]
+After that, Blue thrust into me, and I writhed in ecstasy...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント03
+*married_03
+
+; 宿屋の一室・テオが１人で宿泊している時
+@saveon
+@bg f=0001
+[texton w=1]
+[テオ e=通常 f=10]「...」[k]
+Another nightmare night has come.[k]
+I wonder if [フレデリカ] is being held by Blue again by now...[k]
+@se f=door1
+∗slam∗[k]
+[textoff]
+@mu f=love
+@fg c=フレデリカ e=タンクトップ f=25
+[texton w=1]
+[フレデリカ v=vd383 f=25]「Dear...」[k]
+[テオ f=05]「[フレデリカ]...! What are you doing here?!」[k]
+[フレデリカ v=vd384 f=33]「Well... Blue told me to go make you happy once in a while.」[k]
+[テオ f=05]「Blue...?」[k]
+What kind of windfall is this? Is he up to something again...?[k]
+@fg c=フレデリカ f=22
+[フレデリカ v=vd385 f=22]「Please take off your clothes. I'm going to do my best for you tonight...」[k]
+[テオ f=33]「Y-yeah...」[k]
+I missed you too, [フレデリカ]. I don't know what Blue is up to, but since we're here, let's enjoy our time together for the first time in a while.[k]
+[テオ f=30]「[フレデリカ]...」[k]
+I take off my pants and underwear, exposing my lower body. My crotch is already rock hard.[k]
+The anticipation of holding my wife for the first time in ages was already getting me excited.[k]
+@fg c=フレデリカ f=25
+[フレデリカ v=vd386 f=25]「Well...」[k]
+[フレデリカ] stares at my crotch with a strange look on her face.[k]
+@fg c=フレデリカ f=23
+[フレデリカ v=vd387 f=23]「I see you've been building up a lot lately ♪ Then I'll have to do lots of nice things for you! ♪」[k]
+[テオ f=02]「Ah, please. Well, [フレデリカ], come on...」[k]
+@cl
+[フレデリカ] also began to undress.[k]
+[textoff]
+@fg c=フレデリカ e=布のスカート f=25
+@w05
+[texton w=1]
+She boldly took off her tank top, revealing her voluptuous breasts.[k]
+[フレデリカ f=25]「...」[k]
+However, [フレデリカ] suddenly stops moving.[k]
+[テオ f=02]「What's wrong? Come on, take off the rest too. I can't hold it in any longer.」[k]
+@fg c=フレデリカ f=29
+[フレデリカ f=29]「...」[k]
+[フレデリカ] hesitated a little before taking off her skirt.[k]
+[textoff]
+@fg c=フレデリカ e=鋼鉄の貞操帯 f=30
+@w05
+[texton w=1]
+[テオ f=12]「Ah...!」[k]
+Something unfamiliar appears from under my wife's skirt.[k]
+[フレデリカ f=30]「...」[k]
+[テオ f=12]「[フレデリカ], what's... that?」[k]
+To my surprise, [フレデリカ]'s lower body was fitted with underwear that looked like an metal ring.[k]
+@fg c=フレデリカ f=29
+[フレデリカ v=vd388 f=29]「Well... It's a chastity belt... Blue told me to put it on...」[k]
+[テオ f=12]「A chastity belt...?! Blue...!」[k]
+A chastity belt is a item that prevents a wife's infidelity by stopping her from fornicating.[k]
+That guy... making someone else's wife wear something like this, to stop me, her husband...![k]
+[フレデリカ v=vd389 f=29]「I can't take this off because Blue has the key...」[k]
+[テオ f=09]「Damn it... Blue...!」[k]
+That's what this is all about...! That's why you sent [フレデリカ] to me today, to show me this...![k]
+He's probably gloating at the thought of me not being able to get laid even though I want to. What a foul man.[k]
+@fg c=フレデリカ f=33
+[フレデリカ v=vd390 f=33]「Well, because I'm like this, you won't be able to insert into me today. But I'll try my best to please you.」[k]
+@cl
+[テオ f=29]「Oh...」[k]
+[textoff]
+@fg c=フレデリカ e=パイズリ・大 f=72
+@w05
+[texton w=1]
+[フレデリカ] kneels in front of me and sandwiches my hard penis between her large breasts. It seems she is going to give me a titjob.[k]
+As usual, [フレデリカ] used her ample breasts to carefully stroke my cock.[k]
+She further stimulates the glans by licking the tip with her mouth and sucking on it.[k]
+[フレデリカ v=vd391 f=72]「Mmmm... ∗suck∗ ... Ahhh... Do you feel good?」[k]
+[テオ f=01]「Ah... That's amazing.」[k]
+I love [フレデリカ]'s titjob. Her soft, voluminous breasts envelop my penis, and it feels so good.[k]
+Above all, the sight of [フレデリカ] squeezing my penis with her breasts is very erotic and exciting.[k]
+What's more, today she's learned a new technique... My wife's titjob really is the best...![k]
+[テオ f=12]「Ah...! [フレデリカ]...!」[k]
+∗spurt spurt!∗[k]
+@fg c=フレデリカ e=パイズリ・射精・大 f=69
+[フレデリカ v=vd392 f=69]「Ahhh...! Dear...!」[k]
+It felt so good that I couldn't resist shooting my load.[k]
+@fg c=フレデリカ e=パイズリ・精子・大 f=70
+[テオ f=12]「I'm sorry, I just... I splashed it all over your face...」[k]
+[フレデリカ v=vd393 f=70]「It's okay. I'm happy that you feel good...」[k]
+My wife smiles at me, and her words are very comforting. It was a great relief, as I had been feeling completely overwhelmed by Blue.[k]
+Still, [フレデリカ], when did you learn this technique...?[k]
+@st
+[テオ f=12]「...! (Ah!)」[k]
+@mu f=worry
+Could Blue have taught [フレデリカ] this new technique?[k]
+@fg c=フレデリカ f=71
+[フレデリカ v=vd394 f=71]「What's the matter?」[k]
+[テオ f=10]「N-no... It's nothing...」[k]
+It's him, so of course he did.[k]
+[フレデリカ] squeezed his dick, which is much bigger than mine, with her breasts.[k]
+[テオ f=10]「...」[k]
+Beyond my beloved wife, the shadow of that man flickers.[k]
+I truly regretted leaving [フレデリカ] in Blue's care.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント04・４日目以降
+*married_04
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=affair
+[texton w=0]
+[フレデリカ v=vd395 e=汗だく f=37]「Ahhh..! Ahhh..! Blue! Please... More...!」[k]
+[ブルー e=汗だく f=02]「Kuku, you've become crazy for my dick too!」[k]
+[フレデリカ v=vd396 f=37]「That's not... true... Ahhh!」[k]
+[ブルー f=01]「Liar. You really love cock, don't you? You want me to do this to you with my dick, don't you?」[k]
+∗squish squish squish squish!∗[k]
+[フレデリカ v=vd397 f=37]「Kyaaa!」[k]
+I let Blue take care of me today...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ホテルイベント・主人公と同室
+
+; ラブホで売春組織が暗躍している
+; 主人公たちはラブホに一般のカップルのふりをして潜入し事件を解決する
+
+;◇主人公ホテルイベント・夜
+*hotel_theo_1
+
+; ラブホテルの一室
+@saveon
+@mu f=affair
+@se f=door1
+@bgf f=0004
+@wait time=1000
+@fg l=テオ f=10 b
+@fg r=フレデリカ f=05
+[texton w=1]
+[テオ f=26]「...」[k]
+[フレデリカ v=vd398 f=05]「The whole room is pink... It's amazing...」[k]
+After checking in, I went into a love hotel room with [フレデリカ].[k]
+Ugh... This makes me nervous...[k]
+The room is pink. There is a heart-shaped bed.[k]
+The bath is also in the same room, albeit separated by a screen.[k]
+Even though we are only staying as a couple for form's sake, I still feel conscious when I am alone with a girl in a place like this.[k]
+@fgf r=フレデリカ f=03
+[フレデリカ v=vd399 f=03]「It's a lovely room, Captain!」[k]
+@fgf l=テオ f=33
+[テオ f=33]「O-oh, yeah?」[k]
+[フレデリカ] says this happily. Unlike me, she doesn't seem too nervous.[k]
+[フレデリカ v=vd400 f=04]「Let's enjoy the cute atmosphere!」[k]
+[テオ f=33]「W-well, yes.」[k]
+[フレデリカ] looks completely relaxed. That makes me relax too.[k]
+At this rate, we can spend the time until morning normally... I was relieved to think so, when.[k]
+@se f=door1
+@fgf l=テオ f=05 b
+@fgf r=フレデリカ f=05
+[従業員]「Excuse me, excuse me.」[k]
+[テオ f=05]「Aaa...」[k]
+An employee unexpectedly entered the room.[k]
+[従業員]「We offer a free laundry service. Please put your clothes in this basket. We will wash them and return them to you by tomorrow morning.」[k]
+[フレデリカ f=05]「...」[k]
+A laundry service...?[k]
+It may be convenient, but we brought weapons and other items with us in case something happened. I'd rather not leave our belongings with others.[k]
+[テオ f=05]「Uh... That's fine...」[k]
+[従業員]「We are sorry, but this service is mandatory for all guests staying at this hotel.」[k]
+[テオ f=05]「What...?」[k]
+You're saying laundry service is mandatory? What on earth is going on?[k]
+[従業員 f=01]「You see, we have had problems in the past with guests staying at this hotel, including vandalism and murder...」[k]
+[従業員 f=01]「To prevent any problems, we ask our customers to leave all their luggage, including what they are wearing.」[k]
+[テオ f=06]「I see...」[k]
+[従業員]「In return, we will wash the clothes you leave with us. Thank you very much for your cooperation.」[k]
+[テオ f=06]「...」[k]
+[フレデリカ v=vd401 f=05]「If that's the case, hadn't we better?」[k]
+[テオ f=02]「That's right.」[k]
+We're here to conduct an undercover investigation of this hotel. I'm a little reluctant to check in all our luggage...[k]
+However, disobeying the employees will be regarded with suspicion. It would be counterproductive to be refused accommodation.[k]
+[テオ f=05]「Okay, I'll leave my clothes and luggage with you.」[k]
+[従業員]「Thank you for your cooperation! Please them in this basket. Please wear this instead.」[k]
+[textoff]
+@out
+@w1
+@bg f=0004 b
+@fg l=テオ e=バスタオル f=26 b
+@fg r=フレデリカ e=バスタオル f=53
+[texton]
+[テオ f=26]「...」[k]
+[フレデリカ v=vd402 f=53]「It's embarrassing...」[k]
+After depositing all of our clothes, [フレデリカ] and I were only clad in towels.[k]
+This was all the employee offered us to wear.[k]
+[テオ f=25]「Um... You didn't have anything else to wear?」[k]
+[従業員]「Sorry, we wanted to provide bathrobes, but unfortunately we are out of stock...」[k]
+[テオ f=26]「Oh no...」[k]
+[従業員]「...Isn't it fine? Given what you are both here for, after all.」[k]
+The employee then smiles a little condescendingly.[k]
+[テオ f=26]「...」[k]
+...This is one of those places where if you stand out too much, people may become suspicious. Ostensibly, [フレデリカ] and I are just an ordinary couple who came to stay at a love hotel.[k]
+[テオ f=05]「I understand. Please take care of the laundry.」[k]
+[従業員]「Well, enjoy yourselves.」[k]
+@se f=door1
+∗slam∗[k]
+[テオ f=26]「...」[k]
+[フレデリカ f=53]「... (Kyaa)」[k]
+Now we are facing each other almost naked, save a single piece of cloth.[k]
+And this is a love hotel... In this situation, it would be strange not to be aware of the other party.[k]
+[テオ f=26]「...」[k]
+[フレデリカ v=vd403 f=53]「The towels are... a little small...」[k]
+For [フレデリカ], who has large breasts, the towel provided seems too small.[k]
+The top edge of the towel barely covers the nipples, and even then it doesn't seem to cover the butt properly.[k]
+[フレデリカ] looks very embarrassed.[k]
+[フレデリカ v=vd404 f=29]「Um... Please don't look at me too much...」[k]
+[テオ f=26]「O-oh, okay.」[k]
+@fg r=フレデリカ e=バスタオル・はだけ f=31
+∗boing∗[k]
+@fg l=テオ f=25 b
+@fg r=フレデリカ e=バスタオル・はだけ f=67
+[フレデリカ f=67]「...!」[k]
+[テオ f=25]「Ah...!」[k]
+To my surprise, [フレデリカ]'s breasts burst out of the towel![k]
+They're completely exposed, nipples and all![k]
+@fg r=フレデリカ e=バスタオル・はだけ・手ブラ f=37
+[フレデリカ v=vd405 f=37]「Kya!」[k]
+[フレデリカ] hastily hides her breasts.[k]
+I saw... [フレデリカ]'s breasts...[k]
+@fg r=フレデリカ e=バスタオル f=29
+[フレデリカ v=vd406 f=29]「D-did you see?」[k]
+@fgf l=テオ f=26
+[テオ f=26]「I-I'm sorry...」[k]
+[フレデリカ v=vd407 f=53]「Ah... You saw...」[k]
+[テオ f=25]「I'm so sorry. I turned away right away...」[k]
+My eyes were glued to them, albeit for a moment... It's hard for a man not to stare at breasts like that...[k]
+But still, the towel is too short. I feel sorry for [フレデリカ].[k]
+@fgf l=テオ f=02
+[テオ f=02]「[フレデリカ], I won't use the bed, so cover yourself with the bed sheet.」[k]
+@fgf r=フレデリカ f=25
+[フレデリカ v=vd408 f=25]「What...? But where will you sleep?」[k]
+[テオ f=02]「I'll sleep in the corner of the room.」[k]
+@cl l
+[フレデリカ v=vd409 f=25]「Ah...!」[k]
+I moved away from [フレデリカ] and lay down in the corner of the room with my back to her.[k]
+@fgf r=フレデリカ f=29
+[フレデリカ f=29]「...」[k]
+[テオ f=02]「Well, good night. See you tomorrow.」[k]
+I laid my body on the floor and closed my eyes.[k]
+[textoff]
+@fa
+@out
+@w1
+@bg f=0057
+[texton w=0]
+[フレデリカ e=バスタオル f=26]「...」[k]
+[テオ e=裸 f=10]「...」[k]
+[フレデリカ v=vd410 f=25]「...Captain, are you awake?」[k]
+[テオ f=13]「...Yeah, it's hard to sleep in an unfamiliar place.」[k]
+[フレデリカ v=vd411 f=60]「Me too... I can't sleep well...」[k]
+[フレデリカ f=26]「...」[k]
+[テオ f=06]「...」[k]
+[フレデリカ v=vd412 f=25]「Umm... Captain...」[k]
+[テオ f=06]「Hmm?」[k]
+@mu f=peace
+[フレデリカ v=vd413 f=21]「Well... Why don't you come over here?」[k]
+[テオ f=05]「What...?」[k]
+[フレデリカ v=vd414 f=22]「Captain, you must be cold there. You should get into bed and warm up...」[k]
+[テオ f=05]「But if I do that, you...」[k]
+[フレデリカ v=vd415 f=22]「I'm fine... It's more painful to see you putting up with that...」[k]
+[テオ f=05]「[フレデリカ]...」[k]
+[フレデリカ] is so sweet... I bet she really doesn't want to be in the same bed with a guy...[k]
+[フレデリカ v=vd416 f=22]「Besides, it's kind of sad that we're good friends, but we have to sleep avoiding each other...」[k]
+[テオ f=05]「But... you're barely wearing anything...」[k]
+[フレデリカ v=vd417 f=21]「Of course, you shouldn't look at me. But it's okay if you just get in the bed.」[k]
+[テオ f=05]「[フレデリカ]...」[k]
+[フレデリカ v=vd418 f=22]「Come on, captain. Please...」[k]
+[テオ f=02]「Well, then, I'll take your word for it...」[k]
+I quietly got under the covers, trying not to look at [フレデリカ].[k]
+Then we lie side by side in bed with our backs to each other.[k]
+[テオ f=06]「...」[k]
+On my back, I faintly feel [フレデリカ]'s warmth...[k]
+And then we fell asleep.[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+@jump storage="main11.scn" target=*hotel_2
+
+;◇主人公ホテルイベント・朝
+*hotel_theo_2
+
+; ラブホテルの一室・朝
+@bg f=9999
+@bg f=0064 t=2000
+@mu f=peace
+[texton w=1]
+[テオ e=裸 f=06]「...」[k]
+It's morning...?[k]
+I wake up on a pink bed. Come to think of it, I slept at a love hotel last night...[k]
+[テオ f=25]「...! (Ah!)」[k]
+That's right! Next to me is a completely naked [フレデリカ], not even wearing a towel...![k]
+Munyu.[k]
+[テオ f=25]「...!」[k]
+I felt something very soft on my back. This can't be...![k]
+[フレデリカ v=vd419 e=裸・胸押しつけ f=19]「Cap...tain...」[k]
+[テオ f=25]「[フレデリカ]...!」[k]
+To my surprise, a naked [フレデリカ] was hugging me in her sleep.[k]
+She's muttering in her sleep and pushing her large breasts against my back.[k]
+I don't know what to do... Should I wake [フレデリカ] up...?[k]
+[フレデリカ v=vd420 f=19]「Nyu... Captain...」[k]
+[テオ f=26]「...」[k]
+But still, the feel of this...[k]
+So soft... I want to feel this all the time...[k]
+[テオ f=25]「...! (Ah!)」[k]
+That's no good. I have to wake [フレデリカ] up as soon as possible...![k]
+[フレデリカ v=vd421 f=61]「Um... Captain...?」[k]
+Suddenly, [フレデリカ] woke up.[k]
+[フレデリカ v=vd422 f=61]「Is this... the captain's back? I'm hugging him...」[k]
+[フレデリカ f=31]「...! (Ah!)」[k]
+[フレデリカ v=vd423 e=裸 f=67]「Aaaaah! Captain! I'm sorry!」[k]
+[フレデリカ] rushed away from me and hid her breasts with a sheet.[k]
+[テオ f=12]「Sorry, I meant to wake you up right away...」[k]
+[フレデリカ v=vd424 e=バスタオル f=29]「Did you see...? I'm naked...」[k]
+[テオ f=13]「I didn't see it! I was looking the other way the whole time...」[k]
+Well, I didn't see it, but I felt your breasts...[k]
+@se f=door1
+[従業員]「Good morning. The clothes we received yesterday have been washed and brought to you.」[k]
+The hotel employee brought the clothes and luggage we left behind yesterday. We hurriedly put them on and checked out of the hotel.[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+@eval exp='o.フレデリカ.strip.theo = "パンツ"'
+@jump storage="main11.scn" target=*hotel_4
+
+
+
+;■ホテルイベント・マックスと同室
+
+;◇マックスホテルイベント・夜
+*hotel_max_1
+
+; ラブホテルの一室
+@se f=door1
+@mu f=bad
+@bgf f=0004 b
+@fg l=マックス e=バスタオル,勃起 f=22 b
+@fg r=フレデリカ e=バスタオル f=30
+[texton w=1]
+[従業員]「Well, enjoy yourselves.」[k]
+@se f=door1
+∗slam∗[k]
+[フレデリカ f=30]「... ∗badump∗」[k]
+A hotel employee leaves the room, leaving me and [マックス] alone.[k]
+I was alone with [マックス], dressed only in a towel...[k]
+I'm scared... Am I being looked at sexually by [マックス]?[k]
+[フレデリカ f=30]「... ∗badump∗」[k]
+[マックス f=22]「Well, [フレデリカ]. Let me get right to it...」[k]
+[フレデリカ v=vd425 f=29]「W-what is it?」[k]
+@fgf r=フレデリカ f=31
+[フレデリカ f=31]「...!」[k]
+When I look at [マックス], I see a large tent stretched over his lower body![k]
+@fgf r=フレデリカ f=65
+[フレデリカ v=vd426 f=65]「Aah!」[k]
+@fg l=マックス f=22 left=500 index=1900
+[マックス f=22]「Come on, let's get dirty. I can't wait to do something dirty.」[k]
+@fgf r=フレデリカ f=64
+[フレデリカ v=vd427 f=64]「No, I don't want to...」[k]
+@fgf l=マックス f=71 fix
+[マックス f=71]「I've been looking forward to tonight ever since I found out I'd be rooming with you!」[k]
+[マックス f=71]「I've always wanted to fuck you. See, my dick is getting so hard!」[k]
+@fgf r=フレデリカ f=52
+[フレデリカ v=vd428 f=52]「I don't want to! I don't do nasty things!」[k]
+@fgf l=マックス f=27 fix
+[マックス f=27]「What are you talking about? A love hotel is a place to have sex. How can you stay here and not have sex?」[k]
+@fgf r=フレデリカ f=63
+[フレデリカ v=vd429 f=63]「Well... I don't know what to say...」[k]
+@fgf l=マックス f=53 fix
+[マックス f=53]「No? Every man and woman who enter a love hotel have sex. That's what it means to stay in a love hotel. Do you understand?」[k]
+[フレデリカ v=vd430 f=63]「But that's what Sandra said to do, and it's only a trick...」[k]
+[マックス f=54]「...Yeah. But as long as you stay at a love hotel, you have sex. You might not know because you're from the country, but that's the way it is.」[k]
+[マックス f=53]「By now, everyone in the other rooms will have started having sex, right? I'm sure [テオ]'s getting laid too.」[k]
+[フレデリカ v=vd431 f=63]「The captain too...?」[k]
+[マックス f=54]「Yes, that's right. They're definitely fucking, I'm sure of it.」[k]
+[マックス f=61]「It's just the two of them in a love hotel, spending the night in the same bed. How can a young man and woman do nothing?」[k]
+@fgf r=フレデリカ f=30
+[フレデリカ f=30]「...」[k]
+[マックス f=54]「It's awful, we might be the only ones who haven't had sex yet!」[k]
+[マックス f=61]「If Sandra heard that, she'd say it's disgusting. That it's impossible for a couple to go to a love hotel and leave without having had sex.」[k]
+[フレデリカ f=30]「...」[k]
+@fgf l=マックス f=22 fix
+[マックス f=22]「Let's just do it once, so we don't embarrass ourselves. What's the big deal if it's just once? Right?」[k]
+[フレデリカ f=30]「...」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=フレデリカ f=event25 p0=hair p1=04 p2=03
+@mu f=action
+[texton w=2]
+[フレデリカ v=vd432]「Oh... Oh... Oh...」[k]
+[マックス]「Ohhhhhhh, that feels so good! [フレデリカ]'s pussy is so tight～～!」[k]
+In the end, I allowed myself to be taken by [マックス].[k]
+[フレデリカ v=vd433]「Umm... Please... Don't go too deep...」[k]
+[マックス]'s big penis is slurping in and out of me.[k]
+[マックス]'s penis is so big, and really hard... I'm not sure how to describe it...[k]
+On the other hand, [マックス] was moving his hips enthusiastically and not paying attention to me at all, as if he was feeling really good.[k]
+[マックス]「Muho～! This is irresistible!」[k]
+[フレデリカ v=vd434]「Please hurry... Please hurry up... [マックス]...」[k]
+[マックス]「What? You want me to cum? You're pretty dirty, [フレデリカ].」[k]
+[フレデリカ v=vd435]「No, no... I mean, I just want this to be over...」[k]
+[マックス]「Well, it's time to take the first shot! Then let's go for round two!」[k]
+[フレデリカ v=vd436]「What, no way...! Oh no...!」[k]
+[マックス]'s movements become even more intense![k]
+No... Don't... You'll break me![k]
+[マックス]「Mwah! I'm cumming!」[k]
+∗spuurt! spuurt!∗[k]
+[フレデリカ v=vd437]「Oh no...!」[k]
+[マックス] began to ejaculate with his penis still inside![k]
+[マックス]「Oh, man, I came inside...」[k]
+[フレデリカ v=vd438]「That's terrible, [マックス]...」[k]
+[マックス]「Sorry, sorry... ♪ I really am. Next time, I'll make sure to pull out.」[k]
+@bg chara=フレデリカ f=event25 p0=hair p1=05 p2=02
+[フレデリカ v=vd439]「Next time is no good... I don't want to do it with you anymore...」[k]
+[マックス]「What are you talking about? We've only done it once! That's too cruel, I can't let it end with one shot!」[k]
+@bg chara=フレデリカ f=event25 p0=hair p1=05 p2=01
+[フレデリカ v=vd440]「What...?!」[k]
+You said it would only be once...![k]
+[マックス]「Look at it. It's still not fully subdued, is it? My dick. It would be cruel to stop after just one time!」[k]
+[マックス] then showed me his penis, which was still hard. The tip was dripping with semen that he had just let out.[k]
+[マックス]「Come on, just open your legs.」[k]
+@bg chara=フレデリカ f=event25 p0=hair p1=05 p2=03
+[フレデリカ v=vd441]「No... Don't...」[k]
+[マックス]「I'm sure you'll soon realize how good a big cock feels and start asking me for it. Okay, let's go for the second round!」[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+@jump storage="main11.scn" target=*hotel_3
+
+;◇マックスホテルイベント・朝
+*hotel_max_2
+
+; ラブホテルの一室・朝
+@bg chara=フレデリカ f=event25 p0=hair p1=04 p2=03
+@mu f=adult
+[texton w=2]
+[フレデリカ v=vd442]「Ah... Ah... Ah... Ah...」[k]
+[マックス]「I'm going to cum! I'm going to shoot my second sperm of the day!」[k]
+∗spuurt! spuurt!∗[k]
+[フレデリカ v=vd443]「Oh, no...!」[k]
+[マックス] ejaculated for the second time today and the seventh time since last night.[k]
+My body is completely soiled from the repeated sex since this morning and being doused with sperm.[k]
+[マックス]「Kuu～～! You're so erotic, I can't stop my dick, oh! [フレデリカ], one more time...」[k]
+@bg chara=フレデリカ f=event25 p0=hair p1=04 p2=04
+[フレデリカ v=vd444]「Please stop... I don't want to do this with you anymore...」[k]
+[マックス]「Please don't say that. I want you so bad～!」[k]
+[textoff]
+
+@bgf f=0064
+@se f=door1
+[texton w=1]
+∗slam∗[k]
+[従業員]「Good morning. The clothes we received yesterday have been washed and brought to you. Oops, were you having fun?」[k]
+[マックス e=汗だく f=55]「Aaa...」[k]
+[フレデリカ v=vd445 e=汗だく・開き f=65]「Kya!」[k]
+Suddenly, a hotel employee entered the room. I hurriedly covered my body with a towel.[k]
+[フレデリカ e=バスタオル＆汗だく f=29]「... (Kyaa)」[k]
+[マックス f=27]「What the hell? Don't interrupt me! I'm on the verge of something good!」[k]
+[従業員]「I'm very sorry to interrupt your fun, but it's time to check out...」[k]
+[マックス f=26]「Damn... All right, all right.」[k]
+[フレデリカ f=94]「... (Phew)」[k]
+Thanks to the employee, I was finally freed from [マックス].[k]
+My body, which had responded to seven requests, was completely exhausted...[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+
+; マックス関連イベント消滅
+@delevent name=フレデリカ num=20
+@delevent name=フレデリカ num=21
+@delevent name=フレデリカ num=22
+@delevent name=フレデリカ num=23
+@eval exp='o.フレデリカ.strip.max = "汗だく"'
+@recordsex guy=マックス sex=7 orgasm=2 date=&'game.date - 1'
+@recordsex guy=マックス sex=3 orgasm=1
+@eval exp='o.フレデリカ.moveHeart(o.マックス, 1)'
+
+@jump storage="main11.scn" target=*hotel_5
+
+
+
+;■不倫イベント
+
+;◇マックス不倫イベント
+*adultery_max
+
+; 宿屋の一室
+@saveon
+@bg f=0001 b
+@fg c=マックス e=通常 f=03
+@mu f=affair
+[texton w=1]
+[マックス f=03]「Ahhh, [フレデリカ]'s boobs are seriously huge! Just looking at them is enough to drive me crazy.」[k]
+[マックス f=03]「I'm so jealous of [テオ], who gets to have sex with those huge tits every night! I want to squeeze those tits too!」[k]
+@fg c=マックス e=勃起 f=32
+[マックス f=32]「Imagining it gave me a boner... I can't hold back anymore, I'm gonna jerk off!」[k]
+@clf
+[マックス] sat down on the bed, pulled down his pants, and placed his hand on his hard penis.[k]
+@fg r=フレデリカ e=タンクトップ f=29
+[フレデリカ v=vd446 f=29]「[マックス]...」[k]
+@fgf l=マックス e=硬い革鎧,勃起 f=31
+@shake layer=2 loop=3 time=50 length=5
+[マックス f=31]「Whoa! Who is it?!」[k]
+@fg l=マックス f=23
+[マックス f=23]「...Oh, [フレデリカ]...? I didn't notice you were there. Sorry for showing you my dick!」[k]
+[フレデリカ f=29]「... ∗stare∗」[k]
+@fg l=マックス f=33
+[マックス f=33]「...Hey, don't look at my dick with such a greedy expression on your face. Sure, my dick is bigger than [テオ]'s, but...!」[k]
+[フレデリカ f=29]「... ∗stare∗」[k]
+@fg l=マックス f=64
+[マックス f=64]「...What, you really want it? ...Well, I guess so. Come on, [フレデリカ].」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=フレデリカ f=event25 p0=hair p1=04 p2=03
+@mu f=action
+[texton w=2]
+[フレデリカ v=vd447]「Ah, ah, ah, it feels so good, I can't stand it!」[k]
+[マックス]「Huh, you're really fired up, [フレデリカ].」[k]
+[フレデリカ v=vd448]「Ah, this is... This is what I've always wanted... Ahhhhh!」[k]
+[マックス]「What do you mean, [テオ] didn't do it for you?」[k]
+[フレデリカ v=vd449]「Haa haa... You're doing it, but... It doesn't feel good at all... Ahhhhhhhhhh...!」[k]
+[マックス]「Then I'll make you feel good! Come on, [フレデリカ], let's go!」[k]
+[フレデリカ] revels in a penis the size of a dwarf husband for the first time in ages.[k]
+Unable to suppress her overflowing sexual desire, she committed adultery.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナス不倫イベント
+*adultery_linus
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=affair
+[texton w=0]
+[フレデリカ v=vd450 e=汗だく f=37]「Ahh, Linus, harder...!」[k]
+[ライナス e=裸 f=01]「Wow, you're really wild, [フレデリカ]. I never imagined you were so dirty!」[k]
+[フレデリカ v=vd451 f=37]「No, I'm not a pervert... It's not that... Ahhh!」[k]
+[ライナス e=裸 f=01]「You're moaning so much with my dick in you, yet you still say that! Come on! I'm going to make you cum hard!」[k]
+Surprisingly, [フレデリカ] engaged in an extramarital affair with Linus after becoming dissatisfied with her sex life with [テオ].[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+
+
+;■ドワーフ寝取られなしルート
+*_another_dwarf_route
+@mu f=anxiety
+@bgf f=0011
+[texton w=1]
+[テオ f=12]「Where is [フレデリカ]...?」[k]
+I look for [フレデリカ]. Is she not here?[k]
+[テオ f=12]「...!」[k]
+Suddenly, I spotted a familiar girl with pigtails in the corner of the room. It was [フレデリカ]![k]
+[テオ f=10]「...」[k]
+I searched around for a window with a better view of her.[k]
+[textoff]
+@out
+@w05
+@bg chara=フレデリカ f=event101 p0=01
+@w05
+[texton w=2]
+[フレデリカ v=vd588]「Haa, haa...」[k]
+[テオ]「[フレデリカ]...!」[k]
+[フレデリカ] wasn't naked, but she was wearing an indecent outfit and was slumped in the corner of the orgy room.[k]
+With a flushed face and glistening eyes, she stared intently at the dwarven couple making love before her eyes.[k]
+[フレデリカ]「... ∗badump∗」[k]
+[テオ]「...」[k]
+[フレデリカ] stared at the couple's actions, occasionally letting out heavy breaths.[k]
+She presses her hands against her crotch tightly and moves her fingers around.[k]
+Wet and squishy lewd noises could faintly be heard.[k]
+Yes, [フレデリカ] was clearly excited and couldn't help but rub her crotch.[k]
+I'm sure her vagina is soaking wet with love juice right now.[k]
+[フレデリカ v=vd146]「Ah... ah... ah...」[k]
+[テオ]「...」[k]
+You seem to be in a horny mood, [フレデリカ]...[k]
+Perhaps she also wants to join in on what the other dwarves are doing...[k]
+[name n="Dwarf Husband"]「Phew, I'm finished... Hey, [フレデリカ]!」[k]
+@bgf chara=フレデリカ f=event101 p0=02
+@quake time=500 hmax=5 vmax=5
+[フレデリカ]「...! (Eek!)」[k]
+Having finished, the dwarf man addressed [フレデリカ] with his penis limp and dangling after ejaculation.[k]
+No way... next it'll be [フレデリカ]...![k]
+[name n="Dwarf Husband"]「I'm thirsty. Could you bring me some water?」[k]
+@bg chara=フレデリカ f=event101 p0=03
+[フレデリカ v=vd596]「Y-yes...」[k]
+[textoff]
+
+@bgf f=0022
+[texton w=1]
+When [フレデリカ] was asked to bring some water, she stopped masturbating and hurriedly headed toward the door of the orgy room.[k]
+[テオ f=06]「...」[k]
+[name n="Dwarf Wife"]「Oh, you... Staring at [フレデリカ]'s butt like that...」[k]
+The dwarf wife he had been having sex with gently accused him.[k]
+[name n="Dwarf Husband"]「W-well, she's quite an alluring girl, isn't she, that [フレデリカ]...」[k]
+[name n="Dwarf Wife"]「Do you really want to have a child with that girl too?」[k]
+[name n="Dwarf Husband"]「I'd love to... but I promised. I won't lay a finger on her.」[k]
+[テオ f=05]「...!」[k]
+A promise not to touch her...? What does that mean...?[k]
+[name n="Dwarf Wife"]「Hmm...? Is there someone there?」[k]
+[textoff]
+
+; ドワーフ村共用住居の外
+@st
+@bgf f=0011
+[texton w=1]
+[テオ f=12]「...!」[k]
+This is bad...! I absolutely can't let anyone find me here...![k]
+I ran away at full speed. Then I returned to the dwarf village.[k]
+[textoff]
+@out
+@w1
+@return cond='f.replayMode'
+;-------------------------------------------------------------------------------
+; セックス記録と時間経過
+[iscript]
+
+game.date += 185;
+
+o.フレデリカ.desire += intrandom(100, 120);
+o.フレデリカ.moral -= intrandom(50, 60);
+o.フレデリカ.expose += intrandom(10, 15);
+o.フレデリカ.feel += intrandom(60, 70);
+
+// 主人公のセックス履歴
+game.wife.strip.theo = "裸・幸せ";
+tf.temp = game.wife.getSexRecord(o.テオ, 2, 0, "乳揉み,正常位", game.date - 3);
+game.wife.addSexRecordAndChangeHeart(tf.temp);
+tf.temp = game.wife.getSexRecord(o.テオ, 2, 1, "パイズリ,正常位", game.date - 2);
+game.wife.addSexRecordAndChangeHeart(tf.temp);
+tf.temp = game.wife.getSexRecord(o.テオ, 3, 2, "パイズリ,正常位,騎乗位", game.date - 1);
+game.wife.addSexRecordAndChangeHeart(tf.temp);
+tf.temp = game.wife.getSexRecord(o.テオ, 0, 0, "パイズリ,フェラチオ", game.date - 0);
+game.wife.addSexRecordAndChangeHeart(tf.temp);
+
+[endscript]
+;-------------------------------------------------------------------------------
+
+[texton w=0]
+Six months have passed.[k]
+[textoff]
+@w1
+
+; 半年後・サファイアシティ
+@mu f=wedding
+@fg c=フレデリカ e=通常 f=03 b
+@bgf f=0007
+[texton w=1]
+[フレデリカ v=vd272 f=03]「I'm back, Captain!」[k]
+[テオ f=01]「[フレデリカ]...!」[k]
+After completing her six-month duty as a dwarf woman, [フレデリカ] has returned to me.[k]
+[フレデリカ] didn't become pregnant. Because she never actually slept with any of her six husbands.[k]
+When she started living in her village's communal dwelling, [フレデリカ] apparently spent all her time crying over me.[k]
+The dwarves, unable to bear seeing her like that, apparently decided not to choose [フレデリカ] as their sex partner.[k]
+Instead of requiring her to perform sexual duties, her husbands decided to let her fulfill her role by entrusting her with everyone's daily care.[k]
+Of course, this would not allow her to fulfill her role as a dwarf wife. Her mission was to produce children for the prosperity of the dwarven race.[k]
+However, not all women can get pregnant. No matter how many times they have sex, sometimes they can't conceive.[k]
+As such, the custom is that there is no blame even if a wife is unable to conceive. After six months, everyone is freed from their obligation.[k]
+So her husbands decided that would be the story they'd give, and she'd only need to provide her services as a maid in the meantime.[k]
+In other words, [フレデリカ] is still a virgin. She will marry me with a pure body.[k]
+When she was released from her communal life, [フレデリカ] repeatedly expressed her gratitude to her husbands. They were such kind men, she said, that no amount of thanks could ever be enough. I also want to bow my head to them over and over.[k]
+Whatever the outcome, [フレデリカ] has done her part. From now on, she can live the life she wants.[k]
+[フレデリカ v=vd273 f=02]「Now I am free! From now on, I can be with you all the time!」[k]
+This is the moment I have been waiting for. Of course, my feelings did not change even after six months had passed.[k]
+[テオ f=05]「...I'll ask again. [フレデリカ], please marry me.」[k]
+[フレデリカ v=vd274 f=03]「Yes, I will! With pleasure!」[k]
+[textoff]
+@out
+@w05
+@jump target=*_return_from_another_route
+
+
+
+
+
+
+
+
+;■フリーモード
+
+
+*_blue_01_freemode
+
+; 宿屋の一室
+@bg f=0001
+@mu f=darkside
+@fg c=フレデリカ e=タンクトップ f=09
+@fg r=ブルー e=通常 f=02
+[texton w=1]
+[フレデリカ f=09]「...」[k]
+[ブルー f=02]「... ∗grin∗」[k]
+Blue and [フレデリカ] were alone in the room. He grinned as he watched the frightened girl.[k]
+[フレデリカ v=vd320 f=09]「Um... What can I do for you?」[k]
+[ブルー f=02]「Ha, that's obvious.」[k]
+With that, Blue reached out to [フレデリカ]![k]
+@se f=tear
+@flash on time=500
+@wait time=200
+@fg c=フレデリカ e=布のスカート f=05
+@flash off
+∗riiiiiiip!∗[k]
+Blue ripped [フレデリカ]'s tank top off with great force![k]
+@fg c=フレデリカ e=布のスカート,手ブラ f=37
+[フレデリカ v=vd321 f=37]「Kya!」[k]
+[フレデリカ]'s breasts are exposed! She hurriedly covered her chest.[k]
+[ブルー f=02]「Hmph, they really are nice breasts.」[k]
+@fg c=フレデリカ f=47
+[フレデリカ v=vd322 f=47]「W-what are you doing all of a sudden...?」[k]
+@fg r=ブルー f=01
+[ブルー f=01]「It's obvious, isn't it? I'm gonna get dirty with you.」[k]
+@fg c=フレデリカ e=布のスカート f=39 b
+@fg r=ブルー e=触り f=02 left=472 b
+@fg a=blue_default_hand left=472
+Saying that, Blue pushed [フレデリカ]'s hand away and squeezed her breasts![k]
+[フレデリカ v=vd323 f=39]「No... Please stop...」[k]
+[ブルー f=05]「Hey, we agreed that I could do whatever I wanted with you girls. You haven't forgotten that, have you?」[k]
+@fg c=フレデリカ f=47
+[フレデリカ f=47]「...」[k]
+[ブルー f=05]「Got it? Then, it's time to get dirty.」[k]
+@fg c=フレデリカ e=白いパンツ f=47
+∗swish∗[k]
+[フレデリカ v=vd324 f=47]「Ah...!」[k]
+Blue reached for [フレデリカ]'s skirt, unfastened it, and let it fall to the floor.[k]
+@fg r=ブルー f=02 fix
+[ブルー f=02]「I'll take good care of you, heh heh.」[k]
+Blue stood [フレデリカ] in front of the bed and began to caress her large breasts carefully.[k]
+@fg c=フレデリカ f=37
+[フレデリカ v=vd325 f=37]「A-ha-ha...! Ahh! Blue... No...!」[k]
+Now [フレデリカ] was wearing only a small piece of underwear. Through the thin fabric, he roughly rubbed her erogenous zones with his fingers.[k]
+[ブルー f=02]「Kuku, you're starting to feel it.」[k]
+[フレデリカ f=39]「...」[k]
+[フレデリカ] fidgets with her legs and gasps, as if she is feeling something.[k]
+Her nipples were hard and pointed.[k]
+[ブルー f=94]「Kukukuku...」[k]
+Blue puts his hand on [フレデリカ]'s panties![k]
+@fg c=フレデリカ f=54
+[フレデリカ v=vd327 f=54]「Aaaah...!」[k]
+@se f=whip
+@flash time=100
+@cl b
+@fg l=フレデリカ f=47 left=400 b
+@fgf r=ブルー e=通常 f=05 left=550
+Suddenly, [フレデリカ] brushed Blue's hand away![k]
+[フレデリカ v=vd328 f=47]「Blue, I really don't want to do this. Please stop at this...」[k]
+[ブルー f=05]「What are you talking about? You guys have to accommodate me if you want me along. That's the deal.」[k]
+[フレデリカ v=vd329 f=48]「But...」[k]
+[ブルー f=05]「I'm gonna fuck you right now. I won't let you refuse.」[k]
+@fg l=フレデリカ f=49 b
+@fg r=ブルー e=上半身裸 f=94 left=400
+With that, Blue took off his shirt and headed toward [フレデリカ] again.[k]
+[フレデリカ v=vd332 f=49]「Oh, no...!」[k]
+[textoff]
+@out
+
+@bgf chara=フレデリカ f=event73 p0=hair p1=01 p2=01
+[texton w=2]
+Blue forcefully stripped off [フレデリカ]'s panties, then removed his own pants and straddled her.[k]
+Blue's throbbing hot penis pops out. It is stands tall, ready to fuck [フレデリカ].[k]
+[フレデリカ v=vd333 f=505]「No...! No! That's not allowed...!」[k]
+[フレデリカ] trembles with fear at the sight of Blue's vicious object. She backs away behind the bed to escape from Blue.[k]
+But Blue doesn't let her get away with that. He holds her legs and forces them open.[k]
+[フレデリカ v=vd334 f=49]「Oh no...!」[k]
+[ブルー f=02]「Come on, let's fuck...」[k]
+He pressed the tip against her entrance. Then...[k]
+[textoff]
+
+@bg chara=フレデリカ f=event73 p0=hair p1=02 p2=04
+@w05
+[texton w=2]
+∗thrust∗[k]
+[フレデリカ v=vd335]「Ah... Ah... Ahhh!」[k]
+As Blue pushes forward, his meat pole sinks into [フレデリカ].[k]
+[ブルー]「Kukukuku...」[k]
+And then, his penis was completely buried up to the root.[k]
+[フレデリカ v=vd336]「Ugh... ∗slurp∗」[k]
+[ブルー]「You girls take care of my dick. That was the deal. So give it up and enjoy sex with me.」[k]
+@en f=kuchaslow
+@bg chara=フレデリカ f=event73 p0=hair p1=03 p2=05
+Blue started thrusting.[k]
+He shakes [フレデリカ]'s body and lets his penis slide in and out of her with a slurp, slurp, slurp.[k]
+[フレデリカ v=vd337]「Ah... Ah... Ahhh...!」[k]
+[フレデリカ]'s large breasts bounce around. A nasty slurping sound came from where they were joined.[k]
+[フレデリカ] struggles to bear the thrusting, sweat beading on her forehead.[k]
+[フレデリカ v=vd338]「Ahh... no... ahh... mmm... ahhh...!」[k]
+She is made to moan both adorably and sensually. Blue's penis makes her perform a lascivious act that she does not want to perform.[k]
+[ブルー]「Kukuku... You have a dirty body. I should have done this sooner.」[k]
+∗squish squish squish squish∗[k]
+[フレデリカ v=vd339]「Huh... No... Ah... ahh... Aaah... Ah...!」[k]
+[フレデリカ] wriggles her hips and writhes, as if she is gradually feeling the sensation.[k]
+Her panting had clearly become more agonizing.[k]
+[フレデリカ v=vd340]「Phew...」[k]
+[ブルー]「What is it? Are you getting excited?」[k]
+[フレデリカ v=vd341]「Ahh... I'm not excited... I'm not... Hiaaaah..! I... I don't feel good...」[k]
+∗squish squish squish squish squish squish!∗[k]
+@en f=kuchafast
+@bg chara=フレデリカ f=event73 p0=hair p1=03 p2=04
+[フレデリカ v=vd342]「Ah, ah, ah, ahhh!」[k]
+Blue quickly increases the speed of his thrusting and violently attacks [フレデリカ]![k]
+[ブルー]「Liar! You're really feeling it, aren't you? It's making you feel good, isn't it? Huh?」[k]
+∗squish squish squish squish squish squish!∗[k]
+[フレデリカ v=vd343]「Ah, ah, ah, ah, ah, ah.」[k]
+[ブルー]「I'm going to punish you for lying! I'm going to put a lot of cum inside you!」[k]
+[フレデリカ v=vd344]「Noooo, don't do that!」[k]
+@flash
+@enst
+∗spurt! spuuurt!∗[k]
+@bg chara=フレデリカ f=event73 p0=hair p1=04 p2=05
+Blue ejaculated without hesitation with his meat stick firmly inserted into her vagina...[k]
+[ブルー]「Phew... That was pretty good, you know.」[k]
+[textoff]
+@out
+@w1
+
+@bgf f=0001
+[texton w=1]
+[フレデリカ v=vd345 e=裸 f=50]「Ugh... It's too much... I didn't want to have sex with you...」[k]
+@fg c=ブルー e=汗だく f=02
+[ブルー f=02]「You can't refuse what I want. That's the position you're in. You have to give up.」[k]
+@fg c=ブルー e=汗だく f=03
+[ブルー f=03]「You were good to fuck, so I'll do it again! Hahahahahaha!」[k]
+@cl
+[フレデリカ e=裸 f=48]「... ∗sob∗」[k]
+Blue left the room with a roaring laugh and a satisfied look on his face. A tear-stained [フレデリカ] was left behind...[k]
+[textoff]
+@out
+@w05
+@recordsex guy=ブルー sex=1 orgasm=0 acts=乳揉み,手マン,正常位
+[hoteloff]
+
+
+
+
+*_blue_02_freemode
+
+
+; 宿屋の一室
+@bg f=0001
+@fg l=ブルー e=通常 f=06 b
+@fg r=フレデリカ e=タンクトップ f=29
+@mu f=shadow
+[texton w=1]
+[ブルー f=05]「Hey, [フレデリカ], you'll have to deal with me again today.」[k]
+[フレデリカ e=通常 f=30]「...」[k]
+[フレデリカ] silently climbed into bed as Blue instructed.[k]
+@cl r
+@fg l=ブルー f=02
+[ブルー f=02]「That's a good attitude. Well then, let's get started.」[k]
+[textoff]
+@out
+
+@bg chara=フレデリカ f=event73 p0=hair p1=03 p2=04
+@mu f=darkside
+[texton w=2]
+∗sluurp sluurp sluurp sluurp∗[k]
+[フレデリカ v=vd347]「Oh... Aaaan... Blue... Aaan...」[k]
+Blue takes off all of [フレデリカ]'s clothes. After a light caress, he takes out his erect penis and inserts it without hesitation.[k]
+[ブルー]「Kuku, how do you feel? Can you feel it?」[k]
+∗sluurp!∗[k]
+[フレデリカ v=vd348]「Huuuu...!」[k]
+[フレデリカ]'s whole body shudders as Blue thrusts in deeply.[k]
+[ブルー]「How does this cock feel?」[k]
+Blue shoves his penis up to the base of [フレデリカ]'s vagina and then thrusts deeply![k]
+∗slurp slurp slurp slurp!∗[k]
+[フレデリカ v=vd349]「Aaaan... Blue... That's... No! Ah... I'm... going crazy...!」[k]
+[フレデリカ] writhed in ecstasy. She was clearly in a state of considerable pleasure.[k]
+[フレデリカ v=vd350]「Anh, anh, hah...! Ahhh!」[k]
+Under the intense attack she arched her back, her whole body jolting.[k]
+[ブルー]「It looks like you're cumming. Then I'm going to cum too.」[k]
+∗slurp slurp slurp slurp!∗[k]
+[フレデリカ v=vd351]「Ah... Ahh...! Nooo...!」[k]
+∗spurt spurt spurt spurt spurt!∗[k]
+Blue also came inside [フレデリカ]. The two collapsed on the bed in a heap...[k]
+[textoff]
+@out
+@w05
+
+@bgf f=0001
+[texton w=0]
+[フレデリカ v=vd352 e=汗だく f=39]「Ahh ahh ahh ahh ahh...」[k]
+[フレデリカ], perhaps tired, lounges in bed.[k]
+But there was something about her expression that seemed to be savoring the lingering aftertaste.[k]
+[ブルー e=裸 f=01]「Kuku, you were having a lot of fun too, weren't you? Did my dick feel good?」[k]
+[フレデリカ f=98]「...」[k]
+She didn't answer. But she didn't deny it either.[k]
+[ブルー f=01]「You have big boobs and a nice pussy, so I'm going to keep fucking you. Look forward to it! Wahahahaha!」[k]
+[フレデリカ f=98]「...」[k]
+Blue said, with a very cheerful laugh.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+*_blue_03_freemode
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=worry
+[texton w=1]
+[フレデリカ v=vd353 e=汗だく f=37]「An... An... Blue...」[k]
+[ブルー e=汗だく f=01]「Hehe, your boobs are bouncing around like crazy. It's exciting.」[k]
+[フレデリカ v=vd354 f=38]「Ah... Blue's penis... It feels so good... My hips won't stop!」[k]
+Inside the room, the sound of skin colliding with skin echoed roughly.[k]
+[フレデリカ] is grinding her hips enthusiastically on top of Blue.[k]
+Another woman has become captivated by Blue.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+
+;■ドワーフ寝取られなしルート・追記
+
+*_another_theo_20
+He says otherwise, but he still seems a little unsatisfied. I guess she really wanted to cum after all.[k]
+It's been a while since I started having sex with [フレデリカ], but even now, I’ve only managed to make her cum a mere handful of times.[k]
+I think... the biggest factor, first and foremost, is my lack of sexual experience.[k]
+I feel like I'm doing my best, but I just can't seem to quite manage to satisfy her.[k]
+Still, [フレデリカ] is dedicated to making me feel good, and she is always willing to do what I ask of her. I am truly grateful to my wonderful wife.[k]
+To respond to her feelings, I should work harder too...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+; 終わり

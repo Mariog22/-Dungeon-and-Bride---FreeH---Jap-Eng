@@ -1,0 +1,117 @@
+﻿; 城
+
+name = 常闇の城４Ｆ
+insideName = ４Ｆ
+lower = 常闇の城３Ｆ
+level = 36
+bgm = shadow
+margin = 3
+shadow = dark
+sky = stormyforest
+effect = PE_storm
+
+; パーツ画像
+━ = stone
+… = half
+　 = marble
+㊦ = ladderd
+⑴ = candle
+⑵ = candle
+⑶ = candle
+⑷ = candle
+⑤ = ladderd
+⑹ = br_str
+
+; 敵情報
+monsters = バンパイアラット,バンパイアバット,ナイトメア,ナイトスケルトン,ガスト,ヴァンパイア,ノスフェラトゥ
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  ┏……………┓									┏……………┓
+10￤㊦　　　　￤									￤㊦　　　　￤
+  ￤　　　　　┗………………………┛　　　　　￤
+ 9￤　　⑶　　　　　　　　　　　　　　　⑴　　￤
+  ￤　　　　　┏………………………┓　　　　　￤
+ 8￤　　　　　￤									￤　　　　　￤
+  ┗…┓　┏…┛									┗……………┛
+ 7		￤　￤
+  		￤　￤
+ 6		￤　￤
+  		￤　￤
+ 5		￤　￤
+  		￤　￤
+ 4		￤　￤
+  		￤　￤
+ 3		￤⑹￤
+  ┏…┻…┻…┓									┏……………┓
+ 2￤㊦　　　　￤									￤　　　　　￤
+  ￤　　　　　┗………………………┛　　　　　￤
+ 1￤　　⑷　　　　　　　　　　　　　　　⑵　　￤
+  ￤　　　　　┏………………………┓　　　　　￤
+ 0￤　　　　　￤									￤　　　　⑤￤
+  ┗……………┛									┗……………┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[10][0].f.icon = 22;
+pos[10][0].f.info = "はしご";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] inSearching || onObjectTrigger
+*event_2
+;[exp] inSearching || onObjectTrigger
+*event_3
+;[exp] inSearching || onObjectTrigger
+*event_4
+;[exp] inSearching || onObjectTrigger
+
+[if exp='! game.inSearching']
+	@notice text="There is a pedestal with a large crystal ball at the top."
+	[eventoff]
+[endif]
+
+@delevent
+@se f=period
+@changefloor pimg="lighten"
+@notice text="<y>The crystal ball began to glow!"
+
+[if exp='! game.map.events.has(1) && ! game.map.events.has(2) && ! game.map.events.has(3) && ! game.map.events.has(4)']
+	@wait time=800
+	@se f=fence
+	@switchfence map=常闇の城３Ｆ x=6 y=2 way=n mode=open
+	@notice text="I heard a door open somewhere!"
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] inSearching
+
+@notice text="There is a ladder to the lower floor but it appears to be broken."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("power", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Strength permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

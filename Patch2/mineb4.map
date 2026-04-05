@@ -1,0 +1,161 @@
+﻿; 鉱山
+
+name = 鉱山Ｂ４
+insideName = Ｂ４
+upper = 鉱山Ｂ３
+lower = 鉱山Ｂ５
+level = 44
+bgm = anxiety
+roof = stone
+shadow = dark
+sky = black
+outfield = soil
+blank = rock
+
+; パーツ画像
+━ = soil
+　 = soil
+〰 = water
+／ = door
+〆 = key
+☖ = arch
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+Ⓐ = ladderu
+⑶ = fountain
+⑷ = fountain
+⑸ = trash
+⑹ = trash
+
+; 敵情報
+maxGroups = 2
+monsters = デーモンインプ,シャドウインプ
+
+; 移動ポイント
+(A) = x:6, y:6
+(B) = x:9, y:6
+
+; 宝箱
+box[1] = ウォーハンマー_u,革のビキニ・上_u,経験のコイン（小）,チーズ,信仰心の秘薬_u,ボム,召喚びん
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  		┏━┳━┳━┳━┳━┳━┳━┳━┳━┓
+ 6		┃Ⓑ┃⑶┃　┃⑸┃⑷┃　┃■┃❶／　┃
+  		┣／╋／┻／┻／┻／┻／┻／╋↓╋━┫
+ 5		┃敵／　　　　　　　　　　　／　┃㊦┃
+  		┣━┫　┏━┳／┳／┳━┓　┣━┫　┃
+ 4		┃⑹／　┃　┃①┃②┃　┃　／敵┃　┃
+  		┣━┫　┃　┗／┻／┛　┃　┣━┫　┃
+ 3		┃■〆　┃　　　　　　　┃　／Ⓐ┃　┃
+  		┣━┻━┫　　　　　　　┗━┻━┛　┃
+ 2		┃㊤　　┃⑦　　　　　　　　　　　　┃
+  		┃　　　┗︼━━━━━━┓　　　　　┃
+ 1		┃　　　　　　　　　　㊦┃　　　　　┃
+  		┗━━━━━━━━━━━┻━━━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[2][3].w.key = o.鉱山の鍵;
+pos[4][4].f = %[type: "air", trap: "air"];
+pos[5][4].f = %[type: "floor", img: "marble", pimg: "rope2"];
+pos[4][4].f.noCount = true;
+pos[5][4].f.noCount = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(o.鉱山のインプ軍団.flag == 1) monsters = [m.バンパイアバット];
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command type=mini title="Which button will you press?" cancel=true
+@select text="Ｂ１" exp='tf.result = ["鉱山Ｂ１", "鉱山Ｂ５", "up"]'
+@select text="Ｂ２" exp='tf.result = ["鉱山Ｂ２", "鉱山Ｂ４", "up"]'
+@select text="Ｂ３" exp='tf.result = ["鉱山Ｂ３", "鉱山Ｂ３", "up"]'
+@select text="Ｂ５" exp='tf.result = ["鉱山Ｂ５", "鉱山Ｂ１", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+@call storage="mineb1.map" target=*change_lift cond='tf.result !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@command type=mini title="Which button will you press?" cancel=true
+@select text="Ｂ１" exp='tf.result = ["鉱山Ｂ５", "鉱山Ｂ１", "up"]'
+@select text="Ｂ２" exp='tf.result = ["鉱山Ｂ４", "鉱山Ｂ２", "up"]'
+@select text="Ｂ３" exp='tf.result = ["鉱山Ｂ３", "鉱山Ｂ３", "up"]'
+@select text="Ｂ５" exp='tf.result = ["鉱山Ｂ１", "鉱山Ｂ５", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+@call storage="mineb1.map" target=*change_lift cond='tf.result !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@question title="<y>Will you drink water from the gushing spring?" cancel=true
+@eval exp='o.噴水.doDamage = o.毒針.doDamage'
+@eval exp='o.噴水.resultMessage = o.毒針.resultMessage'
+[if exp='tf.result']
+	@btcmd name=噴水
+	@notice text="The party was poisoned!"
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@question title="<y>Will you drink water from the gushing spring?" cancel=true
+@eval exp='o.噴水.doDamage = o.クイック.doDamage'
+@eval exp='o.噴水.resultMessage = o.クイック.resultMessage'
+[if exp='tf.result']
+	@btcmd name=噴水
+	@notice text="The speed of the party was temporarily increased!"
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@trash item=修理の巻物
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@trash item=修理の巻物
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@notice text="You can also stand on the roof of the elevator."
+
+[eventoff]
+;-------------------------------------------------------------------------------

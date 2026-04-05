@@ -1,0 +1,177 @@
+﻿; 愚者の倉庫
+
+name = 愚者の倉庫７
+insideName = Floor 7
+level = 23
+bgm = trick
+external = n:1
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+antiWarp = true
+
+; 各パーツ
+━ = stone
+✜ = stone_h
+　 = marble
+❖ = marble
+☆ = soilr
+❑ = cube
+／ = door
+〆 = key
+⧻ = fence
+☖ = arch
+☗ = gate
+︻ = panel
+Ⓑ = warp
+
+; 移動ポイント
+(A) = map:愚者の倉庫６, x:5, y:0, way:n, symbol:exit, ask:Go to the previous floor?
+(B) = map:コリンズの森, x:14, y:66, way:w
+
+; 宝箱
+box[1] = 罠はない,スターカード・杯
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5  
+  
++1											❖
+  ┏━┳︻━━━━━━━☗┓
+13┃Ⓑ┃②　　　　　　　Ⓐ┃
+  ┃　┃　　　　　　　　　┃
+12┃　✜　　　　　　　　　┃
+  ┃　┃　　　　　　　　　┃
+11┃③【❑　❑　❑　❑　❑┃
+  ┃　┃　　　　　　　　　┃
+10┃③〆　　　　　　　　　┃
+  ┣⧻┛　　　　　　　　　┃
+ 9┃　　　　❑　❑　❑　　┃
+  ┃　　　　　　　　　　　┃
+ 8┃　　❑　　　　　　　❑┃
+  ┃　　　　　　　　　　　┃
+ 7┃　　　　❑　　　❑　　┃
+  ┣⧻┓　　　　　　　　　┃
+ 6┃　〆❑　　　❑　❑　　┃
+  ┃　┃　　　　　　　　　┃
+ 5┃　【⑤　　　　　　　　┃
+  ┃　┃　　　　　　　　　┃
+ 4┃　✜　　　　①　　　❑┃
+  ┃　┃　┏━┓　┏━┓　┃
+ 3┃　┃①┃	┃☆┃	┃①┃
+  ┃　┃　┗━┛　┗━┛　┃
+ 2┃❶┃☆　☆　☆　☆　☆┃
+  ┣━┛　　　　　　　　　┃
+ 1┃　　☆　☆　☆　☆　☆┃
+  ┃　　　　　　　　　　　┃
+ 0┃　　☆　☆　☆　☆　☆┃
+  ┗━━━━━━━━━━━┛
+;    0   1   2   3   4   5  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[1][11].event = 4;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(0, 9, "n", events.has(1) ? "close" : "open");
+switchFence(0, 7, "s", events.has(1) ? "close" : "open");
+if(sf.clearedQuestOfWarehouse)
+{
+	unlockDoor(1, 6, "w");
+	unlockDoor(1, 10, "w");
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsPush
+
+@eventoff cond='game.map.getFloorInfo(3, 3).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(1, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(2, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(3, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(4, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(5, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(1, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(2, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(3, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(4, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(5, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(1, 0).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(2, 0).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(3, 0).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(4, 0).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(5, 0).type != "movable"'
+@delevent
+@wait time=1000
+@se f=fence
+@switchfence x=0 y=9 way=n mode=open
+@switchfence x=0 y=7 way=s mode=open
+@notice text="I heard a door open somewhere!"
+@eval exp='o.倉庫整理のお仕事.flag = 2'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Just a little more! Keep going!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@delevent
+@se f=period
+@notice text="<y>☆CONGRATULATIONS!☆<r><w>The job is complete.<r>Please receive your reward from the client."
+@eval exp='o.倉庫整理のお仕事.flag = 3' cond='o.愚者の倉庫１.events.has(1)'
+@eval exp='o.倉庫整理のお仕事.flag = 3' cond='o.愚者の倉庫２.events.has(1)'
+@eval exp='o.倉庫整理のお仕事.flag = 3' cond='o.愚者の倉庫３.events.has(1)'
+@eval exp='o.倉庫整理のお仕事.flag = 3' cond='o.愚者の倉庫４.events.has(1)'
+@eval exp='o.倉庫整理のお仕事.flag = 3' cond='o.愚者の倉庫５.events.has(1)'
+@eval exp='o.倉庫整理のお仕事.flag = 3' cond='o.愚者の倉庫６.events.has(1)'
+@eval exp='o.倉庫整理のお仕事.flag = 3' cond='o.愚者の倉庫７.events.has(1)'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="← Shortcut for New Game +"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Shortcut for New Game + →"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+[if exp='! game.map.events.has(1)']
+	@call storage="anime.ks" target=*failed_to_reset
+	[eventoff]
+[endif]
+
+@se f=dragstone
+@eval exp='game.map.reset()'
+@wait time=800
+@warp x=5 y=13 way=s
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,242 @@
+﻿; 森の城塞
+
+name = 森の城塞３Ｆ
+insideName = ３Ｆ
+lower = 森の城塞２Ｆ
+upper = 森の城塞４Ｆ
+level = 23
+bgm = eerie
+margin = 3
+roof = stone
+shadow = dark
+sky = forest
+
+; 各パーツ
+━ = stoner
+　 = marble
+毒 = poison
+／ = door
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+⑶ = barrel
+
+; 敵情報
+maxGroups = 2
+monsters = クレリック,アコライト,ハイプリースト,ディサイプル,アルケミスト
+
+; 宝箱
+box[1] = 罠はない,信徒の称号・月
+box[2] = 罠はない,信徒の称号・星
+box[3] = 罠はない,信徒の称号・雲
+box[4] = 罠はない
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  ┏━━━━━┳━┳━┳━┳︻━━━━┳━━︻┓
+ 9┃　　❹　　┃❸┃❷┃㊤┃②　　　⑶┃　　①┃
+  ┃　　　　　┃　┃　┃　┃　　　　　┃　　　┃
+ 8┃　　　　　┃　┃消┃　┃　　　　　┃㊦　　┃
+  ┣━━／┳━┛　┃〰┃　┃　┏━━━┻━┓　┃
+ 7┃　　　┃　　　┃⑫┃　┃　┃⑱　❶　⑱┃　┃
+  ┃　┏━┻／━━┫〰┃　┃　┃　　　　　┃　┃
+ 6┃　┃　　　　　┃⑪┃　┃　┃毒　⑲　毒┃　┃
+  ┃　┃　　　　　┃〰┃　┃　┃　　　　　┃　┃
+ 5┃　┃　　⑧　　┃⑪┃　┃　┃⑰　毒　炎┃　┃
+  ┃　┣━━／━━┫〰┃　┃　┃　　　　　┃　┃
+ 4┃　┃　　　　　┃⑪┃　┃　┃槍　⑯　⑮┃　┃
+  ┃　┃　　　　　┃〰┃　┃　┃　　　　　┃　┃
+ 3┃　┃　　⑦　　┃⑪┃　┃　┃⑭　⑮　⑰┃　┃
+  ┃　┣━━／━━┫〰┃　┃　┃　　　　　┃　┃
+ 2┃　┃　　　　　┃消┃　┃　┃毒　毒　毒┃　┃
+  ┃　┃　　　　　┣／┛　┗／┫　　　　　┃　┃
+ 1┃　┃　　⑥　　【⑨　　　　┃消　消　消┃　┃
+  ┃　┗━━／━︻┛　　　　　┗━━／━︻┛　┃
+ 0┃　　　　　　⑤　　　　　　　　　　　⑬　　┃
+  ┗━━━━━━━━━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+for(var i = 1; i <= 7; i++) pos[7][i].f.antiWarp = pos[8][i].f.antiWarp = pos[9][i].f.antiWarp = true;
+for(var i = 2; i <= 7; i++) pos[7][i].f.eraseMagic = pos[8][i].f.eraseMagic = pos[9][i].f.eraseMagic = true;
+for(var i = 3; i <= 7; i++) pos[4][i].f.img = "pond";
+pos[4][8].f.antiWarp = pos[4][9].f.antiWarp = true;
+pos[1][9].event = 4;
+pos[4][2].event = 10;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Those who wish to meet the guru must complete five ascetic practices and stand before the door."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="The Trial of Divine Water<r>Those who wish to train must drink all the water in the barrel."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@delevent
+@eval exp='game.curTarget.setStatus(o.毒, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> is poisoned!"'
+@notice text=&'"A <p>" + o.信徒の称号・海.getUnknownName() + "<w> was lying at the bottom of the barrel."'
+@getitem item=信徒の称号・海
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] party.lastIsMove
+
+@notice text="It's a treasure chest with something written on it:<r>The Trial of God's Bread. Eat the bread inside the chest."
+@eval exp='game.setTouchableObject()'
+@addevent name=全般 num=62
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Path of Suffering"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@monster pos=2 name=ゴーレム
+@monster pos=4 name=ゴーレム
+@callbattle
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+@monster pos=1 name=ハイパーローパー
+@monster pos=2 name=ハイパーローパー
+@monster pos=3 name=ハイパーローパー
+@monster pos=4 name=ハイパーローパー
+@monster pos=5 name=ハイパーローパー
+@callbattle
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] true
+
+@monster pos=1 name=ジャンボスライム
+@monster pos=5 name=ジャンボスライム
+@monster pos=10 name=ジャンボスライム
+@callbattle
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] (party.lastIsMove && WAY == "s") || onObjectTrigger
+
+@eval exp='game.view.stopEffect()' cond='WAY == "s"'
+@notice text="<y>Only those who are prepared to abandon everything should embark on the path of purification. Once you embark on this path, there is no turning back."  cond='WAY != "s"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] party.lastIsMove
+
+@eval exp='game.view.startEffect("PE_steam", true)'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] true
+
+@btcmd name=酸の噴水
+@walk move=&'game.party.lastY < game.party.curY ? "n" : "s"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] true
+
+@btcmd name=酸の噴水
+[if exp='game.party.lastY < game.party.curY']
+	@walk move=n
+	@callbattle cond='game.map.getTreasureBox(4, 9) === void'
+[else]
+	@walk move=s
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_13
+;[exp] onObjectTrigger
+
+@notice text="Prepare for all kinds of pain during your training."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_14
+;[exp] party.lastIsMove
+
+@btcmd name=毒ガス
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_15
+;[exp] party.lastIsMove
+
+@btcmd name=爆弾
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_16
+;[exp] party.lastIsMove
+
+@btcmd name=亡霊の群れ
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_17
+;[exp] party.lastIsMove
+
+@btcmd name=プリズムボルト
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_18
+;[exp] party.lastIsMove
+
+@btcmd name=死神の鎌 random=true
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_19
+;[exp] party.lastIsMove
+
+@btcmd name=デモニックフレア
+
+[eventoff]
+;-------------------------------------------------------------------------------

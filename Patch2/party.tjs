@@ -1,0 +1,2339 @@
+﻿// party.tjs
+// パーティーを作成
+
+
+//=======================================================================================
+class PlayersParty extends BoardLayer
+{
+	// パーティー（プレイヤー）を表しパーティーキャラを管理するクラス
+
+	var members = [];	// パーティーメンバー
+	var allMembers = [];	// ゲストも含んだ全員
+	var group0 = [];	// 前列グループ
+	var group1 = [];	// 後列グループ
+	var maxMembers = 6;	// パーティーの最大数
+	var maxGroupMembers = 3;	// １列の最大数（ゲスト除く）
+	var cellWidth = 164;	// メンバー１人の枠の幅
+	var cellHeight = 208;	// メンバー１人の枠の高さ
+	var maxGold = 99999999;	// 持てるお金の最大値
+	var luck = 0;	// 運気。様々なことに影響する
+	var goodDonate = 0;	// 今まで善の教会に寄付した総額
+	var badDonate = 0;	// 今まで悪の教会にに寄付した総額
+	var mainPicker;	// ドアのこじ開けを担当する人を保存（ユーザー指定）
+
+	var curX = 0;		// 現在のＸ座標
+	var curY = 0;		// 現在のＹ座標
+	var lastX = 0;	// 直前のＸ座標
+	var lastY = 0;	// 直前のＹ座標
+	var middleX = 0;	// ジャンプする際の中間のＸ座標（ジャンプ演出用）
+	var middleY = 0;	// ジャンプする際の中間のＹ座標（ジャンプ演出用）
+	var curFront = "n";	// 現在の前方の方角
+	var curLeft  = "w";	// 現在の左の方角
+	var curRight = "e";	// 現在の右の方角
+	var curBack  = "s";	// 現在の後方の方角
+	var lastWalk = "goForward";	// 前回の移動方法（逃走用）
+	var lastIsMove = false;	// 座標の移動が行われたどうか
+	var lastIsTurn = false;	// 最後が回転だったかどうか
+	var throughDoor = false;	// 直前の移動でドアを通過したかどうか
+	var lastIsPush = false;	// 直前の移動で石を押したかどうか
+	var afterEscaped = false;	// 逃げた直後かどうかのフラグ
+	var walkedInEvent = false;	// イベントによる移動が行われたかどうか
+	var _gold = 10000;	// 手持ちの金
+	var holdingMarker;	// 並べ替え用
+	var spacing = 8;	// 各メンバー間の隙間の幅
+	var sortingMargin = 20;	// キーボードで並べ替える時にはみ出す長さ
+	var status = [];	// 現在所持しているステータス（常駐魔法など）
+	var sickTime = [];	// 状態異常にかかっている残り時間
+	var statusLayer;	// ステータス表示
+	var darkCoverLayer;	// 暗くするレイヤー
+	var moversQueue = [];	// 復帰移動アニメを行うメンバーの待ち行列
+
+	var arrangeTimer;	// 並べ替えアニメで使用するタイマー
+	var arrangeSpeed = 0;
+	var arrangeMaxSpeed = 40;
+	var arrangeAccel = 10;
+	var arrangeSelf;
+	var arrangeTarget;
+	var arrangeIndex;
+	var displayName;
+
+	function PlayersParty(par, master)
+	{
+		super.BoardLayer(...);
+		name = "Red Bird";
+		members.name = "Player corps";
+		displayName = name;
+		setSize(kag.scWidth, cellHeight + sortingMargin);
+		resetPos();
+		visible = true;
+		targetLayers = members;
+		enabled = false;
+
+		members.curIndex = 0;
+		group0.depth = 0;
+		group1.depth = 1;
+		group0.curIndex = group1.curIndex = 0;
+
+		arrangeTimer = new Timer(membersMove, "");
+		arrangeTimer.interval = 20;
+
+		statusLayer = new DecoLayer(par);
+		statusLayer.setSize(142, 142);
+		statusLayer.clear();
+		statusLayer.setPos(2, 2);
+		statusLayer.visible = true;
+
+		darkCoverLayer = new DarkCoverLayer(this);
+		darkCoverLayer.paintAll(this);
+		darkCoverLayer.absolute = 1000;
+		darkCoverLayer.hitThreshold = 256;
+	}
+
+	function finalize()
+	{
+		invalidate statusLayer;
+		invalidate arrangeTimer;
+		invalidate darkCoverLayer;
+		super.finalize();
+	}
+
+	//---------------------------------------------------------------------------
+	// プロパティ
+
+	property gold
+	{
+		setter(v)
+		{
+			_gold = cap(v, maxGold, -maxGold);
+			master.updateWallet();
+			if(_gold == maxGold) sf.gotMaxGold = true;	// 記録
+		}
+		getter{ return _gold; }
+	}
+
+	property memberClickable
+	{
+		setter(v)
+		{
+			enabled = v;
+			for(var i = 0; i < members.count; i++)
+			{
+				members[i].focusable = ! v;
+			}
+			magicButtonsEnabled = v;
+		}
+	}
+
+	property magicButtonsEnabled
+	{
+		setter(v)
+		{
+			for(var i = 0; i < members.count; i++)
+			{
+				members[i].magicButton.hitThreshold = v ? 0 : 256;
+			}
+		}
+	}
+
+	//---------------------------------------------------------------------------
+	// セーブロード
+
+	function store()
+	{
+		var dic = %[];
+		dic.name = name;
+		dic.curX = curX;
+		dic.curY = curY;
+		dic.lastX = lastX;
+		dic.lastY = lastY;
+		dic.curFront = curFront;
+		dic.curLeft = curLeft;
+		dic.curRight = curRight;
+		dic.curBack = curBack;
+		dic.lastWalk = lastWalk;
+		dic.lastIsMove = lastIsMove;
+		dic.lastIsTurn = lastIsTurn;
+		dic._gold = _gold;
+		dic.luck = luck;
+		dic.goodDonate = goodDonate;
+		dic.badDonate = badDonate;
+		dic.membersID = [];
+		for(var i = 0; i < members.count; i++) dic.membersID[i] = master.chara.find(members[i]);
+		dic.statusNames = [];
+		for(var i = 0; i < status.count; i++) dic.statusNames[i] = status[i].name;
+		dic.sickTime = sickTime;
+		if(mainPicker !== void) dic.mainPickerID = master.chara.find(mainPicker);
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		name = dic.name;
+		displayName = name;
+		curX = dic.curX;
+		curY = dic.curY;
+		lastX = dic.lastX;
+		lastY = dic.lastY;
+		curFront = dic.curFront;
+		curLeft = dic.curLeft;
+		curRight = dic.curRight;
+		curBack = dic.curBack;
+		lastWalk = dic.lastWalk;
+		lastIsMove = dic.lastIsMove;
+		lastIsTurn = dic.lastIsTurn;
+		_gold = dic._gold;
+		luck = dic.luck;
+		goodDonate = dic.goodDonate;
+		badDonate = dic.badDonate;
+		members.clear();
+		allMembers.clear();
+		master.guest.clearMembers();	// ここでゲストも消しておかないと下で矛盾が生じる
+		for(var i = 0; i < dic.membersID.count; i++) entry(master.chara[dic.membersID[i]],, true);
+		status.clear();
+		for(var i = 0; i < dic.statusNames.count; i++) status[i] = o[dic.statusNames[i]];
+		sickTime.assign(dic.sickTime);
+		mainPicker = dic.mainPickerID === void ? void : master.chara[dic.mainPickerID];
+		lastIsPush = false;
+		updateStatus();
+	}
+
+	function storePartyMembers()
+	{
+		// パーティーメンバーの状態のみ保存する
+		var arr = [];
+		for(var i = 0; i < members.count; i++)
+		{
+			arr[i] = %[];
+			(Dictionary.assignStruct incontextof arr[i])(members[i].store());
+		}
+		return arr;
+	}
+
+	function restorePartyMembers(arr)
+	{
+		// 保存したパーティーメンバーの状態を復帰する
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].restore(arr[i]);
+			members[i].updateLife();
+			members[i].updateWeightIcon();
+			members[i].switchFaceState();
+		}
+	}
+
+	//---------------------------------------------------------------------------
+	// パーティーメンバー操作
+
+	function updateFormation()
+	{
+		// パーティーキャラ一覧＆グループ所属を更新
+
+		// グループ所属を更新
+		group0.clear();
+		group1.clear();
+		for(var i = 0; i < members.count; i++)
+		{
+			var one = members[i];
+			var grp = i < maxGroupMembers ? group0 : group1;
+			grp.add(one);
+			one.group = grp;
+			if(! one.dragging) one.resetPos();
+			one.visible = true;
+		}
+
+		// 全メンバーの一覧も更新（ここではパーティーメンバーのみ）
+		allMembers.assign(members);
+
+		// ゲストを入れ直す
+		for(var i = 0; i < master.guest.members.count; i++)
+		{
+			var one = master.guest.members[i];
+			one.group.add(one);
+			allMembers.add(one);	// ここでゲストも全メンバーの一覧に入れる
+		}
+
+		// 町マップの場合プレイヤーシンボルを読み込み直し
+		if(master.view == master.townView) master.view.loadPlayerSymbol();
+	}
+
+	function updateByGuestAdded(obj, depth)
+	{
+		// ゲストを加入させたときのグループ・フォーメーション更新
+		obj.team = this;
+		setGuestGroup(obj, depth);
+		updateFormation();
+	}
+
+	function updateByGuestRemoved(obj)
+	{
+		// ゲストを外したときのグループ・フォーメーション更新
+		group0.remove(obj);
+		group1.remove(obj);
+		allMembers.remove(obj);
+	}
+
+	function updateByGuestMove(obj)
+	{
+		// ゲストを別のグループに入れ直す
+		group0.remove(obj);
+		group1.remove(obj);
+		if(obj.group == group1) obj.group = group0;
+		else obj.group = group1;
+		obj.group.add(obj);
+	}
+
+	function setGuestGroup(obj, depth)
+	{
+		// ゲストを指定したグループに入れる
+		group0.remove(obj);
+		group1.remove(obj);
+		if(depth == 0) obj.group = group0;
+		else obj.group = group1;
+		obj.group.add(obj);
+	}
+
+	function entry(obj, id = members.count, inLoading)
+	{
+		// ギルド画面以外から加入させるときはこれを呼ぶ
+		obj.activate();
+		addMember(...);
+	}
+
+	function addMember(obj, id = members.count, inLoading)
+	{
+		// パーティーキャラを追加
+		obj.team = this;
+		members.insert(id, obj);
+		obj.transformToPartyType();
+		updateFormation();
+		if(! inLoading) recordFormation();	// 順位を記録しておく
+	}
+
+	function removeMember(obj)
+	{
+		// パーティーキャラを外す
+		members.remove(obj);
+		obj.visible = false;	// 自動フォーカス機能にまた悩まされることとなった……
+		updateFormation();
+		recordFormation();	// 順位を記録しておく
+	}
+
+	function recordFormation()
+	{
+		// 現在の位置を記録しておく（ステータス治療時に利用）
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].beforeOrder = members[i].slot;
+		}
+	}
+
+	function restoreFormation()
+	{
+		// 前回記憶した位置に一瞬で戻す（ステータス治療時に利用）
+		for(var i = 0; i < members.count; i++)
+		{
+			members[members[i].beforeOrder] <-> members[i];
+		}
+		updateFormation();
+	}
+
+	function arrangeMemberWithoutAnime(obj, id)
+	{
+		// パーティーキャラの位置を入れ替える（アニメなし）
+		if(id < 0 || id >= members.count) return;
+		members.remove(obj);
+		members.insert(id, obj);
+		updateFormation();
+	}
+
+	function arrangeMember(obj, id)
+	{
+		// パーティーキャラの位置をアニメさせながら入れ替える
+		if(id < 0 || id >= members.count) return;
+		if(obj.slot == id) return;
+		if(arrangeTimer.enabled) return;
+		arrangeSelf = obj;
+		arrangeIndex = id;
+		arrangeSpeed = 0;
+		exchangeMembersPosition(obj, obj.slot < id);
+		disappearPointer();
+	}
+
+	function exchangeMembersPosition(obj, toRight)
+	{
+		// メンバーを１つ隣に移動させる
+		if(toRight) arrangeTarget = members[obj.slot + 1];
+		else arrangeTarget = members[obj.slot - 1];
+		arrangeSelf.goalLeft = arrangeTarget.left;
+		arrangeTarget.goalLeft = arrangeSelf.left;
+		arrangeTimer.enabled = true;	// 移動開始
+	}
+
+	function membersMove()
+	{
+		// メンバー位置移動アニメ
+		if(arrangeSelf.animTimer.enabled) return;	// ダメージアニメ発動中は移動を待つ
+		if(arrangeSpeed < arrangeMaxSpeed) arrangeSpeed += arrangeAccel;
+		var s = arrangeSelf.faceWindowMove(arrangeSpeed);
+		var t = arrangeTarget.faceWindowMove(arrangeSpeed);
+		if(s || t) return;
+		arrangeMemberWithoutAnime(arrangeSelf, arrangeTarget.slot);	// 情報更新
+		if(arrangeSelf.slot == arrangeIndex)
+		{
+			arrangeTimer.enabled = false;
+			if(moversQueue.count > 0)
+			{
+				var obj = moversQueue.shift();
+				if(! isvalid obj) return;
+				revivedMemberToBeforePos(obj);
+				return;
+			}
+			kag.trigger("arrangeMember");
+			pointToObject(arrangeSelf);
+			return;	// 終了
+		}
+		exchangeMembersPosition(arrangeSelf, arrangeSelf.slot < arrangeIndex);	// 繰り返す
+	}
+
+	function retiredMemberToLastPos(obj)
+	{
+		// 非稼働になったパーティーキャラを稼働キャラの最後尾へ（アニメあり）
+		for(var i = members.count - 1; i >= 0; i--)
+		{
+			if(obj == members[i]) return;
+			if(members[i].knockOut) continue;
+			arrangeMember(obj, i);
+			return;
+		}
+	}
+
+	function revivedMemberToBeforePos(obj)
+	{
+		// 稼働になったパーティーキャラを非稼働になる前の順位へ（アニメあり）
+		// その位置よりも前に非稼働のキャラがいたらさらに前の順位へ行く
+
+		if(arrangeTimer.enabled) moversQueue.add(obj);
+
+		for(var i = 0; i < members.count; i++)
+		{
+			if(! members[i].knockOut && members[i].beforeOrder < obj.beforeOrder) continue;
+			arrangeMember(obj, i);
+			return;
+		}
+	}
+
+	function getAreaUnderMouse(obj)
+	{
+		// マウスで並べ替え時にドラッグ中のキャラをどの位置に入れるか返す
+		var n = (obj.left + obj.width \ 2) \ (obj.width + spacing);
+		if(n < members.count) return n;
+		return members.count;
+	}
+
+	//---------------------------------------------------------------------------
+	// ステータス関連
+
+	function updateStatus()
+	{
+		// ステータス表示を更新する。アイコンは少し詰め気味に表示する
+		var temp = new global.Layer(window, parent);
+		var num = 0;
+		statusLayer.clear();
+		for(var i = 0; i < status.count; i++)
+		{
+			if(status[i].icon == "") continue;
+			temp.loadImages(status[i].icon);
+			statusLayer.copyRect(num \ 3 * 42, (num % 3) * 42, temp, 0, 0, 44, 44);
+			num ++;
+		}
+	}
+
+	function setStatus(statusObj)
+	{
+		// 新たなパーティーステータスを追加する
+		return global.LivingObjectLayer.setStatus(statusObj, true);
+	}
+
+	function removeStatus(statusObj)
+	{
+		// 指定のパーティーステータスを消去する
+		if(statusObj == o.地図) return;
+		global.LivingObjectLayer.removeStatus(statusObj);
+	}
+
+	function clearStatus()
+	{
+		// パーティーステータスを全消去する
+		global.LivingObjectLayer.clearStatus();
+	}
+
+	function clearAllMembersAction()
+	{
+		// パーティーの行動を全消去する
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].act = void;
+			allMembers[i].avoidingTrap = false;
+		}
+	}
+
+	function clearMembersBrokenPartsList()
+	{
+		// パーティーの破壊が起きた装備のリストを全消去する
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].brokenPartsList.clear();
+		}
+	}
+
+	function clearStatusOnBattleEnd()
+	{
+		// 戦闘が終わった時に一部ステータスをクリアする
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].clearStatusOnBattleEnd();
+		}
+		global.LivingObjectLayer.clearStatusOnBattleEnd();
+	}
+
+	function clearStatusOnDungeonExit()
+	{
+		// ダンジョンから出た時に一部ステータスをクリアする
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].clearStatusOnDungeonExit();
+		}
+		clearStatus();	// 常駐魔法効果をリセット
+		restoreFaces();	// ゲストの服装が変化するので顔画像も更新
+	}
+
+	function minimumRecovery(weaken)
+	{
+		// 全滅したパーティーが全員少ＨＰ（＋衰弱状態）で復活する
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			if(allMembers[i].dead)
+			{
+				allMembers[i].beRaised();
+				if(weaken) allMembers[i].setStatus(o.衰弱, true);
+			}
+			else allMembers[i].clearStatus();
+		}
+		restoreFaces();	// 全員の表情を更新
+	}
+
+	function updateMembersBadge()
+	{
+		// パーティーメンバーたちの重量表示を更新する。水中マップを開いた時などに利用する
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].updateWeightIcon();
+		}
+	}
+
+	function recovery()
+	{
+		// パーティー全員を全回復する
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].goToSleep();
+		}
+	}
+
+	function supplyClothesToNakedMembers()
+	{
+		// 装備がなく全裸状態のメンバーに最低限の服を支給し装備させる
+		var done = false;
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			var one = allMembers[i];
+			if(one instanceof "SummonedObject") continue;
+			if(one.dead) continue;
+			if(! one.isBustNaked() && ! one.isHipNaked()) continue;
+			done = true;
+			if(one.isGuest)
+			{
+				one.equipLife = G_WHOLE;
+			}
+			else
+			{
+				if(one.isBustNaked()) one.dressEquipment(o.冒険者のブラ);
+				if(one.isHipNaked()) one.dressEquipment(o.冒険者のパンツ);
+				one.updateWeightIcon();
+			}
+			one.makeBustups();
+		}
+		return done;
+	}
+
+	function getCancelAction(enemy, inCounter)
+	{
+		// 攻撃を無効化できたらその行動を返す
+		var skill = [o.遠距離防御, o.退魔の力];	// パーティースキル
+		for(var i = 0; i < skill.count; i++)
+		{
+			if(skill[i].isCancelSucceed(this, enemy, inCounter)) return skill[i];
+		}
+	}
+
+	function isCancelStatusEffect(exf)
+	{
+		// 敵の特殊効果を無効化したかどうかを返す
+		return false;
+	}
+
+	function changeAllMembersTrust(value)
+	{
+		// メンバー全員の信頼度を増減する
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].trust += value;
+		}
+	}
+
+	function donate(churchObj)
+	{
+		// 寄付を行い状態を変化させる
+		gold -= churchObj.price;	// 寄付金支払い
+		luck = churchObj.luck;	// パーティーの運気を設定（日が変わると消滅）
+		if(churchObj.alignment == "good") goodDonate += churchObj.price;	// 善の教会に寄付
+		else badDonate += churchObj.price;	// 悪の教会に寄付。一定額に達したら特典
+	}
+
+	//---------------------------------------------------------------------------
+	// 各種情報
+
+	function getGroup(depth)
+	{
+		// 列の位置から列グループを得る
+		return depth == group0.depth ? group0 : group1;
+	}
+
+	function getFirstChara()
+	{
+		// 稼働可能な最初のキャラを返す
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].active) return members[i];
+		}
+	}
+
+	function getFirstHeroine()
+	{
+		// 最初のヒロインキャラを返す
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].sex == "女") return members[i];
+		}
+	}
+
+	function getFirstGuy()
+	{
+		// 最初の男性キャラを返す
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].sex == "男") return members[i];
+		}
+	}
+
+	function getMagicUser(atRandom = false)
+	{
+		// 魔法を使えるキャラを１人返す
+		var arr = [];
+		arr.assign(members);
+		if(atRandom) arr.shuffle();
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(arr[i].getMagicPermission() !== void) continue;
+			if(! arr[i].isMagicUser()) continue;
+			return arr[i];
+		}
+	}
+
+	function getNumExist(depth, ignoreGuest = false)
+	{
+		// 稼働不能になっていないメンバーの数を返す
+		// 引数に数値を入れるとその位置のグループでの結果を返す
+		// ignoreGuest が true ならゲストを除外する
+		var num = 0;
+		var arr = depth === void ? (ignoreGuest ? members : allMembers) : getGroup(depth);
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(! arr[i].knockOut) num ++;
+		}
+		return num;
+	}
+
+	function getAdmittedAlingments()
+	{
+		// このパーティーに加入可能な属性の一覧を返す
+		var arr = [];
+		arr.assign(master.alignment);
+		var adjust = 2;
+		for(var i = 0; i < members.count; i++)
+		{
+			var alm = members[i].alignment;
+			if(alm.value >= 1 + adjust) arr.remove(o.極悪);
+			if(alm.value >= 2 + adjust) arr.remove(o.悪);
+			if(alm.value <= -1 - adjust) arr.remove(o.神聖);
+			if(alm.value <= -2 - adjust) arr.remove(o.善);
+		}
+		return arr;
+	}
+
+	function hasPatient(stat)
+	{
+		// 指定のステータス異常をもったメンバーがいるかどうかを返す
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			var one = allMembers[i];
+			if(one.status.has(stat)) return true;
+		}
+		return false;
+	}
+
+	function isUsableMagic(magic)
+	{
+		// 指定した魔法が使えるキャラがいるかどうかを返す
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].isUsableMagic(magic)) return true;
+		}
+		return false;
+	}
+
+	function isUsableSkill(cmd)
+	{
+		// 指定したパッシブスキルが使えるキャラがいるかどうかを返す
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			if(allMembers[i].isUsableSkill(cmd)) return true;
+		}
+		return false;
+	}
+
+	function getLevelUpChara()
+	{
+		// レベルアップしそうなキャラを返す
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].isLevelUp()) return members[i];
+		}
+	}
+
+	function giveExpToMembers(exp)
+	{
+		// メンバーに経験値を与える
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			if(! allMembers[i].isAbleToGetExp()) continue;
+			allMembers[i].exp += exp + allMembers[i].getExtraExp(exp);
+		}
+	}
+
+	function getExpPerHead(exp)
+	{
+		// １人あたりの経験値を返す
+		var num = 0;	// もらえる人の数
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].isAbleToGetExp()) num ++;
+		}
+		if(num == 0) num = 1;	// ゲストだけが生き残っていることがあるので１人分は出るようにする
+		return int(Math.round(exp / num));
+	}
+
+	function putOpinionsOfTrap(treasureBox)
+	{
+		// パーティーメンバーがそれぞれ正しいと思う罠を挙げる
+		for(var i = 0; i < members.count; i++)
+		{
+			var one = members[i];
+			if(! one.active) continue;
+			one.speak(one.getOpinionOfTrap(treasureBox, false));
+		}
+	}
+
+	function getCurPicker()
+	{
+		// 現在のこじあけ担当を返す
+		if(! members.has(mainPicker)) mainPicker = getBestThief();
+		else if(! mainPicker.active) return getBestThief();	// 調子が悪いだけなら代入はしない
+		return mainPicker;
+	}
+
+	function getMaxParamsValue(param)
+	{
+		// 指定したパラメータが最も高いメンバーの値を返す
+		var val = 0;
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			if(allMembers[i][param] > val) val = allMembers[i][param];
+		}
+		return val;
+	}
+
+	function getBestThief()
+	{
+		// 最もシーフスキルの高いキャラを返す
+		var chr, max = 0;
+		for(var i = 0; i < members.count; i++)
+		{
+			if(! members[i].active) continue;
+			var v = members[i].getThiefSkill();
+			if(v < max) continue;
+			max = v;
+			chr = members[i];
+		}
+		return chr;
+	}
+
+	function getBestSmith()
+	{
+		// 最も修理スキルの高いキャラを返す
+		var chr, max = 0;
+		for(var i = 0; i < members.count; i++)
+		{
+			if(! members[i].active) continue;
+			if(! members[i].skill.has(o.修理)) continue;
+			var v = members[i].getCraftSkill();
+			if(v < max) continue;
+			max = v;
+			chr = members[i];
+		}
+		return chr;
+	}
+
+	function getIdentifier(atRandom = false)
+	{
+		// 鑑定できるキャラを１人返す
+		var arr = [];
+		arr.assign(members);
+		if(atRandom) arr.shuffle();
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(! arr[i].active) continue;
+			if(arr[i].status.has(o.恐怖)) continue;
+			return arr[i];
+		}
+	}
+
+	function getMaxSexAppeal(watcher)
+	{
+		// メンバーの中で最も高いセクシー度を返す
+		// watcher は見ている男  誰が見ているかでセクシー度は変わる
+		var val, max = 0;
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			val = watcher.getSexAppealByTarget(allMembers[i]);
+			if(val > max) max = val;
+		}
+		return max;
+	}
+
+	function hasMembersNakedPenis()
+	{
+		// メンバーの中に男性器を顕わにしているキャラがいたらその状態を返す
+		var res;
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			var one = allMembers[i];
+			if(one === void || ! isvalid one) continue;
+			if(one instanceof "SummonedObject") continue;
+			var penis = one.isPenisNaked();
+			if(penis == "erected") return "erected";
+			if(penis == "droop") res = "droop";
+		}
+		return res;
+	}
+
+	function getMemberHipNaked()
+	{
+		// 股間に何も身に着けていないキャラがいたらそのキャラを返す
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			var one = allMembers[i];
+			if(one.knockOut) continue;
+			if(one.status.has(o.灰)) continue;	// ★原因分からず dead == false で灰状態がある？
+			if(one.isHipNaked()) return one;
+		}
+	}
+
+	function getTiredMember(sleep = 90)
+	{
+		// 眠気が大きいメンバーがいたらそのキャラを返す
+		for(var i = 0; i < members.count; i++)
+		{
+			var one = members[i];
+			if(one.sleep >= sleep) return one;
+		}
+	}
+
+	function getMostHeartsHeroine(guyObj, lower = false)
+	{
+		// 指定した男に対し最も好感度の高い or 低いヒロインを返す
+		var max = 0, sign = 1, res, one;
+		if(lower) sign = -1, max = 9999;
+		for(var i = 0; i < members.count; i++)
+		{
+			one = members[i];
+			if(! one.isHeroine) continue;
+			if(sign * one.love[guyObj.img] < sign * max) continue;
+			max = one.love[guyObj.img];
+			res = one;
+		}
+		return res;
+	}
+
+	function isAllHeroinesDeveloped(guyObj, score)
+	{
+		// 所属するすべてのヒロインが指定した男に指定値以上に開発されたかを返す
+		var one;
+		for(var i = 0; i < members.count; i++)
+		{
+			one = members[i];
+			if(! one.isHeroine) continue;
+			if(one.develop[guyObj.img] < score) return false;
+		}
+		return true;
+	}
+
+	function allMembersAreHeatedUpByOthers()
+	{
+		// パーティー全員が他メンバーに影響を受けて興奮度が上がる
+		// 装備変更後などに呼び出す
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].beHeatedUpByOthers();
+		}
+	}
+
+	function exciteOtherMembers(curMember)
+	{
+		// 敵・味方・ゲストの誰か一人がパーティーの他のメンバーを興奮させる
+
+		// 戦闘中はカットインが表示されない行動には反応しない
+		if(master.inBattle && curMember.act !== void && curMember.act.category == "other") return;
+
+		// 見た目等により異性の興奮度に影響を与える
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			var one = allMembers[i];
+			if(! one.active) continue;
+			if(one == curMember) continue;
+			if(one.isHiring) continue;	// 召喚・一時雇用は影響を受けない
+			var sexy = one.getSexAppealByTarget(curMember);
+			if(sexy >= 100) one.heat += one.desire \ 45 + sexy \ 50;
+		}
+	}
+
+	function changeHeat(add)
+	{
+		// 全員の興奮度を増減させる
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].heat = cap(allMembers[i].heat + add);
+		}
+	}
+
+	//---------------------------------------------------------------------------
+	// 戦闘関連
+
+	function autoAttack()
+	{
+		// 全員に攻撃を自動で選択させる（オート攻撃）
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].autoAttack();
+		}
+		master.endAllBattleCommandSet();
+	}
+
+	function autoRepeat()
+	{
+		// 全員に攻撃を自動で選択させる（オートリピート）
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].autoRepeat();
+		}
+		master.endAllBattleCommandSet();
+	}
+
+	function autoEscape()
+	{
+		// 全員に逃亡を自動で選択させる（オート逃亡）
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].autoEscape();
+		}
+		master.endAllBattleCommandSet();
+	}
+
+	function escape(inTravel = false)
+	{
+		// 逃走成功時に一歩退却する
+		if(! inTravel) afterEscaped = true;
+		if(lastWalk == "goForward") master.walk("escapeToBack");
+		else if(lastWalk == "stepToLeft") master.walk("stepToRight");
+		else if(lastWalk == "stepToRight") master.walk("stepToLeft");
+		else if(lastWalk == "jumpForward") master.walk("jumpToBack");
+		else master.walk("goForward");
+	}
+
+	//---------------------------------------------------------------------------
+	// アイテム
+
+	function findItem(itemData, unknown)
+	{
+		// アイテムを持っている最初のキャラと位置を返す
+		for(var i = 0; i < members.count; i++)
+		{
+			var key = members[i].findItem(itemData, unknown);
+			if(key !== void) return %[chara: members[i], key: key];
+		}
+	}
+
+	function findEquipedItems(itemData *)
+	{
+		// 指定したアイテムすべてを装備している最初のキャラを返す
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].isEquipedItems(...)) return members[i];
+		}
+	}
+
+	function hasItem(itemData, unknown)
+	{
+		// 指定したアイテムを所持しているかどうかを返す
+		// unknown を true にすると未鑑定品もカウントする
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].findItem(itemData, unknown) !== void) return true;
+		}
+		return false;
+	}
+
+	function countItem(itemData, includeBad = false)
+	{
+		// 指定したアイテムの所持数を返す
+		// includeBad を true にすると未鑑定品や破損品もカウントする
+		var num = 0;
+		for(var i = 0; i < members.count; i++)
+		{
+			num += members[i].countItem(itemData, includeBad);
+		}
+		return num;
+	}
+
+	function insertItem(itemData, stat)
+	{
+		// パーティーキャラの誰かの持ち物袋にアイテムを１つ追加する
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].insertItem(itemData, stat)) return true;
+		}
+		return false;
+	}
+
+	function ejectItem(itemData, unknown)
+	{
+		// パーティーキャラの持ち物袋からアイテムを１つ削除する
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].ejectItem(itemData,, unknown)) return true;
+		}
+		return false;
+	}
+
+	function useItem(itemData, unknown)
+	{
+		// パーティーの誰かが持っているアイテムを利用する
+		for(var i = 0; i < members.count; i++)
+		{
+			var key = members[i].findItem(itemData, unknown);
+			if(key !== void)
+			{
+				members[i].useItem(itemData, key);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function useHammers()
+	{
+		// ★パーティーの誰かが持っているハンマー系武器を利用する★検証必要
+		for(var i = 0; i < master.hammers.count; i++)
+		{
+			if(findItem(master.hammers[i]) !== void) return true;
+		}
+	}
+
+	function findUnderwear()
+	{
+		// 女物の下着を持っているキャラをランダムに返す
+		var arr = [];
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].getUnderwearFromBag() !== void) arr.add(members[i]);
+		}
+		return arr.draw();
+	}
+
+	function hasNothing(exclude *)
+	{
+		// アイテムを一切持っていないかどうかを返す
+		// exclude に入れたアイテムは除外する
+		for(var i = 0; i < members.count; i++)
+		{
+			if(! members[i].hasNothing(...)) return false;
+		}
+		return true;
+	}
+
+	//---------------------------------------------------------------------------
+	// その他のコマンド
+
+	function useMagic(cmd, func, scroll)
+	{
+		// 指定した魔法を誰かに実行させる
+		enabled = true;	// 下で focus() を実行するために先に有効にしておく必要がある
+		for(var i = members.count - 1; i >= 0; i--)
+		{
+			var one = members[i];
+			one.selectable = one.isUsableMagic(cmd);
+			if(! one.selectable && scroll !== void) one.selectable = one.countItem(scroll);
+			if(one.selectable) one.focus();
+		}
+		master.instruct("Who will use " + cmd.displayName + "?");
+		master.enterSelectTargetMode(func, false, false);
+	}
+
+	function setDying()
+	{
+		// メンバー全員を瀕死の状態にする（開発用）
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].life = 1;
+		}
+	}
+
+	//---------------------------------------------------------------------------
+	// ダンジョン探索
+
+	function setCurPos(x, y, way)
+	{
+		// 現在の位置と向きを任意に指定
+		if(x !== void) curX = +x;
+		if(y !== void) curY = +y;
+		if(way !== void)
+		{
+			while(way != curFront)
+			{
+				var temp = curFront;
+				curFront = curLeft;
+				curLeft  = curBack;
+				curBack  = curRight;
+				curRight = temp;
+			}
+		}
+		master.gameFrame.updateCompass();	// コンパス書き換え
+		master.gameFrame.updateCoordinate();	// 座標を書き換え
+	}
+
+	function setCurPosToBlankAreaFromKeepOut()
+	{
+		// 移動してはいけない場所に移動していたら少し位置をずらす
+		//（いくつか例外的な状況に対処するため）
+		var info = master.map.getFloorInfo();
+		if(info.type == "movable")
+		{
+			var p = master.map.getNextBlankPos(curX, curY);
+			if(p !== void) setCurPos(p.x, p.y);
+			else dm("★警告  移動不可の場所にいます 予備の場所もありません  " + x + ", " + y);
+		}
+	}
+
+	function updateStatusByChangePosition()
+	{
+		// 移動に伴いパーティーの状態が変化する
+		var info = master.map.getFloorInfo(curX, curY);
+		if(info.type != "water") removeStatus(o.ボート);
+		if(master.map.underWater) removeStatus(o.煙);
+	}
+
+	function updateDungeonViewByPartyStatus()
+	{
+		// パーティーの様々な状態をダンジョン画面に反映
+		if(isWaterWalking()) o.ボート.onSetStatus();
+		if(status.has(o.地図)) o.地図.onSetStatus();
+		if(status.has(o.煙)) o.煙.onSetStatus();
+		master.dungeonView.setClairvoyance(status.has(o.透視));
+		master.dungeonView.setBlindScreen(! status.has(o.照明));
+		master.dungeonView.resetPos();	// 浮遊状態の反映
+	}
+
+	function checkStatusByMoving()
+	{
+		// １歩歩くごとに状態をチェックし何かあれば効果が発動したり状態が変化したりする
+		if(master.inEvent) return;	// 強制移動中に毒で死ぬことがあるので
+		if(afterEscaped) return;	// 逃亡中に毒で死んだりすると動作がおかしくなるので
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].checkStatusByMoving();
+		}
+		global.LivingObjectLayer.checkStatusByMoving();
+		checkMembersDead();
+		master.advanceClock(1);
+	}
+
+	function checkMembersDead()
+	{
+		// 移動中にキャラが死んだかどうかチェックする
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			if(allMembers[i].dead || allMembers[i].life > 0) continue;
+			master.curFighter = allMembers[i];
+			master.exitTravelMode();
+			kag.process("script.ks", "*defeated_check_in_walking");
+			return true;
+		}
+	}
+
+	function onBridge()
+	{
+		// 魔法の浮き橋に乗っているかどうかを返す
+		return master.map.getFloorInfo(curX, curY).pimg == "bridge";
+	}
+
+	function isFloating(changeToFlyingSuits = false)
+	{
+		// 浮遊しているかどうかを返す
+		// changeToFlyingSuits が true の時は必要ならゲストに羽衣装備を着せる
+		if(status.has(o.浮遊)) return true;
+		for(var i = 0; i < members.count; i++)
+		{
+			if(! members[i].isFloating()) return false;
+		}
+		if(changeToFlyingSuits) master.guest.dressSpecialSuits("flying");
+		return true;
+	}
+
+	function isWaterWalking()
+	{
+		// 水上を移動できるかどうかを返す
+		if(status.has(o.ボート)) return true;
+		return false;
+	}
+
+	function isSwimming()
+	{
+		// 水中に潜れるかどうかを返す
+		// なお、ここではゲストキャラのチェックは行わない（自動で着替えたりする）
+		if(status.has(o.潜水)) return true;
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].dead || members[i].status.has(o.石化)) continue;
+			if(! members[i].isSwimming()) return false;
+		}
+		return true;
+	}
+
+	function isBlind()
+	{
+		// 現在、視界が遮られているかどうかを返す
+		if(master.map.blind !== void && ! status.has(o.照明)) return true;
+		if(status.has(o.煙)) return true;
+		return false;
+	}
+
+	function moveByForce(way)
+	{
+		// 自動移動
+		// 現在の仕様では左右に動くときだけ方向も転換する
+		if(way === void) master.walk(lastWalk);	// つるつる床
+		else if(way == curFront) master.walk("goForward");
+		else if(way == curLeft)
+		{
+			if(lastWalk == "stepToRight") master.walk("stepToLeft");
+			else master.walk("turnLeftAndGo");
+		}
+		else if(way == curRight)
+		{
+			if(lastWalk == "stepToLeft") master.walk("stepToRight");
+			else master.walk("turnRightAndGo");
+		}
+		else master.walk("goBackward");
+	}
+
+	function turnByForce(way)
+	{
+		// 自動回転。way === void でランダム回転
+		if(way === void) way = [curLeft, curRight, curBack].draw();
+		if(way == curBack || way == "back") master.walk("turnAround");
+		else if(way == curLeft || way == "left") master.walk("turnLeft");
+		else if(way == curRight || way == "right") master.walk("turnRight");
+	}
+
+	function pushFrontObject()
+	{
+		// 目の前の動かせる物体を押す
+
+		// パワーブレスレットを誰かが装備していなかったら押せない
+		if(! findEquipedItems(o.パワーブレスレット)) return false;
+
+		// 押す方向が壁なら押せない
+		var mapObj = master.map;
+		var wall = mapObj.getWallInfo(curX, curY, curFront);
+		if(wall.type != "space") return false;
+
+		// 押した先に障害物があったら押せない
+		var p = mapObj.getPosRelatively(curX, curY, curFront);
+		var nextPos = mapObj.getFloorInfo(p.x, p.y);
+		if(nextPos.pimg !== void && ! nextPos.breakable && nextPos.trap != "collapse")
+		{
+			return false;	// 何か置いてあるので押せない（はしごなど）
+		}
+		if(nextPos.type == "movable" || nextPos.type == "hurdle" || nextPos.type == "block")
+		{
+			return false;	// 他の物体が侵入できない属性なので押せない
+		}
+
+		// 押したい物体の上にさらに物体が乗っていたら押せない
+		if(mapObj.inPool && mapObj.upper !== void)
+		{
+			var info = o[mapObj.upper].getFloorInfo();
+			if(info.type == "movable") return false;
+		}
+
+		// 押せたので新たな位置に物体を移動させる
+		changeObjectPos(mapObj, curX, curY, p.x, p.y);
+		return true;
+	}
+
+	function changeObjectPos(mapObj, curX, curY, nextX, nextY)
+	{
+		// 動かせる１つの物体を現在の場所から次の場所へ移動させる
+
+		// 押せたので新たな位置に物体を移動させる
+		var cubeImg = mapObj.getFloorInfo(curX, curY).pimg;
+
+		// 現在地から物体がなくなる
+		mapObj.changeObject(%[type: "floor", pimg: mapObj.getPimgUnderCube(curX, curY)], curX, curY, "f");
+		if(mapObj.inPool)
+		{
+			// 今いる所がプールならプールの上の床も更新する
+			var upperMap = o[mapObj.upper];
+			if(mapObj.underWater)
+			{
+				upperMap.changeObject(%[type: "water", trap: "water", img: "pool", cubeTop: void]
+					, curX, curY, "f");
+			}
+			else
+			{
+				upperMap.changeObject(%[type: "air", img: void, trap: "drained", cubeTop: void]
+					, curX, curY, "f");
+			}
+		}
+		if(mapObj.pool !== void)
+		{
+			// 下にもプールがありそこに２段重ねの画像が設定されていたら
+			var pool = o[mapObj.pool];
+			var info = pool.getFloorInfo(curX, curY);
+			if(info !== void)
+			{
+				if(info.type == "movable") pool.changeObject(%[pimg: cubeImg], curX, curY, "f");	// １段にする
+				else pool.changeObject(%[pimg: void], curX, curY, "f");	// 消去
+			}
+		}
+
+		// 動かした先が空中 or 水中なら落下する
+		var nextPos = mapObj.getFloorInfo(nextX, nextY);
+		if(nextPos.type == "air" || nextPos.type == "water" || nextPos.trap == "collapse")
+		{
+			master.view.fallenObject = %[img: cubeImg, intoWater: nextPos.type == "water"
+				, collapse: nextPos.trap == "collapse"];
+			var lowerMap = mapObj.getLowerFloorHasGround(nextX, nextY);
+			if(lowerMap === void) return;
+			var info = lowerMap.getFloorInfo(nextX, nextY);	// 下層マップの１つ前方の場所
+			if(info.type == "hurdle" || info.type == "block")
+			{
+				// 落とした先に物体を設置不可能とする何かがあったら破壊音を鳴らして消滅させる
+				master.view.fallenObject.crash = true;
+			}
+			if(info.type == "floor")
+			{
+				// 落とした先が床ならそこに物体を置く
+				lowerMap.changeObject(%[type: "movable", pimg: cubeImg], nextX, nextY, "f");
+
+				// 落とした先のさらに１つ下にもプールがあるならプールの床に２段重ねの画像を設定する
+				if(lowerMap.pool !== void)
+				{
+					o[lowerMap.pool].changeObject(%[pimg: cubeImg + "2_h"], nextX, nextY, "f");
+				}
+			}
+			if(lowerMap.inPool)
+			{
+				// 落とした先がプールなら上を歩けるようになる
+				var mapOverPool = o[lowerMap.upper];	// プールの上にあたるマップ
+				var cubeKey = lowerMap.underWater ? "water" : "air";
+				var imgKey = lowerMap.underWater ? cubeImg + "w" : cubeImg;
+				if(mapOverPool == mapObj)
+				{
+					// 現在のフロアから落としたなら落とすアニメの後で床画像を更新する
+					master.view.fallenObject.intoPool = true;
+					mapObj.changeObject(%[type: "floor", trap: void, cubeTop: cubeKey], nextX, nextY, "f");
+				}
+				else
+				{
+					// さらに下層に落ちたなら水面のフロアの床画像の情報だけ更新
+					mapOverPool.changeObject(%[type: "floor", img: imgKey, trap: void, cubeTop: cubeKey]
+						, nextX, nextY, "f");
+				}
+			}
+		}
+
+		// 動かした先が床の上ならそこに物体が置かれる
+		else
+		{
+			mapObj.changeObject(%[type: "movable", pimg: cubeImg], nextX, nextY, "f");
+
+			if(mapObj.inPool)
+			{
+				// 今いる所がプールならプールの上の床も更新する
+				var upperMap = o[mapObj.upper];
+				var imgKey = mapObj.underWater ? cubeImg + "w" : cubeImg;
+				var cubeKey = mapObj.underWater ? "water" : "air";
+				upperMap.changeObject(%[type: "floor", img: imgKey, trap: void, cubeTop: cubeKey]
+					, nextX, nextY, "f");
+			}
+
+			// １つ下にプールがあるならプールの床に２段重ねの画像を設定する
+			if(mapObj.pool !== void && ! mapObj.underWater)
+			{
+				o[mapObj.pool].changeObject(%[pimg: cubeImg + "2_h"], nextX, nextY, "f");
+			}
+		}
+	}
+
+	function setBoat()
+	{
+		// ボート設置
+		if(master.map.underWater) return "But you can't make a boat underwater!";
+
+		var info = master.map.getWallInfo(curX, curY, curFront);
+		if(info.type != "space") return "There's no water to make a boat on!";
+		if(master.map.getFloorInfo().eraseMagic) return "Magic was cancelled!";
+		info = master.map.getNextFloorInfo(curX, curY, curFront);
+		if(info.type != "water" && info.type != "stream") return "There's no water to make a boat on!";
+		if(info.trap == "lava") return "You can't make a boat on lava!";
+		if(! setStatus(o.ボート)) return "But it didn't work!";
+	}
+
+	function setBomb(isHyper = false)
+	{
+		// ボム設置
+
+		var mapObj = master.map;
+		master.noReturnMenu = true;	// 探索時に使用した時はメニューに戻らない
+
+		// 戦闘中だったら
+		if(master.inBattle)
+		{
+			if(mapObj.kind == "town") return %[res: "success"];
+			if(mapObj.underWater)
+			{
+				return %[res: "misfire", msg: "But the bomb didn't work underwater!"];
+			}
+			var info = mapObj.getFloorInfo(curX, curY);
+			if(info.type == "water")
+			{
+				return %[res: "sink", msg: "The bomb sunk!"];
+			}
+			return %[res: "success"];
+		}
+
+		// 設置場所が正しいかどうかのチェック
+		if(mapObj.kind != "dungeon")
+		{
+			return %[res: "forbidden", msg: "<y>Bombs can only be used in dungeons"];
+		}
+
+		if(mapObj.underWater)
+		{
+			return %[res: "forbidden", msg: "<y>Bombs can't be used in the water'"];
+		}
+
+		var info = mapObj.getWallInfo(curX, curY, curFront);
+		if(info.type != "space")
+		{
+			return %[res: "forbidden"
+				, msg: "<y>Bomb can't be placed, move back a<r>step"];
+		}
+
+		// 設置場所の状態のチェック
+		var p = mapObj.getPosRelatively(curX, curY, curFront);	// １つ前の座標（正しい設置場所）
+		info = mapObj.getFloorInfo(p.x, p.y);
+		if(info.type == "hurdle" || info.type == "movable")
+		{
+			return %[res: "forbidden", msg: "Obstacles prevent bomb placement"];
+		}
+
+		if(info.type == "block")
+		{
+			return %[res: "forbidden"
+				, msg: "<y>Bomb can't be placed, move back a<r>step"];
+		}
+
+		if(info.type == "water")
+		{
+			return %[res: "sink", msg: "The bomb sunk!"];
+		}
+
+		// 空中だったら下層のチェック
+		if(info.type == "air")
+		{
+			mapObj = mapObj.getLowerFloorHasGround(p.x, p.y);	// 新たな対象マップ
+			if(mapObj.underWater)
+			{
+				return %[res: "fallAndSink", msg: "The bomb sunk!"];
+			}
+			info = mapObj.getFloorInfo(p.x, p.y);	// 下層の同座標の情報
+		}
+
+		// 設置完了
+		var floorBroken = false;
+		var wallBroken = false;
+
+		// 床の破壊を試みる
+		if(info.breakable)
+		{
+			var dic = %[breakable: false, type: "air", trap: "air", img: void, pimg: void];
+			mapObj.changeObject(dic, p.x, p.y, "f");
+			floorBroken = true;
+		}
+
+		// 四方の壁の破壊を試みる
+		var ways = ["n", "s", "w", "e"];
+		for(var i = 0; i < ways.count; i++)
+		{
+			info = mapObj.getWallInfo(p.x, p.y, ways[i]);
+			if(! info.breakable) continue;
+			if(info.hyper && ! isHyper) continue;
+			var dic = %[breakable: false, type: "space", img: void, himg: void];
+			mapObj.changeObject(dic, p.x, p.y, ways[i], true);
+			wallBroken = true;
+		}
+
+		// 破壊成功
+		if(floorBroken || wallBroken)
+		{
+			if(mapObj == master.map)
+			{
+				var str = ! floorBroken ? "壁" : (! wallBroken ? "床" : "壁と床");
+				return %[res: "success", msg: "Obstacle destroyed!"];
+			}
+			else
+			{
+				// 爆弾が落下し、別のフロアを破壊した
+				return %[res: "fall", msg: ""];
+			}
+		}
+
+		// 破壊失敗・壊せる箇所がなかった
+		if(mapObj == master.map) return %[res: "failed", msg: "It didn't work!"];
+		else return %[res: "fall", msg: ""];
+	}
+
+	function isStandingOnBridge()
+	{
+		// 現在出ている魔法の浮き橋が維持できているかどうかを返す
+		var curFloor = master.map.getFloorInfo();
+		if(curFloor.type == "floor") return true;	// そもそも魔法の浮き橋は出ていなかった
+		if(curFloor.type == "water") return true;	// 水上なら浮いている事にする（もう動けないが）
+		var ways = ["n", "s", "w", "e"];
+		for(var i = 0; i < ways.count; i++)
+		{
+			var wall = master.map.getWallInfo(,, ways[i]);
+			var floor = master.map.getNextFloorInfo(,, ways[i]);
+			if(wall.type == "space" && floor.type == "floor") return true;	// 橋を維持する床があった
+		}
+		curFloor.pimg = void;	// 橋を消去
+		return false;	// 四方どこにも橋を維持する床がない
+	}
+
+	function effectedByTrap(trapObj)
+	{
+		// ダンジョンの仕掛けにより何らかの効果をいつの間にか受ける。trapObj はコマンドオブジェクト
+		if(! trapObj.cond()) return;
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			trapObj.doDamage(allMembers[i]);
+		}
+		master.battleInfo.ready();
+		master.battleInfo.processCh(trapObj.actionMessage());
+		checkMembersDead();
+	}
+
+	function fallIntoTrap(trapObj)
+	{
+		// ダンジョンの仕掛けにより何らかの効果を受ける。trapObj はコマンドオブジェクト
+		if(! trapObj.cond()) return false;
+		master.exitTravelMode();
+		master.resetPrev();
+		master.setPrev(master.enterTravelMode);
+		master.setPrev();
+		master.curFighter = master.virtualChara;
+		master.curFighter.act = trapObj;
+		master.curFighter.setTarget(members.draw());
+		return true;
+	}
+
+	function awakeToAnything(rank)
+	{
+		// ダンジョンの仕掛けに誰かが気付く
+		for(var i = 0; i < members.count; i++)
+		{
+			var one = members[i];
+			if(! one.active) continue;
+			one.speak(one.getCommentOnAwaking(rank));
+		}
+	}
+
+	function avoidTrap(act, opener, target)
+	{
+		// 罠を回避する
+		if(act.category != "trap" && act.category != "fixture") return false;
+		if(act.range == -1) return false;
+		if(act.range == 3)
+		{
+			var res = false;
+			for(var i = 0; i < allMembers.count; i++)
+			{
+				if(! act.toGuest && allMembers[i].isGuest) continue;
+				if(allMembers[i].avoidTrap()) res = true;
+			}
+			return res;
+		}
+		else if(act.range == 0 || act.range == 1)
+		{
+			if(target.avoidTrap()) return true;
+		}
+		return false;
+	}
+
+	function restoreFaces()
+	{
+		// パーティー全員の顔を通常に戻す（トラップ回避の後などに使う）
+		for(var i = 0; i < allMembers.count; i++)
+		{
+			allMembers[i].switchFaceState();
+		}
+		master.wordsBase.close();
+	}
+
+	function excuseForFailure(act, opener, target)
+	{
+		// 罠を解除に失敗したら解除を試みた人が謝る
+		if(master.inBattle) return;	// 戦闘コマンドと兼用の罠があるのでそれを弾く
+		if(act.category != "trap") return;
+		if(act.range == 3)
+		{
+			if(! opener.avoidingTrap) return;	// 自分もよけられなかったら謝らない
+			for(var i = 0; i < allMembers.count; i++)
+			{
+				if(allMembers[i].avoidingTrap) continue;
+				opener.excuseForFailure();
+				return;
+			}
+		}
+		else if(act.range == 1)
+		{
+			if(target != opener && ! target.avoidingTrap) opener.excuseForFailure();
+		}
+	}
+
+	function walk(type)
+	{
+		// 指示に従ってパーティーの座標や向きを変更する
+
+		var wall;	// 進行方向の壁の情報
+		var floor;	// 現在の床の情報
+		var lastFloor;	// 移動前の床の情報
+		lastIsTurn = false;
+		lastIsMove = false;
+		lastX = curX;
+		lastY = curY;
+		throughDoor = false;
+		var mapWidth  = master.map.mapWidth + master.map.mapMarginW;
+		var mapHeight = master.map.mapHeight + master.map.mapMarginH;
+		var pushNow = false;
+
+		if(type == "goForward")
+		{
+			wall = master.map.getWallInfo(curX, curY, curFront);
+			if(wall.type == "wall")
+			{
+				// 完全な壁
+				playSound("beat");
+				return;
+			}
+			if(wall.type == "climb" || wall.type == "ladder")
+			{
+				// はしご or マジックラダーで登れる壁があったら
+				if(wall.type == "climb")
+				{
+					// はしごはないけど登れそうな壁があったら自らマジックラダー設置
+					if(! useItem(o.マジックラダー)) return;	// やや低い壁
+					wall.himg = "ladder";	// マジックラダー設置
+					master.updateView();	// マジックラダー表示
+					wall.himg = void;	// マジックラダー消去
+				}
+				floor = master.map.getFloorInfo(curX, curY);
+				if(floor.pimg == "bridge") floor.pimg = void;	// 魔法の浮き橋を消去（あれば）
+				master.climbWallLadder(%[map: master.map.upper]);	// 上の階へ
+				return;	// 上に登った後で改めて前進を行うのでとりあえずここでいったん終了
+			}
+			if(wall.key !== void)
+			{
+				// 鍵がかかったドア
+				master.popup.open();
+				master.popup.write("Locked");
+				return;
+			}
+			if(wall.type == "door")
+			{
+				playSound(wall.sound !== void ? wall.sound : "door1");	// ドアは正面からなら通れる
+				throughDoor = true;	// 通過フラグ（後で使う）
+			}
+
+			if(curFront == "n") curY ++;
+			if(curFront == "s") curY --;
+			if(curFront == "e") curX ++;
+			if(curFront == "w") curX --;
+			lastIsMove = true;
+		}
+		else if(type == "jumpForward")
+		{
+			if(master.map.isPartition(curX, curY, curFront))
+			{
+				middleX = curX, middleY = curY;	// ジャンプ演出用
+				playSound("beat");
+				return;	// ジャンプは障害物がない状態でないとできない
+			}
+			if(curFront == "n") curY ++;
+			if(curFront == "s") curY --;
+			if(curFront == "e") curX ++;
+			if(curFront == "w") curX --;
+
+			// 座標が範囲外なら反対側へ
+			if(curX == mapWidth) curX = 0;
+			if(curX < 0) curX = mapWidth - 1;
+			if(curY == mapHeight) curY = 0;
+			if(curY < 0) curY = mapHeight - 1;
+
+			middleX = curX, middleY = curY;	// ジャンプ演出用
+			wall = master.map.getWallInfo(curX, curY, curFront);	// 後で使うので取得
+			if(master.map.isKeepOut(curX, curY) || master.map.isPartition(curX, curY, curFront))
+			{
+				playSound("beat");
+				type = "goForward";
+			}
+			else if(master.map.getFloorInfo(curX, curY).type != "movable")
+			{
+				playSound("poyon");
+				master.map.recordAreaOpened(curX, curY);	// 記録
+				if(curFront == "n") curY ++;
+				if(curFront == "s") curY --;
+				if(curFront == "e") curX ++;
+				if(curFront == "w") curX --;
+			}
+			lastIsMove = true;
+		}
+		else if(type == "goBackward")
+		{
+			wall = master.map.getWallInfo(curX, curY, curBack);
+			if(wall.type != "space")
+			{
+				playSound("beat");
+				return;	// 前方以外へはドアであっても側面は通れない
+			}
+			if(curFront == "n") curY --;
+			if(curFront == "s") curY ++;
+			if(curFront == "e") curX --;
+			if(curFront == "w") curX ++;
+			lastIsMove = true;
+		}
+		else if(type == "escapeToBack")
+		{
+			// 逃亡時にバックする。すでに通ってきた所だから必ず通れるはずなのでチェックはしない
+			// ドアの音だけ鳴らす。なお、ドアは正面からしか通れないのでチェックは後ろだけでいい
+			wall = master.map.getWallInfo(curX, curY, curBack);
+			if(wall.type == "door") playSound("door1");
+			if(curFront == "n") curY --;
+			if(curFront == "s") curY ++;
+			if(curFront == "e") curX --;
+			if(curFront == "w") curX ++;
+			lastIsMove = true;
+		}
+		else if(type == "jumpToBack")
+		{
+			// ジャンプ後に逃亡時にバックする。必ず戻れるはずなのでチェックしない
+			wall = master.map.getWallInfo(curX, curY, curBack);	// 後で使うので
+			if(curFront == "n") curY -= 2;
+			if(curFront == "s") curY += 2;
+			if(curFront == "e") curX -= 2;
+			if(curFront == "w") curX += 2;
+			lastIsMove = true;
+		}
+		else if(type == "stepToLeft")
+		{
+			wall = master.map.getWallInfo(curX, curY, curLeft);
+			if(wall.type != "space")
+			{
+				playSound("beat");
+				return;	// 前方以外へはドアであっても側面は通れない
+			}
+			if(curFront == "e") curY ++;
+			if(curFront == "w") curY --;
+			if(curFront == "s") curX ++;
+			if(curFront == "n") curX --;
+			lastIsMove = true;
+		}
+		else if(type == "stepToRight")
+		{
+			wall = master.map.getWallInfo(curX, curY, curRight);
+			if(wall.type != "space")
+			{
+				playSound("beat");
+				return;	// 前方以外へはドアであっても側面は通れない
+			}
+			if(curFront == "w") curY ++;
+			if(curFront == "e") curY --;
+			if(curFront == "n") curX ++;
+			if(curFront == "s") curX --;
+			lastIsMove = true;
+		}
+		else if(type == "turnLeft" || type == "turnLeftAndGo")
+		{
+			var temp = curFront;
+			curFront = curLeft;
+			curLeft  = curBack;
+			curBack  = curRight;
+			curRight = temp;
+			lastIsTurn = true;
+		}
+		else if(type == "turnRight" || type == "turnRightAndGo" || type == "turnAround")
+		{
+			var temp = curFront;
+			curFront = curRight;
+			curRight = curBack;
+			curBack  = curLeft;
+			curLeft  = temp;
+			lastIsTurn = true;
+		}
+
+		// 回転だけならここで終わり
+		if(lastIsTurn)
+		{
+			lastIsPush = false;
+			master.miniMap.setPartyMark();	// ミニマップの向きだけ更新
+			master.gameFrame.updateCompass();	// コンパスを更新
+		}
+		if(! lastIsMove) return;
+
+		// 座標が範囲外なら反対側へ
+		if(curX == mapWidth) curX = 0;
+		if(curX < 0) curX = mapWidth - 1;
+		if(curY == mapHeight) curY = 0;
+		if(curY < 0) curY = mapHeight - 1;
+
+		// ここで床の情報を取得
+		floor = master.map.getFloorInfo(curX, curY);
+		lastFloor = master.map.getFloorInfo(lastX, lastY);
+
+		// 移動した先が侵入不可 or 進入条件を満たしていなかったら通れない
+		if(floor.type == "block" || floor.type == "hurdle"
+			 || ((throughDoor || type == "jumpForward") && floor.type == "movable"))
+		{
+			playSound("beat");
+			curX = lastX;
+			curY = lastY;
+			lastIsMove = false;
+			return;
+		}
+
+		// 押せる物体を押した場合
+		if(floor.type == "movable")
+		{
+			if(type != "goForward" || ! pushFrontObject())
+			{
+				// 押せなかったので元の位置に戻る
+				playSound("beat");
+				curX = lastX;
+				curY = lastY;
+				lastIsMove = false;
+				return;
+			}
+			pushNow = true;
+			lastIsPush = true;
+			playSound("dragstone");
+			floor = master.map.getFloorInfo(curX, curY);	// ブロックが変化したので取得しなおす
+		}
+
+		// 移動した先が床でなかったら
+		// 目の前が水上でボートがあるならそのまま進む
+		// 目の前が水流で浮遊状態でもなかったらそのまま流される
+		if(floor.type != "floor" && ! (floor.type == "stream" && ! isFloating())
+			 && ! (floor.type == "water" && isWaterWalking()))
+		{
+			if(useItem(o.魔法の浮き橋) && type != "jumpForward" && lastFloor.type == "floor" && ! throughDoor)
+			{
+				// 魔法の浮き橋を持っていて、ドアを通過しておらず、今までいた所が床ならば魔法の浮き橋を出す
+				floor.pimg = "bridge";
+				master.view.updateView(lastX, lastY, curFront);	// 移動開始前に魔法の浮き橋を出現させる
+			}
+			else if(floor.type != "air" && (! isSwimming() || floor.trap != "water") && ! isWaterWalking())
+			{
+				// 魔法の浮き橋がない or 既に魔法の浮き橋上（空中）にいたら穴の上以外には侵入できない
+				// （穴の上に進入したら即落下する）
+				// したがって今の場所に留まる
+				curX = lastX;
+				curY = lastY;
+				lastIsMove = false;
+				// ただし、水中に潜れる状態 or 水上移動状態なら水上には侵入できる（潜水ならすぐ水中へ落ちる）
+				//（このブロックと下の行を抜けて先のコードへ ↓ ）
+			}
+		}
+
+		// 結局移動できなかったらここで終わり
+		if(! lastIsMove) return;
+
+		// １マス動いた
+		if(! pushNow) lastIsPush = false;
+		master.gameFrame.updateCoordinate();	// 座標を更新
+		lastWalk = type;	// 逃走用に今回の移動方法を覚えておく
+		master.map.recordAreaOpened(curX, curY);	// 記録
+		sf.walkCount ++;	// 歩行数を記録
+		master.miniMap.update();	// ミニマップを更新
+		checkStatusByMoving();	// 移動したことでダメージを受けたりするのを処理
+
+		// 効果音を鳴らす
+		if(floor.type == "stream" && ! isFloating()) playSound("scratch");
+		if(wall.secret == "path") playSound("grass");
+
+		// 魔法の浮き橋を出していたら片付ける
+		if(lastFloor.pimg == "bridge") lastFloor.pimg = void;
+
+		// 水上だったらボートを片付ける
+		if(floor.type != "water" && floor.type != "stream" && status.has(o.ボート))
+		{
+			removeStatus(o.ボート);
+		}
+
+		// 階段があったら専用のアニメを平行して行う
+		var info = master.map.getWarpInfo(curX, curY);
+		if(info !== void && info.stair !== void) master.walkStairs(info);
+
+		// 押せる物体が落下
+		if(master.view.fallenObject !== void) master.objectFall();
+	}
+
+	//---------------------------------------------------------------------------
+	// 操作・表示等
+
+	function resetPos()
+	{
+		// quake で揺らした位置を元に戻す
+		setPos(0, window.scHeight - height);
+	}
+
+	function getLayerByKey(curLayer, key)
+	{
+		if(key == BT_UP || key == BT_DOWN || key == BT_UP2 || key == BT_DOWN2)
+		{
+			if(master.guildWin.enabled && master.guildWin.members.count > 0)
+			{
+				// ギルド画面の時に上を押すとギルド領域にフォーカスを移動
+				var num = cap(curLayer.slot, master.guildWin.members.count - 1);
+				if(key == BT_UP || key == BT_UP2)
+				{
+					while(num < master.guildWin.members.count - master.guildWin.columnsCount)
+					{
+						num += master.guildWin.columnsCount;	// 同じ列のより下の段を選択する
+					}
+				}
+				master.guildWin.members[num].focus();
+			}
+			else if(master.guest.enabled && master.guest.members.count > 0)
+			{
+				// ゲストが選択可の時に上を押すとゲスト領域にフォーカスを移動
+				if(key == BT_UP || key == BT_UP2) master.guest.members[0].focus();
+				else master.guest.members[-1].focus();
+			}
+			return;
+		}
+
+		// グループ選択時には選択の仕方を多少変える
+		if(master.rowSelectMode) targetLayers = getGroup(1 - curLayer.group.depth);
+		else targetLayers = members;
+		return super.getLayerByKey(...);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class PartyWordsLayer extends Layer
+{
+	// セリフを表示するレイヤー
+
+	var wordLayers = [];
+
+	function PartyWordsLayer(par)
+	{
+		super.Layer(par.window, par);
+		setSize(par.width, 433);
+		setPos(0, 140);
+		hitThreshold = 256;
+		for(var i = 0; i < 10; i++)
+		{
+			wordLayers[i] = new DecoLayer(this);
+			wordLayers[i].font.height = 24;
+		}
+		for(var i = 0; i < 6; i++) wordLayers[i].setPos(i * 170 + 5, 360);	// パーティー
+		for(var i = 6; i < 8; i++) wordLayers[i].setPos(60, (8 - i) * 130);	// ゲスト
+		wordLayers[9].setPos(670, 150);	// 召喚獣
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < wordLayers.count; i++) invalidate wordLayers[i];
+		super.finalize();
+	}
+
+	function open()
+	{
+		visible = true;
+	}
+
+	function close()
+	{
+		if(! visible) return;
+		for(var i = 0; i < wordLayers.count; i++) wordLayers[i].visible = false;
+		visible = false;
+	}
+
+	function popUpMessage(num, str, img = "frame_word", flip = false)
+	{
+		// パーティーメンバーの発言を表示する
+		wordLayers[num].loadImages(img);
+		if(flip) wordLayers[num].flipLR();
+		var bubbleFont = wordLayers[num].font;
+		var origFontSize = bubbleFont.height;
+		while (bubbleFont.height >= 14 && bubbleFont.getTextWidth(str) > 148) {
+			// Make it a little smaller and see if it fits then.
+			--bubbleFont.height;
+		}
+		wordLayers[num].drawText(11, 10, str, 0xFFFFFF,,, 2048, 0x000000, 3);
+		wordLayers[num].visible = true;
+		bubbleFont.height = origFontSize;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class RivalParty
+{
+	// ライバルパーティーの情報
+
+	var master;
+	var name;	// チーム名
+	var img;	// チームの画像キー名
+	var boss;	// チームのリーダー
+	var gold = 100;	// 所持金（倒したときの報酬になる）
+	var penalty = 1000;	// 和解金。これを支払えば決闘を断れる
+	var itemsList = "";	// 所持アイテム一覧文字列（倒したときの報酬になる）
+	var favorite = [];	// 欲しいアイテムの種類の一覧。ない場合は要求しない
+	var interval = 5;	// マップ上における行動休止期間の長さ
+	var interruption = 0;	// 行動休止の残り日数
+	var maxSlaves = 0;	// このチームが求める奴隷の最大数。奴隷を求めない時はこの数を０にする
+	var members = [];	// パーティーメンバー
+	var slaves = [];	// プレイヤーが取られたヒロインたち（奴隷）
+	var guysList = [];	// 奴隷がいたら性行為を行う男たち（そういう事をしないなら空で）多いほど回数が増える
+	var sawRepeatableEventToday = false;	// その日の継続イベントを見たかどうか
+	var hostage;	// プレイヤーが勝った時に引き渡すメンバー
+	var level = 0;	// パーティーのレベル。倒すたびに強くなる
+	var slaveTerm = 60;	// 奴隷の拘束期間。パーティーによって異なる
+	var displayName;
+
+	function RivalParty(master, name)
+	{
+		this.master = master;
+		this.name = name;
+		master.rivals.add(this);
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.name = name;
+		dic.interruption = interruption;
+		dic.penalty = penalty;
+		dic.level = level;
+		dic.bossName = boss.name;
+		dic.guysList = guysList;
+		dic.sawRepeatableEventToday = sawRepeatableEventToday;
+		if(hostage !== void) dic.hostageName = hostage.name;
+		dic.memberNames = [];
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i] !== void) dic.memberNames[i] = members[i].name;
+		}
+		dic.slavesID = [];
+		for(var i = 0; i < slaves.count; i++)
+		{
+			dic.slavesID[i] = master.chara.find(slaves[i]);
+		}
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		slaves = [];
+		for(var i = 0; i < dic.slavesID.count; i++)
+		{
+			entry(master.chara[dic.slavesID[i]]);
+		}
+
+		// 再プレイ時は読み込まないもの
+		if(! master.retryMode && ! master.nextRoundMode)
+		{
+			interruption = dic.interruption;
+			penalty = dic.penalty;
+			level = dic.level;
+			boss = m[dic.bossName];
+			guysList.assign(dic.guysList);
+			sawRepeatableEventToday = dic.sawRepeatableEventToday;
+			if(dic.hostageName !== void) hostage = o[dic.hostageName];
+			members = [];
+			for(var i = 0; i < dic.memberNames.count; i++)
+			{
+				if(dic.memberNames[i] !== void) members.add(m[dic.memberNames[i]]);
+			}
+		}
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "members") this[key] = master.getObjArrayByText(data, global.m);
+		else if(key == "boss") this[key] = m[data];
+		else if(key == "hostage") this[key] = o[data];
+		else if(key == "favorite" || key == "guysList") this[key] = strToArray(data);
+		else if(key == "name") {
+			name = data;
+			displayName = data;
+		} else this[key] = data;
+	}
+
+	function entry(her, id = slaves.count)
+	{
+		// 決闘イベント以外で奴隷を加入させるときはこれを呼ぶ
+		slaves.insert(id, her);
+		her.activate();
+	}
+
+	function removeMember(her)
+	{
+		// 奴隷キャラを外す（解放する）
+		slaves.remove(her);
+		her.recovery();	// 回復
+		her.slaveTerm = 0;
+		if(her.pregnant < 0) her.pregnant = NO_PREGNANCY;
+			// 妊娠カウントがリセットされる。０になるまでに解放できれば妊娠したことにならない
+	}
+
+	function addSlave(her)
+	{
+		// 奴隷を追加する
+		her.storeAllItemsInOthers(, ["main", "sub"]);	// 武器を外す・所持アイテムを回収
+		her.makeBustups();
+		her.slaveTerm = slaveTerm;	// 拘束期間を設定
+		slaves.add(her);
+		if(her.team !== void) her.team.removeMember(her);
+		her.recovery();	// 回復
+	}
+
+	function restoreSlave(her, team)
+	{
+		// 奴隷を元のパーティーに復帰させる
+		removeMember(her);
+		team.entry(her);
+	}
+
+	function getBigBellySlave()
+	{
+		// ボテ腹になっている奴隷メンバーを１人返す
+		for(var i = 0; i < slaves.count; i++)
+		{
+			if(slaves[i].isBigBelly()) return slaves[i];
+		}
+	}
+
+	function getFreeSlave()
+	{
+		// 解放可能な最も滞在期間が長い奴隷メンバーを１人返す
+		if(slaves.count > 0 && slaves[0].slaveTerm == 0) return slaves[0];
+	}
+
+	function checkHideoutEvent(checkOnly)
+	{
+		// マップ上のアジトでの奴隷イベントをチェックし、あれば実行する
+		for(var i = 0; i < slaves.count; i++)
+		{
+			if(slaves[(i + master.date) % slaves.count].checkEvent(checkOnly))
+			{
+				if(! checkOnly) master.curTeam = this;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function getDemand()
+	{
+		// 決闘で負けた際にこのパーティーが求める要求を返す
+		if(slaves.count < maxSlaves && master.waitingRoomHasSpace() && demandSlave() !== void)
+		{
+			return %[type: "slave", text: "<c>Demand party member"];
+		}
+		if(favorite.count > 0 || master.party.gold == 0)
+		{
+			return %[type: "items", text: "<c>Demand 10 items"];
+		}
+		return %[type: "money", text: "<c>Demand all money"];
+	}
+
+	function demandItems(num = 10, allType = false)
+	{
+		// 決闘で負けた際に取られるアイテムを返す
+		// タイプが favorite のアイテムから奪うが
+		// 所持金が０ or 指定タイプのアイテムが残っていない場合はジャンル問わず奪う
+		var bag, res = [];
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			bag = master.party.members[i].bag;
+			for(var j = 0; j < bag.count; j++)
+			{
+				if(bag[j] === void) continue;
+				if(bag[j].event) continue;
+				if(! allType && ! favorite.has(bag[j].type)) continue;
+				master.party.members[i].ejectItem(bag[j], j, true);
+				res.add(bag[j]);
+				if(res.count == num) return num;
+			}
+		}
+		if(allType) return res.count;
+		return demandItems(num - res.count, true) + res.count;
+	}
+
+	function demandSlave()
+	{
+		// 決闘で負けた際の奪われるヒロインを返す
+		// 結婚後はワイルド・ブル壊滅イベントもあり
+		// 話がややこしくなるので、妻は奪われない設定にする
+		var her, arr = [], minDevelop = 99;
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			her = master.party.members[i];
+			if(! her.isHeroine || her.married) continue;
+			// Custom: use random heroine from those with equal lowest development level.		
+			var currentDevelop = her.develop[boss.img];
+			if (currentDevelop <= minDevelop) {
+				if (currentDevelop < minDevelop) {
+					arr.clear();
+					minDevelop = currentDevelop;
+				}
+				arr.add(her);
+			}
+		}
+		return arr.draw();
+	}
+
+	function actionsForDay(day)
+	{
+		// 日数経過に伴う処理
+
+		// 活動停止期間消化
+		interruption = cap(interruption - day);
+
+		// その日の継続イベントを見た記録をリセット
+		sawRepeatableEventToday = false;
+
+		// 奴隷の処理
+		var sexNum;
+		for(var i = 0; i < slaves.count; i++)
+		{
+			// 奴隷の拘束期間消化
+			slaves[i].slaveTerm = cap(slaves[i].slaveTerm - day);
+
+			// 奴隷たちに性行為を行う
+			// ここでの性行為は妊娠につながる
+
+			// ボテ腹になるまでは犯す
+			if(slaves[i].pregnant < 20) sexNum = fuckSlave(slaves[i]);
+
+			if(slaves[i].pregnant < 0)
+			{
+				// 未妊娠状態なら行為の回数だけ妊娠度を加算
+				slaves[i].pregnant += sexNum;
+				if(slaves[i].pregnant >= 0)
+				{
+					// たった今妊娠した
+					slaves[i].pregnantCount ++;
+					slaves[i].love[master.playerChara.img] = 0;	// 主人公との恋愛は消滅
+				}
+			}
+			else
+			{
+				// すでに妊娠状態なら妊娠度を進行させる
+				slaves[i].processPregnancy(day);
+			}
+		}
+	}
+
+	function fuckSlave(her)
+	{
+		// 奴隷に行った性行為の記録を日記データに追加し、パラメータを変動させる
+
+		// まだガードされていたらなし
+		if(her.guard[boss.img] > 0)
+		{
+			her.guard[boss.img] --;
+			return 0;
+		}
+
+		// 性行為をする男を選出
+		// 現在は guysList に多く記載すると頻度が上がるようになっている
+		if(guysList.count == 0) return 0;
+		var guy = o[guysList.draw()];
+
+		// 行為の記録
+		var num = intrandom(1, guy.desire \ 30 + 1);
+		var rec = her.getSexRecord(guy, num, her.getOrgasmCount(guy, num));
+		her.addSexRecordAndChangeHeart(rec);
+
+		// 経験人数を加算
+		if(guy == o.どこかの男)
+		{
+			// 相手が不特定多数だった場合
+			if(random < 0.1 * cap(her.slaveTerm) + 0.2) her.loversCount ++;	// 徐々に新規の相手は減っていく
+		}
+		else if(guy == o.取った客)
+		{
+			// 売春だった場合
+			her.sellCount ++;
+			if(random < 0.5) her.loversCount ++;	// ２回に１回は新規の客ということにする
+		}
+
+		return rec.sexCount;	// 回数を返す。妊娠に影響する
+	}
+}
+//=======================================================================================

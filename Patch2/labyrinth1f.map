@@ -1,0 +1,143 @@
+﻿; 古代の迷宮
+
+name = 古代の迷宮１Ｆ
+insideName = １Ｆ
+lower = 古代の迷宮Ｂ１
+level = 6
+bgm = anxiety
+external = s:1
+roof = stone
+shadow = dark
+sky = black
+blank = rock
+antiWarp = true
+
+; 各パーツ
+━ = stoney
+　 = marble
+❖ = soil
+／ = door
+〆 = key
+☗ = upstair
+︻ = panel
+㊦ = ladderd
+
+; 敵情報
+battleRate = 0
+maxGroups = 2
+monsters = スケルトンガード
+traps = 石つぶて,毒針,しびれ針,酸スプレー,スモーク
+
+; 移動ポイント
+(A) = map:ランドン渓谷・谷底, x:21, y:26, way:s, symbol:exit ,ask:Leave the dungeon?
+
+; 宝箱
+box[1] = チーズ,チーズ,サーベル,スパイククラブ
+box[2] = マルチヒールの巻物,はちみつパン,はちみつパン,復活の粉
+box[3] = スパークの魔法書,マルチヒールの巻物,マルチヒールの巻物,りんご,りんご,復活の粉
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  ┏━━━━━━━━━━━━━━━┓
+ 6┃　　　　　　③　　　　　　　　┃
+  ┃　┏━━━━／━━━━┓　　　┃
+ 5┃　┃　　　　⑥　　　　┃　　❷┃
+  ┃　┃　　　　　　　　　┣／━━┫
+ 4┃　┃　　　　　　　　　┃⑤　　┃
+  ┣／┫　　　　　　　　　┃　　　┃
+ 3┃④┃　　　　②　　　　┃　　　┃
+  ┃　┣━━━┳〆┳━━━┫　　　┃
+ 2┃　┃　　　┃　┃❸　　┃　　　┃
+  ┃　┃　　　┃　┃　　　┃　　　┃
+ 1┃❶┃　　敵┃　┃　　　／　　　┃
+  ┣━┻━━／┛　┗━┓　┗━┓　┃
+ 0┃Ⓐ　　　　　　　　┃　　㊦┃　┃
+  ┗☗━━━━━━━━┻━━━┻━┛
+-1	❖
+  
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[0][0].event = 1;
+pos[6][3].f.noCount = pos[6][2].f.noCount = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = []
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@delevent
+@wait time=500
+[texton]
+[リーダー f=05]「This is the ancient labyrinth...」[k]
+According to the village chief, the girls who were abducted from the village were brought here.[k]
+The captured girls must be up ahead. We must rescue them no matter what.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@delevent
+@jump storage="main04.scn" target=*labyrinth_2
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] WAY == "s"
+
+[texton]
+There's no turning back now. We must pursue the escaped Lesser Devil.[k]
+[textoff]
+@walk turn=e
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] WAY == "s"
+
+@delevent
+@wait time=500
+[texton]
+[if exp='game.isFreeMode']
+	It seems the Lesser Devil isn't here.[k]
+[else]
+	[テオ]「Is he not here?」[k]
+[endif]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@delevent
+@delevent num=3
+@delevent num=4
+@addevent num=6
+@jump storage="main04.scn" target=*labyrinth_3
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@delevent
+@jump storage="main04.scn" target=*labyrinth_5
+
+[eventoff]
+;===============================================================================

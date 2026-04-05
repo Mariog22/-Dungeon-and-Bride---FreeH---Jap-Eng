@@ -1,0 +1,134 @@
+﻿; 大洞窟
+
+name = 大洞窟Ｂ４
+insideName = Ｂ４
+upper = 大洞窟Ｂ３
+lower = 大洞窟Ｂ５
+level = 44
+bgm = cave
+margin = 1
+isOutdoor = true
+shadow = dark
+sky = black
+roof = stone
+outfield = soil
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = soil_h
+‥ = soil
+　 = soil
+☐ = soil
+〰 = pond
+☖ = gate
+﹃ = ladder
+︻ = panel
+㊦  = ladderd
+⒌ = br_hp
+
+; 敵情報
+monsters = ローパー,ハイパーローパー,レイス,グール,スケルトンガード
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  
+  																								┏━━━┓
+11																								┃☐☐☐┃
+  ┏━━━━━━━┓							┏━━━━━┓	┃☐☐☐┃									┏━━━┓
+10┃☐☐Ｅ☐☐☐☐┃							┃〰〰〰〰〰┃	┃☐☐Ｅ┃									┃☐☐☐┃
+  ┃☐☐☐┏━┓☐┃							┃〰〰〰〰〰┃	┗━┓☐┃									┃☐☐☐┃
+ 9┃☐☐☐┃	┃☐┃							┃〰〰〰〰〰┃			┃☐┃									┃Ｅ☐☐┃
+  ┃☐☐☐┃	┃☐┃							┃〰〰〰〰〰┃			┃☐┗━━━━━━━━━┛☐┏━┛
+ 8┃⒌☐☐┃	┃☐┃							┃　　　　　┃			┃☐☐☐☐☐☐☐☐☐☐☐☐☐┃
+  ┗━━━┛	┣☖┫							┃　　　　　┃			┃☐┏━━━━━┓☐┏━━━┛
+ 7						┃　┃							┃　　③　　┃			┃☐┃					┃☐┃
+  						┃　┃							┃　　　　　┃			┃☐┃					┃☐┃
+ 6						┃　┃							┃　　③　　┃			┃☐┃					┃☐┃
+  						┃　┃							┗━┓　┏━┛			┃☐┃	┏━━━┛☐┃
+ 5						┃　┃									┃　┃					┃☐┃	┃☐☐☐☐☐┃
+  						┃　┃									┃　┃			┏━┻☖┫	┃☐┏━━━┛
+ 4						┃　┃									┃　┃			┃　　　┃	┃☐┃					┃					┃
+  				┏━┛　┃							┏━┛　┃			┃　　　┃	┃☐┃					┃					┃
+ 3				┃　　　┃							┃　　　┃			┃　　　┃	┃☐┃					┃					┃
+  ┏━━━┛　　　┗━━━━━━━┛　　　┗━━━┛　　　┃	┃☐┃					┣‥‥﹃‥‥┫
+ 2┃　　　　　　　　　　　　②　②　①　①　②　②　　　　┃	┃☐┃					┃　　　　　┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　┃	┃☐┃					┃　　　　　┃
+ 1┃　　　　　　　　　　④　②　②　①　①　②　②　　　　┃	┃☐┃					┃　　　　　┃
+  ┃　　　┏━━━━━━︼━━━━━━━━━━━━━━━━┛	┃☐┗━━━━━┫　　　　　┃
+ 0┃㊦　　┃																									┃☐☐☐☐☐☐☐☖　　　　　┃
+  ┗━━━┛																									┗━━━━━━━┻━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[20][2].n.img = "soil";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.hasItem(o.地下の町の鍵)
+
+@delevent
+@addevent num=2
+@addevent num=3
+@wait time=500
+@jump storage="main09.scn" target=*return_2
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+[texton]
+[ミレディ f=51]「Hey, that's not the right way! I'm seriously about to burst, so hurry up and go to the north spring!」[k]
+[textoff]
+@walk move=e cond='game.party.curX < 8'
+@walk move=e cond='game.party.curX < 8'
+@walk move=w cond='game.party.curX > 9'
+@walk move=w cond='game.party.curX > 9'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@delevent
+@delevent num=2
+@addevent map=神の山１Ｆ num=1
+@eval exp='o.テオ.skill.remove(o.退魔の力)'
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+@walk move=n cond='game.party.curY == 8'
+@wait time=500
+@jump storage="main09.scn" target=*return_3
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="Underground City →<r>100 meters"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("life", 300)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP restored!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

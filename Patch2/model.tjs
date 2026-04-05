@@ -1,0 +1,233 @@
+﻿// model.tjs
+// 素体（キャラのひな形）オブジェクト
+
+
+class Model
+{
+	// 素体（キャラのひな形）を作るクラス
+
+	var master;	// 管理オブジェクト
+	var id;	// 表示の並び順に影響
+	var name;	// 名前
+	var img;	// 画像の基本名（接頭辞）
+	var keyName = "リーネ";	// デフォルト名。この名前でシナリオファイルを記述するので重要
+	var edit = false;	// 新規作成可能か
+	var job = "戦魔僧盗鍛狩吟海錬召司ドバソモ曲君ア";	// 就ける職業。原則全部だが場合によって制限する
+	var sex = "女";	// 性別
+	var race;	// 種族
+	var power;	// 力
+	var intellect;	// 知恵
+	var piety;	// 信仰心
+	var vitality;	// 生命力
+	var speed;	// すばやさ
+	var luck;	// 運
+	var desire  = 10;	// 性欲
+	var skill = [];	// 種族固有のスキル
+	var weak = [];	// 種族固有の弱点
+	var resist = [];	// 種族固有の耐性
+	var block = [];	// 種族固有の完全耐性
+	var items = [];	// 作成時に持っているアイテム
+
+	var events = [];	// 素体ごとに起きるイベント（初期値）
+	var conditions = [];	// 宿イベントが起きる条件式
+	var emitters = [];	// 宿イベントが起きた時表示するエミッター
+	var booking = [];	// 部屋割り条件（初期値）
+	var bookingExp = [];	// 部屋割り条件を表す式
+
+	var favoriteFood;	// 好きな食べ物のタイプ
+	var dislikedFood;	// 嫌いな食べ物のタイプ
+
+	var color   = [];	// 選べる髪の色
+	var threeSize = [80, 60, 80];	// スリーサイズ
+	var trim    = [0, 0];	// フェイスウインドウ画像の切り抜き開始位置
+	var cutIn   = [0, 0];	// 特殊カットインの切り出し位置
+	var face    = [0, 0];	// 表情レイヤーの位置
+	var main    = [0, 0];	// 右の握り手の基準点。ここを基準に武器の位置合わせをする
+	var sub     = [0, 0];	// 左の握り手の基準点。ここを基準に盾の位置合わせをする
+	var hideMain= [0, 0];	// 胸元を隠す時の右の握り手の基準点。ここを基準に武器の位置合わせをする
+	var hideSub = [0, 0];	// 胸元を隠す時の左の握り手の基準点。ここを基準に盾の位置合わせをする
+	var chest   = [0, 0];	// 胸レイヤーの位置。上鎧の装備位置でもある
+	var waist   = [0, 0];	// 腰レイヤーの位置。下鎧の装備位置でもある
+	var bust    = [0, 0];	// 乳房レイヤーの位置。ブラの装備位置でもある
+	var hip     = [0, 0];	// 尻レイヤーの位置。パンツの装備位置でもある
+	var leg     = [0, 0];	// 足レイヤーの位置。ブーツの装備位置でもある
+	var arm     = [0, 0];	// 右腕レイヤーの位置。小手の装備位置でもある
+	var subArm  = [0, 0];	// 左腕レイヤーの位置。小手の装備位置でもある
+	var hideArm = [0, 0];	// 胸元を隠す時の両腕レイヤーの位置。小手の装備位置でもある
+	var subArmOrder = 900;	// キャラによっては左腕が後ろに来るのでその際は順位を指定する
+	var hasExtraPose = false;	// カットイン専用画像を所持しているかどうか
+	var dressInfo = %[];	// 設定名ごとの服装・表情の情報 ヒロイン情報で使用する
+	var figureTop = 0;	// 立ち絵での標準表示高さ（ＫＡＧ用）
+	var displayName;
+
+	// カットイン専用画像のパーツ位置。意味は上記と同じ
+	var exPos = %[
+		 cutIn   : [0, 0]
+		,face    : [0, 0]
+		,main    : [0, 0]
+		,sub     : [0, 0]
+		,chest   : [0, 0]
+		,waist   : [0, 0]
+		,bust    : [0, 0]
+		,hip     : [0, 0]
+		,leg     : [0, 0]
+		,arm     : [0, 0]
+		,subArm  : [0, 0]
+		,armOrder    :  20
+		,weaponOrder :  30
+		,subWeaponOrder :  30
+		,bowOrder    :  30
+		,harpOrder   :  30
+		,drumOrder   :  30
+		,magicOrder  :  30
+		,gripOrder   :  40
+		,subArmOrder : 900
+	];
+
+	// 大型専用画像のパーツ位置。意味は上記と同じ
+	var lgPos = %[
+		,face    : [0, 0]
+		,main    : [0, 0]
+		,sub     : [0, 0]
+		,chest   : [0, 0]
+		,waist   : [0, 0]
+		,bust    : [0, 0]
+		,hip     : [0, 0]
+		,leg     : [0, 0]
+		,arm     : [0, 0]
+		,subArm  : [0, 0]
+		,subArmOrder : 900
+	];
+
+	// コメント集
+	var comment = %[
+		 awake  : []		// 何かに気付いた
+		,bra    : void
+		,noBra  : void
+		,panties: void	// パンツをとらない
+		,noPan  : void	// パンツをはいてない
+		,erected: []
+	];
+
+	// 以下のキーを持つ入力データはカンマで区切って配列に入れる
+	var keyOfArray = [
+		"color", "threeSize", "cutIn", "trim", "face", "main", "sub", "hideMain", "hideSub", "chest"
+		, "waist", "bust", "hip", "leg", "arm", "subArm", "hideArm"
+		, "weak", "resist", "block"
+	];
+
+	var keyOfArrayAdded = [
+		"ex_cutIn", "ex_face", "ex_main", "ex_chest", "ex_waist"
+		, "ex_bust", "ex_hip", "ex_leg", "ex_arm", "ex_subArm"
+	];
+
+	var keyOfValueAdded = [
+		"ex_armOrder", "ex_subArmOrder", "ex_gripOrder", "ex_weaponOrder", "ex_subWeaponOrder"
+		, "ex_bowOrder", "ex_harpOrder", "ex_drumOrder", "ex_magicOrder"
+	];
+
+	function Model(master, id)
+	{
+		this.master = master;
+		this.id   = id;
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.name = name;
+		dic.events = events;
+		dic.booking = booking;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic === void) return;	// 後から追加された分をスルー
+		events.assign(dic.events);
+		booking.assign(dic.booking);
+	}
+
+	function inputData(key, data)
+	{
+		if(keyOfArrayAdded.find(key) != -1)
+		{
+			exPos[key.substr(3)] = strToArray(data);
+			hasExtraPose = true;
+		}
+		else if(key == "lg_face" || key == "lg_chest")
+		{
+			lgPos[key.substr(3)] = strToArray(data);
+		}
+		else if(keyOfValueAdded.find(key) != -1) exPos[key.substr(3)] = data;
+		else if(keyOfArray.find(key) != -1) this[key] = strToArray(data);
+		else if(key == "cmt_awake") comment.awake = strToArray(data);
+		else if(key == "cmt_erected") comment.erected = strToArray(data);
+		else if(key.substr(0, 4) == "cmt_") comment[key.substr(4)] = data;
+		else if(key == "skill" || key == "items") this[key] = master.getObjArrayByText(data);
+		else if(key == "race") this[key] = o[data];
+		else this[key] = data;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class CharaReference
+{
+	// キャラクターの参照を保持するクラス。シナリオなどで使う
+	// メイキングキャラクターなど、参照するキャラオブジェクトが
+	// 必ずしも一定でないものを参照するために利用する
+
+	var master;
+	var model;
+
+	function CharaReference(master, model)
+	{
+		this.master = master;
+		this.model = model;
+	}
+
+	property chara
+	{
+		getter
+		{
+			if(master.curChara !== void && master.curChara.isUserChara && master.curChara.model == model)
+			{
+				return master.curChara;
+			}
+
+			for(var i = 0; i < master.party.members.count; i++)
+			{
+				var one = master.party.members[i];
+				if(one.model == model) return one;
+			}
+
+			for(var i = 0; i < master.chara.count; i++)
+			{
+				var one = master.chara[i];
+				if(one === void) continue;
+				if(one.model == model) return one;
+			}
+		}
+	}
+
+	property chara2
+	{
+		// 同じ種族ばかりでパーティーを固められた場合、同じキャラ同士で会話を始めてしまわないように
+		// 確実に違うメンバーを返すためのもう１つの参照
+		getter
+		{
+			if(master.party.members.count == 0)
+			{
+				return chara;	// 回想モード対策
+			}
+
+			for(var i = master.party.members.count - 1; i >= 0; i--)
+			{
+				var one = master.party.members[i];
+				if(one == master.curChara) continue;
+				if(one.model == model) return one;
+			}
+		}
+	}
+}
+//----------------------------------------------------------------------------------------

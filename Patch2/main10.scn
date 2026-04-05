@@ -1,0 +1,1035 @@
+﻿; 各種クエストシナリオ（体験版搭載分）
+
+
+
+
+;■牢獄クエスト
+
+; 牢獄に囚われた人たちを助け出すクエスト
+; 助けに行くつもりが主人公たちが捕まってしまう
+
+;◇イベント01・入口の罠
+*jail_01
+
+; ☆フリーモード
+@jump storage="free02.scn" target=*jail_01 cond='game.isFreeMode'
+
+; 牢獄入口
+@se f=kacha
+@wait time=1000
+[texton]
+[テオ f=05]「...?!」[k]
+[textoff]
+@playse storage=acid
+@image layer=e1 storage=9999 opacity=0 visible=true
+@image layer=e2 storage=PE_base_full left=0 top=0 visible=true
+@startemit layer=e2 storage=PE_smoke_gray time=2500
+@move layer=e1 time=2000 path=,,255
+@wait time=2000
+[texton]
+The moment we stepped on the floor of the passageway in front of the door, pure white smoke billowed out from the surrounding walls![k]
+The narrow aisle quickly filled with smoke. As everyone inhaled it, they collapsed![k]
+[テオ f=09]「Damn it... a trap...!」[k]
+[textoff]
+@black time=1000
+@layopt layer=e1 visible=false
+@clearemit layer=e2
+@w2
+
+[iscript]
+//------------------------------------------------------------------------------
+o.マリア.exp = o.マリア.getNeedExp(20);	// マリアのレベルを上げておく
+o.マリア.levelUpToTheLast();
+
+f.allPrisoners = [
+	"看守","看守"
+	,"囚人","囚人","囚人","囚人"
+	,"シスター","シスター","シスター","シスター","シスター"
+];
+f.atrociousPrisoners = ["バジリスク", "デザートバイパー", "マンイーター"];
+f.atrociousPrisoners.shuffle();
+
+f.partyPrisonerNums = [];
+f.stolenWeapons = [];
+for(var i = game.party.members.count - 1; i >= 0; i--)
+{
+	var one = game.party.members[i];
+	if(one == game.playerChara) continue;
+	if(one == o.マックス) continue;
+	f.partyPrisonerNums.add(game.chara.find(one));
+	game.party.removeMember(one);
+	f.allPrisoners.add("仲間");
+}
+
+while(f.allPrisoners.count < 18) f.allPrisoners.add("なし");
+f.allPrisoners.shuffle();
+f.partyPrisonerNums.shuffle();
+f.partyPrisonerNums.unshift(game.chara.find(o.マックス));
+game.party.removeMember(o.マックス);
+
+game.guest.eraseHiring();	// 召喚・雇用キャラを外す
+for(var i = game.guest.members.count - 1; i >= 0; i--)
+{
+	game.removeMemberTemporary(game.guest.members[i]);
+}
+//------------------------------------------------------------------------------
+[endscript]
+
+; 牢屋に移動
+@warp map=牢獄Ｂ２ x=7 y=5 way=s sound=false
+
+; テオが収監された牢屋
+@black off=0
+[texton]
+[テオ f=12][nw]「...Ah!」[/nw][k]
+When I woke up, I was in a small stone room.[k]
+Where... Could this be a prison?[k]
+[テオ f=06]「...」[k]
+How shameful... To be captured like this by the enemy...[k]
+Is this how the criminals have been capturing adventurers who came to investigate? No wonder no one is coming back.[k]
+I need to figure out a way to get out of here. I'm also worried about everyone in the party.[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント02・マリアが救出に来る
+*jail_02
+
+; ☆フリーモード
+@jump storage="free02.scn" target=*jail_02 cond='game.isFreeMode'
+
+; テオが収監された牢屋
+@wait time=500
+[texton]
+[テオ f=06]「...」[k]
+I touch the door of the prison.[k]
+The door is very sturdy, made of steel, and it is unlikely that it could be broken.[k]
+The walls are made of stone and look solid, so it would take decades to even drill a hole in them.[k]
+...The prison is unexpectedly strong. It may be almost impossible to escape by force.[k]
+Was I destined to rot away as a prisoner...?[k]
+@se f=kacha
+∗click∗[k]
+[テオ f=05]「...!」[k]
+Suddenly, with the sound of a key being turned, the door to the room opened slightly![k]
+Why unlock it? What does the enemy want with me?[k]
+[textoff]
+@wait time=500
+@walk move=n
+[texton]
+[テオ f=06]「...!」[k]
+In any case, this is my chance! I must get out of here immediately.[k]
+[textoff]
+@se f=door4
+@wait time=500
+@fg c=マリア e=通常 f=05
+[texton w=1]
+[マリア v=va192 f=05]「Hey! Are you okay?」[k]
+[テオ f=12]「Maria!」[k]
+To my surprise, it was that Maria who opened the door to the cell.[k]
+Hey, why are you here?[k]
+[マリア v=va194 f=05]「I'm here to help you. So get out while there are no guards nearby!」[k]
+[テオ f=12]「O-oh...」[k]
+[textoff]
+@black on=500
+@wait time=500
+@warp x=6 y=3 way=w sound=false
+@fgf c=マリア f=02
+@black off=500
+[texton]
+[マリア v=va195 f=02]「Hey, that was a disaster.」[k]
+[テオ f=12]「How did you know...? What's going on?」[k]
+[マリア v=va196 f=14]「Well... Actually, the client for your quest is me.」[k]
+[テオ f=05]「Huh? What's going on?」[k]
+[マリア v=va197 f=02]「...As I'm sure you've heard, this quest was attempted by several parties of adventurers. They all disappeared without being able to solve it.」[k]
+[マリア v=va198 f=02]「The client was at a loss as to why.」[k]
+[マリア v=va199 f=02]「So, I decided to find out why adventurers keep disappearing in this prison and then launch a full-scale rescue operation.」[k]
+[テオ f=00]「...」[k]
+[マリア v=va200 f=02]「I was consulted by the client about this matter before you guys.」[k]
+[マリア v=va201 f=02]「After much deliberation, we decided to have someone else take on this request and observe how the enemy catches adventurers who try to infiltrate.」[k]
+[マリア v=va202 f=02]「Then you guys took up the offer and I followed you to the prison.」[k]
+[テオ f=12]「No way!」[k]
+[マリア v=va203 f=02]「I watched from a distance as you infiltrated this prison.」[k]
+[マリア v=va204 f=02]「After finding out about that immobilization trap at the entrance, I was able to sneak in without being caught by the enemy.」[k]
+[テオ f=12]「...So we were used as bait.」[k]
+[マリア v=va205 f=53]「Sorry! But I was going to get you guys out of there right away and have you do the rescue mission with me! I'm pretty good at picking locks.」[k]
+[テオ f=00]「...」[k]
+I'm a little baffled, but it worked out anyway, so I guess that's good...[k]
+[テオ f=05]「I get it. Then let's go help everyone else as soon as possible!」[k]
+[マリア v=va206 f=10]「Hmmm... As much as I'd like to...」[k]
+[テオ f=05]「What's the problem?」[k]
+[マリア v=va207 f=09]「The cell doors here are much sturdier than I thought they would be. It would take a long time to pry them open. Your cell happened to have a simple lock, so I was able to open it...」[k]
+[マリア v=va208 f=09]「Given time I could pick the other ones, but if it's too slow, the guards would find out. I'd like to get the [b]prison key[/b] if possible. The guards should have it...」[k]
+[テオ f=00]「Ok, I've got it. Let's get the key to the jail first!」[k]
+[textoff]
+@cl
+@eval exp='game.guest.entry(o.マリア)'
+@st
+@se f=up3
+@notice text="<y>Maria joined the party!"
+@mu f=&'game.map.bgm'
+[eventoff]
+
+
+;◇イベント03・牢屋の鍵を奪う
+*jail_03
+
+; 牢の並ぶ廊下
+@fg l=kobold_white left=340 top=80 b
+@fgf r=kobold_white left=560 top=80
+[texton]
+[name n=Guard]「What the hell! How did you get out of there?」[k]
+[マリア v=va209 f=06]「This isn't good...」[k]
+The guards have found us! We have to take them down before the other guards gather![k]
+[textoff]
+@clf
+
+; 看守と戦闘
+@monster pos=2 name=ウインターコボルド
+@monster pos=4 name=ウインターコボルド
+@callbattle escape=false
+; 勝利
+
+@treasure item=牢屋の鍵
+[texton]
+[マリア v=va210 f=01]「Lucky! These guys had the keys!」[k]
+[マリア v=va211 f=02]「Things were a bit sketchy for a while, but we should be okay now. So, let's go get everyone out of there.」[k]
+[textoff]
+@delevent
+[eventoff]
+
+
+
+
+;◇イベント04・囚われた仲間の救出
+*jail_04
+
+@jump target=*_jail_04_prisoner cond='f.allPrisoners[0] == "囚人"'
+@jump target=*_jail_04_keeper cond='f.allPrisoners[0] == "看守"'
+@jump target=*_jail_04_sister cond='f.allPrisoners[0] == "シスター"'
+@jump target=*_jail_04_nobody cond='f.allPrisoners[0] == "なし"'
+
+; 仲間たちのいる牢屋に入る
+@delevent
+@eval exp='f.allPrisoners.shift()'
+@eval exp='game.curChara = game.chara[f.partyPrisonerNums[0]]'
+[if exp='! game.isFreeMode']
+	@jump target=*_jail_04_max cond='game.curChara == o.マックス'
+	@jump target=*_jail_04_last cond='f.partyPrisonerNums.count == 1'
+[endif]
+@jump target=*_jail_04_others
+
+*_jail_04_prisoner
+; 囚人とバトル
+@monster pos=3 name=囚人
+@callbattle
+@delevent
+@eval exp='f.allPrisoners.shift()'
+[eventoff]
+
+*_jail_04_keeper
+; 看守とバトル
+@wait time=1000
+@fg l=kobold_white left=340 top=80 b
+@fgf r=kobold_white left=560 top=80
+[texton]
+[name n=Guard]「What the hell! How did you get out of there?」[k]
+[マリア v=va212 f=06]「This isn't good...」[k]
+There happened to be a guard in the room. Now that it had come to this, we had no choice but to fight.[k]
+[textoff]
+@clf
+@monster pos=2 name=ウインターコボルド
+@monster pos=4 name=ウインターコボルド
+@callbattle
+@delevent
+@eval exp='f.allPrisoners.shift()'
+[eventoff]
+
+*_jail_04_sister
+; シスター救出
+@wait time=1000
+[texton]
+@eval exp='f.temp = "priest_" + ["purple", "red", "green", "pink"].draw() + "_03"'
+[name n=Sister f=&'f.temp']「Oh... You're... What?」[k]
+[マリア v=va213 f=07]「We're here to help you! Now, get out of here as fast as you can!」[k]
+[name n=Sister f=&'f.temp']「Oh, thank you!」[k]
+[textoff]
+@se f=period
+@notice text="<y>One Sister rescued!"
+@delevent
+@eval exp='f.allPrisoners.shift()'
+[eventoff]
+
+*_jail_04_nobody
+; 誰もいない
+@wait time=1000
+[texton]
+[マリア v=va214 f=06]「There's no one here...」[k]
+There doesn't seem to be anyone here. Let's look elsewhere.[k]
+[textoff]
+@delevent
+@eval exp='f.allPrisoners.shift()'
+[eventoff]
+
+*_jail_04_max
+; マックス救出
+@wait time=1000
+[texton]
+[テオ f=05]「Max!」[k]
+[マックス f=01]「Yo, [テオ]! You're here to help!」[k]
+@se f=period
+@eval exp='game.party.entry(game.curChara)'
+I found Max in the cell. He rejoined the group.[k]
+[マックス f=21]「Oh, Maria! You came to save me, didn't you?!」[k]
+[マリア v=va215 f=52]「Hi, long time no see, Max...」[k]
+; ↑ 気まずそうに
+[マックス f=92]「I can't believe you'd risk your life for me! I knew you- 」[k]
+[マリア v=va216 f=27]「It's not like that! Don't get me wrong!」[k]
+[マックス f=03]「Don't be shy! You really like me, don't you?」[k]
+[マリア v=va217 f=27]「I told you it's not like that! Stay away from me!」[k]
+[マックス f=33]「I love you too～ Now, kiss me!」[k]
+[テオ f=07]「Max!」[k]
+[マックス f=12]「Hey, what the hell, [テオ]. Don't yell at me all of a sudden.」[k]
+[テオ f=05]「We still need to find everyone else. Let's hurry up and go look for them!」[k]
+[マックス f=95]「O-oh... Okay, okay... 」[k]
+[textoff]
+@eval exp='f.partyPrisonerNums.shift()'
+[eventoff]
+
+*_jail_04_others
+; 仲間を１人救出
+@wait time=1000
+[texton]
+[if exp='! game.isFreeMode']
+	[テオ f=05]「[キャラ]! Are you safe?!」[k]
+	[キャラ f=11]「Captain...!」[k]
+[endif]
+@se f=period
+@eval exp='game.party.entry(game.curChara)'
+[name key=&'game.curChara.keyName' f=01] [キャラ] was inside the cell. Now free, [キャラ] rejoined the party![k]
+[textoff]
+@eval exp='f.partyPrisonerNums.shift()'
+[eventoff]
+
+*_jail_04_last
+; 最後の１人を救出
+; 囚われた仲間の１人が看守にいたずらされている
+@wait time=1000
+[texton]
+[name n=Guard f=orc_03]「Heh heh heh... Are you feeling good?」[k]
+
+[   if exp='isHUM'][リム v=vh065 e=裸 f=37]「No... Don't... No...!」[k]
+[elsif exp='isELF'][クレア v=ve066 e=裸 f=37]「No... Don't... No...!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd065 e=裸 f=37]「No... Don't... No...!」[k]
+[elsif exp='isGNO'][ミューズ v=vg054 e=裸 f=37]「No... Don't... No...!」[k]
+[elsif exp='isSYL'][マルエット v=vs067 e=裸 f=37]「No... Don't... No...!」[k]
+[endif]
+
+[テオ f=05]「[キャラ]...!」[k]
+[キャラ] was inside the cell. To my shock, her clothes had been removed, she'd been tied up, and a guard was relentlessly playing with her body![k]
+This is terrible! We have to rescue her quickly...![k]
+[テオ f=07]「Stop that! Get away from [キャラ]!」[k]
+
+[   if exp='isHUM'][リム v=vh066 e=裸 f=31]「Captain...!」[k]
+[elsif exp='isELF'][クレア v=ve067 e=裸 f=31]「Captain...!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd066 e=裸 f=31]「Captain...!」[k]
+[elsif exp='isGNO'][ミューズ v=vg055 e=裸 f=31]「Captain...!」[k]
+[elsif exp='isSYL'][マルエット v=vs068 e=裸 f=31]「Captain...!」[k]
+[endif]
+
+@fg l=orc_green left=250 top=45 b
+@fg c=orc_blue left=450 top=45 b
+@fgf r=orc_green left=650 top=45
+[name n=Guard f=orc_03]「What the hell?! How did you get in here?」[k]
+[テオ f=07]「I won't forgive you if you lay a hand on an important member of my party!」[k]
+[name n=Guard f=orc_02]「What the hell? You're with this woman?」[k]
+[name n=Guard f=orc_03]「Fine! I'll take care of these guys first!」[k]
+[textoff]
+@clf
+
+; 看守たちと戦闘
+@monster pos=1 name=オークシャーマン
+@monster pos=2 name=オークキング
+@monster pos=3 name=オークキング
+@monster pos=4 name=オークキング
+@monster pos=5 name=オークシャーマン
+@callbattle escape=false
+; 勝利・救出
+
+[texton]
+@eval exp='game.curChara = game.chara[f.partyPrisonerNums[0]]'
+[テオ f=05]「[キャラ], are you all right?」[k]
+
+[   if exp='isHUM'][リム v=vh067 e=裸 f=25]「Y-yes...」[k]
+[elsif exp='isELF'][クレア v=ve068 e=裸 f=25]「Y-yes... 」[k]
+[elsif exp='isDWA'][フレデリカ v=vd067 e=裸 f=25]「Y-yes...」[k]
+[elsif exp='isGNO'][ミューズ v=vg056 e=裸 f=25]「Y-yes...」[k]
+[elsif exp='isSYL'][マルエット v=vs069 e=裸 f=25]「Y-yes... 」[k]
+[endif]
+
+@se f=period
+@eval exp='game.party.entry(game.curChara)'
+[キャラ] put her equipment back on and rejoined the group.[k]
+[textoff]
+@eval exp='f.partyPrisonerNums.shift()'
+[eventoff]
+
+
+;◇イベント05・逃げていた他の仲間と合流する
+*jail_05
+
+; ☆フリーモード
+@jump storage="free02.scn" target=*jail_05 cond='game.isFreeMode'
+
+; 監獄の外
+@wait time=500
+
+; サンドラが仲間だった場合
+[if exp='game.waitingMembers.has(o.サンドラ) || game.waitingMembers.has(o.ブルー)']
+	@fg l=ブルー f=06 b
+	@fg c=サンドラ f=05 b
+	@fg r=ライナス f=06
+	[texton w=1]
+	[サンドラ v=vn038 f=05]「Oh, there you are. Honestly, I was so worried.」[k]
+	When we walked out of the jail, Sandra, Blue, and Linus were waiting for us. Everyone seemed to be safe.[k]
+	@eval exp='game.guest.removeMember(o.マリア)'
+	@eval exp='game.restoreMembers()'
+	@clf
+	@se f=period
+	@notice text="<y>Blue, Sandra, and Linus rejoined the party!"
+; ミレディが仲間だった場合
+[elsif exp='game.waitingMembers.has(o.ミレディ)']
+	@fg l=ミレディ f=01 b
+	@fg r=ライナス f=06
+	[texton w=1]
+	[ミレディ v=vm182 f=01]「Ahh! There you are! You're safe～!」[k]
+	When we walked out of the jail, Miredy and Linus were waiting for us, both of them seemingly safe.[k]
+	@eval exp='game.guest.removeMember(o.マリア)'
+	@eval exp='game.restoreMembers()'
+	@clf
+	@se f=period
+	@notice text="<y>Miredy and Linus rejoined the party!"
+; ポラリスが仲間だった場合
+[elsif exp='game.waitingMembers.has(o.ポラリス)']
+	@fg l=ポラリス f=01 b
+	@fg r=ライナス f=06
+	[texton w=1]
+	[ポラリス v=vp031 f=01]「We were very worried. I am glad to hear that everyone is safe.」[k]
+	When we walked out of the jail, I found Lady Polaris and Linus waiting for us, both of them seemingly safe.[k]
+	@eval exp='game.guest.removeMember(o.マリア)'
+	@eval exp='game.restoreMembers()'
+	@clf
+	@se f=period
+	@notice text="<y>Polaris and Linus rejoined the party!"
+; ライナスのみが仲間だった場合
+[elsif exp='game.waitingMembers.has(o.ライナス)']
+	@fg c=ライナス f=05
+	[texton w=1]
+	[ライナス f=06]「Yo.」[k]
+	When we walked out of the jail, Linus was waiting for us. Apparently, he was safe.[k]
+	@eval exp='game.guest.removeMember(o.マリア)'
+	@eval exp='game.restoreMembers()'
+	@clf
+	@se f=period
+	@notice text="<y>Linus rejoined the party!"
+[else]
+	@eval exp='game.guest.removeMember(o.マリア)'
+[endif]
+@eval exp='game.guest.removeMember(o.マリア)' cond='game.guest.members.has(o.マリア)'
+[textoff]
+@wait time=500
+@fg c=マリア f=00
+[texton]
+[マリア v=va218 f=02]「Well, that's it for me. Thanks for your help, everyone.」[k]
+[マックス f=11]「Whaaaaat?! You're leaving already?!」[k]
+[マリア v=va219 f=02]「I know you guys are going through a lot, but please hang in there. I'll be rooting for you, too.」[k]
+[テオ f=02]「Yeah, thanks. Take care, Maria.」[k]
+[textoff]
+@cl
+@se f=period
+@notice text="<y>Maria left the party."
+[eventoff]
+
+
+
+
+
+;■オークの拠点制圧クエスト
+
+; 洞窟に救ったオークたちを退治するクエスト
+
+;◇イベント・オークの群れと戦闘
+*orc_1
+
+; 洞窟内
+[texton]
+I saw a large group of orcs gathered in a slightly open area at the back of the cave. And in the center of them is [―――]![k]
+[textoff]
+*_replay_orc_1
+@bg f=event92
+[texton w=2]
+[警備隊長]「Ah... Ah... Stop... Stop...!」[k]
+[オーク]「Phew... This is good...!」[k]
+Shockingly, the guard captain had been captured by orcs.[k]
+She'd been undressed, and was on all fours being raped from behind by one orc.[k]
+[警備隊長]「Ugh...! Stop...! Don't... No more humiliation... I won't forgive you... I won't... No!」[k]
+[オーク]「Come on, come on, come on. You like this, don't you? Huh? It really feels good, doesn't it?」[k]
+∗sluurp!∗[k]
+[警備隊長]「I don't... I don't feel good... Aaaaahhh...!」[k]
+Penetrated by the orc's thick member, the guard captain couldn't resist making sensual sounds and wiggling her hips.[k]
+Seeing this, the orc became even more aroused and began thrusting strongly into her.[k]
+[警備隊長]「Ohhh... Ohhh... Stop... Stop it... ahhh..!」[k]
+[オーク]「Damn, I can't wait! I'm about to cum! I'm going to cum inside of you again!」[k]
+[警備隊長]「Stop it...! I don't want to become pregnant with an orc's child...!」[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+@gameon
+[texton w=0]
+To my surprise, the captain of the guard was being used like a sex toy by the orcs.[k]
+We can't just leave her like this. We have to help as soon as possible...[k]
+[オーク]「What the hell? Are you here to fight us, too?」[k]
+Orcs have discovered us. We have no choice but to fight![k]
+[オーク]「Hm! Far more of us than them! Let's beat these guys up too!」[k]
+[textoff]
+
+; オークの群れと戦闘
+@monster pos=0 name=オークソルジャー
+@monster pos=1 name=オークソルジャー
+@monster pos=2 name=オークソルジャー
+@monster pos=3 name=オークソルジャー
+@monster pos=4 name=オークソルジャー
+@monster pos=5 name=オークソルジャー
+@monster pos=6 name=オークソルジャー
+@monster pos=7 name=オークシャーマン
+@monster pos=8 name=オークシャーマン
+@monster pos=9 name=オークシャーマン
+@monster pos=10 name=オークシャーマン
+@monster pos=11 name=オークシャーマン
+@monster pos=12 name=オークシャーマン
+@monster pos=13 name=オークシャーマン
+@monster pos=15 name=オークキング
+@monster pos=16 name=オークキング
+@monster pos=17 name=オークキング
+@monster pos=18 name=オークキング
+@monster pos=19 name=オークキング
+@callbattle bgm=boss escape=false gameover=true
+; 勝利
+
+@wait time=500
+[texton]
+After a battle, we managed to fight off the orcs.[k]
+[警備隊長 f=04]「...I'm sorry. My squad planned to exterminate them ourselves, but well...」[k]
+[警備隊長 f=04]「I don't know what would have happened to us if you guys hadn't come to our rescue. I'm so sorry.」[k]
+[警備隊長 f=04]「Those ones you just defeated were the leaders, and also the only ones left. So our mission is now complete.」[k]
+[警備隊長 f=05]「Thank you very much for your hard work. You may return to the tavern to receive your reward. I'll head back with the other surviving men.」[k]
+[textoff]
+[eventoff]
+
+
+
+
+;■モデル募集イベント
+
+; 絵のモデルなってくれる女性を募集するクエスト
+; メンバーの誰かが指定の格好をしてモデルになる
+
+;◇イベント01・女神のドレスのモデル
+*model_1
+
+; 女神のドレスのモデル
+[if exp='isELF || isSYL']
+	@fg c=キャラ e=女神のドレス f=01
+[elsif exp='isHUM || isDWA']
+	@fg c=キャラ e=女神のドレス f=22
+[else]
+	@fg c=キャラ e=女神のドレス f=25
+[endif]
+[texton w=1]
+[   if exp='isHUM'][リム v=vh068 f=22]「Eh... does it suit me?」[k]
+[elsif exp='isELF'][クレア v=ve069 f=01]「How is this?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd068 f=22]「I'm kind of embarrassed...」[k]
+[elsif exp='isGNO'][ミューズ v=vg057 f=25]「It's... embarrassing...」[k]
+[elsif exp='isSYL'][マルエット v=vs070 f=01]「Hehehe, does it look good on me?」[k]
+[elsif exp='isLIS'][リーゼル f=25]「...」[k]
+[endif]
+[依頼人]「Oh! So beautiful...! Please model as soon as possible.」[k]
+[textoff]
+@return
+
+
+;◇イベント02・赤い下着のモデル
+*model_2
+
+; 赤い下着のモデル
+@fg c=キャラ e=赤いブラ,赤いパンツ f=25
+[texton w=1]
+[   if exp='isHUM'][リム v=vh069 f=25]「Um... how about this...?」[k]
+[elsif exp='isELF'][クレア v=ve070 f=25]「I wonder if this is okay...?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd069 f=25]「It's... embarrassing...」[k]
+[elsif exp='isGNO'][ミューズ v=vg058 f=25]「Don't stare so much...!」[k]
+[elsif exp='isSYL'][マルエット v=vs071 f=25]「Honestly! Is this what you wanted?!」[k]
+[elsif exp='isLIS'][リーゼル v=vl405 f=25]「It's a bit embarrassing...」[k]
+[endif]
+[if exp='isLIS || isELF || isDWA'][依頼人]「Oh! This is just what I wanted! Please model for me!」[k]
+[else][依頼人]「Hmm... it's not quite what I had in mind, but that's fine. Please model for me!」[k]
+[endif]
+[キャラ] modeled for the painting in her outfit. She remained a little embarrassed throughout, which was also sexy.[k]
+[textoff]
+@return
+
+
+;◇イベント03A・ヌードモデルを頼むものの拒否
+*model_3_reject
+
+; ヌードモデルを頼むものの拒否
+[texton w=1]
+[if exp='game.curChara.sex == "男"'][依頼人]「Hey, wait a minute! No men! The request is for a nude female model!」[k]
+[elsif exp='isHUM'][リム v=vh070 f=29]「No, no! I don't want to be a nude model!」[k]
+[elsif exp='isELF'][クレア v=ve071 f=29]「N-not a chance!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd070 f=29]「It's embarrassing to be nude...」[k]
+[elsif exp='isGNO'][ミューズ v=vg059 f=29]「I would like to decline...」[k]
+[elsif exp='isSYL'][マルエット v=vs072 f=29]「Idiot! What are you trying to make me do?」[k]
+[elsif exp='isLIS'][リーゼル v=vl406 f=30]「Nudity is a bit too embarrassing...」[k]
+[endif]
+[if exp='game.isFreeMode']
+	Someone else will have to help.[k]
+[else]
+	[テオ f=06]「I knew it was a bad idea...」[k]
+	I have no choice. Let's ask someone else.[k]
+[endif]
+[textoff]
+@return
+
+
+;◇イベント03B・ヌードモデル受諾
+*model_3_accept
+
+; ヌードモデル受諾
+[texton]
+[   if exp='isHUM'][リム v=vh071 f=25]「Okay, I'll try... nude modeling.」[k]
+[elsif exp='isELF'][クレア v=ve072 f=25]「That's fine. I'll show you my body.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd071 f=25]「Got it. It's embarrassing, but I'll do my best!」[k]
+[elsif exp='isGNO'][ミューズ v=vg060 f=25]「If it's okay with you... I'll take it off.」[k]
+[elsif exp='isSYL'][マルエット v=vs073 f=25]「Guess there's no choice. I'll model for you.」[k]
+[elsif exp='isLIS'][リーゼル v=vl407 f=25]「It's a little embarrassing, but... it's okay, even if I'm nude.」[k]
+[elsif exp='game.curChara == o.サンドラ'][サンドラ v=vn039 f=01]「All right. I'll get nude.」[k]
+[elsif exp='game.curChara == o.ミレディ'][ミレディ v=vm183 f=14]「Do you want to see my naughty parts? I'll show you as much as you want ♪」[k]
+[elsif exp='game.curChara == o.マリア'][マリア v=va220 f=10]「...It can't be helped. I'll do it for you, nude!」[k]
+; ↑ 恥ずかしいけど思い切ってやってやるぞ！という感じ
+[elsif exp='game.curChara == o.ポラリス'][ポラリス v=vp032 f=03]「Eh～ Me～? But if you want to see that much...」[k]
+; ↑ 少し嬉しそうにわざとらしく困ってみる感じ
+[elsif exp='game.curChara == o.チャンピオン || game.curChara == o.エンジェルナイト || game.curChara == o.アコライト || game.curChara == o.ハイプリースト'][キャラ f=&'game.curChara.img + "_01"']「Okay... I'll do it.」[k]
+[else][キャラ f=&'game.curChara.img + "_01"']「Okay, I'll do it. I'll do it for you.」[k]
+[endif]
+[依頼人]「Oh! You'll really model for me? Then, let's get started!」[k]
+[textoff]
+@out
+@w05
+@gameon
+@jump target=*_model_3_polaris cond='game.curChara == o.ポラリス'
+@jump target=*_model_3_sandra cond='game.curChara == o.サンドラ'
+@jump target=*_model_3_miredy cond='game.curChara == o.ミレディ'
+@jump target=*_model_3_others
+
+
+*_model_3_polaris
+; ヌードモデル・ポラリス
+
+@fg c=ポラリス e=裸 f=04
+@w05
+[texton w=1]
+[ポラリス f=04]「...」[k]
+To my surprise, Lady Polaris, despite her position as God, took off her clothes and generously exposed her body before everyone.[k]
+Slightly embarrassed, she stands in front of the client, in all her naked glory. Staring at her, the client ran his brush across the canvas.[k]
+[依頼人]「Ohhhhh, what a wonderful...! What a godly...! This could be one hell of a masterpiece...!」[k]
+With her bare skin proudly exposed, Lady Polaris waited quietly for the client to finish painting.[k]
+[textoff]
+@out
+@w05
+@gameon
+@fg c=ポラリス f=01
+[texton w=1]
+[ポラリス v=vp033 f=01]「How was it?」[k]
+@jump target=*_model_3_end
+
+
+*_model_3_sandra
+; ヌードモデル・サンドラ
+
+@fg c=サンドラ e=裸 f=51
+@w05
+[texton w=1]
+[サンドラ v=vn040 f=51]「Well, look at me all you want.」[k]
+Sandra quickly and easily removed all of her clothes and stood naked in front of everyone.[k]
+She stood in front of the client with a relaxed look. Staring at her, the client ran his brush across the canvas.[k]
+[依頼人]「Beautiful... This will be a masterpiece!」[k]
+Sandra has no intention of hiding her breasts or crotch, but confidently shows them off to those around her. She waited patiently for the client to finish the painting, while generously radiating her sexuality.[k]
+[textoff]
+@out
+@w05
+@gameon
+@fg c=サンドラ e=バスタオル f=02
+[texton w=1]
+[サンドラ v=vn041 f=02]「I hope you are satisfied.」[k]
+@jump target=*_model_3_end
+
+
+*_model_3_miredy
+; ヌードモデル・ミレディ
+
+@fg c=ミレディ e=裸 f=01
+@w05
+[texton w=1]
+[ミレディ v=vm184 f=01]「Come on, I'm naked, draw as much as you like.」[k]
+Miredy threw off her clothes in front of everyone.[k]
+She stood in front of the client with a relaxed look. Staring at her, the client ran his brush across the canvas.[k]
+[依頼人]「Beautiful... This will be a masterpiece!」[k]
+Miredy had no intention of hiding her breasts or crotch at all. She proudly showed off her embarrassing parts and waited patiently for the client to finish the painting.[k]
+[textoff]
+@out
+@w05
+@gameon
+@fg c=ミレディ e=下着 f=02
+[texton w=1]
+[ミレディ v=vm185 f=02]「How's it going? Satisfied?」[k]
+@jump target=*_model_3_end
+
+
+*_model_3_others
+; ヌードモデル・その他
+
+@fg c=キャラ e=裸 f=40
+@w05
+[texton w=1]
+[if exp='game.curChara.isHiring']
+	[キャラ f=&'game.curChara.img + "_03"']「...」[k]
+[else]
+	[キャラ f=40]「...」[k]
+[endif]
+[キャラ] took off all of her clothes and generously exposed her body to everyone.[k]
+Slightly embarrassed, she stands in front of the client, in all her naked glory. Staring at her, the client ran his brush across the canvas.[k]
+[依頼人]「Beautiful... This will be a masterpiece!」[k]
+[キャラ] doesn't hide her breasts or her crotch, properly doing her job as a model. She waited patiently for the client to finish the painting, leaving her embarrassing parts exposed.[k]
+[textoff]
+@out
+@w05
+@gameon
+[if exp='game.curChara.isHiring']
+	@fg c=キャラ e=バスタオル
+	[texton w=1]
+	[キャラ f=&'game.curChara.img + "_04"']「...」[k]
+[else]
+	@fg c=キャラ e=&'game.curChara == o.マリア ? void : "バスタオル"' f=25
+	[texton w=1]
+	[キャラ f=25]「...」[k]
+[endif]
+@jump target=*_model_3_end
+
+
+*_model_3_end
+; ヌードモデル終了
+
+[依頼人]「Ohhhh, thanks to you, I was able to create a wonderful work of art! How can I thank the model enough?」[k]
+[依頼人]「Let's give you your reward! Thank you again!」[k]
+[textoff]
+@complete name=モデル募集その３
+@clf
+[baroff]
+
+
+
+
+;■鎧のテスター
+
+; 依頼人が作った鎧を着用テストする依頼
+; 鎧の出来が悪く、着用中に壊れてしまう
+
+;◇イベント01・試作品の鎧１のテスト
+*armor_1
+
+; 試作品の鎧１を着用した直後
+@eval exp='game.curChara = game.party.findEquipedItems(o.試作品の鎧)'
+@wait time=500
+@fg c=キャラ f=26
+@wait time=500
+[texton w=1]
+[キャラ]「...」[k]
+[キャラ] wears the armor given by the client of the quest.[k]
+She looks kind of uneasy. Is it not very comfortable to wear?[k]
+
+[   if exp='isHUM'][リム v=vh072 f=25]「Something is wrong with this armor... Huh?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd072 f=25]「Something is wrong with this armor... Huh?」[k]
+[elsif exp='isGNO'][ミューズ v=vg061 f=25]「Something is wrong with this armor... Huh?」[k]
+[elsif exp='isELF'][クレア v=ve073 f=25]「Oh no... it's a little weird, this armor... ah!」[k]
+[elsif exp='isSYL'][マルエット v=vs074 f=25]「Oh no... it's a little weird, this armor... ah!」[k]
+[elsif exp='isLIS'][リーゼル v=vl408 f=25]「Oh no... this armor is a bit strange... Ah!」[k]
+[endif]
+
+[textoff]
+@playse buf=1 storage=glassbreak
+@image layer=e5 storage=9999 visible=true
+@image layer=e4 storage=PE_base_broken visible=true mode=psdodge5
+@layopt layer=e4 left=256 top=128
+@startemit layer=e4 storage=PE_broken time=200 skip=500
+@eval exp='game.curChara.removeEquipment(o.試作品の鎧, "chest", true)'
+@eval exp='game.curChara.updateByChangeEquipment()'
+@eval exp='game.party.insertItem(o.試作品の鎧, BROKEN)'
+@fgf c=キャラ f=37
+@wait time=50
+@move layer=e5 path=,,0 time=1000
+@wm
+@layopt layer=e5 visible=false opacity=255
+@clearemit layer=e4
+[texton w=1]
+[if exp='! game.isFreeMode']
+[テオ f=29]「[キャラ]!」[k]
+	[if exp='game.party.members.has(o.マックス)']
+	[マックス f=21]「Oooooh!」[k]
+	[endif]
+[endif]
+
+[   if exp='isHUM'][リム v=vh073 f=37]「Kyaaaah! What is this armor?!」[k]
+[elsif exp='isELF'][クレア v=ve074 f=37]「Aah! Hey, what is wrong with this armor?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd073 f=37]「Kyaaaah! What is this armor?!」[k]
+[elsif exp='isGNO'][ミューズ v=vg062 f=38]「What in the world... is this armor?」[k]
+[elsif exp='isSYL'][マルエット v=vs075 f=37]「Aah! Hey, what's with the armor?!」[k]
+[elsif exp='isLIS'][リーゼル v=vl409 f=37]「Oh no...! What is this armor...!」[k]
+[endif]
+
+To my surprise, the armor she had just put on burst into pieces![k]
+[キャラ] was suddenly bare-chested. She hid her chest in shame.[k]
+Anyway, that armor is terrible... Even though it was only a prototype, the quality was shocking.[k]
+The test failed. I'll report this to the client later.[k]
+[textoff]
+@cl
+[eventoff]
+
+
+;◇イベント02・試作品の鎧２のテスト
+*armor_2
+
+; 試作品の鎧２が戦闘で破壊されていたら
+@eval exp='game.curChara = tf.charaWearingTestArmor'
+@wait time=500
+@fg c=キャラ f=30
+@wait time=500
+
+[texton w=1]
+[   if exp='isHUM'][リム v=vh074 f=30]「It's embarrassing...」[k]
+[elsif exp='isELF'][クレア v=ve075 f=25]「It's already broken again...」[k]
+[elsif exp='isDWA'][フレデリカ v=vd074 f=30]「It's embarrassing...」[k]
+[elsif exp='isGNO'][ミューズ v=vg063 f=30]「It's embarrassing...」[k]
+[elsif exp='isSYL'][マルエット v=vs076 f=25]「It's already broken again...」[k]
+[elsif exp='isLIS'][リーゼル v=vl410 f=25]「It's broken again... it didn't get any better...」[k]
+[endif]
+
+[if exp='game.isFreeMode']
+	Once again, it broke... It lasted a little longer than before though.[k]
+[else]
+	[テオ f=10]「...」[k]
+	Once again, it broke... It lasted a little longer than before though.[k]
+[endif]
+The test failed again. I'll report this to the client later.[k]
+[textoff]
+@cl
+[eventoff]
+
+
+
+
+;■サキュバス召喚
+
+; 召喚魔法を使い、依頼人にサキュバスに会わせてやるクエスト
+; どのサキュバスと召喚契約したかどうかで結果が変化する
+
+;◇イベント・サキュバス召喚
+*succubus_1
+
+; サキュバスを呼び出すかどうか
+[texton]
+[依頼人 f=duroth_02]「So, how's it going? Any chance I can see a succubus?」[k]
+[textoff]
+@eval exp='tf.result = void, tf.num = 0'
+@eval exp='tf.num += 4' cond='o.サキュバス.contracted'
+@eval exp='tf.num += 2' cond='o.エルダーサキュバス.contracted'
+@eval exp='tf.num += 1' cond='o.見習いサキュバス.contracted'
+[baroff cond='tf.num == 0']
+@command type=long title="Do you want to summon a succubus?"
+@select text="Summon Succubus" exp='tf.result = "girl"' cond='tf.num >= 4'
+@select text="Summon Elder Succubus" exp='tf.result = "adult"' cond='tf.num % 4 >= 2'
+@select text="Summon Apprentice Succubus" exp='tf.result = "baby"' cond='tf.num % 2 == 1'
+@select text="Summon every succubus" exp='tf.result = "all"' cond='tf.num == 7'
+@select text="Don't summon one"
+[ask]
+[baroff cond='tf.result === void']
+
+; サキュバス召喚
+@image layer=e2 storage=screen_bluefull left=0 top=0
+@image layer=e4 storage=BE_zodiac1 clipwidth=300 clipheight=180 mode=psdogde left=0 top=0
+@image layer=e5 storage=&'"succubus_" + tf.result' visible=true opacity=0 mcolor=0xFFFFFF mopacity=255
+@layopt layer=e5 left=&'1024 - kag.effects[5].width >> 1' top=&'540 - kag.effects[5].height'
+@anime_fadein layer=e2
+@playse storage=magic6loop
+@layopt layer=e4 left=362 top=400 visible=true
+@anime layer=e4
+@clickskip enabled=true
+@move layer=e5 time=2000 path=,,255
+@wm
+@fadeoutse time=500
+@anime_fadeout layer=e4
+@stopanime layer=e4
+@freeimage layer=e4
+@image layer=e4 storage=&'"succubus_" + tf.result' visible=true
+@layopt layer=e4 left=&'kag.effects[5].left' top=&'kag.effects[5].top'
+@wait time=500
+@anime_fadeout layer=e5
+@wait time=500
+@anime_fadeout layer=e2,e4
+@cancelskip
+@clickskip enabled=false
+@jump target=&'"*_succubus_" + tf.result'
+
+
+*_succubus_all
+; 全員呼び出し
+
+@fg l=succubus_adult_l top=70 left=200
+@fg c=succubus_girl_l top=70
+@fg r=succubus_baby_l top=0 left=800
+@wait time=500
+[texton w=1]
+[依頼人 f=duroth_01]「Well! To be able to fuck three together is a dream I never even imagined! Wonderful...!」[k]
+[依頼人 f=duroth_01]「I'm so glad I hired you! You deserve a little extra! I'll leave it right there for you to take!」[k]
+[サキュバス f=11]「Wait a minute, are you sure you can handle all three of us together?」[k]
+[サキュバス f=21]「You shouldn't act so tough...」[k]
+[サキュバス f=01]「Right, it might even kill you!」[k]
+[依頼人 f=duroth_01]「I'd love to! Go ahead and fuck me!」[k]
+[textoff]
+@call target=*_succubus_charm
+[texton]
+The client was thoroughly drained by the three succubi![k]
+[依頼人 f=duroth_03]「...」[k]
+[サキュバス f=11]「...Oh no, he broke.」[k]
+[サキュバス f=20]「No way... Did he actually die...?!」[k]
+[サキュバス f=00]「That's fine. We got what we wanted, so let's go home.」[k]
+@cl
+[texton w=0]
+[依頼人 f=duroth_03]「...」[k]
+The client lies on his back with a smile on his face.[k]
+He doesn't even twitch. He could be really be dead...[k]
+[if exp='game.isFreeMode']
+	...Well, it's not our fault.[r]
+	Having completed the quest, we quickly left.[k]
+[else]
+	[テオ f=06]「Well, it's not our fault...」[k]
+	Having completed the quest, we quickly left.[k]
+[endif]
+
+[textoff]
+@complete name=サキュバスに会いたい
+@treasure item=回復の指輪
+[baroff]
+
+
+*_succubus_girl
+; 少女呼び出し
+
+@fg c=succubus_girl_l top=70
+@wait time=500
+[texton w=1]
+[依頼人 f=duroth_01]「Ohhhhh! That's definitely a succubus!」[k]
+[依頼人 f=duroth_01]「Thanks for making my dreams come true! I'll leave your reward right there!」[k]
+[サキュバス f=10]「Do you want me to suck your energy out of you?」[k]
+[依頼人 f=duroth_01]「Ha, yes! Please! Dehehehehe...」[k]
+[textoff]
+@call target=*_succubus_charm
+[texton]
+[依頼人 f=duroth_03]「Uuuu... this is irresistible...」[k]
+[サキュバス f=10]「Woohoo! Thanks for the meal.」[k]
+[textoff]
+@cl
+@eval exp='tf.temp = "ブラックパール"'
+@jump target=*_succubus_end
+
+
+*_succubus_adult
+; 大人呼び出し
+
+@fg c=succubus_adult_l top=70
+@wait time=500
+[texton w=1]
+[依頼人 f=duroth_01]「Ohhhhh! That's definitely a succubus!」[k]
+[依頼人 f=duroth_01]「Thanks for making my dreams come true! I'll leave your reward right there!」[k]
+[サキュバス f=00]「Human, you want me to squeeze you dry?」[k]
+[依頼人 f=duroth_01]「Yes, yes! Please do it to the hilt!」[k]
+[textoff]
+@call target=*_succubus_charm
+[texton]
+[依頼人 f=duroth_03]「Wahhhh, I feel like I'm dying... Ugh!」[k]
+[サキュバス f=00]「Pfft, foolish man...」[k]
+[textoff]
+@cl
+@eval exp='tf.temp = "破邪の指輪"'
+@jump target=*_succubus_end
+
+
+*_succubus_baby
+; 子供呼び出し
+
+@fg c=succubus_baby_l top=70
+@wait time=500
+[texton w=1]
+[依頼人 f=duroth_01]「Ohhhhh! That's definitely a succubus!」[k]
+[依頼人 f=duroth_01]「Thanks for making my dreams come true! I'll leave your reward right there!」[k]
+[サキュバス f=21]「I'll do my best to suck out your energy!」[k]
+[依頼人 f=duroth_02]「Umm, yeah, good luck... ♪」[k]
+[textoff]
+@call target=*_succubus_charm
+[texton]
+[サキュバス f=20]「Ha ha ha... How do you like it? Does it feel good?」[k]
+[依頼人 f=duroth_03]「This isn't bad... strangely exciting...!」[k]
+[textoff]
+@cl
+@eval exp='tf.temp = "堕天使の指輪"'
+@jump target=*_succubus_end
+
+
+*_succubus_end
+; 終了
+
+[texton w=0]
+The client had all of his energy drained by the succubus![k]
+[依頼人 f=duroth_03]「Ugh... I can die now...」[k]
+@se f=dosa
+∗thud∗[k]
+[依頼人 f=duroth_03]「...」[k]
+The client collapsed from being drained of his energy. I'm starting to worry that he's really dead.[k]
+[if exp='game.isFreeMode']
+	...Well, it's not our fault.[r]
+	Having completed the quest, we quickly left.[k]
+[else]
+	[テオ f=06]「Oh well, let's get going... quickly...」[k]
+	Having completed the quest, we quickly left.[k]
+[endif]
+[textoff]
+@complete name=サキュバスに会いたい
+@treasure item=&'tf.temp'
+[baroff]
+
+
+*_succubus_charm
+; サキュバスに吸われる共通の演出
+
+@playse storage=poyon loop=true
+@image layer=e2 storage=screen_pinkfull visible=true
+@image layer=e3 storage=PE_base_full visible=true mode=psdodge
+@layopt layer=e3 left=0 top=0
+@startemit layer=e3 storage=PE_heart_pink3 time=1200
+@anime_fadein layer=e2
+@wait time=1200
+@stopse
+@anime_fadeout layer=e2
+@clearemit layer=e3
+@return
+

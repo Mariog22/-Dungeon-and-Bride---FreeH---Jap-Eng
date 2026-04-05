@@ -1,0 +1,733 @@
+﻿// ゲーム初期化 ＆ 開始
+
+
+//-----------------------------------------------------------------------------
+// ゲーム設定（設定ファイルで読み込まないその他の設定）
+
+/*
+01 : 笑顔
+02 : すまし顔
+03 : 笑い
+04 : ニコニコ
+05 : 普通に話す
+06 : 普通
+07 : 怒る
+08 : 不満
+09 : 困る
+10 : 気分が沈む
+11 : 驚く
+12 : 緊張
+13 : 苦笑い
+14 : 困った笑い
+15 : 強気
+16 : 得意げ
+17 : 悲鳴
+18 : 苦しい
+19 : 得心・眠り
+20 : 疲れ果てる
+21 : 好意を持って笑う
+22 : 好意
+23 : 満面の笑み
+24 : 秘めた恋心
+25 : ポカンとする
+26 : 赤くなる
+27 : 必死
+28 : 戦慄が走る
+29 : 恥ずかしい
+30 : 照れくさい
+31 : 慌てる
+32 : 息を呑む
+33 : 照れ笑い
+34 : もじもじする
+35 : 虚勢を張る
+36 : やせがまん
+37 : 喘ぐ
+38 : 羞恥にゆがむ
+39 : 息絶え絶え・熱が出ている
+40 : 恥を晒す
+41 : 泣き笑い
+42 : 恨み泣き
+43 : 恐怖でひきつる
+44 : 半狂乱
+45 : 涙の訴え
+46 : 涙目
+47 : 泣く
+48 : しくしく泣く
+49 : 絶叫
+50 : 号泣
+51 以降 : カスタム
+
+※キャラによって表情に差が生じるもの
+90 : 戦闘
+91 : 謝罪
+92 : 恍惚・魅了
+93 : 性的な嫌悪
+94 : 性的な興奮を覚える
+95 : 混乱
+96 : 歌
+97 : うんざりした表情
+98 : 熱にうかされた表情
+99 : 特殊・表情がない状態
+00 : デフォルト
+*/
+
+// 表情一覧。prior が高いほど優先して使われる
+// ※ステータスの都合で必ず必要となる番号
+//     11  12  17  18  19  20  92
+// ※メイドキャラのみ必要な番号
+//     91  94
+// ※メイドキャラの女子のみ必要な番号
+//     25  29  40  37  93
+// ※カットインに使われる番号
+//     12  20  25  29  38  92
+
+var FACE = %[];
+FACE["normal"  ] = %[prior:  0, body: 0, num:  0];	// 通常時・デフォルト
+FACE["fight"   ] = %[prior:  0, body: 0, num: 90];	// 戦闘コマンド入力時
+FACE["happy"   ] = %[prior:  0, body: 0, num:  3];	// 幸せ
+FACE["sorry"   ] = %[prior:  0, body: 0, num: 91];	// 謝罪・罠解除失敗時
+FACE["aware"   ] = %[prior:  0, body: 0, num:  0];	// 気づき・ダンジョン探索時
+FACE["surprise"] = %[prior:  0, body: 0, num: 11];	// 驚き・混乱（ステータス）
+FACE["shy"     ] = %[prior: 10, body: 0, num: 25];	// やや照れる ※女子のみ
+FACE["blush"   ] = %[prior: 20, body: 0, num: 29];	// 恥ずかしい ※女子のみ
+FACE["insulted"] = %[prior: 30, body: 0, num: 38];	// 羞恥に歪む ※女子のみ
+FACE["ecstasy" ] = %[prior: 35, body: 0, num: 37];	// 性的快感   ※女子のみ
+FACE["dislike" ] = %[prior: 35, body: 0, num: 93];	// 性的な嫌悪 ※女子のみ
+FACE["excite"  ] = %[prior: 35, body: 0, num: 94];	// 性的に興奮
+FACE["fever"   ] = %[prior: 35, body: 0, num: 98];	// 熱にうかされた表情
+FACE["sing"    ] = %[prior: 40, body: 0, num: 96];	// 歌
+FACE["afraid"  ] = %[prior: 40, body: 0, num: 12];	// 恐怖（ステータス）
+FACE["confuse" ] = %[prior: 40, body: 0, num: 95];	// 混乱（ステータス）
+FACE["hurt"    ] = %[prior: 45, body: 0, num: 17];	// ダメージを受ける
+FACE["hurt2"   ] = %[prior: 45, body: 1, num: 17];	// ダメージを受ける（胸晒し状態）
+FACE["weak"    ] = %[prior: 50, body: 1, num: 20];	// 衰弱・毒（ステータス）
+FACE["drunk"   ] = %[prior: 60, body: 1, num: 92];	// 酩酊（ステータス）
+FACE["charmed" ] = %[prior: 60, body: 1, num: 92];	// 魅了（ステータス）
+FACE["asleep"  ] = %[prior: 65, body: 1, num: 19];	// 眠り（ステータス）
+FACE["hiding"  ] = %[prior: 70, body: 2, num:  0];	// 隠れる（ステータス）
+FACE["stunned" ] = %[prior: 80, body: 1, num: 18];	// 麻痺（ステータス）
+FACE["frozen"  ] = %[prior: 99, body: 3, num: 19];	// 凍結（ステータス）
+FACE["stoned"  ] = %[prior: 99, body: 4, num: 11];	// 石化（ステータス）
+FACE["dead"    ] = %[prior: 99, body: 1, num: 20];	// 死亡（ステータス）
+FACE["ashes"   ] = %[prior: 99, body: 5];	// 灰（ステータス）
+
+// ダンジョンパーツの代替画像名
+// パーツ用レイヤーに指定された画像がなければ代替画像を使う
+var PROXY = %[];
+var lines = csvToArray("_proxy.tsv", true);
+for(var i = 0; i < lines.count; i++) PROXY[lines[i][0]] = lines[i][1];
+delete lines;
+
+// 装備の耐久度
+const WHOLE = 12;
+const BROKEN = 6;
+const G_WHOLE = 24;	// ゲストは装備が実質１つしかないので耐久力を多めにする
+const G_BROKEN = 12;
+const G_PIECE = 6;
+const G_FLYING = 100;	// 100 以上はすべて浮遊状態とする
+const G_SWIM = 99;
+const G_TOWELF = 98;
+const G_TOWEL = 97;
+const G_NUDE = 96;
+
+//（格闘が可能な）極端に軽い装備重量
+const SLIGHT = 5;
+
+// 妊娠していない初期状態
+const NO_PREGNANCY = -20;
+
+// プロパティ
+property KEY_PRESSED
+{
+	getter
+	{
+		return System.getKeyState(BT_OK)     || System.getKeyState(BT_OK2)
+			  || System.getKeyState(BT_CANCEL) || System.getKeyState(BT_CANCEL2)
+			  || System.getKeyState(BT_OPTION) || System.getKeyState(BT_OPTION2)
+			  || System.getKeyState(BT_LSTEP)  || System.getKeyState(BT_LSTEP2)
+			  || System.getKeyState(BT_RSTEP)  || System.getKeyState(BT_RSTEP2)
+			  || System.getKeyState(BT_MAP)    || System.getKeyState(BT_MAP2)
+			  || System.getKeyState(BT_MAGIC)  || System.getKeyState(BT_MAGIC2)
+			  || System.getKeyState(BT_ITEM)   || System.getKeyState(BT_ITEM2)
+			  || System.getKeyState(BT_SAVE)   || System.getKeyState(BT_SAVE2) ;
+	}
+}
+
+property MOUSE_HIDDEN
+{
+	getter
+	{
+		return kag.mouseCursorState == mcsTempHidden;
+	}
+}
+
+property EARLY
+{
+	getter{ return game.hour == "early"; }
+}
+
+property DAY
+{
+	getter{ return game.hour == "day"; }
+}
+
+property SUNSET
+{
+	getter{ return game.hour == "sunset"; }
+}
+
+property NIGHT
+{
+	getter{ return game.hour == "night"; }
+}
+
+property MIDNIGHT
+{
+	getter{ return game.hour == "midnight"; }
+}
+
+property SLAVE
+{
+	getter{ return game.hour == "slave"; }
+}
+
+property MORNING
+{
+	getter{ return game.hour == "morning"; }
+}
+
+property WAY
+{
+	getter{ return game.party.curFront; }
+}
+
+property CX
+{
+	getter{ return game.party.curX; }
+}
+
+property CY
+{
+	getter{ return game.party.curY; }
+}
+
+property isHUM
+{
+	getter{ return game.curChara == o.リム; }
+}
+
+property isELF
+{
+	getter{ return game.curChara == o.クレア; }
+}
+
+property isDWA
+{
+	getter{ return game.curChara == o.フレデリカ; }
+}
+
+property isGNO
+{
+	getter{ return game.curChara == o.ミューズ; }
+}
+
+property isSYL
+{
+	getter{ return game.curChara == o.マルエット; }
+}
+
+property isLIS
+{
+	getter{ return game.curChara == o.リーゼル; }
+}
+
+property isTEO
+{
+	getter{ return game.curChara == o.テオ; }
+}
+
+property isMAX
+{
+	getter{ return game.curChara == o.マックス; }
+}
+
+property HUM
+{
+	getter{ if(! game.party.members.has(o.リム)) return false; game.curChara = o.リム; return true; }
+}
+
+property ELF
+{
+	getter{ if(! game.party.members.has(o.クレア)) return false; game.curChara = o.クレア; return true; }
+}
+
+property DWA
+{
+	getter{ if(! game.party.members.has(o.フレデリカ)) return false; game.curChara = o.フレデリカ; return true; }
+}
+
+property GNO
+{
+	getter{ if(! game.party.members.has(o.ミューズ)) return false; game.curChara = o.ミューズ; return true; }
+}
+
+property SYL
+{
+	getter{ if(! game.party.members.has(o.マルエット)) return false; game.curChara = o.マルエット; return true; }
+}
+
+property LIS
+{
+	getter{ if(! game.party.members.has(o.リーゼル)) return false; game.curChara = o.リーゼル; return true; }
+}
+
+property TEO
+{
+	getter{ if(! game.party.members.has(o.テオ)) return false; game.curChara = o.テオ; return true; }
+}
+
+property MAX
+{
+	getter{ if(! game.party.members.has(o.マックス)) return false; game.curChara = o.マックス; return true; }
+}
+
+property HUM2
+{
+	getter{ if(o.リム２ === void) return false;  return true; }
+}
+
+property ELF2
+{
+	getter{ if(o.クレア２ === void) return false;  return true; }
+}
+
+property DWA2
+{
+	getter{ if(o.フレデリカ２ === void) return false;  return true; }
+}
+
+property GNO2
+{
+	getter{ if(o.ミューズ２ === void) return false;  return true; }
+}
+
+property SYL2
+{
+	getter{ if(o.マルエット２ === void) return false;  return true; }
+}
+
+property LIS2
+{
+	getter{ if(o.リーゼル２ === void) return false;  return true; }
+}
+
+// その他便利な関数
+function isArrowButton(key, shift)
+{
+	if(shift != 0 && shift != ssRepeat) return false;
+	return key == BT_UP || key == BT_DOWN || key == BT_LEFT || key == BT_RIGHT
+			 || key == BT_UP2 || key == BT_DOWN2 || key == BT_LEFT2 || key == BT_RIGHT2;
+}
+
+//========================================================================================
+// ゲーム本体の作成と登録
+
+// オブジェクトの参照を保存する変数（アクセスの簡略化のため）
+var m = %[];	// 敵モンスター
+var o = %[];	// その他のオブジェクト
+
+var game = new GameMaster();	// 作成
+kag.addPlugin(game);	// ＫＡＧに登録
+game.setSystemStateFromSystemVariables();	// システム変数ロード
+renameMagicNames(game);	// ユーザーによる魔法のリネーム
+//========================================================================================
+
+// モデル別キャラ服装設定・装備を指定するか、全体画像を指定する
+// 全体画像は chest の装備の一種として扱い、その他の身体パーツはすべて表示しない
+o.人間Ａ.dressInfo["通常"] = %[clothes: "町娘の服", face: 0, pose: "showBust"];
+o.人間Ａ.dressInfo["通常・大"] = %[img: "tunic_girl", large: true];
+
+o.エルフＡ.dressInfo["通常"] = %[clothes: "エルフの服", face: 0, pose: "showBust"];
+o.エルフＡ.dressInfo["通常・大"] = %[img: "tunic_elven", large: true];
+
+o.ドワーフＡ.dressInfo["通常"] = %[clothes: "ドワーフ民族衣装", face: 0, pose: "showBust"];
+o.ドワーフＡ.dressInfo["通常・大"] = %[img: "tunic_dwarven", large: true];
+
+o.ノームＡ.dressInfo["通常"] = %[clothes: "ノームのローブ", face: 0, pose: "showBust"];
+o.ノームＡ.dressInfo["通常・大"] = %[img: "tunic_gnoman", large: true];
+
+o.シルフＡ.dressInfo["通常"] = %[clothes: "シルフのドレス", face: 0, pose: "showBust"];
+o.シルフＡ.dressInfo["通常・大"] = %[img: "tunic_sylvan", large: true];
+o.シルフＡ.dressInfo["通常・大・上げ"] = %[img: "tunic_sylvan_up", large: true];
+
+o.人間Ｂ.dressInfo["通常"] = %[clothes: "リーゼルの私服", face: 0, pose: "showBust"];
+o.人間Ｂ.dressInfo["通常・大"] = %[img: "tunic_liesel", large: true];
+o.人間Ｂ.dressInfo["ビキニ・大"] = %[img: "bra_blue", large: true];
+
+o.人間Ｃ.dressInfo["通常"] = %[clothes: "主人公の私服"];
+o.人間Ｃ.dressInfo["上半身裸"] = %[clothes: "主人公の内ズボン"];
+o.人間Ｃ.dressInfo["下着"] = %[clothes: "トランクス"];
+
+o.エルフＢ.dressInfo["通常"] = %[clothes: "硬い革鎧,布のズボン"];
+o.エルフＢ.dressInfo["上半身裸"] = %[clothes: "布のズボン"];
+o.エルフＢ.dressInfo["下着"] = %[clothes: "トランクス"];
+o.エルフＢ.dressInfo["勃起"] = %[clothes: "硬い革鎧,布のズボン,勃起"];
+o.エルフＢ.dressInfo["上半身裸・勃起"] = %[clothes: "布のズボン,勃起"];
+o.エルフＢ.dressInfo["下着・勃起"] = %[clothes: "トランクス,勃起"];
+o.エルフＢ.dressInfo["裸・勃起"] = %[clothes: "裸,勃起"];
+o.エルフＢ.dressInfo["裸・腕上げ"] = %[img: "fix_up"];
+o.エルフＢ.dressInfo["裸・腕上げ・勃起"] = %[img: "fix_up_erect"];
+o.エルフＢ.dressInfo["下半身裸・射精"] = %[img: "fix_bottomless_sperm"];
+
+// 共通イメージ情報・装備を指定するか、全体画像を指定する
+o["下着"] = %[clothes: "白いブラ,白いパンツ", face: 25, pose: "showBust"];
+o["パンツ"] = %[clothes: "白いパンツ", face: 29, pose: "coverBust"];
+o["パンツ・幸せ"] = %[clothes: "白いパンツ", face: 22, pose: "coverBust"];
+o["裸"] = %[clothes: "裸"];
+o["裸・恥辱"] = %[img: "fix_crotch", face: 30];
+o["裸・幸せ"] = %[clothes: "裸", face: 22, pose: "coverBust"];
+o["裸・不満"] = %[clothes: "裸", face: 97, pose: "showBust"];
+o["汗だく"] = %[img: "fix_sweat", face: 98];
+o["汗だく・勃起"] = %[img: "fix_sweat_erect"];
+o["バスタオル＆汗だく"] = %[img: "fix_bathtowel_sweat"];
+o["バスタオル＆汗だく・勃起"] = %[img: "fix_bathtowel_sweat_erect"];
+o["妊娠"] = %[img: "fix_pregnant", face: 40];
+o["ボテ腹"] = %[img: "fix_bigbelly", face: 40];
+o["穴あき鎧・妊娠"] = %[img: "fix_hole_pregnant"];
+o["穴あき鎧・ボテ腹"] = %[img: "fix_hole_bigbelly"];
+o["股隠し"] = %[img: "fix_crotch"];
+o["股隠し・汗だく"] = %[img: "fix_crotch_sweat"];
+o["裸・胸押しつけ"] = %[img: "fix_press"];
+
+// ヒロイン大型イメージ情報・大型イメージは全体画像指定のみ
+o["裸・大"] = %[img: "fix_open", clothes: "裸", pose: "showBust", large: true];
+o["裸・大・手ブラ"] = %[img: "fix_hide", clothes: "裸", pose: "coverBust", large: true];
+o["汗だく・大"] = %[img: "fix_sweat", large: true];
+o["ローブ・大"] = %[img: "robe_green", large: true];
+o["タンクトップ・大"] = %[img: "fix_tanktop", large: true];
+o["タンクトップ・太り・大"] = %[img: "fix_tanktop_fat", large: true];
+o["寝室のキャミソール・大"] = %[img: "camisole_night", large: true];
+o["バスタオル・大"] = %[img: "fix_bathtowel", large: true];
+o["バスタオル・はだけ・大"] = %[img: "fix_bathtowel_bare", large: true];
+o["パイズリ・大"] = %[img: "fix_rubpenis", large: true];
+o["パイズリ・射精・大"] = %[img: "fix_rubpenis_fire", large: true];
+o["パイズリ・精子・大"] = %[img: "fix_rubpenis_drip", large: true];
+
+// その他のヒロイン服装イメージ情報
+o["汗だく・開き"] = %[img: "fix_sweat_open"];
+o["後ろ手"] = %[img: "fix_behind"];
+o["ローブ・後ろ手"] = %[img: "fix_robe_behind"];
+o["ブラウス・後ろ手"] = %[img: "fix_blouse_behind"];
+o["下着・後ろ手"] = %[img: "fix_under_behind"];
+o["ブラ＆スカート"] = %[img: "fix_bra_skirt"];
+o["上半身裸＆スカート"] = %[img: "fix_topless_skirt"];
+o["タオル＆スカート"] = %[img: "fix_towel_skirt"];
+o["タオル＆ブラ＆スカート"] = %[img: "fix_towel_skirt"];
+o["タオル＆パンツ"] = %[img: "fix_towel_panties"];
+o["タオル＆裸"] = %[img: "fix_towel_nude"];
+o["バスタオル・はだけ"] = %[img: "fix_bathtowel_bare"];
+o["バスタオル・はだけ・手ブラ"] = %[img: "fix_bathtowel_bare_hide"];
+o["エルフの服めくり＆裸"] = %[img: "fix_elven_hip"];
+o["エルフの服めくり＆貞操帯"] = %[img: "fix_elven_chastity"];
+o["特製ビキニ鎧"] = %[img: "fix_bikini_armor"];
+o["サハギンの鎧"] = %[img: "fix_sahagin_bikini"];
+o["サハギンの鎧・下"] = %[img: "fix_sahagin_pants"];
+o["強化レオタード"] = %[img: "fix_leotard"];
+o["強化レオタード・破け"] = %[img: "fix_leotard_tear"];
+o["強化レオタード・手ブラ"] = %[img: "fix_leotard_hide"];
+o["最強レオタード"] = %[img: "fix_reinforce"];
+o["最強レオタード・食い込み"] = %[img: "fix_reinforce_into"];
+o["タンクトップ"] = %[img: "fix_tanktop"];
+o["タンクトップ・太り"] = %[img: "fix_tanktop_fat"];
+o["スカートとブラのみ"] = %[img: "fix_skirt_bra"];
+o["穴あき鎧・手ブラ"] = %[img: "fix_hole_hide"];
+o["穴あき鎧・つまみ"] = %[img: "fix_hole_pick"];
+o["パイズリ"] = %[img: "fix_rubpenis"];
+o["パイズリ・射精"] = %[img: "fix_rubpenis_fire"];
+o["パイズリ・精子"] = %[img: "fix_rubpenis_drip"];
+
+// ゲスト立ち絵・その他セーブされない設定
+o.ブルー.face = [151, 41];
+o.ブルー.trim = [103, 10];
+o.ブルー.largeFace = [310, 92];
+o.ブルー.dressInfo["勃起"] = %[img: "default_erect"];
+o.ブルー.dressInfo["裸・勃起"] = %[img: "nude_erect"];
+o.ブルー.dressInfo["汗だく"] = %[img: "sweat"];
+o.ブルー.dressInfo["汗だく・勃起"] = %[img: "sweat_erect"];
+o.ブルー.dressInfo["下着・勃起"] = %[img: "under_erect"];
+o.ブルー.dressInfo["下半身裸"] = %[img: "bottomless"];
+o.ブルー.dressInfo["下半身裸・勃起"] = %[img: "bottomless_erect"];
+o.ブルー.dressInfo["帯刀"] = %[img: "sword"];
+o.ブルー.dressInfo["通常・大"] = %[img: "default", large: true];
+o.ブルー.dressInfo["裸・大"] = %[img: "nude", large: true];
+o.ブルー.dressInfo["汗だく・大"] = %[img: "sweat", large: true];
+o.ブルー.dressInfo["腕上げ・大"] = %[img: "up", large: true];
+o.ブルー.dressInfo["発光"] = %[img: "light"];
+o.ブルー.dressInfo["触り"] = %[img: "default_touch"];
+o.ブルー.breakCount = 5;
+
+o.ライナス.face = [204, 57];
+o.ライナス.trim = [141, 5];
+o.ライナス.dressInfo["勃起"] = %[img: "default_erect"];
+o.ライナス.dressInfo["裸・勃起"] = %[img: "nude_erect"];
+o.ライナス.dressInfo["汗だく"] = %[img: "sweat"];
+o.ライナス.dressInfo["汗だく・勃起"] = %[img: "sweat_erect"];
+o.ライナス.dressInfo["下着・勃起"] = %[img: "under_erect"];
+o.ライナス.dressInfo["バスタオル・勃起"] = %[img: "towel_erect"];
+o.ライナス.dressInfo["下半身裸"] = %[img: "bottomless"];
+o.ライナス.dressInfo["下半身裸・勃起"] = %[img: "bottomless_erect"];
+o.ライナス.dressInfo["武装"] = %[img: "armament"];
+
+o.エリック.face = [155, 54];
+o.エリック.trim = [98, 7];
+o.エリック.dressInfo["裸・勃起"] = %[img: "nude_erect"];
+o.エリック.dressInfo["下半身裸・勃起"] = %[img: "bottomless_erect"];
+o.エリック.noBreak = true;
+
+o.ミレディ.face = [201, 155];
+o.ミレディ.trim = [140, 108];
+o.ミレディ.largeFace = [281, 227];
+o.ミレディ.figureTop = 50;
+o.ミレディ.dressInfo["腕広げ"] = %[img: "spread"];
+o.ミレディ.dressInfo["下着・腕広げ"] = %[img: "under_spread"];
+o.ミレディ.dressInfo["裸・腕広げ"] = %[img: "nude_spread"];
+o.ミレディ.dressInfo["通常・大"] = %[img: "default", large: true];
+o.ミレディ.dressInfo["裸・大"] = %[img: "nude", large: true];
+o.ミレディ.dressInfo["汗だく・大"] = %[img: "sweat", large: true];
+o.ミレディ.threeSize = [65, 45, 68];
+
+o.サンドラ.face = [177, 72];
+o.サンドラ.trim = [108, 27];
+o.サンドラ.largeFace = [262, 108];
+o.サンドラ.figureTop = 50;
+o.サンドラ.dressInfo["通常・大"] = %[img: "default", large: true];
+o.サンドラ.dressInfo["裸・大"] = %[img: "nude", large: true];
+o.サンドラ.dressInfo["汗だく・大"] = %[img: "sweat", large: true];
+o.サンドラ.guard.linus = 3;
+o.サンドラ.threeSize = [94, 65, 92];
+
+o.マリア.face = [170, 88];
+o.マリア.trim = [110, 45];
+o.マリア.largeFace = [284, 172];
+o.マリア.figureTop = 50;
+o.マリア.dressInfo["ビキニ"] = %[img: "bikini"];
+o.マリア.dressInfo["後ろ手"] = %[img: "behind"];
+o.マリア.dressInfo["上半身裸・後ろ手"] = %[img: "topless_behind"];
+o.マリア.dressInfo["下着・後ろ手"] = %[img: "under_behind"];
+o.マリア.dressInfo["裸・後ろ手"] = %[img: "nude_behind"];
+o.マリア.dressInfo["通常・大"] = %[img: "default", large: true];
+o.マリア.dressInfo["裸・大"] = %[img: "nude", large: true];
+o.マリア.dressInfo["ビキニ・大"] = %[img: "bikini", large: true];
+o.マリア.guard.max = 5;
+o.マリア.guard.linus = 3;
+o.マリア.threeSize = [98, 62, 95];
+
+o.シュバルツ.face = [155, 45];
+o.シュバルツ.trim = [104, 0];
+o.シュバルツ.dressInfo["暗闇"] = %[img: "dark"];
+o.シュバルツ.noBreak = true;
+
+o.アレックス.face = [196, 42];
+o.アレックス.trim = [141, 0];
+o.アレックス.dressInfo["裸・勃起"] = %[img: "nude_erect"];
+o.アレックス.dressInfo["汗だく・勃起"] = %[img: "sweat_erect"];
+o.アレックス.dressInfo["下半身裸"] = %[img: "bottomless"];
+o.アレックス.dressInfo["下半身裸・勃起"] = %[img: "bottomless_erect"];
+o.アレックス.dressInfo["触り"] = %[img: "touch"];
+o.アレックス.dressInfo["つまみ"] = %[img: "pick"];
+
+o.ルーファス.face = [165, 56];
+o.ルーファス.trim = [110, 5];
+o.ルーファス.dressInfo["裸・勃起"] = %[img: "nude_erect"];
+o.ルーファス.dressInfo["下半身裸・勃起"] = %[img: "bottomless_erect"];
+
+o.ガラム.face = [165, 56];
+o.ガラム.trim = [110, 5];
+o.ガラム.dressInfo["裸・勃起"] = %[img: "nude_erect"];
+
+o.ポラリス.face = [204, 99];
+o.ポラリス.trim = [155, 33];
+o.ポラリス.noBreak = true;
+o.ポラリス.threeSize = [60, 44, 62];
+
+o.悪魔.face = [192, 139];
+o.悪魔.trim = [148, 78];
+o.悪魔.dressInfo["暗闇"] = %[img: "dark"];
+o.悪魔.dressInfo["灰色"] = %[img: "gray"];
+
+o.ムールムール.face = [192, 139];
+o.ムールムール.trim = [148, 78];
+
+o.魔公ムールムール.face = [449, 101];
+o.魔公ムールムール.trim = [405, 40];
+
+// 雇用モンスター設定
+o.チャンピオン.equipLife = G_BROKEN;
+o.エンジェルナイト.equipLife = G_WHOLE;
+o.アコライト.equipLife = G_BROKEN;
+o.ハイプリースト.equipLife = G_WHOLE;
+o.ミスティック.equipLife = G_WHOLE;
+o.メイガス.equipLife = G_BROKEN;
+o.スナイパー.equipLife = G_BROKEN;
+o.マスターアーチャー.equipLife = G_WHOLE;
+o.ブレイズマン.equipLife = G_WHOLE;
+o.ソードダンサー.equipLife = G_BROKEN;
+o.ブレイズマン.threeSize = [80, 49, 82];
+o.ソードダンサー.threeSize = [82, 52, 85];
+o.チャンピオン.threeSize = [85, 56, 88];
+o.エンジェルナイト.threeSize = [87, 60, 85];
+o.アコライト.threeSize = [78, 51, 76];
+o.ハイプリースト.threeSize = [76, 48, 75];
+o.スナイパー.threeSize = [80, 48, 79];
+o.マスターアーチャー.threeSize = [78, 45, 76];
+o.ミスティック.threeSize = [83, 50, 81];
+o.メイガス.threeSize = [82, 48, 79];
+
+//男キャラの設定（固定）
+o.ライナス.sexActs = [
+	"ディープキス", "乳揉み", "正常位","乳首吸い", "素股", "手マン", "クリ責め", "バック", "フェラチオ"
+	, "背面座位", "対面座位", "手こき", "騎乗位", "６９", "立ちバック", "パイズリ", "松葉崩し", "足こき", "アナル挿入"
+];
+o.アレックス.sexActs = [
+	"乳揉み", "正常位","乳首吸い", "手マン", "クリ責め", "バック", "フェラチオ"
+	, "背面座位", "対面座位", "手こき", "騎乗位", "６９", "立ちバック", "パイズリ", "松葉崩し", "足こき", "アナル挿入"
+];
+o.ブルー.sexActs = [
+	"ディープキス", "軽い愛撫", "乳揉み", "正常位","乳首吸い", "素股", "手マン", "クリ責め", "バック", "フェラチオ"
+	, "背面座位", "対面座位", "手こき", "騎乗位", "６９", "立ちバック", "パイズリ", "松葉崩し", "足こき", "アナル挿入"
+];
+o.エリック.sexActs = [
+	"乳揉み", "正常位","乳首吸い", "素股", "手マン", "クリ責め", "バック", "フェラチオ"
+	, "背面座位", "対面座位", "手こき", "騎乗位", "６９", "立ちバック", "パイズリ", "松葉崩し", "足こき", "アナル挿入"
+];
+
+// モブ男の設定。日記に記述される内容に影響する
+o.どこかの男 = %[];
+o.どこかの男.name = "どこかの男";
+o.どこかの男.keyName = "どこかの男";
+o.どこかの男.displayName = "Man";
+o.どこかの男.img = "other";
+o.どこかの男.desire = 30;
+o.どこかの男.technic = 10;
+o.どこかの男.penis = 10;
+o.どこかの男.heat = 100;
+o.どこかの男.getPlayList = global.CharaObject.getPlayList;
+o.どこかの男.sexActs = [
+	"ディープキス", "乳揉み", "正常位","乳首吸い", "手マン", "クリ責め", "バック", "フェラチオ", "ＳＭ"
+	, "背面座位", "対面座位", "手こき", "騎乗位", "６９", "立ちバック", "パイズリ", "松葉崩し", "アナル挿入"
+];
+
+o.取った客 = %[];
+(Dictionary.assign incontextof o.取った客)(o.どこかの男);
+o.取った客.name = "取った客";
+o.取った客.keyName = "取った客";
+o.取った客.displayName = "Customer";
+
+o.フォスター = %[];
+(Dictionary.assign incontextof o.フォスター)(o.どこかの男);
+o.フォスター.name = "フォスター";
+o.フォスター.keyName = "フォスター";
+o.フォスター.img = "foster";
+o.フォスター.displayName = "Foster";
+
+o.ドワーフ夫 = %[];
+(Dictionary.assign incontextof o.ドワーフ夫)(o.どこかの男);
+o.ドワーフ夫.name = "ドワーフ";
+o.ドワーフ夫.keyName = "ドワーフ夫";
+o.ドワーフ夫.img = "husband";
+o.ドワーフ夫.desire = 60;
+o.ドワーフ夫.technic = 100;
+o.ドワーフ夫.penis = 18;
+o.ドワーフ夫.displayName = "Dwarf Husband";
+
+o.モンスター = %[];
+(Dictionary.assign incontextof o.モンスター)(o.どこかの男);
+o.モンスター.name = "モンスター";
+o.モンスター.keyName = "モンスター";
+o.モンスター.img = "monster";
+o.モンスター.desire = 100;
+o.モンスター.technic = 50;
+o.モンスター.penis = 20;
+o.モンスター.displayName = "Monster";
+
+o.アイテム = %[];
+(Dictionary.assign incontextof o.アイテム)(o.どこかの男);
+o.アイテム.name = "アイテム";
+o.アイテム.keyName = "アイテム";
+o.アイテム.img = "item";
+o.アイテム.penis = 20;
+o.アイテム.displayName = "Item";
+
+o.other = %[];
+o.other.name = "どこかの男";
+o.other.displayName = "Man";
+o.other.img = "other";
+
+// イベントＣＧで変更可能な下着の一覧
+game.changablePanties = [
+	o.冒険者のパンツ, o.白いパンツ, o.ピンクのパンツ,o.縞のパンツ, o.粗末なパンツ, o.赤いパンツ
+	, o.黒いパンツ, o.ひものパンツ, o.魔法の前貼り
+];
+
+// 触手ＣＧカラー設定
+m.スワンプデビル.tentacle = "green";
+m.マウンテンデビル.tentacle = "blue";
+m.ケイブデーモン.tentacle = "blue";
+m.アビスデーモン.tentacle = "red";
+m.ローパー.tentacle = "red";
+m.ハイパーローパー.tentacle = "blue";
+m.マンイーター.tentacle = "green";
+
+// 恥ずかしい装備に分類される装備
+tf.sexyEquipments = [
+	o.クラムトップス, o.クラムボトムズ, o.貝のネックレス, o.妖艶妻のシルク
+	, o.怪盗のレオタード, o.暗殺者のかたびら
+];
+
+// 恥ずかしい呪い装備に分類される装備（背徳の鎧・下だけ別イベント）
+tf.sexyCursedEquipments = [
+	o.魔法の革ひも, o.背徳の鎧・上, o.奴隷の鎧・上, o.奴隷の鎧・下
+	, o.安物のビキニ・上, o.安物のビキニ・下, o.奴隷の前掛け
+];
+
+// 仕様の変更に伴い名称の変わったオブジェクト
+o.踊り子の服 = o.踊り子の服・下;
+o.奴隷戦士の鎧・上 = o.アマゾネスの鎧・上;
+o.奴隷戦士の鎧・下 = o.アマゾネスの鎧・下;
+o.偽奴隷戦士の鎧・上 = o.奴隷の鎧・上;
+o.偽奴隷戦士の鎧・下 = o.奴隷の鎧・下;
+o.アンバータウン = o.ブレイブタウン;
+o.アンバータウン教会 = o.ブレイブタウン教会;
+o.ルッツの森 = o.ジョセフの森;
+
+// 体験版用に調整する値
+if(isDemoVersion)
+{
+	game.deleteItemFlagsInDemoVersion();
+
+	m.エルダーサキュバス.exp = 9600;
+	m.エルダーサキュバス.life = 94;
+	m.エルダーサキュバス.attack = [12, 19];
+
+	o.亜人陵辱.targetModels = ["リム"];
+	o.蛮人陵辱.targetModels = ["クレア"];
+	o.化物陵辱.targetModels = ["ミューズ", "リーゼル"];
+	o.小鬼陵辱.targetModels = ["マルエット"];
+	o.触手陵辱.targetModels = ["リム", "クレア", "ミューズ"];
+}
+
+// システム変数の修正
+if(sf["picevent46_p0_01"]) sf["picevent46"] = true;
+if(sf["picevent26"] || sf["picevent95"]) sf["picevent26a"] = true;
+if(sf["picevent30"] || sf["picevent96"]) sf["picevent30a"] = true;
+
+
+// ファイルテスト
+// checkStorages("dir.txt");
+
+// 必要経験値出力テスト
+// game.saveNeedExpList(true, true);
+
+// アイテムデータ更新
+// game.updateItemDataFromFile();
+

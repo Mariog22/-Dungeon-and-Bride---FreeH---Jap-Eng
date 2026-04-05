@@ -1,0 +1,194 @@
+﻿; ヤネクの森
+
+name = ヤネクの森・西
+insideName = West
+level = 10
+bgm = field
+isOutdoor = true
+shadow = dark
+sky = forest
+outfield = soil
+blank = rock
+
+; 画像パーツ
+━ = wood_h
+ᆖ = stone
+－ = rock
+　 = soil
+❖ = soil
+⏃ = woods
+／ = door
+☗ = gate
+♜ = downstair
+︻ = panel
+⑴ = bulletin
+⑷ = bulletin
+⑸ = bulletin
+⑹ = grave
+⑺ = grave
+⑻ = grave
+⑽ = bulletin
+Ⓒ = ladderd
+
+; 敵情報
+maxGroups = 2
+monsters = ポイズンスライム,コボルド,オーク,巨大ヘビ,ローグ,シューター
+traps = 毒針,酸スプレー,しびれ針,スモーク
+
+; 移動ポイント
+(A) = map:サファイアシティ, enter:サファイアシティ・北東門, ask:Enter town?
+(B) = map:ヤネクの森・東, x:0, y:2, way:e, symbol:movev, ask:Go to the next map?
+(C) = map:下水道・通路, x:39, y:5, way:s, lift:down, ask:Go to the dungeon?
+(D) = map:フーラ雪原・南の森, x:4, y:26
+(E) = map:体験の洞窟Ｂ１, x:0, y:0, way:e, symbol:cave, ask:Go to the dungeon?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  
+  
+ 7	⏃⏃⏃⏃⏃⏃⏃									⏃⏃⏃⏃⏃⏃⏃							⏃⏃					⏃⏃											⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃									⏃⏃⏃⏃⏃⏃⏃							⏃⏃━━︻━︻⏃⏃											⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+ 6	❖	❖	❖	❖					⏃⏃⏃⏃⏃⏃　　　⏃⏃							⏃⏃　　②　③⏃⏃									⏃⏃⏃⏃　　　　　　　　　　⑷　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　Ⓑ▲
+  	⏃⏃⏃⏃⏃⏃⏃					⏃⏃⏃⏃⏃⏃　　　⏃⏃							⏃⏃　　　　　⏃⏃									⏃⏃⏃⏃　　　　　　　　　　　　　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃
+ 5	⏃⏃⏃⏃⏃⏃⏃					⏃⏃　　　　　　　⏃⏃							⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃　　　　　　　　　　　　　　　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃
+  													⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃							⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃													⏃⏃　　　⏃⏃
+ 4							⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃							⏃⏃　　　　　　　　　　　⏃⏃	⏃⏃　　　　　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　　　⏃⏃
+  							⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃													⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃	⏃⏃　⏃⏃							⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	－┓　　　┏－
+ 3‖⏃⏃⏃⏃⏃⏃⏃⏃　　⑨　　　　⏃⏃													⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃　⏃⏃							⏃⏃　⏃⏃⏃⏃⏃⑹　⑹　⑹　⑹　⑺⏃⏃		ⅼ　　⑽ⅼ
+  ‖⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃																							⏃⏃　⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃							⏃⏃　⏃⏃⏃⏃⏃　　　　　　　　　⏃⏃		ⅼ　　　ⅼ
+ 2‖　　　　⑴　　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃　　　　　⏃⏃							⏃⏃　　⑸⏃⏃⏃　　⑹　⑹　⑹　⑻⏃⏃		ⅼ　　　ⅼ
+  ‖　　　　　　　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃	⏃⏃　　　⏃⏃⏃⏃							⏃⏃　　　⏃⏃⏃　　　　　　　　　⏃⏃		ⅼ　　　ⅼ
+ 1☗Ⓐ　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　⏃⏃⏃⏃	⏃⏃Ⓒ　　⏃⏃⏃⏃							⏃⏃　　　　　　　　　　⑹　⑹　⑹⏃⏃		ⅼ　　Ⓔ♜				❖
+  ‖⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃									⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃		┗－－－┛
+ 0‖⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃									⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[0][1].w.img = "stone";
+for(var i = 16; i <= 18; i++) pos[i][7].s.img = void;
+pos[17][6].n.himg = "door";
+pos[46][1].e.img = pos[47][1].w.img = "rock";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+sky = game.date % 4 == 2 ? "forest" : "snowy";
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 10]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Welcome to Sapphire City!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+[texton]
+I tried to put my hand on the door, but it was tightly closed and would not budge.[k]
+[name n=Voice]「Outsiders aren't allowed in here! Go home!」[k]
+[if exp='o.人身売買の証拠をつかめ.accepted']
+	[リーダー f=06]「...」[k]
+	Well, there's no way a criminal organization would let you in so easily... Is there anywhere that could be infiltrated?
+	 [k]
+[endif]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Count's Manor"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@roadguide w="Sapphire City" e="Northrop Village"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text=Cemetery
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger || inSearching
+
+@grave
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger || inSearching
+
+@grave monster=ゾンビ
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger || inSearching || (onUseEventItem && [o.気付けの花, o.毒消しの花].has(game.curItem))
+
+[if exp='o.墓参り.flag == 1 && game.onUseEventItem']
+	@se f=period
+	@wait time=500
+	@notice text="<y>I laid flowers on Stella's grave!"
+	@eval exp='game.itemWin.curChara.ejectItem(game.curItem, game.itemWin.curChara.reservedGrid)'
+	@eval exp='o.墓参り.flag = 2'
+[else]
+	@grave name=Stella
+	@notice text="Flowers are placed on the grave." cond='o.墓参り.flag == 2'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] party.lastIsMove
+
+@fg c=slime_01 left=450 top=386
+[texton w=1]
+[name n=Salesperson f=slime_01]「Hello. We're selling tickets to Yanek Hot Springs here.[r]They're 800G each. Would you like to buy one?」[k]
+[textoff]
+
+@question title="Would you like to buy a hot spring ticket?"
+
+[if exp='tf.result']
+	[if exp='game.party.gold < 800']
+		@se f=buzzer
+		[texton w=1]
+		[name n=Salesperson f=slime_01]「You don't have enough money. I'm sorry, but I can't give you another freebie.」[k]
+		[textoff]
+	[else]
+		@eval exp='game.party.gold -= 800'
+		@se f=coin
+		@getitem item=温泉チケット message="<y>I paid 800G for a hot spring ticket!"
+	[endif]
+[endif]
+@clf
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] onObjectTrigger
+
+@notice text="Ahead: the Cave of Experience"
+
+[eventoff]
+;-------------------------------------------------------------------------------

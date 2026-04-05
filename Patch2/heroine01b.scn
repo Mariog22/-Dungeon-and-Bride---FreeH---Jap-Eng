@@ -1,0 +1,2750 @@
+﻿; シナリオ・ヒューマン編・Ｂパート
+
+
+
+;■主人公編・後半
+
+;◇主人公イベント06
+*theo_06
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=guild
+@fg c=リム e=通常 f=01
+[texton w=1]
+[リム v=vh225 f=01]「Ah, captain!」[k]
+@fg c=リム e=通常・大 f=01
+As soon as I entered the room, [リム], who was inside, came running toward me.[k]
+[テオ e=通常 f=01]「Hi. What's up, [リム]?」[k]
+@fg c=リム f=22
+[リム v=vh226 f=22]「I wanted to ask you something...」[k]
+[テオ f=02]「Hmm? What is it?」[k]
+@fg c=リム f=33
+[リム v=vh227 f=33]「Well... I was wondering... Would you like to visit my house?」[k]
+[テオ f=05]「By house, do you mean your family home?」[k]
+[リム v=vh228 f=33]「I just wanted to introduce you to everyone in my family... My brother wants to thank you too...」[k]
+[テオ f=01]「Oh... I see...」[k]
+That's right, it would be nice to get to know [リム] better.[k]
+[テオ f=02]「Yes, I'll go with you.」[k]
+@fg c=リム f=03
+[リム v=vh229 f=03]「Really? Then let's go together next time!」[k]
+I believe [リム]'s family live in [b]Sapphire City[/b]. I'll try to visit there with her next time I find some free time.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント07
+*theo_07
+
+; リムの実家
+@saveon
+@out
+@bg f=0035
+@fg c=リム e=通常 f=01
+[texton w=1]
+[リム v=vh230 f=01]「Thank you for coming today, Captain.」[k]
+The next morning. I visited [リム]'s family home with her.[k]
+It was a small shack in the slum district of Sapphire City, a corner of the city crowded with shabby houses.[k]
+@fg c=リム f=03
+[リム v=vh231 f=03]「I'm home, everyone!」[k]
+[リムの母]「Welcome back, [リム].」[k]
+[リムの弟 f=01]「Welcome back, sis!」[k]
+[テオ e=通常 f=06]「...」[k]
+[リム] calls out to them, and her family patters to the entrance.[k]
+[リムの母]「Oh, who are you? Are you the captain?」[k]
+@fg c=リム f=01
+[リム v=vh232 f=01]「Yes! This is my captain!」[k]
+[テオ f=01]「Hi, my name is [テオ]... [リム] has been a great help to me...」[k]
+With a slight bow, I greet [リム]'s family.[k]
+[リムの母]「Oh my! You're [リム]'s captain! It's so nice to meet you!」[k]
+[リムの母]「[リム] talks about you a lot. I hear you are very dependable!」[k]
+[テオ f=02]「I'm honored...」[k]
+[リム]'s mother, with a big smile on her face, speaks to me in a friendly manner. It's a relief to feel welcome.[k]
+[リムの弟 f=06]「Umm...」[k]
+[テオ f=05]「Hmm?」[k]
+A boy who must be [リム]'s brother talks to me.[k]
+[リムの弟 f=05]「Well... I don't know how to thank you properly, but... anyway, thank you!」[k]
+He then bowed deeply to me.[k]
+[テオ f=02]「It's okay. I'm happy to have been able to help the family of one of our members.」[k]
+[リムの弟 f=01]「My sister may be an idiot and a ditz, and she's probably not very useful, but please continue to support her!」[k]
+@fg c=リム f=07
+[リム v=vh233 f=07]「Hey! Don't be mean to me! I'm doing my best!」[k]
+[リムの母]「Has [リム] been any trouble? She's always been a bit absent-minded...」[k]
+[リム v=vh234 f=08]「Not you as well!」[k]
+[テオ f=01]「Haha... Don't worry, [リム], you are an indispensable member of our party!」[k]
+I'll support [リム] as her leader. Apparently, she's considered to be a rather unreliable girl.[k]
+Still, they are a close-knit family. [リム] must have grown up in this warm atmosphere...[k]
+[リムの母]「By the way, Captain, what do you think of our [リム]?」[k]
+[テオ f=12]「W-What? How do you mean?」[k]
+[リムの母]「You're still single, aren't you? Actually, she seems to like you a lot...」[k]
+@fg c=リム f=29
+[リム v=vh235 f=29]「Hey, hey, stop it!」[k]
+[リムの弟 f=02]「Isn't it fine? Sis, you said before that you wanted to marry the captain.」[k]
+[テオ f=12]「Huh... is that so...?」[k]
+@fg c=リム f=31
+[リム v=vh236 f=31]「What are you talking about?! I didn't say that!」[k]
+[リムの弟 f=03]「Ehhh! You told me that the captain was your first choice for a husband. It's fine, I won't object.」[k]
+@fg c=リム f=54
+[リム v=vh237 f=54]「Honestly! Stop it!」[k]
+[テオ f=10]「...」[k]
+@fg c=リム f=33
+[リム v=vh238 f=33]「Captain! I was just joking! It was just a joke!」[k]
+[リム]'s face turned red up to her ears, and I couldn't help but feel heated as well.[k]
+I've never thought of her that way before, but I may become more aware of [リム] from now on...[k]
+@fg c=リム f=03
+[リム v=vh239 f=03]「Anyway, captain, please have dinner here today! I'll put my best effort into cooking for you!」[k]
+[テオ f=10]「Ah, yeah. I'm looking forward to it.」[k]
+[リム] is a caring person. It must be the kind of family she grew up in.[k]
+[リムの弟 f=01]「You have to show off your skills to become the captain's wife, sis.」[k]
+@fg c=リム f=91
+[リム v=vh240 f=91]「Not again! It's not like that! You help too. You owe the captain a thank you, don't you?」[k]
+[リムの弟 f=02]「Yeah, okay.」[k]
+@cl
+The two headed for the kitchen.[k]
+[テオ f=02]「...」[k]
+They seem like really close siblings. I'm a little jealous that I don't have a sibling.[k]
+[リムの母]「Thank you for coming here today.」[k]
+[テオ f=02]「No, thank you for the invitation.」[k]
+[リムの母]「...Please, please, continue to take care of that girl.」[k]
+With that, [リム]'s mother bows deeply.[k]
+[テオ f=05]「Oh, no... Raise your head, please.」[k]
+[リムの母]「She has been struggling all her life because we're a poor family. For money, she even went as far as becoming an adventurer...」[k]
+[リムの母]「Since she became a member of your party, our lives have finally become easier. I can't thank you enough for all you have done.」[k]
+[テオ f=01]「No, I didn't do much. It's all thanks to [リム]'s hard work.」[k]
+[リムの母]「...That girl has suffered because I, her mother, couldn't do enough for her...」[k]
+[リムの母]「I want her to be happy from now on because of all the hardships she has gone through.」[k]
+[テオ f=06]「...」[k]
+[リムの母]「You are the only one I can count on! I'm not asking you to marry her, but please keep her by your side in the future!」[k]
+She grips my hands and pleads with me with wide eyes.[k]
+[テオ f=05]「I understand, I'll take full responsibility for watching over [リム].」[k]
+[リムの母]「Thank you very much!」[k]
+I was struck by a mother's love for her daughter, and I knew that I would continue to cherish [リム] in the future.[k]
+[textoff]
+@out
+@w05
+@addevent name=リム num=6
+@deleventbtn map=サファイアシティ label=リムの実家_1
+@eval exp='o.リム.moveHeart(o.テオ, 5)'
+@eval exp='f.walkingHumanID = void'
+[townoff]
+
+
+;◇主人公イベント08
+*theo_08
+
+; 宿屋・ロビー
+@saveon
+@bgf f=0003
+@w05
+[texton w=0]
+[テオ e=通常 f=05]「Oh... What? Where's [リム]?」[k]
+When I woke up in the morning, [リム] was gone. Where on earth did she go?[k]
+[受付]「Oh, your companion went into town early this morning, didn't she?」[k]
+[テオ f=01]「Oh, I see. Thank you very much.」[k]
+Oh well, I guess I'll go and find [リム].[k]
+[textoff]
+[hoteloff leave=true]
+
+
+;◇主人公イベント09
+*theo_09
+
+; リムの実家
+@saveon
+@bgf f=0035
+[texton w=1]
+I decided to go to her family's house.[k]
+[リムの弟 f=01]「Oh, hi captain! What's up?」[k]
+[テオ e=通常 f=05]「Ah, is [リム] here?」[k]
+[リムの弟 f=02]「Sis was here earlier, but only for a bit. Didn't she go back?」[k]
+[テオ f=12]「What...?!」[k]
+Did we miss each other?[k]
+[テオ f=01]「Okay, thanks for letting me know.」[k]
+I decided to go back the way I came, looking for [リム].[k]
+[textoff]
+@deleventbtn map=サファイアシティ label=リムの実家_2
+[eventoff]
+
+
+;◇主人公イベント10
+*theo_10
+
+; 宿屋・ロビー
+@saveon
+@bgf f=0003
+[texton w=1]
+[テオ e=通常 f=05]「I'm back... is [リム] here?」[k]
+@fgf c=マックス e=通常 f=01
+[マックス f=01]「Huh? [リム] still isn't back. You didn't see her?」[k]
+[テオ f=06]「...」[k]
+Did she stop somewhere on her way back here?[k]
+[テオ f=05]「Okay, I'll go look again.」[k]
+[textoff]
+@addeventbtn map=サファイアシティ label=路地裏_1 name="Back Alley" img=incident x=761 y=464
+@clf
+[eventoff]
+
+
+;◇主人公イベント11
+*theo_11
+
+; スラム街の路地裏
+@saveon
+[texton]
+[テオ e=通常 f=05]「Ah... [リム]...!」[k]
+In a back alley in the slums, I finally found [リム].[k]
+She's being confronted by a man who looks like a thug.[k]
+[テオ f=06]「...? What are you...?」[k]
+The atmosphere seems somehow grim. What are they talking about?[k]
+[textoff]
+@out
+
+@bg f=0036
+@mu f=anxiety
+@fg l=ガラム e=通常 f=02 b
+@fg r=リム e=通常 f=10
+[texton w=1]
+[男 key=ガラム f=02]「Yo, [リム].」[k]
+[リム v=vh241 f=10]「Garam... Can I help you...?」[k]
+[ガラム f=01]「I need some money. I'm in a bit of a tight spot.」[k]
+[リム v=vh242 f=09]「M-money again...」[k]
+[ガラム f=02]「For old time's sake. I took care of you when you were a kid, right?」[k]
+[リム v=vh243 f=10]「That's true, but...」[k]
+[ガラム f=01]「I hear you're doing pretty well these days.」[k]
+[リム v=vh244 f=10]「W-what about it...」[k]
+[ガラム f=01]「Since you're making good money, you can spare me a little bit, right?」[k]
+[ガラム f=02]「We've been friends for a long time after all, so we should share in good fortune. You've been doing this ever since you were a kid, right?」[k]
+[リム f=10]「...」[k]
+[ガラム f=01]「50,000G is fine for now. Give me that much and I'll back off for today.」[k]
+[リム f=09]「...」[k]
+[テオ e=通常 f=05]「[リム]!」[k]
+@fg l=ガラム f=08 b
+@fg r=リム f=11
+[リム v=vh245 f=11]「Ah, captain!」[k]
+@se f=footstep2
+@clf r
+When I called out to her, [リム] came running toward me at full speed.[k]
+@fgf c=リム e=通常・大 f=17
+[リム v=vh246 f=17]「Captain!」[k]
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+@clf c
+[テオ f=12]「Wow, [リム]...!」[k]
+[リム] hugs me with all her might, and I am taken aback.[k]
+[テオ f=05]「[リム], what's going on?」[k]
+[リム v=vh247 f=09]「Oh, um...」[k]
+[リム] glanced back at the rough man, and hesitates to answer my question.[k]
+...Perhaps it's difficult to talk about?[k]
+@fg l=ガラム f=08
+[ガラム f=08]「...Tch.」[k]
+@cl l
+[テオ f=05]「Ah...!」[k]
+He glared at us for a moment, then turned and went away.[k]
+[テオ f=06]「...」[k]
+@fg c=リム f=14
+[リム v=vh248 f=14]「I'm sorry, Captain... You searched for me... I'm so glad!」[k]
+[テオ f=05]「What's going on? You can talk to me if you want.」[k]
+@fg c=リム f=10
+[リム v=vh249 f=10]「Yes... Actually...」[k]
+[textoff]
+@out
+@w1
+@bg f=0036 b
+@fg c=リム e=通常 f=10
+[texton]
+[テオ e=通常 f=05]「An old acquaintance is asking for money...?」[k]
+[リム v=vh250 f=10]「Yes... A while ago, he found out I was making money as an adventurer... And ever since then...」[k]
+[テオ f=06]「...」[k]
+I can't believe [リム] is going through that... She never mentioned it...[k]
+[リム v=vh251 f=09]「We've known each other since childhood. He was a bit older, and really nice to me...」[k]
+[リム v=vh252 f=10]「But a place like this encourages people to get together and do all kinds of bad things...」[k]
+[リム v=vh253 f=10]「As he grew older, he started hanging out with those bad groups, and he and I drifted apart.」[k]
+[リム v=vh254 f=10]「Up until he heard about my activities as an adventurer somewhere...」[k]
+[テオ f=06]「So, you've been getting extorted for a long time...?」[k]
+@fg c=リム f=14
+[リム v=vh255 f=14]「As a child, he was a caring, kind older brother...」[k]
+[テオ f=06]「...」[k]
+It's a common story. When you grow up in poverty, it is easy to become involved with criminal gangs.[k]
+And in doing so, become more and more entrenched in criminality yourself.[k]
+But [リム] isn't like that. She found a way out as a result of her efforts to become an honest adventurer. She shouldn't have to sacrifice that just because she's known him for a long time.[k]
+[テオ f=02]「If you need anything, you can count on me. I'll do whatever it takes to protect you.」[k]
+@fg c=リム f=13
+[リム v=vh256 f=13]「Thank you, Captain...」[k]
+[リム] gave me a slightly relieved look.[k]
+[テオ f=06]「...」[k]
+Still, I'm worried. I had no idea that [リム] was being preyed on by that guy...[k]
+I can't let our valued members be threatened. From now on, I must watch out for [リム]...[k]
+[textoff]
+@out
+@w05
+@eval exp='game.restoreMembers()'
+@deleventbtn map=サファイアシティ label=路地裏_1
+@showeventbtns map=サファイアシティ
+@eval exp='f.walkingHumanID = void'
+[eventoff bgm]
+
+
+;◇主人公イベント12
+*theo_12
+
+; 宿屋・ロビー
+@saveon
+@bgf f=0003
+@w05
+[texton w=0]
+[テオ e=通常 f=05]「Oh... [リム] is...?」[k]
+[textoff]
+@fg c=マックス e=通常 f=01
+[texton w=1]
+[マックス f=01]「Looks like she went out in the morning. She's not back yet?」[k]
+[テオ f=10]「...」[k]
+Could it be she's in trouble again?[k]
+[テオ f=05]「Sorry, I'll go and look for [リム] for a bit.」[k]
+[textoff]
+@out
+@w1
+
+[texton w=0]
+Meanwhile [―――][k]
+[textoff]
+@w1
+
+; スラム街の路地裏の小屋
+@eval exp='o.サファイアシティ.bgm = "anxiety"'
+@bg f=0022
+@mu f=anxiety
+@fg c=ガラム e=通常 f=02 b left=374
+@fg r=リム e=通常 f=10
+[texton w=1]
+[ガラム f=02]「Come on, [リム].」[k]
+[リム f=09]「...」[k]
+I was taken by Garam to a small shack in a back alley.[k]
+Garam stood at the exit, blocking the only escape route.[k]
+Garam was persisting in asking me for money.[k]
+[ガラム f=02]「Give me some money.」[k]
+[リム f=10]「...」[k]
+[ガラム f=02]「100,000G should be good. Come on now.」[k]
+[リム v=vh257 f=10]「...I don't have that much money. My family neither.」[k]
+[ガラム f=01]「Surely not. Your party is pretty famous round here. You must be getting a nice cut of that, right?」[k]
+[リム v=vh258 f=10]「...More importantly, can you let me go?」[k]
+[ガラム f=02]「Sure, as soon as you give me the money.」[k]
+Garam really wants to take money from me.[k]
+I need to get back to the inn... I'm sure the captain is worried.[k]
+@fg r=リム f=08
+[リム v=vh259 f=08]「I don't care what you say, I won't pay any more money.」[k]
+@fg c=ガラム f=08 fix
+[ガラム f=08]「...What the hell?」[k]
+[リム v=vh260 f=08]「I'll never give you money again. I don't even want to see you. I want to put an end to this!」[k]
+@fg c=ガラム f=07 fix
+[ガラム f=07]「You...!」[k]
+@fg r=リム f=09
+[リム v=vh261 f=09]「So please work honestly from now on, Garam. If you work diligently, I am sure you'll-!」[k]
+[ガラム f=07]「Screw you, [リム]!」[k]
+@fg r=リム f=18
+[リム f=18]「...! ∗shiver!∗」[k]
+Garam yelled at me. I was so scared that my whole body started shaking.[k]
+[ガラム f=07]「Don't get stuck up just because you're an adventurer now. You're still from these parts.」[k]
+@fg r=リム f=09
+[リム f=09]「...」[k]
+@fg c=ガラム f=06 fix
+[ガラム f=06]「...I remember when you were a kid. You were such a sweet, honest girl.」[k]
+[ガラム f=06]「I wonder how you turned out to be such an ungrateful woman. Forgetting the favors I did for you. I'm disappointed.」[k]
+[リム f=10]「...」[k]
+@fg c=ガラム f=02 fix
+[ガラム f=02]「...Well, if you want to get rid of me, go ahead and try.」[k]
+[ガラム f=01]「But I'm sticking with you. For life. Heh...」[k]
+@fg r=リム f=31
+[リム v=vh262 f=31]「O-oh, no...!」[k]
+[ガラム f=01]「So there's no point running.」[k]
+@fg r=リム f=29
+[リム v=vh263 f=29]「No. I won't give you any more money.」[k]
+@fg c=ガラム f=08 fix
+[ガラム f=08]「...I don't care what you say.」[k]
+When I said this, Garam's mood changed unexpectedly. Then [―――][k]
+@fgf c=ガラム f=02 left=450
+∗grab∗[k]
+@fgf r=リム f=31
+[リム f=31]「...!」[k]
+Garam quickly grabbed my wrist![k]
+[ガラム f=02]「Heh.」[k]
+@se f=dosa
+@clf
+@quake time=500 hmax=5 vmax=20
+∗thud!∗[k]
+Garam pushed me down![k]
+[リム v=vh264 f=31]「Let me go!」[k]
+[ガラム f=01]「I'll teach your body the price of resistance, [リム].」[k]
+After I fell, Garam stood over me![k]
+[リム f=32]「...!」[k]
+I realized what Garam intended and my blood boiled.[k]
+[リム v=vh265 f=37]「No, no, don't!」[k]
+[ガラム f=02]「It's your fault for not listening to me. So be a big girl and let's do this.」[k]
+I resist desperately to escape from Garam.[k]
+But he was a strong enough man that even I, an experienced adventurer, couldn't fend him off.[k]
+[リム v=vh266 f=38]「Please... Please don't do that... I don't want to do that...!」[k]
+[ガラム f=01]「I wouldn't have done this if you hadn't been so stubborn.」[k]
+@se f=tear
+@flash on time=500
+@wait time=200
+@flash off
+∗rrrippp!∗[k]
+[リム v=vh267 e=白いブラ f=37]「Aah!」[k]
+Garam tore my blouse off with great force![k]
+[ガラム f=08]「Huh, you're wearing an expensive looking bra. You really piss me off.」[k]
+@se f=buchi
+@flash time=200
+∗swiish!∗[k]
+Garam also rips off my bra. My breasts are revealed in front of his eyes.[k]
+@fg c=ガラム f=02
+[ガラム f=01]「Oh, your boobs really grew.」[k]
+[リム v=vh268 e=裸 f=38]「Oh, no... Don't look...!」[k]
+@fg c=ガラム e=上半身裸 f=02
+[ガラム f=02]「Good eating's really filled you out, huh? Well, I'll help myself.」[k]
+@clf
+@se f=dosa
+@clf
+@quake time=500 hmax=5 vmax=20
+With that, Garam took off his tank top and straddled me![k]
+I tried to push Garam away with all my strength. But he's too strong and doesn't even budge.[k]
+Am I really going to be raped by Garam?[k]
+I absolutely hate that...! I don't want to have sex with Garam...![k]
+Help me...! [テオ], help...![k]
+[textoff]
+@out
+@w05
+[hoteloff leave]
+
+
+;◇主人公イベント13
+*theo_13
+
+; リムの実家
+@saveon
+@bgf f=0035
+[texton w=1]
+[リムの弟 f=01]「Hi, captain!」[k]
+[テオ e=通常 f=05]「Hey, is [リム] here today?」[k]
+[リムの弟 f=02]「No, she hasn't been here today.」[k]
+[テオ f=10]「I see...」[k]
+She didn't come to her family's house? Where on earth did she go?[k]
+[textoff]
+[eventoff]
+
+
+;◇主人公イベント14
+*theo_14
+
+; 宿屋のロビー
+@saveon
+@bgf f=0003
+[texton w=1]
+[テオ e=通常 f=05]「Is [リム] back?」[k]
+@fg c=マックス e=通常 f=01
+[マックス f=01]「No, she's still not back. Can't find her?」[k]
+She didn't go back to the inn... Where did she go?[k]
+[textoff]
+@clf
+[eventoff]
+
+
+;◇主人公イベント15・１回目の捜索
+*theo_15_1st
+
+; スラム街の路地裏
+@saveon
+@bgf f=0036
+[texton w=1]
+I searched the area around the alley where [リム] was talking to the guy the other day.[k]
+[テオ e=通常 f=10]「...No good.」[k]
+I have a bad feeling about this... I have to find her soon...[k]
+[textoff]
+[eventoff]
+
+
+;◇主人公イベント15・２回目の捜索
+*theo_15_2nd
+
+; スラム街の路地裏
+@saveon
+@bgf f=0036
+[texton w=1]
+[テオ e=通常 f=10]「There has to be something fishy here...!」[k]
+I decided to search all the back alleys again.[k]
+...But I can't find [リム]. Is she really not here?[k]
+[textoff]
+@jump target=*_theo_15_a cond='! o.テオ.btcmd.has(o.ミスティックアイ) && o.テオ.findItem(o.ミスティックアイの巻物) === void && o.テオ.findItem(o.パールリング) === void'
+@command type=short
+@select text="Think it over" target=*_theo_15_b
+@select text="Give up and look elsewhere" target=*_theo_15_a
+[s]
+
+*_theo_15_a
+[texton w=1]
+[テオ f=10]「I'll just have to try something else...」[k]
+Although I felt reluctant, I decided to look elsewhere.[k]
+[textoff]
+[eventoff]
+
+*_theo_15_b
+[texton w=1]
+[テオ f=05]「...Ah!」[k]
+Ah! I wonder if the [emb exp='o.ミスティックアイ.displayName'] spell could be used to find [リム] quickly?[k]
+[if exp='o.テオ.btcmd.has(o.ミスティックアイ)']
+	I used the [emb exp='o.ミスティックアイ.displayName'] spell.[k]
+[elsif exp='o.テオ.findItem(o.パールリング) !== void']
+	I have a pearl ring that has has the magical effect of [emb exp='o.ミスティックアイ.displayName'].
+	 [k]
+[else]
+	I used a [emb exp='o.ミスティックアイ.displayName'] scroll that I had.[k]
+	@eval exp='o.テオ.ejectItem(o.ミスティックアイの巻物)'
+[endif]
+[textoff]
+@se f=period
+@flash t=200
+@fg c=icon_eye left=22 top=0
+@w1
+[texton w=1]
+[テオ f=06]「Okay, let's find [リム]...」[k]
+I walk down the alley, looking at the surrounding houses in a clairvoyant state.[k]
+[テオ f=06]「...Hmm?」[k]
+[textoff]
+@bg f=0058 b
+@fg c=0059 left=512 top=0 b
+@fgf r=&'"1101_" + o.リム.color' left=563 top=263
+@w1
+@se f=magic2
+@move layer=3 time=1000 path=,,128
+@wm
+@w1
+@cl b
+@bgf f=0036
+@mu f=ghost
+[texton w=1]
+[テオ f=05]「...Found her!」[k]
+Shortly after I started using magic, I found [リム] in a small hut![k]
+But it isn't good, a man is straddling her, and she can't move! I have to help [リム] quickly![k]
+[textoff]
+@out
+@w1
+
+; スラム街の路地裏の小屋・早期発見ルート
+@se f=door5
+@bgf f=0022
+[texton w=1]
+[テオ f=05]「[リム]!」[k]
+[リム v=vh269 e=裸 f=31]「Captain!」[k]
+I finally found [リム]! To my surprise, she was topless and being straddled by the man named Garam![k]
+[テオ f=07]「Get away from [リム]!」[k]
+I grabbed the guy who attacked [リム]![k]
+[ガラム e=上半身裸 f=10]「Tch!」[k]
+The man rushes away from [リム] and escapes toward the doorway.[k]
+@fg c=ガラム f=10
+[ガラム f=10]「Damn... Not you again.」[k]
+[テオ f=08]「What were you trying to do to [リム]?」[k]
+@jump target=*_theo_15_battle
+
+
+;◇主人公イベント15・３回目の捜索
+*theo_15_3rd
+
+; スラム街の路地裏
+@saveon
+@bgf f=0036
+[texton w=1]
+[テオ e=通常 f=10]「...」[k]
+I've returned to this back alley three times. I can't think of anywhere else.[k]
+But if [リム] is in a house, how would I find her?[k]
+[テオ f=10]「Ah...!」[k]
+There's a slightly familiar sword propped up on the window sill of a small hut.[k]
+Didn't that guy Garam have something similar?[k]
+[テオ f=10]「...!」[k]
+I decided to go into this shack. Then [―――][k]
+[textoff]
+@out
+@w1
+*_replay_theo_15_3rd
+; スラム街の路地裏の小屋・手遅れルート
+@se f=door5
+@bgf f=0022
+@mu f=ghost
+[texton w=1]
+[テオ f=05]「[リム]!」[k]
+I found her![k]
+I finally found [リム]! To my surprise, she was completely naked and being straddled by the man named Garam![k]
+[textoff]
+@out
+@bg chara=リム f=event21 p0=hair p1=01
+[texton w=2]
+[リム v=vh270]「Ha... ha... ha... ha...」[k]
+[ガラム]「Hehehe... How is it [リム]? How does my dick feel?」[k]
+[リム v=vh271]「Please... not this...」[k]
+[ガラム]「It's just the beginning. You'll soon be writhing in pleasure on my dick.」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[リム v=vh272]「Ah... Ah... Ahhh...! Ahhh...!」[k]
+Garam thrust his hips rhythmically, causing [リム] to let out a small moan.[k]
+Garam looked down on [リム], who was gasping for breath, with a triumphant look in his eyes.[k]
+[ガラム]「Hehehe... Once women end up like this, they're cute.」[k]
+[リム v=vh273]「Ahh... Ahhh... Garam... Ahhh!」[k]
+[ガラム]「Garam looks down at [リム], who is panting painfully, with triumphant eyes.」[k]
+∗slurp slurp slurp slurp!∗[k]
+[リム v=vh274]「Ah, ah, aaaaaah!」[k]
+Garam thrusts his penis roughly into [リム], making a lewd splashing sound.[k]
+With her wet pussy being thrust into, [リム] couldn't help but moan and writhe in agony.[k]
+[リム] seems to be feeling it, occasionally mixing sweet sounds with her movements as she writhes her hips.[k]
+Excited by the sight, Garam picked up the pace even more and thrust his hot, hard member into her.[k]
+[ガラム]「Now, it's time for my third ejaculation today! I'm going to fill your womb with my semen!」[k]
+[リム v=vh275]「Oh no... Stop it...」[k]
+∗sluurp!∗[k]
+[ガラム]「Let's go!」[k]
+Garam thrusts his hips forward and his entire body stiffened![k]
+[リム v=vh276]「Nooooooo...!」[k]
+@bg f=9999
+[リム]'s sad voice echoed hollowly in the room.[k]
+[textoff]
+@bg chara=リム f=event21 p0=hair p1=02
+[texton w=2]
+[ガラム]「Whew, I came. That felt good.」[k]
+Saying that, Garam let out a satisfied sigh while his lower body trembled slightly.[k]
+His penis was still inside her. He ejaculated inside her without hesitation.[k]
+[リム]「...」[k]
+[ガラム]「From now on, I'm going to fuck you every day.」[k]
+[ガラム]「And someday, I'll make you so addicted to me that you won't be able to live without me! Hahahaha!」[k]
+[リム]「...」[k]
+Garam's laughter echoed loudly over [リム], who stood there in a daze.[k]
+[textoff]
+@out
+@bgf f=0022
+[texton w=1]
+[テオ f=07]「Get away from [リム]!」[k]
+[ガラム e=上半身裸 f=09]「Who is it?」[k]
+I grabbed the guy who attacked [リム]![k]
+[ガラム f=10]「Tch!」[k]
+Garam hurriedly pulled his penis out of [リム] and fled toward the doorway![k]
+@fg c=ガラム f=10
+[ガラム f=10]「Damn... Not you again.」[k]
+Garam curses at me while tucking his penis into his pants.[k]
+[テオ f=07]「What have you done to [リム]?!」[k]
+@return cond='f.replayMode'
+@recordsex guy=ガラム sex=3 orgasm=1 acts=乳揉み,クリ責め,正常位
+@jump target=*_theo_15_battle
+*_theo_15_battle
+@fg c=ガラム f=01
+[ガラム f=01]「What I do with [リム] is my own business.」[k]
+@fg c=ガラム e=戦闘 f=02
+Garam then turns to face me, holding up his sword, which was propped up against the wall.[k]
+[テオ f=06]「...You want to fight? Okay, I get it.」[k]
+I also draw my sword and confront Garam.[k]
+[リム v=vh277 e=裸 f=31]「Captain! That man...」[k]
+[テオ f=02]「It's okay [リム], don't worry.」[k]
+[ガラム f=07]「I'll make sure he doesn't bother you again. Let's go!」[k]
+[textoff]
+@clf
+
+; ガラムと戦闘
+@eval exp='game.backScreen.loadImages(%[storage: "other_woodyhouse", visible: true])'
+@gameon
+@monster pos=3 name=ガラム
+@callbattle escape=false gameover=true stopbgm=true
+@bgf f=0022
+
+; ここで元に戻しておく
+@eval exp='o.サファイアシティ.bgm = "city"'
+@eval exp='f.walkingHumanID = void'
+@eval exp='game.restoreMembers()'
+@delevent name=サファイアシティ・北西門 num=3
+@delevent name=サファイアシティ・北東門 num=3
+@delevent name=サファイアシティ・南西門 num=3
+@delevent name=サファイアシティ・南東門 num=2
+@delevent name=下水道入口 num=3
+@delevent name=王立ギルド num=9
+@delevent name=待合所 num=6
+@delevent name=ベトリヌスの酒場 num=19
+@delevent name=冒険者の宿 num=13
+@delevent name=ホテル・クイーン num=2 cond='o.ホテル・クイーン.visible'
+@delevent name=サファイア城 num=12
+@delevent name=公園 num=9
+@delevent name=闘技場 num=10
+@deleventbtn map=サファイアシティ label=リムの実家_3
+@deleventbtn map=サファイアシティ label=路地裏_4
+@showeventbtns map=サファイアシティ
+; 勝利
+
+[texton w=1]
+[ガラム e=上半身裸 f=10]「Damn, damn!」[k]
+I won the fight with Garam. He collapses on the ground.[k]
+[テオ f=05]「Now walk away from here!」[k]
+@fg c=ガラム f=10
+[ガラム f=10]「Damn...!」[k]
+Garam staggers to his feet and heads toward the exit.[k]
+[ガラム f=09]「Hey, don't get too comfortable just because you won once.」[k]
+@fg c=ガラム f=13
+[ガラム f=13]「[リム] will never be able to escape me! I'll follow you till the day I die! Hahahaha!」[k]
+@cl
+Garam walked away with that parting remark.[k]
+@mu f=sad
+@eval exp='tf.temp = o.リム.diary[-1]'
+[if exp='tf.temp !== void && tf.temp.guyKey == "ガラム"']
+	@fg c=リム e=タオル＆パンツ f=10
+	[リム f=10]「...」[k]
+	[テオ f=05]「Are you okay, [リム]?」[k]
+	[リム] is standing there with a sad look on her face, wearing only her panties and covering her chest with a towel.[k]
+[else]
+	@fg c=リム e=タオル＆スカート f=10
+	[リム f=10]「...」[k]
+	[テオ f=05]「Are you okay, [リム]?」[k]
+	[リム] stands there with a solemn expression, her upper body covered only by a towel.[k]
+[endif]
+[リム v=vh278 f=10]「...I'm sorry, Captain. I didn't mean to drag you into this.」[k]
+[テオ f=05]「It's okay. But from now on, let me come with you when you go out.」[k]
+[リム f=10]「...」[k]
+@fg c=リム f=50
+[リム v=vh279 f=50]「∗waah...∗ ∗waaaaaah!∗」[k]
+[テオ f=12]「[リム]!」[k]
+Suddenly, [リム] began to cry.[k]
+[テオ f=12]「Hey, hey, [リム]...」[k]
+[リム v=vh280 f=50]「It's going to be like this for the rest of my life... I was born in this place, so I'll never be happy...」[k]
+[テオ f=12]「That's not true. If you continue to work hard as an adventurer...」[k]
+@fg c=リム f=48
+[リム v=vh281 f=48]「No matter how hard I try... You can't cut ties with someone like that... He won't let me go until I die...」[k]
+[テオ f=10]「...」[k]
+@fg c=リム f=47
+[リム v=vh282 f=47]「Captain, please tell me. Am I not allowed to be happy?」[k]
+[テオ f=10]「N-no, that's not...」[k]
+@fg c=リム f=48
+[リム v=vh283 f=48]「I worked really hard. I wanted to get out of poverty. I wanted to change my destiny.」[k]
+[リム v=vh284 f=48]「I just wanted to live a normal life, have a normal marriage, and be happy like most people in town... That's why I worked so hard as an adventurer...」[k]
+[テオ f=05]「[リム]...」[k]
+[リム v=vh285 f=48]「But no... Even if I do my best to earn money, Garam and his friends will take it away from me. I'm doomed to live here in poverty until I die...」[k]
+[リム v=vh286 f=48]「I won't have a happy marriage either... I'll probably marry a selfish, lazy man like Garam and live a life of abuse and hardship... Just like my mother.」[k]
+[テオ f=06]「...」[k]
+I see... So that's why [リム] longs for a happy marriage.[k]
+@fg c=リム f=60
+[リム v=vh287 f=60]「I've been in your party for a while now, and I really admire you.」[k]
+[テオ f=05]「Me...?」[k]
+[リム v=vh288 f=60]「You're serious, kind, and your fame as an adventurer is rising rapidly... I always thought that if I could marry such a man, I would be very happy...」[k]
+[テオ f=06]「...」[k]
+@fg c=リム f=59
+[リム v=vh289 f=59]「...But no. I'm connected to thugs like Garam, so someone like you would never marry me. I can never have a happy marriage...」[k]
+[テオ f=05]「[リム]...」[k]
+[textoff]
+
+; 選択肢・リムと結婚するかどうか
+@command type=short
+@select text="That's not true" target=*_theo_15_n
+@select text="I'll marry you" target=*_theo_15_y
+[s]
+
+*_theo_15_y
+; 選択肢１・リムと結婚する
+
+[texton]
+[テオ f=05]「Don't make assumptions like that without knowing how I feel.」[k]
+@fa
+@fg c=リム f=45
+[リム v=vh290 f=45]「What...?」[k]
+I faced [リム] straight on and looked her in the eye.[k]
+[リム v=vh291 f=45]「Captain...」[k]
+[テオ f=06]「...」[k]
+[テオ f=05]「...If you want to... I'll marry you, [リム].」[k]
+[リム f=45]「...!」[k]
+[リム v=vh292 f=45]「Me and... you...?」[k]
+[テオ f=06]「I care about you more than anything else. An incident like this won't change that.」[k]
+[テオ f=05]「No, it's the opposite, I want to protect you, [リム]. I'm willing to put myself in harm's way to protect you from something that threatens you like that.」[k]
+@fg c=リム f=47
+[リム v=vh293 f=47]「Cap...tain...」[k]
+@mu f=love
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+@clf
+∗thump∗[k]
+[リム v=vh294 f=49]「Captain!」[k]
+[リム] hugged me as hard as she could.[k]
+[リム v=vh295 f=61]「Captain... I'm so happy...!」[k]
+[テオ f=05]「[リム]...」[k]
+[リム] is sobbing as she nuzzles her face into my chest.[k]
+I gently hugged her shoulders.[k]
+[テオ f=02]「So don't be afraid anymore. You can count on me. You got it?」[k]
+[リム v=vh296 f=59]「Yes, Captain...」[k]
+[textoff]
+@out
+@bg f=0022
+[texton]
+An hour passed. [リム], who had cried for a while, finally regained her composure.[k]
+[テオ f=02]「Well, let's get going. We're all waiting for you.」[k]
+@fg c=リム e=通常・大 f=23
+[リム v=vh297 f=23]「O-oh yes! Sorry I've kept you waiting so long. Let's hurry!」[k]
+[リム] turned a full-blown smile on me, her eyes bright red from crying.[k]
+[textoff]
+@fa
+@out
+@w05
+@addevent name=リム num=8
+@addevent name=リム num=9
+@addevent name=リム num=10
+@eval exp='o.リム.moveHeart(o.テオ, 20)'
+[eventoff]
+
+*_theo_15_n
+; 選択肢２・気休めを言う
+
+[texton]
+[テオ f=02]「That's not true. I'm sure you'll find a good man someday.」[k]
+@fg c=リム f=47
+[リム v=vh298 f=47]「Captain...」[k]
+[テオ f=02]「So don't give up. I'll help you find a good solution for Garam. I'm sure, someday, you'll be happy.」[k]
+[リム f=47]「...」[k]
+[リム v=vh299 f=60]「...Yeah. I shouldn't give up hope.」[k]
+[テオ f=02]「Yeah.」[k]
+@fg c=リム f=42
+[リム v=vh300 f=42]「I'm glad I'm a member of your party...! I feel like I can continue to do my best if you're with me.」[k]
+[テオ f=02]「That's the spirit, [リム], let's keep working together.」[k]
+[リム v=vh301 f=41]「Yes!」[k]
+[リム] finally smiled.[k]
+She must have been troubled about this for a long time.[k]
+[テオ f=02]「Well, let's go back to the inn. They're waiting for us.」[k]
+[textoff]
+@out
+@w05
+@eval exp='o.リム.moveHeart(o.テオ, -20)'
+[eventoff]
+
+
+;◇主人公イベント16・恋人イベント
+*theo_16
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=peace
+@fg c=リム e=通常・大 f=22
+[texton w=1]
+[リム v=vh302 f=22]「It's just you and me tonight... Captain.」[k]
+[テオ e=通常 f=05]「[リム]...」[k]
+[リム] and I were sitting side by side on the same bed. Then she touched her shoulder to my body.[k]
+[テオ f=25]「[リム], we can't do that here...」[k]
+[リム v=vh303 f=22]「I know. You won't do anything naughty here so that no-one finds out, right?」[k]
+[テオ f=30]「Y-yeah...」[k]
+@fg c=リム f=24
+[リム v=vh304 f=24]「I love you, Captain...」[k]
+@cl
+[リム] rests her head on my chest.[k]
+[リム v=vh305 f=24]「I want to stay like this... forever...」[k]
+[テオ f=22]「[リム]...」[k]
+I gently put my arm around [リム]'s shoulders and we spent some time together.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント17・一度仲良くなったが、その後疎遠になった場合
+*theo_17
+
+; 宿屋のロビー
+@saveon
+@bg f=0003
+@fg c=リム e=通常 f=09
+[texton w=1]
+[リム v=vh306 e=通常 f=09]「Ah, Captain...」[k]
+[テオ e=通常 f=05]「[リム]...」[k]
+I ran into [リム] in the lobby in the morning, and there's an awkwardness between us.[k]
+[リム v=vh307 f=10]「Umm, Captain...」[k]
+[リム v=vh308 f=10]「Let's... break up...」[k]
+[テオ f=06]「...I understand.」[k]
+[リム] and I have decided to end our relationship. Unfortunately, I have to respect [リム]'s feelings.[k]
+At one time, she wanted to marry me, but that turned out to be a fleeting dream.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント18・プロポーズイベント
+*theo_18
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=peace
+@fg c=リム e=通常・大 f=03
+[texton w=1]
+[リム v=vh309 f=03]「I'll be in your care tonight, Captain.」[k]
+[テオ e=通常 f=13]「Y-yeah...」[k]
+Tonight it's just me and [リム].[k]
+Since this was a good opportunity, I wanted to confirm something with her.[k]
+[textoff]
+
+; 選択肢・プロポーズするか否か
+@command type=short
+@select text=&'"Check with " + o.リム.displayName' target=*_theo_18_y
+@select text="Never mind" target=*_theo_18_n
+[s]
+
+*_theo_18_n
+; 選択肢１・保留
+
+[texton w=1]
+@fg c=リム f=05
+[リム v=vh310 f=05]「Is something wrong?」[k]
+[テオ f=]「...Sorry, it's nothing.」[k]
+@fg c=リム f=02
+[リム v=vh311 f=02]「Is that so? Well, I'm going to bed.」[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+*_theo_18_y
+; 選択肢２・プロポーズする
+
+[texton w=1]
+[テオ f=12]「H-hey, [リム].」[k]
+@fg c=リム f=02
+[リム v=vh312 f=02]「What is it?」[k]
+[テオ f=10]「About... the other day...」[k]
+@fg c=リム f=05
+[リム f=05]「？」[k]
+[テオ f=12]「The other day... I said I would marry you.」[k]
+@fg c=リム f=30
+[リム v=vh313 f=30]「∗gulp∗ Y-yes...」[k]
+[テオ f=12]「You said you wanted to marry me. Were you serious...?」[k]
+[リム f=30]「...」[k]
+[リム v=vh314 f=30]「...Of course I'm serious.」[k]
+[テオ f=12]「...!」[k]
+[リム v=vh315 f=30]「I meant what I said then. Did you?」[k]
+@fg c=リム f=34
+[リム v=vh316 f=34]「...Or were you just trying to comfort me by saying that?」[k]
+[テオ f=07]「What are you talking about? No way, [リム].」[k]
+Then I take both of her hands.[k]
+@fg c=リム f=25
+[リム v=vh317 f=25]「Captain...!」[k]
+[テオ f=06]「I'm serious, too. There's no way I could say something like that on impulse.」[k]
+[テオ f=12]「Let me say it again, [リム], will you marry me? I love you. I want to be with you forever.」[k]
+@mu f=love
+@fg c=リム f=47
+[リム v=vh318 f=47]「Cap...tain...!」[k]
+@fg c=リム f=41
+[リム v=vh319 f=41]「Yes... Happily...!」[k]
+[テオ f=02]「Thank you...」[k]
+@cl
+I hugged [リム], and she firmly hugged me back.[k]
+I finally... I finally said it...![k]
+Feeling her warmth, I am deeply moved. I am marrying the love of my life. I will walk the same path with her.[k]
+[リム v=vh320 f=24]「I'm so happy...! This isn't a dream, right?」[k]
+[テオ f=02]「You're not dreaming. Let's be happy together, [リム].」[k]
+[リム v=vh321 f=23]「...Yes!」[k]
+We held each other for a while.[k]
+[textoff]
+@out
+@w05
+@delevent name=リム num=8
+@delevent name=リム num=9
+@delevent name=リム num=10
+@addevent name=テオ num=1
+@eval exp='game.wife = o.リム'
+[hoteloff]
+
+
+;◇主人公イベント・メインシナリオからの結婚式の続き
+*theo_wedding
+
+; どこかの教会
+@saveon
+@bg chara=リム f=event03 p0=hair p1=01
+@mu f=wedding
+@w1
+[texton w=2]
+[リムの母]「Congratulations, [リム]!」[k]
+[リムの弟]「Congratulations, Sis～!」[k]
+With the blessing of the party and [リム]'s family, we were able to have a happy wedding.[k]
+[リム v=vh322]「Captain, I... I must be dreaming...!」[k]
+[テオ]「[リム]...」[k]
+[リム v=vh323]「It was my dream to be a happy bride... I can't believe it came true... I'm so happy...!」[k]
+[テオ]「Me too. Let's build a happy family, [リム].」[k]
+[リム v=vh324]「Yes!」[k]
+[リム] responds with an overflowing smile.[k]
+This girl has struggled all her life. She is a frail girl, but she became an adventurer for the sake of her family and has been fighting, knowing the dangers.[k]
+For her family, her companions, and me, [リム] always works hard and is brave... I must never let such a good girl be unhappy.[k]
+I will protect this happy smile...[k]
+[textoff]
+@fa
+@out
+@w2
+
+; 結婚式の２週間後
+[texton w=0]
+Two weeks later.[k]
+[textoff]
+@w05
+
+; 宿屋の一室・ベッドの上
+@bg f=0007
+@w05
+[texton w=1]
+[テオ e=裸 f=06]「...」[k]
+Is it morning...?[k]
+@mu f=enjoy
+@fg c=リム e=通常 f=03
+[リム v=vh325 f=03]「Good morning, my dear ♪」[k]
+[テオ f=02]「...Oh, good morning.」[k]
+When I woke up, [リム] was by my side. She had woken up earlier and was already dressed.[k]
+[リム] and I have been married for almost two weeks now. Today we resume adventuring with the party.[k]
+I had given everyone in the party a leave of absence the day after the wedding. We had been fighting constantly, so I thought it would be good for everyone to relax.
+ [k]
+And during this period, [リム] and I enjoyed our married life to the fullest. At the inn, we enjoyed our time together, just the two of us. Of course, there were also nighttime activities.
+ [k]
+But that vacation ended yesterday. The days of just the two of us staying at the inn are now over.
+ [k]
+@fg c=リム f=01
+[リム v=vh326 f=01]「Everyone's already gathered outside the inn. We should get going, dear!」[k]
+[テオ f=05]「What? Is it that time already... I'll be ready in a minute.」[k]
+[textoff]
+@out
+@jump storage="main12.scn" target=*wedding_02
+;  → メインシナリオ・結婚後のパーティー再結成へ
+
+
+;◇主人公イベント20・冒険再開後、最初の日の宿の夜
+*theo_20
+
+; 宿屋の一室
+@saveon
+@w1
+@out
+@bg f=0001
+@mu f=peace
+@w05
+[texton w=1]
+[テオ e=通常 f=02]「I'm glad we can all go on an adventure together again, [リム]!」[k]
+@fg c=リム e=通常・大 f=03
+[リム v=vh327 f=03]「Yes, everyone in the party is an important friend.」[k]
+[リム] and I were spending a night together as a married couple.[k]
+@fg c=リム f=02
+[リム v=vh328 f=02]「Well, it's time to go to bed.」[k]
+[テオ f=05]「Umm... Tonight...」[k]
+@fg c=リム f=03
+[リム v=vh329 f=23]「Yes, I know, dear ♪」[k]
+@fg c=リム e=白いパンツ f=22
+[リム] strips to her underwear. I take off my clothes too and go to bed with her.[k]
+I know that the other members of the group are staying at the same inn tonight. I'm aware it might lead to teasing.[k]
+But we are a married couple, so it's only natural. Since we're adventuring as part of a party, we wouldn't be able to have sex for a long time, otherwise.[k]
+@fg c=リム f=33
+[リム v=vh330 f=33]「Ahaha... I'm kind of embarrassed...」[k]
+[テオ e=裸 f=05]「What's the matter? You've already shown me so many times.」[k]
+[リム v=vh331 f=33]「That's true, but... I still can't get used to it...」[k]
+[テオ f=05]「[リム]...」[k]
+∗suck∗[k]
+@fg c=リム f=39
+[リム v=vh332 f=39]「Ahh... My love!」[k]
+I run my tongue over [リム]'s nipples. Her nipples are a particularly sensitive area for her.[k]
+[リム]'s nipples are getting hard and bloodshot. This was obvious evidence that she was getting horny. I continued to attack her breasts.[k]
+[リム v=vh333 f=38]「Ah... ah... feels good...!」[k]
+[テオ f=02]「Well... How about here...?」[k]
+[リム v=vh334 f=37]「Aaah...!」[k]
+I explored her pubic area over her panties. Sure enough, [リム] was starting to get wet.[k]
+@fg c=リム f=29
+[リム v=vh335 f=29]「Um... In bed, dear!」[k]
+[テオ f=02]「I know.」[k]
+I took off [リム]'s panties and pushed her down on the bed.[k]
+[textoff]
+@out
+@w1
+
+@bg chara=リム f=event51 p0=hair p1=01 p2=02
+[texton w=2]
+[リム v=vh336]「Aaaaaah...」[k]
+[リム] lies on her back on the bed, crotch open, in a position to receive a man.[k]
+It was a very obscene pose, and it only made me more excited. Her vagina was dripping wet and ready for insertion.[k]
+I want to put it in quickly...! I took off my clothes and lay on top of [リム].[k]
+[テオ]「Well, here I go.」[k]
+∗sliip!∗[k]
+[リム v=vh337]「Ohhh... My love...!」[k]
+I pushed my hardened penis against [リム]'s crotch and penetrated her smoothly.[k]
+After two weeks, we were both completely used to each other. At first it was very difficult to insert, but...[k]
+[リム v=vh338]「Ah... Ah... Ah...」[k]
+[テオ]「Ahh...! [リム]...!」[k]
+I rhythmically thrust my fully erect penis into her.[k]
+[リム] moaned cutely in time with my thrusting.[k]
+[リム v=vh339]「Haa haa... I love you...!」[k]
+[テオ]「You're so cute, [リム].」[k]
+The sight of her small breasts bouncing and her hips shaking is incredibly erotic.[k]
+[リム]'s bold and sensual appearance, different from her usual cute self, instantly heightened my desire to ejaculate.[k]
+[テオ]「Argh...! I can't hold it in any longer...!」[k]
+@flash on=500 off=500
+@bgf chara=リム f=event51 p0=hair p1=02 p2=01
+I reached my limit and shot inside [リム].[k]
+[テオ f=10]「Sorry, I came first...」[k]
+[リム v=vh340 f=33]「Honestly, dear... Please make me cum properly next time!」[k]
+; ↑ やや不満げに明るい声で
+My wife, was a little dissatisfied that I came first.[k]
+I've only been able make [リム] cum properly a few times so far. I need to work on my technique...[k]
+[textoff]
+@out
+@w1
+
+@bg f=0001
+[texton w=1]
+After having sex with [リム], we lay naked side by side on the bed, basking in the afterglow.[k]
+By the way, I don't use contraception; when I have sex with [リム], I always ejaculate inside her.[k]
+We talked it over and decided to have a baby as soon as possible.[k]
+[リム v=vh341 f=24]「I wonder... have we we made a child?」[k]
+[テオ f=02]「I don't know yet. Maybe in another month we'll have some signs.」[k]
+[リム v=vh342 f=23]「Oh～! I can't wait to have a baby with you...」[k]
+[テオ f=06]「...」[k]
+As for me, I wanted to enjoy my sex life with [リム] a little more, but I couldn't say anything as she spoke about it with anticipation.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント21・２日目以降・満足
+*theo_21
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=love
+[texton w=1]
+[リム v=vh343 e=裸 f=37]「Ah... ah... ah...!」[k]
+[if exp='o.テオ.penis >= 16']
+	[リム v=vh344 e=裸 f=38]「Aaaah...! Ahh! It's so deep... It feels so good, my love...!」[k]
+[endif]
+[テオ e=裸 f=12]「[リム]! I'll cum inside you!」[k]
+Tonight, I had sex with [リム] again. She responded to my needs to the fullest.[k]
+[リム v=vh345 f=24]「Ha ha ha... It was good... My love...」[k]
+[テオ f=02]「Yes, it was good.」[k]
+I fell asleep looking at [リム]'s satisfied face.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント22・２日目以降・不満
+*theo_22
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=love
+[texton w=1]
+[リム v=vh346 e=裸 f=39]「Ah... Dear... Go deeper... Ahh!」[k]
+[テオ e=裸 f=09]「I can't do it! I'm cumming!」[k]
+Tonight, I had sex with [リム] again. She responded to my needs to the fullest.[k]
+[リム f=10]「...」[k]
+[テオ f=05]「Not so good, huh? I'll do better next time.」[k]
+I went to sleep vowing to satisfy [リム] next time.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント23・２日目以降・拒絶
+*theo_23
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=love
+[texton w=1]
+[テオ e=通常 f=05]「[リム]...」[k]
+I get into bed and reach for [リム]'s body.[k]
+[リム v=vh347 e=寝室のキャミソール f=10]「I'm sorry, dear... I'm just not in the mood...」[k]
+[テオ f=06]「Oh, I see... Sorry.」[k]
+I gave up on having sex with [リム] and went straight to sleep.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント24・ブルーと浮気後
+*theo_24
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=love
+[texton w=1]
+[テオ e=裸 f=09]「Damn...! I'm cumming...!」[k]
+[リム e=裸 f=10]「...」[k]
+Tonight I had sex with [リム] again.[k]
+But [リム] is just lying there, letting me do as I please.[k]
+[リム f=10]（My husband tries his best to make me feel good...）[k]
+[リム f=10]（But... I'm not feeling it at all after I found out how good [emb exp='o.リム.develop.blue > o.リム.develop.max ? "Blue" : "Max"'] was...）[k]
+[テオ f=12]「Sorry, that wasn't very good, was it?」[k]
+[リム v=vh348 f=73]「No... It's okay...」[k]
+[リム] answered nonchalantly. She looked bored throughout...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇グッドエンディング・主人公の子を出産エンド
+*good_ending
+
+; 主人公たちの自宅
+@bg f=0007
+@mu f=wedding
+[texton w=1]
+[リム v=vh349 e=通常 f=03]「Lara, Lara～, come over here～!」[k]
+[テオ e=通常 f=06]「...」[k]
+[リム] plays with our three-year-old daughter, Lara. Once an adventurer, she is now a mother of one.[k]
+[リム] is devoted to our child and enjoys taking care of her around the clock.[k]
+Meanwhile, I was supporting my family by taking on simple jobs nearby and enjoying a peaceful life with my wife and daughter. Nowadays, I'm more of a handyman than an adventurer.[k]
+But...[k]
+[テオ f=06]「...」[k]
+Suddenly, I remember the adventurous days of the past.[k]
+Ever since I first became an adventurer, there was one hardship after another. There have been sad events too. If anything, I think I have more painful memories than happy ones.[k]
+...However, there was joy in being an adventurer. There were new discoveries, excitement, and the joy of being appreciated by others.[k]
+My father, Siegwart, also went on adventures and rarely came home. As a result, he lost his life at a young age, but now I understand how he felt.[k]
+I want to go on another adventure. I felt that desire growing stronger every day.[k]
+@fg c=リム e=通常・大 f=02
+[リム v=vh350 f=02]「You should go, dear.」[k]
+[テオ f=05]「[リム]...!」[k]
+[リム v=vh351 f=02]「You're more alive when you're adventuring. Being an adventurer suits you best!」[k]
+[テオ f=05]「But [リム], you and Lara...」[k]
+@fg c=リム f=01
+[リム v=vh352 f=01]「I'm fine. I can take care of Lara by myself.」[k]
+[テオ f=05]「[リム]...」[k]
+@fg c=リム f=68
+[リム v=vh353 f=68]「...Though, I really want to go on an adventure with you too! I'm an adventurer too, after all!」[k]
+[テオ f=05]「A-ah, that's right, sorry...」[k]
+@fg c=リム f=02
+[リム v=vh354 f=02]「...I'll give up for now because I have this child. But...」[k]
+@fg c=リム f=03
+[リム v=vh355 f=03]「Please take me adventuring with you again, someday.」[k]
+[テオ f=05]「...」[k]
+[テオ f=01]「...Yes! Of course!」[k]
+@cl
+I have decided to set out on another journey.[k]
+We are adventurers. That way of life may never change.[k]
+[textoff]
+@fa
+@out
+@jump storage="main13.scn" target=*staff_roll
+
+
+
+
+;■ブルー編１・結婚前にブルーと宿泊を強制される
+
+;◇ブルーイベント01
+*blue_01
+@saveon
+@call storage="stay.ks" target=*kick_out_by_blue
+@jump target=*_blue_01_freemode cond='game.isFreeMode'
+@jump target=*_blue_01_case1 cond='game.curChara.inSameRoom(o.テオ)'
+@jump target=*_blue_01_case2
+
+;＜主人公とヒロインが同室だった場合＞
+*_blue_01_case1
+
+; 宿屋の一室
+@bg f=0001
+@fg c=リム e=通常 f=04
+@mu f=guild
+[texton w=1]
+[リム v=vh356 f=04]「We're sharing a room today, Captain ♪」[k]
+[テオ e=通常 f=13]「Y-yeah...」[k]
+[リム] seems to be having fun. She is always cheerful and a really good girl.[k]
+@fg c=リム f=01
+[リム v=vh357 f=01]「Captain! Let's talk a lot today.」[k]
+[テオ f=02]「Okay. So, what do you want to talk about?」[k]
+[リム v=vh358 f=01]「Let's see...」[k]
+@se f=door1
+@cl b
+@fg l=リム f=09 b
+@fg r=ブルー e=通常 f=08
+@mu f=anxiety
+∗slam∗[k]
+[ブルー f=08]「Hey, [テオ].」[k]
+All of a sudden, Blue entered the room![k]
+Why is Blue here...?[k]
+[リム f=09]「...」[k]
+[テオ f=12]「Hey, what can I do for you, Blue?」[k]
+[ブルー f=08]「...」[k]
+Blue is staring at us. He is clearly angry.[k]
+[テオ f=12]「Blue?」[k]
+[ブルー f=08]「...You bastard, ignoring me while you go have sex with a woman. Nice deal huh?」[k]
+[テオ f=12]「I didn't mean to ignore you...」[k]
+@fg r=ブルー f=06
+[ブルー f=06]「... ∗glance∗」[k]
+@fg l=リム f=12
+[リム f=12]「...!」[k]
+@fg r=ブルー f=02
+[ブルー f=02]「... ∗grin∗」[k]
+Blue looked sideways at [リム], and the next moment his expression changed to that horrible look of lechery![k]
+[リム v=vh359 f=12]「W-what is it...?」[k]
+[リム] looks frightened when Blue stares at her with those eyes.[k]
+[ブルー f=02]「...Heh.」[k]
+[ブルー f=02]「Hey, [テオ]. Go outside for a minute.」[k]
+[テオ f=12]「Eh?」[k]
+@fg r=ブルー f=01
+[ブルー f=01]「I'll take this woman tonight, and your sins will be forgiven.」[k]
+[リム f=12]「...! ∗gulp∗」[k]
+[テオ f=12]「W-what?」[k]
+[ブルー f=02]「Let's do it, [リム].」[k]
+@cl r b
+@fg c=ブルー f=02 b
+@fg l=リム f=29 fix
+Blue then places himself between me and [リム].[k]
+[リム v=vh360 f=29]「N-no...!」[k]
+[ブルー f=02]「That was the deal, right from the start. So, let's do it.」[k]
+[リム f=09]「...」[k]
+[テオ f=12]「Blue! Wait!」[k]
+@fg c=ブルー f=05
+[ブルー f=05]「What the hell, [テオ]. Get out of my way.」[k]
+[テオ f=10]「Please, Blue, [リム] doesn't want to be with you. Please let her go.」[k]
+@fg l=リム f=29 fix
+[リム v=vh361 f=29]「Wait a minute, Captain!」[k]
+[テオ f=05]「[リム]...」[k]
+@fg l=リム f=30 fix
+[リム v=vh362 f=30]「...I'm fine. We had an agreement, so I was prepared for this.」[k]
+[テオ f=12]「But...」[k]
+@fg l=リム f=33 fix
+[リム v=vh363 f=33]「Besides... If I refuse, another girl will be sacrificed... It's not fair if I'm the only one to avoid it...」[k]
+[テオ f=10]「[リム]...」[k]
+@fg c=ブルー f=02
+[ブルー f=02]「That's what I'm talking about. Now, leave. You're in my way!」[k]
+[テオ f=09]「Damn...!」[k]
+[textoff]
+@clf
+
+; 宿屋の廊下
+@se f=door1
+@bgf f=0002
+[texton w=0]
+I was kicked out of the room by Blue.[k]
+I can't go against Blue. I have to do what he wants so that he stays with this party.[k]
+Besides, [リム] is prepared to accept a night with Blue. I'll just have to leave the rest up to her...[k]
+[テオ f=09]「...」[k]
+...I'm still curious.[k]
+I wonder, is there a way to stop Blue? I don't want to sacrifice her.[k]
+It has only been a few minutes since [リム] and Blue have been in the room together. Maybe there's still time to stop him.[k]
+[テオ f=10]「...!」[k]
+I decided to go back to [リム]'s room.[k]
+[textoff]
+@out t=500
+@w05
+@jump target=*_blue_01_common
+;  → 共通ルート１へ
+
+
+;＜主人公が部屋にいず、ブルーが移動してヒロインの部屋に入った場合＞
+*_blue_01_case2
+
+; 宿屋の廊下
+@bg f=0002
+@fg c=ブルー e=通常 f=06
+@w05
+@cl
+@w05
+[texton w=0]
+[テオ e=通常 f=05]「Ah...!」[k]
+Just now I saw Blue enter [リム]'s room.[k]
+No way, you're going after [リム] now...?![k]
+[テオ f=10]「...!」[k]
+I was curious and decided to go to [リム]'s room.[k]
+[textoff]
+@out t=500
+@w05
+@jump target=*_blue_01_common
+;  → 共通ルート１へ
+
+
+;＜共通ルート１＞
+*_blue_01_common
+
+; 宿屋の一室
+@se f=door1
+@bgf f=0001
+[texton w=0]
+[テオ f=12]「Blue! I need to talk to you!」[k]
+I wasn't about to give up, so I opened the door to [リム]'s room![k]
+[textoff]
+@bgf chara=リム f=event08 p0=01 p1=hair p2=01 p3=02 p4=01
+@mu f=darkside
+[texton w=2]
+[リム f=29]「...!」[k]
+[ブルー f=08]「What are you doing here, [テオ]?」[k]
+[テオ f=12]「[リム]...!」[k]
+To my surprise, [リム]'s clothes were off and she was in bed with Blue.[k]
+She is bare-chested, revealing her beautiful breasts.[k]
+She probably isn't wearing anything at all, but it's hard to tell because her lower half is hidden by the sheets.[k]
+[ブルー]「You didn't come here to stop us, did you?」[k]
+[テオ]「...Of course. Please, stop targeting [リム].」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=01 p3=01 p4=01
+[ブルー]「Can't you see? We already started having sex. Wouldn't it be rude to stop now?」[k]
+[テオ]「But...」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=01 p3=03 p4=01
+[ブルー]「Hey, [リム]?」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=02 p3=04 p4=04
+[リム v=vh364]「Ah...!」[k]
+Blue idly fondled [リム]'s breasts.[k]
+[リム] lets out a small scream as if she feels something.[k]
+Blue further fondles [リム]'s breasts.[k]
+[ブルー]「Kuku, your nipples are getting harder and harder.」[k]
+[リム v=vh365]「Ah... no... Blue... Aaah...!」[k]
+Blue caresses [リム]'s breasts. He squeezes her breasts and kneads her nipples to stimulate her.[k]
+[ブルー]「Hmm, it seems like you're feeling good. Now, how about here?」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=03 p3=04 p4=05
+Blue plunged his other hand into the sheets and fumbled with [リム]'s lower body.[k]
+[リム v=vh366]「Aaaaahhh... Blue...!」[k]
+[ブルー]「Oh, you are wet. You're soaking wet, right in front of your captain.」[k]
+[リム v=vh367]「Ahh... No... No... There's... ahhh..!」[k]
+[テオ]「...」[k]
+[リム] writhes under Blue's caresses, perhaps being attacked in the place she's most sensitive.[k]
+Her nipples were hard, her face flushed, and she continued to let out husky gasps.[k]
+[ブルー]「Well, it's about time...」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=03 p3=04 p4=04
+Blue is wriggling his hands in the sheets.[k]
+Is he putting it in? Is he really going to put it in [リム]?![k]
+[テオ]「Oh, um... Blue...」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=03 p3=01 p4=06
+[ブルー]「Just shut up and watch.」[k]
+[テオ]「...!」[k]
+Blue stilled me and I was speechless.[k]
+I want to stop them...! But I don't know what to say...![k]
+[リム v=vh368]「Ahhhh... Blue...」[k]
+[リム] shows no signs of refusing Blue. Is it because she's already accepted the outcome...? Or that she's not entirely against the idea...?[k]
+[ブルー]「Let's get it in... Damn!」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=04 p3=09 p4=05
+@se f=kucha
+∗squish∗[k]
+[リム v=vh369]「Aaagh...!」[k]
+[リム] frowned as Blue thrust his hips forward with an obscene wet sound.[k]
+[ブルー]「Phew... I'm in. It's pretty tight.」[k]
+@se f=kucha
+@bg chara=リム f=event08 p0=01 p1=hair p2=04 p3=06 p4=06
+[ブルー]「Hey, [テオ]. This woman is pretty tight. She's in good shape.」[k]
+[テオ]「...」[k]
+[ブルー]「You can fuck her later, too. It feels good, I'll allow it.」[k]
+I'm not happy to be allowed to do that by you... What do you think [リム] is?[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=04 p3=09 p4=06
+[ブルー]「Okay, let's move.」[k]
+@se f=kuchaslow
+∗sluurp sluurp sluurp∗[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=04 p3=09 p4=04
+[リム v=vh370]「Oh, oh, oh, oh...」[k]
+Blue starts to move back and forth. Every time Blue moved, there was a lewd squishing sound, and [リム] moaned prettily.[k]
+He's fucking her... He's inserted himself into [リム] and rubbing against her inner walls...[k]
+[ブルー]「Ohh... That's pretty good.」[k]
+[リム v=vh371]「Mmm... Ugh... Ugh... Ahhh...! Ahh...!」[k]
+[リム]'s voice is pained, yet somehow sweet.[k]
+I wonder if Blue's penis makes her feel good. I'd have to ask [リム] about that. But...[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ブルー]「It's slippery. It's nice and slippery.」[k]
+[リム v=vh372]「Ah... Blue... Aan... ah... Hiaah... Aah!」[k]
+Wet sounds echoed all around. There was no doubt that her vagina was being stirred by Blue and overflowing with disgusting nectar.[k]
+[ブルー]「I'm getting close to cumming. It's time to pick up the pace.」[k]
+@bg chara=リム f=event76 p0=hair p1=02
+Blue changes position. The sheets are rolled up, revealing their pubic areas![k]
+[テオ]「...!」[k]
+Blue and [リム] had their genitals fully joined.[k]
+Blue's rigid, obscenely glistening rod pushes [リム]'s pink entrance open and penetrates deeply.[k]
+[if exp='o.リム.sexCount.blue == 0']
+	It's happened again...! Another one of my friends had sex with Blue.[k]
+[endif]
+[ブルー]「Phew... That's good... I can't get enough!」[k]
+[リム v=vh373]「Ah, ah, ah, Blue, ah, no, ah...!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+Blue roughly thrusts into [リム]'s pussy![k]
+[リム] wiggles her hips and moans excitedly as the strong and rigid cock slides in and out of her.[k]
+Although initially passive, [リム] was already into sex with Blue. She seemed to have forgotten about me.[k]
+[ブルー]「Damn, how does my dick feel?」[k]
+[リム v=vh374]「Aah, aah, if you do this to me like this... aah! I... aahhh!」[k]
+Blue increases the pace of his thrusts even more! He seemed to be building up all the way to ejaculation.[k]
+[ブルー]「Ugh... I'm about to cum...」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[リム v=vh375]「Ah! Ah! Ah! I can't... any more... ah!」[k]
+[ブルー]「Okay, let's get it out!」[k]
+[テオ]「Wait a minute, Blue! Don't cum inside...!」[k]
+[ブルー]「Ugh!」[k]
+@flash
+∗spurt! spurt!∗[k]
+[リム v=vh376]「Haaaaaaaaahhh... Blue...!」[k]
+Blue thrusts his hips forward as far as he can and stiffens in that position![k]
+He's ejaculating... In [リム]... Plenty of it...[k]
+@bg chara=リム f=event76 p0=hair p1=03
+[ブルー]「Phew... That felt good...」[k]
+After ejaculating for a while, Blue sighed with pleasure.[k]
+A dollop of Blue's white fluid silled out of [リム]'s vaginal hole...[k]
+[textoff]
+@out
+@w05
+@bg f=0001
+[texton w=1]
+[リム v=vh377 e=汗だく f=39]「Phew...」[k]
+[ブルー e=汗だく f=08]「Oi, [テオ]. Don't call out to me just before I cum.」[k]
+[テオ f=12]「B-but...」[k]
+[ブルー f=01]「I cum inside because it feels good. That's all there is to it. What, you think she'll get pregnant from just that?」[k]
+[テオ f=12]「There's no guarantee she won't. Anyway, that's...」[k]
+[ブルー f=07]「Shut up! Don't tell me what to do!」[k]
+[テオ f=10]「...」[k]
+I knew that even if I told him, he wouldn't listen to me. But I couldn't let him hurt [リム] and everyone else any more.[k]
+Damn it...! What should I do...?![k]
+[リム f=30]「...」[k]
+[テオ f=12]「[リム]...」[k]
+[if exp='o.リム.sexCount.blue == 0']
+	Finally [リム] has been tainted by Blue... I couldn't protect her...![k]
+[endif]
+[リム] lies there completely exhausted, with depressed eyes and Blue's semen dribbling between her legs.[k]
+It was very painful to me, and I was filled with a sense of helplessness.[k]
+[textoff]
+@out
+@w05
+@recordsex guy=ブルー sex=1 orgasm=0 acts=乳揉み,クリ責め,正常位 cond='! f.replayMode'
+[hoteloff]
+
+
+;◇ブルーイベント02
+*blue_02
+@saveon
+@call storage="stay.ks" target=*kick_out_by_blue
+@jump target=*_blue_02_freemode cond='game.isFreeMode'
+@jump target=*_blue_02_case1 cond='! game.curChara.inSameRoom(o.テオ)'
+@jump target=*_blue_02_case2
+
+;＜主人公と同室ではない＞
+*_blue_02_case1
+
+; 宿屋の廊下
+@bg f=0002
+@fg c=ブルー e=通常 f=06
+@w05
+@cl
+@w05
+[texton w=0]
+[テオ e=通常 f=12]「Ah...!」[k]
+Just now I saw Blue enter [リム]'s room.[k]
+[テオ f=06]「[リム]...!」[k]
+Feeling uneasy, I followed Blue.[k]
+[textoff]
+
+@fg l=ブルー e=通常 f=08 b
+@fg r=リム e=通常 f=09 b
+@bgf f=0001
+@mu f=darkside
+@se f=door1
+[texton w=1]
+∗slam∗[k]
+[リム v=vh378 f=09]「Ah... Captain...!」[k]
+[ブルー f=08]「What the hell are you doing here?」[k]
+[テオ f=05]「What the hell is Blue planning to do?」[k]
+@fg l=ブルー f=02
+[ブルー f=02]「...Huh. It's obvious.」[k]
+Saying that, Blue looked at [リム] and smiled sadistically.[k]
+@jump target=*_blue_02_common
+;  → 共通ルート２へ
+
+
+;＜主人公と同室＞
+*_blue_02_case2
+
+; 宿屋の一室
+@fg c=リム e=通常 f=05 b
+@bgf f=0001
+@mu f=darkside
+@se f=door1
+[texton w=1]
+∗slam∗[k]
+[リム f=12]「...! (Ah!)」[k]
+[テオ e=通常 f=12]「Ah... Blue...」[k]
+@cl b
+@fg l=ブルー e=通常 f=06 b
+@fg r=リム e=通常 f=09
+[リム] and I were spending time together in our room when Blue suddenly came in.[k]
+@fg l=ブルー f=02
+@jump target=*_blue_02_common
+;  → 共通ルート２へ
+
+
+;＜共通ルート２＞
+*_blue_02_common
+[ブルー e=通常 f=02]「Hey, [リム], you'll have to deal with me again today.」[k]
+@fg r=リム f=10
+[リム f=10]「...!」[k]
+[リム]'s face turned pale in an instant. However, perhaps realizing her position, she simply remained silent and looked down.[k]
+@fg l=ブルー f=05
+[ブルー f=05]「Come on!」[k]
+[テオ f=12]「Ah...!」[k]
+Without a second thought, Blue grabs [リム]'s hand and takes her straight to bed.[k]
+[テオ f=12]「Ah, hey, Blue...!」[k]
+[ブルー f=05]「You know what I'm talking about. Stay out of my way.」[k]
+[テオ f=10]「...」[k]
+I can't say anything. I can't go against Blue after all.[k]
+@fg l=ブルー f=02
+[ブルー f=02]「You just stay quiet and watch. Now, [リム], let's get started.」[k]
+@cl
+Blue takes off his shirt with great enthusiasm, then strips off [リム]'s clothes, leaving her naked. She doesn't resist.[k]
+@fg l=ブルー e=上半身裸 f=02 b
+@fg r=リム e=白いパンツ f=30
+[ブルー f=02]「Come on, let's fuck. Let's feel good today.」[k]
+[リム f=30]「...」[k]
+@cl
+Blue pushed a half-naked [リム] down on the bed![k]
+[textoff]
+@out
+
+@bg chara=リム f=event76 p0=hair p1=02
+@mu f=worry
+[texton w=2]
+[リム v=vh379]「Ah... Ah... Ah... Ah...」[k]
+[ブルー]「Phew... Feels good...」[k]
+Blue inserted himself into [リム] without so much as a caress.[k]
+[リム]'s pussy seemed to get wet right away, and Blue's big cock slid in and out smoothly and slippery.[k]
+[リム v=vh380]「Oh, no... No... ahh... Aaahhh...!」[k]
+[リム]'s gasps are clearly louder than the last time this happened.[k]
+She's feeling it... Blue's penis must make her feel good...![k]
+[ブルー]「Kuku, looks like you're enjoying my cock a lot more now. Reminds me of when I broke in [テオ]'s girl.」[k]
+He's talking about Riselle... Deliberately, since I'm right here.[k]
+[ブルー]「I'm going to make sure you can't get enough of my dick, too, yaa!」[k]
+∗sluuurp!∗[k]
+[リム v=vh381]「Ha-an... Blue... I... I can't... No more!」[k]
+[リム] makes a very distressed sound as she is penetrated deeply.[k]
+[ブルー]「Are you about to cum? Kuku, hear that, [テオ]?! Go ahead then, slut!」[k]
+[テオ]「...」[k]
+[ブルー]「I'll make you cum as you wish, yaa!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+Blue picks up the pace of his poke at [リム] quickly.[k]
+[ブルー]「Feels good, doesn't it? Come on, let [テオ] watch you cum!」[k]
+[リム v=vh382]「Oh, oh, oh... Ahh...! Ahh..! Please... Don't look at me...!」[k]
+[テオ]「...」[k]
+[リム v=vh383]「Ahh! I can't...! I'm cumming... Please don't look at me...!」[k]
+[ブルー]「I'm gonna cum too... Ugh!」[k]
+@flash
+@flash
+@flash
+∗spuurt! spuurt!∗[k]
+@bg chara=リム f=event76 p0=hair p1=03
+[リム v=vh384]「Aaaaaaahhh...」[k]
+Finally, [リム] was made to cum by Blue... It seemed that Blue was also cumming a lot inside [リム]...[k]
+[textoff]
+@out
+@w05
+
+@bgf f=0001
+[texton w=0]
+[ブルー f=02]「Phew, I just gave another woman a taste of heaven.」[k]
+[テオ f=10]「...」[k]
+[ブルー f=01]「This is a reward, not an obligation. She's lucky to have me to protect her and make her feel even better! Hahahahaha!」[k]
+[ブルー f=02]「[テオ], it's a trick you'll never be able to pull off... Kukuku.」[k]
+[テオ f=10]「...」[k]
+I couldn't say anything back to Blue.[k]
+Yes, having lost my demon hunting powers and lacking sexual experience, I can't compare to Blue...[k]
+After that, Blue screwed [リム] several more times and left the room looking satisfied.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーイベント03
+*blue_03
+@jump target=*_blue_03_freemode cond='game.isFreeMode'
+; 宿屋の一室
+@saveon
+@se f=door1
+@bg f=0002
+@mu f=worry
+[texton w=0]
+[リム v=vh385 e=汗だく f=37]「Ah... that's good... that's good... aaah...!」[k]
+[テオ e=通常 f=06]「...」[k]
+From inside the room, [リム]'s moans can be heard.[k]
+I'm in front of [リム]'s room. Today, Blue came to violate her again.[k]
+[リム] had been penetrated by Blue many times, and moans with pleasure.[k]
+She no longer feels any shame. She must truly enjoy having sex with Blue.[k]
+[リム v=vh386 f=38]「Aaaan... Blue... I'm... I'm cumming...!」[k]
+[テオ f=06]「...」[k]
+Another girl was captivated by Blue... I wonder if Blue will continue to rob me...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーイベント04
+*blue_04
+
+; 朝のロビー
+@saveon
+@bg f=0003
+@w05
+[texton w=1]
+[テオ f=05]「Huh...?」[k]
+We're about to leave, but Blue and [リム] aren't here yet.[k]
+[テオ f=06]「They're late... What's going on...?」[k]
+@fg c=リム f=29 e=中立の胸当て,ひものパンツ,革の手袋,鉄のブーツ
+[リム v=vh387 f=29]「G-good morning...」[k]
+; ↑ おずおずと
+[テオ f=12]「[リム]...!」[k]
+Suddenly, [リム] appeared.[k]
+That's a pretty revealing outfit... Why are you dressed like that...?[k]
+@mu f=anxiety
+@fg r=ブルー e=通常 f=02 left=745
+[ブルー e=通常 f=02]「Ah, you like it?」[k]
+[テオ f=12]「Blue!」[k]
+Then Blue came up behind her. Was this his doing?![k]
+[ブルー f=94]「I made her dress like that. I like looking at women's asses.」[k]
+[テオ f=10]「Blue...!」[k]
+What on earth...! Come to think of it, Riselle was dressed like this too...[k]
+[ブルー f=02]「This way, I can touch her butt anytime, and do things like this...」[k]
+@image layer=3 page=back storage=&'"1102_" + o.リム.color' left=260
+@eval exp='tf.temp = o.リム.equip.arm !== void ? o.リム.equip.arm.img : "arm"'
+@pimage layer=3 page=back storage=&'"hum1_" + tf.temp + "_down"' dx=61 dy=290
+@pimage layer=3 page=back storage=&'"hum1_" + tf.temp + "_sub"' dx=266 dy=299
+@pimage layer=3 page=back storage="1102_patch" dx=150 dy=290
+@eval exp='tf.temp = o.リム.equip.leg !== void ? o.リム.equip.leg.img : "leg"'
+@pimage layer=3 page=back storage=&'"hum1_" + tf.temp' dx=94 dy=527
+@fg r=4002 left=705
+[リム v=vh388 f=37]「Ahh...!」[k]
+[テオ f=12]「...!」[k]
+Blue pulled [リム]'s underwear string from behind![k]
+Her underwear dug into her crotch, and [リム] couldn't help but let out an indecent cry.[k]
+@fg r=4001 fix
+[ブルー f=01]「Hmm? Did you feel good?」[k]
+Blue continues to pull hard on the string.[k]
+[リム v=vh389 f=38]「Ahh... Stop it... Ah... Hmm...!」[k]
+[テオ f=07]「Blue! Stop it!」[k]
+@fg c=リム f=48
+@fg r=4002 fix
+[ブルー f=02]「Oops, this is going to make her cum. I'll leave it at that.」[k]
+[リム f=48]「... ∗sob∗」[k]
+[テオ f=12]「[リム]...」[k]
+Blue lets go of the string. [リム]'s eyes fill with tears as she hurriedly adjusts her panties, which had ridden up.[k]
+[テオ f=09]「Damn it... Blue...!」[k]
+How could you humiliate a girl in front of everyone...?!  But I can't say a word to Blue...[k]
+[ブルー f=01]「Hey, [リム], wipe your pussy before you go out. Don't walk around outside with your crotch wet! Hahahaha!」[k]
+[リム f=48]「... ∗sob∗」[k]
+[テオ f=09]「Damn...!」[k]
+How long will these humiliating days continue...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ブルー編２・妻としてブルーとの宿泊を求められる
+
+;◇ブルー人妻イベント01・妻としてブルーとの宿泊を求められた最初の夜
+*married_01
+
+; 宿屋の一室
+@call storage="main12.scn" target=*revive_4
+@bgf f=0001
+@mu f=shadow
+[texton w=1]
+@se f=door1
+∗slam∗[k]
+@fg l=リム e=通常 f=10 b
+@fg r=ブルー e=通常 f=02
+[リム f=10]「...」[k]
+The door to the room is locked. It's just me and Blue, and our night alone is about to begin.[k]
+[ブルー f=01]「Well, let's get started.」[k]
+@fg r=ブルー e=上半身裸 f=02
+With that, Blue takes off his jacket and strips naked. Blue's large, strong body is revealed.[k]
+[ブルー f=02]「Come on, you too, get undressed.」[k]
+[リム f=10]「...」[k]
+[ブルー f=05]「You're mine from today. You know what to do, right?」[k]
+[リム f=10]「...」[k]
+[リム v=vh390 f=09]「Y-yes...」[k]
+[textoff]
+@fg l=リム e=下着 f=10
+@w05
+[texton]
+I took off my clothes and was left in my underwear as Blue urged me to do so.[k]
+[ブルー f=02]「Okay, let's fuck. Now, I'm going to enjoy the body of [テオ]'s] wife.」[k]
+[リム v=vh391 f=12]「Ah...!」[k]
+@se f=dosa
+@quake time=200 hmax=5 vmax=5
+@clf
+I was suddenly pushed down on the bed by Blue.[k]
+[リム v=vh392 e=裸 f=37]「Oh... No...!」[k]
+[ブルー f=01]「Kuku, your nipples are hard right away, aren't they? Are you excited?」[k]
+Blue quickly ripped my bra off of me, and then he flicked his tongue over my nipples.[k]
+[リム v=vh393 f=37]「Ahh...!」[k]
+Blue is right, my body is responding quickly. It is because my body has been developed by the daily sex with my husband.[k]
+My nipples are sensitive...! And my pussy is hot...![k]
+I was trying not to feel it as much as possible for my husband's sake, but I'm already so excited...![k]
+∗sluurp∗[k]
+[リム v=vh394 f=37]「Ahhhhh...!」[k]
+Blue fumbled with my crotch! Stimulation runs through the lower half of my body![k]
+[ブルー f=01]「You're already so wet. You're a dirty girl. You don't mind about your husband?」[k]
+[リム f=30]「...」[k]
+It's... probably because Blue is so practiced...[k]
+I felt it more than my husband's caresses... I didn't know that the technique made such a difference...[k]
+∗slurp slurp slurp∗[k]
+[リム v=vh395 f=37]「Aaaan... Blue... No...」[k]
+Blue was rubbing my crotch again. My lower body was getting hotter and hotter.[k]
+No... If you keep teasing me like this... I'm going to cum...![k]
+[textoff]
+@fg c=ブルー e=裸・勃起 f=02
+[texton]
+[ブルー f=01]「You're wet now. What do you think? Don't you think it's about time you got this?」[k]
+With that, Blue shows off his growing cock.[k]
+[リム f=29]「...」[k]
+Oh, it's big...![k]
+Looking at it, it's clearly different in size than my husband's... I didn't know they got so big.[k]
+[リム f=25]「... ∗badump∗」[k]
+...Don't! Don't even think about wanting it![k]
+[ブルー f=02]「Kuku, you look like you want it. Fine, I'll allow it.」[k]
+@cl
+Blue lies down on his back on the bed and beckons me to come closer.[k]
+Between Blue's legs, a large, powerfully erect penis stood tall.[k]
+[リム f=30]「... ∗badump∗」[k]
+At Blue's urging, I climb onto the bed and approach him.[k]
+[ブルー f=02]「You came straight over. That means you welcome my dick, right?」[k]
+It's not that, just that it's not a good idea to refuse him now...[k]
+[ブルー f=01]「Come on, get on top of me. Fuck me from above.」[k]
+[textoff]
+@out
+
+@bgf chara=リム f=event02 p0=hair p2=01 p3=01
+@quake time=200 hmax=5 vmax=5
+[texton w=2]
+∗sluuurp!∗[k]
+[リム v=vh396]「Ahhhh!」[k]
+I dropped my hips as far as I could! Blue's big thing was thrust deep inside me![k]
+It... feels good![k]
+[ブルー]「Kuku, you've done it now. Having sex with a man other than your husband.」[k]
+@bg chara=リム f=event02 p1=hair p2=02 p3=02
+[リム]「...」[k]
+I'm sorry, my dear... I'm sorry. But I would never betray you...![k]
+@bg f=event02 p2=03 t=500
+@bg f=event02 p2=04 t=500
+@bg f=event02 p2=03 t=500
+@bg f=event02 p2=04 t=500
+∗sluurp sluurp sluurp sluurp∗[k]
+[リム v=vh397]「Mmm... Ugh... Ugh... Ahhh...! Ahh...!」[k]
+I move my hips up and down and start having sex with Blue.[k]
+Ahh... I feel it... it feels good...![k]
+@bg f=event02 p2=03 t=500
+@bg f=event02 p2=04 t=500
+@bg f=event02 p2=03 t=500
+@bg f=event02 p2=04 t=500
+∗sluurp sluurp sluurp sluurp∗[k]
+I don't want to betray you. But... I can feel it... Oh...![k]
+[ブルー]「You don't sound too opposed to it. By the way, [リム].」[k]
+Suddenly, Blue spoke to me.[k]
+@bg chara=リム f=event02 p1=hair p2=02 p3=02
+[リム v=vh398]「Ah ah ah... What is it, Blue?」[k]
+[ブルー]「Are you and [テオ] trying for a baby?」[k]
+[リム v=vh399]「Huh... a baby...?」[k]
+The sudden question in the middle of the act is unintentionally baffling.[k]
+[リム v=vh400]「Yes... I'm trying...」[k]
+If you ask me if I'm trying for a baby, I am. We were having unprotected sex because we wanted to have children as soon as possible.[k]
+[ブルー]「So that means you were having raw sex every night. Kuku.」[k]
+Suddenly, Blue smiled a lecherous smile. And then...[k]
+@bg f=event02 p2=04
+@quake time=500 hmax=10 vmax=10
+∗thrust thrust thrust thrust!∗[k]
+[リム v=vh401]「Ah...! Blue! Ahhh...!」[k]
+Blue grabbed my ass and started thrusting violently![k]
+@quake time=500 hmax=10 vmax=10
+[リム v=vh402]「Ah, ah, ah, ah!」[k]
+Blue's big cock roughly stirs my vagina![k]
+It felt so good, and the pleasure inside me rose all at once.[k]
+@quake time=200 hmax=20 vmax=10
+Ah...! I'm cumming...![k]
+[ブルー]「You're trying for a baby with [テオ]? That's great!」[k]
+[ブルー]「So if I cum inside you right now... What would happen?」[k]
+@bg chara=リム f=event02 p1=hair p2=02 p3=03
+[リム]「...!」[k]
+If you do that, no-one will know whose child was born![k]
+@bg chara=リム f=event02 p1=hair p2=02 p3=04
+[リム v=vh403]「Nooooooo! That's not allowed!」[k]
+[ブルー]「Too late! There you go!」[k]
+@flash
+@bgf f=event02 p2=05
+∗spuurt!∗ ∗spurt spurt spurt spurt!∗[k]
+[リム v=vh404]「Nooooooooo!」[k]
+Blue started to ejaculate while deep inside me![k]
+[リム v=vh405]「Oh...」[k]
+@bg chara=リム f=event02 p1=hair p2=02 p3=04
+Suddenly, I felt a rush of pleasure through my whole body. I came too...[k]
+[ブルー]「Oooooh... I've still got more...!」[k]
+@flash
+@flash
+@bgf f=event02 p2=05
+∗spuurt!∗ ∗spuurt!∗ ∗spuurt!∗[k]
+[リム v=vh406]「Ohhh, no, no... Please pull it out...!」[k]
+Blue continues to ejaculate. With his penis still inside me, he grabs my butt tightly and releases a generous amount inside me...[k]
+[textoff]
+@out
+
+@bg f=0001
+[texton w=0]
+[ブルー e=汗だく f=01]「Phew... Raw sex without holding back is the best feeling ever!」[k]
+[リム v=vh407 e=汗だく f=48]「Ugh... ∗sniff∗ ...That's horrible, Blue...」[k]
+Blue sighs with satisfaction.[k]
+I just cried at Blue's terrible treatment.[k]
+[ブルー f=02]「You came when I did, right? You might not have if I'd pulled my dick out, would you?」[k]
+[リム f=48]「...」[k]
+That's true, but that doesn't mean I want semen inside...[k]
+[リム v=vh408 f=47]「Please, Blue, don't do that again.」[k]
+[ブルー f=51]「Well, what should I do～?」[k]
+I was in a position where I could not defy Blue, and all I could do was beg him...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント02
+*married_02
+
+; 宿屋の一室
+@saveon
+@bg chara=リム f=event02 p0=hair p2=01 p3=01
+@mu f=shadow
+[texton w=2]
+[リム v=vh409]「An... Blue... Blue!」[k]
+[ブルー]「You've become a sucker for sex with me. How is it? Much better than [テオ], isn't it?」[k]
+I was having sex with Blue again tonight.[k]
+I shouldn't enjoy this, for the sake of my husband [テオ] who loves me. I know that.[k]
+However, the constant waves of pleasure gradually wash away my desire to remain faithful to my husband...![k]
+[リム v=vh410]「Oh, oh, Blue, more... deeper... It's good!」[k]
+I found myself engrossed in Blue's cock.[k]
+Fuck me some more...! Fuck me harder...![k]
+Aah... I'm going to cum...![k]
+[リム v=vh411]「Blue... Please...!」[k]
+[ブルー]「Are you gonna cum? I'm gonna cum too!」[k]
+[リム v=vh412]「Blue... please, pull out...!」[k]
+[ブルー]「Ugh!」[k]
+@flash
+@bgf f=event02 p2=05
+∗spuurt!∗ ∗spuurt!∗[k]
+[リム v=vh413]「Aaah... nooooo...!」[k]
+Blue came inside me again tonight.[k]
+How should I even act with my husband from now on...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント03
+*married_03
+
+; 宿屋の一室・テオが１人で宿泊している時
+@saveon
+@bg f=0001
+[texton w=1]
+[テオ e=通常 f=06]「...」[k]
+Another nightmare night has come.[k]
+I wonder if [リム] is being held by Blue again by now...[k]
+@se f=door1
+∗slam∗[k]
+[textoff]
+
+@mu f=worry
+@fg c=リム e=通常 f=09
+[texton]
+[リム v=vh414 f=09]「Hey, dear... I'm back...」[k]
+[テオ f=05]「[リム]?」[k]
+Oh, [リム] came to my room. Why is she here?[k]
+[リム v=vh415 f=13]「Blue said I can sleep with you today. I think he has something to do...」[k]
+[テオ f=14]「O-oh, is that so...」[k]
+[リム] had returned after a long absence, and my heart was filled with joy to be able to spend time with her again, even if only temporarily.[k]
+@fg c=リム e=通常 f=04
+[リム v=vh416 f=04]「So we can spend the night together, dear ♪」[k]
+[テオ f=14]「A-ahhh...」[k]
+In that case, let's have sex tonight for the first time in a while...[k]
+[リム v=vh417 f=04]「I haven't been able to talk to you much lately, so I really wanted to.」[k]
+[テオ e=通常 f=05]「[リム]...」[k]
+@bg f=0044 b
+@fg c=リム e=通常・大 f=05
+I approach [リム] and put my hands on her clothes.[k]
+[リム v=vh418 f=05]「Dear..?」[k]
+[テオ f=05]「[リム], is it okay?」[k]
+@fg c=リム e=通常 f=09
+I pressed closer to [リム]. Then she made a gesture as if to escape from me.[k]
+[リム v=vh419 f=14]「Wait, dear. Can we not do that tonight?」[k]
+[テオ f=05]「What are you talking about? It's been a long time since I've seen you. I can't take it anymore!」[k]
+[リム v=vh420 f=09]「I'm sorry, I really can't today...」[k]
+[テオ f=05]「[リム]!」[k]
+@se f=dosa
+@quake time=200 hmax=5 vmax=5
+@clf
+[リム v=vh421 f=17]「Kyaa...! Wait a minute...!」[k]
+I suddenly pushed [リム] down on the bed and began to undress her.[k]
+[リム v=vh422 f=12]「Hey, honey, calm down...!」[k]
+[テオ f=12]「Come on, [リム], have sex with me! You've been tainted by Blue, and today I'm going to clean you up!」[k]
+[リム v=vh423 e=下着 f=18]「Wait, dear! I told you to wait...!」[k]
+I remove [リム]'s blouse and skirt.[k]
+[テオ f=12]「...!」[k]
+Then I witnessed a shocking sight![k]
+[テオ f=12]「This is...」[k]
+[textoff]
+
+@mu f=darkside
+@bg f=0001 b
+@fg c=リム e=鋼鉄の貞操帯 f=40
+@w05
+[texton]
+[リム f=40]「...」[k]
+An extraordinary object was attached to her lower body.[k]
+To my surprise, [リム] was wearing a chastity belt under her skirt![k]
+[テオ f=12]「What's going on, [リム]?」[k]
+[リム f=40]「...」[k]
+The metal chastity belt has a lock attached to it and cannot be removed.[k]
+[テオ f=12]「Hey, how do I get this lock off? Where's the key?」[k]
+[リム f=40]「...」[k]
+[textoff]
+
+@se f=door1
+@cl b
+@fg l=リム e=鋼鉄の貞操帯 f=30 b
+@fg r=ブルー e=通常 f=01
+[texton]
+[ブルー f=01]「Hahahahaha! How's seeing your own wife looking like that?」[k]
+Suddenly, Blue, who was supposed to be absent, opened the door and entered the bedroom.[k]
+@fg r=ブルー e=通常 f=02
+[ブルー f=02]「Before I left, I thought I'd come by and check in on you for a bit, and sure enough, here you are!」[k]
+[テオ f=09]「Blue...! What is this...?!」[k]
+[ブルー f=02]「I have the key to that chastity belt, so [リム] can't take it off by herself.」[k]
+[テオ f=12]「What... what the...?!」[k]
+[リム f=30]「...」[k]
+[リム] is my wife! Why would Blue do something like this to me?![k]
+[テオ f=12]「Blue! What a thing to do to [リム]!」[k]
+[ブルー f=01]「I told you. Your wife is mine while I'm here.」[k]
+[テオ f=09]「...!」[k]
+[ブルー f=02]「She's my property.」[k]
+@fg r=ブルー f=05
+[ブルー f=05]「That chastity belt is a sign that I will not let anyone touch my woman without permission. Understand?」[k]
+[テオ f=09]「Damn...!」[k]
+@fg r=ブルー f=01
+[ブルー f=01]「Well, I'm off. I guess you two can play house tonight. Hahahaha!」[k]
+With a hearty laugh, Blue left the room.[k]
+@se f=door1
+@clf r
+[テオ f=09]「No...」[k]
+@cl b
+@fg c=リム e=鋼鉄の貞操帯 f=29
+[リム v=vh424 f=29]「Dear... For now, we have to be patient until this battle is over.」[k]
+I tremble with anger.[k]
+But... I can't do anything now. All we can do is endure it...![k]
+[テオ f=09]「Damn it...!」[k]
+I couldn't do anything about my uncontrollable anger, overcome with my own helplessness and the cruelty of fate...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント04・４日目以降
+*married_04
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=shadow
+[texton w=1]
+[リム v=vh425 e=汗だく f=37]「Ah... Ah... Blue...」[k]
+[ブルー e=裸 f=02]「Kuku, it looks like you're enjoying sex with me a lot more. Is that okay? You have a husband after all.」[k]
+[リム v=vh426 f=38]「Please... Don't mention my husband right now... Aah...!」[k]
+I'm being held by Blue again tonight. I forget about my husband and immerse myself in the current sex.[k]
+I just want to stay in Blue's arms like this forever...![k]
+I feel sorry for my husband, but I can't resist this pleasure.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ホテルイベント・主人公と同室
+
+; ラブホで売春組織が暗躍している
+; 主人公たちはラブホに一般のカップルのふりをして潜入し事件を解決する
+
+;◇主人公ホテルイベント・夜
+*hotel_theo_1
+
+; ラブホテルの一室
+@saveon
+@mu f=affair
+@se f=door1
+@bgf f=0004
+@wait time=1000
+@fg l=テオ f=10 b
+@fg r=リム f=32
+[texton w=1]
+[テオ f=10]「...」[k]
+[リム f=32]「...」[k]
+After checking in, I went into a love hotel room with [リム].[k]
+In the quiet room, [リム] and I stand there and fall silent.[k]
+[テオ f=10]「...」[k]
+[リム f=32]「...」[k]
+Ugh... This makes me nervous...[k]
+The room is pink. There is a heart-shaped bed.[k]
+The bath is also in the same room, albeit separated by a screen.[k]
+Even though we are only staying as a couple for form's sake, I still feel conscious when I am alone with a girl in a place like this.[k]
+For now, let's talk something to relieve the tension.[k]
+@fgf l=テオ f=13
+[テオ f=13]「Umm... Listen...」[k]
+@shake layer=1 loop=3 time=20 length=2
+[リム f=32]「...! (Eek!)」[k]
+[テオ f=13]「Anyway, we'll just have to spend the night here, so let's relax.」[k]
+@fgf r=リム f=33
+[リム v=vh427 f=33]「Y-yeah, that's true...」[k]
+[リム] finally opens her mouth, and I am relieved to see the atmosphere soften a bit. Then.[k]
+@se f=door1
+@fg l=テオ f=05 b
+@fg r=リム f=05
+[従業員]「Excuse me, excuse me.」[k]
+[テオ f=05]「Aaa...」[k]
+An employee unexpectedly entered the room.[k]
+[従業員]「We offer a free laundry service. Please put your clothes in this basket. We will wash them and return them to you by tomorrow morning.」[k]
+[リム f=05]「...」[k]
+A laundry service...?[k]
+It may be convenient, but we brought weapons and other items with us in case something happened. I'd rather not leave our belongings with others.[k]
+[テオ f=05]「Uh... That's fine...」[k]
+[従業員]「We are sorry, but this service is mandatory for all guests staying at this hotel.」[k]
+[テオ f=05]「What...?」[k]
+You're saying laundry service is mandatory? What on earth is going on?[k]
+[従業員 f=01]「You see, we have had problems in the past with guests staying at this hotel, including vandalism and murder...」[k]
+[従業員 f=01]「To prevent any problems, we ask our customers to leave all their luggage, including what they are wearing.」[k]
+[テオ f=06]「I see...」[k]
+[従業員]「In return, we will wash the clothes you leave with us. Thank you very much for your cooperation.」[k]
+[テオ f=06]「...」[k]
+[リム v=vh428 f=05]「If that's the case, should we just obey?」[k]
+[テオ f=06]「...」[k]
+We're here to conduct an undercover investigation of this hotel. I'm a little reluctant to check in all our luggage...[k]
+However, disobeying the employees will be regarded with suspicion. It would be counterproductive to be refused accommodation.[k]
+[テオ f=05]「Okay, I'll leave my clothes and luggage with you.」[k]
+[従業員]「Thank you for your cooperation! Please them in this basket. Please wear this instead.」[k]
+[textoff]
+@out
+@w1
+@bg f=0004 b
+@fg l=テオ e=バスタオル f=26 b
+@fg r=リム e=バスタオル f=30
+[texton]
+[テオ f=26]「...」[k]
+[リム f=30]「... (Kyaa)」[k]
+After depositing all of our clothes, [リム] and I were only clad in towels.[k]
+This was all the employee offered us to wear.[k]
+[テオ f=25]「Um... You didn't have anything else to wear?」[k]
+[従業員]「Sorry, we wanted to provide bathrobes, but unfortunately we are out of stock...」[k]
+[テオ f=26]「Oh no...」[k]
+[従業員]「...Isn't it fine? Given what you are both here for, after all.」[k]
+The employee then smiles a little condescendingly.[k]
+[テオ f=26]「...」[k]
+...This is one of those places where if you stand out too much, people may become suspicious. Ostensibly, [リム] and I are just an ordinary couple who came to stay at a love hotel.[k]
+[テオ f=05]「I understand. Please take care of the laundry.」[k]
+[従業員]「Well, enjoy yourselves.」[k]
+@se f=door1
+∗slam∗[k]
+[テオ f=26]「...」[k]
+[リム f=30]「... (Kyaa)」[k]
+Now we are facing each other almost naked, save a single piece of cloth.[k]
+And this is a love hotel... In this situation, it would be strange not to be aware of the other party.[k]
+[テオ f=26]「...」[k]
+I feel the urge to embrace [リム] with all my might. But if I act on instinct here, I'll lose my credibility as a captain...[k]
+@fgf l=テオ f=13
+[テオ f=13]「For now, I'm going to go to the corner of the room. You can use the bed, [リム]. I'll sleep on the floor.」[k]
+@fgf r=リム f=31
+[リム v=vh429 f=31]「No...! That's not fair on you...」[k]
+@fgf l=テオ f=02
+[テオ f=02]「I can't let you sleep on the floor. Don't worry about it. I'll be fine.」[k]
+@fgf r=リム f=30
+[リム f=30]「...」[k]
+@fgf r=リム f=29
+[リム v=vh430 f=29]「Umm... Captain...」[k]
+[テオ f=02]「What?」[k]
+[リム v=vh431 f=29]「If you like... Would you like to sleep with me?」[k]
+@mu f=peace
+@fgf l=テオ f=25
+[テオ f=25]「What?!」[k]
+I am thrilled at the unexpected invitation from [リム].[k]
+@fgf r=リム f=31
+[リム v=vh432 f=31]「Ah... no! Just sleeping next to me! I don't mean that in a weird way...」[k]
+@fgf r=リム f=33
+[リム v=vh433 f=33]「I'd feel bad if you slept on the floor, so please use the bed too. It's quite large, so it should be fine if you sleep next to me...」[k]
+@fgf l=テオ f=13
+[テオ f=13]「I-I was just surprised. But aren't you worried about a guy sleeping next to you?」[k]
+@fgf r=リム f=04
+[リム v=vh434 f=04]「It's all right. I trust you, Captain!」[k]
+[テオ f=13]「Ah... Hahaha...」[k]
+[リム] says this with an uninhibited smile. I guess she sees me as harmless...[k]
+[textoff]
+@fa
+@out
+@w05
+@jump storage="main11.scn" target=*hotel_2
+
+
+;◇主人公ホテルイベント・朝
+*hotel_theo_2
+
+; ラブホテルの一室・朝
+@bg f=9999
+@bg f=0064 t=2000
+@mu f=peace
+[texton w=0]
+[テオ e=バスタオル f=06]「...」[k]
+It's morning...?[k]
+I wake up on a pink bed. Come to think of it, I slept at a love hotel last night...[k]
+[テオ f=25]「...Ah!」[k]
+I remember! [リム] is sleeping next to me, wearing just a towel...![k]
+I timidly look beside me. Then [―――][k]
+[リム e=裸 f=19]「... ∗zzz∗」[k]
+[テオ f=12]「...!」[k]
+There was [リム], sleeping innocently, her towel having fallen completely loose![k]
+She was on her back, exposing her twin white dunes. Her cute nipples were pointing upwards.[k]
+Her crotch also wasn't covered by anything. The tightly closed crack barely prevents the female genitalia from being visible.[k]
+[リム f=19]「... ∗zzz∗」[k]
+[テオ f=10]「[リム]...」[k]
+I can't take my eyes off [リム]...![k]
+My eyes were glued to her naked body, which was openly exposed.[k]
+[リム] was sleeping soundly despite the fact that I can see her naked.[k]
+[テオ f=10]「[リム]...」[k]
+[リム v=vh435 f=19]「...Mmm...」[k]
+[テオ f=12]「...Ah!」[k]
+Not good! [リム] will wake up![k]
+I came to my senses and hurriedly wrapped the towel back around [リム] to hide her body.[k]
+[textoff]
+@out
+@bg f=0064
+@fg c=リム e=バスタオル f=01
+[texton w=1]
+[リム v=vh436 f=01]「Ah... Good morning, Captain.」[k]
+[テオ f=33]「Oh, good morning...」[k]
+Perhaps because of what happened earlier, my reply is somewhat awkward.[k]
+@fg c=リム f=31
+[リム v=vh437 f=31]「...Kyaa!」[k]
+[テオ f=05]「Hmm? What's wrong?」[k]
+Suddenly [リム]'s face turns bright red and she seems embarrassed.[k]
+...Maybe she knew that I saw her naked earlier?![k]
+@fg c=リム f=29
+[リム v=vh438 f=29]「Captain... That place...!」[k]
+[テオ f=25]「Ah...!」[k]
+To my surprise, my penis had grown and was tenting between my legs![k]
+[テオ f=25]「S-sorry!」[k]
+I hurriedly cover my front. I just saw [リム] naked, and now this is happening...![k]
+@fg c=リム f=33
+[リム v=vh439 f=33]「No, it's okay! I don't mind! Men get erections in the morning... I know, because I have a brother.」[k]
+[テオ f=26]「...」[k]
+Apparently [リム] thinks it's a morning erection. Thank goodness...[k]
+@se f=door1
+[従業員]「Good morning. The clothes we received yesterday have been washed and brought to you.」[k]
+The hotel employee brought the clothes and luggage we left behind yesterday. We hurriedly put them on and checked out of the hotel.[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+@eval exp='o.リム.strip.theo = "裸"'
+@jump storage="main11.scn" target=*hotel_4
+
+
+
+;■ホテルイベント・マックスと同室
+
+;◇マックスホテルイベント・夜
+*hotel_max_1
+
+; ラブホテルの一室
+@se f=door1
+@mu f=bad
+@bgf f=0004
+@fg l=マックス e=バスタオル,勃起 f=22 b
+@fg r=リム e=バスタオル f=30
+[texton w=1]
+[従業員]「Well, enjoy yourselves.」[k]
+@se f=door1
+∗slam∗[k]
+The hotel employee left, leaving me wearing only a towel.[k]
+[マックス f=22]「... ∗grin∗」[k]
+[リム f=29]「...!」[k]
+[マックス]'s gaze is kind of scary... I'm afraid of what he's thinking.[k]
+Will it really be okay? Spending the night with [マックス], wearing just a towel...[k]
+Anyway, I should do something now so he doesn't get any funny ideas...[k]
+[リム v=vh440 f=29]「Hey, [マックス]...」[k]
+@fgf l=マックス f=22 left=550 index=1900
+[マックス f=22]「[リム]!」[k]
+@se f=cloth
+@flash t=200
+@fgf r=リム e=裸 f=25
+Ah![k]
+@fgf r=リム f=31
+[リム f=31]「...!」[k]
+Suddenly, [マックス] ripped off my towel![k]
+@fg r=リム e=裸,手ブラ f=37
+[リム v=vh441 f=37]「Kyaaaah! What are you doing?!」[k]
+@fgf l=マックス e=裸・腕上げ・勃起 f=22 left=620 index=1900
+[マックス f=22]「That's obvious, isn't it?! Sex! Sex!」[k]
+[マックス] also took off the towel he was wearing and grabbed my shoulders![k]
+@shake layer=1 loop=5 time=20 length=2
+[リム v=vh442 f=37]「No, don't! Let go of me! [マックス]!」[k]
+@shake layer=2 loop=5 time=20 length=2
+[マックス f=22]「I can't take it anymore! Please! [リム], let me fuck you right away!」[k]
+@mu f=action
+@clf
+@se f=dosa
+@quake time=500 hmax=5 vmax=20
+[マックス] pushes me down on the pink double bed![k]
+[リム v=vh443 e=裸 f=37]「No! Stop it! Calm down, [マックス]!」[k]
+[マックス f=56]「Come on, don't get angry, don't resist.」[k]
+[リム v=vh444 f=37]「I don't want to! I don't want to do it with you, [マックス]! Please let go of me!」[k]
+[マックス f=75]「Huh? What are you talking about? This is a love hotel! There's no way you won't let me fuck you!」[k]
+[リム v=vh445 f=47]「I only stayed here because Sandra told me to, so no sex! Please stop!」[k]
+[マックス f=24]「Seeing you in a towel really turned me on... I couldn't help but want to get in your pussy, so please, let me do it! Just once is fine!」[k]
+[リム v=vh446 f=47]「That's no good! Even once is too much!」[k]
+[マックス f=24]「Hey, please. Just once, once! Okay?」[k]
+[マックス] holds both my arms and runs his tongue over my bare breasts.[k]
+[リム v=vh447 f=37]「That's why I said it's not okay... Ah...!」[k]
+[マックス f=55]「Come on, spread your legs.」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=リム f=event13 p0=hair p1=01 p2=01
+[texton w=2]
+[マックス] forced his leg between my thighs and spread my legs apart.[k]
+[リム v=vh448]「No...!」[k]
+My vagina is exposed in front of [マックス]'s eyes...[k]
+Then he brought his hard, fully erect cock close to it![k]
+[マックス]「I can't wait until it gets wet! ∗spit∗」[k]
+@bg chara=リム f=event13 p0=hair p1=01 p2=03
+[リム v=vh449]「Ahhhh... Nooooooo...」[k]
+[マックス] spat onto his hand and roughly smeared it on my crotch.[k]
+[マックス]「Anyway, I've gotta put it in right now. Sorry we couldn't play around some more first!」[k]
+[マックス]'s tip is pressed against my entrance![k]
+[リム]「...!」[k]
+[マックス]「Let's go, [リム]!」[k]
+[マックス] put his weight in front of him, then [――――][k]
+@bg chara=リム f=event13 p0=hair p1=03 p2=03
+∗sluurp∗[k]
+[リム v=vh450]「Aaaahh...!」[k]
+[マックス]「Whoa, I'm in!」[k]
+[マックス]'s cock slid into me![k]
+His penis penetrated deeper and deeper, reaching the depths of my vagina in no time.[k]
+It's all in...![k]
+[if exp='o.リム.getTotalSexCount() == 0']
+	I didn't want my first time to be like this...![k]
+[else]
+	I didn't want to have sex with [マックス]...![k]
+[endif]
+[マックス]「Kuuuuu! It's so tight! I can't get enough of this!」[k]
+@bg chara=リム f=event13 p0=hair p1=03 p2=04
+[リム v=vh451]「Ahh... [マックス]...」[k]
+[マックス]「Come on, I'll make you feel good real quick! Just be a little patient!」[k]
+@bg chara=リム f=event13 p0=hair p1=04 p2=03
+∗sluurp sluurp sluurp∗[k]
+[マックス] began to move his hips.[k]
+[マックス]「Ugh! It feels so good I can't stop my hips!」[k]
+[リム v=vh452]「Mmm... Ugh... Ugh... Ahhh...! Ahh...!」[k]
+Maybe it's because I'm not very wet, but my pussy hurts... Ahh...![k]
+But [マックス] ignored my pain and continued to move his hips.[k]
+∗sluurp sluurp sluurp∗[k]
+[リム v=vh453]「Ugh... Ugh... Mmm...」[k]
+[マックス]'s big penis squeezes back and forth inside my narrow vagina.[k]
+I clenched my teeth and endured the stimulation of the cock.[k]
+Please... just get it over with...![k]
+∗sluurp sluurp sluurp∗[k]
+[マックス]「Whoa, you're getting a lot wetter, huh? I'm moving more smoothly now!」[k]
+[リム v=vh454]「Mmm... Ah... Ugh... Ahh...」[k]
+[マックス]「Well, then, I guess I'll have to cum soon～!」[k]
+∗slurp slurp slurp slurp slurp slurp!∗[k]
+[マックス] suddenly increases the speed he's moving his hips![k]
+[リム v=vh455]「Ahh... No... If you move like that... Aaahh!」[k]
+It hurts... Stop...![k]
+If you do that to me... You'll break me...![k]
+[マックス]「Hnnuuuuuuu! I can't stop! It feels too good, ooooh, [リム]'s pussy!」[k]
+∗slurp slurp slurp slurp slurp slurp!∗[k]
+[リム v=vh456]「Ah... ahh... no... nooooo...!」[k]
+[マックス]「[リム]! [リム]!」[k]
+[マックス] furiously moves his hips and slams his cock into my pussy![k]
+[マックス]「Ugh! I'm gonna cum!」[k]
+∗spuurt! spuurt!∗[k]
+[リム v=vh457]「Aaahhh...!」[k]
+[マックス] pushed his penis into me as hard as he could, and ended up finishing inside...[k]
+[textoff]
+@fa
+@out
+@w05
+
+@bg f=0004
+@mu f=bad
+[texton w=1]
+[マックス e=汗だく f=24]「Ohhhhh, that felt good!」[k]
+[リム v=vh458 e=汗だく f=61]「Ugh... That's horrible... [マックス]... Ugh...」[k]
+[マックス f=65]「Sorry, I should have caressed you properly. I just couldn't resist.」[k]
+I didn't mean that, I didn't want to do anything dirty with you in the first place...[k]
+I can't believe he forced me to do this... It's too much...![k]
+[マックス f=77]「I'm so sorry! Next time I'll play with you until it's properly wet! Okay, let's go for round two...」[k]
+[リム v=vh459 f=54]「I won't do it with you any more!」[k]
+[マックス f=77]「I said I'm sorry. I'll make you feel better this time. So let's do it again. The night has only just begun, right?」[k]
+[リム v=vh460 f=54]「You said just once earlier! I'll never do it again!」[k]
+[マックス f=77]「Eh～? Don't say that, let's do it again. I'm still so excited. Come on, [リム].」[k]
+[リム v=vh461 f=69]「If you touch me again, I won't forgive you!」[k]
+[マックス f=55]「What the hell, you don't have to be so mad...」[k]
+Perhaps intimidated by my attitude, [マックス] didn't touch me again.[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+@jump storage="main11.scn" target=*hotel_3
+
+;◇マックスホテルイベント・朝
+*hotel_max_2
+
+; ラブホテルの一室・朝
+@bg f=0064 b
+@fg l=マックス f=13 b
+@fg r=リム f=72
+@mu f=bad
+[texton w=1]
+[リム f=72]「...」[k]
+[マックス f=13]「Hey～ [リム]～ Cheer up～!」[k]
+[リム v=vh462 f=71]「Of course I'm angry after what you did to me!」[k]
+[マックス f=13]「That's why I said I was sorry. I just got so horny looking at you, and I just couldn't resist.」[k]
+[リム f=72]「...」[k]
+[マックス f=60]「Sorry, I'm sorry! You're right!」[k]
+[リム f=72]「...」[k]
+[マックス] bows his head deeply and repeatedly apologizes to me.[k]
+...[k]
+[マックス f=60]「I'm really sorry! Seriously, forgive me!」[k]
+@fgf r=リム f=08
+[リム f=08]「...」[k]
+@fgf r=リム f=07
+[リム v=vh463 f=07]「...If you do anything to me again, I'll tell the captain!」[k]
+@fgf l=マックス f=51
+[マックス f=51]「Will you forgive me?」[k]
+@fgf r=リム f=71
+[リム v=vh464 f=71]「It was just that one time. There won't be a next time.」[k]
+@fgf l=マックス f=59
+[マックス f=59]「Thank you! [リム]!」[k]
+...I don't want to see him ever again, but [マックス] is an important member of the party, so we can't keep fighting...[k]
+@fgf l=マックス f=78
+[マックス f=78]「Well then, it's time to go to the front desk! It's almost time to check out!」[k]
+I remained silent and headed to the front desk with [マックス].[k]
+[textoff]
+@out
+@w1
+[texton w=0]
+[マックス f=19]（Ha～, I guess I was too pushy indeed. I made [リム] angry. I may not be able to have sex with her anymore...）[k]
+[マックス f=03]（...Well, it's okay ♪ I got to do it once, and it felt great, so no regrets!）[k]
+[textoff]
+@fa
+@out
+@w05
+
+; マックス関連イベント消滅
+@delevent name=リム num=20
+@delevent name=リム num=21
+@delevent name=リム num=22
+@delevent name=リム num=23
+@delevent name=リム num=24
+@delevent name=全般 num=81
+@eval exp='o.リム.strip.max = "裸"'
+@eval exp='o.リム.guard.max = -1'
+@recordsex guy=マックス sex=1 orgasm=0 acts=乳首吸い,正常位 date=&'game.date - 1'
+@recordsex guy=マックス sex=1 orgasm=1 acts=乳首吸い,クリ責め,バック
+@jump storage="main11.scn" target=*hotel_5
+
+
+
+
+;■不倫イベント
+
+;◇マックス不倫イベント
+*adultery_max
+
+; 宿屋の一室
+@saveon
+@bg f=0001 b
+@fg l=マックス e=通常 f=01 b
+@fg r=リム e=通常 f=10
+@mu f=affair
+[texton w=1]
+[マックス f=01]「Hey, [リム]. How are things going with [テオ]?」[k]
+[リム v=vh465 f=13]「Hmmm... okay...」[k]
+@fg l=マックス f=03
+[マックス f=03]「I see! I've talked to you about [テオ] before, so if things are going well, I'm happy for you!」[k]
+[リム f=10]「...」[k]
+@fg l=マックス f=01
+[マックス f=01]「Huh? You look downcast. Is something bothering you?」[k]
+[リム f=10]「...」[k]
+[マックス f=01]「...Could it be a sexual problem?」[k]
+@fg r=リム f=52
+[リム f=52]「...!」[k]
+@fg r=リム f=30
+[リム f=30]「... (Kyaa)」[k]
+[マックス f=03]「Oh, looks like I hit the nail on the head! Okay, I'll give you some advice!」[k]
+[リム v=vh466 f=29]「...[マックス], are you knowledgeable about sex?」[k]
+@fg l=マックス f=67
+[マックス f=67]「Huh? Well... I know more than [テオ], at least. I've slept with quite a few women, after all!」[k]
+[リム v=vh467 f=30]「Well, okay...」[k]
+@fg l=マックス f=01
+[マックス f=01]「So, what kind of problem is it?」[k]
+[リム f=30]「...」[k]
+[マックス f=01]「What? Is it hard to say? ...Maybe you don't feel very good even when you're doing it with [テオ]?」[k]
+@fg r=リム f=52
+[リム f=52]「...!」[k]
+[マックス f=03]「Hehe, right again. There's no need to be embarrassed. It's a common occurrence.」[k]
+@fg r=リム f=29
+[リム v=vh468 f=29]「So... what should I do...」[k]
+@fg l=マックス f=62
+[マックス f=62]「Hmm, well...」[k]
+@fg l=マックス f=15
+[マックス f=15]「...If you want, I can teach you. Through practice!」[k]
+[リム f=26]「...」[k]
+[textoff]
+@out
+@w05
+
+@bgf chara=リム f=event13 p0=hair p1=04 p2=03
+@mu f=adult
+[texton w=2]
+[リム v=vh469]「Ahh... [マックス]... that's good...!」[k]
+[マックス]「That's some amazing sex. Is it really that good?」[k]
+[リム v=vh470]「Yes... my husband has never done this for me... aaah!」[k]
+[マックス]「Really? Okay, then let me teach you some other techniques!」[k]
+[リム v=vh471]「Yes...! Please... [マックス]...!」[k]
+[textoff]
+@out
+@w05
+
+@bg f=0045
+@mu f=affair
+[texton w=0]
+[リム v=vh472 e=汗だく f=37]「Phew...」[k]
+[マックス e=汗だく f=15]「How was it, did it feel good?」[k]
+[リム v=vh473 f=74]「Yes... It's been a while since I've felt this good...」[k]
+[マックス f=03]「That's great! Well, use it as a reference for sex with [テオ]!」[k]
+[リム v=vh474 f=55]「[マックス], you're really good at sex... Um... Can I come back to learn more about sex...?」[k]
+[マックス f=03]「Oh! You're more than welcome! It's for sex with your precious husband, after all! Don't be shy, come on over!」[k]
+[textoff]
+@fa
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナス不倫イベント
+*adultery_linus
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=affair
+[texton w=0]
+[リム v=vh475 e=汗だく f=37]「Ahh... Linus's... is thick...!」[k]
+[ライナス e=裸 f=01]「It's really tight, [リム]. Which is better, [テオ]'s dick or this one?」[k]
+[リム v=vh476 f=37]「Of course... Linus's... Aaahhh!」[k]
+[ライナス f=03]「Hehe, I wonder what [テオ] would think if he heard that... [リム], what a terrible wife you are!」[k]
+Surprisingly, [リム] engaged in an extramarital affair with Linus after becoming dissatisfied with her sex life with [テオ].[k]
+[textoff]
+@fa
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■フリーモード
+
+*_blue_01_freemode
+
+; 宿屋の一室
+@bg chara=リム f=event08 p0=01 p1=hair p2=01 p3=04 p4=06
+@mu f=darkside
+[texton w=2]
+Blue and [リム] were alone in a room at the inn.[k]
+[リム] had been stripped of her clothes and she was in bed with Blue.[k]
+[リム] had decided to keep her promise and entrust her body to him.[k]
+She is bare-chested, revealing her beautiful breasts.[k]
+Her lower body is hidden by the sheets, but she isn't wearing anything.[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=02 p3=04 p4=04
+[リム v=vh364]「Ah...!」[k]
+Blue idly fondled [リム]'s breasts.[k]
+[リム] lets out a small scream as if she feels something.[k]
+Blue further fondles [リム]'s breasts.[k]
+[ブルー]「Kuku, your nipples are getting harder and harder.」[k]
+[リム v=vh365]「Ah... no... Blue... Aaah...!」[k]
+Blue caresses [リム]'s breasts. He squeezes her breasts and kneads her nipples to stimulate her.[k]
+[ブルー]「Hmm, it seems like you're feeling good. Now, how about here?」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=03 p3=04 p4=05
+Blue plunged his other hand into the sheets and fumbled with [リム]'s lower body.[k]
+[リム v=vh366]「Aaaaahhh... Blue...!」[k]
+[ブルー]「Oh, you are wet. You're soaking wet, right in front of your captain.」[k]
+[リム v=vh367]「Ahh... No... No... There's... ahhh..!」[k]
+[テオ]「...」[k]
+[リム] writhes under Blue's caresses, as he attacks the most sensitive part of her lower body.[k]
+Her nipples were hard, her face flushed, and she continued to let out husky gasps.[k]
+[ブルー]「Well, it's about time...」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=03 p3=04 p4=04
+Blue is wriggling his hands in the sheets.[k]
+[ブルー]「Let's get it in... Damn!」[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=04 p3=09 p4=05
+@se f=kucha
+∗squish∗[k]
+[リム v=vh369]「Aaagh...!」[k]
+[リム] frowned as Blue thrust his hips forward with an obscene wet sound.[k]
+[ブルー]「Phew... I'm in. It's pretty tight.」[k]
+@se f=kucha
+@bg chara=リム f=event08 p0=01 p1=hair p2=04 p3=09 p4=06
+[ブルー]「Wow, that's pretty tight. That's good.」[k]
+[ブルー]「Okay, let's move.」[k]
+@se f=kuchaslow
+∗sluurp sluurp sluurp∗[k]
+@bg chara=リム f=event08 p0=01 p1=hair p2=04 p3=09 p4=04
+[リム v=vh370]「Oh, oh, oh, oh...」[k]
+Blue starts to move back and forth. Every time Blue moved, there was a lewd squishing sound, and [リム] moaned prettily.[k]
+[ブルー]「Ohh... That's pretty good.」[k]
+[リム v=vh371]「Mmm... Ugh... Ugh... Ahhh...! Ahh...!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ブルー]「It's slippery. It's nice and slippery.」[k]
+[リム v=vh372]「Ah... Blue... Aan... ah... Hiaah... Aah!」[k]
+Wet sounds echoed all around. Her vagina was being stirred by Blue and was overflowing with disgusting nectar.[k]
+[ブルー]「I'm getting close to cumming. It's time to pick up the pace.」[k]
+@bg chara=リム f=event76 p0=hair p1=02
+Blue changes position. The sheets are rolled up, revealing their pubic areas![k]
+Blue's rigid, obscenely glistening rod pushes [リム]'s pink entrance open and penetrates deeply.[k]
+[ブルー]「Phew... That's good... I can't get enough!」[k]
+[リム v=vh373]「Ah, ah, ah, Blue, ah, no, ah...!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+Blue roughly thrusts into [リム]'s pussy![k]
+[リム] wiggles her hips and moans excitedly as the strong and rigid cock slides in and out of her.[k]
+[リム] was already addicted to sex with Blue.[k]
+[ブルー]「Damn, how does my dick feel?」[k]
+[リム v=vh374]「Aah, aah, if you do this to me like this... aah! I... aahhh!」[k]
+Blue increases the pace of his thrusts even more! He seemed to be building up all the way to ejaculation.[k]
+[ブルー]「Ugh... I'm about to cum...」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[リム v=vh375]「Ah! Ah! Ah! I can't... any more... ah!」[k]
+[ブルー]「I'm going to let it out! Ugh!」[k]
+@flash
+∗spurt! spurt!∗[k]
+[リム v=vh376]「Haaaaaaaaahhh... Blue...!」[k]
+Blue thrusts his hips forward as far as he can and stiffens in that position![k]
+Blue ejaculated copiously inside [リム].[k]
+@bg chara=リム f=event76 p0=hair p1=03
+[ブルー]「Phew... That felt good...」[k]
+After ejaculating for a while, Blue sighed with pleasure.[k]
+A dollop of Blue's white fluid silled out of [リム]'s vaginal hole...[k]
+[textoff]
+@out
+@w05
+@bg f=0001
+[texton w=1]
+[リム v=vh377 e=汗だく f=39]「Phew...」[k]
+[リム] lies there completely exhausted, with depressed eyes and Blue's semen dribbling between her legs.[k]
+[textoff]
+@out
+@w05
+@recordsex guy=ブルー sex=1 orgasm=0 acts=乳揉み,クリ責め,正常位 cond='! f.replayMode'
+[hoteloff]
+
+
+
+
+*_blue_02_freemode
+
+; 宿屋の一室
+@bg f=0001
+@mu f=darkside
+@fg l=ブルー e=通常 f=06 b
+@fg r=リム e=通常 f=09
+[texton w=1]
+[ブルー e=通常 f=02]「Hey, [リム], you'll have to deal with me again today.」[k]
+Blue, now alone with [リム], blurted out those words as soon as he opened his mouth.[k]
+@fg r=リム f=10
+[リム f=10]「...!」[k]
+[リム]'s face turned pale in an instant. However, perhaps realizing her position, she simply remained silent and looked down.[k]
+@fg l=ブルー f=05
+[ブルー f=05]「Come on!」[k]
+Without a second thought, Blue grabs [リム]'s hand and takes her straight to bed.[k]
+@fg l=ブルー f=02
+[ブルー f=02]「Alright, [リム], let's get started.」[k]
+@cl
+Blue takes off his shirt with great enthusiasm, then strips off [リム]'s clothes, leaving her naked. She doesn't resist.[k]
+@fg l=ブルー e=上半身裸 f=02 b
+@fg r=リム e=白いパンツ f=30
+[ブルー f=02]「Come on, let's fuck. Let's feel good today.」[k]
+[リム f=30]「...」[k]
+@cl
+Blue pushed a half-naked [リム] down on the bed![k]
+[textoff]
+@out
+
+@bg chara=リム f=event76 p0=hair p1=02
+@mu f=worry
+[texton w=2]
+[リム v=vh379]「Ah... Ah... Ah... Ah...」[k]
+[ブルー]「Phew... Feels good...」[k]
+Blue inserted himself into [リム] without so much as a caress.[k]
+[リム]'s pussy seemed to get wet right away, and Blue's big cock slid in and out smoothly and slippery.[k]
+[リム v=vh380]「Oh, no... No... ahh... Aaahhh...!」[k]
+[リム]'s gasps are clearly louder than the last time this happened.[k]
+She's feeling aroused by Blue's penis.[k]
+[ブルー]「Hehe, it looks like you're really starting to like my dick.」[k]
+[ブルー]「I'm going to make sure you can't get enough of my dick, too, yaa!」[k]
+∗sluuurp!∗[k]
+[リム v=vh381]「Ha-an... Blue... I... I can't... No more!」[k]
+[リム] makes a very distressed sound as she is penetrated deeply.[k]
+[ブルー]「Are you about to cum?」[k]
+[ブルー]「I'll make you cum as you wish, yaa!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+Blue picks up the pace of his poke at [リム] quickly.[k]
+[リム v=vh383]「Ahh! I can't...! I'm cumming... Please don't look at me...!」[k]
+[ブルー]「I'm gonna cum too... Ugh!」[k]
+@flash
+@flash
+@flash
+∗spuurt! spuurt!∗[k]
+@bg chara=リム f=event76 p0=hair p1=03
+[リム v=vh384]「Aaaaaaahhh...」[k]
+Finally, [リム] was made to cum by Blue... Blue also came inside [リム]...[k]
+[textoff]
+@out
+@w05
+
+@bgf f=0001
+[texton w=0]
+[ブルー f=02]「Phew, I just gave another woman a taste of heaven.」[k]
+[ブルー f=01]「This is a reward, not an obligation. She's lucky to have me to protect her and make her feel even better! Hahahahaha!」[k]
+After that, Blue screwed [リム] several more times and left the room looking satisfied.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+*_blue_03_freemode
+
+; 宿屋の一室
+@saveon
+@se f=door1
+@bg f=0002
+@mu f=worry
+[texton w=0]
+[リム v=vh385 e=汗だく f=37]「Ah... that's good... that's good... aaah...!」[k]
+Today, Blue was violating [リム] again.[k]
+[リム] had been penetrated by Blue many times, and moans with pleasure.[k]
+She no longer feels any shame. She truly enjoys having sex with Blue.[k]
+[リム v=vh386 f=38]「Aaaan... Blue... I'm... I'm cumming...!」[k]
+[リム] is drowning in pleasure. Another woman has become captivated by Blue.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+

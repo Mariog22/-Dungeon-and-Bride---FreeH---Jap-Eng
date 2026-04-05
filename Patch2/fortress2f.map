@@ -1,0 +1,139 @@
+﻿; 森の城塞
+
+name = 森の城塞２Ｆ
+insideName = ２Ｆ
+upper = 森の城塞３Ｆ
+lower = 森の城塞１Ｆ
+level = 23
+bgm = eerie
+margin = 3
+roof = stone
+shadow = dark
+sky = forest
+
+; 各パーツ
+━ = stoner
+　 = marble
+／ = door
+〆 = key
+☖ = arch
+⧻ = fence
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+⑴ = candle
+⑵ = lighten
+⑶ = monument
+
+; 敵情報
+maxGroups = 2
+monsters = クレリック,アコライト,ハイプリースト,ディサイプル,アルケミスト
+
+; 宝箱
+box[1] = 沈黙の杖_u,輝く鎖かたびら_u,経験のコイン（小）,ライトストリームの巻物,マジックウェポンの魔法書_u
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  ┏━┳━━━┳━━━━━━━┳━━━┳━━━┓
+ 9┃　／⑤　　┃　　　　　　　／④　④／　　　┃
+  ┃　┃　　　┃　┏━━━━━┫　　　┣━┓　┃
+ 8┃　┃　　⑤／　┃⑴　⑴　⑴┃　　　┃㊤┃　┃
+  ┃　┣━┳━┻━┫　　　　　┣━━━┫　┃　┃
+ 7┃　┃❶┃⑴　⑴┃　　　　　┃⑴　⑴┃　┃　┃
+  ┃　┃　┃　　　┣━━／━━┫　　　┃　┃　┃
+ 6┃　┃　┃⑴　　／　　　　　／　　⑴┃　┃　┃
+  ┃　┃　┣━━━┫　　　　　┣━━━┫　┃　┃
+ 5┃㊦┃　┃⑴　　┃　　　　　┃　　⑵┃　┃　┃
+  ┣━┛　┃　　　┃　　　　　┃　　　┃　┃　┃
+ 4┃　　　┃⑴　　／　　⑶　　／　　⑴┃　┃　┃
+  ┣／━━┫　　　┃　　　　　┃　　　┃　┃　┃
+ 3┃⑥　　┃⑴　　┃　　　　　┃　　⑴┃　┃　┃
+  ┃　　　┣━━━┫　　　　　┣━━━┫　┃　┃
+ 2┃　　⑥┃⑴　　／　　　　　／　　⑴┃　┃　┃
+  ┣━━／┫　　　┃　　　　　┃　　　┃　┃　┃
+ 1┃　　　┃⑴　⑴┃　　　　　┃⑴　⑴┃　┃　┃
+  ┃　　　┗━━━┻〆┳⧻━━┻━━━┛　┃　┃
+ 0┃㊦　　　　　　　　┃　　　　　　　　　┃㊦┃
+  ┗━━━━━━━━━┻━━━━━━━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[4][0].n.key = o.教団の鍵;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(4, 5, 6);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@se f=kacha
+@changefloor pimg=&'game.map.getFloorInfo().pimg == "candle" ? "lighten" : "candle"'
+[eventoff cond='game.map.getFloorInfo(4, 8).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(5, 8).pimg != "lighten"']
+[eventoff cond='game.map.getFloorInfo(6, 8).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(2, 7).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(3, 7).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(7, 7).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(8, 7).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(2, 6).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(2, 5).pimg != "lighten"']
+[eventoff cond='game.map.getFloorInfo(2, 4).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(2, 3).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(2, 2).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(8, 6).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(8, 4).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(8, 3).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(8, 2).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(2, 1).pimg != "candle"']
+[eventoff cond='game.map.getFloorInfo(3, 1).pimg != "lighten"']
+[eventoff cond='game.map.getFloorInfo(7, 1).pimg != "lighten"']
+[eventoff cond='game.map.getFloorInfo(8, 1).pimg != "candle"']
+@delevent
+@wait time=800
+@se f=fence
+@switchfence x=5 y=1 way=s mode=open
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="There is a pillar with a crystal ball at the tip.<r>Nothing happens when you touch it."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Draw the symbol of our sect here."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+*event_5
+;[exp] true
+*event_6
+;[exp] true
+
+@callbattle gameover=true
+@delevent
+@jump storage=&'o.森の城塞１Ｆ.mapFile' target=*_dropMembersItem
+
+[eventoff]
+;-------------------------------------------------------------------------------

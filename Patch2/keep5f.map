@@ -1,0 +1,125 @@
+﻿; ワイルド・ブルの砦
+
+name = ワイルド・ブルの砦５Ｆ
+insideName = ５Ｆ
+lower = ワイルド・ブルの砦４Ｆ
+level = 60
+bgm = bad
+shadow = dark
+sky = mountain
+roof = wood
+margin = 3
+
+; パーツ画像
+━ = wood
+　 = wood
+／ = door
+∫ = pick
+㊦ = ladderd
+⑵ = barrel
+⑶ = barrel
+⑷ = br_luc
+
+; 宝箱
+box[1] = 鍵付き宝箱,奴隷の鎧・上_u,奴隷の鎧・下_u,アンロックの巻物
+box[2] = 金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（特大）,金貨（特大）,金貨（特大）,金貨（特大）,金貨（大）,金貨（大）,金貨（中）,金貨（中）,金貨（小）,金貨（小）,金貨（小）
+box[3] = 金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（特大）,金貨（特大）,金貨（特大）,金貨（特大）,金貨（大）,金貨（大）,金貨（中）,金貨（中）,金貨（小）,金貨（小）,金貨（小）
+box[4] = 金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（特大）,金貨（特大）,金貨（特大）,金貨（特大）,金貨（大）,金貨（大）,金貨（中）,金貨（中）,金貨（小）,金貨（小）,金貨（小）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4  
+  ┏━━━━━┳━━━┓
+ 4┃⑵　⑶　⑷┃　　❷┃
+  ┃　　　　　┃　　　┃
+ 3┃　　　　　∬　　❸┃
+  ┃　　　　　┃　　　┃
+ 2┃　　　　　┃　　❹┃
+  ┃　　　　　┣━━━┫
+ 1┃㊦　　　　┃　　❶┃
+  ┃　　　　　┃　　　┃
+ 0┃　　　　　／　　炎┃
+  ┗━━━━━┻━━━┛
+;    0   1   2   3   4  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[0][1].event = 1;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@delevent
+@delevent map=ワイルド・ブルの砦１Ｆ num=1
+
+@wait time=500
+@walk move=n
+@walk turn=e
+@wait time=500
+@fg c=アレックス e=通常 f=12
+[texton w=1]
+[アレックス f=12]「How did you find this place?」[k]
+Surprisingly, Alex was hiding in the attic![k]
+[アレックス f=12]「Damn it! I'm not going to let you catch me!」[k]
+Alex and his gang attacked us![k]
+[textoff]
+@clf
+
+@eval exp='m.アレックス.life = 1280'
+@monster pos=1 name=アークメイジ naked=1
+@monster pos=2 name=デュエリスト naked=1
+@monster pos=3 name=デュエリスト naked=1
+@monster pos=4 name=デュエリスト naked=1
+@monster pos=5 name=アークメイジ naked=1
+@monster pos=9 name=アークプリースト naked=1
+@monster pos=10 name=アレックス
+@monster pos=11 name=アークプリースト naked=1
+@callbattle bgm=boss gameover=true escape=false
+
+[texton w=0]
+[アレックス f=12]「Damn it!」[k]
+Alex, who had committed all sorts of atrocities and caused so much suffering, was finally apprehended. This is the end for him.[k]
+[警備隊長 f=02]「You did a great job! You were instrumental to this operation. Thanks to you, it was a huge success!」[k]
+[警備隊長 f=00]「We have captured all of the other key members of Wild Bull. Now, law-abiding citizens will no longer have to worry about them. This was all thanks to your contributions.」[k]
+[警備隊長 f=02]「Please continue to cooperate for the sake of this country.[r]I am counting on you!」[k]
+[textoff]
+
+@complete name=ワイルド・ブル壊滅作戦
+@call storage="quest.ks" target=*_return_slaves cond='o.ワイルド・ブル.slaves[0] !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+*event_3
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("luck", 2)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Luck permanently increased by 2!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

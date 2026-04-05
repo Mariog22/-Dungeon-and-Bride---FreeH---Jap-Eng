@@ -1,0 +1,675 @@
+﻿; 主人公の結婚～悪魔再々復活・ブルー再加入まで
+
+
+
+
+;■主人公の結婚
+
+;◇イベント01・結婚式
+*wedding_01
+
+; どこかの教会を選んで『結婚する』を選ぶ
+;-----------------------------------------------------------------------------------------
+[iscript]
+
+// 主人公のセックス履歴
+game.wife.strip.theo = "裸・幸せ";
+for(var i = 0; i < 14; i++)
+{
+	game.elapse(1);
+	var rec = game.wife.getSexRecord(o.テオ, intrandom(2, 3));
+	game.wife.addSexRecordAndChangeHeart(rec);
+}
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+
+; どこかの教会。結婚した主人公夫婦を祝福する。ヒロインは妻の名
+@out
+@w05
+@bg f=0063
+@mu f=wedding
+[texton]
+[マックス f=03]「Congratulations!」[k]
+[マリア v=va247 f=01]「Congratulations! Both of you!」[k]
+[テオ f=01]「Thanks, guys.」[k]
+[ヒロイン] and I were finally able to hold our wedding ceremony with the blessing of everyone in the party and our acquaintances.[k]
+[ヒロイン] and I are now officially husband and wife.[k]
+[textoff]
+
+; 各ヒロイン別の結婚式シナリオへ（ドワーフだけ別）
+@jump storage="heroine01b.scn" target=*theo_wedding cond='game.wife == o.リム'
+@jump storage="heroine02b.scn" target=*theo_wedding cond='game.wife == o.クレア'
+@jump storage="heroine04b.scn" target=*theo_wedding cond='game.wife == o.ミューズ'
+@jump storage="heroine05b.scn" target=*theo_wedding cond='game.wife == o.マルエット'
+
+
+;◇イベント02・結婚から２週間後・結婚後のパーティー再結成
+*wedding_02
+
+; 設定
+;-----------------------------------------------------------------------------------------
+[iscript]
+game.protectHeroines = false;
+game.playerChara.married = game.wife.married = true;
+game.wife.events = [13, 17, 14, 15, 16, 30, 50, 70];	// 新たな宿屋イベントの設定
+game.party.recovery();
+game.party.supplyClothesToNakedMembers();
+o.ブルー.recovery();
+o.ライナス.recovery();
+o.サンドラ.recovery();
+
+// o.サファイアシティ.events.push(12);
+o.ベトリヌスの酒場.events.push2(18);
+o.ブレイブタウン・西門.events = [];
+o.冒険者の宿.events = [14];
+o.ホテル琥珀.events = [3];
+o.潮風のペンション.events = [2];
+o.雪の宿.events = [1];
+o.大洞窟ホテル.events = [0];
+o.簡易宿泊所.events = [0, 1];
+o.ヤネクの森・霧の谷.events.remove(5);
+game.events.push(52);	// 神の山封鎖解除の報告
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+
+; 宿屋のロビー。ヒロインは妻の名
+@bg f=0003 b
+@fg c=マックス f=03
+[texton]
+[マックス f=03]「Yo! [テオ]! Long time no see! [ヒロイン] too!」[k]
+
+; 結婚した妻のセリフ。夫とともに他のメンバーを迎える
+@eval exp='game.curChara = game.wife'
+[   if exp='isHUM'][リム v=vh080 e=現在の装備 f=01]「Good morning, [マックス].」[k]
+[elsif exp='isELF'][クレア v=ve081 e=現在の装備 f=02]「Good morning, Max.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd078 e=現在の装備 f=03]「Good morning, [マックス].」[k]
+[elsif exp='isGNO'][ミューズ v=vg068 e=現在の装備 f=02]「Good morning, [マックス].」[k]
+[elsif exp='isSYL'][マルエット v=vs082 e=現在の装備 f=01]「Good morning, Max.」[k]
+[endif]
+
+; 結婚しなかった他のメンバーのセリフ。テオ夫婦に会いに来た
+[if exp='HUM && game.curChara != game.wife']
+	[リム v=vh081 f=01]「Captain! It's been a while! I look forward to working with you again!」[k]
+[endif]
+[if exp='ELF && game.curChara != game.wife']
+	[クレア v=ve082 f=02]「Long time no see, Captain. Nice to see you again.」[k]
+[endif]
+[if exp='DWA && game.curChara != game.wife']
+	[フレデリカ v=vd079 f=03]「It's been a long time～ I look forward to working with you again!」[k]
+[endif]
+[if exp='GNO && game.curChara != game.wife']
+	[ミューズ v=vg069 f=02]「It's been a while... Please take care of me again, Captain.」[k]
+[endif]
+[if exp='SYL && game.curChara != game.wife']
+	[マルエット v=vs083 f=01]「It's been a while! I look forward to working with you again!」[k]
+[endif]
+
+[テオ e=現在の装備 f=02]「Yeah, good to see you again, everyone.」[k]
+[ライナス f=06]「...Yo.」[k]
+[テオ f=02]「Linus, you're here too. I hope we can continue to work together.」[k]
+For now, it seems we are all here. After a long break, everyone in the party will adventure together again.[k]
+I greeted the new morning with a very refreshed feeling.[k]
+Now, there are no more demons and no more involvement with Blue. Alight, it's all up to us what we want to do from here on out.[k]
+We can take on new quests at the tavern, or venture out into uncharted territory.[k]
+Now, what should I do first...?[k]
+[textoff]
+@clf
+@eval exp='game.churchWin.visible = false'
+[eventoff]
+
+
+;◇イベント03・冒険再開初日の宿予約時のコメント
+*wedding_03
+
+; 宿のロビー。ヒロインは妻の名
+@w05
+[texton]
+[テオ]「Well, I guess we'll rest here tonight.」[k]
+Our party arrives at the inn. We are now going to assign rooms.[k]
+But now, [ヒロイン] and I are a married couple.[k]
+In other words, unless there are special circumstances, I have to share a room with [ヒロイン].[k]
+I mustn't make the mistake of staying with another woman, because that would seriously undermine [ヒロイン]'s trust in me.[k]
+[textoff]
+[hoteloff]
+
+
+
+
+;■悪魔再々復活とブルー再加入
+
+;◇イベント01・ダストウェルの町に到着
+*revive_1
+
+; ダストウェルの町
+@w05
+[texton]
+[テオ f=05]「This is the forgotten town...!」[k]
+How much time had passed since we started walking through the desert?[k]
+There was indeed a "forgotten town". Its name was Dustwell.[k]
+Deep in a valley in the middle of the wilderness, a town of some size had been built. Who would have thought that a town could exist in such a remote place...[k]
+[テオ f=06]「Well... First we have to find a place to stay...」[k]
+Everyone is tired from all the walking. First of all, let's stay somewhere and heal from the fatigue of the trip.[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント02・シュバルツの話
+*revive_2
+
+; ダストウェルの町
+@saveon
+@w05
+[texton w=0]
+Next morning.[k]
+[textoff]
+@fg c=シュバルツ f=00
+[texton w=1]
+[シュバルツ]「Oh, there you are! I've been looking for you, [テオ].」[k]
+[テオ f=01]「Mr. Schwartz, it's been a long time. I see that you know of this town too.」[k]
+To my surprise, I ran into that Mr. Schwartz in this isolated town. As expected of him, he knew even this remote area.[k]
+Although... I could tell from Mr. Schwartz's grim expression that he wasn't in the mood to celebrate our reunion.[k]
+[テオ f=05]「You said you were looking for me.」[k]
+[シュバルツ f=00]「[テオ], you're in danger.」[k]
+[テオ f=05]「Is there something wrong?」[k]
+[シュバルツ f=00]「The devil...」[k]
+[テオ f=05]「Eh?」[k]
+@fa
+[シュバルツ f=07]「The devil... Murmur has risen again!」[k]
+[if exp='game.wife !== void'][ヒロイン f=11]「...!」[k][endif]
+[テオ f=12]「What did you say?!」[k]
+@mu f=cave
+Murmur is back...?! That's impossible...![k]
+She died in the last battle. She was burned to ashes by the flames of Sandra's magic.[k]
+I saw Murmur reduced to ashes with my own eyes. This time it was certain destruction.[k]
+She... she can't be alive![k]
+[テオ f=12]「I-is that really true?!」[k]
+[シュバルツ f=10]「Believe it or not, it's true. I've seen it with my own eyes.」[k]
+[テオ f=10]「Oh no...」[k]
+I can't believe it. I want to believe it's a lie.[k]
+We went through a lot of hardship to confront that devil. I hope it's a mistake.[k]
+...But Mr. Schwartz is not the kind of person to make such a careless mistake.[k]
+[テオ f=12]「Mr. Schwartz, could you tell us more about this?」[k]
+[シュバルツ f=00]「Yes, of course. Please, listen.」[k]
+[シュバルツ f=00]「Have you seen that big canyon west of Collins Wood?」[k]
+[シュバルツ f=00]「One day, I heard a rumor that someone was building a mysterious tower there, and decided to investigate. And there she was...!」[k]
+[textoff]
+@out
+@w05
+
+; 塔の建設現場。シュバルツの回想
+@bg f=0041
+@fg c=悪魔 f=07
+[texton w=1]
+[ムールムール v=vm211 f=07]「Hey, you! You guys better get to work!」[k]
+[name n=Worker f=thief_blue_02]「Ugh...」[k]
+[name n=Worker f=thief_red_02]「Please... Let me rest now...」[k]
+@se f=whip
+@flash time=200
+∗crack!∗[k]
+[name n=Worker f=thief_blue_02]「Waaaaah!」[k]
+[ムールムール v=vm212 f=07]「I told you not to take a break! I'll kill you!」[k]
+[シュバルツ f=10]「...」[k]
+On the top floor of a tower under construction, I saw many men working on the construction and Murmur whipping them.[k]
+I watched from a small hill a short distance away so that she would not see me. But there was no doubt in my mind that the figure and voice was Murmur's.[k]
+[ムールムール v=vm213 f=07]「You know what? I can kill you all with my breath of death anytime I want! So don't dare disobey me!」[k]
+[name n=Worker f=thief_blue_02]「Ugh...」[k]
+[name n=Worker f=thief_red_02]「D-damn!」[k]
+[ムールムール v=vm214 f=07]「I want to make this tower even taller! It's not high enough at all!」[k]
+[ムールムール v=vm215 f=07]「I have to finish the tower before the gods get wind of this! I'm in a hurry, get it?! So work harder!」[k]
+@se f=whip
+@flash time=200
+∗crack!∗[k]
+[name n=Worker f=thief_blue_02]「Waaaaah!」[k]
+[name n=Worker f=thief_red_02]「All right, all right, I'll work. So don't kill me...!」[k]
+[シュバルツ f=10]「Damn... That Murmur...!」[k]
+By my estimate, the tower was about 10 stories high. She said she would make it higher.[k]
+I wanted to help them, but if she found me, I would have been the target of her fatal breath. All I could do was watch.[k]
+[ムールムール v=vm216 f=03]「Gahahahaha! Hey, hey, hey! Work harder～!」[k]
+; ↑ 爆笑しながら
+@se f=whip
+@flash time=200
+@wait time=500
+@se f=whip
+@flash time=200
+∗crack!∗ ∗crack!∗[k]
+[name n=Worker f=thief_blue_02]「Gyaaaaaah!」[k]
+[シュバルツ f=10]「...」[k]
+After observing the situation for a while, I quietly left so that she wouldn't see me...[k]
+[textoff]
+@out
+@w05
+@gameon
+@fgf c=シュバルツ f=00
+[texton w=1]
+[テオ f=05]「Murmur is building a tower...?」[k]
+[シュバルツ f=00]「Yes. She wants her large human workforce to build her a very tall tower.」[k]
+[テオ f=05]「What on earth for...?」[k]
+[シュバルツ f=00]「I don't know her motives. But since it's her, she's surely up to no good.」[k]
+[テオ f=06]「I'm worried about the people who are forced to work there. It needs to be stopped...」[k]
+She said, "I want to destroy the human world and make it a world ruled by demons". As long as her goal remains unchanged, there is nothing to do but oppose her plans.[k]
+But... I guess that devil really is back...[k]
+...Damn! I guess a high-ranking demon cannot be completely destroyed by human power...![k]
+No matter how much you cut them up, no matter how much you reduce them to ashes, they will resurrect. That's the power of such devils.[k]
+They are beings we cannot be fathom. As living organisms, they are far superior to humans.[k]
+Then, the only way is to seal her away. To do so, we need the help of the god Polaris.[k]
+In other words... the only way to fundamentally resolve this issue is to summon the god Polaris with the 12 magic stones...[k]
+[シュバルツ f=00]「What is it? Are you still in shock?」[k]
+[テオ f=05]「Yes... Just when I thought things were finally at peace...」[k]
+[シュバルツ f=00]「...It will be hard, but only you, the demon hunter, can do it. Please do your best. I will help you as much as I can.」[k]
+[テオ f=01]「Thank you, Mr. Schwarz.」[k]
+[シュバルツ f=00]「Well, that's all for now.」[k]
+@cl
+Yes, this is no time to be depressed. It's hard, but we have to fight.[k]
+To protect this world... And to protect my party friends and my beloved [ヒロイン], I have no choice but to defeat the devil.[k][endif]
+[テオ f=06]「...」[k]
+[if exp='game.getNumOfJewels(true) >= 12']
+	I have collected 12 magic stones. If I go to the Temple of Polaris right now, I should be able to summon Lady Polaris.[k]
+	However, the Temple of Polaris is very far from here. If it's attacked before we reach it...[k]
+[else]
+	Currently, we have [emb exp='game.getNumOfJewels(true)'] magic stones that we have collected. We haven't been able to collect all 12 yet.[k]
+	Right now, Murmur seems to be obsessed with building a tower, but you never know when she might decide to come and kill us.[k]
+	If she attacks us while we're collecting the rest of the magic stones...[k]
+[endif]
+[テオ f=06]「...」[k]
+I need to think of a solution. What should we do...?[k]
+[textoff]
+@image layer=0 page=back storage=0042 visible=true left=0 top=0
+@trans method=universal rule=rule_01 time=200
+@wt
+@wait time=500
+@layopt layer=0 page=back visible=false
+@trans method=universal rule=rule_01 time=200
+@wt
+@wait time=500
+[texton]
+[テオ f=06]「...」[k]
+In the end... I guess we have to rely on him once again.[k]
+[textoff]
+@jump target=*_kick_out_from_dustwell cond='game.wife === void'
+@fg c=ライナス f=06
+[texton w=1]
+[ライナス f=06]「I'm out of here. I don't want to fight that demon anymore.」[k]
+[テオ f=02]「I can't say I blame you. Thanks for everything, Linus.」[k]
+[textoff]
+@clf
+@eval exp='game.guest.removeMember(o.ライナス)'
+@se f=period
+@notice text="<y>Linus left the party."
+@eval exp='f.talkToPolaris = 4'
+[eventoff bgm]
+;◇イベント03・ブルー、サンドラに再会   301L
+*revive_3
+@w05
+[texton]
+[テオ f=06]「Well... I have to see Blue first...」[k]
+For now, I decided to go to Blue's hideout.[k]
+[textoff]
+@out
+@w05
+
+; ブルーのアジト
+@saveon
+@bg f=0022
+@mu f=worry
+@fg c=ブルー e=通常 f=08
+[texton w=1]
+[ブルー f=08]「...It's you. What do you want?」[k]
+[テオ f=10]「Blue...」[k]
+Blue was inside his hideout. He looked at me and was clearly annoyed.[k]
+@cl b
+@fg l=ブルー f=08 b
+@fg r=サンドラ e=通常 f=03
+[サンドラ v=vn083 f=03]「Oh, hello, how are you? It's been a while. How are you?」[k]
+Sandra also appeared from behind Blue. She talks to us in a friendly manner with a cheerful smile on her face.[k]
+@fg r=サンドラ f=01
+[サンドラ v=vn084 f=01]「It's very unusual for you guys to visit. Do you have business with Blue?」[k]
+[テオ f=12]「Yes... Actually...」[k]
+[textoff]
+@out
+[texton w=0]
+I told Blue that the demon Murmur had returned and that I wanted him to join us again.[k]
+[textoff]
+@bg f=0022 b
+@fg l=ブルー f=06 b
+@fg r=サンドラ f=11
+[texton w=1]
+[サンドラ v=vn085 f=11]「What the...?」[k]
+[ブルー f=06]「...」[k]
+[テオ f=12]「Please, Blue, will you join our party again? We need your help to protect everyone from the demons.」[k]
+[ブルー f=06]「...I don't care. I'm not going with you again.」[k]
+[テオ f=12]「Please don't say that. You're the only one I can rely on.」[k]
+@fg l=ブルー f=08
+[ブルー f=08]「That's why I said I don't care. It's none of my business. I'm done with that kind of troublesome life.」[k]
+[テオ f=10]「Blue...」[k]
+Despite my desperate pleas, Blue remains adamant.[k]
+@fg l=ブルー f=06
+[ブルー f=06]「Anyway, I'm not going to put up with you guys anymore. Do whatever you want. I don't care about demons or anything like that.」[k]
+@fg r=サンドラ f=09
+[サンドラ v=vn086 f=09]「Enough, [ブルー]...」[k]
+[テオ f=10]「...」[k]
+Damn... How can I convince Blue...![k]
+@fg r=サンドラ f=01
+[サンドラ v=vn087 f=01]「...Hmm?」[k]
+Suddenly, Sandra seemed to notice something.[k]
+[サンドラ v=vn088 f=01]「Hey, did you guys get married?」[k]
+[ヒロイン f=05]「...!」[k]
+[テオ f=13]「Eh...? Oh, yes. That's right.」[k]
+Apparently, Sandra noticed the wedding rings that [ヒロイン] and I were wearing.[k]
+@fg r=サンドラ f=03
+[サンドラ v=vn089 f=03]「I knew it! Congratulations, I'm so happy for you!」[k]
+[テオ f=01]「T-thank you.」[k]
+@fg r=サンドラ f=15
+[サンドラ v=vn090 f=15]「Hmm... When did you two become so close... Hmm...」[k]
+[テオ f=13]「Ahaha...」[k]
+Sandra looked very interested, smiling at me and [ヒロイン] alternately.[k]
+[テオ f=13]「Excuse me, Sandra, I'm a little embarrassed...」[k]
+@fg r=サンドラ f=03
+[サンドラ v=vn091 f=03]「Oh, I'm sorry. Ufufufu.」[k]
+@fg l=ブルー f=06
+[ブルー f=06]「...」[k]
+@fg l=ブルー f=05
+[ブルー f=05]「...Hey, [テオ].」[k]
+Blue suddenly spoke up.[k]
+[テオ f=12]「W-what is it, Blue?」[k]
+@fg l=ブルー f=02
+[ブルー f=02]「I've changed my mind. I'll stick with you a little longer.」[k]
+@fg r=サンドラ f=05
+[テオ f=12]「What?!」[k]
+Surprisingly, Blue offered to participate. Just a moment ago, he was so reluctant...[k]
+[サンドラ v=vn092 f=05]「Huh, what's going on all of a sudden, [ブルー]?」[k]
+[テオ f=12]「R-really?!」[k]
+[ブルー f=02]「Yes, but there is a condition.」[k]
+[テオ f=05]「Eh?」[k]
+Does he want me to find another woman for his sexual gratification? I don't want to sacrifice anyone else...[k]
+[テオ f=10]「Are you asking me to let you sleep with different girls again? I've had enough of that...」[k]
+[ブルー f=02]「No, just one person is fine this time.」[k]
+[テオ f=12]「Just one person?」[k]
+[ブルー f=02]「Your wife.」[k]
+[テオ f=05]「Eh?」[k]
+@fa
+@fg l=ブルー f=15
+[ブルー f=15]「Your wife, right there. Let me make love to her every night. That's my condition.」[k]
+@mu f=cave
+[ヒロイン f=11]「...!」[k]
+[テオ f=12]「E-eeeeeeh?!」[k]
+@fg r=サンドラ f=59
+[サンドラ v=vn093 f=59]「W-wait a minute, Blue...!」[k]
+Let him have sex with [ヒロイン]?! That's crazy![k]
+[テオ f=12]「W-wait, Blue!」[k]
+[ブルー f=15]「What? You didn't hear me? I said just one person is fine this time!」[k]
+[テオ f=10]「That's true, but...」[k]
+@fg l=ブルー f=02 b
+@fg r=サンドラ f=56
+[ブルー f=02]「If you, as the leader, are willing to sacrifice your wife, then I'll go along with that annoying proposal yet again. I'm making a concession in my own way.」[k]
+[テオ f=10]「...」[k]
+@fg l=ブルー f=03
+[ブルー f=03]「Or what? Are you saying that you can offer other women, but not your own? Hahaha! That's pretty selfish! Can you really be a leader like that?」[k]
+[テオ f=10]「...」[k]
+Blue's point isn't entirely invalid. But...[k]
+@fg l=ブルー f=05
+[ブルー f=05]「...Heh. So in the end you're just looking out for yourself. Well, whatever. Let's just forget about this whole thing...」[k]
+
+; ↓ テオの妻としてヒロインがブルーと話す
+@eval exp='game.curChara = game.wife'
+[   if exp='isHUM'][リム v=vh082 f=91]「Wait a minute!」[k]
+[elsif exp='isELF'][クレア v=ve083 f=07]「Wait!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd080 f=51]「Wait a minute!」[k]
+[elsif exp='isGNO'][ミューズ v=vg070 f=09]「Please wait!」[k]
+[elsif exp='isSYL'][マルエット v=vs084 f=27]「Wait!」[k]
+[endif]
+
+@fg l=ブルー f=02
+[ブルー f=02]「... ∗grin∗」[k]
+Suddenly, [ヒロイン] raised her voice.[k]
+
+[   if exp='isHUM'][リム v=vh083 f=30]「I... just need to be his partner, right? If that's okay with you...」[k]
+[elsif exp='isELF'][クレア v=ve084 f=28]「I'll be his partner, okay? If that's fine with you...」[k]
+[elsif exp='isDWA'][フレデリカ v=vd081 f=29]「I... just need to be his partner, right? If that's okay with you...」[k]
+[elsif exp='isGNO'][ミューズ v=vg071 f=30]「I... just need to be his partner, right? If that's okay with you...」[k]
+[elsif exp='isSYL'][マルエット v=vs085 f=30]「I'll be his partner, okay? If that's fine with you...」[k]
+[endif]
+
+[テオ f=12]「[ヒロイン]!」[k]
+
+[   if exp='isHUM'][リム v=vh084 f=28]「If I endure it alone, everyone will be saved, right?」[k]
+[elsif exp='isELF'][クレア v=ve085 f=19]「If I endure it alone, everyone else will be saved, right?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd082 f=30]「If I endure it alone, everyone will be saved, right?」[k]
+[elsif exp='isGNO'][ミューズ v=vg072 f=10]「If I endure it alone, everyone will be saved, right...?」[k]
+[elsif exp='isSYL'][マルエット v=vs086 f=08]「If I endure it alone, everyone else will be saved, right?」[k]
+[endif]
+
+[テオ f=10]「T-that's true, but...」[k]
+
+[   if exp='isHUM'][リム v=vh085 f=03]「It's okay, dear, I can handle Blue. So don't worry.」[k]
+[elsif exp='isELF'][クレア v=ve086 f=16]「It's okay, love, I can handle Blue. So don't worry.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd083 f=14]「It's okay, dear. I can handle Blue. Don't worry.」[k]
+[elsif exp='isGNO'][ミューズ v=vg073 f=08]「It's okay... I can handle Blue... So don't worry...」[k]
+[elsif exp='isSYL'][マルエット v=vs087 f=36]「It's okay, my love, I can handle Blue. So don't worry.」[k]
+[endif]
+
+[テオ f=10]「Even if you say it's okay...」[k]
+Letting another man hold [ヒロイン]... I can't do that...[k]
+...It's true that I'm only thinking about my own convenience right now. Blue is right.[k]
+The reason I'm refusing Blue's proposal is simply because I don't want my precious [ヒロイン] to be embraced by someone else... that's how I feel.[k]
+Am I unfit to be a leader?[k]
+[ブルー f=02]「So, what are you going to do? Accept the conditions? Or not?」[k]
+
+[   if exp='isHUM'][リム v=vh086 f=08]「I'll do it. That's okay, right?」[k]
+[elsif exp='isELF'][クレア v=ve087 f=19]「I'll do it! That's fine, isn't it?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd084 f=07]「I'll do it. That's okay, right?」[k]
+[elsif exp='isGNO'][ミューズ v=vg074 f=06]「I'll do it. It's fine...」[k]
+[elsif exp='isSYL'][マルエット v=vs088 f=07]「I'll do it! It's fine!」[k]
+[endif]
+
+[テオ f=12]「[ヒロイン]!」[k]
+
+[   if exp='isHUM'][リム v=vh087 f=02]「I understand. I know you care about me. I'm your wife, but I'm a member of this party too.」[k]
+[elsif exp='isELF'][クレア v=ve088 f=01]「I understand. I know you care about me. But while I'm your wife, I am also a member of this party.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd085 f=13]「I understand. I know you care about me. But as well as your wife, I'm also a member of this party.」[k]
+[elsif exp='isGNO'][ミューズ v=vg075 f=06]「I understand... that you care about me. But while I'm your wife, I'm also a member of this party...」[k]
+[elsif exp='isSYL'][マルエット v=vs089 f=02]「I understand. I know you care about me. Yes I'm your wife, but I'm also a member of this party.」[k]
+[endif]
+
+[テオ f=10]「...」[k]
+
+[   if exp='isHUM'][リム v=vh088 f=04]「Don't worry. My feelings for you won't change... I love you.」[k]
+[elsif exp='isELF'][クレア v=ve089 f=22]「Don't worry. My feelings for you will never change. I love you.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd086 f=04]「Please don't worry. My feelings for you will never change... I love you.」[k]
+[elsif exp='isGNO'][ミューズ v=vg076 f=16]「Don't worry... My feelings for you will never change... I love you...」[k]
+[elsif exp='isSYL'][マルエット v=vs090 f=23]「Don't worry. My feelings for you will never change. I love you.」[k]
+[endif]
+
+[テオ f=10]「[ヒロイン]...」[k]
+...If [ヒロイン] says so... Then I should believe her.[k]
+I shouldn't be hesitant. As a leader, I have a responsibility to protect everyone. Perhaps I should rely on her determination in this situation.[k]
+[ブルー f=02]「...It's settled then. Okay, I'll go along with you guys one more time. Don't forget your promise, [テオ].」[k]
+[テオ f=10]「...」[k]
+[サンドラ f=56]「...」[k]
+I could only remain silent.[k]
+[ヒロイン] is mine alone, and I won't let anyone take her away from me. I hold back the urge to shout this out loud.[k]
+Do I really have no choice but to accept this situation?![k]
+[textoff]
+@eval exp='game.guest.entry(o.ブルー)'
+@eval exp='game.guest.entry(o.サンドラ)'
+@st
+@se f=up3
+@notice text="<y>Sandra and Blue have joined the party!"
+@out
+@w05
+@mu f=&'game.townView.curTown.bgm'
+@addevent name=ベトリヌスの酒場 num=13 cond='! o.売春組織の実体を暴け.accepted'
+[eventoff bgm]
+
+
+;◇イベント04・ブルーに初めて妻を差し出す
+*revive_4
+; ブルーとヒロインの宿泊初日
+@return cond='f.replayMode'
+@saveon
+@bg f=0002
+@mu f=worry
+[texton w=1]
+[テオ e=通常 f=10]「...」[k]
+Night has finally come. Starting tonight, I have to offer [ヒロイン] to Blue.[k]
+[textoff]
+@fg l=ヒロイン e=通常 f=10 b
+@fg r=ブルー e=通常 f=02
+[texton w=1]
+[ブルー f=02]「Yo.」[k]
+[テオ f=10]「...」[k]
+[ブルー f=02]「I'm sure you understand, but starting tonight, your wife is mine.」[k]
+[テオ f=10]「...」[k]
+[ブルー f=01]「See you later. I'm borrowing your wife.」[k]
+[テオ f=12]「Hey, Blue, do I really have to leave [ヒロイン] with you?」[k]
+[ブルー f=02]「Of course. That's the deal, right? If you can't keep your promise, I'm leaving the party right now.」[k]
+[テオ f=12]「Is there no other condition...?」[k]
+[ブルー f=02]「Rejected. I won't accept anything but what we agreed. Give up already.」[k]
+[テオ f=10]「...」[k]
+Blue's attitude left no room for discussion. I tried to negotiate with Blue, clinging to a glimmer of hope, but he wouldn't even give me a chance to negotiate.[k]
+[ブルー f=01]「Well, I'll do my best to take care of you. See you later.」[k]
+[テオ f=12]「W-wait...!」[k]
+@se f=door1
+@clf
+Blue took [ヒロイン] and entered the room.[k]
+I am filled with anxiety. To let another man embrace my precious wife...![k]
+What's more, the opponent is Blue. Blue is the man who once enslaved Riselle sexually.[k]
+What if my beloved [ヒロイン] started to desire sex with that man more than anything else?[k]
+[テオ f=09]「...Damn!」[k]
+I'm getting impatient. My head is filled with the fear of losing [ヒロイン].[k]
+Damn it...! What should I do...?[k]
+[textoff]
+@fa
+@out
+@w05
+@return
+
+
+
+
+;■ポラリスとの会話
+
+; ポラリスの神殿を訪れたとき、祭壇で見えないポラリス神と会話が行われる
+
+;◇パターン１・ゴーレム騒動のさなか、最初にムールムールを倒した後
+*polaris_1
+
+; ポラリスの神殿・祭壇
+[texton]
+[テオ f=05]「Lady Polaris, are you there?」[k]
+I went to the altar of the Temple of Polaris and called Lady Polaris, in the heavens.[k]
+[ポラリス v=vp034 f=polaris_99]「Yes, I'm here.」[k]
+[テオ f=01]「Actually, we defeated the demon Murmur!」[k]
+[ポラリス v=vp035 f=polaris_99]「Is that true?」[k]
+[テオ f=02]「Yes, I happened to be nearby when she appeared near Sapphire City, and I took care of it myself! Now that devil is no longer a threat.」[k]
+[ポラリス v=vp036 f=polaris_99]「Is that so...」[k]
+; ↑ あまり喜んでいない。本当に倒せたか疑っている
+[テオ f=05]「？」[k]
+Despite the long-awaited report that the demon had been defeated, Lady Polaris' reaction was less than favorable.[k]
+[ポラリス f=polaris_99]「...」[k]
+[テオ f=05]「Lady Polaris, what's wrong?」[k]
+[ポラリス v=vp037 f=polaris_99]「...Well, I just wonder if it could really be so easy...」[k]
+[テオ f=05]「What do you mean?」[k]
+[ポラリス v=vp038 f=polaris_99]「Murmur is, after all, a high-ranking demon. She is not an opponent who can be easily defeated. I don't mean to doubt you all, but...」[k]
+[ポラリス v=vp039 f=polaris_99]「Please be careful just in case. It may not truly be over. Also, just in case, I would like you to continue collecting magic stones if possible.」[k]
+[テオ f=06]「...Understood.」[k]
+[ポラリス v=vp040 f=polaris_99]「I hope it's just my imagination...」[k]
+Lady Polaris seems a little hesitant. It might indeed be better to be careful.[k]
+[textoff]
+[eventoff]
+
+
+;◇パターン２・ミレディがムールムールであることが発覚した後
+*polaris_2
+
+; ポラリスの神殿・祭壇
+[texton]
+[テオ f=05]「Lady Polaris, are you there?」[k]
+I went to the altar of the Temple of Polaris and called Lady Polaris, in the heavens.[k]
+[ポラリス v=vp034 f=polaris_99]「Yes, I'm here.」[k]
+[テオ f=06]「...It's Murmur. Just as you suspected, she has been revived.」[k]
+[ポラリス v=vp041 f=polaris_99]「I knew it...!」[k]
+[テオ f=05]「Also, the power I had to exorcise demons has been taken away from me. Is there any way I can regain this power?」[k]
+[ポラリス v=vp042 f=polaris_99]「I'm afraid I can do nothing about that... Being in the heavenly realm, I cannot exert my power over you all...」[k]
+[テオ f=06]「Is that so...」[k]
+[ポラリス v=vp043 f=polaris_99]「I'm sorry I couldn't be of help...」[k]
+Even Lady Polaris can't do anything about it... For now I have no choice but to accept the current circumstances.[k]
+[textoff]
+[eventoff]
+
+
+;◇パターン３・ムールムールと再戦しサンドラの魔法でムールムールを灰にした後
+*polaris_3
+
+; ポラリスの神殿・祭壇
+[texton]
+[テオ f=05]「Lady Polaris, are you there?」[k]
+I went to the altar of the Temple of Polaris and called Lady Polaris, in the heavens.[k]
+[ポラリス v=vp044 f=polaris_99]「Yes, I'm here. What's the matter?」[k]
+[テオ f=01]「Lady Polaris! Actually...」[k]
+I told her that we had defeated Murmur again and turned her to ash with magic.[k]
+[ポラリス v=vp045 f=polaris_99]「I see! That's a relief for now.」[k]
+; ↑ 今度は本気で喜んでいる
+[ポラリス v=vp046 f=polaris_99]「Thank you very much for your long-standing efforts. We deeply appreciate your courage in confronting the devil.」[k]
+[テオ f=05]「What should I do with the magic stones I've collected?」[k]
+[ポラリス v=vp047 f=polaris_99]「Please keep hold of them for now.」[k]
+[ポラリス v=vp048 f=polaris_99]「Murmur has been destroyed, but there are still many other demons out there. Could you keep them in storage in case something else happens?」[k]
+[テオ f=02]「Understood.」[k]
+That's right. Just like with Malphas last time, there is a possibility that another demon will appear. It is necessary to be prepared for the next time something happens.[k]
+[textoff]
+[eventoff]
+
+
+;◇パターン４・灰になったムールムールが復活したことをシュバルツから知らされた後
+*polaris_4
+
+; ポラリスの神殿・祭壇
+[texton]
+[テオ f=05]「Lady Polaris, are you there?」[k]
+I went to the altar of the Temple of Polaris and called Lady Polaris, in the heavens.[k]
+[ポラリス v=vp044 f=polaris_99]「Yes, I'm here. What's the matter?」[k]
+[テオ f=05]「Lady Polaris! Actually...」[k]
+I reported that Murmur, who had previously been reduced to ashes, had been revived.[k]
+[ポラリス v=vp049 f=polaris_99]「I see... It's not so easy to get rid of her after all...」[k]
+[テオ f=06]「We reduced her to ashes once. This time, we thought we had defeated her. But then...」[k]
+[ポラリス v=vp050 f=polaris_99]「That's what demons are like... No matter how much you burn them or cut them up, they will always come back to life. Unless they are sealed away with divine power.」[k]
+[テオ f=06]「...」[k]
+[ポラリス v=vp051 f=polaris_99]「...It seems that I have no choice but to leave. Adventurer, will you please gather all 12 magic stones? Once the magic stones are gathered, I will be able to descend to the earth.」[k]
+[テオ f=06]「I guess that's the only way...」[k]
+[ポラリス v=vp052 f=polaris_99]「It will be difficult, but please do your best. The fate of the earth depends on your efforts.」[k]
+[テオ f=06]「Yes... To be honest, there are many obstacles, but I will try harder...」[k]
+[ポラリス v=vp053 f=polaris_99]「Sorry, thank you very much...」[k]
+In the end, there's no choice but to take the direct approach... The repeated futile efforts are enough to break my spirit.[k]
+However, I cannot give up now. This time, I will defeat that devil and restore true peace.[k]
+[textoff]
+[eventoff]
+
+
+;◇パターン５・魔石が１２個で、オニキスの魔石（ニセモノ）が混じっている時の会話
+*polaris_5
+@jump storage="free02.scn" target=*polaris_5 cond='game.isFreeMode'
+; ポラリスの神殿・祭壇
+[texton]
+[テオ f=05]「Huh...? There's one crystal that isn't glowing.」[k]
+That's strange... we definitely collected 12 magic stones, but one of them isn't glowing. What on earth is going on?![k]
+[ポラリス v=vp054 f=polaris_99]「...There's a fake mixed in there.」[k]
+Lady Polaris answered.[k]
+[テオ f=12]「A fake?」[k]
+[ポラリス v=vp055 f=polaris_99]「Among the 12 magic stones you collected, there is one fake. Someone must have made a clever imitation of the real thing. Magic stones sell for a high price.」[k]
+[テオ f=12]「Oh, no...」[k]
+[ポラリス v=vp056 f=polaris_99]「There must be a genuine magic stone somewhere. Please search for it. I know it's going to be difficult, but...」[k]
+[テオ f=06]「I understand. I'll try looking for it again.」[k]
+How humiliating. I can't believe I was tricked into buying a fake. I'd been desperately trying to collect magic stones up until now...[k]
+...There's no point in being discouraged. We'll have to pull ourselves together and search for the last one again. We're almost there.[k]
+[textoff]
+[eventoff]
+
+
+; ※不具合修正
+*_kick_out_from_dustwell
+@delevent name=ブレイブタウン num=5
+@eval exp='game.hour = "day"'
+@eval exp='game.enterDungeon(%[map: "タルハ砂漠・南", x: 2, y: 3, way: "n"])'
+@eval exp='game.onGameRestart()'
+[s]

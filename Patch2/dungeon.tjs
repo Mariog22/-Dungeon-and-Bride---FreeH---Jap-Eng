@@ -1,0 +1,1932 @@
+﻿// dungeon.tjs
+// ダンジョン画面生成＆移動
+
+
+//----------------------------------------------------------------------------------------
+class DungeonView extends Layer
+{
+	// ダンジョンのビュー（景色）画面のクラス
+	// ここにフォーカスを持ってくるとキー入力で移動するようになる
+
+	var master;	// 管理オブジェクト
+	var defaultX = 0;	// レイヤーの初期位置Ｘ
+	var defaultY = -40;	// レイヤーの初期位置Ｙ
+	var walkTimer;	// アニメ用タイマー
+	var walkSpeed = 20;	// 移動アニメ速度。短いほど速い
+	var animCount = 0;	// アニメ用カウント
+	var waitTimer;	// マウスの連続移動を開始するまで待つタイマー
+	var repeatStarted = true;	// マウスの連続移動が開始したかどうか
+	var viewScreen;	// 実際に画面に表示されるダンジョン画面
+	var bufScreen;	// レイヤーの表示状態を操作し構成する裏画面
+	var sideScreen;	// 横移動＆横回転時に利用する横から出てくる画面
+	var tempScreen;	// レイヤー合成など一時的に利用する見えない画面
+	var effectLayer;	// 演出用レイヤー（アニメ・スクリーン等）
+	var emitLayer;	// 演出用レイヤー（パーティクル）
+	var skyLayer;	// 空のレイヤー
+	var blindScreen;	// 暗闇レイヤー
+	var objectLayer;	// クリックできるオブジェクトを読み込むレイヤー
+	var boatLayer;	// ボート
+	var fallenObject;	// 落下する物体
+	var controlBoard;	// 移動操作ボード
+	var borderLayer;	// 分割線を描画するレイヤー
+	var backSound;	// 環境音オブジェクト
+	var _skyImage;	// 空の画像（ updateView を実行するまで読み込まれない）
+	var _blindImage;	// 目隠しの画像（ updateView を実行するまで読み込まれない）
+	var _effectFile;	// 演出ファイル（ updateView を実行するまで読み込まれない）
+	var _soundFile;	// 効果音ファイル（ updateView を実行するまで読み込まれない）
+	var nextX = 0;	// 移動後のＸ座標
+	var nextY = 0;	// 移動後のＹ座標
+	var middleX = 0;	// ジャンプする際の中間のＸ座標（ジャンプ演出用）
+	var middleY = 0;	// ジャンプする際の中間のＹ座標（ジャンプ演出用）
+	var nextFront = "n";	// 移動後の前方の方角
+	var nextDarkZone;	// 次のエリアをダークゾーンにするかどうか
+	var walkType = "goForward";	// 移動のタイプ。これを参照してアニメを行う
+	var cursorDirect = "crArrow";	// マウス移動用カーソル
+	var centerBorder = 420;	// マウスカーソルが変化する境界（縦分割・中央）
+	var sideBorder   = 400;	//   〃  （縦分割・外側）
+	var leftBorder   = 320;	//   〃  （横分割・左）
+	var rightBorder  = 580;	//   〃  （横分割・右）
+	var downKeyAction = "goBackward";	// 下キーを押した時の動作  後退 or 転回
+	var anotherDecideKey = BT_UP;	// 決定キーが決定以外に果たす役割のキー
+
+	function DungeonView(par, master)
+	{
+		super.Layer(par.window, par);
+		name = "ダンジョンビュー";
+		this.master = master;
+		focusable = true;
+		setSize(900, 600);
+		hitThreshold = 0;
+		fillRect(0, 0, width, height, 0);
+
+		// 移動アニメ用タイマーを作成
+		walkTimer = new Timer(walking, "");
+		walkTimer.interval = walkSpeed;	// 移動アニメの速度
+
+		// 連続移動開始待ち用タイマーを作成
+		waitTimer = new Timer(startRepeat, "");
+		waitTimer.interval = 300;	// 待ち時間
+
+		// 裏構成画面を作成
+		bufScreen = new ViewLayer(this);
+		bufScreen.absolute = 0;
+		bufScreen.hitThreshold = 256;
+
+		// 表示画面を作成
+		viewScreen = new KAGLayer(window, this);
+		viewScreen.setSize(this.width, this.height);
+		viewScreen.absolute = 100;
+		viewScreen.visible = true;
+		viewScreen.hitThreshold = 256;
+
+		// 横から出てくる画面を作成
+		sideScreen = new KAGLayer(window, this);
+		sideScreen.setSize(this.width, this.height);
+		sideScreen.left = 900;
+		sideScreen.absolute = 90;
+		sideScreen.visible = true;
+		sideScreen.hitThreshold = 256;
+
+		// 一時レイヤーを作成
+		tempScreen = new KAGLayer(window, this);
+		tempScreen.setSize(bufScreen.width, bufScreen.height);
+		tempScreen.absolute = 0;
+		tempScreen.hitThreshold = 256;
+
+		// 空のレイヤーを作成
+		skyLayer = new global.Layer(window, parent);
+		skyLayer.setSize(width, height);
+		skyLayer.hitThreshold = 256;
+		skyLayer.visible = true;
+
+		// 演出用レイヤーを作成
+		emitLayer = new EffectLayer(parent);
+		emitLayer.setSize(width, height);
+		emitLayer.visible = false;
+
+		// 手前のスクリーンレイヤーを作成
+		effectLayer = new EffectLayer(parent);
+		effectLayer.setSize(width, height);
+		effectLayer.visible = false;
+
+		// 暗闇レイヤー作成
+		blindScreen = new global.Layer(window, this);
+		blindScreen.setSize(this.width, this.height);
+		blindScreen.absolute = 900;
+		blindScreen.hitThreshold = 256;
+
+		// クリックオブジェクトレイヤー作成
+		objectLayer = new TouchableObject(this, master);
+		objectLayer.setSize(700, 660);
+		objectLayer.setPos(100, -40);
+		objectLayer.absolute = 800;
+
+		// ボート作成
+		boatLayer = new global.Layer(window, parent);
+		boatLayer.loadImages("magical_boat");
+		boatLayer.setSizeToImageSize();
+		boatLayer.setPos(width - boatLayer.width >> 1, height - boatLayer.height - 40);
+		boatLayer.hitThreshold = 256;
+
+		// 移動操作ボード作成
+		controlBoard = new ControlBoard(master.gameFrame, master);
+		controlBoard.setPos(width - controlBoard.width - 15, height - controlBoard.height - 45);
+
+		// 分割線を描画するレイヤーを作成
+		borderLayer = new global.Layer(window, this);
+		borderLayer.setSize(this.width, this.height);
+		borderLayer.absolute = 1200;
+		borderLayer.hitThreshold = 256;
+
+		// 環境音を再生するバッファを作成（ＫＡＧの物を使うとロード時に再生されてしまうため）
+		backSound = new WaveSoundBuffer(window);
+		backSound.looping = true;
+	}
+
+	function finalize()
+	{
+		invalidate walkTimer;
+		invalidate waitTimer;
+		invalidate viewScreen;
+		invalidate bufScreen;
+		invalidate sideScreen;
+		invalidate tempScreen;
+		invalidate emitLayer;
+		invalidate effectLayer;
+		invalidate skyLayer;
+		invalidate blindScreen;
+		invalidate objectLayer;
+		invalidate boatLayer;
+		invalidate controlBoard;
+		invalidate borderLayer;
+		invalidate backSound;
+		super.finalize();
+	}
+
+	property visible
+	{
+		setter(v)
+		{
+			skyLayer.visible = v;
+			if(! v) stopEffect();
+			else if(master.map.effect !== void) startEffect(master.map.effect, true);
+			super.visible = v;
+		}
+		getter
+		{
+			return super.visible;
+		}
+	}
+
+	property enabled
+	{
+		setter(v)
+		{
+			hitThreshold = v ? 0 : 256;
+			objectLayer.touchable = v;
+			focusable = v;
+		}
+		getter
+		{
+			return focusable;
+		}
+	}
+
+	property inStable
+	{
+		getter{ return ! walkTimer.enabled; }
+	}
+
+	function resetPos()
+	{
+		// ビュー位置リセット。浮遊状態かどうかで違う
+		setPos(0, master.party.isFloating() ? 0 : -40);
+	}
+
+	function open()
+	{
+		// 表示（画面は構築済み）
+		visible = true;
+		skyLayer.visible = true;
+	}
+
+	function startExplore()
+	{
+		// ダンジョン探索開始
+		open();
+		master.onGameRestart();
+		playMusic(master.map.bgm);
+		master.walkFinished(true);	// 入ってすぐのイベントを調べる
+	}
+
+	function close()
+	{
+		// ダンジョンを閉じる
+		enabled = false;
+		visible = false;
+		boatLayer.visible = false;
+		skyLayer.visible = false;
+		objectLayer.visible = false;
+		bufScreen.duelNet.visible = false;
+		master.miniMap.close();
+		stopEffect();
+		stopMapSound();
+	}
+
+	function goToStreet()
+	{
+		// 店舗等から戻る時に呼ぶ
+		master.clearWindows();
+		master.itemWin.close();
+		master.updateView();
+		kag.process("script.ks", "*shop_exit");
+	}
+
+	function setTouchableObject(info)
+	{
+		// クリックできるオブジェクトを設置する
+		objectLayer.loadImages(info.img);
+		objectLayer.isButton = +info.button;
+		objectLayer.visible = true;
+	}
+
+	function setBlindScreen(enabled)
+	{
+		// ダンジョンの目隠し状態を設定する
+		blindScreen.visible = (enabled && master.map.blind !== void);
+	}
+
+	function setClairvoyance(enabled)
+	{
+		// 透視状態を設定する
+		bufScreen.wall_front_a0.opacity = enabled ? 64 : 255;
+		updateView(master.party.curX, master.party.curY, master.party.curFront);
+	}
+
+	function loadInitialParts(dic)
+	{
+		// マップデータを読み込みするときに必ず必要になる画像を先にある程度まとめて読み込む
+		// 操作開始初期に読み込まれてないパーツ画像が多いせいでもたつくのを回避するのも兼ねる
+		bufScreen.loadMainDungeonParts(dic.defWall, dic.defFloor);
+		setEnvironmentInfo(dic);
+	}
+
+	function setEnvironmentInfo(dic)
+	{
+		// ダンジョンの壁や床以外の周囲の状況を表す画像を設定する
+		if(dic.sky !== void) _skyImage = dic.sky;	// 空（背景）
+		if(dic.effect !== void) _effectFile = dic.effect;	// 演出
+		if(dic.sound !== void) _soundFile = dic.sound;	// 効果音
+		if(dic.blind !== void) _blindImage = dic.blind;	// 暗闇
+	}
+
+	function startEffect(file, quickly = false)
+	{
+		// 演出を開始する
+		stopEffect();	// いったん止める
+		if(Storages.isExistentStorage(file + ".pee"))
+		{
+			// パーティクル
+			emitLayer.loadImages(%[storage: "PE_base_view"]);
+			particle_object.start(emitLayer, 12, file + ".pee", -1);
+			if(quickly) particle_object.emitters[12].advanceTime(5);
+			emitLayer.visible = true;
+		}
+		if(Storages.isExistentStorage(file + ".asd"))
+		{
+			// アニメ
+			effectLayer.loadImages(%[storage: file, clipwidth: 900, clipheight: 560]);
+			effectLayer.visible = true;
+			effectLayer.startAnim(%[seg: 1, target: "*start"]);
+		}
+		else if(Storages.isExistentStorage(file + ".png"))
+		{
+			// 手前のスクリーンに画像を読み込むだけ
+			effectLayer.loadImages(%[storage: file]);
+			effectLayer.visible = true;
+		}
+	}
+
+	function stopEffect()
+	{
+		// 演出を終了する
+		effectLayer.freeImage();
+		if(emitLayer.visible)
+		{
+			emitLayer.visible = false;
+			particle_object.emitters[12].stop(true);
+		}
+	}
+
+	function fadeEffect()
+	{
+		// 演出をゆっくり終了する  シナリオの先で stopEffect を実行すること
+		if(particle_object.emitters[12].active) particle_object.emitters[12].stop(false);
+		if(effectLayer.visible) effectLayer.beginMove(%[time: 1000, path: ",,0"]);
+	}
+
+	function playMapSound(file)
+	{
+		// 環境音を開始する
+		backSound.volume2 = kag.se[0].volume2;
+		backSound.open(file + ".wav");
+		backSound.play();
+	}
+
+	function stopMapSound()
+	{
+		// 効果音を終了する
+		backSound.stop();
+	}
+
+	function showWarpingEffect()
+	{
+		// 移動アニメ中に次の座標がワープだった場合その演出を行う
+		if(master.party.afterEscaped) return;
+		if(master.party.lastX == nextX && master.party.lastY == nextY) return;
+		var warp = master.map.getWarpInfo(nextX, nextY);
+		if(warp === void) return;
+		if(warp.ask !== void || warp.click !== void || warp.stair !== void) return;
+		if(warp.stealth || warp.fall || warp.climb) return;
+		master.backScreen.visible = true;
+		if(warp.symbol === void) playSound("poyon");
+	}
+
+	function updateView(x, y, front)
+	{
+		// 指定したビューを表示する
+		nextDarkZone = master.map.getDarkZoneName(x, y);
+		bufScreen.updateView(x, y, front, nextDarkZone);
+		viewScreen.piledCopy(0, 0, bufScreen, 60, 40, 900, 600);
+		master.backScreen.visible = false;
+		if(_skyImage !== void)
+		{
+			skyLayer.loadImages("sky_" + _skyImage);
+			_skyImage = void;
+		}
+		if(_effectFile !== void)
+		{
+			startEffect(_effectFile);
+			_effectFile = void;
+		}
+		if(_soundFile !== void)
+		{
+			playMapSound(_soundFile);
+			_soundFile = void;
+		}
+		if(_blindImage !== void)
+		{
+			blindScreen.loadImages("blind_" + _blindImage);
+			blindScreen.visible = true;
+			_blindImage = void;
+		}
+	}
+
+	function startWalk(type, x, y, front, darkZone, mx, my)
+	{
+		// 移動アニメをしつつ指定のビューを表示する
+		if(walkTimer.enabled) return;
+		nextX = x;
+		nextY = y;
+		middleX = mx;
+		middleY = my;
+		nextFront = front;
+		nextDarkZone = darkZone;
+		walkType = type;
+		animCount = 0;
+		walkTimer.enabled = true;	// 移動開始
+		objectLayer.visible = false;	// オブジェクトを消しておく
+	}
+
+	function stretchAndPrintToViewScreen(sleft, stop, swidth, sheight)
+	{
+		// 子レイヤを１枚にまとめつつ拡縮コピー
+		tempScreen.piledCopy(0, 0, bufScreen, 0, 0, 1020, 680);
+		viewScreen.stretchCopy(0, 0, 900, 600, tempScreen, sleft, stop, swidth, sheight);
+			// operateStretch だとコピー先への合成機能が災いして前の画像が残ってしまうのでこれを使う
+	}
+
+	function walking()
+	{
+		// 歩行や方向転換のビューアニメ処理
+
+		// ジャンプ前進
+		if(walkType == "jumpForward")
+		{
+			sideScreen.left = 2000;
+			if(animCount == 0)
+			{
+				bufScreen.shiftWallImage(1);
+				stretchAndPrintToViewScreen(75, 50, 870, 580);	// 0.967
+				top += 30;
+			}
+			else if(animCount == 1)
+			{
+				bufScreen.shiftWallImage(2);
+				stretchAndPrintToViewScreen(120, 80, 780, 520);	// 0.867
+				top += 20;
+			}
+			else if(animCount == 2)
+			{
+				// 中間表示・一瞬途中の画像を見せることで大きく移動していることを意識させる
+				bufScreen.updateView(middleX, middleY, nextFront, nextDarkZone);
+				bufScreen.shiftWallImage(0);
+				viewScreen.piledCopy(0, 0, bufScreen, 60, 40, 900, 600);
+				top += 10;
+			}
+			else if(animCount == 6)
+			{
+				bufScreen.updateView(nextX, nextY, nextFront, nextDarkZone);
+				bufScreen.shiftWallImage(3);
+				stretchAndPrintToViewScreen(0, 0, 1020, 680);		// 1.133
+				top -= 10;
+			}
+			else if(animCount == 7)
+			{
+				bufScreen.shiftWallImage(4);
+				stretchAndPrintToViewScreen(45, 30, 930, 620);	// 1.033
+				top -= 20;
+			}
+			else if(animCount == 8)
+			{
+				bufScreen.shiftWallImage(0);
+				viewScreen.piledCopy(0, 0, bufScreen, 60, 40, 900, 600);
+				walkTimer.enabled = false;
+				resetPos();
+			}
+			else
+			{
+				// 中間表示 ( animCount が 3 ～ 5 ) 実際は止まっているが一瞬なので動いているように見える
+				bufScreen.shiftWallImage(0);
+				viewScreen.piledCopy(0, 0, bufScreen, 60, 40, 900, 600);
+			}
+		}
+
+		// 前進／後退／逃亡／ジャンプ後の逃亡による後退
+		if(walkType == "goForward" || walkType == "goBackward"
+			 || walkType == "escapeToBack" || walkType == "jumpToBack")
+		{
+			sideScreen.left = 2000;
+			var d = (walkType != "goForward");
+			if(animCount == 2)
+			{
+				bufScreen.updateView(nextX, nextY, nextFront, nextDarkZone);
+				showWarpingEffect();
+			}
+			if(animCount == 4)
+			{
+				bufScreen.shiftWallImage(0);
+				viewScreen.piledCopy(0, 0, bufScreen, 60, 40, 900, 600);
+				walkTimer.enabled = false;
+			}
+			else if(animCount == 3 * d)
+			{
+				bufScreen.shiftWallImage(1);
+				stretchAndPrintToViewScreen(75, 50, 870, 580);	// 0.967
+			}
+			else if(animCount == 1 + d)
+			{
+				bufScreen.shiftWallImage(2);
+				stretchAndPrintToViewScreen(120, 80, 780, 520);	// 0.867
+			}
+			else if(animCount == 2 - d)
+			{
+				bufScreen.shiftWallImage(3);
+				stretchAndPrintToViewScreen(0, 0, 1020, 680);		// 1.133
+			}
+			else
+			{
+				bufScreen.shiftWallImage(4);
+				stretchAndPrintToViewScreen(45, 30, 930, 620);	// 1.033
+			}
+		}
+
+		// カニ歩き
+		else if(walkType == "stepToLeft" || walkType == "stepToRight")
+		{
+			var d = (walkType == "stepToLeft" ? 1 : -1);
+			if(animCount == 0)
+			{
+				// 次がワープだった場合一瞬暗くなり音も鳴る
+				bufScreen.updateView(nextX, nextY, nextFront, nextDarkZone);
+				showWarpingEffect();
+
+				// 画面を準備
+				sideScreen.width = 900;
+				sideScreen.piledCopy(0, 0, bufScreen, 60, 40, 900, 600);
+				viewScreen.left =  20 * d; sideScreen.left = -580 * d + 300;
+				sideScreen.width = 300;
+				sideScreen.imageLeft = 300 * d - 300;
+			}
+			else if(animCount == 1)
+			{
+				viewScreen.left =  60 * d; sideScreen.left = -540 * d + 300;
+			}
+			else if(animCount == 2)
+			{
+				// ここで sideScreen が広くなる
+				viewScreen.left = 540 * d + 300; sideScreen.left =  -60 * d;
+				viewScreen.width = 300;
+				viewScreen.imageLeft = -300 * d - 300;
+				sideScreen.width = 900;
+				sideScreen.imageLeft = 0;
+			}
+			else if(animCount == 3)
+			{
+				viewScreen.left = 580 * d + 300; sideScreen.left =  -20 * d;
+			}
+			else if(animCount == 4)
+			{
+				viewScreen.left = 600 * d + 300; sideScreen.left = 0;
+				walkTimer.enabled = false;
+				viewScreen <-> sideScreen;	// 参照を入れ替える
+			}
+		}
+
+		// 方向転換
+		else if(walkType == "turnLeft" || walkType == "turnRight" || walkType == "turnAround"
+			 || walkType == "turnLeftAndGo" || walkType == "turnRightAndGo")
+		{
+			var d = (walkType == "turnLeft" || walkType == "turnLeftAndGo" ? 1 : -1);
+			if(animCount == 0)
+			{
+				bufScreen.updateView(nextX, nextY, nextFront, nextDarkZone);
+				sideScreen.left = 900 * d;
+				sideScreen.width = 900;
+				sideScreen.piledCopy(0, 0, bufScreen, 60, 40, 900, 600);
+				viewScreen.left =  20 * d; sideScreen.left = -880 * d;
+			}
+			else if(animCount == 1){ viewScreen.left =  60 * d; sideScreen.left = -840 * d; }
+			else if(animCount == 2){ viewScreen.left = 120 * d; sideScreen.left = -780 * d; }
+			else if(animCount == 3){ viewScreen.left = 780 * d; sideScreen.left = -120 * d; }
+			else if(animCount == 4){ viewScreen.left = 840 * d; sideScreen.left =  -60 * d; }
+			else if(animCount == 5){ viewScreen.left = 880 * d; sideScreen.left =  -20 * d; }
+			else
+			{
+				viewScreen.left = 900 * d; sideScreen.left = 0;
+				walkTimer.enabled = false;
+				viewScreen <-> sideScreen;
+				if(walkType == "turnAround")
+				{
+					master.walk("turnRight");
+					return;
+				}
+				else if(walkType == "turnLeftAndGo" || walkType == "turnRightAndGo")
+				{
+					master.walk("goForward");
+					return;
+				}
+			}
+		}
+
+		if(! walkTimer.enabled)
+		{
+			master.walkFinished();
+			return;
+		}
+
+		animCount ++;		// アニメカウントアップ
+	}
+
+	function repeatLastWalkingByMouse()
+	{
+		// マウスを押しっぱなしにした時に同じ移動を繰り返す
+		if(! enabled) return;
+		if(! repeatStarted) waitTimer.enabled = true;
+		else master.walk(walkType);
+	}
+
+	function startRepeat()
+	{
+		// 連続移動開始
+		repeatStarted = true;
+		waitTimer.enabled = false;
+		master.walk(walkType);
+	}
+
+	function stopWaitingStartRepeat()
+	{
+		// 連続移動開始を待つのを中断する
+		waitTimer.enabled = false;
+		repeatStarted = false;
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		// このレイヤーにフォーカスがあるときにキー入力があったら
+		// 方向キーだったら移動、キャンセルキーならメニューを出すなどする
+
+		if(walkTimer.enabled) return;
+		if(window.preProcessKeys(key, shift)) return;
+
+		// マウスが押されているとき
+		if(System.getKeyState(VK_LBUTTON) || System.getKeyState(VK_RBUTTON))
+		{
+			return;
+		}
+
+		// マウスが表示されているとき
+		if(! MOUSE_HIDDEN)
+		{
+			master.turnOffCharasHilight();
+			window.hideMouseCursor();	// 誤解を招かないため、カーソルを一時的に隠す
+		}
+
+		// 決定キーの追加機能
+		if(key == BT_OK || key == BT_OK2) key = anotherDecideKey;
+
+		// 各種キー操作
+		if(key == BT_UP || key == BT_UP2) master.walk("goForward");
+		else if(key == BT_DOWN || key == BT_DOWN2) master.walk(downKeyAction);
+		else if(key == BT_LSTEP || key == BT_LSTEP2) master.walk("stepToLeft");
+		else if(key == BT_RSTEP || key == BT_RSTEP2) master.walk("stepToRight");
+		else if(key == BT_LEFT || key == BT_LEFT2) master.walk("turnLeft");
+		else if(key == BT_RIGHT || key == BT_RIGHT2) master.walk("turnRight");
+		else if(key == BT_OPTION || key == BT_OPTION2) master.clickObjectByKey();
+		else if(kag.focusedLayerIsNull) return;	// フォーカス null 時のキーイベント二重送信問題対策
+		else if(key == BT_CANCEL || key == BT_CANCEL2) window.onPrimaryRightClick();
+		else if(key == BT_MAP || key == BT_MAP2) master.gameFrame.openAutoMap();
+		else if(key == BT_SEARCH || key == BT_SEARCH2) master.gameFrame.playSearchCommand();
+		else if(key == BT_MAGIC || key == BT_MAGIC2) master.gameFrame.openMagicCommand();
+		else if(key == BT_ITEM || key == BT_ITEM2) master.gameFrame.openItemCommand();
+		else if(key == BT_SAVE || key == BT_SAVE2) master.gameFrame.openSaveCommand();
+		super.onKeyDown(key, shift, false);
+	}
+
+	function onKeyUp(key, shift, process=true)
+	{
+		if(objectLayer.visible) objectLayer.releaseObject();
+		super.onKeyUp(key, shift, false);
+	}
+
+	function focus()
+	{
+		focusable = true;
+		super.focus();
+		repeatStarted = false;
+		if(sf.controlBoardVisible) controlBoard.visible = true;
+		else if(focused) onMouseMove(cursorX, cursorY);	// カーソルを適切な形に変える
+		if(sf.cursorsBorderVisible) drawControllerLine();
+	}
+
+	function unfocus()
+	{
+		super.unfocus();
+		focusable = false;
+		cursorDirect = "crArrow";	// とりあえず
+		cursor = crArrow;
+		borderLayer.visible = false;
+		controlBoard.visible = false;
+	}
+
+	function onMouseEnter()
+	{
+		if(MOUSE_HIDDEN) return;
+			// ↑ キーボード操作時に隠れたマウスの所にフォーカスが再度動いてしまうのを防ぐため
+		focus();
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbLeft) stopWaitingStartRepeat();
+		super.onMouseUp(...);
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		// レイヤーが当たり判定を失った後も
+		// マウスメッセージを受け付けることがあるのが判明
+		// hitThreshold が 256 になってからマウスメッセージを受け付けなくなるまで
+		// タイムラグがあるようなので、ここでも判定をする
+		if(walkTimer.enabled || hitThreshold ==256) return;
+		if(button == mbRight) window.onPrimaryRightClick();
+		else if(button == mbLeft && ! controlBoard.visible) master.walk(cursorDirect);
+		super.onMouseDown(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		if(sf.controlBoardVisible) return;
+		if(x < leftBorder)
+		{
+			if(y < sideBorder) changeCursor("turnLeft");
+			else changeCursor("stepToLeft");
+		}
+		else if(x > rightBorder)
+		{
+			if(y < sideBorder) changeCursor("turnRight");
+			else changeCursor("stepToRight");
+		}
+		else
+		{
+			if(y < centerBorder) changeCursor("goForward");
+			else changeCursor(downKeyAction);
+		}
+	}
+
+	function changeCursor(direct)
+	{
+		if(cursorDirect == direct) return;
+		cursorDirect = direct;
+		cursor = direct + ".cur";
+	}
+
+	function drawControllerLine()
+	{
+		// 分割線を描画する
+		var col = 0x80FF0000;
+		var upper = sideBorder, lower = centerBorder;
+		if(upper > lower) upper <-> lower;
+		with(borderLayer)
+		{
+			.clear();
+			.fillRect(leftBorder, centerBorder - 1, rightBorder - leftBorder, 2, col);
+			.fillRect(leftBorder - 100, sideBorder - 1, 100, 2, col);
+			.fillRect(rightBorder, sideBorder - 1, 100, 2, col);
+			.fillRect(leftBorder - 1, upper - 100, 2, lower - upper + 200, col);
+			.fillRect(rightBorder - 1, upper - 100, 2, lower - upper + 200, col);
+			.visible = true;
+		}
+	}
+}
+
+
+class ControlButton extends Layer
+{
+	// 移動操作ボードに乗せるボタン
+
+	var onButtonDownAction;
+	var onButtonUpAction;
+	var value;
+
+	function ControlButton(par)
+	{
+		super.Layer(par.window, par);
+		setSize(50, 50);
+		fillRect(0, 0, width, height, 0xFFFFFFFF);
+		opacity = 0;
+		hitThreshold = 0;
+		visible = true;
+		type = ltDodge;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function onMouseEnter()
+	{
+		opacity = 192;
+		super.onMouseEnter();
+	}
+
+	function onMouseLeave()
+	{
+		opacity = 0;
+		super.onMouseLeave();
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		parent.onButtonDownAction(button, value);
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button)
+	{
+		parent.onButtonUpAction(button, value);
+		super.onMouseUp(...);
+	}
+}
+
+
+class ControlBoard extends DecoLayer
+{
+	// 移動操作ボード
+
+	var master;
+	var buttons = [];	// ボタン
+
+	function ControlBoard(par, master)
+	{
+		super.DecoLayer(par);
+		name = "移動操作ボード";
+		this.master = master;
+		loadImages("frame_control_back");
+
+		for(var i = 0; i < 6; i++)
+		{
+			buttons[i] = new ControlButton(this);
+		}
+		buttons[0].setPos( 54,  2);
+		buttons[0].value = "goForward";
+		buttons[1].setPos( 54, 54);
+		buttons[1].value = "goBackward";
+		buttons[2].setPos(  2,  2);
+		buttons[2].value = "turnLeft";
+		buttons[3].setPos(106,  2);
+		buttons[3].value = "turnRight";
+		buttons[4].setPos(  2, 54);
+		buttons[4].value = "stepToLeft";
+		buttons[5].setPos(106, 54);
+		buttons[5].value = "stepToRight";
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < buttons.count; i++) invalidate buttons[i];
+		super.finalize();
+	}
+
+	function onButtonDownAction(button, value)
+	{
+		if(master.dungeonView.walkTimer.enabled) return;
+		if(button == mbLeft) master.walk(value);
+	}
+
+	function onButtonUpAction(button, value)
+	{
+		if(button == mbLeft) master.dungeonView.stopWaitingStartRepeat();
+		else if(button == mbRight) window.onPrimaryRightClick();
+	}
+
+	function changeDownKey(funcName)
+	{
+		if(funcName == "turnAround") loadImages("frame_control_turn");
+		else loadImages("frame_control_back");
+		buttons[1].value = funcName;
+	}
+}
+
+
+class PartsLayer extends Layer
+{
+	// ビュー画面を構成する各パーツを作成
+
+	var suffix = "";	// 接尾辞
+	var img = "_";	// 読み込まれている画像ファイル
+	var flip = false;	// 反転して表示するパーツかどうか
+	var masked = false;	// 現在マスクされているかどうか（サブクラスで利用）
+
+	function PartsLayer(par, suf, w, h, x, y, z, anim = false, flp = false)
+	{
+		super.Layer(par.window, par);
+		setSize(w, h);
+		setPos(x, y);
+		absolute = z;
+		setImageSize(w * (anim ? 5 : 1), h);
+		hitThreshold = 256;
+		if(suf !== void) suffix = "_" + suf;
+		flip = flp;
+	}
+
+	function load(v)
+	{
+		// ここに画像ファイル名を指定するとパーツ画像を読み込む
+		// 無効な画像名なら非表示にする
+		// 画像読込み回数を減らすように工夫しないとアニメが遅くなるので注意
+
+		if(v === void)
+		{
+			visible = false;
+			return;
+		}
+
+		if(! Storages.isExistentStorage(v + suffix + ".png"))
+		{
+			if(! Storages.isExistentStorage(PROXY[v] + suffix + ".png"))
+			{
+				visible = false;
+				return;
+			}
+			v = PROXY[v];
+		}
+
+		visible = true;
+
+		if(img != v || masked)
+		{
+			loadImages(v + suffix);
+			if(flip) flipLR();
+			img = v;
+			masked = false;
+		}
+	}
+}
+
+
+class WallLayer extends PartsLayer
+{
+	// 壁を作成。マスクを利用したり屋外で背の高いパーツを使えたりする
+
+	var mask = "_";	// 読み込まれているマスクファイル
+	var maskLayer;	// マスク画像を保持するレイヤー
+
+	function WallLayer(par, suf, w, h, x, y, z, anim = false, flp = false, useMask = false)
+	{
+		super.PartsLayer(...);
+		if(useMask)
+		{
+			maskLayer = new global.Layer(window, this);
+			maskLayer.setSize(w, h);
+			maskLayer.setImageSize(w * (anim ? 5 : 1), h);
+			maskLayer.hitThreshold = 256;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate maskLayer;
+		super.finalize();
+	}
+
+	function loadMask(v)
+	{
+		if(! Storages.isExistentStorage(v + "_m" + suffix + ".png")) return;
+		if(mask != v)
+		{
+			maskLayer.loadImages(v + "_m" + suffix);
+			if(flip) maskLayer.flipLR();
+			mask = v;
+		}
+		clipAlphaRect(0, 0, maskLayer, 0, 0, imageWidth, imageHeight);
+		masked = true;
+	}
+
+	function load(v, short)
+	{
+		// "_h" を付けた名前を指定すると屋内では "_h" 抜きの画像が読み込まれる
+		if(short && v !== void && v.substr(v.length - 2, 2) == "_h")
+		{
+			v = v.substr(0, v.length - 2);
+		}
+		super.load(v);
+	}
+}
+
+
+class TouchableObject extends Layer
+{
+	// ダンジョン内で触ってイベントを起こせるオブジェクトのレイヤー
+	// オブジェクト画像は正面壁レイヤーのサイズ 820 x 680 で作る
+	// 領域画像の当たり判定は目的のオブジェクトの
+	// 左上座標から (-24, 2)  右下座標から (-4, 28) の範囲に設定する
+	// （カーソルのホットスポットが何故か左下にあるため）
+
+	var isButton = false;	// ボタンなら押した瞬間画像が変化する
+
+	function TouchableObject(par, master)
+	{
+		super.Layer(par.window, par);
+		name = "触れるオブジェクト";
+		this.master = master;
+		hitType = htProvince;
+		hitThreshold = 256;	// touchable プロパティで必要になる
+		cursor = "pushbutton.cur";
+	}
+
+	property touchable
+	{
+		setter(v){ hitType = v ? htProvince : htMask; }
+	}
+
+	function loadImages(storage)
+	{
+		if(Storages.isExistentStorage(storage + "_click.png")) super.loadImages(storage + "_click");
+		else super.loadImages("default_click");
+		if(! Storages.isExistentStorage(storage + "_click_p.png"))
+		{
+			storage = PROXY[storage];
+			if(storage === void) return;
+		}
+		loadProvinceImage(storage + "_click_p.png");
+	}
+
+	function touchObject()
+	{
+		if(isButton) imageLeft = -width;
+		master.checkClickObject();
+	}
+
+	function releaseObject()
+	{
+		if(isButton) imageLeft = 0;
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(button == mbLeft) touchObject();
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbLeft) releaseObject();
+		else if(button == mbRight) window.onPrimaryRightClick();
+		super.onMouseUp(...);
+	}
+}
+
+
+class ViewLayer extends Layer
+{
+	// 位置情報からダンジョンのビュー（景色）画面を作成
+
+	/*
+	＜フィールドオブジェクトの名称＞
+		     front
+		  left ▲ right
+		      back
+		floor: 床    roof: 天井
+
+		d4  c4  b4  a4  B4  C4  D4
+		d3  c3  b3  a3  B3  C3  D3
+		d2  c2  b2  a2  B2  C2  D2
+		    c1  b1  a1  B1  C1
+		        b0 (a0) B0
+	*/
+
+	// 正面壁レイヤー
+	var wall_front_a0, wall_front_a1, wall_front_a2, wall_front_a3
+	 ,wall_front_b0, wall_front_b1, wall_front_b2, wall_front_b3
+	 ,wall_front_B0, wall_front_B1, wall_front_B2, wall_front_B3
+	 ,wall_front_c1, wall_front_c2, wall_front_c3, wall_front_C1, wall_front_C2, wall_front_C3
+	 ,wall_front_d2, wall_front_d3, wall_front_D2, wall_front_D3;
+
+	// 左の壁レイヤー
+	var wall_left__a0, wall_left__a1, wall_left__a2, wall_left__a3, wall_left__a4
+	 ,wall_left__b1, wall_left__b2, wall_left__b3, wall_left__b4
+	 ,wall_left__c2, wall_left__c3, wall_left__c4
+	 ,wall_left__a5, wall_left__b5, wall_left__c5;
+
+	// 右の壁レイヤー
+	var wall_right_a0, wall_right_a1, wall_right_a2, wall_right_a3, wall_right_a4
+	 ,wall_right_B1, wall_right_B2, wall_right_B3, wall_right_B4
+	 ,wall_right_C2, wall_right_C3, wall_right_C4
+	 ,wall_right_a5, wall_right_B5, wall_right_C5;
+
+	// 床レイヤー
+	var floor_a0, floor_a1, floor_a2, floor_a3, floor_a4
+	 ,floor_b0, floor_b1, floor_b2, floor_b3, floor_b4, floor_B0, floor_B1, floor_B2, floor_B3, floor_B4
+	 ,floor_c1, floor_c2, floor_c3, floor_c4, floor_C1, floor_C2, floor_C3, floor_C4
+	 ,floor_d2, floor_d3, floor_d4, floor_D2, floor_D3, floor_D4;
+
+	// 置物レイヤー
+	var put_a0, put_a1, put_a2, put_a3, put_a4
+	 ,put_b0,put_b1, put_b2, put_b3, put_b4, put_B0, put_B1, put_B2, put_B3, put_B4
+	 ,put_c2, put_c3, put_c4, put_C2, put_C3, put_C4 ,put_d3 ,put_D3 ,put_d4 ,put_D4;
+
+	// 特殊な置物レイヤー（演出用）
+	var put_ex;
+
+	// 正面壁貼付レイヤー
+	var hang_front_a0, hang_front_a1, hang_front_a2, hang_front_a3
+	 ,hang_front_b0, hang_front_b1, hang_front_b2, hang_front_b3
+	 ,hang_front_B0, hang_front_B1, hang_front_B2, hang_front_B3
+	 ,hang_front_c1, hang_front_c2, hang_front_c3, hang_front_C1, hang_front_C2, hang_front_C3
+	 ,hang_front_d2, hang_front_d3, hang_front_D2, hang_front_D3;
+
+	// 左の壁貼付レイヤー
+	var hang_left__a0, hang_left__a1, hang_left__a2, hang_left__a3
+	 ,hang_left__b1, hang_left__b2, hang_left__b3
+	 ,hang_left__c2, hang_left__c3;
+
+	// 右の壁貼付レイヤー
+	var hang_right_a0, hang_right_a1, hang_right_a2, hang_right_a3
+	 ,hang_right_B1, hang_right_B2, hang_right_B3
+	 ,hang_right_C2, hang_right_C3;
+
+	// 屋根レイヤー
+	var roof;
+
+	// 床と屋根の影レイヤー
+	var shadow_floor;
+	var shadow_roof;
+
+	// 透視を防止する壁
+	var scopeGuard;
+
+	// ダークゾーン・網レイヤー（拡縮をしないのでこれらは別途合成する）
+	var darkZone;
+	var duelNet;
+
+	// 現在、屋根のあるところを描画しようとしているかどうかを保存するフラグ
+	var ceiling = false;
+
+	// 現在、水面の直下を描画しようとしているかどうかを保存するフラグ
+	var underSurface = false;
+
+	function ViewLayer(par)
+	{
+		super.Layer(par.window, par);
+		name = "ViewLayer";
+		focusable = false;
+		visible = false;
+		setPos(0, 0);
+		setSize(1020, 680);
+
+		wall_left__a0 = new WallLayer(this, "side_a0" , 360, 680,   0, 0, 980,,, true);
+		wall_right_a0 = new WallLayer(this, "side_a0" , 360, 680, 660, 0, 980,, true, true);
+		wall_front_a0 = new WallLayer(this, "front_a0", 700, 660, 160, 0, 940,,, true);
+		wall_front_b0 = new WallLayer(this, "front_b0", 280, 660,   0, 0, 930,,, true);
+		wall_front_B0 = new WallLayer(this, "front_b0", 280, 660, 740, 0, 930,, true, true);
+
+		wall_left__a1 = new WallLayer(this, "side_a1" , 260, 680, 200, 0, 880,,, true);
+		wall_right_a1 = new WallLayer(this, "side_a1" , 260, 680, 560, 0, 880,, true, true);
+		wall_left__b1 = new WallLayer(this, "side_b1" , 180, 540,   0, 0, 870,,, true);
+		wall_right_B1 = new WallLayer(this, "side_b1" , 180, 540, 840, 0, 870,, true, true);
+		wall_front_a1 = new WallLayer(this, "front_a1", 320, 490, 350, 0, 840,,, true);
+		wall_front_b1 = new WallLayer(this, "front_b1", 320, 490,  80, 0, 830,,, true);
+		wall_front_B1 = new WallLayer(this, "front_b1", 320, 490, 620, 0, 830,, true, true);
+		wall_front_c1 = new WallLayer(this, "front_c1", 140, 490,   0, 0, 820,,, true);
+		wall_front_C1 = new WallLayer(this, "front_c1", 140, 490, 880, 0, 820,, true, true);
+
+		wall_left__a2 = new WallLayer(this, "side_a2" , 140, 500, 340, 0, 780, true,, true);
+		wall_right_a2 = new WallLayer(this, "side_a2" , 140, 500, 540, 0, 780, true, true, true);
+		wall_left__b2 = new WallLayer(this, "side_b2" , 240, 500,  70, 0, 770, true,, true);
+		wall_right_B2 = new WallLayer(this, "side_b2" , 240, 500, 710, 0, 770, true, true, true);
+		wall_left__c2 = new WallLayer(this, "side_c2" , 130, 470,   0, 0, 760, true,, true);
+		wall_right_C2 = new WallLayer(this, "side_c2" , 130, 470, 890, 0, 760, true, true, true);
+		wall_front_a2 = new WallLayer(this, "front_a2", 220, 440, 400, 0, 740,,, true);
+		wall_front_b2 = new WallLayer(this, "front_b2", 220, 440, 220, 0, 730,,, true);
+		wall_front_B2 = new WallLayer(this, "front_b2", 220, 440, 580, 0, 730,, true, true);
+		wall_front_c2 = new WallLayer(this, "front_c2", 220, 440,  50, 0, 720,,, true);
+		wall_front_C2 = new WallLayer(this, "front_c2", 220, 440, 750, 0, 720,, true, true);
+		wall_front_d2 = new WallLayer(this, "front_d2", 100, 440,   0, 0, 710,,, true);
+		wall_front_D2 = new WallLayer(this, "front_d2", 100, 440, 920, 0, 710,, true, true);
+
+		wall_left__a3 = new WallLayer(this, "side_a3" , 100, 450, 390, 0, 680, true,, true);
+		wall_right_a3 = new WallLayer(this, "side_a3" , 100, 450, 530, 0, 680, true, true, true);
+		wall_left__b3 = new WallLayer(this, "side_b3" , 130, 450, 220, 0, 670, true,, true);
+		wall_right_B3 = new WallLayer(this, "side_b3" , 130, 450, 670, 0, 670, true, true, true);
+		wall_left__c3 = new WallLayer(this, "side_c3" , 170, 450,  50, 0, 660, true,, true);
+		wall_right_C3 = new WallLayer(this, "side_c3" , 170, 450, 800, 0, 660, true, true, true);
+		wall_front_a3 = new WallLayer(this, "front_a3", 180, 420, 420, 0, 640,,, true);
+		wall_front_b3 = new WallLayer(this, "front_b3", 180, 420, 290, 0, 630,,, true);
+		wall_front_B3 = new WallLayer(this, "front_b3", 180, 420, 550, 0, 630,, true, true);
+		wall_front_c3 = new WallLayer(this, "front_c3", 180, 420, 160, 0, 620,,, true);
+		wall_front_C3 = new WallLayer(this, "front_c3", 180, 420, 680, 0, 620,, true, true);
+		wall_front_d3 = new WallLayer(this, "front_d3", 180, 420,  30, 0, 610,,, true);
+		wall_front_D3 = new WallLayer(this, "front_d3", 180, 420, 810, 0, 610,, true, true);
+
+		wall_left__a4 = new WallLayer(this, "side_a4" ,  70, 420, 420, 0, 580, true);
+		wall_right_a4 = new WallLayer(this, "side_a4" ,  70, 420, 530, 0, 580, true, true);
+		wall_left__b4 = new WallLayer(this, "side_b4" ,  80, 420, 300, 0, 570, true);
+		wall_right_B4 = new WallLayer(this, "side_b4" ,  80, 420, 640, 0, 570, true, true);
+		wall_left__c4 = new WallLayer(this, "side_c4" , 110, 420, 170, 0, 560, true);
+		wall_right_C4 = new WallLayer(this, "side_c4" , 110, 420, 740, 0, 560, true, true);
+
+		wall_left__a5 = new WallLayer(parent, "side_a5" , 240, 400, 180, 0, 80);
+		wall_right_a5 = new WallLayer(parent, "side_a5" , 240, 400, 480, 0, 80,, true);
+		wall_left__b5 = new WallLayer(parent, "side_b5" , 250, 400,  80, 0, 80);
+		wall_right_B5 = new WallLayer(parent, "side_b5" , 250, 400, 570, 0, 80,, true);
+		wall_left__c5 = new WallLayer(parent, "side_c5" , 160, 400,  80, 0, 80);
+		wall_right_C5 = new WallLayer(parent, "side_c5" , 160, 400, 660, 0, 80,, true);
+
+		hang_left__a0 = new PartsLayer(wall_left__a0, "side_a0" , 360, 680, 0, 0, 1);
+		hang_right_a0 = new PartsLayer(wall_right_a0, "side_a0" , 360, 680, 0, 0, 1,, true);
+		hang_front_a0 = new PartsLayer(wall_front_a0, "front_a0", 700, 660, 0, 0, 1);
+		hang_front_b0 = new PartsLayer(wall_front_b0, "front_b0", 280, 660, 0, 0, 1);
+		hang_front_B0 = new PartsLayer(wall_front_B0, "front_b0", 280, 660, 0, 0, 1,, true);
+
+		hang_left__a1 = new PartsLayer(wall_left__a1, "side_a1" , 260, 680, 0, 0, 1);
+		hang_right_a1 = new PartsLayer(wall_right_a1, "side_a1" , 260, 680, 0, 0, 1,, true);
+		hang_left__b1 = new PartsLayer(wall_left__b1, "side_b1" , 180, 540, 0, 0, 1);
+		hang_right_B1 = new PartsLayer(wall_right_B1, "side_b1" , 180, 540, 0, 0, 1,, true);
+		hang_front_a1 = new PartsLayer(wall_front_a1, "front_a1", 320, 490, 0, 0, 1);
+		hang_front_b1 = new PartsLayer(wall_front_b1, "front_b1", 320, 490, 0, 0, 1);
+		hang_front_B1 = new PartsLayer(wall_front_B1, "front_b1", 320, 490, 0, 0, 1,, true);
+		hang_front_c1 = new PartsLayer(wall_front_c1, "front_c1", 140, 490, 0, 0, 1);
+		hang_front_C1 = new PartsLayer(wall_front_C1, "front_c1", 140, 490, 0, 0, 1,, true);
+
+		hang_left__a2 = new PartsLayer(wall_left__a2, "side_a2" , 140, 500, 0, 0, 1, true);
+		hang_right_a2 = new PartsLayer(wall_right_a2, "side_a2" , 140, 500, 0, 0, 1, true, true);
+		hang_left__b2 = new PartsLayer(wall_left__b2, "side_b2" , 240, 500, 0, 0, 1, true);
+		hang_right_B2 = new PartsLayer(wall_right_B2, "side_b2" , 240, 500, 0, 0, 1, true, true);
+		hang_left__c2 = new PartsLayer(wall_left__c2, "side_c2" , 130, 470, 0, 0, 1, true);
+		hang_right_C2 = new PartsLayer(wall_right_C2, "side_c2" , 130, 470, 0, 0, 1, true, true);
+		hang_front_a2 = new PartsLayer(wall_front_a2, "front_a2", 220, 440, 0, 0, 1);
+		hang_front_b2 = new PartsLayer(wall_front_b2, "front_b2", 220, 440, 0, 0, 1);
+		hang_front_B2 = new PartsLayer(wall_front_B2, "front_b2", 220, 440, 0, 0, 1,, true);
+		hang_front_c2 = new PartsLayer(wall_front_c2, "front_c2", 220, 440, 0, 0, 1);
+		hang_front_C2 = new PartsLayer(wall_front_C2, "front_c2", 220, 440, 0, 0, 1,, true);
+		hang_front_d2 = new PartsLayer(wall_front_d2, "front_d2", 100, 440, 0, 0, 1);
+		hang_front_D2 = new PartsLayer(wall_front_D2, "front_d2", 100, 440, 0, 0, 1,, true);
+
+		hang_left__a3 = new PartsLayer(wall_left__a3, "side_a3" , 100, 450, 0, 0, 1, true);
+		hang_right_a3 = new PartsLayer(wall_right_a3, "side_a3" , 100, 450, 0, 0, 1, true, true);
+		hang_left__b3 = new PartsLayer(wall_left__b3, "side_b3" , 130, 450, 0, 0, 1, true);
+		hang_right_B3 = new PartsLayer(wall_right_B3, "side_b3" , 130, 450, 0, 0, 1, true, true);
+		hang_left__c3 = new PartsLayer(wall_left__c3, "side_c3" , 170, 450, 0, 0, 1, true);
+		hang_right_C3 = new PartsLayer(wall_right_C3, "side_c3" , 170, 450, 0, 0, 1, true, true);
+		hang_front_a3 = new PartsLayer(wall_front_a3, "front_a3", 180, 420, 0, 0, 1);
+		hang_front_b3 = new PartsLayer(wall_front_b3, "front_b3", 180, 420, 0, 0, 1);
+		hang_front_B3 = new PartsLayer(wall_front_B3, "front_b3", 180, 420, 0, 0, 1,, true);
+		hang_front_c3 = new PartsLayer(wall_front_c3, "front_c3", 180, 420, 0, 0, 1);
+		hang_front_C3 = new PartsLayer(wall_front_C3, "front_c3", 180, 420, 0, 0, 1,, true);
+		hang_front_d3 = new PartsLayer(wall_front_d3, "front_d3", 180, 420, 0, 0, 1);
+		hang_front_D3 = new PartsLayer(wall_front_D3, "front_d3", 180, 420, 0, 0, 1,, true);
+
+		floor_a0 = new WallLayer(this, "floor_a0", 820, 240, 100, 440, 480);
+		floor_b0 = new WallLayer(this, "floor_b0", 260, 240,   0, 440, 470);
+		floor_B0 = new WallLayer(this, "floor_b0", 260, 240, 760, 440, 470,, true);
+
+		floor_a1 = new WallLayer(this, "floor_a1", 660, 300, 180, 380, 380);
+		floor_b1 = new WallLayer(this, "floor_b1", 410, 300,   0, 380, 370);
+		floor_B1 = new WallLayer(this, "floor_b1", 410, 300, 610, 380, 370,, true);
+		floor_c1 = new WallLayer(this, "floor_c1", 150, 300,   0, 380, 360);
+		floor_C1 = new WallLayer(this, "floor_c1", 150, 300, 870, 380, 360,, true);
+
+		floor_a2 = new WallLayer(this, "floor_a2", 320, 310, 350, 370, 280);
+		floor_b2 = new WallLayer(this, "floor_b2", 380, 310,  80, 370, 270, true);
+		floor_B2 = new WallLayer(this, "floor_b2", 380, 310, 560, 370, 270, true, true);
+		floor_c2 = new WallLayer(this, "floor_c2", 270, 310,   0, 370, 260, true);
+		floor_C2 = new WallLayer(this, "floor_c2", 270, 310, 750, 370, 260, true, true);
+		floor_d2 = new WallLayer(this, "floor_d2",  90, 270,   0, 370, 250, true);
+		floor_D2 = new WallLayer(this, "floor_d2",  90, 270, 930, 370, 250, true, true);
+
+		floor_a3 = new WallLayer(this, "floor_a3", 220, 240, 400, 360, 180, true);
+		floor_b3 = new WallLayer(this, "floor_b3", 260, 240, 220, 360, 170, true);
+		floor_B3 = new WallLayer(this, "floor_b3", 260, 240, 540, 360, 170, true, true);
+		floor_c3 = new WallLayer(this, "floor_c3", 270, 240,  60, 360, 160, true);
+		floor_C3 = new WallLayer(this, "floor_c3", 270, 240, 690, 360, 160, true, true);
+		floor_d3 = new WallLayer(this, "floor_d3", 200, 240,   0, 360, 150, true);
+		floor_D3 = new WallLayer(this, "floor_d3", 200, 240, 820, 360, 150, true, true);
+
+		floor_a4 = new WallLayer(this, "floor_a4", 160, 170, 430, 360,  80);
+		floor_b4 = new WallLayer(this, "floor_b4", 170, 170, 300, 360,  70);
+		floor_B4 = new WallLayer(this, "floor_b4", 170, 170, 550, 360,  70,, true);
+		floor_c4 = new WallLayer(this, "floor_c4", 200, 170, 170, 360,  60);
+		floor_C4 = new WallLayer(this, "floor_c4", 200, 170, 650, 360,  60,, true);
+		floor_d4 = new WallLayer(this, "floor_d4", 230, 170,  40, 360,  50);
+		floor_D4 = new WallLayer(this, "floor_d4", 230, 170, 750, 360,  50,, true);
+
+		put_a0 = new WallLayer(this, "put_a0", 820, 680, 100, 0, 985);
+		put_b0 = new WallLayer(this, "put_b0", 360, 680,   0, 0, 975);
+		put_B0 = new WallLayer(this, "put_b0", 360, 680, 660, 0, 975,, true);
+
+		put_a1 = new WallLayer(this, "put_a1", 700, 660, 160, 0, 885);
+		put_b1 = new WallLayer(this, "put_b1", 460, 650,   0, 0, 875);
+		put_B1 = new WallLayer(this, "put_b1", 460, 650, 560, 0, 875,, true);
+
+		put_a2 = new WallLayer(this, "put_a2", 420, 490, 300, 0, 785);
+		put_b2 = new WallLayer(this, "put_b2", 430, 500,  50, 0, 775, true);
+		put_B2 = new WallLayer(this, "put_b2", 430, 500, 540, 0, 775, true, true);
+		put_c2 = new WallLayer(this, "put_c2", 310, 500,   0, 0, 765, true);
+		put_C2 = new WallLayer(this, "put_c2", 310, 500, 710, 0, 765, true, true);
+
+		put_a3 = new WallLayer(this, "put_a3", 280, 440, 370, 0, 685);
+		put_b3 = new WallLayer(this, "put_b3", 290, 450, 200, 0, 675, true);
+		put_B3 = new WallLayer(this, "put_b3", 290, 450, 530, 0, 675, true, true);
+		put_c3 = new WallLayer(this, "put_c3", 320, 450,  30, 0, 665, true);
+		put_C3 = new WallLayer(this, "put_c3", 320, 450, 670, 0, 665, true, true);
+		put_d3 = new WallLayer(this, "put_d3", 200, 440,   0, 0, 655, true);
+		put_D3 = new WallLayer(this, "put_d3", 200, 440, 820, 0, 655, true, true);
+
+		put_a4 = new WallLayer(this, "put_a4", 200, 420, 410, 0, 585);
+		put_b4 = new WallLayer(this, "put_b4", 220, 420, 280, 0, 575, true);
+		put_B4 = new WallLayer(this, "put_b4", 220, 420, 520, 0, 575, true, true);
+		put_c4 = new WallLayer(this, "put_c4", 250, 420, 150, 0, 565, true);
+		put_C4 = new WallLayer(this, "put_c4", 250, 420, 620, 0, 565, true, true);
+		put_d4 = new WallLayer(this, "put_d4", 250, 420,   0, 0, 555, true);
+		put_D4 = new WallLayer(this, "put_d4", 250, 420, 770, 0, 555, true, true);
+
+		put_ex = new WallLayer(this, "put_ex", 900, 680, 60, 0, 886);
+
+		roof = new PartsLayer(this,, 1020, 340, 0, 0, 10);
+
+		// 床と屋根の影を作成。サイズはここで新たに設定する
+		shadow_floor = new PartsLayer(this,, 1020, 150, 0, 340, 500);
+		shadow_floor.setImageSize(1020, 750);
+		shadow_roof = new PartsLayer(this,, 1020, 350, 0, 0, 15);
+		shadow_roof.setImageSize(1020, 1750);
+
+		// 透視を防止する壁
+		scopeGuard = new PartsLayer(this,, 820, 680, 100, 0, 935);
+
+		// 暗闇エリアのレイヤーを作成
+		darkZone = new global.Layer(par.window, par);
+		darkZone.setSize(par.width, par.height);
+		darkZone.hitThreshold = 256;
+		darkZone.absolute = 990;
+
+		// 決闘の網レイヤーを作成
+		duelNet = new global.Layer(window, this);
+		duelNet.setSize(width, height);
+		duelNet.loadImages("duel_net");
+		duelNet.hitThreshold = 256;
+		duelNet.absolute = 900;
+		duelNet.type = ltDodge;
+	}
+
+	function finalize()
+	{
+		invalidate wall_left__a0;
+		invalidate wall_right_a0;
+		invalidate wall_front_a0;
+		invalidate wall_front_b0;
+		invalidate wall_front_B0;
+		invalidate wall_left__a1;
+		invalidate wall_right_a1;
+		invalidate wall_left__b1;
+		invalidate wall_right_B1;
+		invalidate wall_front_a1;
+		invalidate wall_front_b1;
+		invalidate wall_front_B1;
+		invalidate wall_front_c1;
+		invalidate wall_front_C1;
+		invalidate wall_left__a2;
+		invalidate wall_right_a2;
+		invalidate wall_left__b2;
+		invalidate wall_right_B2;
+		invalidate wall_left__c2;
+		invalidate wall_right_C2;
+		invalidate wall_front_a2;
+		invalidate wall_front_b2;
+		invalidate wall_front_B2;
+		invalidate wall_front_c2;
+		invalidate wall_front_C2;
+		invalidate wall_front_d2;
+		invalidate wall_front_D2;
+		invalidate wall_left__a3;
+		invalidate wall_right_a3;
+		invalidate wall_left__b3;
+		invalidate wall_right_B3;
+		invalidate wall_left__c3;
+		invalidate wall_right_C3;
+		invalidate wall_front_a3;
+		invalidate wall_front_b3;
+		invalidate wall_front_B3;
+		invalidate wall_front_c3;
+		invalidate wall_front_C3;
+		invalidate wall_front_d3;
+		invalidate wall_front_D3;
+		invalidate wall_left__a4;
+		invalidate wall_right_a4;
+		invalidate wall_left__b4;
+		invalidate wall_right_B4;
+		invalidate wall_left__c4;
+		invalidate wall_right_C4;
+		invalidate wall_left__a5;
+		invalidate wall_right_a5;
+		invalidate wall_left__b5;
+		invalidate wall_right_B5;
+		invalidate wall_left__c5;
+		invalidate wall_right_C5;
+		invalidate hang_left__a0;
+		invalidate hang_right_a0;
+		invalidate hang_front_a0;
+		invalidate hang_front_b0;
+		invalidate hang_front_B0;
+		invalidate hang_left__a1;
+		invalidate hang_right_a1;
+		invalidate hang_left__b1;
+		invalidate hang_right_B1;
+		invalidate hang_front_a1;
+		invalidate hang_front_b1;
+		invalidate hang_front_B1;
+		invalidate hang_front_c1;
+		invalidate hang_front_C1;
+		invalidate hang_left__a2;
+		invalidate hang_right_a2;
+		invalidate hang_left__b2;
+		invalidate hang_right_B2;
+		invalidate hang_left__c2;
+		invalidate hang_right_C2;
+		invalidate hang_front_a2;
+		invalidate hang_front_b2;
+		invalidate hang_front_B2;
+		invalidate hang_front_c2;
+		invalidate hang_front_C2;
+		invalidate hang_front_d2;
+		invalidate hang_front_D2;
+		invalidate hang_left__a3;
+		invalidate hang_right_a3;
+		invalidate hang_left__b3;
+		invalidate hang_right_B3;
+		invalidate hang_left__c3;
+		invalidate hang_right_C3;
+		invalidate hang_front_a3;
+		invalidate hang_front_b3;
+		invalidate hang_front_B3;
+		invalidate hang_front_c3;
+		invalidate hang_front_C3;
+		invalidate hang_front_d3;
+		invalidate hang_front_D3;
+		invalidate floor_a0;
+		invalidate floor_b0;
+		invalidate floor_B0;
+		invalidate floor_a1;
+		invalidate floor_b1;
+		invalidate floor_B1;
+		invalidate floor_c1;
+		invalidate floor_C1;
+		invalidate floor_a2;
+		invalidate floor_b2;
+		invalidate floor_B2;
+		invalidate floor_c2;
+		invalidate floor_C2;
+		invalidate floor_d2;
+		invalidate floor_D2;
+		invalidate floor_a3;
+		invalidate floor_b3;
+		invalidate floor_B3;
+		invalidate floor_c3;
+		invalidate floor_C3;
+		invalidate floor_d3;
+		invalidate floor_D3;
+		invalidate floor_a4;
+		invalidate floor_b4;
+		invalidate floor_B4;
+		invalidate floor_c4;
+		invalidate floor_C4;
+		invalidate floor_d4;
+		invalidate floor_D4;
+		invalidate put_a0;
+		invalidate put_b0;
+		invalidate put_B0;
+		invalidate put_a1;
+		invalidate put_b1;
+		invalidate put_B1;
+		invalidate put_a2;
+		invalidate put_b2;
+		invalidate put_B2;
+		invalidate put_c2;
+		invalidate put_C2;
+		invalidate put_a3;
+		invalidate put_b3;
+		invalidate put_B3;
+		invalidate put_c3;
+		invalidate put_C3;
+		invalidate put_d3;
+		invalidate put_D3;
+		invalidate put_a4;
+		invalidate put_b4;
+		invalidate put_B4;
+		invalidate put_c4;
+		invalidate put_C4;
+		invalidate put_d4;
+		invalidate put_D4;
+		invalidate put_ex;
+		invalidate roof;
+		invalidate shadow_floor;
+		invalidate shadow_roof;
+		invalidate scopeGuard;
+		invalidate darkZone;
+		invalidate duelNet;
+		super.finalize();
+	}
+
+	function shiftWallImage(n)
+	{
+		// アニメの際に影の位置を調整した別のパターンに切り替える
+
+		shadow_floor.imageTop = -150 * n;
+		shadow_roof.imageTop  = -350 * n;
+		wall_left__a2.imageLeft = -140 * n;
+		wall_left__a3.imageLeft = -100 * n;
+		wall_left__a4.imageLeft = - 70 * n;
+		wall_left__b2.imageLeft = -240 * n;
+		wall_left__b3.imageLeft = -130 * n;
+		wall_left__b4.imageLeft = - 80 * n;
+		wall_left__c2.imageLeft = -130 * n;
+		wall_left__c3.imageLeft = -170 * n;
+		wall_left__c4.imageLeft = -110 * n;
+		if(floor_a3.imageWidth == 1100) floor_a3.imageLeft = -220 * n;
+		if(floor_b2.imageWidth == 1900) floor_b2.imageLeft = -380 * n;
+		if(floor_b3.imageWidth == 1300) floor_b3.imageLeft = -260 * n;
+		if(floor_c2.imageWidth == 1350) floor_c2.imageLeft = -270 * n;
+		if(floor_c3.imageWidth == 1350) floor_c3.imageLeft = -270 * n;
+		if(floor_d2.imageWidth ==  450) floor_d2.imageLeft = - 90 * n;
+		if(floor_d3.imageWidth == 1000) floor_d3.imageLeft = -200 * n;
+		n = 4 - n;
+		wall_right_a2.imageLeft = -140 * n;
+		wall_right_a3.imageLeft = -100 * n;
+		wall_right_a4.imageLeft = - 70 * n;
+		wall_right_B2.imageLeft = -240 * n;
+		wall_right_B3.imageLeft = -130 * n;
+		wall_right_B4.imageLeft = - 80 * n;
+		wall_right_C2.imageLeft = -130 * n;
+		wall_right_C3.imageLeft = -170 * n;
+		wall_right_C4.imageLeft = -110 * n;
+		if(floor_B2.imageWidth == 1900) floor_B2.imageLeft = -380 * n;
+		if(floor_B3.imageWidth == 1300) floor_B3.imageLeft = -260 * n;
+		if(floor_C2.imageWidth == 1350) floor_C2.imageLeft = -270 * n;
+		if(floor_C3.imageWidth == 1350) floor_C3.imageLeft = -270 * n;
+		if(floor_D2.imageWidth ==  450) floor_D2.imageLeft = - 90 * n;
+		if(floor_D3.imageWidth == 1000) floor_D3.imageLeft = -200 * n;
+	}
+
+	function loadMainDungeonParts(wallImg, floorImg)
+	{
+		// 頻繁に利用する壁と床の画像を前もってまとめて読み込む
+
+		// 壁
+		wall_left__a0.load(wallImg);
+		wall_right_a0.load(wallImg);
+		wall_front_a0.load(wallImg);
+		wall_front_b0.load(wallImg);
+		wall_front_B0.load(wallImg);
+		wall_left__a1.load(wallImg);
+		wall_right_a1.load(wallImg);
+		wall_front_a1.load(wallImg);
+		wall_left__b1.load(wallImg);
+		wall_right_B1.load(wallImg);
+		wall_front_b1.load(wallImg);
+		wall_front_B1.load(wallImg);
+		wall_front_c1.load(wallImg);
+		wall_front_C1.load(wallImg);
+		wall_left__a2.load(wallImg);
+		wall_right_a2.load(wallImg);
+		wall_front_a2.load(wallImg);
+		wall_left__b2.load(wallImg);
+		wall_front_b2.load(wallImg);
+		wall_right_B2.load(wallImg);
+		wall_front_B2.load(wallImg);
+		wall_left__c2.load(wallImg);
+		wall_front_c2.load(wallImg);
+		wall_right_C2.load(wallImg);
+		wall_front_C2.load(wallImg);
+		wall_front_d2.load(wallImg);
+		wall_front_D2.load(wallImg);
+		wall_left__a3.load(wallImg);
+		wall_right_a3.load(wallImg);
+		wall_front_a3.load(wallImg);
+		wall_left__b3.load(wallImg);
+		wall_front_b3.load(wallImg);
+		wall_right_B3.load(wallImg);
+		wall_front_B3.load(wallImg);
+		wall_left__c3.load(wallImg);
+		wall_front_c3.load(wallImg);
+		wall_right_C3.load(wallImg);
+		wall_front_C3.load(wallImg);
+		wall_front_d3.load(wallImg);
+		wall_front_D3.load(wallImg);
+		wall_left__a4.load(wallImg);
+		wall_right_a4.load(wallImg);
+		wall_left__b4.load(wallImg);
+		wall_right_B4.load(wallImg);
+		wall_left__c4.load(wallImg);
+		wall_right_C4.load(wallImg);
+
+		// 床
+		floor_a0.load(floorImg);
+		floor_b0.load(floorImg);
+		floor_B0.load(floorImg);
+		floor_a1.load(floorImg);
+		floor_b1.load(floorImg);
+		floor_B1.load(floorImg);
+		floor_c1.load(floorImg);
+		floor_C1.load(floorImg);
+		floor_a2.load(floorImg);
+		floor_b2.load(floorImg);
+		floor_B2.load(floorImg);
+		floor_c2.load(floorImg);
+		floor_C2.load(floorImg);
+		floor_d2.load(floorImg);
+		floor_D2.load(floorImg);
+		floor_a3.load(floorImg);
+		floor_b3.load(floorImg);
+		floor_B3.load(floorImg);
+		floor_c3.load(floorImg);
+		floor_C3.load(floorImg);
+		floor_d3.load(floorImg);
+		floor_D3.load(floorImg);
+		floor_a4.load(floorImg);
+		floor_b4.load(floorImg);
+		floor_B4.load(floorImg);
+		floor_c4.load(floorImg);
+		floor_C4.load(floorImg);
+		floor_d4.load(floorImg);
+		floor_D4.load(floorImg);
+	}
+
+	function updateView(cx, cy, cf, dkz)
+	{
+		// パーツを操作して現在の座標からビューを構築する
+		// cx : 描画したいＸ座標   cy : 描画したいＹ座標   cf : 描画したい方角
+
+		var startTick = System.getTickCount();
+
+		var pf, pl, pr;		// 正面、左の方角、右の方角の画像パーツの種類
+		var map = parent.master.map;	// 現在のマップ
+		var pos = map.pos;	// 位置情報が格納された変数
+		var short = false;	// 高いファイルを低くするかどうか
+
+		// スコープガードがあれば表示
+		scopeGuard.visible = false;
+		if(wall_front_a0.opacity != 255 && pos[cx][cy][cf].antiScope !== void)
+		{
+			scopeGuard.load("antiscope_" + pos[cx][cy][cf].antiScope);
+		}
+
+		// ダークゾーン
+		darkZone.visible = (dkz !== void);
+		if(darkZone.visible)
+		{
+			darkZone.loadImages("darkzone_" + dkz);
+			return;
+		}
+
+		// 水面の直下
+		if(map.isUnderSurface()) short = true;
+
+		// 方角の決定
+		if(cf == "n") pf = "n", pl = "w", pr = "e";
+		else if(cf == "s") pf = "s", pl = "e", pr = "w";
+		else if(cf == "e") pf = "e", pl = "n", pr = "s";
+		else pf = "w", pl = "s", pr = "n";
+
+		// 符号と距離を決定
+		// vertical/horizontal - depth/width - blockCount
+		var maxW = map.mapWidth + map.mapMarginW;
+		var maxH = map.mapHeight + map.mapMarginH;
+		var vd1 = 0, vd2 = 0, vd3 = 0, vd4 = 0, vd5 = 0, hd1 = 0, hd2 = 0, hd3 = 0, hd4 = 0, hd5 = 0;
+		var vl1 = 0, vl2 = 0, vl3 = 0, vr1 = 0, vr2 = 0, vr3 = 0;
+		var hl1 = 0, hl2 = 0, hl3 = 0, hr1 = 0, hr2 = 0, hr3 = 0;
+		if(cf == "n")
+		{
+			vd5 = 5 - maxH, vd4 = 4 - maxH, vd3 = 3 - maxH, vd2 = 2 - maxH, vd1 = 1 - maxH;
+			vl3 = -3, vl2 = -2, vl1 = -1;
+			vr3 = 3 - maxW, vr2 = 2 - maxW, vr1 = 1 - maxW;
+		}
+		else if(cf == "s")
+		{
+			vd5 = -5, vd4 = -4, vd3 = -3, vd2 = -2, vd1 = -1;
+			vl3 = 3 - maxW, vl2 = 2 - maxW, vl1 = 1 - maxW;
+			vr3 = -3, vr2 = -2, vr1 = -1;
+		}
+		else if(cf == "e")
+		{
+			hd5 = 5 - maxW, hd4 = 4 - maxW, hd3 = 3 - maxW, hd2 = 2 - maxW, hd1 = 1 - maxW;
+			hl3 = 3 - maxH, hl2 = 2 - maxH, hl1 = 1 - maxH;
+			hr3 = -3, hr2 = -2, hr1 = -1;
+		}
+		else
+		{
+			hd5 = -5, hd4 = -4, hd3 = -3, hd2 = -2, hd1 = -1;
+			hl3 = -3, hl2 = -2, hl1 = -1;
+			hr3 = 3 - maxH, hr2 = 2 - maxH, hr1 = 1 - maxH;
+		}
+
+		// 天井の状態を調査
+		// １つ前のブロックを参照することで壁の向こうを透視したときに矛盾がなくなる
+		// 連続した空間内で屋根が途中で途絶える状況（アーケード等）はこのゲームには登場しない、
+		// つまり、天井の状況が変化するとき空間は壁によって完全に仕切られているので
+		// 目の前が壁になる状況のときは天井が一切見えなくなる。
+		// よって１つ前のブロックを参照しても問題ない
+		var ceil_a1 = map.isCeiling(cx + hd1, cy + vd1);
+		var ceil_b1 = map.isCeiling(cx + hd1 + vl1, cy + vd1 + hl1);
+		var ceil_B1 = map.isCeiling(cx + hd1 + vr1, cy + vd1 + hr1);
+		ceiling = ceil_a1;	// 屋根画像を読み込むかどうか。１つ前が屋根の下なら読み込む
+
+		if(! ceiling && map.isCeiling(cx, cy))
+		{
+			// １つ前が屋根でなくてもその両脇の屋根が見えているなら読み込む
+			if(ceil_b1 && ! map.isPartition(cx, cy, pl,, true)
+				 && ! map.isPartition(cx + vl1, cy + hl1, pf,, true)) ceiling = true;
+			if(ceil_B1 && ! map.isPartition(cx, cy, pr,, true)
+				 && ! map.isPartition(cx + vr1, cy + hr1, pf,, true)) ceiling = true;
+		}
+		if(ceiling) short = true;
+
+		// 天井とその影の画像を読み込み
+		shadow_roof.visible = roof.visible = ceiling;
+		if(ceiling) roof.load("roof_" + map.roof);
+		var shadow = map.shadow;
+		if(shadow == "auto") shadow = ceiling ? "dark" : "light";
+		shadow_floor.load("shadow_floor_" + shadow);
+		if(shadow_roof.visible) shadow_roof.load("shadow_roof_" + shadow);
+
+		// 天井が読み込まれ、その一部が屋外の場合
+		// 屋外にあたる屋根部分だけ消去する
+		if(ceiling)
+		{
+			if(! ceil_a1)
+			{
+				roof.fillRect(220, 0, 580, 600, 0);
+				shadow_roof.fillRect(220, 0, 580, 600, 0);
+				roof.masked = shadow_roof.masked = true;
+			}
+			if(! ceil_b1 && ! map.isPartition(cx, cy, pl,, true))
+			{
+				roof.fillRect(0, 0, 220, 600, 0);
+				shadow_roof.fillRect(0, 0, 220, 600, 0);
+				roof.masked = shadow_roof.masked = true;
+			}
+			if(! ceil_B1 && ! map.isPartition(cx, cy, pr,, true))
+			{
+				roof.fillRect(800, 0, 220, 600, 0);
+				shadow_roof.fillRect(800, 0, 220, 600, 0);
+				roof.masked = shadow_roof.masked = true;
+			}
+		}
+
+		// ０列目を表示
+		wall_left__a0.load(pos[cx][cy][pl].img, short);
+		wall_right_a0.load(pos[cx][cy][pr].img, short);
+		wall_front_a0.load(pos[cx][cy][pf].img, short);
+		wall_front_b0.load(pos[cx + vl1][cy + hl1][pf].img, short);
+		wall_front_B0.load(pos[cx + vr1][cy + hr1][pf].img, short);
+		hang_left__a0.load(pos[cx][cy][pl].himg);
+		hang_right_a0.load(pos[cx][cy][pr].himg);
+		hang_front_a0.load(pos[cx][cy][pf].himg);
+		hang_front_b0.load(pos[cx + vl1][cy + hl1][pf].himg);
+		hang_front_B0.load(pos[cx + vr1][cy + hr1][pf].himg);
+		floor_a0.load(pos[cx][cy].f.img, short);
+		floor_b0.load(pos[cx + vl1][cy + hl1].f.img, short);
+		floor_B0.load(pos[cx + vr1][cy + hr1].f.img, short);
+		put_a0.load(pos[cx][cy].f.pimg, short);
+		put_b0.load(pos[cx + vl1][cy + hl1].f.pimg, short);
+		put_B0.load(pos[cx + vr1][cy + hr1].f.pimg, short);
+
+		wall_left__a0.loadMask(pos[cx][cy][pl].mask);
+		wall_right_a0.loadMask(pos[cx][cy][pr].mask);
+		wall_front_a0.loadMask(pos[cx][cy][pf].mask);
+		wall_front_b0.loadMask(pos[cx + vl1][cy + hl1][pf].mask);
+		wall_front_B0.loadMask(pos[cx + vr1][cy + hr1][pf].mask);
+
+		// １列目を表示
+		wall_left__a1.load(pos[cx + hd1][cy + vd1][pl].img, short);
+		wall_right_a1.load(pos[cx + hd1][cy + vd1][pr].img, short);
+		wall_front_a1.load(pos[cx + hd1][cy + vd1][pf].img, short);
+		wall_left__b1.load(pos[cx + hd1 + vl1][cy + vd1 + hl1][pl].img, short);
+		wall_right_B1.load(pos[cx + hd1 + vr1][cy + vd1 + hr1][pr].img, short);
+		wall_front_b1.load(pos[cx + hd1 + vl1][cy + vd1 + hl1][pf].img, short);
+		wall_front_B1.load(pos[cx + hd1 + vr1][cy + vd1 + hr1][pf].img, short);
+		wall_front_c1.load(pos[cx + hd1 + vl2][cy + vd1 + hl2][pf].img, short);
+		wall_front_C1.load(pos[cx + hd1 + vr2][cy + vd1 + hr2][pf].img, short);
+		hang_left__a1.load(pos[cx + hd1][cy + vd1][pl].himg);
+		hang_right_a1.load(pos[cx + hd1][cy + vd1][pr].himg);
+		hang_front_a1.load(pos[cx + hd1][cy + vd1][pf].himg);
+		hang_left__b1.load(pos[cx + hd1 + vl1][cy + vd1 + hl1][pl].himg);
+		hang_right_B1.load(pos[cx + hd1 + vr1][cy + vd1 + hr1][pr].himg);
+		hang_front_b1.load(pos[cx + hd1 + vl1][cy + vd1 + hl1][pf].himg);
+		hang_front_B1.load(pos[cx + hd1 + vr1][cy + vd1 + hr1][pf].himg);
+		hang_front_c1.load(pos[cx + hd1 + vl2][cy + vd1 + hl2][pf].himg);
+		hang_front_C1.load(pos[cx + hd1 + vr2][cy + vd1 + hr2][pf].himg);
+		floor_a1.load(pos[cx + hd1][cy + vd1].f.img, short);
+		floor_b1.load(pos[cx + hd1 + vl1][cy + vd1 + hl1].f.img, short);
+		floor_B1.load(pos[cx + hd1 + vr1][cy + vd1 + hr1].f.img, short);
+		floor_c1.load(pos[cx + hd1 + vl2][cy + vd1 + hl2].f.img, short);
+		floor_C1.load(pos[cx + hd1 + vr2][cy + vd1 + hr2].f.img, short);
+		put_a1.load(pos[cx + hd1][cy + vd1].f.pimg, short);
+		put_ex.load(pos[cx + hd1][cy + vd1].f.eximg, short);	// 特殊な演出用
+		put_b1.load(pos[cx + hd1 + vl1][cy + vd1 + hl1].f.pimg, short);
+		put_B1.load(pos[cx + hd1 + vr1][cy + vd1 + hr1].f.pimg, short);
+
+		wall_left__a1.loadMask(pos[cx + hd1][cy + vd1][pl].mask);
+		wall_right_a1.loadMask(pos[cx + hd1][cy + vd1][pr].mask);
+		wall_front_a1.loadMask(pos[cx + hd1][cy + vd1][pf].mask);
+		wall_left__b1.loadMask(pos[cx + hd1 + vl1][cy + vd1 + hl1][pl].mask);
+		wall_right_B1.loadMask(pos[cx + hd1 + vr1][cy + vd1 + hr1][pr].mask);
+		wall_front_b1.loadMask(pos[cx + hd1 + vl1][cy + vd1 + hl1][pf].mask);
+		wall_front_B1.loadMask(pos[cx + hd1 + vr1][cy + vd1 + hr1][pf].mask);
+		wall_front_c1.loadMask(pos[cx + hd1 + vl2][cy + vd1 + hl2][pf].mask);
+		wall_front_C1.loadMask(pos[cx + hd1 + vr2][cy + vd1 + hr2][pf].mask);
+
+		// ２列目を表示
+		wall_left__a2.load(pos[cx + hd2][cy + vd2][pl].img, short);
+		wall_right_a2.load(pos[cx + hd2][cy + vd2][pr].img, short);
+		wall_front_a2.load(pos[cx + hd2][cy + vd2][pf].img, short);
+		wall_left__b2.load(pos[cx + hd2 + vl1][cy + vd2 + hl1][pl].img, short);
+		wall_front_b2.load(pos[cx + hd2 + vl1][cy + vd2 + hl1][pf].img, short);
+		wall_right_B2.load(pos[cx + hd2 + vr1][cy + vd2 + hr1][pr].img, short);
+		wall_front_B2.load(pos[cx + hd2 + vr1][cy + vd2 + hr1][pf].img, short);
+		wall_left__c2.load(pos[cx + hd2 + vl2][cy + vd2 + hl2][pl].img, short);
+		wall_front_c2.load(pos[cx + hd2 + vl2][cy + vd2 + hl2][pf].img, short);
+		wall_right_C2.load(pos[cx + hd2 + vr2][cy + vd2 + hr2][pr].img, short);
+		wall_front_C2.load(pos[cx + hd2 + vr2][cy + vd2 + hr2][pf].img, short);
+		wall_front_d2.load(pos[cx + hd2 + vl3][cy + vd2 + hl3][pf].img, short);
+		wall_front_D2.load(pos[cx + hd2 + vr3][cy + vd2 + hr3][pf].img, short);
+		hang_left__a2.load(pos[cx + hd2][cy + vd2][pl].himg);
+		hang_right_a2.load(pos[cx + hd2][cy + vd2][pr].himg);
+		hang_front_a2.load(pos[cx + hd2][cy + vd2][pf].himg);
+		hang_left__b2.load(pos[cx + hd2 + vl1][cy + vd2 + hl1][pl].himg);
+		hang_front_b2.load(pos[cx + hd2 + vl1][cy + vd2 + hl1][pf].himg);
+		hang_right_B2.load(pos[cx + hd2 + vr1][cy + vd2 + hr1][pr].himg);
+		hang_front_B2.load(pos[cx + hd2 + vr1][cy + vd2 + hr1][pf].himg);
+		hang_left__c2.load(pos[cx + hd2 + vl2][cy + vd2 + hl2][pl].himg);
+		hang_front_c2.load(pos[cx + hd2 + vl2][cy + vd2 + hl2][pf].himg);
+		hang_right_C2.load(pos[cx + hd2 + vr2][cy + vd2 + hr2][pr].himg);
+		hang_front_C2.load(pos[cx + hd2 + vr2][cy + vd2 + hr2][pf].himg);
+		hang_front_d2.load(pos[cx + hd2 + vl3][cy + vd2 + hl3][pf].himg);
+		hang_front_D2.load(pos[cx + hd2 + vr3][cy + vd2 + hr3][pf].himg);
+		floor_a2.load(pos[cx + hd2][cy + vd2].f.img, short);
+		floor_b2.load(pos[cx + hd2 + vl1][cy + vd2 + hl1].f.img, short);
+		floor_B2.load(pos[cx + hd2 + vr1][cy + vd2 + hr1].f.img, short);
+		floor_c2.load(pos[cx + hd2 + vl2][cy + vd2 + hl2].f.img, short);
+		floor_C2.load(pos[cx + hd2 + vr2][cy + vd2 + hr2].f.img, short);
+		floor_d2.load(pos[cx + hd2 + vl3][cy + vd2 + hl3].f.img, short);
+		floor_D2.load(pos[cx + hd2 + vr3][cy + vd2 + hr3].f.img, short);
+		put_a2.load(pos[cx + hd2][cy + vd2].f.pimg, short);
+		put_b2.load(pos[cx + hd2 + vl1][cy + vd2 + hl1].f.pimg, short);
+		put_B2.load(pos[cx + hd2 + vr1][cy + vd2 + hr1].f.pimg, short);
+		put_c2.load(pos[cx + hd2 + vl2][cy + vd2 + hl2].f.pimg, short);
+		put_C2.load(pos[cx + hd2 + vr2][cy + vd2 + hr2].f.pimg, short);
+
+		wall_left__a2.loadMask(pos[cx + hd2][cy + vd2][pl].mask);
+		wall_right_a2.loadMask(pos[cx + hd2][cy + vd2][pr].mask);
+		wall_front_a2.loadMask(pos[cx + hd2][cy + vd2][pf].mask);
+		wall_left__b2.loadMask(pos[cx + hd2 + vl1][cy + vd2 + hl1][pl].mask);
+		wall_front_b2.loadMask(pos[cx + hd2 + vl1][cy + vd2 + hl1][pf].mask);
+		wall_right_B2.loadMask(pos[cx + hd2 + vr1][cy + vd2 + hr1][pr].mask);
+		wall_front_B2.loadMask(pos[cx + hd2 + vr1][cy + vd2 + hr1][pf].mask);
+		wall_left__c2.loadMask(pos[cx + hd2 + vl2][cy + vd2 + hl2][pl].mask);
+		wall_front_c2.loadMask(pos[cx + hd2 + vl2][cy + vd2 + hl2][pf].mask);
+		wall_right_C2.loadMask(pos[cx + hd2 + vr2][cy + vd2 + hr2][pr].mask);
+		wall_front_C2.loadMask(pos[cx + hd2 + vr2][cy + vd2 + hr2][pf].mask);
+		wall_front_d2.loadMask(pos[cx + hd2 + vl3][cy + vd2 + hl3][pf].mask);
+		wall_front_D2.loadMask(pos[cx + hd2 + vr3][cy + vd2 + hr3][pf].mask);
+
+		// ３列目を表示
+		wall_left__a3.load(pos[cx + hd3][cy + vd3][pl].img, short);
+		wall_right_a3.load(pos[cx + hd3][cy + vd3][pr].img, short);
+		wall_front_a3.load(pos[cx + hd3][cy + vd3][pf].img, short);
+		wall_left__b3.load(pos[cx + hd3 + vl1][cy + vd3 + hl1][pl].img, short);
+		wall_front_b3.load(pos[cx + hd3 + vl1][cy + vd3 + hl1][pf].img, short);
+		wall_right_B3.load(pos[cx + hd3 + vr1][cy + vd3 + hr1][pr].img, short);
+		wall_front_B3.load(pos[cx + hd3 + vr1][cy + vd3 + hr1][pf].img, short);
+		wall_left__c3.load(pos[cx + hd3 + vl2][cy + vd3 + hl2][pl].img, short);
+		wall_front_c3.load(pos[cx + hd3 + vl2][cy + vd3 + hl2][pf].img, short);
+		wall_right_C3.load(pos[cx + hd3 + vr2][cy + vd3 + hr2][pr].img, short);
+		wall_front_C3.load(pos[cx + hd3 + vr2][cy + vd3 + hr2][pf].img, short);
+		wall_front_d3.load(pos[cx + hd3 + vl3][cy + vd3 + hl3][pf].img, short);
+		wall_front_D3.load(pos[cx + hd3 + vr3][cy + vd3 + hr3][pf].img, short);
+		hang_left__a3.load(pos[cx + hd3][cy + vd3][pl].himg);
+		hang_right_a3.load(pos[cx + hd3][cy + vd3][pr].himg);
+		hang_front_a3.load(pos[cx + hd3][cy + vd3][pf].himg);
+		hang_left__b3.load(pos[cx + hd3 + vl1][cy + vd3 + hl1][pl].himg);
+		hang_front_b3.load(pos[cx + hd3 + vl1][cy + vd3 + hl1][pf].himg);
+		hang_right_B3.load(pos[cx + hd3 + vr1][cy + vd3 + hr1][pr].himg);
+		hang_front_B3.load(pos[cx + hd3 + vr1][cy + vd3 + hr1][pf].himg);
+		hang_left__c3.load(pos[cx + hd3 + vl2][cy + vd3 + hl2][pl].himg);
+		hang_front_c3.load(pos[cx + hd3 + vl2][cy + vd3 + hl2][pf].himg);
+		hang_right_C3.load(pos[cx + hd3 + vr2][cy + vd3 + hr2][pr].himg);
+		hang_front_C3.load(pos[cx + hd3 + vr2][cy + vd3 + hr2][pf].himg);
+		hang_front_d3.load(pos[cx + hd3 + vl3][cy + vd3 + hl3][pf].himg);
+		hang_front_D3.load(pos[cx + hd3 + vr3][cy + vd3 + hr3][pf].himg);
+		floor_a3.load(pos[cx + hd3][cy + vd3].f.img, short);
+		floor_b3.load(pos[cx + hd3 + vl1][cy + vd3 + hl1].f.img, short);
+		floor_B3.load(pos[cx + hd3 + vr1][cy + vd3 + hr1].f.img, short);
+		floor_c3.load(pos[cx + hd3 + vl2][cy + vd3 + hl2].f.img, short);
+		floor_C3.load(pos[cx + hd3 + vr2][cy + vd3 + hr2].f.img, short);
+		floor_d3.load(pos[cx + hd3 + vl3][cy + vd3 + hl3].f.img, short);
+		floor_D3.load(pos[cx + hd3 + vr3][cy + vd3 + hr3].f.img, short);
+		put_a3.load(pos[cx + hd3][cy + vd3].f.pimg, short);
+		put_b3.load(pos[cx + hd3 + vl1][cy + vd3 + hl1].f.pimg, short);
+		put_B3.load(pos[cx + hd3 + vr1][cy + vd3 + hr1].f.pimg, short);
+		put_c3.load(pos[cx + hd3 + vl2][cy + vd3 + hl2].f.pimg, short);
+		put_C3.load(pos[cx + hd3 + vr2][cy + vd3 + hr2].f.pimg, short);
+		put_d3.load(pos[cx + hd3 + vl3][cy + vd3 + hl3].f.pimg, short);
+		put_D3.load(pos[cx + hd3 + vr3][cy + vd3 + hr3].f.pimg, short);
+
+		wall_left__a3.loadMask(pos[cx + hd3][cy + vd3][pl].mask);
+		wall_right_a3.loadMask(pos[cx + hd3][cy + vd3][pr].mask);
+		wall_front_a3.loadMask(pos[cx + hd3][cy + vd3][pf].mask);
+		wall_left__b3.loadMask(pos[cx + hd3 + vl1][cy + vd3 + hl1][pl].mask);
+		wall_front_b3.loadMask(pos[cx + hd3 + vl1][cy + vd3 + hl1][pf].mask);
+		wall_right_B3.loadMask(pos[cx + hd3 + vr1][cy + vd3 + hr1][pr].mask);
+		wall_front_B3.loadMask(pos[cx + hd3 + vr1][cy + vd3 + hr1][pf].mask);
+		wall_left__c3.loadMask(pos[cx + hd3 + vl2][cy + vd3 + hl2][pl].mask);
+		wall_front_c3.loadMask(pos[cx + hd3 + vl2][cy + vd3 + hl2][pf].mask);
+		wall_right_C3.loadMask(pos[cx + hd3 + vr2][cy + vd3 + hr2][pr].mask);
+		wall_front_C3.loadMask(pos[cx + hd3 + vr2][cy + vd3 + hr2][pf].mask);
+
+		// ４列目を表示（側壁と床だけ。正面の壁は暗くて見えない）
+		if(pos[cx + hd4] === void || pos[cx + hd4][cy + vd4] === void) return;
+		wall_left__a4.load(pos[cx + hd4][cy + vd4][pl].img, short);
+		wall_right_a4.load(pos[cx + hd4][cy + vd4][pr].img, short);
+		wall_left__b4.load(pos[cx + hd4 + vl1][cy + vd4 + hl1][pl].img, short);
+		wall_right_B4.load(pos[cx + hd4 + vr1][cy + vd4 + hr1][pr].img, short);
+		wall_left__c4.load(pos[cx + hd4 + vl2][cy + vd4 + hl2][pl].img, short);
+		wall_right_C4.load(pos[cx + hd4 + vr2][cy + vd4 + hr2][pr].img, short);
+		floor_a4.load(pos[cx + hd4][cy + vd4].f.img, short);
+		floor_b4.load(pos[cx + hd4 + vl1][cy + vd4 + hl1].f.img, short);
+		floor_B4.load(pos[cx + hd4 + vr1][cy + vd4 + hr1].f.img, short);
+		floor_c4.load(pos[cx + hd4 + vl2][cy + vd4 + hl2].f.img, short);
+		floor_C4.load(pos[cx + hd4 + vr2][cy + vd4 + hr2].f.img, short);
+		floor_d4.load(pos[cx + hd4 + vl3][cy + vd4 + hl3].f.img, short);
+		floor_D4.load(pos[cx + hd4 + vr3][cy + vd4 + hr3].f.img, short);
+		put_a4.load(pos[cx + hd4][cy + vd4].f.pimg, short);
+		put_b4.load(pos[cx + hd4 + vl1][cy + vd4 + hl1].f.pimg, short);
+		put_B4.load(pos[cx + hd4 + vr1][cy + vd4 + hr1].f.pimg, short);
+		put_c4.load(pos[cx + hd4 + vl2][cy + vd4 + hl2].f.pimg, short);
+		put_C4.load(pos[cx + hd4 + vr2][cy + vd4 + hr2].f.pimg, short);
+		put_d4.load(pos[cx + hd4 + vl3][cy + vd4 + hl3].f.pimg, short);
+		put_D4.load(pos[cx + hd4 + vr3][cy + vd4 + hr3].f.pimg, short);
+
+		// ５列目を表示（一部特殊な壁のみ）
+		if(pos[cx + hd5] === void || pos[cx + hd5][cy + vd5] === void) return;
+		wall_left__a5.load(pos[cx + hd5][cy + vd5][pl].img, short);
+		wall_right_a5.load(pos[cx + hd5][cy + vd5][pr].img, short);
+		wall_left__b5.load(pos[cx + hd5 + vl1][cy + vd5 + hl1][pl].img, short);
+		wall_right_B5.load(pos[cx + hd5 + vr1][cy + vd5 + hr1][pr].img, short);
+		wall_left__c5.load(pos[cx + hd5 + vl2][cy + vd5 + hl2][pl].img, short);
+		wall_right_C5.load(pos[cx + hd5 + vr2][cy + vd5 + hr2][pr].img, short);
+
+		dm("ダンジョンの描画に " + (System.getTickCount() - startTick) + " ms かかりました");
+	}
+}
+//----------------------------------------------------------------------------------------

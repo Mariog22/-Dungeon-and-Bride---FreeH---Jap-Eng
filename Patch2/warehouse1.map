@@ -1,0 +1,151 @@
+﻿; 愚者の倉庫
+
+name = 愚者の倉庫１
+insideName = Floor 1
+level = 23
+bgm = trick
+external = w:1
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+outfield = marble
+antiWarp = true
+
+; 各パーツ
+━ = stone
+✜ = stone_h
+　 = marble
+❖ = soil
+☆ = soilr
+❑ = cube
+／ = door
+〆 = key
+⧻ = fence
+☖ = arch
+☗ = gate
+︻ = panel
+Ⓒ = warp
+
+; 移動ポイント
+(A) = map:コリンズの森, x:14, y:66, way:w, symbol:exit, ask:Move to dungeon exit?
+(B) = map:愚者の倉庫２, x:0, y:3, way:e, symbol:exit, ask:Go to the next floor?
+(C) = map:愚者の倉庫７, x:1, y:7
+
+; 宝箱
+box[1] = 罠はない,取消しスイッチ
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;   -1   0   1   2   3   4   5   6   7   8  
+  		┏︻━━┳━━━━━┳━━━┳━━━┓
+ 6		┃④　　┃❶　　　　┃　　　⧻　　　┃
+  		┃　　　┗━┓　　　┃　　　┣━┓　┃
+ 5		┃　　　　　┃　　　⧻　　　〆　┃　┃
+  		┃　　　　　┃　　　┃　　　┃　┃　┃
+ 4		┃　　　　❑┃　　　┃❑　⑤】　┃　┃
+  		┃　　　　　┗━━︻┛　　　┃　┃　┃
+ 3		┃　　　　❑　　　③　　　❑✜Ⓒ┃Ⓑ☗
+  		┃　　　　　　　　　　　　　┗━┻━┫
+ 2		┃　　　　❑　　　　　　　①　☆　☆┃
+  		┃　　　　　　　　　　　　　　　　　┃
+ 1		┃　　　　❑　　　　　②　①　☆　☆┃
+  		┣━━━━━┳━━━━⧻┓　　　　　┃
+ 0	❖☗Ⓐ　　　　〆　　　　②┃　　☆　☆┃
+  		┗━━━━━┻━━━━━┻━━━━━┛
+;   -1   0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[2][0].e.key = o.倉庫の鍵
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(5, 5, "w", events.has(1) ? "close" : "open");
+switchFence(6, 6, "e", events.has(1) ? "close" : "open");
+switchFence(5, 0, "n", "close");
+if(sf.clearedQuestOfWarehouse) unlockDoor(6, 5, "e");
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsPush
+
+@eventoff cond='game.map.getFloorInfo(7, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(7, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(7, 0).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(8, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(8, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(8, 0).type != "movable"'
+@delevent
+@wait time=1000
+@se f=fence
+@switchfence x=6 y=6 way=e mode=open
+@switchfence x=5 y=5 way=w mode=open
+@notice text="I heard a door open somewhere!"
+@eval exp='o.倉庫整理のお仕事.flag = 1'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] map.isPartition(5, 0, "n")
+
+[if exp='! game.party.hasItem(o.時のスイッチ)']
+	@notice text="I hear a voice from somewhere:<y><r>This door will not be opened to those without a <p>Time Switch<y>."
+	[eventoff]
+[endif]
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=5 y=0 way=n mode=open
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="<y>From the client ☆<r><w>Please put stones on all red floors."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="This is just a warm-up."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="← Shortcut for New Game +"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+[if exp='! game.map.events.has(1) || o.倉庫整理のお仕事.flag == 0']
+	@call storage="anime.ks" target=*failed_to_reset
+	[eventoff]
+[endif]
+
+@se f=dragstone
+@eval exp='game.map.reset()'
+@wait time=800
+@warp x=4 y=1 way=n
+@switchfence x=5 y=0 way=n mode=open
+@changewall x=2 y=0 way=e himg=door key=void behind=true
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,159 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔２Ｆ
+insideName = ２Ｆ
+upper = ラドミラの塔３Ｆ
+lower = ラドミラの塔１Ｆ
+level = 65
+bgm = tower
+margin = 3
+shadow = dark
+sky = forest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+― = stone_h
+… = half
+　 = marble
+☐ = marble
+〰 = water
+／ = door
+∫ = pick
+毒 = water
+☖ = arch
+⧻ = fence
+﹃ = ladder
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+Ⓑ = warp
+④ = fountain
+⑤ = ladderu
+⑥ = box
+⑺ = empty
+
+; 敵情報
+monsters = マスターランサー,デュエリスト,アークプリースト,メイガス,ネクロマンサー,マスターアーチャー,バーグラー,マスターシャドウ,オークキング,コボルドリーダー
+
+; 移動ポイント
+(A) = x:3, y:1, stealth: true
+(B) = x:5, y:6
+
+; 宝箱
+box[1] = 妖艶妻のシルク_u,破魔の短剣_u,ディバインレイの巻物,経験のコイン（中）
+box[2] = ポラリスの宝珠,ポラリスの宝珠,ポラリスの宝珠,ポラリスの宝珠,ポラリスの宝珠,ポラリスの宝珠,ポラリスの宝珠,ポラリスの宝珠
+box[3] = 沈黙の指輪_u,メイルシュトロームの巻物,オリハルコンの砂,経験のコイン（大）
+box[4] = 敏捷性の秘薬,運の秘薬,宝箱の鍵_u,金貨（中）
+box[5] = 罠はない,トカゲの彫像
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━━━━━━━━━━━━━┳━━━━━━━┳…┓
+ 9┃　　　　　　　　　　　　　／　　　　　　　┃☐￤
+  ┃　　　　　┏☖┳━━━┓　┣━━━━━━―┫☐￤
+ 8┃　　毒　毒┃　┃　　④┃③┃㊤　　　　　　┃☐￤
+  ┃　　　　　┃　┃　　　┃　┣━━━━━━━┫☐￤
+ 7┃　　毒　⑤┃　／　　　┃　／敵　　　　　⑤┃☐￤
+  ┃　┏━━━┫　┣━━━┫　┣━━━━━━━┫☐￤
+ 6┃　┃㊦　㊤┃　┃　　Ⓑ┃　／　　　　⑧　❸┃☐￤
+  ┃　┗━━━┛　┃　　　┃　┣━━━━━━━┫☐￤
+ 5┃　　　　　　　／　　　┃　／　　　　　　⑥┃☐￤
+  ┣⧻┳━━━┓　┣━━━┫　┣━━━━━━━┫☐￤
+ 4┃　┃　　　∬　┃　　　┃　／　　　　　　⑺┃☐￤
+  ┃　┃　　　┃　┃　　　┃　┣━━━━━━━┫☐￤
+ 3┃❺┃❷　　┃　／敵　　┃　／敵　　　　　⑥┃☐￤
+  ┃　┣━━━┛　┗━━━┛　┣━━━━━━━┫☐￤
+ 2┃　→②　　　　　　　　　　←❹　　　　　　／☐￤
+  ┃　┣／━━━━━━━━━━┻━━━━━┳━┫☐￤
+ 1┃　┃　　　　　　Ⓐ　　　　　　　　　❶┃㊦┃☐￤
+  ┃　┃　　　┏━━━━━━━━━━━━━┛　┃☐￤
+ 0┃㊤┃㊦　①】㊤　　　　　　　　　　　　　　┃☐￤
+  ┗━┻━━━┻━━━━━━━━━━━━━━━┻…┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[6][8].e.himg = "door";
+pos[1][2].w.himg = "door";
+pos[3][4].w.himg = "fence";
+pos[3][4].w.mask = "arch";
+pos[10][5].f.trap = "air";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="On this floor, it is important not to be fooled by appearances."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] inSearching && WAY == "w"
+
+@notice text="There is a door, but it seems like an illusion."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] inSearching && WAY == "e"
+
+@notice text="There is a door, but it seems like an illusion."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] inSearching
+
+@notice text="There is a fountain, but it seems like an illusion."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] inSearching
+
+@notice text="There is a ladder to the upper floor, but it seems like an illusion."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] inSearching
+
+@notice text="There is a treasure chest, but it seems to be an illusion."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("vitality", 4)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Vitality permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] ! party.isFloating() && party.lastIsMove
+
+@btmes
+[emb exp='o.火炎放射.actionMessage()']
+@anireset
+@call storage="anime.ks" target=*burner_trap
+[r]But then I realized the flames were an illusion!
+@wait time=700
+
+[eventoff]
+;-------------------------------------------------------------------------------

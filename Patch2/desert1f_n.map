@@ -1,0 +1,361 @@
+﻿;  砂漠
+
+name = タルハ砂漠・北
+insideName = Desert North
+level = 18
+bgm = trip
+shadow = light
+sky = bluesky
+blank = rock
+outfield = sand
+isOutdoor = true
+
+; 画像パーツ
+━ = rockw
+ᆖ = grit
+＋ = rockw
+　 = sand
+❖ = sand
+／ = doorw
+⑊ = doorw
+☗ = gatew
+Ⓖ = warp
+Ⓗ = warp
+Ⓘ = warp
+Ⓙ = warp
+Ⓚ = warp
+Ⓛ = warp
+Ⓜ = warp
+Ⓝ = warp
+Ⓞ = warp
+Ⓟ = warp
+Ⓠ = warp
+Ⓡ = warp
+④ = human
+⑸ = monument
+⑹ = br_pie
+⑻ = br_hp
+⑼ = br_hp
+⑽ = bulletin
+⑪ = warp
+⒀ = bulletin
+⒁ = br_maxmp
+⒂ = monument
+
+; 敵情報
+maxGroups = 2
+monsters = 猛毒ぐも,毒トカゲ,猛毒ヘビ,アサシン,グラディエイター,ナーガ
+
+; 移動ポイント
+(A) = map:海岸, x:29, y:23, way:w, symbol:moveh, ask:Go to the next map?
+(B) = map:砂漠の民のほこら, x:2, y:0, way:n, symbol:cave, ask:Go to the dungeon?
+(C) = map:王の墓Ｂ１, x:2, y:24, way:s, symbol:cave, ask:Go to the dungeon?
+(D) = map:タルハ砂漠・峡谷, x:8, y:19, way:s, symbol:movev, ask:Go to the next map?
+(E) = map:タルハ砂漠・峡谷, x:9, y:19, way:s, symbol:movev, ask:Go to the next map?
+(F) = map:エミール平原, x:14, y:30
+(G) = x: 3, y:19, way:n
+(H) = x: 2, y:32, way:w
+(I) = x: 5, y:38, way:e
+(J) = x:19, y: 9, way:s
+(K) = x: 1, y:16, way:s
+(L) = x: 1, y:37, way:n
+(M) = x:11, y:34, way:s
+(N) = x:18, y: 0, way:n
+(O) = x: 1, y: 3, way:e
+(P) = x:10, y: 9, way:w
+
+; 宝箱
+box[1] = グレイブ_b,金貨（大）,ウィザードアイの巻物,特効薬,ハイポーション,修理の巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+  	━━━━━━━━━━━┓																		━━━━━━━━━
+59▲Ⓐ　　　　　　　　　　┃			┃❖	❖┃										❖	❖	❖	❖	❖
+  	━━━━━━━━━┓　┗━┓	┃			┃										━━━━━━━━━
+58										┃　　　┃	┃❖	❖┃
+  ┏━━━┓			┏━┛　　　┃	┃			┃
+57┃　　⑸┃			┃　　　　　┃	┃❖	❖┃
+  ┃　　　┗━━━┛　　　　　┃	┃			┃							┏━━━━━━━┓
+56┃　　　　　　　　　　　　　┃	┃❖	❖┃							┃　　　　　　　┃
+  ┗━━━━━━━┓　　　　　┃	┛			┃					┏━┛　┏⑊ᆖᆖ┓　┃
+55								┃　　　　　┃		❖	❖┃					┃　　　‖③		‖　┃
+  						┏━┛　　　　　┗━┓							┏━┛　　　‖			‖　┃
+54						┃　　　　　　　　　┃							┃　　　　　‖			‖　┃
+  		┏━━━┛　　　　　　　　　┗━━━━━━━┛　　　　　┗ᆖᆖᆖ┛　┃
+53		┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  ┏━┛　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┏━┛
+52┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  ┃　　　┏━━━━━━━━━┓　　　　　　　　　　　┏ᆖᆖᆖ┓　　　┃
+51┃　　　┃									┃　　　　　　　　　　　‖		①⑊　　　┃
+  ┃　┏━┛									┗━━━┓　　　　　　　‖			‖　　　┗━━━━━┓
+50┃　┃															┃　　　　　　　‖			‖　　　　　　　　④┃
+  ┃　┃															┗━┓　　　　　┗ᆖᆖᆖ┛　　　┏━━━┓　┃
+49┃　┃																	┃　　　　　　　　　　　　　┃			┃⑹┃
+  ┃　┗━━━━━┓											┃　　　　　　　　　　　　　┃			┗━┛
+48┃　　　　　　　┃											┃　　　　　　　　　　　　　┃
+  ┗━━━┓　　　┃											┗━┓　　　　　┏ᆖᆖᆖ┓　┗━┓
+47				☗Ⓑ　　┃													┃　　　　　‖			‖　　　┃
+  				┗━┓　┃													┃　　　　　‖			‖　　　┃
+46						┃　┃													┃　　　　　‖		②⑊　　　┃
+  						┃　┗━━━━━┓			┏━━━┛　　　　　┗ᆖᆖᆖ┛　　　┗━┓
+45						┃　　　　　　　┃			┃　　　　　　　　　　　　　　　　　　　┃
+  						┗━━━┓　　　┗━━━┛　　　　　　　　　　　　　　　　　　　┃
+44										┃　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  		┏━┓					┗━┓　　　　　　　　　┏━━━┓　　　　　　　┏━┓　┃
+43		┃Ⓝ┃							┃　　　　　　　　　┃			┃　　　　　　　┃	┃　┃
+  		┃　┃							┗━━━┓　　　　　┃			┗━┓　　　　　┗━┛　┃
+42		┃　┃											┃　　　　　┃					┃　　　　　　　　　┃
+  		┃　┃											┗━┓　　　┗━━━━━┛　　　　　　　┏━┛
+41		┃　┃													┃　　　　　　　　　　　　　　　　　┃
+  		┃　┃													┗━┓　　　　　　　　　　　　　　　┃
+40		┃Ⓞ┃															┃　　　　　　　　　　　　　　　┃
+  		┃　┃															┗━━━┓　　　　　　　　　┏━┛
+39		┃　┃																			┃　　　　　　　　　┃
+  		┃　┃					┏━━━━━━━┓					┗━┓　　　　　　　┃
+38		┃　┃					┃　　　　　　　┃							┃　　　　　　　┃
+  		┃　┃					┗━━━━━┓　┃							┃　　　　　┏━┛
+37		┃　┃											┃　┃							┃　　　　　┃
+  		┗━┛											┃　┃							┗━┓　　　┃
+36																┃　┃									┃　　　┃
+  								┏━━━━━━━┛　┃									┃　　　┗━┓
+35								┃Ⓟ　　　　　　　　┃									┃　　　　　┃
+  ┏━┓					┃　　　　　　　┏━┛			┏━┓			┗━┓　　　┃
+34┃Ⓙ┃					‖Ⓖ　　　　　　┃					┃　┃					┃　　　┃
+  ┃　┃					┗ᆖ┓　　　┏━┛			┏━┛　┃					┃　　　┃
+33┃　┃							‖Ⓛ　　┃					┃Ⓞ　　┃					┃　　　┃
+  ┃　┗━━━┓			┗━━━┛					┃　　　┃					┃　　　┃
+32┃　　　　　┃													┃⒁　⒀┃					┃　　　┃
+  ┃　┏━━━┛													┗━━━┛					┃　　　┗━┓
+31┃　┃																											┃　　　　　┃
+  ┃　┃							┏━━━━━┓											┏━┛　　　　　┃
+30┃Ⓚ┃							┃　　　　　┃											┃　　　　　　　┃
+  ┗━┛							┗ᆖ┓　　　┗━━━━━━━━━━━┛　　　　　　　┗━┓
+29											⑦⑊　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  												‖　　　　　　　　　　　　　　　　　　　　　　　　　┃
+28												‖　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  												┗━━━━━━━━━━━┓　　　　　┏━━━┓　　　┃
+27																								┃　　　　　┃			┃　　　┃
+  				┏━┓	┏━┓											┏━┛　　　┏━┛			┃　　　┗━┓
+26				┃Ⓘ┃	┃Ⓟ┃											┃　　　　　┃					┃　　　　　┃
+  				┃　┃	┃　┃									┏━┛　　　┏━┛					┗━┓　　　┃
+25				┃　┃	┃　┃									┃　　　　　┃									┃　　　┃
+  				┃　┃	┃　┃									┃　　　　　┗━┓							┃　　　┃
+24				┃　┃	┃　┃									┃　　　　　　　┃							┃　　　┃
+  				┃　┃	┃　┃							┏━┛　　　　　　　┗━━━━━━━┛　　　┃
+23				┃　┃	┃　┃							┃　　　　　　　　　　　　　　　　　　　　　┃
+  				┃　┗━┛　┃					┏━┛　　　　　　　　　　　　　　　　　　　　　┃
+22				┃　　　　　┃					┃　　　　　　　　　　　　　　　　　　　　　　　┃
+  				┗━┓　┏━┛					┃　　　　　　　　　　　　　　　　　　　　　　　┃
+21						┃　┃							┃　　　　　　　　　　　　　　　　　　　　　　　┃
+  						┃　┃					┏━┛　　　　　　　　　　　　　　　　　　　　　　　┃
+20						┃　┃					┃　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  						┃　┃					┃　　　　　　　　　　　　　　　　　　　　　　　　　┃
+19						┃　┃					┃　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  						┗━┛			┏━┛　　　　　　　　　　　　　　　　　　　　　　　　　┃
+18												┃　　　　　　　　　　　　Ⓒ　　　　　　　　　　　　　　┃
+  												┃　　　　　　　┏ᆖᆖᆖᆖ☗ᆖᆖᆖᆖ┓　　　　　　　　　┃
+17												┃　　　　　　　‖									‖　　　　　　　　　┃
+  ┏ᆖᆖᆖ┓					┏━┛　　　　　　　‖									‖　　　　　　　　　┃
+16‖　　　‖					┃　　　　　　　　　‖									‖　　　　　　　　　┃
+  ‖　　　‖					┃　　　　　　　┏ᆖ┛									┗ᆖ┓　　　　　　　┃
+15‖　　　‖					┃　　　　　　　‖													‖　　　　　　　┃
+  ‖　　　‖					┃　　　　　　　‖													‖　　　　　　　┃
+14‖　　　‖					┃　　　　　　　‖													‖　　　　　　　┃
+  ‖　　　‖					┃　　　　　　　‖													‖　　　　　┏━┛
+13‖　　　‖					┃　　　　　　　‖													‖　　　　　┃
+  ‖　　　‖					┃　　　　　　　┗ᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖ┛　　　　　┃
+12‖Ⓜ　Ⓗ‖					┃　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  ┗ᆖᆖᆖ┛			┏━┛　　　　　　　　　　　　　　　　　　　　　　　　　┏━┛
+11								┃　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  								┃　　　　　┏━━━━━━━━━━━┓　　　　　　　┏━┛
+10								┃　　　　　┃											┃　　　　　　　┃
+  						┏━┛　　　┏━┛	┏━━━━━┓			┃　　　　　┏━┛			┏━┓
+ 9						┃　　　　　┃			┃⑫　⑫　　┃			┃　　　　　┃					┃　┃
+  		┏━━━┛　　　　　┗━┓	┃　　　┏━┛	┏━┛　　　┏━┛					┃　┃
+ 8		┃　　　　　　　　　　　┃	┃Ⓞ　⑫┃			┃　　　　　┃							┃　┃
+  		┃　┏━━━━━┓　　　┃	┗━━━┛	┏━┛　　　┏━┛							┃　┃
+ 7		┃　┃					┃　　　┃							┃　　　　　┃									┃　┃
+  		┃　┃					┃　　　┗━━━━━━━┛　　　┏━┛	┏ᆖᆖᆖ━━━━┛　┃
+ 6		┃　┃					┃　　　　　　　　　　　　　　　┃			‖　　　　　　　　　┃
+  		┃　┃					┗━┓　　　　　　　　　┏━━━┛	┏ᆖ┛　　　┏━━━━━┛
+ 5		┃　┃							┃　　　　　　　　　┃					‖Ⓞ　　　❶┃
+  		┃　┃	┏ᆖᆖᆖ┓	┗━┓　　　　　┏━┛					‖　　　┏━┛
+ 4		┃　┃	‖　　Ⓗ‖			┃⑽　　　　┃							‖　　　┃
+  		┃　┗━┛　┏ᆖ┛			┗━┓　　　┃							┃　┏━┛
+ 3		┃　　　　　‖							┃　　　┃							┃　┃
+  		┗━━━┓　┗ᆖ┓					┃　　　┃							┃　┃			┏━━━━━┓
+ 2						‖　　Ⓖ‖					┃　　　┃							┃　┃			┃　　⒂　Ⓞ┃
+  						┗ᆖᆖᆖ┛					┃　　　┃			┏━━━┛　┃			┃　　　　　┃
+ 1																┃　　　┃			┃Ⓜ　　　　┃			┃　　　　　┃
+  																┃　　　┃			┗━━━━━┛			┃　　　　　┃
+ 0																┃Ⓓ　Ⓔ┃													┃　　　　　┃
+  																	▲	▲														┗━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setHouse(14, 51);
+setHouse(15, 55);
+setHouse(15, 46);
+setHouse( 5, 29);
+pos[12][18].s.img = "grit";
+pos[4][35].event = pos[4][26].event = 11;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@enterhouse img=interior_02
+[texton w=0]
+[住民]「If it's the King's Tomb you want, it's in the desert south of this village.」[k]
+[住民]「Furthermore, it is possible to go further, but I don't recommend it. It seems to be quite dangerous.」[k]
+[textoff]
+@exithouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@enterhouse img=interior_02
+[texton w=0]
+[住民]「If you go down the side road on the west side a little south of this village, you'll find an old man running a magic shop who calls himself "the greatest wizard of all time".」[k]
+[住民]「Apparently, he sells some kind of amazing magic.」[k]
+[textoff]
+@exithouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@enterhouse img=interior_02
+[texton w=0]
+[住民]「Further south of the King's Tomb, there is a very dangerous bridge where people often fall.」[k]
+[住民]「Apparently, even if you float using levitation magic, the effect will be canceled out and you'll end up falling to the bottom of the valley.」[k]
+[textoff]
+@exithouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] party.lastIsMove
+
+@fg c=9016 left=450
+[texton w=1]
+[ドナ f=06]「...I am a wandering peddler. Traveler, would you like to take a look at my wares?」[k]
+[textoff]
+@question title="Take a look?"
+@clf
+[eventoff cond='! tf.result']
+@shop name=ドナの行商
+[texton w=0]
+[ドナ]「Visit again～!」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@question title="There is a stone monument. Would you like to touch it?"
+[eventoff cond='! tf.result']
+@se f=period
+@eval exp='o.タルハ砂漠・北.setWarp(0, 56, "F", "warp")'
+@eval exp='o.エミール平原.setWarp(14, 30, "D", "warp")'
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("piety", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Faith permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+@shop name=魔法店ベイワロ・スターズ
+@walk turn=e move=e
+[texton]
+[name n=Baywalos f=waroth_02]「Please come again.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+*event_9
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("life", 300)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP restored!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] onObjectTrigger
+
+@notice text="Warning! Many people have fallen from the bridge ahead."
+
+[eventoff]
+;------------------------------------------------------------------------------
+*event_11
+;[exp] party.lastIsMove
+
+; ⑫ の戦闘を発生させた上で Ⓟ のワープ先にワープする
+; 上の移動ポイント欄で書かれている (P) の設定はマップ表示のためだけのダミー
+@addevent num=12
+@warp x=10 y=9 way=w
+
+[eventoff]
+;------------------------------------------------------------------------------
+*event_12
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_13
+;[exp] onObjectTrigger
+
+@notice text="Magical Source"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_14
+;[exp] onObjectTrigger
+
+@barrel noguest
+@damage v=&'game.curTarget.addParam("maxMagic", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max MP permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_15
+;[exp] onObjectTrigger || (onUseEventItem && [o.エレメントプレート・土, o.エレメントプレート・水, o.エレメントプレート・火, o.エレメントプレート・風].has(game.curItem))
+
+@eval exp='tf.temp = "southSlotOnMonument"'
+@jump storage="maze.map" target=*_set_plate_on_monument
+
+[eventoff]
+;-------------------------------------------------------------------------------

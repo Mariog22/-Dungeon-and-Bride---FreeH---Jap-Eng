@@ -1,0 +1,1305 @@
+﻿; 闘技大会開始～祝勝会まで
+
+
+
+;■闘技大会
+
+;◇イベント01・闘技大会に出場決定
+*tournament_1
+
+; サファイアシティ
+@saveon
+@w05
+@bg f=0019
+@mu f=trick
+@fg c=ライナス f=05
+[texton w=1]
+[ライナス f=05]「Hey, [テオ]!」[k]
+[テオ f=05]「...!」[k]
+I was suddenly stopped by Linus.[k]
+I hope he don't start picking a fight again...[k]
+[テオ f=12]「Hey, what do you want?」[k]
+@fg c=ライナス f=01
+[ライナス f=01]「You guys, enter the next tournament.」[k]
+[テオ f=12]「Huh...?」[k]
+Linus suddenly ordered me to participate in a competition.[k]
+...Even if you say that, we have our own plans. We're not going to follow your instructions out of the blue.[k]
+[テオ f=10]「Sorry, but we...」[k]
+[ライナス f=01]「You have no right to refuse. Because your participation has already been accepted.」[k]
+[テオ f=12]「What?!」[k]
+[ライナス f=02]「I decided to let you guys participate. I have connections with the tournament organizers...」[k]
+[テオ f=12]「Oh, no...」[k]
+How selfish... How can such high-handedness be allowed?[k]
+[ライナス f=02]「If you withdraw from the competition, your reputation will plummet, as a party that ran away from the challenge.」[k]
+[ライナス f=03]「Well, even if you do participate, we in Hawk Wing will beat you guys to a pulp, so your reputation will go down anyway! Hahahaha!」[k]
+[テオ f=10]「...」[k]
+What a nuisance... Is there no way to avoid this?[k]
+@st
+
+[   if exp='HUM'][リム v=vh019 f=07]「Let's do it, Captain!」[k]
+[elsif exp='DWA'][フレデリカ v=vd019 f=07]「Let's do it, Captain!」[k]
+[elsif exp='ELF'][クレア v=ve020 f=07]「Let's fight! Captain!」[k]
+[elsif exp='SYL'][マルエット v=vs021 f=07]「Let's fight! Captain!」[k]
+[elsif exp='GNO'][ミューズ v=vg012 f=08]「Captain... Let's fight...!」[k]
+[endif]
+
+[テオ f=05]「Eh?」[k]
+
+@mu f=tower
+[   if exp='ELF2'][クレア２ v=ve021 f=15]「That's right! With our current abilities, we can definitely win!」[k]
+[elsif exp='SYL2'][マルエット２ v=vs022 f=15]「That's right! With our current abilities, we can definitely win!」[k]
+[elsif exp='HUM2'][リム２ v=vh020 f=07]「Yeah! We can definitely win!」[k]
+[elsif exp='DWA2'][フレデリカ２ v=vd020 f=07]「Yeah! We can definitely win!」[k]
+[elsif exp='GNO2'][ミューズ２ v=vg013 f=08]「That's right... We can win now...!」[k]
+[endif]
+
+Surprisingly, our members were eager to accept the challenge.[k]
+[if exp='game.party.members.count > 4']
+	[テオ f=05]「Does everyone else feel the same way?」[k]
+	When I asked that question, the other members nodded in unison.[k]
+[endif]
+[リーゼル v=vl122 f=08]「I also want to test our current abilities...! I believe that we can definitely put up a good fight against Linus and his team...」[k]
+[テオ f=06]「...」[k]
+I never thought I would hear such powerful words from Riselle...[k]
+Everyone else is also very motivated. Before I knew it, everyone seemed to have become very energetic.[k]
+There's no doubt that we've grown considerably compared to before. We won the battle at the kobold fort, and it's clear that we're more than a match for them.[k]
+Actually, I was thinking that it was about time I tested my strength. This offer might not be so bad.[k]
+[ライナス f=01]「...It seems like you're motivated now.」[k]
+[ライナス f=03]「But you guys are no match for us! We'll show you your place in front of a large audience! Hahahaha!」[k]
+@cl
+With those parting words, Linus left.[k]
+[テオ f=06]「...」[k]
+To be honest, I'm still not sure how far I can go with my current abilities, so if anything, I feel more like this is a problem.[k]
+But...[k]
+
+[   if exp='SYL'][マルエット v=vs023 f=15]「It's okay! I won't lose to people like that!」[k]
+[elsif exp='ELF'][クレア v=ve022 f=15]「It's okay! I won't lose to people like that!」[k]
+[elsif exp='DWA'][フレデリカ v=vd021 f=07]「It's okay! We definitely won't lose to them!」[k]
+[elsif exp='HUM'][リム v=vh021 f=07]「It's okay! We definitely won't lose to them!」[k]
+[elsif exp='GNO'][ミューズ v=vg014 f=08]「It's okay...! I won't lose to people like that...!」[k]
+[endif]
+
+[   if exp='DWA2'][フレデリカ２ v=vd022 f=07]「Let's show them how strong we are!」[k]
+[elsif exp='HUM2'][リム２ v=vh022 f=07]「Let's show them how strong we are!」[k]
+[elsif exp='SYL2'][マルエット２ v=vs024 f=08]「I'll get them back for that! I'll make them regret making fun of us!」[k]
+[elsif exp='ELF2'][クレア２ v=ve023 f=08]「I'll get them back for that! They will regret mocking us!」[k]
+[elsif exp='GNO2'][ミューズ２ v=vg015 f=08]「We'll show you our power...!」[k]
+[endif]
+
+The party is motivated, so let's take a chance and give it a try.[k]
+It's not that I don't have any reservations, but sometimes we need to take on ambitious challenges. We can't grow unless we take on tasks that are a little challenging.[k]
+Furthermore, even if we lose, we won't have our property confiscated or members taken away, unlike in a duel. The only price would be a small participation fee.[k]
+[テオ f=06]「...」[k]
+The date is [b]next Sunday[/b]. I need to make sure I'm fully prepared by then.[k]
+We should finish off anything we planned to do. I want to get a good night's sleep the day before, so I'll return to Sapphire City by [b]Saturday[/b] and prepare for the tournament.[k]
+[textoff]
+@fa
+@out
+[townoff]
+
+
+;◇イベント02・大会前日・リーゼルを探しに行く
+*tournament_2
+
+; サファイアシティ・大会前日
+@eval exp='game.party.removeMember(o.リーゼル)'
+@w05
+[texton w=0]
+[テオ f=06]「Tomorrow is finally the day. I need to make sure I'm fully prepared for the tournament.」[k]
+[テオ f=05]「Wait, where is Riselle?」[k]
+I noticed that Riselle was missing. Maybe she went off somewhere?[k]
+[テオ f=05]「Let's see if I can find Riselle.」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント03・公園でリーゼルと会話
+*tournament_3
+
+; 公園
+@saveon
+@bg f=0018
+[texton w=1]
+[リーゼル v=vl123 e=ローブ,木の杖 f=15]「Ha!」[k]
+[テオ e=通常 f=05]「Riselle?」[k]
+I found Riselle at the back of the park.[k]
+Riselle, what are you doing there all alone...? I approach her.[k]
+[リーゼル v=vl124 f=15]「Ahhh!」[k]
+[テオ f=01]「Riselle!」[k]
+@fg c=リーゼル e=ローブ,木の杖 f=06
+[リーゼル v=vl125 f=05]「Oh, Captain...」[k]
+When I called out to her, Riselle noticed me.[k]
+[テオ f=02]「Riselle, what are you doing here?」[k]
+[リーゼル v=vl126 f=13]「Um... Well... Practicing snowstorm magic...」[k]
+[テオ f=05]「Snowstorm magic? Does that mean you've mastered [emb exp='o.ブリザード.displayName']?」[k]
+[リーゼル v=vl127 f=14]「Y-yeah...」[k]
+Next to her was a [emb exp='o.ブリザード.displayName'] spellbook. On its cover were magical characters indicating that it had been used, and thus learned.[k]
+[テオ f=01]「That's amazing! You really can do it if you try. You overcame a real challenge!」[k]
+@fg c=リーゼル f=09
+[リーゼル v=vl128 f=09]「Well... Actually, about that...」[k]
+[textoff]
+@out
+@w05
+@bg f=0018 b
+@fg c=リーゼル e=ローブ・大 f=10
+[texton w=1]
+[テオ f=05]「You've learned it, but you can't cast it?」[k]
+[リーゼル v=vl129 f=10]「Yeah... No matter how many times I try, it doesn't work... I just can't get the blizzard to appear...」[k]
+It seems that Riselle kept on trying to learn [emb exp='o.ブリザード.displayName'], and she finally managed.[k]
+But even after doing so, she still can't cast it. Imagining the blizzard makes her panic and her mind goes blank.[k]
+[リーゼル v=vl130 f=10]「I'm sorry, but in the end, I couldn't do it at all...」[k]
+[テオ f=01]「That's not true! Just learning it is a big step forward! It was pretty tough, wasn't it?」[k]
+[リーゼル v=vl131 f=06]「Y-yeah...」[k]
+[テオ f=02]「You did a great job. Well done.」[k]
+@fg c=リーゼル f=25
+[リーゼル f=25]「...」[k]
+@fg c=リーゼル f=22
+[リーゼル v=vl132 f=22]「Yeah... Thanks, Captain.」[k]
+She muttered, with a slightly shy smile.[k]
+[テオ f=01]「But you don't have to go through so much pain to master [emb exp='o.ブリザード.displayName']... There are other spells, and I and everyone in the party will support you.」[k]
+@fg c=リーゼル f=02
+[リーゼル v=vl133 f=01]「I know, and that makes me happy... But...」[k]
+[リーゼル v=vl134 f=02]「I wanted to be useful to everyone in the party. I didn't want to just be helped by everyone, I wanted to help everyone. And...」[k]
+[テオ f=05]「And?」[k]
+@fg c=リーゼル f=24
+[リーゼル v=vl135 f=24]「I didn't want to waste this magic book... Because it was the first gift I ever received from you.」[k]
+Saying that, Riselle lovingly hugged the used [emb exp='o.ブリザード.displayName'] spellbook.[k]
+[テオ f=05]「Riselle...!」[k]
+I was touched that she thought so highly of my gift...! I was so moved that I was at a loss for words.[k]
+@fg c=リーゼル f=01
+[リーゼル v=vl136 f=01]「That's why I want to be able to use this magic someday... I don't know when that will be, though.」[k]
+[テオ f=01]「A-ah, you can definitely do it.」[k]
+There is still a long way to go, but we have definitely taken a step forward. There is hope on the horizon![k]
+[textoff]
+@out
+@w05
+
+@gameon
+@eval exp='game.party.entry(o.リーゼル)'
+[texton w=0]
+[テオ f=02]「Well, it's about time to go back to the inn.」[k]
+[リーゼル v=vl137 e=ローブ f=02]「Yeah.」[k]
+I took Riselle back to the inn.[k]
+Tomorrow is finally the first day of the tournament. I need to get back to the inn early and get some rest.[k]
+[textoff]
+@fg c=マックス e=通常 f=06
+[texton w=1]
+[マックス f=06]「Hey, [テオ]...」[k]
+[テオ f=01]「Hey, it's Max. Long time no see.」[k]
+Max was waiting in front of the inn. [k]
+[テオ f=01]「How's it going at Hawk Wing? Are you going to compete in the tournament? We might end up facing each other.」[k]
+[マックス f=06]「...I'm not participating in the tournament.」[k]
+[テオ f=02]「What? Why? I heard Hawk Wing was going to compete.」[k]
+[マックス f=06]「...」[k]
+[マックス f=06]「...Actually, I got fired from Hawk Wing.」[k]
+[テオ f=12]「What?!」[k]
+[リーゼル f=12]「...!」[k]
+[テオ f=12]「R-really?」[k]
+[マックス f=06]「Yeah. I was suddenly fired yesterday. They said I didn't have to go with them from today.」[k]
+[テオ f=12]「Oh no...」[k]
+[マックス f=09]「...I guess Linus wanted to radically reshuffle the members to strengthen the team. In order to win this weekend's tournament.」[k]
+[マックス f=09]「...I think it was around the middle of last week. Suddenly, new adventurers started joining Hawk Wing's party one after another. And they were all high-level, skilled adventurers.」[k]
+[マックス f=09]「I had a feeling something was up, then yesterday, they fired five members at once, including me.」[k]
+[テオ f=10]「Oh, no...」[k]
+[マックス f=09]「We're no longer needed. That bastard Linus... He's been exploiting us...」[k]
+[テオ f=10]「That's awful...」[k]
+[リーゼル v=vl138 f=12]「So, what happened to Maria?」[k]
+[マックス f=05]「Maria is going to keep working for them. Linus seems to really like her, and she wanted to stay too. Linus is a good payer, after all.」[k]
+[リーゼル f=06]「...」[k]
+[マックス f=19]「Well, I was employed as a temporary party member, and I figured my contract would end eventually, so it's fine.」[k]
+[マックス f=09]「But I feel sorry for the other girls who were dismissed. They'd worked so hard for Linus all this time...」[k]
+[テオ f=06]「...」[k]
+@fgf c=マックス f=01
+[マックス f=03]「Well, that's why I'm returning to [emb exp='game.party.displayName']! I'll be counting on you again!」[k]
+[テオ f=06]「...About that, Max, I can't let you rejoin us right now.」[k]
+@fgf c=マックス f=11
+[マックス f=11]「Whaaaat?! Why?!」[k]
+[テオ f=05]「It's stipulated in the guild rules. Parties participating in the tournament aren't allowed to accept new members from one week before the tournament.」[k]
+[マックス f=10]「S-seriously...?」[k]
+[テオ f=02]「Unless there are some restrictions on member transfers, fairness in the tournament cannot be maintained.」[k]
+Linus probably recruited new adventurers last week in order to avoid violating those rules.[k]
+[テオ f=02]「So please wait until after the tournament is over to join.」[k]
+@fgf c=マックス f=01
+[マックス f=01]「So I can join after the tournament ends? Then there's no problem!」[k]
+[マックス f=03]「Good luck in the tournament! I'll be cheering you on from the stands!」[k]
+[textoff]
+@cl
+@eval exp='o.リーゼル.moveHeart(o.テオ, 5)'
+[eventoff]
+
+
+;◇イベント04・大会当日
+*tournament_4
+
+; 宿泊後・当日
+[texton]
+Today is finally the day of the tournament.[k]
+Our party members have been working hard. The time has come to show the results of their efforts.[k]
+[テオ f=05]「Everyone! Are you ready? Then let's head to the arena!」[k]
+[textoff]
+[eventoff]
+
+
+*match_start
+; トーナメント戦闘開始処理
+@eval exp='game.inDuelBattle = true'
+@callbattle bgm=boss escape=false gameover=true stopbgm=true
+@anime_duel_sign visible=false
+@eval exp='game.party.minimumRecovery()'
+
+@return
+
+;◇イベント05・闘技場に入る～１回戦
+*tournament_5
+
+; 闘技場の前
+@saveon
+@mu f=tower
+[texton]
+[テオ f=06]「...」[k]
+I stand in front of the arena. The battle to determine the strongest party is about to begin.[k]
+[テオ f=05]「All right! Let's do our best!」[k]
+I said those words, which were out of character for me, to encourage myself.[k]
+[リーゼル v=vl139 f=01]「Hehe... Captain, you seem really motivated.」[k]
+[テオ f=02]「Yeah. I'm pretty serious about winning this tournament.」[k]
+[リーゼル v=vl140 f=06]「Weren't you troubled at first when Linus decided to enter us in the competition without asking you?」[k]
+[テオ f=02]「Yes, I was. But things are different now.」[k]
+[テオ f=02]「Although we ended up participating in an unexpected way, I'm now glad that I am able to participate in this competition.」[k]
+[リーゼル v=vl141 f=05]「Eh... Why is that?」[k]
+[テオ f=02]「Earlier, I told you about how I used to be dominated by a man named Blue and was constantly abused.」[k]
+[テオ f=06]「When I started my adventure full of dreams, what awaited me was a reality dominated by the strong, one that I could not resist. At that time, I was made painfully aware of how weak and powerless I was.」[k]
+[リーゼル f=06]「...」[k]
+[テオ f=06]「I was driven by the thought that, being weak, I would never be able to do anything in my life... I even thought that maybe I should just quit being an adventurer.」[k]
+[テオ f=05]「But I still want to be a strong adventurer... I want to become strong and leave my mark on the world... Yes, that's what I strongly believe now.」[k]
+[リーゼル v=vl142 f=05]「Captain...」[k]
+[テオ f=06]「I am not a powerless person. I want to prove that. That's why I think this tournament is a great opportunity to overcome my past self.」[k]
+[リーゼル f=06]「...」[k]
+[テオ f=06]「I want to win this tournament. Then I can be confident as an adventurer... I won't have to be afraid of Blue's shadow anymore...」[k]
+[テオ f=06]「...But to do that, I need everyone in the party to cooperate. I can't win on my own. Except for Max, the current party members are the first people I've ever truly trusted.」[k]
+[テオ f=02]「When we were in Bravetown, Max and I were isolated and helpless, but now we have reliable friends... Including you.」[k]
+[リーゼル v=vl143 f=05]「Captain...!」[k]
+[テオ f=01]「Riselle, let's win together! And let's prove that we are not weaklings!」[k]
+[リーゼル f=06]「...」[k]
+[リーゼル v=vl144 f=03]「...Yeah, I understand. Let's work hard together, Captain!」[k]
+[textoff]
+@fa
+@out
+@w05
+
+; 闘技場・控え室
+@saveon
+@bg f=0023
+@mu f=guild
+[texton w=1]
+[name n=Attendant]「It's [emb exp='game.party.displayName'], isn't it? You are already registered, so please come in.」[k]
+We were led to the waiting room of the arena. Here we would wait for our turn.[k]
+In the waiting room, the parties that have already arrived are doing warm-up exercises and holding strategy meetings.[k]
+[テオ f=05]「Are these people our rivals...?」[k]
+Sixteen teams are participating in this tournament. It seems that there are significantly fewer participating parties than usual.[k]
+Apparently, rumors that Linus' Hawk Wing would be entering put many parties off signing up.[k]
+Hawk Wing is, regardless of its true nature, considered to be a powerful party. So they must have thought winning was impossible.[k]
+Due to these numbers, there are only four matches in all; the first round, second round, semifinals, and final. Winning all four will win the championship.[k]
+According to the tournament bracket, we are in a different block from Hawk Wing, so we won't face each other until the final. Of course, that assumes that neither of us is eliminated first.[k]
+Although there are few matches, they feature some fairly well-known parties other than Hawk Wing. Every match is intense, so we can't let our guard down. We have to stay focused.[k]
+@fg c=ライナス f=01
+[ライナス f=01]「Hey, looks like you didn't run away after all.」[k]
+[テオ f=06]「...」[k]
+Linus appeared at the venue. As usual, he looked down on us with contempt.[k]
+[ライナス f=01]「I'll give you credit for not running away. But either way, you guys are destined to crawl before me.」[k]
+[テオ f=06]「...You'd better make sure not to lose before you even fight us.」[k]
+[ライナス f=02]「Heh, there's no need to worry. Things have changed now.」[k]
+[テオ f=05]「What...?」[k]
+[ライナス f=01]「I'm looking forward to fighting you guys.」[k]
+@cl
+Linus left with some cryptic words.[k]
+[テオ f=06]「...」[k]
+Things have changed...?[k]
+Is there something going on? Or is it just a bluff? It might be better to be cautious just in case.[k]
+@se f=door1
+[name n=Attendant]「[emb exp='game.party.displayName'] party, we're about to start the first round, so please come to the arena!」[k]
+[テオ f=05]「Ah, yes, we're on our way.」[k]
+It's finally here. We'll do whatever it takes to win and advance to the finals![k]
+[textoff]
+@fa
+@out
+@w1
+
+; 闘技場・１回戦
+@eval exp='game.backScreen.loadImages(%[storage: "other_arena", visible: true])'
+@mu f=brave
+@gameon fade
+@saveoff
+[texton]
+[name n=Commentator]「Let's begin the first round! The first match is [emb exp='game.party.displayName'] vs. the Slime Squad! Both sides, step forward!」[k]
+[name n="Enemy Leader" f=slime_green]「...! (←Uncharacteristically filled with murderous intent)」[k]
+[テオ f=05]「What a murderous aura...! But I can't lose. I'll definitely win!」[k]
+[textoff]
+@w05
+@anime_duel_net visible=true storage=other_arena_net
+@w05
+[texton]
+[name n=Commentator]「In the name of the Duel God, let us start the first match of the first round! Begin!」[k]
+[textoff]
+
+; 戦闘・１回戦
+@eval exp='game.curTeam = o.スライム軍団'
+@monster pos=0 name=ポイズンスライム
+@monster pos=1 name=ブルースライム
+@monster pos=2 name=レッドスライム
+@monster pos=3 name=スライム
+@monster pos=4 name=ゴーストスライム
+@monster pos=5 name=ブラックスライム
+@monster pos=6 name=マジカルスライム
+@monster pos=10 name=ジャンボスライム
+@call target=*match_start
+
+; 勝利
+[texton]
+[name n=Commentator]「Congratulations on winning the first round! Please wait until the second round begins.」[k]
+[textoff]
+@out
+@w1
+@bg f=0023
+@mu f=city
+[texton]
+[   if exp='HUM'][リム v=vh023 f=03]「We did it, Captain!」[k]
+[elsif exp='ELF'][クレア v=ve024 f=01]「We won! Captain!」[k]
+[elsif exp='DWA'][フレデリカ v=vd023 f=03]「We did it, Captain!」[k]
+[elsif exp='GNO'][ミューズ v=vg016 f=01]「You won... Captain...!」[k]
+[elsif exp='SYL'][マルエット v=vs025 f=01]「We won! Captain!」[k]
+[endif]
+[テオ f=01]「Let's keep winning at this pace!」[k]
+[textoff]
+@eval exp='game.party.recovery()'
+@notice text="The party regained HP and magic!"
+@eval exp='game.hotelView.checkLevelUp()'
+[waittrig name="finishLevelUpInEvent"]
+@out
+@w05
+[townoff]
+
+
+;◇イベント06・２回戦
+*tournament_6
+
+; 闘技場・２回戦
+[texton]
+[name n=Attendant]「Ah, it's the [emb exp='game.party.displayName'] party. Please come in.」[k]
+[textoff]
+@out
+@wait time=1000
+@eval exp='game.backScreen.loadImages(%[storage: "other_arena", visible: true])'
+@mu f=brave
+@gameon fade
+@saveoff
+[texton]
+[name n=Commentator]「Now, let's begin the first match of the second round![r][emb exp='game.party.displayName'] vs. Team Amazoness!」[k]
+[name n=Amazoness f=valkyrie_yellow_04]「Don't underestimate us just because we're all women, or you'll regret it!」[k]
+[テオ f=05]「Of course not. We're mostly women too, after all. I'll give it my all!」[k]
+[textoff]
+@w05
+@anime_duel_net visible=true storage=other_arena_net
+@w05
+
+; 戦闘・２回戦
+@eval exp='game.curTeam = o.チーム・アマゾネス'
+@monster pos=1 name=シューター
+@monster pos=3 name=チャンピオン
+@monster pos=5 name=グラディエイター
+@monster pos=9 name=ハイプリースト
+@monster pos=11 name=アークメイジ
+@call target=*match_start
+
+; 勝利
+[texton]
+[name n=Commentator]「Congratulations on winning the second round! Please wait until the semifinals begin.」[k]
+[textoff]
+@out
+@w1
+@bg f=0023
+@mu f=city
+@saveon
+[texton]
+[リーゼル v=vl145 f=05]「We won again...」[k]
+[テオ f=02]「That's how strong we've become. It's the result of everyone's hard work up until today.」[k]
+[テオ f=01]「But I'm not satisfied with just this much. Our goal is to win the championship. Let's keep winning!」[k]
+[リーゼル v=vl146 f=01]「Yeah, let's do our best next time too, Captain!」[k]
+Riselle's voice was cheerful. She no longer sounds like the the timid girl from when we first met.[k]
+Suddenly, I realized that Riselle was encouraging me. She was no longer just someone I needed to protect, but also a reliable friend.[k]
+With her by my side, I was sure we could win. For some reason, that's how I felt.[k]
+[textoff]
+@eval exp='game.party.recovery()'
+@notice text="The party regained HP and magic!"
+@eval exp='game.hotelView.checkLevelUp()'
+[waittrig name="finishLevelUpInEvent"]
+@out
+@w05
+[townoff]
+
+
+;◇イベント07・準決勝
+*tournament_7
+
+; 闘技場・準決勝
+[texton]
+[name n=Attendant]「Ah, it's the [emb exp='game.party.displayName'] party. Please come in.」[k]
+[textoff]
+@out
+@w1
+
+; 闘技場・アリーナ
+@mu f=eerie
+@gameon
+@image layer=0 storage=other_arena visible=true
+@image layer=0 storage=other_arena visible=true page=back
+@saveon
+[texton w=1]
+[name n=Commentator]「Next up is the semi-finals! The first match is [emb exp='game.party.displayName'] vs. Phantom Lizard! The winner will advance to the finals!」[k]
+@fg c=rich_green left=450 top=40
+[name n="Enemy Mage" f=summon_01]「... ∗grin∗」[k]
+[テオ f=05]「...?」[k]
+A man who appeared to be a mage stood in front of us. It seemed that he was one of our opponents in this match.[k]
+However, the other members did not appear. The man stood alone in front of us, smiling faintly.[k]
+[テオ f=05]「There's only one enemy...? Are there no other members?」[k]
+[name n="Enemy Mage" f=summon_01]「No, there aren't. I'm your only opponent.」[k]
+Is he really going to fight us alone?[k]
+
+[   if exp='SYL'][マルエット v=vs026 f=07]「Hey, you! Are you really planning to take all of us on by yourself?」[k]
+[elsif exp='ELF'][クレア v=ve025 f=08]「Hey, you! Are you really planning to take all of us on by yourself?」[k]
+[elsif exp='HUM'][リム v=vh024 f=05]「Are you really going to fight us alone?」[k]
+[elsif exp='DWA'][フレデリカ v=vd024 f=05]「Are you really going to fight us alone?」[k]
+[elsif exp='GNO'][ミューズ v=vg017 f=05]「Fighting us on your own?」[k]
+[endif]
+
+[   if exp='ELF2'][クレア２ v=ve026 f=07]「That's right! Don't make fun of me!」[k]
+[elsif exp='SYL2'][マルエット２ v=vs027 f=07]「That's right! Don't make fun of me!」[k]
+[elsif exp='DWA2'][フレデリカ２ v=vd025 f=07]「That's right! We're not that weak!」[k]
+[elsif exp='HUM2'][リム２ v=vh025 f=07]「That's right! We're not that weak!」[k]
+[elsif exp='GNO2'][ミューズ２ v=vg018 f=08]「If you underestimate us, you'll regret it...!」[k]
+[endif]
+
+[name n="Enemy Mage" f=summon_01]「Heh, no need to worry. I, the only registered member, am more than enough for a duel. Come, let's start the match.」[k]
+[テオ f=08]「What...!」[k]
+Are you really going to take on all of us by yourself? Do you have that much confidence in yourself...?![k]
+[リーゼル v=vl147 f=05]「I wonder how he won the last match...」[k]
+[テオ f=06]「He must have some kind of plan. It's probably best to be careful.」[k]
+[textoff]
+@w05
+
+; 戦闘開始
+@image layer=0 page=back storage=other_arena_net
+@image layer=5 page=back storage=rich_green visible=true left=310 top=40
+@anime_duel_net visible=true
+@w05
+@layopt layer=5 page=back visible=false left=0 top=0
+@fgf c=rich_green left=450 top=40
+[texton]
+[name n=Commentator]「Then let the match begin! In the name of the Duel God, let the first match of the semi-finals begin!」[k]
+[テオ f=05]「Let's go, everyone!」[k]
+
+[if exp='HUM'][リム v=vh026 f=01]「Yes!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd026 f=01]「Yes～!」[k][endif]
+[if exp='SYL'][マルエット v=vs028 f=07]「Let's go!」[k][endif]
+[if exp='ELF'][クレア v=ve027 f=02]「Certainly!」[k][endif]
+[if exp='GNO'][ミューズ f=08]「... ∗nod∗」[k][endif]
+
+At my command, the party members all rush toward the enemy![k]
+[name n="Enemy Mage" f=summon_01]「... ∗grin∗」[k]
+Perhaps because they were treated with contempt by this single enemy, everyone is more determined than usual.[k]
+[テオ f=05]「Let's make the first attack! Take this!」[k]
+[name n="Enemy Mage" f=summon_01]「... ∗grin∗」[k]
+As I approached my target and prepared to attack [――――][k]
+[textoff]
+
+@flash time=100
+@playse storage=electric
+@image layer=e2 storage=PE_base_party mode=psdodge visible=true left=0 top=474
+@startemit layer=e2 storage="PE_electric_o3" time=600
+@wait time=600
+@clearemit layer=e2
+
+; リーゼル以外を麻痺させリーゼルを先頭に持ってくる
+[iscript]
+for(var i = 0; i < game.party.members.count; i++)
+{
+	var one = game.party.members[i];
+	if(one != o.リーゼル) one.setStatus(o.麻痺, true);
+}
+game.party.arrangeMember(o.リーゼル, 0);
+[endscript]
+
+; リーゼル以外が麻痺
+@wait time=2000
+@mu f=darkside
+[texton]
+[テオ f=10]「Ugh!」[k]
+Suddenly, I felt a sharp tingling sensation throughout my entire body![k]
+[テオ f=10]「Guh!」[k]
+@se f=dosa
+@quake time=500 hmax=10 vmax=5
+Unable to move, I collapsed on the ground in front of my enemy![k]
+[テオ f=09]「What... is this...?!」[k]
+
+[   if exp='SYL'][マルエット v=vs029 f=18]「Eek...!」[k]
+[elsif exp='ELF'][クレア v=ve028 f=18]「Eek...!」[k]
+[elsif exp='HUM'][リム v=vh027 f=18]「Eek...!」[k]
+[elsif exp='DWA'][フレデリカ v=vd027 f=18]「Eek...!」[k]
+[elsif exp='GNO'][ミューズ v=vg019 f=18]「Eek...!」[k]
+[endif]
+
+[   if exp='ELF2'][クレア２ v=ve029 f=12]「I can't move my body...!」[k]
+[elsif exp='SYL2'][マルエット２ v=vs030 f=12]「I can't move my body...!」[k]
+[elsif exp='DWA2'][フレデリカ２ v=vd028 f=12]「I can't move my body...?!」[k]
+[elsif exp='HUM2'][リム２ v=vh028 f=12]「I can't move...!」[k]
+[elsif exp='GNO2'][ミューズ２ v=vg020 f=12]「I can't move...!」[k]
+[endif]
+
+[テオ f=09]「Everyone...!」[k]
+Everyone fell, one after another.[k]
+[テオ f=09]「This symptom is... paralysis?」[k]
+It seems that our party members have been paralyzed all at once.[k]
+...Paralysis has no natural recovery time, so it's extremely dangerous if it happens to multiple members at the same time. If it happened in a dungeon, it could lead to total annihilation.[k]
+[name n="Enemy Mage" f=summon_01]「It seems to have worked out well. As expected of my basilisks.」[k]
+[テオ f=12]「Basilisks...?!」[k]
+@fg a=lizard_yellow left=150 top=360 b
+@fg l=lizard_yellow left=350 top=360 b
+@fg c=lizard_yellow left=550 top=360 b
+@fg r=lizard_yellow left=750 top=360
+[name n=Basilisk f=lizard_yellow]「∗growl∗」[k]
+When I looked behind me, I saw several lizard-like monsters licking their lips as they watched us, unable to move.[k]
+...They're the ones who paralyzed us...![k]
+@cl b
+@fg c=rich_green left=450 top=40
+[name n="Enemy Mage" f=summon_01]「I am a summoner. I summoned monsters behind you, without you noticing.」[k]
+[name n="Enemy Mage" f=summon_01]「I am particularly fond of basilisks and salamanders. I trained these creatures well...」[k]
+[name n="Enemy Mage" f=summon_01]「While I distract the enemy, they quickly paralyze them.」[k]
+[name n="Enemy Mage" f=summon_01]「You guys were so angry at being made fun of that you didn't pay any attention to what was going on behind you. Thanks to that, the plan worked out so well it was laughable.」[k]
+[テオ f=10]「Damn...!」[k]
+So we fell right into the enemy's trap...! What a disaster...![k]
+If things continue like this, defeat is certain. I don't want to lose here. What should I do...?![k]
+@fg c=リーゼル f=08
+[リーゼル f=08]「...」[k]
+[name n="Enemy Mage" f=summon_01]「Huh? One of them can move... Why? I'm sure the basilisks bit all of them...」[k]
+[テオ f=12]「Riselle...!」[k]
+I could see Riselle standing alone to the rear.[k]
+Riselle was safe...! She was the only one who didn't charge at the enemy. Her cautious nature had unexpectedly paid off.[k]
+However, it's unlikely that Riselle alone can take on the summoner and his beasts. The situation remains critical.[k]
+[name n="Enemy Mage" f=summon_01]「Well, that's fine. She's only a weak-looking female mage. Come, salamanders, burn them all with your flames!」[k]
+@fg a=lizard_red left=150 top=360 b
+@fg l=lizard_red left=350 top=360 b
+@fg c=lizard_red left=550 top=360 b
+@fg r=lizard_red left=750 top=360
+[name n=Salamander f=lizard_red]「∗growl∗」[k]
+The enemy salamanders slowly crawl towards us, targeting us where we lie.[k]
+[テオ f=10]「Ugh...!」[k]
+Oh no...! Salamanders have a special fiery breath attack. If we get hit by that, we're done for.[k]
+Damn... Isn't there any way to turn this around...?![k]
+[name n=Salamander f=lizard_red]「Kwaaah!」[k]
+[name n=All]「...!」[k]
+[テオ f=10]「Damn...!」[k]
+The salamanders all opened their mouths wide, preparing to breathe fire![k]
+Is it over...?![k]
+[リーゼル v=vl148 f=07]「Ahhhhh!」[k]
+[textoff]
+@st
+
+; リーゼルがブリザードの魔法を放つ
+@eval exp='o.リーゼル.cutInFigure(07, "alternate", 464, 0, "cast")'
+@image layer=5 storage=screen_blue left=0 top=0
+@image layer=6 storage=PE_base_full left=0 top=0 visible=true
+@startemit layer=6 skip=2000 storage="PE_blizzard_u"
+@anime_fadein layer=5,6
+@playse storage=blizzard1
+@wait time=1300
+
+@mu f=brave
+[texton]
+∗whoooooosh!∗[k]
+[テオ f=12]「...!」[k]
+Is this a blizzard?[k]
+[name n="Enemy Mage" f=summon_02]「What?!」[k]
+A blizzard rages around the salamanders! Surprisingly,[r]Riselle cast [emb exp='o.ブリザード.displayName'] on them![k]
+A freezing wind blows over the salamanders, freezing their[r]red skin![k]
+[name n=Salamander f=lizard_red]「Guaaaah!」[k]
+[textoff]
+
+; リーゼルがブリザードでサラマンダーたちを殲滅
+@eval exp='game.cutOutFigure("alternate")'
+@se f=shakin4
+@flash on=1000
+@fg a=lizard_freeze left=150 top=360 b
+@fg l=lizard_freeze left=350 top=360 b
+@fg c=lizard_freeze left=550 top=360 b
+@fg r=lizard_freeze left=750 top=360
+@layopt layer=5 visible=false
+@clearemit layer=6
+@layopt layer=5 page=back visible=false
+@layopt layer=6 page=back visible=false
+@flash off=1000
+@se f=bon
+@clf
+@flash on t=100 off=500
+@wait time=500
+
+[texton]
+[テオ f=01]「Yes!」[k]
+The weakness of the fiery salamander is cold. When hit by an icy wind, they suffered heavy damage, falling one after another.[k]
+@fg c=リーゼル f=08
+[リーゼル f=08]「...」[k]
+[テオ f=01]「Yes! That's amazing, Riselle!」[k]
+Riselle shouldn't have been able to use the [emb exp='o.ブリザード.displayName'] spell. But a miracle occurred that made it possible.[k]
+@fg c=rich_green left=450 top=60
+[name n="Enemy Mage" f=summon_02]「My salamanders...! Damn you, I underestimated you, thinking you were just a little girl.」[k]
+[name n="Enemy Mage" f=summon_02]「But I still have my basilisks! After all, it's just [emb exp='o.ブリザード.displayName']. There's no way my summoned beasts would lose to such a low-level spell! Go, basilisks!」[k]
+@fg a=lizard_yellow left=150 top=360 b
+@fg l=lizard_yellow left=350 top=360 b
+@fg c=lizard_yellow left=550 top=360 b
+@fg r=lizard_yellow left=750 top=360
+[name n=Basilisk f=lizard_yellow]「Kwaaah!」[k]
+The basilisks approach Riselle![k]
+[リーゼル v=vl149 f=07]「Ya!」[k]
+[textoff]
+
+; リーゼルがブリザードでバジリスクたちも殲滅
+@eval exp='o.リーゼル.cutInFigure(07, "alternate", 464, 0, "cast")'
+@image layer=5 storage=screen_blue
+@image layer=6 storage=PE_base_full
+@startemit layer=6 skip=2000 storage="PE_blizzard_u"
+@anime_fadein layer=5,6
+@playse storage=blizzard1
+@wait time=500
+
+[texton]
+Riselle unleashes [emb exp='o.ブリザード.displayName'] once again![r]She no longer seems to be afraid.[k]
+[name n=Basilisk f=lizard_yellow]「Guaaaah!」[k]
+[name n="Enemy Mage" f=summon_02]「What?!」[k]
+[textoff]
+
+@eval exp='game.cutOutFigure("alternate")'
+@se f=shakin4
+@flash on=500
+@fg a=lizard_freeze2 left=150 top=360 b
+@fg l=lizard_freeze2 left=350 top=360 b
+@fg c=lizard_freeze2 left=550 top=360 b
+@fg r=lizard_freeze2 left=750 top=360
+@layopt layer=5 visible=false
+@clearemit layer=6
+@layopt layer=5 page=back visible=false
+@layopt layer=6 page=back visible=false
+@wait time=500
+@flash off=500
+
+[texton]
+The power of Riselle's [emb exp='o.ブリザード.displayName'] was tremendous, and although it didn't kill them, it did freeze all the basilisks.[k]
+Basilisks, which are a type of lizard, are weak against cold. But even so, Riselle's magic is incredibly powerful... Perhaps her talent for magic has finally blossomed.[k]
+@cl b
+@fg c=リーゼル f=08
+[リーゼル f=08]「...」[k]
+[テオ f=05]「Riselle...」[k]
+With her sharp gaze fixed intently on her enemy, she seemed very dependable.[k]
+@fg c=リーゼル f=07
+[リーゼル v=vl150 f=07]「Captain! We have a few paralysis remedies, so drink it while the enemy is immobilized!」[k]
+[テオ f=05]「G-got it!」[k]
+[textoff]
+@cl
+
+; 主人公を含むメンバー３人が麻痺から回復
+@call storage="anime.ks" target=*fountain_star
+@eval exp='o.テオ.clearStatus()'
+@call storage="battle.ks" target=*status_check
+@eval exp='(tf.temp2 = game.party.members[3]).clearStatus()'
+@eval exp='(tf.temp = game.party.members[2]).clearStatus()'
+@call storage="battle.ks" target=*status_check
+@eval exp='tf.inStatusCheck = false'
+@btmes off
+
+; 主人公たちも復帰し改めて戦闘
+@wait time=1000
+[texton]
+[b][テオ], [emb exp='tf.temp.displayName'], and [emb exp='tf.temp2.displayName'] have recovered from paralysis![/b][k]
+[name n="Enemy Mage" f=summon_02]「Damn it...! If it comes to this, I will fight alone! Don't underestimate me!」[k]
+[テオ f=05]「I won't waste the opportunity Riselle has given me! Let's go, everyone!」[k]
+[textoff]
+
+; リーゼルがブリザードを習得
+@eval exp='o.リーゼル.learnSkill(o.ブリザード)'
+@eval exp='o.リーゼル.closedSkill = []'
+
+; 戦闘・準決勝
+@saveoff
+@eval exp='game.backScreen.loadImages(%[storage: "other_arena_net", visible: true])'
+@addevent name=戦闘 num=5
+@eval exp='game.curTeam = o.ファントムリザード'
+@eval exp='m.ダークサモナー.btcmd.remove(o.魔獣召喚)'
+@monster pos=1 name=バジリスク
+@monster pos=2 name=バジリスク
+@monster pos=3 name=ダークサモナー
+@monster pos=4 name=バジリスク
+@monster pos=5 name=バジリスク
+@call target=*match_start
+@eval exp='m.ダークサモナー.btcmd.push2(o.魔獣召喚)'
+
+; 戦闘に勝利
+@mu f=happy
+[texton]
+Amazing! It was a tough opponent, but we managed to win! All thanks to Riselle![k]
+
+[if exp='HUM'][リム v=vh029 f=03]「Riselle, that was amazing!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd029 f=03]「Riselle, you're amazing～!」[k][endif]
+[if exp='ELF'][クレア v=ve030 f=15]「You did it! We won today thanks to you!」[k][endif]
+[if exp='SYL'][マルエット v=vs031 f=15]「You're quite something. To be honest, I've changed my opinion of you.」[k][endif]
+[if exp='GNO'][ミューズ v=vg021 f=02]「This victory was only thanks to Riselle...」[k][endif]
+
+@fg c=リーゼル f=29
+[リーゼル v=vl151 f=29]「Well... I didn't do anything special...」[k]
+[テオ f=02]「There's no need to be modest. There's no doubt that you saved everyone this time.」[k]
+[リーゼル v=vl152 f=33]「Um, well... Thank you, everyone...」[k]
+Riselle is very shy when everyone praises her. Her entire face is red, and she looks very cute.[k]
+[テオ f=02]「It's amazing that you were able to cast [emb exp='o.ブリザード.displayName'] at such a critical moment. You couldn't do it before, no matter how hard you tried.」[k]
+@fg c=リーゼル f=06
+[リーゼル f=06]「...」[k]
+[リーゼル v=vl153 f=06]「...Captain, you said you definitely wanted to win this tournament, right? You said you wanted to get stronger and gain confidence. You said you wanted to overcome your oppressed past.」[k]
+[テオ f=05]「Y-yeah...」[k]
+[リーゼル v=vl154 f=08]「When I heard that, I wanted to win for your sake... I wanted to win and give you confidence.」[k]
+[テオ f=05]「Riselle...!」[k]
+[リーゼル v=vl155 f=06]「I wanted to be useful to you... You've always helped me... You've always been kind to me...」[k]
+@fg c=リーゼル f=01
+[リーゼル v=vl156 f=01]「You know... I feel like I finally found my place in this party...」[k]
+[リーゼル v=vl157 f=01]「Here, I feel like I can be useful and overcome my weaknesses...! That's how I started to feel. And it's all thanks to you always supporting me...」[k]
+[テオ f=12]「Well... I don't know...」[k]
+[リーゼル v=vl158 f=01]「I wanted to make you happy by helping our team win...! With that thought in mind, I was able to overcome the terror of a blizzard. Even a coward like me was able to do my best.」[k]
+[リーゼル v=vl159 f=04]「And once I had... I could cast it a second time as well. I'm glad I mustered up the courage...!」[k]
+[テオ f=01]「Riselle...」[k]
+Is that so? For my sake, Riselle overcame her fear of blizzards...![k]
+[テオ f=01]「Thank you, Riselle. I'm so happy to hear that, I don't know what to say...」[k]
+[リーゼル v=vl160 f=01]「Captain, let's definitely win. I'll do my best next time too. I'll be useful to you.」[k]
+[テオ f=01]「Yes! Let's all win together! We can do it!」[k]
+[name n=Commentator]「Congratulations on winning the semifinals!」[k]
+[name n=Commentator]「Next up is the final match! Please wait until the match begins.」[k]
+[textoff]
+@eval exp='game.party.recovery()'
+@notice text="The party regained HP and magic!"
+@eval exp='game.hotelView.checkLevelUp()'
+[waittrig name="finishLevelUpInEvent"]
+@fa
+@out
+@w05
+@eval exp='o.リーゼル.moveHeart(o.テオ, 10)'
+[townoff]
+
+
+;◇イベント08・決勝～リーゼルに告白
+*tournament_8
+
+; 闘技場・決勝
+[texton]
+[name n=Attendant]「Ah, it's the [emb exp='game.party.displayName'] party. Please come in.」[k]
+[textoff]
+@out
+@w1
+
+; 闘技場・控え室
+@bg f=0023
+@mu f=guild
+@saveon
+[texton w=1]
+[テオ f=01]「All right! It's finally the final round!」[k]
+We made it through to the semi-finals and finally made it to the finals. One more win and we'll be the champions of the tournament.[k]
+Until recently, becoming champions would have seemed like something from a different world. It is the result of each member of the team working hard and improving their skills. As captain, I am truly proud of them.[k]
+@fg c=ライナス e=通常 f=01
+[ライナス f=01]「...I'm impressed you made it. I thought you'd crash out quickly.」[k]
+[テオ f=06]「...」[k]
+Our opponents in the final are Linus and Hawk Wing. They advanced smoothly through the tournament.[k]
+To be honest, given what happened at Kobold Fortress, I thought it would be difficult for them to reach the final in their current weakened state. Contrary to my expectations, they ended up being our opponents in the final.[k]
+[ライナス f=01]「I'll make you eat your words in the final. Look forward to it.」[k]
+@cl
+Leaving behind that parting remark, Linus left.[k]
+@fg c=マリア e=通常 f=02
+[マリア v=va111 f=02]「It's been a while, guys.」[k]
+[テオ f=05]「Maria...!」[k]
+[リーゼル v=vl161 f=05]「Maria...!」[k]
+Maria spoke to me. She remains a member of Hawk Wing, so is one of my opponents in the final match.[k]
+[マリア v=va112 f=02]「I never thought I'd end up fighting you guys.」[k]
+[テオ f=05]「Maria, I'm sorry, but we're not going to go easy on you.」[k]
+[マリア v=va113 f=02]「I understand. I won't slack off either. I'm a member of Hawk Wing now, after all. I'll fulfill my responsibilities.」[k]
+[リーゼル f=05]「...」[k]
+[マリア v=va114 f=10]「I'm sorry, Riselle. I really don't want to fight you, but...」[k]
+[リーゼル v=vl162 f=08]「I understand. I don't really want to, but I'll fight with all my might. So Maria, give it your all too.」[k]
+[マリア v=va115 f=03]「I see! ...Hehe, you've become quite strong since I last saw you, Riselle.」[k]
+[リーゼル v=vl163 f=05]「I wonder if that's true...」[k]
+[マリア v=va116 f=01]「Well, I'm going to go now. Let's do our best, Riselle, Captain ♪」[k]
+[テオ f=02]「Yes, I'm looking forward to the match.」[k]
+[textoff]
+@cl
+[texton]
+[テオ f=06]「Well, the match is about to start...」[k]
+There is little time left. We must prepare thoroughly for battle while we still can.[k]
+@se f=door1
+[女性冒険者 f=bladesman_red_01]「Hello...」[k]
+[女性冒険者 f=archer_purple_07]「...」[k]
+Suddenly, two adventurer women entered our waiting room.[k]
+[テオ f=05]「Ah... you guys are...」[k]
+They're the female adventurers from Hawk Wing who tried to steal our glory at Kobold Fortress before. Why are they here...?[k]
+[テオ f=05]「Ah, your dressing room is over there. Go back to the stairs and take the passageway on the opposite side...」[k]
+[女性冒険者 f=bladesman_red_01]「No... We're not participating in the battle...」[k]
+[テオ f=05]「What? Is that so?」[k]
+[女性冒険者 f=archer_purple_07]「We... left Hawk Wing.」[k]
+[テオ f=12]「What?!」[k]
+[女性冒険者 f=bladesman_red_01]「We were kicked out of the party right before the tournament started. Linus announced that he would be making major changes to the party in order to strengthen it.」[k]
+Come to think of it, Max mentioned something like that...[k]
+[女性冒険者 f=bladesman_red_00]「After we lost to you guys... Linus said we were useless...」[k]
+[テオ f=10]「Oh no...」[k]
+That's so cruel. They've been devoted to Linus all this time...[k]
+[女性冒険者 f=bladesman_red_06]「But now I feel refreshed. I was tired of being Linus's nighttime companion. With a fresh start, I want to find a new job.」[k]
+[テオ f=02]「I see... That's good to hear.」[k]
+[女性冒険者 f=bladesman_red_01]「Anyway, we came here today to tell you guys in [emb exp='game.party.displayName'] something important.」[k]
+[テオ f=05]「Something important...?」[k]
+[女性冒険者 f=bladesman_red_00]「Hawk Wing has changed from the party we described the other day. With a major change in members, it's become a completely different team.」[k]
+[テオ f=06]「A different team...」[k]
+[女性冒険者 f=archer_purple_07]「Before firing us, Linus invested all of his remaining funds in hiring a whole bunch of skilled adventurers.」[k]
+[女性冒険者 f=archer_purple_07]「It's now much stronger than before. Don't underestimate them.」[k]
+[テオ f=06]「...」[k]
+[女性冒険者 f=bladesman_red_01]「Be especially wary of the red-haired male warrior. He can kill with a single blow, as well as counterattack. He should be your priority target to defeat with magic or other means. Please be very careful.」[k]
+[テオ f=02]「I understand. I'll keep that in mind. Thank you for coming to give us your advice.」[k]
+[女性冒険者 f=archer_purple_07]「We tried to attack you before... We wanted to make up for it.」[k]
+[女性冒険者 f=bladesman_red_00]「From now on, I want to be an adventurer who everyone can rely on, without resorting to underhanded tactics... Like you guys.」[k]
+[テオ f=01]「Good luck to both of you!」[k]
+[女性冒険者 f=archer_purple_01]「Yes!」[k]
+[name n=Attendant]「The match starts in 10 minutes. Please get ready soon.」[k]
+[テオ f=06]「It's finally here...!」[k]
+If I win this battle, I will confess my feelings to Riselle.[k]
+I had been thinking about it for a long time. Once I became a full-fledged adventurer, I would confess my feelings to her.[k]
+This tournament is a once-in-a-lifetime opportunity. I will prove my strength in this battle and become a man worthy of Riselle![k]
+[テオ f=06]「Let's go...!」[k]
+I clenched my fists tightly and headed toward the arena with a secret determination.[k]
+[textoff]
+@fa
+@out
+@w1
+
+; 闘技場・アリーナ
+*hawkwing_encounter
+@eval exp='game.backScreen.loadImages(%[storage: "other_arena", visible: true])'
+@mu f=brave
+@gameon fade
+@saveoff
+[texton]
+[name n=Commentator]「It's finally the final! The teams that made it to this point are the powerful Hawk Wing, which has won the championship five times! And the up-and-coming [emb exp='game.party.displayName'], who have been making quite a name for themselves lately!」[k]
+[ライナス f=01]「Kukuku, I'll make you whimper.」[k]
+[テオ f=05]「That's what I should say.」[k]
+[name n=Commentator]「This will be the final battle! Fight without regret! Let the match begin!」[k]
+[textoff]
+@w05
+@anime_duel_net visible=true storage=other_arena_net
+@w05
+
+; 決勝・ライナス戦
+;-----------------------------------------------------------------------------------------
+; 設定
+[iscript]
+game.curTeam = o.ホーク・ウイング;
+o.マリア.exp = o.マリア.getNeedExp(10);	// マリアのレベルを上げておく
+o.マリア.levelUpToTheLast();
+m.ルーファス.life = 140;	// 一時的に弱くする
+m.ルーファス.defense = 20;
+m.ルーファス.attack = [24, 37];
+m.ルーファス.power = 20;
+m.ルーファス.times = 1;
+m.ルーファス.btcmd.add(o.見物);
+[endscript]
+;-----------------------------------------------------------------------------------------
+
+; 戦闘
+@monster pos=0 name=アサシン
+@monster pos=2 name=マリア
+@monster pos=4 name=チャンピオン
+@monster pos=6 name=パイレーツ
+@monster pos=8 name=ウォーロック
+@monster pos=10 name=ライナス
+@monster pos=12 name=ルーファス
+@call target=*match_start
+
+;-----------------------------------------------------------------------------------------
+; 元に戻す
+[iscript]
+tf.temp = csvToArray("monster.csv", true, true);
+m.ルーファス = new MonsterData(tf.temp[m.ルーファス.id], game, m.ルーファス.id);
+tf.temp = void;
+[endscript]
+;-----------------------------------------------------------------------------------------
+
+; 勝利
+[texton]
+[ライナス f=18]「What... What the hell...?!」[k]
+[テオ f=13]「We did it...!」[k]
+After a fierce battle, we defeated Hawk Wing.[k]
+A loud cheer erupts from the stands. We won this tournament![k]
+[textoff]
+@out
+@w1
+@bg f=0009
+@saveon
+@mu f=celebration
+[texton]
+
+[if exp='HUM'][リム v=vh030 f=03]「Yay!」[k][endif]
+[if exp='ELF'][クレア v=ve031 f=01]「We did it!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd030 f=03]「That's amazing! We won～!」[k][endif]
+[if exp='GNO'][ミューズ v=vg022 f=01]「I can't believe it...!」[k][endif]
+[if exp='SYL'][マルエット v=vs032 f=15]「Did you see that? This is our power!」[k][endif]
+
+[リーゼル v=vl164 f=01]「Way to go, Captain!」[k]
+[テオ f=01]「Ah! It's all thanks to everyone!」[k]
+We finally did it. We all worked together and won the championship.[k]
+[name n=Spectator]「Congratulations, [emb exp='game.party.displayName']!」[k]
+[name n=Spectator]「What an amazing battle! [emb exp='game.party.displayName'], you guys are the champions!」[k]
+Cheers and praise for us echo from all around.[k]
+Since forming a few months ago, we have worked hard together every day. And now, we have finally achieved this wonderful honor.[k]
+This will instantly raise our popularity and reputation. We are now closer than ever to becoming an ideal party of adventurers.[k]
+And I'm not the same person I used to be. I overcame my weaknesses and became a strong adventurer.[k]
+[リーゼル v=vl165 f=02]「You've worked hard, Captain.」[k]
+[テオ f=02]「Yeah, I guess so.」[k]
+Riselle looked happier than ever before.[k]
+She also went through a series of misfortunes as an adventurer, but now that she's here, has she finally been rewarded?[k]
+[name n=Attendant]「Congratulations. Now, please move to the award ceremony venue.」[k]
+[テオ f=01]「Yes, I understand.」[k]
+[textoff]
+@st
+@image layer=0 page=back storage=0024 visible=true left=0 top=0
+@trans method=universal rule=rule_01 time=200
+@wt
+@image layer=0 page=back storage=0009 visible=true left=0 top=0
+@trans method=universal rule=rule_01 time=200
+@wt
+@wait time=500
+[texton]
+...[k]
+Huh...? What was that...?[k]
+Just now, I saw a glimpse of something... Something I shouldn't have missed...[k]
+@bgf f=0009
+[リーゼル v=vl166 f=05]「Hmm? What's wrong, Captain?」[k]
+[テオ f=13]「N-no, it's nothing!」[k]
+An indescribable sense of unease remains in my heart.[k]
+Yes, it feels like I missed something important.[k]
+...[k]
+[テオ f=05]「...Huh!」[k]
+Oops, now isn't the time for that.[k]
+There's a victory party coming up, but after that's over, I'm going to talk to Riselle about what I mentioned earlier.[k]
+Another major event for me. I need to focus on that now.[k]
+[textoff]
+@out
+@w1
+
+; 会場控え室前
+@bg f=0023 b
+@mu f=shadow
+@fg l=ルーファス e=通常 f=05 b
+@fg r=ライナス e=通常 f=07
+[texton w=1]
+[ライナス f=07]「Hey! You! What's going on there?」[k]
+[ルーファス f=05]「Huh? Is there a problem?」[k]
+[テオ f=05]「Hmm... What was that?」[k]
+As I was leaving the venue, I heard Linus and one of his party arguing in the waiting room.[k]
+It's an adventurer Linus hired specifically for this tournament. I think his name was Rufus.[k]
+[ライナス f=07]「Hey! You weren't giving it your all in the final match, were you?」[k]
+[ルーファス f=05]「What?」[k]
+[ライナス f=07]「I knew it! I know you've been slacking off!」[k]
+[ルーファス f=05]「So what? How can you take such a boring battle seriously?」[k]
+[ライナス f=07]「I'm paying you a lot of money! You have to work hard to earn your salary! Don't mess with me!」[k]
+@fg l=ルーファス f=01
+[ルーファス f=01]「...Heh.」[k]
+@fg r=ライナス f=09
+[ライナス f=09]「W-what's so funny...?」[k]
+[ルーファス f=01]「...I think you haven't realized your position.」[k]
+@fg r=ライナス f=12
+[ライナス f=12]「W-what does that mean?」[k]
+[ルーファス f=01]「Who knows. Well, I'm off to play now. Later.」[k]
+@cl l
+[ライナス f=11]「Hey, wait a minute! We're not done talking yet!」[k]
+@cl r
+[テオ f=06]「...」[k]
+Things seem a bit rough... When a team isn't united, they tend to blame each other when they lose...[k]
+To prevent that from happening, it is important to build trust with your party. It is important to value them.[k]
+[textoff]
+@fa
+@out
+@w1
+
+; 祝勝会
+@bg f=0012
+@mu f=happy
+[texton w=1]
+[マックス f=03]「Let's toast our victory in the fighting tournament!」[k]
+[name n=All]「Cheers!」[k]
+[マリア v=va117 f=03]「Congratulations, everyone!」[k]
+On the night of the final match, we in [emb exp='game.party.displayName'] decided to rent out a restaurant in town and hold a victory party to celebrate winning the tournament.[k]
+Incidentally, Max and Maria aren't party members, but they are participating as well.[k]
+[マックス f=03]「Yay! Let's drink tonight!」[k]
+[マリア v=va118 f=07]「Max! Why are you the most excited one here?! You didn't do anything at all today!」[k]
+[テオ e=通常 f=01]「Ahaha...」[k]
+They're outsiders, and Maria is even a member of the enemy team, but if they can liven up the party, that's fine. They both have cheerful personalities.[k]
+[リーゼル e=通常 f=06]「...」[k]
+[テオ f=05]「Huh? Riselle, are you a little nervous?」[k]
+[リーゼル v=vl167 f=09]「I... I'm not good at drinking parties...」[k]
+[テオ f=02]「In that case, it's best to eat slowly at your own pace. The most important thing is to enjoy yourself.」[k]
+[リーゼル v=vl168 f=01]「Yeah... That's right. You're right.」[k]
+[テオ f=02]「I'm the same. Let's have a relaxing time together. Okay?」[k]
+[リーゼル v=vl169 f=01]「Yeah... Thank you.」[k]
+[マリア v=va119 f=08]「Hmm? Aren't you two getting a little cozy?!」[k]
+; ↑ 文句つける雰囲気で絡んでくる（ちゃかす感じではない）
+Maria, who was already feeling a little tipsy and in a good mood, started chatting with Riselle and me.[k]
+[テオ f=12]「W-what is it, Maria...?」[k]
+[リーゼル v=vl170 f=13]「No, that's not true... It's just your imagination...」[k]
+[マリア v=va120 f=07]「Don't lie! You guys weren't that close before!」[k]
+[リーゼル v=vl171 f=05]「I wonder if that's true...」[k]
+[テオ f=05]「...」[k]
+If Maria says so, it means that we seem closer. Maybe Riselle feels closer to me than I thought. If that's the case, I'm happy.[k]
+However, just becoming close friends is meaningless. I want to date Riselle as a woman.[k]
+That's why tonight, I have to do what I have to do...[k]
+[textoff]
+@fa
+@out
+@w1
+
+; 祝勝会会場の外
+@bg f=0029
+@mu f=beach
+[texton]
+When the victory party was in full swing and things had calmed down a bit, I took Riselle outside.[k]
+@fg c=リーゼル f=05
+[リーゼル v=vl172 f=05]「What's wrong, Captain? Why are you suddenly taking me away?」[k]
+[テオ f=02]「Well, I have something I want to talk about... Let's take a walk.」[k]
+With a pleasant evening breeze blowing, Riselle and I walk alone together.[k]
+@fg c=リーゼル f=02
+[リーゼル v=vl173 f=01]「We... really won the tournament... It still feels like a dream.」[k]
+[テオ f=02]「It's not a dream. We really did win. It's the result of your and everyone else's hard work.」[k]
+[リーゼル v=vl174 f=05]「Captain...」[k]
+[テオ f=02]「Everyone has become stronger. Riselle, everyone else, and me too... I feel like I can overcome my past now. It's all thanks to everyone.」[k]
+[リーゼル v=vl175 f=02]「Me too... I may not be able to become like Grandma, but right now I think I can become a full-fledged mage. Thank you, Captain.」[k]
+[テオ f=05]「Well... I haven't really done anything...」[k]
+[リーゼル v=vl176 f=04]「Everyone in the party said they were glad they followed the captain. And so am I...」[k]
+[テオ f=05]「Riselle...」[k]
+[リーゼル v=vl177 f=01]「Let's keep working hard together, Captain.」[k]
+[テオ f=01]「...Ah!」[k]
+At first, she ended up accompanying me by chance, but now I am really happy that we can fight together.[k]
+Now... she has become the woman I love.[k]
+@fg c=リーゼル f=05
+[リーゼル v=vl178 f=05]「By the way, what did you want to talk about...?」[k]
+[テオ f=10]「Ah, um... Well...」[k]
+Come on, be brave. You have to convey your feelings.[k]
+[テオ f=10]「...!」[k]
+I made sure no one was around, took a deep breath, and turned to face her.[k]
+[テオ f=05]「Riselle. I have something to give you.」[k]
+[name f=other_01]I took Riselle's hair ornament out of my pocket and showed it to her.[k]
+[リーゼル v=vl179 f=12]「...! This is...!」[k]
+[テオ f=02]「I'll return it to you, Riselle.」[k]
+[リーゼル v=vl180 f=05]「Why do you have it? I'm sure it was being sold in the store...」[k]
+[テオ f=01]「I bought it. It's your important hair ornament, isn't it?」[k]
+[リーゼル v=vl181 f=09]「But the price was so high...」[k]
+[テオ f=02]「Don't worry about it.」[k]
+[リーゼル v=vl182 f=09]「But...」[k]
+[テオ f=02]「You know... When your hair ornament was taken, you looked really sad...」[k]
+[テオ f=06]「I... didn't want to see you sad...」[k]
+[リーゼル f=25]「...」[k]
+Riselle gazes at me and the hair ornament with moist eyes.[k]
+@fg c=リーゼル f=23
+[リーゼル v=vl183 f=23]「Thank you, Captain... I'm so glad I got to be with you...」[k]
+[テオ f=02]「I'm glad, too.」[k]
+I put the hair ornament back in Riselle's hair.[k]
+@eval exp='o.リーゼル.color = "brown"'
+@eval exp='o.リーゼル.makeBustups()'
+@eval exp='o.リーゼル.makeOtherFaceWindowPictures()'
+@fg c=リーゼル f=25
+[リーゼル f=25]「...」[k]
+[テオ f=02]「That hair accessory really suits you, Riselle.」[k]
+@fg c=リーゼル f=22
+[リーゼル f=22]「... (Kyaa)」[k]
+Riselle looks very cute when she blushes a little.[k]
+Ah... I want to make this cute girl my girlfriend...! I realize once again how much I like Riselle.[k]
+[テオ f=06]「...」[k]
+In order to make my wish come true, I have to be brave here. That's why I invited her out.[k]
+@fg c=リーゼル f=25
+[リーゼル v=vl184 f=05]「Hmm? What's wrong, Captain?」[k]
+[テオ f=12]「Um... Well... I...」[k]
+Come on, be brave and say it! Say what you've been keeping inside![k]
+[リーゼル v=vl185 f=05]「Captain?」[k]
+@st
+[テオ f=12]「I love you!」[k]
+[リーゼル v=vl186 f=25]「What the...?!」[k]
+@mu f=love
+[テオ f=10]「I've always... loved you... I've always wanted to tell you how I feel...」[k]
+@fg c=リーゼル f=10
+[リーゼル f=10]「...」[k]
+[テオ f=10]「So, umm, I want you to be my girlfriend...」[k]
+[リーゼル v=vl187 f=10]「Um... That means...」[k]
+[テオ f=10]「...」[k]
+I finally said it...! There's no turning back now...![k]
+Riselle seems a little confused by the sudden confession.[k]
+Could it possibly be no good...?![k]
+[テオ f=09]「So... What do you think...?」[k]
+[リーゼル v=vl188 f=10]「Um... Well, what should I do...?」[k]
+[テオ f=10]「I want you to be my girlfriend... We can eat together... Go on dates sometimes...」[k]
+[リーゼル f=10]「...」[k]
+[テオ f=10]「No good...?」[k]
+[リーゼル f=10]「...」[k]
+@fg c=リーゼル f=22
+[リーゼル v=vl189 f=22]「...Yeah... Okay.」[k]
+[テオ f=12]「...!」[k]
+[リーゼル v=vl190 f=22]「Sure, if it's you, Captain... You're kind...」[k]
+[テオ f=01]「Riselle...!」[k]
+Okay! Riselle accepted my confession![k]
+@fg c=リーゼル f=33
+[リーゼル v=vl191 f=33]「Well... Please take care of me...」[k]
+[テオ f=01]「Yes! I'm looking forward to it!」[k]
+I hold back my excitement and reach out to hold Riselle's hands.[k]
+@fg c=リーゼル f=22
+[リーゼル f=22]「...」[k]
+Riselle looked a little nervous as she weakly squeezed my hands back.[k]
+[textoff]
+@fa
+@out
+@w1
+; 翌日・街角でリーゼルと待ち合わせ
+@bg f=0019
+@mu f=city
+[texton]
+Today, I decided to give everyone in the party a day off and take a break from adventuring work.[k]
+Of course, I wanted everyone to get some rest, but it's also for my own convenience.[k]
+[テオ e=通常 f=05]「Riselle, are you here yet?」[k]
+Yes, I decided to go on a date with Riselle today.[k]
+I'm currently waiting for her at a corner of the town street. Standing alone at the edge of the street, I wait for Riselle to arrive.[k]
+[テオ f=10]「She isn't here...」[k]
+Just then, I began to worry whether she would really come.[k]
+@fgf c=マックス e=通常 f=03
+[マックス f=03]「Hey, [テオ]!」[k]
+[テオ f=11]「Ahh!」[k]
+Suddenly, Max called out from behind me.[k]
+[テオ f=10]「What's up, Max? Don't scare me like that...」[k]
+@fg c=マックス f=01
+[マックス f=01]「What are you doing here?」[k]
+[テオ f=10]「N-Nothing much...」[k]
+I have an important first date with Riselle coming up. Don't bother me.[k]
+[マックス f=03]「Hey, [テオ], I heard.」[k]
+[テオ f=10]「What are you talking about?」[k]
+[マックス f=03]「You started dating Riselle, right?」[k]
+[テオ f=12]「Gah!」[k]
+How does Max already know?![k]
+[マックス f=01]「What's going on? Are you dating? Well?」[k]
+[テオ f=10]「Well, that's...」[k]
+[マックス f=03]「It's true! I see, I see! You finally have a girlfriend...」[k]
+[テオ f=10]「...」[k]
+Well, Max can know... It'll come out eventually anyway.[k]
+[マックス f=04]「So, how far did you go with her?」[k]
+[テオ f=10]「How far? With what?」[k]
+[マックス f=03]「Don't play dumb! I'm talking about how far your relationship with Riselle has progressed!」[k]
+@fg c=マックス f=22
+[マックス f=22]「...Did you already do something naughty?」[k]
+[テオ f=10]「No, I wouldn't do that!」[k]
+[マックス f=03]「What, not yet? But you've kissed her, right?」[k]
+[テオ f=10]「...」[k]
+@fg c=マックス f=05
+[マックス f=05]「...Hey, you guys haven't even kissed yet? What's up with that? You guys are so shy!」[k]
+[テオ f=12]「There's no way I can do all that all of a sudden... I have to think about her feelings...」[k]
+[マックス f=05]「If you keep saying things like that, she'll never let you do anything! It's better to be a little pushy! Women actually want that too!」[k]
+[テオ f=10]「That's just your opinion.」[k]
+[マックス f=06]「Now, it's just my hunch, but Riselle seems like the type who would easily agree to have sex if you asked her nicely.」[k]
+Max... Don't say things that send a chill down my spine...[k]
+@fg c=マックス f=03
+[マックス f=03]「Just go for it! I'm rooting for you, okay? As your best friend!」[k]
+[テオ f=10]「I appreciate the sentiment, but...」[k]
+[リーゼル v=vl192 e=通常 f=01]「Captain!」[k]
+@cl b
+@fg l=マックス f=03 b
+@fg r=リーゼル f=01
+Suddenly, Riselle came running over to me.[k]
+[マックス f=03]「Oh, look who it is. I'll get out of the way! Good luck! Let me know how it goes!」[k]
+@cl l
+[テオ f=10]「...」[k]
+Really, that Max...[k]
+@cl b
+@fg c=リーゼル f=05
+[リーゼル v=vl193 f=05]「Were you talking to Max?」[k]
+[テオ f=13]「N-no, it's nothing!」[k]
+@fg c=リーゼル f=01
+[リーゼル v=vl194 f=01]「We're going to the park in Sapphire City today, right?」[k]
+[テオ f=13]「Yeah. Well, let's get going then.」[k]
+[textoff]
+@out
+
+;-----------------------------------------------------------------------------------------
+; ここで今まで通り過ぎた場所の状態をまとめて更新する
+[iscript]
+
+// ここでは、リーゼルとデートできる状態にする
+
+// キャラ
+game.party.ejectItem(o.リーゼルの髪飾り);
+game.temporaryBox.ejectItem(o.リーゼルの髪飾り);
+game.trunkRoom.ejectItem(o.リーゼルの髪飾り);
+game.lockerRoom.ejectItem(o.リーゼルの髪飾り);
+
+o.テオ.removeEquipmentsByForce();
+o.テオ.dressEquipment(o.主人公の私服);
+o.テオ.dressEquipment(o.トランクス);
+o.テオ.updateByChangeEquipment();
+
+o.リーゼル.removeEquipmentsByForce();
+o.リーゼル.dressEquipment(o.リーゼルの私服);
+o.リーゼル.dressEquipment(o.白いブラ);
+o.リーゼル.dressEquipment(o.白いパンツ);
+o.リーゼル.updateByChangeEquipment();
+o.リーゼル.moveHeart(o.テオ, 20);
+
+for(var i = game.party.members.count - 1; i >= 0; i--)
+{
+	var one = game.party.members[i];
+	one.recovery();
+	if(one != o.リーゼル && one != o.テオ) game.removeMemberTemporary(one);
+}
+game.guest.eraseHiring();
+
+// サファイアシティ
+o.サファイアシティ・北西門.events = [4];
+o.サファイアシティ・北東門.events = [4];
+o.サファイアシティ・南西門.events = [4];
+o.サファイアシティ・南東門.events = [4];
+o.下水道入口.events = [4];
+o.王立ギルド.events = [7];
+o.待合所.events = [4];
+o.ベトリヌスの酒場.events = [6];
+o.冒険者の宿.events = [6];
+o.サファイア城.events = [8];
+o.公園.events = [5];
+o.闘技場.events = [6];
+o.サファイアシティ・南西門.requireMembers = false;
+
+// シーガル村
+o.海岸ギルド.events = [0];
+o.潮風のペンション.events = [0];
+o.かもめ亭.events.push2(1);
+o.砂浜.events = [0];
+o.シーガルの村・北門.events = [0];
+o.シーガルの村・東門.events = [1];
+o.シーガルの村・南門.events = [1];
+
+// ダンジョン
+o.ランドン渓谷・崖上.events.push2(13);
+o.ランドン渓谷・谷底.events.push2(3);
+o.ランドン渓谷・崖上.noBattle = true;
+o.ランドン渓谷・谷底.noBattle = true;
+o.ハーピーの山・中腹.noBattle = true;
+o.ランドン渓谷・崖上.changeObject(%[type: "floor", img: "wood", icon: 7], 11, 41, "f");
+
+// その他
+game.lapse = false;
+game.closeItems.remove(o.ブリザードの魔法書);
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+
+@gameon
+[texton w=0]
+[テオ]（Today I have a date with Riselle at the park. Let's hurry.）[k]
+[textoff]
+
+[eventoff]

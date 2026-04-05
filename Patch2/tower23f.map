@@ -1,0 +1,180 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔23Ｆ
+insideName = 23Ｆ
+upper = ラドミラの塔24Ｆ
+lower = ラドミラの塔22Ｆ
+level = 58
+bgm = tower
+margin = 3
+shadow = dark
+sky = nightforest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+… = half
+　 = marble
+☐ = marble
+／ = door
+︻ = panel
+┯ = button
+㊦ = ladderd
+② = pedestal
+③ = pedestal
+④ = pedestal
+⑤ = pedestal
+⑥ = pedestal
+
+; 敵情報
+monsters = ナイトインプ,インキュバス,マウンテンデビル,アビスデーモン,エリートトロール,エルダーサキュバス
+
+; 移動ポイント
+(A) = map:ラドミラの塔24Ｆ ,x:5, y:4
+
+; 宝箱
+box[1] = 罠はない,クリスタルの鍵
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  		┏…┳━┳━━━━━┳━┳…┓
+ 8		￤☐【⑤／　　　　　／⑥】☐￤
+  		￤☐┣━┛　　　　　┗━┫☐￤
+ 7		￤☐┃　　　　　　　　　┃☐￤
+  		￤☐┃　┏／┳／┳／┓　┃☐￤
+ 6		￤☐／　┃②┃③┃④┃　／☐
+  		￤☐┣━┻︼╋︼╋︼┻━┫☐
+ 5		￤☐┃❶　　┠①／　　　／☐
+  		￤☐┃　　　┗━┻━━━┫☐
+ 4		￤☐┃　　　　　　　　㊦┃☐
+  		￤☐┗━━━━━━━━━┛☐
+ 3		￤☐☐☐☐☐☐☐☐☐☐☐☐☐
+  		┗……
+ 2
+  
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(4, 5);
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="21Ｆ" exp='tf.result = ["ラドミラの塔21Ｆ", "down"]'
+@select text="17Ｆ" exp='tf.result = ["ラドミラの塔17Ｆ", "down"]'
+@select text="No" exp='tf.result = []'
+[ask]
+@elevator map=&'tf.result[0]' lift=&'tf.result[1]' cond='tf.result[0] !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger || (onUseEventItem && curItem == o.悪魔の彫像)
+
+[if exp='game.onObjectTrigger']
+	@notice text="There is a picture of a devil on the stone tablet."
+	[eventoff]
+[endif]
+@changewall way=s click=false
+@changefloor pimg="pd_demon"
+@eval exp='game.party.ejectItem(o.悪魔の彫像)'
+@notice text="I placed a devil statue on the pedestal!"
+@delevent
+@call target=*_appear_warp
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger || (onUseEventItem && curItem == o.スライムの彫像)
+
+[if exp='game.onObjectTrigger']
+	@notice text="There is a picture of a slime on the stone tablet."
+	[eventoff]
+[endif]
+@changewall way=s click=false
+@changefloor pimg="pd_slime"
+@eval exp='game.party.ejectItem(o.スライムの彫像)'
+@notice text="I placed a slime statue on the pedestal!"
+@delevent
+@call target=*_appear_warp
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger || (onUseEventItem && curItem == o.ネズミの彫像)
+
+[if exp='game.onObjectTrigger']
+	@notice text="There is a picture of a mouse on the stone tablet."
+	[eventoff]
+[endif]
+@changewall way=s click=false
+@changefloor pimg="pd_rat"
+@eval exp='game.party.ejectItem(o.ネズミの彫像)'
+@notice text="I placed a mouse statue on the pedestal!"
+@delevent
+@call target=*_appear_warp
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger || (onUseEventItem && curItem == o.トカゲの彫像)
+
+[if exp='game.onObjectTrigger']
+	@notice text="There is a picture of a lizard on the stone tablet."
+	[eventoff]
+[endif]
+@changewall way=s click=false
+@changefloor pimg="pd_lizard"
+@eval exp='game.party.ejectItem(o.トカゲの彫像)'
+@notice text="I placed a lizard statue on the pedestal!"
+@delevent
+@call target=*_appear_warp
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger || (onUseEventItem && curItem == o.蛇の彫像)
+
+[if exp='game.onObjectTrigger']
+	@notice text="There is a picture of a snake on the stone tablet."
+	[eventoff]
+[endif]
+@changewall way=s click=false
+@changefloor pimg="pd_horse"
+@eval exp='game.party.ejectItem(o.蛇の彫像)'
+@notice text="I placed a snake statue on the pedestal!"
+@delevent
+@call target=*_appear_warp
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_appear_warp
+@wait time=800
+@return cond='game.map.events.has(2) || game.map.events.has(3)'
+@return cond='game.map.events.has(4) || game.map.events.has(5) || game.map.events.has(6)'
+@se f=shuwa2
+@eval exp='game.map.setWarp(4, 8, "A", "warp")'
+@wait time=800
+@notice text="I heard something moving outside the room!"
+@return
+;-------------------------------------------------------------------------------

@@ -1,0 +1,1125 @@
+﻿// item.tjs
+// アイテムを作成
+// アイテムは基本的にコマンドオブジェクトと同じ働きをする
+
+
+/*----------------------------------------------------------------------------------------
+◆アイテム区分け ( type 属性とファイル名の接頭辞に使う )
+
+sword   剣
+spear   槍
+axe     斧
+dagger  短剣
+mace    メイス（フレイル含む）
+wand    棒・スタッフ
+sling   Ｙ字型パチンコ
+bow     弓
+※クロスボウは登場しない
+
+helm     帽子・ヘルメット  ※登場しないかも
+glove    こて・手袋
+boots    ブーツ
+shield   盾
+
+robe     ローブ（魔術師系の着る服。上半身のみ）
+clothes  服（シャツっぽいもの）
+mail     かたびら
+plate    胸当て
+armor    鎧（上半身全てから腰下まで）
+※フルプレート（全身鎧）は登場しない
+
+skirt    スカート（股が開いている下半身全般）
+pants    ズボン、パンツ（股が閉じている下半身全般）
+
+bra      下着・女性向け上半身全般
+panties  下着・女性向け下半身全般
+trunks   下着・男性向け下半身全般
+
+ring     指輪
+brooch   ブローチ
+amulet   お守り
+※ペンダント・腕輪・イヤリングは登場しない
+
+food     食べ物。消費アイテム。主に体力回復
+bottle   薬瓶。消費アイテム。体力・魔力回復、ステータス治療など
+herb     薬草類。消費アイテム。効能はいろいろ
+scroll   使い切りの魔法書。消費アイテム
+book     永久習得用の魔法書。消費アイテム。規定の職業で一定レベル以上なら使える  ※出ないかも？
+other    その他のアイテム。たいまつ等。他にもあまりにも種類が少ないものはここに統合
+consume  その他の消費アイテム
+
+----------------------------------------------------------------------------------------*/
+
+
+//----------------------------------------------------------------------------------------
+class ItemObject
+{
+	// アイテムクラス
+
+	var master;	// 管理オブジェクト
+	var id;	// ID
+	var name;	// 商品名
+	var img;	// 画像
+	var category = "item";	// コマンドとしての種別。このクラスの物は全て"item"
+	var auto = true;	// 普通はアイテムが自動で使われることはないが敵がまれに使う
+	var magicLV = 0;	// ※戦闘コマンドとして扱われるためその整合性を取る
+	var displayName;	// 表示名
+	var type;	// アイテムの種類
+	var scene = "all";	// 使用場面
+	var price;	// 値段
+	var part;	// 装備部位
+	var toEnemy = false;// 自分自身への効果か（回復など）敵への攻撃手段か
+	var toGuest = false;	// 対象にゲストを含むかどうか
+	var cursed = false;	// 呪いの有無
+	var event = false;	// イベントアイテムかどうか。これが true だと売ったり捨てたりできない
+	var equipIndex;	// 装備時に重ね合わせ順を指定したいときは値を指定
+	var weight = 0;	// 重量
+	var rank = 1;	// アイテムランク。識別の難易度や宝箱での出現率に影響。１なら必ず確定済みになる
+	var strong = 20;	// 頑丈さ。装備破壊確率に影響する
+	var halfState = true;	// 半壊状態で装備できるかどうか。false なら装備できない
+	var nakedByBreak = false;	// 半壊になったことでバストや局部が露出するかどうか
+	var nakedByErect = false;	// 勃起することで局部が露出するかどうか
+	var nakedByErectAndBreak = false;	// 半壊かつ勃起することで局部が露出するかどうか
+	var softCrotch = false;	// 股間の素材が柔らかいかどうか（触手の攻撃対象になる）
+	var fixHand = false;	// 腕の画像を含み腕が固定される装備かどうか
+	var range = -1;	// 効果範囲。内容はコマンドオブジェクトと同じ
+	var reach = 0;	// 到達距離。内容はコマンドオブジェクトと同じ
+	var w_reach = 0;	// 武器としての到達距離。攻撃コマンドを選んだ時 reach がこの値になる
+	var col = 1;	// マス目あたりの横幅
+	var row = 1;	// マス目あたりの高さ
+	var anime = "*use_item";	// 使用時のアニメ
+	var sound = "ironbreak";	// 破壊時のサウンド
+	var showCutIn = true;	// 汎用カットインを挿入するかどうか
+	var special;	// スペシャルパワー
+	var exclude = [];	// 同時に装備できない部位
+	var attrib;	// 属性。相手の属性次第でダメージが変化
+	var slayer = [];	// 追加ダメージが発生する特定の種族名
+	var bootTrap = false;	// このコマンドを実行したことでダンジョンの罠を起動させるかどうか
+	var bootEvent = false;	// このコマンドを実行したことでマップイベントを起こすかどうか
+	var skill = [];	// 追加されるスキル
+	var resist = [];	// 耐性のある属性
+	var block = [];	// 完全に防ぐ耐性
+	var sexy = 0;	// 衣装のセクシーさの度合い
+	var neverRemove;	// ここにコメントが入ると何があっても外れない（シナリオ用）
+	var detail;	// 説明
+	var guide = "Select a target";	// 対象選択時に出る説明文
+	var result;	// 外部から結果を与えるときに一時保存しておく変数
+	var cmdParam;	// コマンドとして使用した際の補助情報を書き込む変数
+
+	// 以下、装備制限を表す文字列
+	var sex = "";	// 男女
+	var alignment = "";	// 神善中悪極
+	var race = "";	// 人エドノシ
+	var job = "";	// 戦魔僧盗鍛狩吟海錬召司ドバソモ曲君ア
+	var limited;	// 特定のキャラ専用の場合その素体名を記述
+	var marriedOnly = false;	// 既婚者専用かどうか
+
+	// 以下、装備品が他の装備品に落とす影のフラグ
+	var sdw_waist;	// 下半身鎧
+	var sdw_waist_b;// 下半身鎧（破損時）
+	var sdw_bust;		// ブラ
+	var sdw_bust_b;	// ブラ（破損時）
+	var sdw_hip;		// パンツ
+	var sdw_hip_b;	// パンツ（破損時）
+	var sdw_leg;		// ブーツ
+	var sdw_leg_b;	// ブーツ（破損時）
+
+	// 以下、使用することによって変化するキャラのステータス
+	var life = 0;
+	var magic = 0;
+	var maxLife = 0;
+	var maxMagic = 0;
+	var accuracy = 0;
+	var defense = 0;
+	var attack = [0, 0];
+	var times = 0;
+	var power = 0;
+	var intellect = 0;
+	var piety = 0;
+	var vitality = 0;
+	var speed = 0;
+	var luck = 0;
+	var muscle = 0;
+	var thief = 0;
+	var knowledge = 0;
+	var craft = 0;
+	var heat = 0;
+	var trust = 0;
+	var exp = 0;
+	var love = 0;
+	var sleep = 0;
+
+	function ItemObject(master, i)
+	{
+		// やることなし
+		this.master = master;
+		id = i;
+	}
+
+	property equipment
+	{
+		// 装備品かどうかを返す
+		getter{ return part !== void; }
+	}
+
+	property instrument
+	{
+		// 楽器かどうかを返す
+		getter{ return ["harp", "drum", "shaker"].has(type); }
+	}
+
+	property hasBrokenState
+	{
+		// このアイテムに破損段階があるかどうかを返す
+		getter{ return Storages.isExistentStorage(img + "_b.png"); }
+	}
+
+	property disposable
+	{
+		// 一回きりで消費されるアイテム・素材かどうかを返す
+		getter
+		{
+			return ["food", "drink", "scroll", "book", "consume", "consumes"].has(type);
+		}
+	}
+
+	function isConsumed()
+	{
+		// 使用時にそのアイテムが消耗したかどうかを返す
+		if(event) return false;	// イベントアイテムは消耗しない
+		if(instrument) return false;	// 楽器は消耗しない
+		if(["other", "letter", "key"].has(type)) return false;	// その他のアイテムは消耗しない
+		if(disposable) return true;	// 消費アイテムは必ず消耗
+		return random > strong / 100;	// 耐久力との比較
+	}
+
+	function isCursed(charaObj)
+	{
+		// このアイテムでキャラが呪われるかどうかを返す
+		if(alignment.indexOf(charaObj.alignment.uniKey) == -1) return true;
+		if(marriedOnly && ! charaObj.married) return true;
+		return cursed;
+	}
+
+	function curseScript(owner)
+	{
+		// 呪われイベントスクリプト  呪われた時に何かが起きる場合ここに記述
+		// 装備した瞬間に owner に指定したキャラオブジェクトを対象に発動する
+		// 現状ほぼ『背徳の鎧・下』専用のメソッド
+	}
+
+	function isResistStatusEffect()
+	{
+		// このアイテムが敵の特殊効果をレジストするかどうかを返す計算式
+		return random < 0.5;
+	}
+
+	function getSpecialPower(curAct)
+	{
+		// このアイテムが持つスペシャルパワーを返す
+		// 現在すでに発動中なら次に発動するスペシャルパワーを返す
+		return special[special.find(curAct) + 1];
+	}
+
+	function isEquipable(charaObj)
+	{
+		// 指定したキャラがこのアイテムを装備できるかどうかを返す
+		if(job.indexOf(charaObj.job.uniKey) == -1) return false;
+		if(! isEquipableIgnoreForce(charaObj)) return false;
+		return true;
+	}
+
+	function isEquipableIgnoreForce(charaObj)
+	{
+		// このアイテムを装備できるかどうかを返す（強制無視）
+		// 男女の違いなどでグラフィックが存在しないものなどは絶対に装備させないようにする
+		if(sex.indexOf(charaObj.sex) == -1) return false;
+		if(race.indexOf(charaObj.race.uniKey) == -1) return false;
+		if(limited !== void && limited != charaObj.model.name) return false;
+		for(var i = job.length - 1; i >= 0; i--)
+		{
+			if(charaObj.model.job.indexOf(job[i]) != -1) return true;
+			if(i == 0) return false;
+		}
+		return true;
+	}
+
+	function getUnknownName()
+	{
+		switch(type)
+		{
+			case "dagger"     : return "Dagger?";	// ダガー
+			case "ldagger"    : return "Dagger?";	// ロングダガー
+			case "ssword"     : return "Sword?";	// ショートソード
+			case "sword"      : return "Sword?";	// 剣（ロングソード）
+			case "gsword"     : return "Sword?";	// グレートソード
+			case "handax"     : return "Axe?";	// 手斧
+			case "axe"        : return "Axe?";	// 戦斧
+			case "poleax"     : return "Axe?";	// 長斧
+			case "spear"      : return "Spear?";	// 槍
+			case "hammer"     : return "Hammer?";	// ハンマー
+			case "sledge"     : return "Hammer?";	// スレッジハンマー
+			case "staff"      : return "Staff?";	// 杖
+			case "wand"       : return "Wand?";	// ワンド
+			case "club"       : return "Club?";	// 棍棒、メイス等
+			case "pole"       : return "Staff?";	// 棒
+			case "tonfa"      : return "Stick?";	// トンファー
+			case "boomerang"  : return "Stick?";	// ブーメラン
+			case "cakram"     : return "Ring?";	// チャクラム
+			case "rod"        : return "Rod?";	// フレイル、モーニングスター
+			case "bow"        : return "Bow?";	// 弓
+			case "longbow"    : return "Bow?";	// 長弓
+			case "harp"       : return "Instrument?";	// 楽器（竪琴）
+			case "drum"       : return "Instrument?";	// 楽器（ドラム類）
+			case "shaker"     : return "Instrument?";	// 楽器（振る楽器）
+			case "rope"       : return "Rope?";	// ひも類（むち等）
+			case "buckler"    : return "Shield?";	// バックラー
+			case "round"      : return "Shield?";	// 丸盾
+			case "shield"     : return "Shield?";	// 盾
+			case "tower"      : return "Shield?";	// タワーシールド
+			case "leather"    : return "Armor?";	// 革の鎧
+			case "chain"      : return "Chainmail?";	// 鎖かたびら
+			case "scale"      : return "Armor?";	// スケイルメイル・上
+			case "breast"     : return "Armor?";	// 胸当て
+			case "plate"      : return "Armor?";	// プレートメイル・上
+			case "hipscale"   : return "Armor?";	// スケイルメイル・下
+			case "hipplate"   : return "Armor?";	// プレートメイル・下
+			case "robe"       : return "Robe?";
+			case "leotard"    : return "Bodysuit?";
+			case "cloth"      : return "Cloth?";
+			case "camisole"   : return "Tunic?";
+			case "tunic"      : return "Tunic?";
+			case "skirt"      : return "Skirt?";
+			case "pants"      : return "Pants?";
+			case "bra"        : return "Bra?";
+			case "panties"    : return "Underwear?";
+			case "braarmor"   : return "Bra?";	// ビキニ鎧・上
+			case "pantsarmor" : return "Underwear?";	// ビキニ鎧・下
+			case "shorts"     : return "Underwear?";
+			case "shell"      : return "Shell?";
+			case "boots"      : return "Boots?";
+			case "sandal"     : return "Sandals?";
+			case "glove"      : return "Gloves?";
+			case "gauntlet"   : return "Gauntlets?";
+			case "ring"       : return "Ring?";
+			case "amulet"     : return "Amulet?";
+			case "necklace"   : return "Ornament?";
+			case "food"       : return "Food?";
+			case "drink"      : return "Bottle?";	// 瓶に入っている飲み物（消費）
+			case "pot"        : return "Bottle?";	// 召喚びん（消費・直接使用できない）
+			case "key"        : return "Key?";
+			case "book"       : return "Book?";
+			case "scroll"     : return "Scroll?";
+			case "letter"     : return "Paper?";
+			case "card"       : return "Card?";
+			case "material"   : return "Material?";
+			case "consume"    : return "Item?";	// その他の消費系アイテム（中型）
+			case "consumes"   : return "Accessory?";	// その他の消費系アイテム（小型）
+			case "other"      : return "Item?";	// その他（消費されない）
+		}
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "grip" || key == "pos" || key == "resist" || key == "block" || key == "slayer")
+		{
+			this[key] = strToArray(data);
+		}
+		else if(key == "exclude")
+		{
+			var arr = strToArray(data);
+			exclude.push(arr * );
+		}
+		else if(key == "skill")
+		{
+			this[key] = master.getObjArrayByText(data);
+			if(skill.has(o.潜水) && special !== void)
+			{
+				System.inform("潜水アイテムにＳＰが設定されています  o." + name);
+			}
+		}
+		else if(key == "sdw_" + part)
+		{
+			System.inform("自身の影を描画する項目があります   " + name);
+			return;
+		}
+		else if(key == "attack")
+		{
+			this[key] = [+data.split("～")[0], +data.split("～")[1]];
+		}
+		else if(key == "special")
+		{
+			this[key] = master.getObjArrayByText(data);
+			if(skill.has(o.潜水)) System.inform("潜水アイテムにＳＰが設定されています  o." + name);
+		}
+		else if(key == "reach")
+		{
+			this["w_reach"] = data;	// コマンドとして使った場合に武器自身の攻撃距離と区別するため
+		}
+		else
+		{
+			this[key] = data;
+			if(key == "type")
+			{
+				if(data == "glove" || data == "gauntlet") master.changableGloves.add(this);	// こて・手袋を登録
+				else if(data == "sandal" || data == "boots") master.changableBoots.add(this);	// ブーツ類を登録
+				else if(data == "hammer" || data == "sledge") master.hammers.add(this);	// ハンマー系武器を登録
+				else if(data == "money") master.goldCoins.add(this);	// 金貨を登録
+			}
+			if(key == "part")
+			{
+				if(times == 0 && (data == "main" || data == "both" || data == "double")) times = 1;
+				if(data == "double") exclude.add("sub");
+				if(sex == "") sex = "男女";
+				if(alignment == "") alignment = "神善中悪極";
+				if(race == "") race = "人エドノシ";
+				if(job == "") job = "戦魔僧盗鍛狩吟海錬召司ドバソモ曲君ア";
+			}
+			if(key == "name")
+			{
+				displayName = name;
+			} else if(key == "displayName") {
+				// Some items can be used as enemy abilities
+				displayName = data;
+			}
+		}
+
+		if(key == "img")
+		{
+			// アイテムの寸法を測る
+			var temp = new Layer(kag, kag.fore.base);
+			temp.loadImages(data);
+			col = (temp.imageWidth + 1) \ master.itemWin.gridSize;
+			row = (temp.imageHeight + 1) \ master.itemWin.gridSize;
+		}
+
+		if(key == "cmdParam")
+		{
+			if(type == "scroll")
+			{
+				setFunctionFromCommandObject(o[data]);
+			}
+			else if(type == "book")
+			{
+				detail = "Teaches <y>" + o[data].displayName + "<w>"
+					 + " to users of " + master[o[data].category].displayName + " magic";
+			}
+		}
+	}
+
+	function setFunctionFromCommandObject(cmd)
+	{
+		// アイテムに指定されたコマンドの機能を設定する
+		// 使用したときに同じ効果を発揮する
+		toEnemy = cmd.toEnemy;
+		toGuest = cmd.toGuest;
+		attrib = cmd.attrib;
+		reach = cmd.reach;
+		range = cmd.range;
+		anime = cmd.anime;
+		cond = cmd.cond;
+		doDamage = cmd.doDamage;
+		resultMessage = cmd.resultMessage;
+		detail = cmd.detail;
+		magicLV = -1;	// 魔力を使うものとして扱われる。反射・無効化・アンチマジックの対象になる
+		dm("コマンド: " + cmd.name + " の機能をアイテムに設定");
+	}
+
+	function getExtraEffects(owner, target)
+	{
+		// 通常攻撃時の追加効果を返す
+		var arr = [];
+		for(var i = 0; i < skill.count; i++)
+		{
+			if(skill[i].category != "status") continue;
+			if(skill[i].isExtraEffectOccuring(owner, target)) arr.add(skill[i]);
+		}
+		return arr;
+	}
+
+	function getWeight(stat)
+	{
+		// ステータスによって変化する重量を返す。破壊されていたら半減
+		var w = getParam("weight", stat);
+		if(master.party.status.has(o.重力)) w *= 2;
+		return w;
+	}
+
+	function getSexyScore(stat)
+	{
+		// ステータスによって変化する衣装のセクシーさを返す。破壊されていたら倍
+		if(abs(stat) <= BROKEN) return sexy * 2;
+		return sexy;
+	}
+
+	function getParam(key, stat)
+	{
+		// ステータスによって変化する性能値を返す。破壊されていたら能力半減
+		if(key == "attack")
+		{
+			if(stat <= BROKEN) return [attack[0] \ 2, attack[1] \ 2];
+			else return [attack[0], attack[1]];
+		}
+		else
+		{
+			return this[key] \ ((abs(stat) <= BROKEN) + 1);
+		}
+	}
+
+	function getMoneyFromCoins()
+	{
+		if(type == "fixedMoney") return price;
+		else if(type == "money") return int(price * (random * 1.5 + 0.5));	// 指定値の 0.5 ～ 2 倍
+		else return 0;
+	}
+
+	function getBuyPrice(stat)
+	{
+		if(stat <= BROKEN) return price \ 5;
+		return price;
+	}
+
+	function getSellPrice(stat)
+	{
+		if(stat <= -BROKEN) return 100;	// 未鑑定品は一律100円
+		if(stat < 0) return 10;	// 未鑑定＆破損品は一律10円
+		if(stat <= BROKEN) return price \ 10;
+		return price \ 2;
+	}
+
+	function getIdentifyPrice(stat)
+	{
+		// 店での鑑定に必要な費用を返す
+		if(stat <= BROKEN) return price \ 6;	// 壊れてたら定価の 1/6
+		return price \ 3;	// 定価の 1/3
+	}
+
+	function getNeededIdentifyingSkill()
+	{
+		// 鑑定に必要なスキルを返す。アイテムのランクに依存する
+		return rank * 2;
+	}
+
+	function getRepairPrice(stat)
+	{
+		// 店での修理に必要な費用を返す
+		return price \ 3;	// 定価の 1/3
+	}
+
+	function getNeededRepairingSkill()
+	{
+		// 修理に必要なスキルを返す。アイテムのランクに依存する
+		return rank;
+	}
+
+	function getRemoveCursePrice(keepItem)
+	{
+		// 店での解呪に必要な費用を返す
+		// 後半登場する解呪するアイテムを保全できる店ではさらに費用がかかる
+		return price \ 3 + keepItem * price * 2;
+	}
+
+	function checkCurrentAction(owner)
+	{
+		// 行動しようとした時に何らかの理由で実行できない状態だったらメッセージを返す
+		// ここでは、使おうとしたアイテムが本当にあるか確かめる
+
+		// マップイベントで使用
+		if(master.checkMapEvent(true)) return;
+
+		// 楽器をアイテムとして使用してしまった
+		if(instrument && owner.equip.main != this)
+		{
+			playSound("buzzer");
+			return owner.displayName + " can't use instrument " + displayName + " without equipping it!";
+		}
+
+		// アンチマジックの効果
+		if(isForbiddenByAntiMagic())
+		{
+			playSound("buzzer");
+			return owner.displayName + "used " + displayName + "! But magical powers have been sealed!";
+		}
+
+		// 魔法禁止エリアの効果
+		if(magicLV != 0 && master.map.getMagicPermission() !== void)
+		{
+			playSound("buzzer");
+			return owner.displayName + " used " + displayName + "! \nBut magic is forbidden here!";
+		}
+
+		// 敵はアイテムを無限に使える
+		if(! owner instanceof "CharaObject") return;
+
+		// アイテムのあった場所を特定
+		var slot = typeof owner.reservedGrid == "String" ? owner.equip : owner.bag;
+		if(slot[owner.reservedGrid] === void) owner.reservedGrid = owner.findItem(this);
+
+		// 探しても見つからなかった
+		if(owner.reservedGrid === void)
+		{
+			playSound("buzzer");
+			return owner.displayName + " tried to use missing " + displayName + "!";
+		}
+
+		// 条件に合わない
+		if(! cond(owner))
+		{
+			playSound("buzzer");
+			return owner.displayName + " used " + displayName + "! \nBut it didn't work!";
+		}
+	}
+
+	function isForbiddenByAntiMagic()
+	{
+		// アンチマジックの効果により行動が禁じられるかどうかを返す
+		if(attrib == "消去") return false;
+		if(magicLV == 0) return false;
+		if(type != "scroll") return false;
+		if(master.party.status.has(o.禁止)) return true;
+		return false;
+	}
+
+	function useResource(res, owner)
+	{
+		// 使おうとしたアイテムを実際に使用・消費（プレイヤーキャラのみ）
+		if(res === 0) return;	// 使われなかった
+		owner.useItem(this, owner.reservedGrid);
+	}
+
+	function cond(owner, target)
+	{
+		// オーバーライドとかする
+		// コマンドと違って選択するだけならできるが実行前に失敗する
+		// アニメの件もあるので実行させたくないものはここで止めるようにする
+		if(master.checkMapEvent(true)) return false;	// マップイベントで使用された場合通常使用はしない
+		if(type == "material" || type == "pot") return false;	// 直接使用できない物
+		if(doDamage === void) return false;	// 実行コマンドがない物
+		return BattleCommand.cond(...);
+	}
+
+	function determined(owner, enemy)
+	{
+		// オーバーライドとかする
+		// 条件によってコマンドが自動的に決まるとき true を返す
+		// 逆に行動させたくないときは false を返す
+	}
+
+	function pickUpTarget(array, owner)
+	{
+		// オーバーライドとかする
+		// 敵が個別のターゲットを選ぶ場合、適切なターゲットを１体選んで返す
+		return BattleCommand.pickUpTarget(...);
+	}
+
+	function affectedParam(key, value)
+	{
+		// オーバーライドとかする
+		// ここにアイテムによって変化したパラメータ値を返す式を書きます
+		return value;
+	}
+
+	function doDamage(self, target)
+	{
+		// ここに使用した際の効果を書く
+		// ここに書かれていない効果を指定するにはオーバーライドする
+
+		// マップイベントで使用
+		if(master.checkMapEvent()) return;
+
+		// 装備は直接指定しない限り基本的に実行コマンドはなし
+		if(part !== void) return 0;
+
+		// 鍵を使用することで扉を開ける
+		if(type == "key" && ! master.inBattle && master.map.kind == "dungeon")
+		{
+			master.noReturnMenu = true;
+			master.popPrev();
+			master.popPrev();
+			if(master.enterUnlockDoorMode()) return "0,0x80FFFF,UNLOCK";
+			else return 0;
+		}
+
+		// 本は魔法を習得する
+		// cmdParam は習得する魔法オブジェクトの名前
+		if(type == "book")
+		{
+			if(cmdParam === void) return 0;
+			var newMagic = o[cmdParam];
+			if(target.knockOut) return 0;
+			if(! target.isMagicCategoryValid(newMagic.category)) return 0;
+			if(target.btcmd.has(newMagic)) return 0;
+			target.learnSkill(newMagic);
+			return "0,0x80FFFF,LEARNING";
+		}
+
+		// 消費系アイテムは指定されたパラメータ分増減させる
+		if(type == "food" || type == "drink" || type == "consume" || type == "consumes")
+		{
+			if(target.knockOut) return 0;	// 対象が途中で死んでいたらミス
+			var res;	// 結果を返す変数。複数効果があったら最後のものを表示
+			var arr = ["life", "magic", "sleep", "maxLife", "maxMagic", "power", "intellect", "piety"
+				, "vitality", "speed", "luck", "heat", "trust", "exp", "love"];
+			for(var i = 0; i < arr.count; i++)
+			{
+				if(this[arr[i]] != 0) res = target.addParam(arr[i], this[arr[i]]);
+			}
+			return res;
+		}
+	}
+
+	function actionMessage(self, target)
+	{
+		return self.displayName + " used " + displayName + "!";
+	}
+
+	function resultMessage(target, value)
+	{
+		// オーバーライドとかする
+
+		if(type == "key")
+		{
+			if(value === 0) return "It didn't work!";
+			else return "Used " + displayName + " to open the door!";
+		}
+
+		if(type == "book")
+		{
+			if(value === 0) playSound("buzzer");
+			else playSound("period");
+			if(value === 0) return "It didn't work!";
+			else return target.displayName + " learned the " + o[cmdParam].displayName + " spell!";
+		}
+
+		if(target instanceof "MonsterObject" && toEnemy)
+		{
+			if(value > 0) return value + " damage to " + target.displayName + "!";
+			else return "Didn't damage " + target.displayName + "!";
+		}
+
+		if(value === 0) return "It didn't work!";
+		var msg = "";
+		var arr = ["life", "magic", "sleep", "maxLife", "maxMagic", "power", "intellect", "piety"
+			, "vitality", "speed", "luck", "heat", "trust", "exp", "love"];
+		var names = ["HP", "MP", "Fatigue", "Max HP", "Max MP", "Strength", "Intelligence", "Faith"
+			, "Vitality", "Speed", "Luck", "Lust", "Trust", "EXP", "Love"];
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(this[arr[i]] == 0) continue;
+			if(msg != "") msg += "\n";
+			var v = +value.substr(11);
+			msg += target.displayName + "'s " + names[i] + (v > 0 ? " increased by " : " decreased by ") + abs(v) + "!";
+		}
+		if(msg != "") return msg;
+		else return "It didn't work!";
+	}
+}
+//----------------------------------------------------------------------------------------
+
+class ItemCommandWindow extends CommandBoard
+{
+	// コマンドウインドウ（通常タイプ）
+
+	var focusLastCommand = false;
+	var lastCommandIndex;	// 最後のコマンドを記憶しておく
+	var imageLayer;	// アイテムイメージレイヤー
+	var specTextLayer;	// スペック表示の項目レイヤー
+	var weightLayer;
+	var skillLayer = [];
+	var sexLayer = [];
+	var alignmentLayer = [];
+	var raceLayer = [];
+	var jobLayer = [];
+	var limitedLayer;
+	var equipMarkLeft = 249;
+	var equipMarkTop  = 432;
+
+	function ItemCommandWindow(par, master)
+	{
+		super.CommandBoard(...);
+		name = "アイテムメニュー";
+		cmdLength = 7;
+		loadImages("frame_itemmenu");
+		setSizeToImageSize();
+		//font.face = "ＭＳ Ｐ明朝";
+		font.bold = true;
+
+		imageLayer = new DecoLayer(this);
+		with(imageLayer)
+		{
+			.visible = true;
+			.font.height = 9;
+			.font.bold = true;
+			.font.italic = true;
+			//.font.face = "ＭＳ Ｐ明朝";
+		}
+
+		specTextLayer = new global.TextWindow(this, master);
+		with(specTextLayer)
+		{
+			.setSize(275, 140);
+			.setPos(266, 285);
+			.lineSpacing = 2;
+			.visible = true;
+			.edge = false;
+			.marginL = 44;
+			.marginR = 25;
+		}
+
+		weightLayer = new DecoLayer(this);
+		weightLayer.loadImages("frame_weight");
+		weightLayer.setPos(12, 502);
+		//weightLayer.font.face = "ＭＳ Ｐ明朝";
+		weightLayer.font.bold = true;
+
+		for(var i = 0; i < 3; i++)
+		{
+			skillLayer[i] = new DecoLayer(this);
+			skillLayer[i].setPos(width - 90 - i * 52, 20);
+			skillLayer[i].visible = false;
+		}
+
+		sexLayer[0] = new DecoLayer(this);
+		sexLayer[0].loadImages("equip_male");
+		sexLayer[0].setPos(equipMarkLeft, equipMarkTop);
+		sexLayer[0].visible = true;
+		sexLayer[1] = new DecoLayer(this);
+		sexLayer[1].loadImages("equip_female");
+		sexLayer[1].setPos(equipMarkLeft, equipMarkTop + 14);
+		sexLayer[1].visible = true;
+
+		limitedLayer = new DecoLayer(this);
+		limitedLayer.setPos(equipMarkLeft + 232, equipMarkTop + 73);
+
+		for(var i = 0; i < master.alignment.count; i++)
+		{
+			alignmentLayer[i] = new DecoLayer(this);
+			alignmentLayer[i].loadImages("equip_" + master.alignment[i].img);
+			alignmentLayer[i].setPos(equipMarkLeft, i * 14 + equipMarkTop + 31);
+			alignmentLayer[i].visible = true;
+		}
+
+		for(var i = 0; i < master.race.count; i++)
+		{
+			raceLayer[i] = new DecoLayer(this);
+			raceLayer[i].loadImages("equip_" + master.race[i].img);
+			raceLayer[i].setPos(equipMarkLeft + 60, i * 14 + equipMarkTop);
+			raceLayer[i].visible = true;
+		}
+
+		for(var i = 0; i < master.job.count; i++)
+		{
+			jobLayer[i] = new DecoLayer(this);
+			jobLayer[i].loadImages("equip_" + master.job[i].img);
+			jobLayer[i].setPos(i \ 7 * 56 + equipMarkLeft + 120, i % 7 * 14 + equipMarkTop);
+			jobLayer[i].visible = true;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate imageLayer;
+		invalidate specTextLayer;
+		invalidate weightLayer;
+		invalidate limitedLayer;
+		for(var i = 0; i < skillLayer.count; i++) invalidate skillLayer[i];
+		for(var i = 0; i < sexLayer.count; i++) invalidate sexLayer[i];
+		for(var i = 0; i < raceLayer.count; i++) invalidate raceLayer[i];
+		for(var i = 0; i < jobLayer.count; i++) invalidate jobLayer[i];
+		super.finalize();
+	}
+
+	function getPartText(itemData)
+	{
+		switch(itemData.part)
+		{
+			case "main"   : return "Main";
+			case "sub"    : return "Off Hand";
+			case "both"   : return "Dual";
+			case "double" : return "Double";
+			case "chest"  : return itemData.exclude.has("waist") ? "Body" : "Upper";
+			case "waist"  : return "Lower";
+			case "arm"    : return "Gloves";
+			case "leg"    : return "Shoes";
+			case "bust"   : return itemData.exclude.has("hip") ? "Body" : "Bra";
+			case "hip"    : return "Underwear";
+			case "finger" : return "Ring";
+			case "pocket" : return "Other";
+		}
+	}
+
+	function open(cmds, mark, user)
+	{
+		super.open();
+		putCommands(cmds);
+		drawInfo(mark, user);
+		focusToFirstCommandByKey();
+	}
+
+	function putCommands(cmds)
+	{
+		// メニューボタンを追加
+		font.height = 24;
+		//font.face = "ＭＳ ゴシック";
+		font.bold = false;
+		for(var i = 0; i < cmds.count; i++)
+		{
+			var dic = cmds[i];
+			dic.left = 324;
+			dic.top = i * 35 + 61;
+			putCommand(dic);
+			commands[i].type = ltDodge;
+		}
+	}
+
+	function getColorByComparison(mark, user, key)
+	{
+		// ２つの値を比較してその結果を色で返す
+
+		var item = mark.itemData;
+		if(! item.equipment || mark.equiped !== void || user === void)
+		{
+			return key == "weight" ? 0xFBDD96 : 0xFFFFFF;
+		}
+		if(! item.isEquipable(user)) return 0xA0A0A0;
+
+		var ip, ep = 0;	// 所持エリアのパラメータ, 装備エリアのパラメータ
+		var prt = item.part;
+		if(key == "attack")
+		{
+			var atk = item.getParam("attack", mark.state);
+			ip = atk[0] + atk[1];
+			// サブ武器はすでに装備されているサブ武器があった場合それと比較する
+			if(prt == "both" && user.equip.sub !== void && user.equip.sub.part == "both") prt = "sub";
+			else prt = "main";
+			if(user.equip[prt] !== void)
+			{
+				atk = user.equip[prt].getParam("attack", user.equipStat[prt]);
+				ep = atk[0] + atk[1];
+			}
+		}
+		else if(key == "defense" || key == "weight")
+		{
+			ip = item.getParam(key, mark.state);
+			var eqpd = user.equip[prt];	// すでに装備されているアイテム
+			if(eqpd !== void)
+			{
+				ep = eqpd.getParam(key, user.equipStat[prt]);
+				for(var i = 0; i < item.exclude.count; i++)
+				{
+					eqpd = user.equip[item.exclude[i]];
+					if(eqpd !== void)
+					{
+						ep += eqpd.getParam(key, user.equipStat[item.exclude[i]]);
+					}
+				}
+			}
+			for(var i = 0; i < user.partNames.count; i++)
+			{
+				eqpd = user.equip[user.partNames[i]];
+				if(eqpd !== void && eqpd.exclude.has(prt))
+				{
+					ep += eqpd.getParam(key, user.equipStat[user.partNames[i]]);
+				}
+			}
+		}
+		else
+		{
+			ip = item[key];
+			if(user.equip.main !== void) ep = user.equip.main[key];
+		}
+
+		if(ip > ep) return key == "weight" ? 0xFFA080 : 0x80FF80;
+		else if(ip < ep) return key == "weight" ? 0x80FF80 : 0xFFA080;
+		else return key == "weight" ? 0xFBDD96 : 0xFFFFFF;
+	}
+
+	function drawInfo(mark, user)
+	{
+		// 名前
+		//font.face = "ＭＳ Ｐ明朝";
+		font.bold = true;
+		font.height = 30;
+		write("<c>" + mark.name + "<w>", 32, 22);
+
+		// 破損表示
+		if(abs(mark.state) <= BROKEN)
+		{
+			font.height = 24;
+			var text = "Broken";
+			if(! mark.itemData.halfState) text += " (Unwearable)";
+			drawText(22, 57, text, 0xFF0000,,, 2048, 0xFFFF80, 4);
+		}
+
+		// イメージ
+		var item = mark.itemData;
+		if(mark.state < 0)
+		{
+			imageLayer.loadImages(item.type + "_unknown" + mark.stateSuffix);
+		}
+		else
+		{
+			imageLayer.loadImages(item.img + mark.stateSuffix);
+			if(/letter|scroll|book/.test(item.type))
+			{
+				// 手紙・巻物・魔法書だった場合、名称を書き込む
+				master.drawDocumentTitle(imageLayer, item);
+			}
+		}
+		if(imageLayer.height > 490) imageLayer.height = 490;
+		imageLayer.setPos(132 - imageLayer.width \ 2, 202 - cap(imageLayer.height \ 2, 140));
+
+		// スペック
+		specTextLayer.font.height = 20;
+		specTextLayer.chColor = 0xFFFFFF;
+		if(mark.state < 0)
+		{
+			// 不明
+			specTextLayer.loadImages("frame_spec_unknown");
+		}
+		else if(! item.equipment)
+		{
+			// アイテム
+			specTextLayer.loadImages("frame_spec_item");
+			specTextLayer.font.height = 16;
+			specTextLayer.write(item.detail, 44, 8);
+		}
+		else if(/main|both|double/.test(item.part))
+		{
+			// 武器
+			specTextLayer.loadImages("frame_spec_weapon");
+			var atk = item.getParam("attack", mark.state);
+			specTextLayer.chColor = getColorByComparison(mark, user, "attack");
+			specTextLayer.write("%3d".sprintf(atk[0]) + " ～ " + atk[1], 90, 0);
+			specTextLayer.chColor = 0xFFFFFF;
+			specTextLayer.chColor = getColorByComparison(mark, user, "times");
+			specTextLayer.write(item.times, 66, 25);
+			specTextLayer.chColor = 0xFFFFFF;
+			specTextLayer.write(getPartText(item), 178, 25);
+			specTextLayer.chColor = getColorByComparison(mark, user, "w_reach");
+			specTextLayer.write(["Ｓ","Ｍ","Ｌ","LL"][item.w_reach], 60, 50);
+			specTextLayer.chColor = 0xFFFFFF;
+			var exfs = [];
+			for(var i = 0; i < item.skill.count; i++)
+			{
+				if(item.skill[i].category == "status") exfs.add(item.skill[i].displayName);
+				if(exfs.count == 2) break;	// 表示の都合で２つまで。まずそれ以上設定しないと思うけど
+			}
+			specTextLayer.write(exfs.count > 0 ? exfs.join(" ") : "None", 178, 50);
+			specTextLayer.font.height = 16;
+			specTextLayer.write(item.detail, 44, 76);
+		}
+		else
+		{
+			// 防具類
+			specTextLayer.loadImages("frame_spec_protector");
+			var prt = item.part;
+			specTextLayer.chColor = getColorByComparison(mark, user, "defense");
+			specTextLayer.write(item.getParam("defense", mark.state), 66, 0);
+			specTextLayer.chColor = 0xFFFFFF;
+			specTextLayer.write(getPartText(item), 60, 25);
+			var str = "";
+			for (var i = 0; i < item.resist.count; i++) {
+				if (str.length > 0) {
+					str += " ";
+				}
+				str += translateResist(item.resist[i]) + " ";
+			}
+			for (var i = 0; i < item.block.count; i++) {
+				if (str.length > 0) {
+					str += " ";
+				}
+				str += "<c>" + translateResist(item.block[i]) + "<w>";
+			}
+			if (str.length == 0) str = "None";
+			specTextLayer.writeToFit(str, 60, 50);
+			specTextLayer.font.height = 16;
+			specTextLayer.write(item.detail, 44, 76);
+		}
+
+		// インジケータをいったん全て非点灯にする
+		weightLayer.visible = false;
+		limitedLayer.visible = false;
+		for(var i = 0; i < sexLayer.count; i++) sexLayer[i].opacity = 96;
+		for(var i = 0; i < alignmentLayer.count; i++) alignmentLayer[i].opacity = 96;
+		for(var i = 0; i < raceLayer.count; i++) raceLayer[i].opacity = 96;
+		for(var i = 0; i < jobLayer.count; i++) jobLayer[i].opacity = 96;
+		for(var i = 0; i < skillLayer.count; i++) skillLayer[i].visible = false;
+
+		// 装備じゃないもの or 不明なアイテムならここまで
+		if(! item.equipment || mark.state < 0) return;
+
+		// 装備重量を表示
+		var wg = "" + item.getWeight(mark.state);
+		weightLayer.clear();
+		var col = getColorByComparison(mark, user, "weight");
+		weightLayer.drawText(49 - weightLayer.font.getTextWidth(wg) \ 2, 9, wg, col);
+		weightLayer.visible = true;
+
+		// 二刀流・両手持ち・特殊スキルの表示
+		var img, num = 0;
+		if(item.part == "both" || item.part == "double")
+		{
+			skillLayer[num].loadImages("equip_" + item.part);
+			skillLayer[num].visible = true;
+			num ++;
+		}
+		for(var i = 0; i < item.skill.count; i++)
+		{
+			     if(item.skill[i] == o.潜水) img = "swim";
+			else if(item.skill[i] == o.耐熱) img = "heat";
+			else if(item.skill[i] == o.浮遊) img = "float";
+			else if(item.skill[i] == o.複数) img = "multiple";
+			else continue;
+			skillLayer[num].loadImages("equip_" + img);
+			skillLayer[num].visible = true;
+			num ++;
+		}
+
+		// 装備制限インジケータを点灯
+		if(item.sex.indexOf("男") != -1) sexLayer[0].opacity = 255;
+		if(item.sex.indexOf("女") != -1) sexLayer[1].opacity = 255;
+
+		for(var i = 0; i < alignmentLayer.count; i++)
+		{
+			if(item.alignment.indexOf(master.alignment[i].uniKey) != -1) alignmentLayer[i].opacity = 255;
+		}
+
+		for(var i = 0; i < raceLayer.count; i++)
+		{
+			if(item.race.indexOf(master.race[i].uniKey) != -1) raceLayer[i].opacity = 255;
+		}
+
+		for(var i = 0; i < master.job.count; i++)
+		{
+			jobLayer[i].visible = master.job[i].appeared;
+			if(item.job.indexOf(master.job[i].uniKey) != -1) jobLayer[i].opacity = 255;
+		}
+
+		if(item.marriedOnly)
+		{
+			limitedLayer.loadImages("equip_married");
+			limitedLayer.visible = true;
+		}
+
+		if(item.limited !== void)
+		{
+			limitedLayer.loadImages("equip_" + o[item.limited].img);
+			limitedLayer.visible = true;
+		}
+	}
+
+	function translateResist(value) {
+	
+		var status = o[value];
+		
+		if (status !== void) {
+			// It's a status
+			return status.displayName;
+		} else {
+			// It's probably an element
+			return master.getTranslation(value);
+		}    	
+    }
+}
+//----------------------------------------------------------------------------------------

@@ -1,0 +1,176 @@
+﻿; ワイルド・ブルのアジト
+
+name = ワイルドブルのアジト２Ｆ
+insideName = ２Ｆ
+lower = ワイルドブルのアジト１Ｆ
+showAllArea = true
+level = 10
+bgm = hideout
+margin = 1
+shadow = dark
+sky = black
+roof = wood
+blank = rock
+
+; 各パーツ
+━ = plaster
+　 = wood
+／ = door
+∫ = pick
+︻ = panel
+㊦ = ladderd
+⑻ = br_luc
+⑼ = barrel
+⑽ = barrel
+Ⓐ = warp
+
+; 移動ポイント
+(A) = map:サファイアシティ, enter:公園
+
+; 宝箱
+box[1] = 爆弾,金貨（特大）,金貨（大）,金貨（大）,金貨（大）,金貨（小）,金貨（小）
+box[2] = 鍵付き宝箱,魔法の錠前,魔法の錠前,精力剤,フェロモンの粉
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22
+  ┏━━━━━━━━━━━━━┳━━━┓
+ 6┃㊦　　　　　　　　　　　⑤】　　　┃
+  ┣━━━┓　　　　　　　　　┃　　　┃
+ 5┃❶　❷┃　　　　　　　　　／②　　┃
+  ┃　　　┃　　　　　　　　　┃　　　┃
+ 4┃　　　┃Ⓐ　　　⑦　④　　┃　　③┃
+  ┣∬━━┻━┳━━／━︼┳━┻━━↑┫
+ 3┃　　　　　┃　　①　　┃⑼　⑽　　┃
+  ┃　　　　　┃　　　　　┃　　　　　┃
+ 2┃　　　　　┃　　　　　┃⑻　　　　┃
+  ┃　　　　　┃　　　　　┃　　　　　┃
+ 1┃　　　　　／　　　　　／　　　　　┃
+  ┗━━━━━┻━━━━━┻━━━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[2][4].event = 6;
+pos[8][4].s.himg = "door";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 8, 9, 10]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] ! game.protectHeroines && party.lastIsMove && party.lastWalk == "goForward" && WAY == "s"
+
+; ワイルド・ブルとの決闘
+; ここはアジトなので出会った次の日からは確実に会える（当日は１回きり）
+
+[if exp='o.ワイルド・ブル壊滅作戦.accepted']
+	[texton w=0]
+	[警備隊長 f=01]「Hey, you guys.」[k]
+	[警備隊長 f=01]「We've taken control of this base, but Alex is nowhere to be found.」[k]
+	[警備隊長 f=03]「We'll keep looking for him, so you focus on their stronghold at Penske Pass. I'm counting on you!」[k]
+	[textoff]
+	[eventoff]
+[endif]
+
+[if exp='o.ワイルド・ブル.interruption >= o.ワイルド・ブル.interval']
+	[texton w=0]
+	I can't see Alex and his gang. Are they out somewhere?[k]
+	[textoff]
+	@eval exp='game.party.escape(true)'
+	[eventoff]
+[endif]
+
+; また翌日まで出会えなくなる
+@eval exp='o.ワイルド・ブル.interruption = o.ワイルド・ブル.interval'
+
+; イベントの有無をチェック
+@eval exp='o.ワイルド・ブル.checkHideoutEvent()'
+
+; イベントがなければ通常の決闘へ
+@call storage="duel.ks" target=*wildbull_load
+@jump storage="duel.ks" target=*wildbull_encounter
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove && party.lastWalk == "goForward" && WAY == "e"
+
+; お楽しみ部屋
+; すべてのイベント消化後は継続イベントになり、
+; 眺めるだけで戦闘にはならず、①のイベントも消えない
+@eval exp='o.ワイルド・ブル.checkHideoutEvent()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] WAY == "s" && ! party.lastIsMove && ! party.lastIsTurn
+
+; 壁等にぶつかろうとしたときのアクションはこのように書く
+@notice text="It doesn't appear to open from here."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="Boss' Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Fun Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@delevent
+@addevent name=サファイアシティ num=10
+@eval exp='game.enterTown(o.サファイアシティ, o.公園, true)'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] WAY == "s"
+
+@delevent
+@jump storage="main09.scn" target=*talk_to_eric_first
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("luck", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had luck permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] onObjectTrigger
+*event_10
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

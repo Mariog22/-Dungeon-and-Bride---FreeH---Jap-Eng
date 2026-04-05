@@ -1,0 +1,114 @@
+﻿; ブルーのアジト
+
+name = ブルーのアジト２Ｆ
+insideName = ２Ｆ
+lower = ブルーのアジト１Ｆ
+showAllArea = true
+level = 3
+bgm = anxiety
+margin = 1
+shadow = dark
+sky = black
+roof = wood
+blank = rock
+antiWarp = true
+
+; 各パーツ
+━ = wood
+　 = wood
+／ = door
+√ = gold
+㊦ = ladderd
+⑵ = br_maxhp
+⑶ = br_pie
+⑷ = barrel
+⑸ = barrel
+
+; 宝箱
+box[1] = 鍵付き宝箱,退魔の剣
+box[2] = 罠はない,元気のタンバリン_u,支えの盾_u,金貨（大）,金貨（大）,金貨（大）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  ┏━━━━━━━━━━━━━━━━━┓
+ 3┃　　①　　　　　　　　　　　　　　┃
+  ┣━━／━━┳━━／━━┳━━√┓　┃
+ 2┃　　　　　┃　　　　　┃　　　┃　┃
+  ┃　　　　　┃　　　　　┃　　　┃　┃
+ 1┃　　　　　┃　　　　　┃　　　┃　┃
+  ┃　　　　　┃　　　　　┃　　　┃　┃
+ 0┃⑵　⑶　　┃⑷　❷　⑸┃❶　　┃㊦┃
+  ┗━━━━━┻━━━━━┻━━━┻━┛
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] WAY == "s"
+
+; イベント＆リーゼル妊娠開始
+[if exp='f.dayOfLieselPregnant === void']
+	@eval exp='f.dayOfLieselPregnant = game.date'
+	@addevent name=リーゼル num=4
+	@jump storage="main08.scn" target=*revenge_3
+[else]
+	[texton]
+	Let's not go in here. I don't want to see what's going on in the orgy room.[k]
+	[textoff]
+	@walk move=e
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 15)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP permanently increased by 15!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("piety", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Faith permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,629 @@
+﻿// bar.tjs
+// 酒場を作る。クエスト関連もここで
+
+//----------------------------------------------------------------------------------------
+class BarWindow extends Layer
+{
+	// 酒場画面
+
+	var questBoard;	// クエスト一覧
+	var quests = [];
+	var foods = [];
+
+	function BarWindow(par, master)
+	{
+		super.Layer(par.window, par);
+		this.master = master;
+		name = "酒場ウインドウ";
+		setSize(window.scWidth, window.scHeight - master.party.cellHeight);
+		hitThreshold = 256;
+
+		// クエスト一覧作成
+		questBoard = new QuestWindow(par, master);
+	}
+
+	function finalize()
+	{
+		invalidate questBoard;
+		super.finalize();
+	}
+
+	function open(barObj)
+	{
+		// 酒場画面を開く＆クエストと食事メニューを設定
+		master.exitTravelMode();
+		master.curBar = barObj;
+		barObj.tryGetSpaceOfQuests();
+		playMusic(barObj.bgm);
+		loadImages(barObj.img);
+		visible = true;
+		openCommand();
+	}
+
+	function openCommand()
+	{
+		// コマンド
+		if(master.curBar.checkEvent()) return;	// イベントチェック
+		master.clearWindows();
+		master.exitSelectTargetMode();
+		master.resetPrev();
+		master.setPrev(close);
+		master.setPrev(openCommand);
+		var cmds = [];
+		cmds.add(%[text: "View Quests", func: openQuestBoard
+			, cond: master.curBar.quests.count > 0]);
+		cmds.add(%[text: "Meal", func: enterDinnerMode
+			, cond: master.isFreeMode || master.playerChara.active]);
+		cmds.add(%[text: "Rumors", func: talkToPeople]);
+		cmds.add(%[text: o.マインドリード.displayName, func: askSpellMindRead, color: 0xFFFFC0
+			, cond: master.party.isUsableMagic(o.マインドリード) || master.party.hasItem(o.マインドリードの巻物)]);
+		master.cmdWin.open(cmds, "What will you do?");
+	}
+
+	function close()
+	{
+		// 終了
+		visible = false;
+		master.view.goToStreet(master.curBar);
+	}
+
+	function talkToPeople()
+	{
+		// バーにいる客たちと話す
+		master.curBar.curTalk ++;
+		master.onGameBreak(true);
+		kag.process("speech.ks", "*people_" + master.curBar.name);
+	}
+
+	function askSpellMindRead(func)
+	{
+		// マインドリードを実行するメンバーを選ぶ
+		master.setPrev();
+		master.cmdWin.close();
+		master.party.useMagic(o.マインドリード, spellMindRead, o.マインドリードの巻物);
+	}
+
+	function spellMindRead(charaObj)
+	{
+		// マインドリードを実行
+		master.instruction.close();
+		master.exitSelectTargetMode();
+		master.onGameBreak(true);
+		var cmd = o.マインドリード;
+		if(charaObj.isUsableMagic(cmd)) charaObj[cmd.category][cmd.magicLV - 1] --;
+		else charaObj.ejectItem(o.マインドリードの巻物);	// 両方あったら魔法を優先
+		playSound("up1");
+		startMindReadEvent();
+	}
+
+	function startMindReadEvent()
+	{
+		// マインドリードを実行したときのラベルに飛ぶ
+		master.curBar.curMind ++;
+		kag.process("speech.ks", "*mind_" + master.curBar.name);
+	}
+
+	function openQuestBoard()
+	{
+		// クエスト一覧を開く
+		master.clearWindows();
+		master.setPrev(openQuestBoard);
+		// Custom: prevent incomplete quests from being hidden by completed ones.
+		master.curBar.quests.sort(function(a, b){ return !a.completed && b.completed; });
+		questBoard.open(master.curBar.quests);
+	}
+
+	function enterDinnerMode()
+	{
+		// 食事をする相手を選ぶ
+		master.clearWindows();
+		master.setPrev(enterDinnerMode);
+		for(var i = 0; i < master.party.allMembers.count; i++)
+		{
+			var one = master.party.allMembers[i];
+			if(! master.isFreeMode && one == master.playerChara) one.selectable = false;
+			if(! one.active) one.selectable = false;
+			if(one.isGuest) one.selectable = false;
+		}
+		master.enterSelectTargetMode(openFoodBoard);
+		master.instruct((master.isFreeMode ? "" : "<y>") + "Eat with who?");
+	}
+
+	function openFoodBoard(charaObj)
+	{
+		// 食事メニューを開く
+		master.clearWindows();
+		master.exitSelectTargetMode();
+		if(! charaObj.askHaveDinner()) return;
+		master.setPrev(openFoodBoard);
+		var cmds = [];
+		for(var i = 0; i < master.curBar.foods.count; i++)
+		{
+			var obj = master.curBar.foods[i];
+			var dic = %[];
+			dic.func = charaObj.orderFood;
+			dic.param = obj;
+			var foodMargin = 335 - master.longMenu.font.getTextWidth(obj.displayName);
+			var priceMargin = 6 *  master.longMenu.font.getTextWidth('0') - master.longMenu.font.getTextWidth(obj.price);
+			var whitespace = " ";
+			whitespace = whitespace.repeat((foodMargin + priceMargin) \ master.longMenu.font.getTextWidth(whitespace));
+			dic.text = obj.displayName + whitespace + obj.price + "G";
+			dic.cond = (master.party.gold >= obj.price);
+			cmds.add(dic);
+		}
+		master.longMenu.open(cmds, "Menu");
+	}
+}
+
+
+class QuestWindow extends CommandBoard
+{
+	// クエスト一覧画面
+
+	var lastButtonIdx = 0;	// 最後に選んでいた依頼ボタン番号（フォーカスを合わせに使う）
+
+	function QuestWindow(par, master)
+	{
+		super.CommandBoard(...);
+		name = "依頼ウインドウ";
+		loadImages("back_quest");
+		setSizeToImageSize();
+	}
+
+	function open(cmds)
+	{
+		global.BoardLayer.open();
+		clear();
+		putCommands(cmds);
+		enabled = true;
+		if(KEY_PRESSED)
+		{
+			var btn = commands[lastButtonIdx];
+			if(btn !== void && btn.selectable) btn.focus();
+			else focusToFirstCommandByKey();
+		}
+	}
+
+	function putCommands(cmds)
+	{
+		// 依頼ボタンを追加
+		for(var i = 0; i < cmds.count; i++)
+		{
+			var btn = new QuestButton(this, master, i);
+			commands.add(btn);
+			btn.setPos(57, i * 140 + 63);
+			btn.onSelectAction = comfirmQuest;
+			btn.onSelectActionParam = cmds[i];
+			btn.drawDetail(cmds[i]);
+			btn.selectable = ! cmds[i].completed;
+		}
+	}
+
+	function comfirmQuest(obj)
+	{
+		// クエストについて確認する
+		// 未受領なら受けるかどうか問い合わせ
+		if(obj.accepted)
+		{
+			master.onGameBreak(true);
+			kag.process("quest.ks", "*" + obj.name + "_" + obj.flag);
+			return;
+		}
+		master.setPrev();
+		enabled = false;
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: acceptQuest, param: obj]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "<y>Accept request?");
+	}
+
+	function acceptQuest(obj)
+	{
+		// クエストを受領する
+		obj.accepted = true;
+		master.onGameBreak(true);
+		kag.process("quest.ks", "*" + obj.name + "_intro");
+	}
+}
+
+
+class QuestButton extends CommandButton
+{
+	// クエストボタン
+
+	var textLayer;	// 詳細を表示するレイヤー
+	var resultLayer;	// 結果のサインを表示するレイヤー
+	var index = 0;
+
+	function QuestButton(par, master, id)
+	{
+		super.CommandButton(par);
+		index = id;
+		global.Layer.loadImages("btn_quest_list");
+		setSize(imageWidth, imageHeight \ 3);
+
+		textLayer = new TextWindow(this, master);
+		with(textLayer)
+		{
+			.setSize(width, height);
+			.visible = true;
+			.font.face = "MS PGothic";
+			.font.bold = true;
+			.edge = false;
+		}
+
+		resultLayer = new DecoLayer(textLayer);
+		with(resultLayer)
+		{
+			.setSize(152, 74);
+			.setPos(737, 15);
+			.visible = true;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate textLayer;
+		invalidate resultLayer;
+		super.finalize();
+	}
+
+	function drawDetail(obj)
+	{
+		var prizeText = obj.prize;
+		if(obj.gold > 0) prizeText = number_format(obj.gold) + " G  " + prizeText;
+		with(textLayer)
+		{
+			.font.height = 28;
+			.drawText(83, 13, obj.displayName, obj.completed ? 0x800000 : 0xC00000);
+			.font.height = 22;
+			.chColor = 0x000000;
+			.write(obj.summary, 73, 55);
+			.chColor = 0x200000;
+			.write(number_format(obj.exp), 211, 91);
+			.write(prizeText, 415, 91);
+		}
+
+		with(resultLayer)
+		{
+			if(obj.failure) .loadImages("image_failure");
+			else if(obj.completed) .loadImages("image_completed");
+			else if(obj.accepted) .loadImages("image_accepted");
+			else .clear();
+		}
+	}
+
+	function drawState(n)
+	{
+		if(n == 3) n = 2;
+		else if(n == 2) n = 1;
+		imageTop = -height * n;
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(button == mbLeft && ! selectable) return;
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button)
+	{
+		if(button == mbLeft && ! selectable) return;
+		super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if(key == BT_OK || key == BT_OK2) parent.lastButtonIdx = index;
+		super.onKeyDown(...);
+	}
+}
+
+
+class QuestNoteWindow extends CommandBoard
+{
+	// クエストノート
+
+	var textLayer;	// 詳細を表示するレイヤー
+	var resultLayer;	// 結果のサインを表示するレイヤー
+	var pageBtn;	// ページ切替ボタン
+	var maxPages = 6;	// 最大ページ数
+	var maxLists = 9;	// １ページの最大リスト数
+	var pageCount = 1;	// 現在表示されるページ数
+	var lastPage = 0;	// 最後に表示していたページ番号
+	var lastButtonIdx = 0;	// 最後に選んでいたリストの番号（フォーカスを合わせに使う）
+
+	function QuestNoteWindow(par, master)
+	{
+		super.CommandBoard(...);
+		name = "クエストノート";
+		loadImages("back_note");
+		setSizeToImageSize();
+
+		textLayer = new global.TextWindow(this, master);
+		with(textLayer)
+		{
+			.loadImages("frame_note");
+			.setSizeToImageSize();
+			.setPos(width - .width >> 1, 83);
+			.visible = true;
+			//.font.face = "ＭＳ Ｐ明朝";
+			.font.bold = true;
+			.font.height = 22;
+			.chColor = 0x000000;
+			.edge = false;
+			.marginL = 180;
+		}
+
+		resultLayer = new DecoLayer(textLayer);
+		with(resultLayer)
+		{
+			.setSize(152, 74);
+			.setPos(640, 170);
+			.visible = true;
+		}
+
+		pageBtn = new ToggleButton(this, maxPages);
+		pageBtn.setSize(pageBtn.buttonCount * 50, 50);
+		pageBtn.setPos(680, 40);	// ページボタン位置
+		pageBtn.maxButtonCount = maxPages;
+		for(var i = 0; i < maxPages; i++)
+		{
+			pageBtn.buttons[i].loadImages("btn_page_" + (i + 1));
+			pageBtn.buttons[i].onSelectAction = openPage;
+			pageBtn.buttons[i].onSelectActionParam = i;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate textLayer;
+		invalidate resultLayer;
+		invalidate pageBtn;
+		super.finalize();
+	}
+
+	function open()
+	{
+		master.setPrev(open);
+		global.BoardLayer.open();
+		pageCount = (getAvailableQuests().count - 1) \ maxLists + 1;
+		pageBtn.setButton(lastPage, pageCount, 50);
+		pageBtn.selectable = false;	// フォーカスは使わない
+		openPage(lastPage);
+		enabled = true;
+		if(KEY_PRESSED || MOUSE_HIDDEN)
+		{
+			if(lastButtonIdx >= commands.count) lastButtonIdx = commands.count - 1;
+			commands[lastButtonIdx].focusAndPointToObject();
+		}
+	}
+
+	function openPage(pageNum = 0)
+	{
+		// 指定したページを開く
+		lastPage = pageNum;
+		textLayer.visible = false;
+		clear();
+		putCommands(pageNum);
+	}
+
+	function switchPage(forward)
+	{
+		// ページを１つ隣に切り替える
+		var val;
+		if(forward) val = (lastPage + 1) % pageCount;
+		else val = (lastPage - 1 + pageCount) % pageCount;
+		pageBtn.pressButton(val);
+		pageBtn.onBlur(false);
+		if(KEY_PRESSED || MOUSE_HIDDEN)
+		{
+			if(lastButtonIdx >= commands.count) lastButtonIdx = commands.count - 1;
+			commands[lastButtonIdx].focusAndPointToObject();
+		}
+	}
+
+	function getAvailableQuests()
+	{
+		// 現在の表示できるすべてのクエストを返す
+		var obj, arr = [];
+		for(var i = master.quests.count - 1; i >= 0; i--)
+		{
+			obj = master.quests[i];
+			if(obj.accepted && ! obj.completed) arr.add(obj);	// 受領中
+		}
+		for(var i = master.quests.count - 1; i >= 0; i--)
+		{
+			obj = master.quests[i];
+			if(obj.completed) arr.add(obj);	// 終了済み
+		}
+		return arr;
+	}
+
+	function putCommands(page)
+	{
+		// クエストリストボタンを追加
+		var num = 0;
+		var arr = getAvailableQuests();
+		for(var i = page * maxLists; i < arr.count; i++)
+		{
+			var btn = new QuestNoteButton(this, master, num);
+			commands.add(btn);
+			btn.setPos(57, num * 70 + 110);	// リストボタン位置
+			btn.onSelectAction = viewContents;
+			btn.onSelectActionParam = arr[i];
+			btn.drawDetail(arr[i]);
+			btn.selectable = true;
+			num ++;
+			if(num == maxLists) return;
+		}
+	}
+
+	function viewContents(obj)
+	{
+		// クエストの内容について表示
+		master.setPrev();
+		clear();
+		pageBtn.visible = false;
+		textLayer.visible = true;
+		textLayer.clear();
+		textLayer.chColor = 0x000000;
+		textLayer.marginR = 180;
+		textLayer.write(obj.detail, 180, 258);
+		if(+obj.end >= 0)
+		{
+			var d = master.getValuesOfDate(obj.end);
+			textLayer.chColor = obj.completed ? 0x000000 : 0xD00000;
+			textLayer.write(d.month + "/" + d.date, 273, 403);
+			textLayer.chColor = 0x000000;
+		}
+		else textLayer.write("None", 270, 403);
+		textLayer.chColor = obj.completed ? 0x008000 : 0xC00000;
+		textLayer.write(obj.completed ? (obj.failure ? "Fail" : "Pass") : "Active", 270, 453);
+		textLayer.marginR = 0;
+		(QuestButton.drawDetail incontextof this)(obj);	// textLayer にボタンの文章とアイコンを書き込む
+	}
+}
+
+
+class QuestNoteButton extends CommandButton
+{
+	// クエストノートボタン
+
+	var textLayer;
+	var resultLayer;
+	var index = 0;
+
+	function QuestNoteButton(par, master, i)
+	{
+		super.CommandButton(par);
+		index = i;
+		global.Layer.loadImages("btn_note_list");
+		setSize(imageWidth, imageHeight \ 2);
+
+		textLayer = new TextWindow(this, master);
+		textLayer.setSize(width, height);
+		textLayer.visible = true;
+		textLayer.font.face = "MS PGothic";
+		textLayer.font.bold = true;
+		textLayer.font.height = 28;
+		textLayer.edge = false;
+
+		resultLayer = new DecoLayer(this);
+		resultLayer.setSize(106, 39);
+		resultLayer.setPos(765, 14);
+		resultLayer.visible = true;
+	}
+
+	function finalize()
+	{
+		invalidate textLayer;
+		invalidate resultLayer;
+		super.finalize();
+	}
+
+	function drawDetail(obj)
+	{
+		textLayer.clear();
+		textLayer.drawText(83, 19, obj.displayName, 0x000000);
+		resultLayer.loadImages("image_btn_" + (obj.completed ? (obj.failure ? "failure" : "completed") : "accepted"));
+	}
+
+	function drawState(n)
+	{
+		if(n != 0) n = 1;
+		imageTop = -height * n;
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if(key == BT_OK || key == BT_OK2 || key == BT_CANCEL || key == BT_CANCEL2
+			 || key == BT_LEFT || key == BT_LEFT2 || key == BT_RIGHT || key == BT_RIGHT2)
+		{
+			parent.lastButtonIdx = index;
+		}
+		if(key == BT_LEFT || key == BT_LEFT2)
+		{
+			parent.switchPage(false);
+		}
+		else if(key == BT_RIGHT || key == BT_RIGHT2)
+		{
+			parent.switchPage(true);
+		}
+		else super.onKeyDown(...);
+	}
+}
+
+
+class QuestObject
+{
+	// クエストオブジェクト
+
+	var master, id;
+	var name;	// タイトルが名前になる
+	var accepted = false;
+	var completed = false;
+	var failure = false;
+	var flag = 0;
+	var exp = 0;
+	var gold = 0;
+	var prize = "";
+	var summary = "";
+	var detail = "";
+	var end = -1;
+
+	function QuestObject(master, id)
+	{
+		this.master = master;
+		this.id = id;
+	}
+
+	function complete(fail = false)
+	{
+		accepted = false;
+		completed = true;
+		failure = fail;
+		end = master.date;
+
+		// 記録
+		var num = master.getNumClearedQuests();
+		if(num > sf.numClearedQuests) sf.numClearedQuests = num;
+		if(num == master.quests.count - 1 && master.hyperBombsCount == 0)
+		{
+			// １つだけダミークエストがあるので１引く
+			sf.clearAllQuestsWithoutHyperBombs = true;
+		}
+	}
+
+	function initialize()
+	{
+		accepted = false;
+		completed = false;
+		failure = false;
+		flag = 0;
+		end = -1;
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.name = name;
+		dic.accepted = accepted;
+		dic.completed = completed;
+		dic.failure = failure;
+		dic.flag = flag;
+		dic.end = end;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic === void) return;	// 後から追加された分をスルー
+		accepted = dic.accepted;
+		completed = dic.completed;
+		failure = dic.failure;
+		flag = dic.flag;
+		end = dic.end;
+	}
+}
+//----------------------------------------------------------------------------------------

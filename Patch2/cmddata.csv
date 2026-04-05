@@ -1,0 +1,223 @@
+﻿; コマンド汎用データ
+; 先にこれを使ってオブジェクト生成、ダメージ計算や個別の処理は btcmd.tjs の方で追加していく
+; 名前は全角９文字まで
+; なお、コマンド欄や技編集画面ではこの表の順番で並ぶようになっている
+; range: 効果範囲    -1: 指定なし  0: 自分  1: 単体  2: グループ  3: 全体
+; reach: 到達距離    -1: 武器によって変動  0: 近接  1: １つ先  2: ２つ先  3: すべて
+; magicLV:    0: 物理・その他の攻撃  1～9: 魔法  -1: 特殊コマンドだが魔法攻撃の一種として扱われる
+; ※本当はこれも tsv だけどエディタの表示の使い分けの都合で csv としておく
+; カテゴリーの説明
+; normal  武器攻撃。武器や爪等の attrib 属性による追加ダメージや、status オブジェクトによる追加攻撃が発生する。reach が０以下なら反撃あり
+; special  攻撃だが追加は発生しない。特殊な条件は各 doDamage メソッド内に記述する。reach が０以下なら反撃あり
+; other  その他のコマンド。カットインがもしあれば通常の立ち絵になる
+; ?magic  魔法。ＭＰを消費する。カットインのポーズが変わる。反撃は受けない
+name	category	scene	toEnemy	toGuest	attrib	magicLV	auto	range	reach	anime	detail	displayName
+攻撃	normal	battle	true	true		0		1	-1	*normal_attack	Normal attack	Attack
+再攻撃	normal	battle	true	true		0		1	-1	*second_attack	Weapon 2 attack	Second Attack
+奇襲	normal	battle	true	true		0	true	1	-1	*assult_attack	Attack while unseen.<r>Large damage / hit rate	Sneak Attack
+一列攻撃	normal	battle	true	true		0	true	2	-1	*devide_slash	Attacks all enemies in a row, at reduced power (Multiple tag required on weapon).	Line Attack
+キック	normal	battle	true	true	物理	0	true	1	1	*normal_attack	A kick<r>Reasonable range.	Kick
+飛びかかる	normal	battle	true	true	物理	0	true	1	1	*normal_attack	Pounces on a single enemy. Long range.	Pounce
+汚いかぎ爪	normal	battle	true	true	物理	0	true	1	0	*normal_attack	Scratch with poisonous claws	Dirty Claws
+毒矢	normal	battle	true	true	毒	0	true	1	3	*poison_arrow	Shoot a poisonous arrow	Poison Arrow
+火矢	normal	battle	true	true	火	0	true	1	3	*fire_arrow	Shoot a fire arrow	Fire Arrow
+召喚モンスター攻撃	normal	battle	true	true		0	true	1	3	*normal_attack	Mirror summoned monster's attack.	Summon Attack
+浄化	special	battle	true		聖	-1	true	2	3	*turn_undead	Eliminates some undead with<r>holy light	Banish Undead
+電撃	special	battle	true	true	雷	-1	true	2	2	*electric_burst	Attack a row with an electric shock	Electric Shock
+冷たい風	special	battle	true	true	冷	-1	true	2	2	*cold_breeze	Attacks a line of enemies with a blast of cold air.	Chill Breeze
+睡魔の霧	special	battle	true	true	眠り	0	true	3	3	*hypnotic_mist	Increases fatigue of all enemies, and may put them to sleep.	Sleepy Fog
+毒霧	special	battle	true	true	毒	0	true	1	3	*venom_mist	Attacks one enemy with a poisonous mist.	Poison Mist
+吸血	special	battle	true	true		0	true	1	0	*suck_blood	Absorbs HP from an enemy.	Suck Blood
+破壊の爪	special	battle	true	true	物理	0	true	1	3	*break_claw	Destroys all equipment on one enemy.	Claws of Destruction
+粉砕の爪	special	battle	true	true	物理	0	true	1	3	*shatter_claw	Delivers a powerful blow that shatters and turns enemy to ash.	Crushing Claws
+冥府の光	special	battle	true	true	魔	0	true	1	3	*incinerate_ball	Sucks an enemy into another dimension, removing them from combat.	Light of the Underworld
+ゲイズ	special	battle	true	true	麻痺	-1	true	2	3	*spell_paralize	Paralyze a row of enemies	Gaze
+毒のブレス	special	battle	true	true	毒	-1	true	3	3	*poison_breath	Breathe poisonous breath at all enemies	Poison Breath
+炎のブレス	special	battle	true	true	火	-1	true	3	3	*fire_breath	Breathe fire breath at all enemies	Fire Breath
+業火のブレス	special	battle	true	true	火	-1	true	3	3	*big_fire_breath	Breathe fierce fire breath at all enemies	Fire Breath
+氷のブレス	special	battle	true	true	冷	-1	true	3	3	*ice_breath	Breathe ice breath at all enemies	Ice Breath
+死のブレス	special	battle	true	true	邪	0	true	3	3	*death_breath	Breathe fatal breath at all enemies, causing instant death	Fatal Breath
+サンダーストーム	special	battle	true	true	雷	-1	true	3	3	*thunder_storm	Rains lightning on all enemies	Thunderstorm
+メテオシャワー	special	battle	true	true	火	0	true	3	3	*spell_meteor	Rains meteorites on all enemies	Meteor Shower
+アンチマジック	special	battle				0	true	-1		*anti_magic	Prohibits the use of any magic, friend or foe.	Anti Magic
+触手攻撃	special	battle	true		物理	0	true	1	3	*tentacle_attack	Attacks crotch with a nasty tentacle.<r>Cancels action	Tentacles
+憑依術	special	battle				0	true	-1	3	*nothing	Possess your summoned monster to use its skill. Costs MP.	Mimic Summon
+淫魔陵辱	capture	battle	true	true		0	true	1	3	*capture_heroine	Capture and humiliate a male adventurer.<r>Drains levels.	Succubus Capture
+亜人陵辱	capture	battle	true			0	true	1	3	*capture_heroine	Capture and violate a female adventurer.	Orc Capture
+山賊陵辱	capture	battle	true			0	true	1	3	*capture_heroine	Capture and violate a female adventurer.	Bandit Capture
+蛮人陵辱	capture	battle	true			0	true	1	3	*capture_heroine	Capture and violate a female adventurer.	Barbarian Capture
+夢魔陵辱	capture	battle	true			0	true	1	3	*capture_heroine	Capture and violate a female adventurer.<r>Drains levels.	Nightmare Capture
+化物陵辱	capture	battle	true			0	true	1	3	*capture_heroine	Capture and violate a female adventurer.	Monster Capture
+小鬼陵辱	capture	battle	true			0	true	1	3	*capture_heroine	Capture and violate a female adventurer.<r>Drains levels.	Imp Capture
+触手陵辱	capture	battle	true			0	true	1	3	*capture_heroine	Capture and violate a female adventurer.<r>Drains levels.	Tentacle Capture
+逃げる	other	battle				0		0		*nothing	Escape from battle	Run
+身を守る	other	battle				0	true	0		*nothing	Increases defense and evasion rate	Guard
+装備変更	other	battle				0		0		*change_equipment	Take a turn to change equipment	Equipment
+位置変更	other	battle				0		1		*nothing	Move to a given position (1 turn)	Swap Position
+かばう	other	battle		true		0	true	1	3	*nothing	Protect an ally from attacks	Protect
+全員かばう	other	battle				0	true	3	3	*nothing	Protect all allies from attacks	Protect All
+ためる	other	battle				0		0		*charge	Builds attack power<r>for the next turn	Accumulate
+隠れる	other	battle				0		0		*hiding	Hide in the shadows<r>Allows sneak attack from next turn	Hide
+カウンター	other	battle				0	true	0		*nothing	Take a stance that counters<r>physical attacks if enemy in range	Counter Stance
+偵察	other	battle	true			0		1	3	*scout_monster	See enemy information	Analyze
+装備を盗む	other	battle	true			0	true	1	3	*steal_equipment	Steal an enemy's equipment	Steal Equipment
+仲間を呼ぶ	call	battle				0	true	0		*enemy_calling	Call fellow monsters	Call Backup
+死霊召喚	call	battle				0	true	0		*enemy_summoning	Summons undead monsters	Spirit Summon
+魔獣召喚	call	battle				0	true	0		*enemy_summoning	Summons magical creature monsters	Summon Beast
+幻獣召喚	call	battle				0	true	0		*enemy_summoning	Summons spirit and beast monsters	Summon Monster
+悪魔召喚	call	battle				0	true	0		*enemy_summoning	Summons demon monsters	Demon Summon
+召喚の歌	other	battle				0		-1		*summoning_song	Sing a song that calls the highest level summonable monster.	Summoner's Song
+見物	other	battle				0	true	0		*nothing	Do nothing, just watch.	Watch
+動けない	other	battle				0	true	0		*nothing	Unable to move	Can't move
+耐性防御	cancel	battle				0		-1		*nothing	Defend with resistance	Resistant defense
+物理無効	cancel	battle				0		-1		*nothing	Nullify all physical attacks	Null Physical
+金属性無効化	cancel	battle				0		-1		*nothing	Nullifies all attacks due to the characteristics of metal.	Metal Skin
+無効化	cancel	battle				0		-1		*nothing	May nullify magic attack	Dodge Magic
+無効化完全	cancel	battle				0		-1		*nothing	Nullify magic attacks	Null Magic
+遠距離防御	cancel	battle				0		-1		*nothing	Block all ranged attacks	Null Ranged
+退魔の力	cancel	battle				0		-1		*nothing	Nullifies fatal breath	Null Fatal Breath
+反撃	passive	all				0		-1			Counters physical attacks if enemy in range	Counter
+格闘	passive	all				0		-1			Strengthens bare handed attacks	Specialist
+聖拳	passive	all				0		-1			Unarmed attacks become imbued with holy power	Holy Fist
+回避	passive	all				0		-1			Increased trap avoidance	Avoid
+鑑定	passive	all				0		-1			Appraise unidentified items<r>(from item screen)	Appraise
+修理	passive	all				0		-1			Repair broken items<r>(from item screen)	Repair
+探索	passive	all				0		-1			More likely to discover<r>secrets in dungeons	Search
+警戒	passive	all				0		-1			Prevent enemy ambushes<r>Increase ambush chance.	Vigilant
+習得	passive	all				0		-1			Increases experience points gained in battle	EXP Boost
+契約	passive	all				0		-1			Can contract with monsters<r>(requires Summon Bottle)	Contract
+潜水	passive	all				0		-1			Swim underwater without<r>diving equipment	Dive
+耐熱	passive	all				0		-1			Prevent heat damage in dungeons	Heat Resistant
+複数	passive	all				0		-1			Allows use of single-line attack skills	Multiple
+ブレス抑制	passive	all				0		-1			Item skill, suppresses enemy breath	Breath Suppression
+呪・体力回復	effect	all				0		-1			Curse - HP increases when walking	Curse - health recovery
+呪・体力減少	effect	all				0		-1			Curse - HP decreases when walking	Curse - weak
+呪・眠気上昇	effect	all				0		-1			Curse - Increases fatigue when walking	Curse - sleepy
+呪・興奮度上昇	effect	all				0		-1			Curse - Increases excitement when walking	Curse - horny
+呪・興奮度急上昇	effect	all				0		-1			Curse - Greatly increases excitement when walking	Curse - excitement surge
+呪・沈黙	effect	all				0		-1			Curse - Prevents magic	Curse - silence
+呪・停滞	effect	all				0		-1			Curse - No EXP gained	Curse - stop
+呪・逃亡不能	effect	all				0		-1			Curse - Cannot escape from combat	Curse - No Escape
+ＳＰ転職	sp	camp				0		0		*sp_change_job	SP Change of Employment	SP Job change
+ＳＰパラメータ変化	sp	camp				0		0		*sp_change_param	SP Various parameters change (1st time)	SP parameter change
+ＳＰパラメータ変化２	sp	camp				0		0		*sp_change_param	Parameter change (2)	SP parameter change 2
+ＳＰパラメータ変化３	sp	camp				0		0		*sp_change_param	Parameter change (3)	SP parameter change 3
+ＳＰ属性変化	sp	camp				0		0		*sp_change_param	Parameter change	SP attribute change
+ＳＰＨＰ回復	sp	camp				0		3		*sp_restore_hp	Party HP restored	SP HP recovery
+ＳＰＭＰ回復	sp	camp				0		3		*sp_restore_hp	Party MP restored	SP MP recovery
+ＳＰＭＰ消滅	sp	camp				0		0		*sp_restore_hp	SP Maximum MP becomes all 0	SP MP Zero
+ＳＰ石化	sp	camp				0		0		*sp_stoned	Petrify	SP petrification
+ＳＰ死亡	sp	camp				0		0		*sp_dead	Die	SP death
+ＳＰ灰	sp	camp				0		0		*sp_ashed	Become ashes	SP ash
+ＳＰ魔法忘却	sp	camp				0		0		*sp_forget	Forget all SP magic	SP Magic Oblivion
+ファイア	mmagic	battle	true	true	火	1	true	1	3	*spell_fire	Attack with small flame	Fire
+スリープ	mmagic	battle	true	true		1	true	2	3	*spell_sleep	Put one row to sleep	Sleep
+スロウ	mmagic	battle	true	true		1	true	2	3	*spell_slow	Slow down one row (delayed attacks, decreased evasion)	Slow
+サンダー	mmagic	battle	true	true	雷	2	true	1	3	*spell_thunder	Attack with small lightning bolt	Thunder
+フリーズ	mmagic	battle	true	true	冷	2	true	1	3	*spell_freeze	Attack with cold air. May freeze	Freeze
+フィアー	mmagic	battle	true	true		2	true	2	3	*spell_fear	Scare one row	Fear
+ファイアリング	mmagic	battle	true	true	火	3	true	2	3	*spell_mega_fire	Wrap one row in a ring of flames	Fire Ring
+スカウト	mmagic	battle	true	true		3		1	3	*scout_monster	See enemy information	Scout
+ウィザードアイ	mmagic	explore				3		-1		*play_sound	Map Display (passive)	Magic Map
+ブリザード	mmagic	battle	true	true	冷	4	true	2	3	*spell_mega_freeze	Attack a row with a snowstorm. May freeze	Blizzard
+チャーム	mmagic	battle	true	true		4	true	2	3	*spell_charm	Charm a row of enemies	Charm
+マインドリード	mmagic	none				4		-1		*nothing	Read the minds of NPCs	Mind Read
+サンダーバースト	mmagic	battle	true	true	雷	5	true	1	3	*spell_mega_thunder	Calls thunder	Thunderburst
+ミラーウォール	mmagic	battle		true	通過	5	true	1		*spell_mirror_wall	Reflect magic for one ally	Mirror Wall
+レビテイト	mmagic	explore				5		-1		*spell_levitate	Party avoids floor traps, prevents Jump (passive)	Levitate
+ファイアストーム	mmagic	battle	true	true	火	6	true	2	3	*spell_giga_fire	Attack with burning flames	Firestorm
+クラッシュデッド	mmagic	battle	true	true	聖	6	true	1	3	*spell_crash_dead	Massive damage to undead	Crush Undead
+アクセラレート	mmagic	battle		true		6	true	1	3	*spell_accelerate	Increase an ally's attack count	Flurry
+アイスブラスト	mmagic	battle	true	true	冷	7	true	2	3	*spell_giga_freeze	Encase a row in a block of ice. May freeze	Ice Blast
+アースクエイク	mmagic	battle	true	true	物理	7	true	3	3	*spell_earthquake	Shake the ground and damage all enemies	Earthquake
+リジェネレイト	mmagic	battle		true		7	true	1	3	*spell_regenerate	Ally restores some HP each turn	Regenerate
+インフェルノ	mmagic	battle	true	true	火	8	true	1	3	*spell_inferno	Burn with a scorching flame	Inferno
+ワープ	mmagic	dungeon			ワープ	8		-1		*nothing	Teleport to any location	Warp
+メイルシュトローム	mmagic	battle	true	true	冷	8	true	3	3	*spell_maelstrom	Attack all enemies with a huge whirlpool. May insta-kill	Maelstrom
+デモニックフレア	mmagic	battle	true	true	爆発	9	true	3	3	*spell_hell_fire	Create an ultra-high temperature vortex to burn all enemies	Demonic Flare
+プリズムボルト	mmagic	battle	true	true		9	true	3	3	*spell_prism_bolt	Causes random conditions to all enemies	Prism Bolt
+コールポラリス	mmagic	battle				9		-1		*spell_mahaman	Call the god Polaris to cause a miracle (consumes 10 Polaris jewels)	Call Polaris
+ヒール	pmagic	all		true		1	true	1		*spell_heal	Heal ally	Heal
+ブレス	pmagic	battle		true		1	true	3	3	*spell_bless	Increase accuracy	Bless
+ライトボール	pmagic	battle	true	true	聖	1	true	1	3	*spell_light_ball	Attack with a holy ball of light	Light Ball
+ガード	pmagic	battle		true		2	true	1	3	*spell_guard	Increase defense	Guard
+サイレンス	pmagic	battle	true	true		2	true	2	3	*spell_silence	Mutes one row, preventing all magic except alchemy.	Silence
+キュアマインド	pmagic	all		true		2	true	1		*spell_cure_mind	Cures fear, charm, and confusion	Cure Mind
+パワーヒール	pmagic	all		true		3	true	1		*spell_power_heal	Heal ally	Mega Heal
+トーチ	pmagic	explore				3		-1		*play_sound	Brightens dark dungeons	Torch
+キュアパラライズ	pmagic	all		true		3	true	1		*spell_cure_paralysis	Cure paralysis	Cure Paralysis
+キュアポイズン	pmagic	dungeon		true		4	true	1		*spell_cure_poison	Cure poison	Cure Poison
+マジックバリア	pmagic	battle		true		4	true	3		*spell_barrier	Increase magic resistance	Barrier
+プロテクション	pmagic	dungeon				4		-1		*spell_protection	Create barrier to enhance defense (passive)	Protection
+マルチヒール	pmagic	all		true		5	true	2		*spell_multi_heal	Heal one row	Multi Heal
+パワーガード	pmagic	battle		true		5	true	3	3	*spell_power_guard	Increase party defense	Power Guard
+ライトストリーム	pmagic	battle	true	true	聖	5	true	2	3	*spell_light_stream	Attack one row with a vortex of holy light	Light Stream
+エクストラヒール	pmagic	all		true		6	true	1		*spell_extra_heal	Heal ally	Giga Heal
+デス	pmagic	battle	true	true	邪	6	true	1	3	*spell_death	Instantly kill one enemy	Death
+レイズデッド	pmagic	all		true	蘇生	6		1		*spell_raise_dead	Revive one dead companion. May fail	Raise Dead
+リカバリー	pmagic	all		true		7	true	1		*spell_recovery	Recover all HP, cure non-fatal conditions	Recovery
+ライフドレイン	pmagic	battle	true	true		7	true	1	3	*spell_life_drain	Absorb HP	Life Drain
+ターンデビル	pmagic	battle	true	true	聖	7	true	1	3	*spell_turn_devil	Banishes a demon	Banish Devil
+グランドヒール	pmagic	all		true		8	true	3		*spell_grand_heal	Heal all allies	Heal All
+デスクラウド	pmagic	battle	true	true	邪	8	true	2	3	*spell_death_cloud	Instantly kill one row	Deathcloud
+リターン	pmagic	dungeon				8		-1		*nothing	Escape from a dungeon	Return
+レザレクション	pmagic	all		true	蘇生	9		1		*spell_resurrection	Resurrect a dead companion, including from ash. May fail	Resurrection
+ディバインレイ	pmagic	battle	true	true	聖	9	true	3	3	*spell_light_fall	Attack all enemies with a rain of holy light	Divine Ray
+コールアウラ	pmagic	camp				9		-1		*spell_iharon	Call the god Aura to grant your wish (consume 10 Aura Jewels)	Call Aura
+エイド	amagic	all		true		1	true	1		*spell_aid	Heal ally	Aid
+アウェイクン	amagic	dungeon		true		1	true	3	3	*play_sound	Wake the party from sleep	Awaken
+アシッド	amagic	battle	true	true	酸	1	true	1	3	*acid_spray	Attacks a single enemy with acid, which may destroy equipment.	Acid
+ジャンプ	amagic	explore				2		-1		*spell_jump	Jump 2 spaces	Jump
+ディテクト	amagic	none			通過	2		0		*play_sound	98% chance to identify treasure chest trap	Detect
+メタルバレット	amagic	battle	true	true	物理	2	true	1	3	*spell_metal_bullet	Attack with shards of metal	Metal Bullet
+スパーク	amagic	battle	true	true	雷	3	true	2	3	*spell_spark	Fire an electric shock at one row	Spark
+クイック	amagic	battle		true		3	true	3		*spell_speedup	Increase party speed	Quick
+エスケープ	amagic	battle		true	通過	3		0		*spell_escape	Guaranteed escape from battle (except special battles)	Escape
+パワーエイド	amagic	all		true		4	true	1		*spell_power_aid	Heal ally (medium)	Mega Aid
+イレースマジック	amagic	dungeon			消去	4	true	-1		*erase_magic	Eliminate all magical effects from enemies and allies	Erase Magic
+トキシッククラウド	amagic	battle	true	true	毒	4	true	2	3	*spell_mega_venom	Envelop a row in a poisonous cloud	Mega Venom
+ミスティックアイ	amagic	explore				5		-1		*play_sound	See through walls in dungeons (passive)	Mystic Eye
+アナライズ	amagic	none				5		-1		*nothing	Appraise unidentified items (from item screen)	Appraise
+ミサイルシールド	amagic	battle				5		-1		*spell_missle_shield	Block physical ranged attack	Missile Shield
+マジカルボート	amagic	explore				6		-1		*spell_boat	Spawn a magic ship to move over water	Magic Boat
+リフレッシュ	amagic	all		true		6	true	1		*spell_refresh	Cure non-fatal conditions	Refresh
+マジックウェポン	amagic	battle				6	true	1	3	*spell_magic_weapon	Grants a magical effect to an ally's weapon	Magic Weapon
+リムーブカース	amagic	none				7		-1		*nothing	Destroy cursed item (from item screen)	Remove Curse
+アンロック	amagic	explore				7		-1		*spell_calnova	Safely open doors and chests	Unlock
+アシッドバースト	amagic	battle	true	true	酸	7	true	2	3	*acid_shower	Attacks a row with acid, which may destroy equipment.	Acid Shower
+マルチエイド	amagic	all		true		8	true	2		*spell_multi_aid	Heal one row (moderate)	Multi Aid
+リペア	amagic	none				8		-1		*nothing	Repair a broken item (from item screen)	Repair
+メタルストーム	amagic	battle	true	true	物理	8	true	2	3	*spell_metal_storm	Attack a row with metal shards	Metal Storm
+グランドキュア	amagic	all		true		9	true	3		*spell_grand_cure	Cure all non-fatal conditions for party	Grand Cure
+ペトロクラウド	amagic	battle	true	true		9	true	2	3	*medusa_eye	Spray one row with petrifying gas	Medusa Eye
+スターバースト	amagic	battle	true	true	爆発	9	true	3	3	*spell_star_burst	Damage all enemies with the energy of the stars	Starburst
+石つぶて	trap	all		true	物理	0		1	3	*stone_attack	StoneBullet	Rockfall
+爆弾	trap	all		true	爆発	0		3	3	*bomber_trap	Bomber	Bomb
+毒針	trap	all		true	毒	0		1	3	*poison_needle	PoisonSting	Poison Dart
+毒ガス	trap	all		true	毒	0		3	3	*poison_gas	PoisonGas	Poison Gas
+しびれ針	trap	all		true		0		1	3	*paralysis_shock	Stunner	Paralysis
+魔力吸収	trap	all				-1		1	3	*suck_magic	SuckMagic	Magic Drain
+酸スプレー	trap	all		true	酸	0		1	3	*acid_spray	AcidSpray	Acid Spray
+ラミアの瞳	trap	all		true		-1		1	3	*medusa_eye	MedusaEye	Petrification
+スモーク	trap	all				0		-1		*smoke_trap	Smoke	Smoke
+亡霊の群れ	trap	all		true		-1		3	3	*spirits_swarm	SpiritSwarm	Ghost Swarm
+媚薬の霧	trap	all				0		3	3	*drug_mist	DrugMist	Aphrodisiac
+死神の鎌	trap	all			物理	0		1	3	*killing	DeathScythe	Lethal
+下着スリ	trap	all				0	true	1	3	*steal_panties	CutPanties	Panty Theft
+淫魔の触手	trap	all				0		1	3	*tentacle_trap	Tentacle	Tentacles
+テレポート	trap	all				0		-1		*nothing	Teleport	Teleport
+グラビティ	trap	all				0	true	-1		*gravity_trap	Gravity	Gravity
+警報	trap	all				0		-1		*warning	Alert	Alarm
+隠し槍	fixture	all		true	物理	0		3	3	*spear_trap	Trap	Spear
+火炎放射	fixture	all		true	火	-1		3	3	*burner_trap	Trap	Burner
+酸の噴水	fixture	all		true	酸	0		3	3	*acid_sprinkler	Trap	Acid Spray
+催眠ガス	fixture	all		true	眠り	0		3	3	*hypnotic_gas	Trap	Sleeping Gas
+毒沼	fixture	all		true	毒	0		3	3	*nothing	Effect	Poison Swamp
+溶岩	fixture	all		true	火	0		3	3	*nothing	Effect	Lava
+噴水	other	all		true		0		3	3	*fountain_star	Fountain with various effects	Fountain
+樽の水	other	all		true		0		1	3	*barrel_star	Barreled water with various effects	Water Barrel
+
+; 特殊なもの ※編集不可
+罠はない	trap					0		-1		*open_box_safety	罠がない状態を表すオブジェクト	No Trap
+解除済み	other					0		-1		*open_box_safety	罠が解除された状態を表すオブジェクト	Released
+鍵付き宝箱	other					0		-1		*nothing	特殊な鍵が宝箱にかかった状態を表すオブジェクト	Locked chest

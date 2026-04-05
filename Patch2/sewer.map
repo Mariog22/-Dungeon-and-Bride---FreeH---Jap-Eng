@@ -1,0 +1,324 @@
+﻿; 下水道
+
+name = 下水道・通路
+insideName = Passage
+pool = 下水道・水路内
+level = 5
+bgm = eerie
+isOutdoor = true
+shadow = dark
+sky = black
+roof = stone
+outfield = marble
+blank = rock
+external = n:2, s:1, e:2, w:1
+
+; パーツ画像
+━ = stoneg_h
+― = stoneg_h
+✜ = stoneg_h
+　 = marble
+☐ = marble
+〰 = pond
+❖ = pond
+⏁ = lighten
+／ = door
+∫ = pick
+∮ = silver
+⧻ = fence
+☖ = arch
+☗ = fenceg
+︻ = panel
+┯ = button
+Ⓐ = ladderl
+Ⓑ = ladderl
+Ⓒ = ladderl
+Ⓓ = ladderl
+Ⓔ = ladderd
+⒑ = br_maxhp
+⑾ = br_maxhp
+⒓ = trash
+⒔ = trash
+⒕ = trash
+⒖ = trash
+⒗ = trash
+⒘ = br_agl
+⒙ = br_maxhp
+⒚ = br_maxhp
+⒛ = box
+㉑ = human
+
+; 敵情報
+maxGroups = 2
+monsters = 大ねずみ,バンパイアラット,ハイウェイマン,ブッシュワッカー,モンストラスバット
+traps = 石つぶて,毒針,しびれ針
+
+; 移動ポイント
+(A) = map:サファイアシティ, enter:下水道入口, lift:up, ask:Enter town?
+(B) = map:サファイアシティ, enter:アイテム保管庫, lift:up, ask:Enter town?
+(C) = map:ヤネクの森・西, x:27, y:1, lift:up
+(D) = map:伯爵の屋敷１Ｆ, x:7, y:4, lift:up
+
+; 宝箱
+box[1] = 武芸の秘薬,守りの腕輪_u,ブロンズバックラー_u,ミスリルの砂,メイジマッシャー_u
+box[2] = ５連泊券_u,アサシンの書_u,ミスリルの砂,チーズ,ターンデビルの巻物
+box[3] = 経験のコイン（小）,経験のコイン（小）,経験のコイン（中）,経験のコイン（中）
+box[4] = 鍵付き宝箱,１０連泊券,マジカルボートの巻物,アウラの宝珠,アウラの宝珠,アウラの宝珠,ポラリスの宝珠,ポラリスの宝珠,ポラリスの宝珠
+box[5] = 罠はない,マジックラダー,マジカルボートの巻物,金貨（中）
+box[6] = 罠はない,ジャンプの巻物,ジャンプの巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;   -1   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  +1  +2  
+  
++2																												┃〰〰〰┃
+  																												┃〰〰〰┃
++1																												┃〰〰〰┃
+  		┏━━━━━━━━━━━━━┓									┏━┻☗━☗┫									┏━━━┳━━━┳━━━━━━━━━┓									┏━━━━━━━━━━━┓
+19		┃Ⓐ　　　　　　　　　　　　┃									┃　〰〰〰〰┃									┃☐☐☐／　　　／☐☐☐☐☐☐⒔☐⒖┃									┃❻　　　　　　　　　⑥】
+  		┃␣␣␣␣␣␣␣␣␣␣␣␣　┃									┃　〰〰〰〰┃									┃☐☐☐┃　　　┃☐☐☐☐☐☐☐☐☐┃									┃　　　　　〰〰〰〰〰〰┣━━━
+18		┃␣␣␣␣␣␣␣␣␣␣␣␣　┃									┃　〰〰〰〰┃									┃⒓☐☐┃　　　┃☐☐☐☐☐☐⒕☐⒗┃									┃　　⑤　　〰〰〰〰〰〰☗〰〰〰
+  		┃␣␣␣␣␣␣␣␣␣␣␣␣　┗━━━━━━━━━┛　〰〰〰〰┗━━━━━━━━━┻━━━┛　　　┗━━━━━━━━━┻━┓							┣∮━︼┓　〰〰〰〰〰〰┃〰〰〰
+17		┃␣␣␣␣␣␣␣␣␣␣␣␣　　　　　　　　　　　　　〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰　　　　　　　　　　　　　　　〰〰〰〰┃							┃☐☐☐┃　〰〰〰〰〰〰☗〰〰〰
+  		┃␣␣␣␣␣␣␣␣␣␣␣␣　┏━━━━━━━━━┓　〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰┃							┃☐☐☐┃　〰〰〰〰〰〰┃〰〰〰
+16		┃␣␣␣␣␣␣␣␣␣␣␣␣⑧┃									┃　　　　　　　　　　　　　〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰┃							┃☐☐☐┃　〰〰〰〰〰〰☗〰〰〰
+  		┃␣␣␣␣␣␣␣␣␣␣␣┏︼┛									┗━━━━━━━━━━━━━┓〰〰〰┏━━━━━━━━━━━━━┓〰〰〰┣━━━┓			┣／━━┫　〰〰〰〰〰〰┣━━━
+15		┃　　⏁　　　⏁　　␣␣┃																									┃　　　┃													┃〰〰　≠☐☐☐┃			┃☐☐☐┃　　　　　〰〰┃
+  		┣━━━━／━━━━┓␣┃			┏━━━━━━━━━━━━━━━━━━━━━┛　　　┗━━━┓			┏━┓			┃〰〰　┃☐☐☐┃			┃☐☐☐┗━┳━┓　〰〰┃
+14		┃☐☐☐☐☐☐☐☐☐┃␣┃			┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃			┃Ⓓ┃			┃〰〰　┃☐☐☐┃			┃➋☐☐☐⒑┃	┃　〰〰┃
+  		┃☐☐☐☐☐☐☐☐☐┃␣┃			┣／━━┳／━━┳／━━┓　┏━┓　　　┏━┓　　　┏━┓　┃			┃　┃			┃〰〰　┃☐☐☐┃			┗━━━━━┛	┃　〰〰┃
+13		┃⒘☐☐☐☐☐☐☐☐┃␣┃			┃☐☐☐┃Ｅ☐☐┃Ｅ☐☐┃　┃	┃　　　┃	┃　　　┃	┃　┃			┃　┃			┃〰〰　┃☐☐☐┃											┃　〰〰┃
+  		┃☐☐☐☐☐☐☐☐☐┃␣┃			┃☐☐☐┃☐☐☐┃☐☐☐┃　┗━┛　　　┗━┛　　　┗━┛　┣━┓	┃　┃			┃〰〰　┣━━／┻━┓									┃　〰〰┃
+12		┃➎☐⒙☐☐☐⒚☐➍┃␣┃			┃☐☐☐┃☐☐☐┃☐☐☐┃　　　　　　　　　　　　　　　　　✜⒛┃	┃　┃			┃〰〰　┃☐☐⓶☐☐┃									┃　〰〰┃
+  		┣━━━━━━━━━┛␣┃			┗━━━┻━━━╋━━━┻━┳━━━━━━━━━━━━━━━┻↓┻━┛　┃			┃〰〰　┃☐☐☐☐☐┃									┃　〰〰┃
+11		┃　　　　　　　　　␣␣┃											┃　　　　　⧻　　　　　　　　　　　　　　　　　　　　　┃			┃〰〰　┃☐☐☐☐☐┃									┃　〰〰┃
+  		┃　　　　　　　　　␣␣┃											┃　┏━━━╋┯━━━━━↓┳━━━━━━━━━━━━━┛			┃〰〰　┃☐☐☐☐☐┗━┳━━━━━┓	┃　〰〰┃
+10		┃　　　　　　　　　␣␣┃											┃　┃			┃①　　　　　　┃																	┃〰〰　┃☐☐⓷☐☐☐☐｜☐☐☐☐⓸】	┃　〰〰┃
+  		┃　┏━━━━━┓　␣␣┃											┃　┃			┃　　　┏━┓　┃																	┃〰〰　┣━━︼━━━━┻━━━━━┛	┃　〰〰┃
+ 9		┃　┃					┃　␣␣┃											┃　┃			┃　　　┃	┃　┃																	┃〰〰　┃															┃　〰〰┃
+  		┃　┃					┃　␣␣┗━━━━━━━━━━━┛␣┃	┏━┛　　　┗━┛　┗━┓	┏━━━━━━━━━━━━━┛〰〰　┗━━━━━━━━━━━━━━━┛　〰〰┃
+ 8		┃　┃					┃　␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃	┃　　　　　　　　　　　┃	┃　　　　　　　　　　　　　〰〰〰　　　　　　　　　　　　　　　　　　　〰〰┃
+  		┃　┃					┃　␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃	┃　┏━┓　　　┏━┓　┃	┃　〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰┃
+ 7		┃　┃					┃　　　　　　　　　　　　　　　␣␣┃	┃　┃	┃　　　┃	┃　┃	┃　〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰┃
+  		┃　┃					┗━━━━━━━┳⧻━⧻━⧻━⧻┓␣┃	┃　┗━┛　　　┗━┛　┃	┃　〰〰┏━━━━━━━━━━━━━━━━━┓〰〰　┏━━━━━━━━━━━┛
+ 6		┃　┃													┃　　　　　　　␣␣┨	┃　　　　　　　　　　　┃	┃　〰〰┃																	┃〰〰　┃
+  		┃　┃													┃　　　　　　　␣␣┃	┃　　　┏━┓　　　　　┃	┃　〰〰┃																	┃〰〰　┃					┏━━━━━┓
+ 5		┃　┃													┃　　　　　　　␣␣┃	┃　　　┃	┃　　　　⑾┃	┃　〰〰┃																	┃〰〰　┃					┃⏁　　　Ⓒ┃
+  		┃　┃													┗━━━━━┓　␣␣┃	┃　　　┗━┛　　　　　┃	┃　〰〰┃					┏━━━━━━━━━━━┫〰〰　┃					┃　　　　　┃
+ 4		┃　┃																			┃　　　┃	┃　　　　　　　　　　　┃	┃　〰〰┃					┃☐☐☐☐☐☐☐☐☐☐☐｜〰〰　┃					┃　　　　　┃
+  		┃　┣━━━┳━━━━━┓									┃　〰〰┃	┃　　　　　　　　　　　┃	┃　〰〰┃					┃☐┏━━━━━━━━━┫〰〰　┃					┃　　　　　┃
+ 3		┃　┃☐☐☐┃➊☐☐☐☐┃									┃　〰〰┃	┃Ⓑ　　　　　　　　　　┃	┃　〰〰┃					┃☐┃									┃〰〰　┃					┃　　　　　┃
+  		┃　┃☐☐☐┃☐☐☐☐☐┃									┃　〰〰┃	┗━━━━━━━━━━━┛	┃　〰〰┃			┏━┻／┻━┓							┃〰〰　┃					┃　　　　　┃
+ 2		┃　┃☐☐Ｅ┃☐☐☐☐Ｅ┃									┃　〰〰┃															┃　〰〰┃			┃☐☐⓽☐☐┃							┃〰〰　┃					┃　　　　　┃
+  		┃　┗━━／┻━━━━∬┫									┃〰〰〰┗━━━━━━━━━━━━━━━┛　〰〰┃			┃☐☐☐☐☐┃							┃〰〰　┗━━━━━┛　〰〰〰〰┣━━━
+ 1	〰┃　　　　　　　　　　　┃❖	❖						┃〰〰〰〰　　　　　　　　　　　　　　　　　〰〰┃			┃☐☐☐☐☐┃							┃〰〰　　　　　　　　　〰〰〰〰☗〰〰〰
+  	〰┃〰〰〰〰〰〰〰〰〰〰〰┃									┃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰┃			┃☐☐☐☐☐┃							┃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰┃〰〰〰
+ 0	〰☗〰〰〰〰〰〰〰〰〰〰〰☗❖	❖						┃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰┃			┃☐☐➌☐☐┃							┃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰☗〰〰〰
+  	━┻━━━━━━━━━━━┻━━━						┗━━━━━━━━━━━━━━━━━━━━━━━┛			┗━━━━━┛							┗━━━━━━━━━━━━━━━┻━━━
+-1																													　	　
+  
+;   -1   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  +1  +2  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[12][6].event = 7;
+writeOpenedAreaRecord(23, 12);
+pos[23][12].f.antiWarp = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=14 y=11 way=e mode=open
+@wait time=1000
+@notice text="I heard a door open somewhere!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@wait time=500
+@fg l=thief_red left=340 top=80 b
+@fgf r=thief_red left=560 top=80
+[texton]
+[name n=Thief]「Who the hell are you?! You're not one of us!」[k]
+[name n=Thief]「Outsiders aren't allowed in! Hey, you bastards! Get 'em!」[k]
+[textoff]
+@clf
+@monster pos=1 name=ブッシュワッカー
+@monster pos=2 name=ブッシュワッカー
+@monster pos=3 name=ブッシュワッカー
+@monster pos=4 name=ブッシュワッカー
+@monster pos=5 name=ブッシュワッカー
+@callbattle
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Don't forget to knock 5 times when entering the boss' room!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="That was a trick for outsiders! The real number of knocks is seven!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Manager's Office"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@notice text="Sewer inspectors, please remember to open the sluice gate later if you closed it."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@se f=rockslide
+@wait time=2000
+@se f=bashan1
+@image layer=e5 storage=9999 left=0 top=0
+@anime_fadein layer=e5
+@wait time=1000
+[iscript]
+tf.temp = %[type: "water", img: "pond", trap: void];
+game.map.changeFloorsOfWideArea(tf.temp,  0, 16,  5, 18);
+game.map.changeFloorsOfWideArea(tf.temp,  5,  8,  5, 15);
+game.map.changeFloorsOfWideArea(tf.temp,  6,  8, 11,  8);
+game.map.changeFloorsOfWideArea(tf.temp, 12,  4, 12,  8);
+game.updateView();
+[endscript]
+@anime_fadeout layer=e5
+@wait time=500
+@notice text="The sluice gate opened and water began to flow through the waterway!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@notice text="Warehouse →"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] true
+
+@wait time=500
+@fg l=thief_red left=340 top=80 b
+@fgf r=thief_red left=560 top=80
+[texton]
+[name n=Thief]「How did you find our hideout?」[k]
+[name n=Thief]「We can't let people find out about this place. Get 'em, you bastards!」[k]
+[textoff]
+@clf
+@monster pos=2 name=ブッシュワッカー
+@monster pos=3 name=ブッシュワッカー
+@monster pos=4 name=ブッシュワッカー
+@callbattle
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] onObjectTrigger
+*event_11
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 10)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 10!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] onObjectTrigger
+*event_13
+;[exp] onObjectTrigger
+*event_14
+;[exp] onObjectTrigger
+*event_15
+;[exp] onObjectTrigger
+
+@trash gold=1000 monster=大ねずみ,バンパイアラット,猛毒ぐも
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_16
+;[exp] onObjectTrigger
+
+@trash item=修理の巻物
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_17
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("speed", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Speed permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_18
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 40)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 40!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_19
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 25)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 25!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_20
+;[exp] onObjectTrigger
+
+; ハイパーボム専用宝箱
+@treasure item=ハイパーボム,ハイパーボム,経験のコイン（大）,経験のコイン（中）,経験のコイン（中）,経験のコイン（小） trap=罠はない
+[if exp='! tf.leaveTreasureBox']
+	@delevent
+	@changefloor pimg=void click=false
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

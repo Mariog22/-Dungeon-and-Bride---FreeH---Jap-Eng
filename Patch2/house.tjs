@@ -1,0 +1,1061 @@
+﻿// house.tjs
+// 建物オブジェクト、一部施設の画面等
+
+
+//----------------------------------------------------------------------------------------
+class HouseObject extends LightCommandButton
+{
+	// 各施設の基底クラス
+	// 光るレイヤーなどを使うために LightCommandButton を継承しているが
+	// フォーカスを得ないことを前提とした仕組みで作り直している
+
+	var master;	// 管理オブジェクトの参照（サブクラス内で色々参照しているので）
+	var name;	// 名前
+	var displayName;	// 表示名
+	var kind = "other";	// 施設の種別
+	var icon = "";	// 町ビューで表示されるアイコン
+	var appeared = true;	// 出現しているかどうか
+	var closed = false;	// 休業中かどうか
+	var inHouse = false;	// 現在入場済みかどうか
+	var closureComment = "<y>Currently not available";	// 閉じている時のコメント
+	var events = [];	// 入場時のイベント
+	var conditions = [];	// その条件
+	var peopleAround = false;	// 周囲に人がいるかどうか
+	var requireMembers = false;	// 
+	var bgm = "shop";	// BGM
+
+	function HouseObject(master)
+	{
+		super.LightCommandButton(master.townView);
+		this.master = master;
+		absolute = 1;	// 指定しないとどこまでも高くなるので
+		focusable = false;	// フォーカスを得ない
+		visible = false;	// 最初は消しておく
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.name = name;	// オブジェクト再現のキーとして使うため保存
+		dic.appeared = appeared;
+		dic.visible = visible;
+		dic.closed = closed;
+		dic.events = events;
+		dic.requireMembers = requireMembers;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		appeared = dic.appeared;
+		visible = dic.visible;
+		closed = dic.closed;
+		requireMembers = dic.requireMembers;
+		events.assignStruct(dic.events);
+	}
+
+	function initialize()
+	{
+		// 施設を初期化する
+		appeared = true;
+		visible = true;
+		closed = false;
+		events = [];
+		requireMembers = false;
+	}
+
+	function loadImages(storage)
+	{
+		super.loadImages(...);
+		visible = false;
+	}
+
+	function clear()
+	{
+		visible = false;
+	}
+
+	function onMouseEnter()
+	{
+		if(MOUSE_HIDDEN || ! visible) return;
+		parent.setFocusToSpot(this);
+		global.Layer.onMouseEnter();
+	}
+
+	function onMouseLeave()
+	{
+		global.Layer.onMouseLeave();
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "pos")
+		{
+			var arr = strToArray(data);
+			setPos(arr[0], arr[1]);
+		}
+		else if(key == "icon")
+		{
+			loadImages(data);
+		}
+		else
+		{
+			this[key] = data;
+		}
+	}
+
+	function onSelectAction()
+	{
+		parent.enabled = false;
+		parent.playerWalkStop();
+
+		// 入店時イベントチェック
+		if(master.inEvent) return;	// 同時押し対策
+		master.inEvent = true;
+		f.saveEnabled = false;
+		inHouse = false;
+		if(checkEvent()) return;
+		master.inEvent = false;
+
+		// パーティー人数チェック
+		if((kind != "guild" || master.waitingRoom == this) && master.party.members.count == 0)
+		{
+			master.notice.open(master.enterTravelMode);
+			master.notice.write("<y>You can't enter without forming a party.");
+			playSound("buzzer");
+			return;
+		}
+
+		if(! master.isFreeMode && requireMembers && master.party.members.count < 4)
+		{
+			playSound("buzzer");
+			master.notice.open(master.enterTravelMode);
+			master.notice.write("<y>In story mode, you must have at least 4 people to enter.");
+			return;
+		}
+
+		// 閉店中
+		if(closed)
+		{
+			master.notice.open(master.enterTravelMode);
+			master.notice.write(closureComment);
+			playSound("buzzer");
+			return;
+		}
+
+		// 施設により、公衆の場を避けようとするメンバーがいたら入れない
+		var charaObj = master.party.getMemberHipNaked();
+		if(peopleAround && charaObj !== void)
+		{
+			playSound("buzzer");
+			master.onGameBreak();
+			master.curChara = charaObj;
+			kag.process("speech.ks", "*avoid_" + charaObj.keyName);
+			return;
+		}
+
+		// 入店
+		inHouse = true;
+		func();
+	}
+
+	function func()
+	{
+		// オーバーライド
+	}
+
+	function checkEvent(checkOnly = false)
+	{
+		// イベント発生チェック
+		// street.ks の ;[exp] をチェックし真ならば該当イベントシナリオに飛ぶ
+		// ※町と施設のイベントは後から追加した方を優先する
+		for(var i = events.count - 1; i >= 0; i--)
+		{
+			var num = events[i];
+			if(! (conditions[num] !)) continue;
+			if(checkOnly) return true;
+			master.onGameBreak(true);
+			kag.process("street.ks", "*event_" + name + "_" + num);
+			dm("イベント発生   " + name + "  No. " + num);
+			master.curEventObj = this;
+			master.curEventNum = num;
+			return true;
+		}
+		return false;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HouseOfEvent extends HouseObject
+{
+	// イベントボタン
+
+	var kind = "event";
+	var label;
+	var hide = false;	// ボタンを一時的に隠すかどうか
+	var eventRef;	// イベント情報への参照
+
+	function HouseOfEvent(master)
+	{
+		super.HouseObject(...);
+		setSize(60, 60);
+		face = dfOpaque;
+	}
+
+	function store()
+	{
+		var dic = super.store();
+		dic.label = label;
+		dic.hide = hide;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		super.restore(dic);
+		label = dic.label;
+		hide = dic.hide;
+	}
+
+	function set(dic)
+	{
+		// イベントボタンを設置する
+		eventRef = dic;
+		loadImages("house_" + dic.img);
+		setPos(dic.x, dic.y);
+		label = dic.label;
+		name = dic.name;
+		// This used to be taken from save file, so wasn't changeable without starting a new file.
+		// Continue putting it through this method, just in case.
+		displayName = master.getTranslation(name);
+		visible = true;
+	}
+
+	function func()
+	{
+		// イベント開始
+		master.onGameBreak();
+		kag.process("street.ks", "*map_" + master.townView.curTown.name + "_" + eventRef.label);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HouseOfGuild extends HouseObject
+{
+	// ギルド
+
+	var kind = "guild";
+	var maxMembers = 12;
+	var members = [];
+	var isWaitingRoom = false;	// 待合所かどうか（キャラの追加はできない）
+
+	function HouseOfGuild(master)
+	{
+		super.HouseObject(...);
+		loadImages("house_guild");
+	}
+
+	function store()
+	{
+		var dic = super.store();
+		dic.membersID = [];
+		for(var i = 0; i < members.count; i++)
+		{
+			dic.membersID[i] = master.chara.find(members[i]);
+		}
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic === void) return;	// 後から追加された分をスルー
+		super.restore(dic);
+		members = [];
+		for(var i = 0; i < dic.membersID.count; i++)
+		{
+			entry(master.chara[dic.membersID[i]]);
+		}
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "members")
+		{
+			var obj, arr = data.split(",");
+			for(var i = 0; i < master.chara.count; i++)
+			{
+				obj = master.chara[i];
+				if(obj === void) continue;
+				if(arr.find(obj.name) != -1) entry(obj);
+			}
+		}
+		else
+		{
+			super.inputData(...);
+			if(key == "isWaitingRoom" && + data) master.waitingRoom = this;
+		}
+	}
+
+	function entry(obj, id = members.count)
+	{
+		// ギルド画面以外から加入させるときはこれを呼ぶ
+		members.insert(id, obj);
+		obj.activate();
+		obj.transformToGuildType();
+	}
+
+	function removeMember(obj)
+	{
+		// キャラを外す
+		members.remove(obj);
+	}
+
+	function func()
+	{
+		master.guildWin.open(this);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HouseOfBar extends HouseObject
+{
+	// 酒場
+
+	var kind = "bar";
+	var img = "";
+	var quests = [];	// クエスト
+	var foods = [];	// メニュー
+	var defQuests = [];	// 初期化用
+	var curTalk = 0;
+	var curMind = 0;
+
+	function HouseOfBar(master)
+	{
+		super.HouseObject(...);
+		loadImages("house_bar");
+	}
+
+	function store()
+	{
+		var dic = super.store();
+		dic.curTalk = curTalk;
+		dic.curMind = curMind;
+		dic.questNames = [];
+		for(var i = 0; i < quests.count; i++) dic.questNames[i] = quests[i].name;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic === void) return;	// 後から追加された分をスルー
+		super.restore(dic);
+		curTalk = dic.curTalk;
+		curMind = dic.curMind;
+		quests = [];
+		for(var i = 0; i < dic.questNames.count; i++)
+		{
+			if(o[dic.questNames[i]] === void) continue;
+			quests.add(o[dic.questNames[i]]);
+		}
+	}
+
+	function initialize()
+	{
+		super.initialize();
+		quests.assign(defQuests);
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "quest")
+		{
+			quests.add(o[data]);
+			defQuests.add(o[data]);
+		}
+		else if(key == "foods")
+		{
+			this[key] = master.getObjArrayByText(data);
+		}
+		else super.inputData(...);
+	}
+
+	function func()
+	{
+		master.barWin.open(this);
+	}
+
+	function tryGetSpaceOfQuests()
+	{
+		// クエスト枠の空きの確保を試みる
+		if(quests.count < 5) return;
+		for(var i = 0; i < quests.count; i++)
+		{
+			if(! quests[i].completed) continue;
+			if(master.date < quests[i].end + 5) continue;	// 終わって間もない
+			quests.remove(quests[i]);
+			if(quests.count < 5) return;
+			i--;
+		}
+	}
+
+	function hasSpaceOfQuests()
+	{
+		// クエストで枠に空きがあるかどうかを返す
+		return quests.count < 5;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HouseOfInn extends HouseObject
+{
+	// 宿屋
+
+	var kind = "hotel";
+	var img = "";
+	var innType = "normal";
+	var rooms = [];
+	var eventBtns = [];
+	var exitBtnPos = %[];
+
+	function HouseOfInn(master)
+	{
+		super.HouseObject(...);
+		loadImages("house_inn");
+	}
+
+	function store()
+	{
+		var dic = super.store();
+		dic.eventBtns = eventBtns;
+		dic.lastMembers = [];
+		for(var i = 0; i < rooms.count; i++)
+		{
+			dic.lastMembers[i] = rooms[i].lastMembers;
+		}
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic === void) return;	// 後から追加された分をスルー
+		super.restore(dic);
+		eventBtns.assignStruct(dic.eventBtns);
+		for(var i = 0; i < dic.lastMembers.count; i++)
+		{
+			rooms[i].lastMembers.assign(dic.lastMembers[i]);
+		}
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "rounge" || key == "guestRoom" || key == "stable")
+		{
+			var dic = strToDic(data);
+			dic.type = key;
+			rooms.add(dic);
+			dic.lastMembers = [];	// 前回この部屋に宿泊したキャラの情報
+		}
+		else if(key == "exitBtn")
+		{
+			exitBtnPos = strToDic(data);
+		}
+		else
+		{
+			super.inputData(...);
+		}
+	}
+
+	function addEventButton(elm)
+	{
+		// イベントボタンを追加する
+		// mp はすぐ消えるので完全コピーすること
+		for(var i = 0; i < eventBtns.count; i++)
+		{
+			// 重複チェック
+			if(eventBtns[i].label == elm.label) return;
+		}
+		var dic = %[];
+		(Dictionary.assign incontextof dic)(elm);
+		if(dic.name === void) dic.name = dic.label;
+		dic.map = name;
+		eventBtns.add(dic);
+		return dic;
+	}
+
+	function deleteEventButton(elm)
+	{
+		// イベントボタンを削除する
+		for(var i = 0; i < eventBtns.count; i++)
+		{
+			if(eventBtns[i].label != elm.label) continue;
+			eventBtns.erase(i);
+			return;
+		}
+	}
+
+	function func()
+	{
+		master.enterHotel(this);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HouseOfShop extends HouseObject
+{
+	// 店
+
+	var kind = "shop";
+	var img = "";	// 店主の画像
+	var shopItem = [];	// 通常商品
+	var specialItem = [];	// 限定商品
+	var selection = [];	// 通常商品の品揃え。再入荷のために記憶しておく
+	var spSelection = [];	// 限定商品の品揃え。初期化のために記憶しておく
+	var itemSeg = [];	// 通常商品の並び   [ 列, 行, 下辺の高さ ]
+	var spItemSeg = [3, 1, 200];	// 限定商品の並び
+	var keepItem = false;	// これが true の店は解呪でアイテムを消滅させない
+	var noService = false;	// 売買以外のサービスが制限されているかどうか
+	var welcome = "";	// 以下各種コメント
+	var thanks = "";
+	var paid = "";
+	var repaired = "";
+	var uncursed = "";
+
+	function HouseOfShop(master)
+	{
+		super.HouseObject(...);
+	}
+
+	function store()
+	{
+		var dic = super.store();
+		dic.shopItemNames = [];
+		for(var i = 0; i < shopItem.count; i++)
+		{
+			if(shopItem[i] !== void) dic.shopItemNames[i] = shopItem[i].name;
+		}
+		dic.specialItemNames = [];
+		for(var i = 0; i < specialItem.count; i++)
+		{
+			if(specialItem[i] !== void) dic.specialItemNames[i] = specialItem[i].name;
+		}
+		dic.selectionNames = [];
+		for(var i = 0; i < selection.count; i++)
+		{
+			if(selection[i] !== void) dic.selectionNames[i] = selection[i].name;
+		}
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic === void) return;	// 後から追加された分をスルー
+		super.restore(dic);
+//		return;	// ★品揃え更新用
+		shopItem = [];
+		for(var i = 0; i < dic.shopItemNames.count; i++)
+		{
+			if(dic.shopItemNames[i] !== void) shopItem[i] = o[dic.shopItemNames[i]];
+		}
+		specialItem = [];
+		for(var i = 0; i < dic.specialItemNames.count; i++)
+		{
+			if(dic.specialItemNames[i] !== void) specialItem[i] = o[dic.specialItemNames[i]];
+		}
+		selection = [];
+		for(var i = 0; i < dic.selectionNames.count; i++)
+		{
+			if(dic.selectionNames[i] !== void) selection[i] = o[dic.selectionNames[i]];
+		}
+	}
+
+	function initialize()
+	{
+		super.initialize();
+		shopItem.assign(selection);
+		specialItem.assign(spSelection);
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "shopItem")
+		{
+			shopItem = master.getObjArrayByText(data);
+			selection.assign(shopItem);
+		}
+		else if(key == "specialItem")
+		{
+			specialItem = master.getObjArrayByText(data);
+			spSelection.assign(specialItem);
+		}
+		else if(key == "itemSeg" || key == "spItemSeg")
+		{
+			this[key] = strToArray(data);
+		}
+		else
+		{
+			super.inputData(...);
+		}
+	}
+
+	function func()
+	{
+		master.itemWin.openShop(this);
+	}
+
+	function restockItems()
+	{
+		// 在庫復活
+		shopItem.assign(selection);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HouseOfChurch extends HouseObject
+{
+	// 教会
+
+	var kind = "church";
+	var img;	// 背景画像
+	var alignment = "good";	// 教会の属性
+	var price = 800;	// １回の寄付金額
+	var luck = 4;
+	var cruising = false;	// ダンジョン内巡礼者かどうか。巡礼者だと寄付・結婚ができない
+
+	function HouseOfChurch(master)
+	{
+		super.HouseObject(...);
+		loadImages("house_church");
+	}
+
+	function func()
+	{
+		master.churchWin.open(this);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HouseOfDungeon extends HouseObject
+{
+	// ダンジョンの入り口
+
+	var kind = "entrance";
+	var entrance;	// ダンジョン内のスタート地点
+
+	function HouseOfDungeon(master)
+	{
+		super.HouseObject(...);
+		loadImages("house_enter");
+		requireMembers = true;
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "entrance")
+		{
+			entrance = strToDic(data);
+		}
+		else
+		{
+			super.inputData(...);
+		}
+	}
+
+	function func()
+	{
+		if(! master.isFreeMode && requireMembers && master.party.getTiredMember(50) !== void)
+		{
+			master.onGameBreak();
+			master.resetPrevForProcessOnly();
+			kag.process("script.ks", "*town_stop_going");
+			return;
+		}
+
+		if(checkEvent()) return;	// イベントチェック
+		master.setPrev(master.townView.goToStreet);
+		master.setPrev();
+		master.exitTravelMode();
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: master.enterDungeon, param: entrance]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "Enter the dungeon?");
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HouseOfOthers extends HouseObject
+{
+	// その他の施設
+
+	var kind = "others";
+	var img;
+	var music;
+	var links = [];	// 各コマンド
+	var mindRead = false;	// マインドリードの魔法を持っていたときにコマンドが出るかどうか
+	var displayLinks = [];
+
+	function HouseOfOthers(master)
+	{
+		super.HouseObject(...);
+		loadImages("house_others");
+	}
+
+	function store()
+	{
+		var dic = super.store();
+		dic.links = links;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic === void) return;	// 後から追加された分をスルー
+		super.restore(dic);
+		links.assign(dic.links);
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "link") links.add(data);
+		else if(key == "displayLink") displayLinks.add(data);
+		else super.inputData(...);
+	}
+
+	function func()
+	{
+		master.othersWin.open(this);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class ChurchWindow extends Layer
+{
+	// 教会画面
+
+	var curChurch;	// 現在の教会
+
+	function ChurchWindow(par, master)
+	{
+		super.Layer(par.window, par);
+		this.master = master;
+		name = "教会ウインドウ";
+		setSize(window.scWidth, window.scHeight - master.party.cellHeight);
+		hitThreshold = 256;
+	}
+
+	function open(churchObj)
+	{
+		// 教会画面を開く
+		master.exitTravelMode();
+		if(churchObj.img !== void)
+		{
+			loadImages(churchObj.img);
+			visible = true;
+		}
+		curChurch = churchObj;
+		openCommand();
+	}
+
+	function openCommand()
+	{
+		// コマンド
+		// 治療で治せた方がいいのは 酩酊 恐怖 衰弱 毒 麻痺 石化
+		if(curChurch.checkEvent()) return;
+		master.wordsBase.close();
+		master.clearWindows();
+		master.exitSelectTargetMode();
+		master.resetPrev();
+		master.setPrev(close);
+		master.setPrev(openCommand);
+		var hp = master.party.hasPatient;
+		var cmds = [];
+		cmds.add(%[text: "Cure", func: enterCureMode
+			, cond: hp(o.毒) || hp(o.酩酊) || hp(o.恐怖) || hp(o.衰弱) || hp(o.麻痺) || hp(o.石化)]);
+		cmds.add(%[text: "Raise", func: enterRaiseMode
+			, cond: hp(o.死亡) || hp(o.灰)]);
+		if(! curChurch.cruising)
+		{
+			cmds.add(%[text: "Donate (" + curChurch.price + "G)", func: enterDonateMode]);
+			if(! master.isFreeMode && master.wife !== void && ! master.wife.married
+				 && ! o.ブレイブタウン.events.has(4) && ! o.エミール平原.events.has(9))
+			{
+				cmds.add(%[text: "Wedding", func: wedding]);
+			}
+		}
+		cmds.add(%[text: "Back", func: close]);
+		master.cmdWin.open(cmds, "What will you do?");
+	}
+
+	function close()
+	{
+		// 終了
+		visible = false;
+		master.view.goToStreet(curChurch);
+	}
+
+	function enterDonateMode()
+	{
+		// 寄付する人を選ぶ
+		master.clearWindows();
+		master.setPrev();
+		if(master.party.luck > 0)
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<y>You can only donate once a day");
+			return;
+		}
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			var one = master.party.members[i];
+			if(! one.active) one.selectable = false;
+		}
+		master.enterSelectTargetMode(donate);
+		master.instruct("Who will donate?");
+	}
+
+	function donate(obj)
+	{
+		// 寄付をする
+		master.party.donate(curChurch);	// パーティーとしての寄付
+		obj.donate(curChurch);	// 個人としての寄付
+		master.clearWindows();
+		playSound("coin", 1);
+		master.notice.open(openCommand);
+		master.notice.write("<p>" + obj.displayName + "<w> donated <y>" + curChurch.price + "G<w>");
+	}
+
+	function enterCureMode()
+	{
+		// 治療する人を選ぶ
+		var hp = master.party.hasPatient;
+		if(! hp(o.毒) && ! hp(o.酩酊) && ! hp(o.恐怖) && ! hp(o.衰弱) && ! hp(o.麻痺) && ! hp(o.石化))
+		{
+			openCommand();
+			return;
+		}
+		master.clearWindows();
+		master.setPrev();
+		for(var i = 0; i < master.party.allMembers.count; i++)
+		{
+			var one = master.party.allMembers[i];
+			var sh = one.status.has;
+			if(sh(o.毒) || sh(o.酩酊) || sh(o.恐怖) || sh(o.衰弱) || sh(o.麻痺) || sh(o.石化))
+			{
+				one.speak("%9d".sprintf(one.getCurePrice(curChurch.alignment)) + " G");
+			}
+			else one.selectable = false;
+		}
+		master.enterSelectTargetMode(cureMember,, true);
+		master.instruct("Who will you treat?", 420);
+	}
+
+	function cureMember(obj)
+	{
+		// 治療する
+		master.wordsBase.close();
+		master.clearWindows();
+		master.exitSelectTargetMode();
+		master.notice.open(enterCureMode);
+		var price = obj.getCurePrice(curChurch.alignment);
+		if(price > master.party.gold)
+		{
+			playSound("buzzer", 1);
+			master.notice.write("<y>Not enough money");
+			return;
+		}
+		master.party.gold -= price;
+		obj.clearStatus();
+		obj.revive();
+		playSound("coin", 1);
+		master.notice.write("<y>" + obj.displayName + "<w> was treated");
+	}
+
+	function enterRaiseMode()
+	{
+		// 蘇生する人を選ぶ
+		if(! master.party.hasPatient(o.死亡) && ! master.party.hasPatient(o.灰))
+		{
+			openCommand();
+			return;
+		}
+		master.clearWindows();
+		master.setPrev();
+		for(var i = 0; i < master.party.allMembers.count; i++)
+		{
+			var one = master.party.allMembers[i];
+			if(! one.dead) one.selectable = false;
+			else one.speak("%9d".sprintf(one.getCurePrice()) + " G");
+		}
+		master.enterSelectTargetMode(tryRaiseMember,, true);
+		master.instruct("Revive who?", 420);
+	}
+
+	function tryRaiseMember(obj)
+	{
+		// 蘇生を試みる
+		master.wordsBase.close();
+		master.clearWindows();
+		master.exitSelectTargetMode();
+		var price = obj.getCurePrice();
+		if(price > master.party.gold)
+		{
+			playSound("buzzer", 1);
+			master.notice.open(enterRaiseMode);
+			master.notice.write("<y>Not enough money");
+			return;
+		}
+		master.party.gold -= price;
+		master.curChara = obj;
+		kag.process("script.ks", "*raise_start");
+	}
+
+	function wedding()
+	{
+		// フィアンセと結婚式を挙げる
+
+		var rings = [];	// 結婚指輪
+		master.clearWindows();
+
+		// 呪いチェック
+		var playerRing = master.playerChara.equip.finger;
+		var fianceeRing = master.wife.equip.finger;
+		if((playerRing !== void && playerRing.cursed) || (fianceeRing !== void && fianceeRing.cursed))
+		{
+			playSound("buzzer");
+			master.notice.open(openCommand);
+			master.notice.write(
+				"<y>Cursed items must be removed to wear the wedding ring.");
+			return;
+		}
+
+		// 指輪をリストアップ
+		for(var i = 0; i < master.items.count; i++)
+		{
+			if(master.items[i].part == "finger") rings.add(master.items[i]);
+		}
+
+		// 指輪がそろっていれば結婚式に
+		for(var i = 0; i < rings.count; i++)
+		{
+			if(master.party.countItem(rings[i]) >= 2)
+			{
+				master.onGameBreak(true);
+				kag.process("script.ks", "*start_wedding");
+				return;
+			}
+		}
+		playSound("buzzer");
+		master.notice.open(openCommand);
+		master.notice.write("<y>I don't have a wedding ring<r>Please prepare two of the same wedding ring.");
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class OthersHouseWindow extends Layer
+{
+	// その他の町の施設画面
+	// 選択肢などが出る
+
+	var curHouse;	// 現在扱われている施設
+
+	function OthersHouseWindow(par, master)
+	{
+		super.Layer(par.window, par);
+		this.master = master;
+		setSize(1024, 560);
+		hitThreshold = 256;
+	}
+
+	function store()
+	{
+		var dic = %[];
+		if(curHouse !== void) dic.curHouseName = curHouse.name;
+		dic.visible = visible;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic.curHouseName !== void)
+		{
+			curHouse = o[dic.curHouseName];
+			if(curHouse.img !== void) loadImages(curHouse.img);
+		}
+		visible = dic.visible;
+	}
+
+	function open(dic)
+	{
+		// その他の施設画面を開く
+		master.exitTravelMode();
+		curHouse = dic;
+		if(curHouse.music !== void) playMusic(curHouse.music);
+		if(curHouse.img !== void)
+		{
+			loadImages(curHouse.img);
+			visible = true;
+		}
+		openCommand();	// 選択肢表示
+	}
+
+	function close()
+	{
+		// 終了
+		visible = false;
+		master.view.goToStreet(curHouse);
+		curHouse = void;
+	}
+
+	function openCommand()
+	{
+		// コマンド表示
+		if(curHouse.checkEvent()) return;	// イベントチェック
+		master.clearWindows();
+		master.exitSelectTargetMode();
+		master.resetPrev();
+		master.setPrev(close);
+		master.setPrev(openCommand);
+		var cmds = [];
+		for(var i = 0; i < curHouse.links.count; i++)
+		{
+			var label = curHouse.links[i];
+			var displayLabel = (curHouse.displayLinks.length > i)? curHouse.displayLinks[i] : master.getTranslation(label);
+			cmds.add(%[text: displayLabel, func: startEvent, param: label]);
+		}
+		if(curHouse.mindRead)
+		{
+			cmds.add(%[text: o.マインドリード.displayName, func: askSpellMindRead, color: 0xFFFFC0
+				, cond: master.party.isUsableMagic(o.マインドリード) || master.party.hasItem(o.マインドリードの巻物)]);
+		}
+		cmds.add(%[text: "Back", func: close]);
+		master.cmdWin.open(cmds, curHouse.displayName);
+	}
+
+	function startEvent(label)
+	{
+		// 押したボタンが指定するラベルに飛ぶ
+		master.cmdWin.close();
+		master.onGameBreak();
+		kag.process("street.ks", "*others_" + curHouse.name + "_" + label);
+	}
+
+	function askSpellMindRead(func)
+	{
+		// マインドリードを実行するメンバーを選ぶ
+		BarWindow.askSpellMindRead(func);
+	}
+
+	function spellMindRead(charaObj)
+	{
+		// マインドリードを実行
+		BarWindow.spellMindRead(charaObj);
+	}
+
+	function startMindReadEvent()
+	{
+		// マインドリードを実行したときのラベルに飛ぶ
+		startEvent("マインドリード");
+	}
+}
+
+//----------------------------------------------------------------------------------------

@@ -1,0 +1,162 @@
+﻿; ワイルド・ブルの隠れ家
+
+name = ワイルド・ブルの隠れ家
+insideName = Ｂ１
+level = 10
+bgm = hideout
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+
+; 画像パーツ
+━ = soil
+　 = soil
+❖ = soil
+／ = door
+〆 = key
+☗ = upstair
+⑵ = bulletin
+⑸ = br_vit
+⑹ = barrel
+⑺ = br_maxhp
+
+; 敵情報
+maxGroups = 2
+monsters = ハイウェイマン,ブッシュワッカー,バーグラー
+traps = 石つぶて,毒針
+
+; 移動ポイント
+(A) = map:エミール平原, x:12, y:18, way:e, symbol:exit, ask:Leave the dungeon?
+
+; 宝箱
+box[1] = グレートアックス_u,怪盗のレオタード_u,鉄のブーメラン_u,運の秘薬
+box[2] = マジカルボートの巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+  																		┏━━━┓	┏━━━┓
+ 7																		┃　　　┃	┃　　❶┃
+  						┏━━━━━┓					┃　　　┃	┃　　　┃
+ 6						┃　　　　❷┃					┃敵　　┃	┃　　　┃
+  ┏━━━┓	┃　　　　　┃					┣／┳━┛	┣〆┳━┛
+ 5┃　　　┃	┃　　③　　┃					┃　┃			┃　┃
+  ┃　　　┃	┗━┳／┳━┛	┏━━━┛　┗━━━┛　┃
+ 4┃　　　┃			┃　┃			┃　　　　　　　　　　　┃
+  ┃　　　┣━━━┛　┗━━━┛　　　　　┏━━━┓　┃
+ 3┃　　敵／　　　　　　　　　　　　　　　┃			┃　┃
+  ┗━━━┻━┓　　　　　┏━━━━━┓　┃	┏━┻／┻━┓
+ 2						┃　　　　　┃					┃　┃	┃　　④　　┃
+  				┏━┛　　　　　┃	┏━━━┫　┃	┃　　　　　┃
+ 1				┃　　　　　　　┃	┃⑸　　〆　┃	┃　　　　　┃
+  ┏━━━┛　　　　　┏━┛	┃　　　┣━┛	┗━━━━━┛
+ 0☗Ⓐ　　　　　⑵　　┃			┃⑹　⑺┃								❖
+  ┗━━━━━━━━━┛			┗━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[0][0].event = 1;
+pos[9][1].w.key = o.ワイルド・ブルの鍵;
+pos[12][5].n.key = o.ワイルド・ブルの鍵;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@delevent
+@eval exp='o.ワイルド・ブルのアジトを探せ.flag ++'
+@wait time=1000
+@walk move=e
+@wait time=100
+@walk move=e
+@wait time=500
+@walk turn=n
+@wait time=500
+@walk turn=e
+@wait time=500
+[texton]
+[リーダー f=05]「This is...!」[k]
+At the back of the cave was an open space. A sign reading "Wild Bull's Den" was standing there.[k]
+[if exp='! game.isFreeMode']
+	[テオ f=06]「Alex...! Their hideout is in a place like this...!」[k]
+[endif]
+Alex and his gang must be using this place as a base to do all sorts of evil.[k]
+[textoff]
+@se f=period
+@notice text="<y>Found one Wild Bull hideout."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Wild Bull's Den"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@delevent
+@wait time=500
+[texton]
+[盗賊 f=thief_green_02]「Waaah, what are you guys doing?」[k]
+Inside the room was a man who appeared to be one of Wild Bull's henchmen. The man looked flustered as he stared at us.[k]
+[盗賊 f=thief_green_02]「A-are you adventurers? How on earth did you get in here?」[k]
+[盗賊 f=thief_green_02]「Wait! I don't want to fight you guys! If you have business with Wild Bull, go find someone higher up! See ya!」[k]
+@se f=door1
+The man must have been very frightened, because he rushed out of the room in a panic.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@delevent
+@jump storage="main11.scn" target=*nest
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("vitality", 2)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Vitality permanently increased by 2!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 30)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had maximum HP permanently increased by 30!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

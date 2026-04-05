@@ -1,0 +1,1691 @@
+﻿// guild.tjs
+// ギルド画面＆キャラメイキング画面
+// ※ギルドは酒場の一部と訓練場の融合施設
+// 某武神のようにキャラ管理だけを独立させて一括で扱う
+// ＷＩＺを知らない人が最初に戸惑うのがここだと思うので…
+//  いきなり酒場に行く → ここでパーティーを作れると聞いたが肝心のキャラクターはどうやって作るの？
+//  いきなり訓練場に行く → キャラは出来たが、パーティーを組むためのコマンドがないんだけど？
+//  まだゲームに慣れていない → また間違って訓練場に行ってパーティー解散しちゃったよ！
+
+//----------------------------------------------------------------------------------------
+class GuildBoard extends BoardLayer
+{
+	// ギルド画面を作るクラス
+
+	var members = [];	// このギルドに所属するキャラ
+	var spacing = 2;	// 各メンバー間の隙間の幅
+	var cellWidth = 166;	// キャラ１人の枠の幅
+	var cellHeight = 208;	// キャラ１人の枠の高さ
+	var topMargin = 64;
+	var frameMargin = 9;	// 外側のマージン
+	var columnsCount = 6;	// 列数
+	var holdingMarker;	// 並べ替え用
+	var changeJobBoard;	// 転職用の職業一覧
+	var charactorFace;	// 操作対象のキャラ顔イメージ
+	var detailBoard;	// 詳細表示レイヤー
+	var disableLayer;	// 合計メンバーが最大値を超えないようにする制限表示
+	var darkCoverLayer;	// 暗くするレイヤー
+	var sortingMargin = 10;	// 並べ替え用のスペース
+	var curChara;	// 現在作業中のキャラ
+	var curGuild;	// 現在選択中のギルド
+
+	function GuildBoard(par, master)
+	{
+		super.BoardLayer(...);
+		this.master = master;
+		loadImages("back_guild");
+		setSizeToImageSize();
+		name = "Guild Screen";
+		adjustX = 1;
+		adjustY = 100000;	// 縦横の差を十分に付けることでカーソルが斜めに移動しなくなる
+		hitThreshold = 256;
+		//font.face = "ＭＳ Ｐ明朝";
+		font.bold = true;
+		invalidate cover;
+
+		darkCoverLayer = new DarkCoverLayer(this);
+		with(darkCoverLayer)
+		{
+			.paintAll(this);
+			.absolute = 1000;
+			.hitThreshold = 256;
+		}
+
+		disableLayer = new DecoLayer(this);
+		with(disableLayer)
+		{
+			.loadImages("charaslot_disable");
+			.setPos(frameMargin, topMargin + spacing + cellHeight);
+			.visible = true;
+			.absolute = 500;
+		}
+
+		detailBoard = new DetailBoard(master.gameBase, master);
+		with(detailBoard)
+		{
+			.name = "詳細表示レイヤー";
+			.setPos(window.scWidth - .width >> 1, 520);
+		}
+
+		changeJobBoard = new JobCommandBoard(master.gameBase, master);
+		with(changeJobBoard)
+		{
+			.name = "Job Change Board";
+			.setPos(350, 272);
+			.cmdParent = changeJobBoard;
+			.detailRef = detailBoard;
+		}
+
+		charactorFace = new DecoLayer(master.gameBase);
+		with(charactorFace)
+		{
+			.name = "キャラ顔イメージ";
+			.setPos(100, 270);
+			.absolute = 500;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate changeJobBoard;
+		invalidate darkCoverLayer;
+		invalidate disableLayer;
+		invalidate detailBoard;
+		invalidate charactorFace;
+		super.finalize();
+	}
+
+	function displayChara(obj)
+	{
+		// 操作対象のキャラを表示
+		charactorFace.loadImages("text_face_frame");
+		charactorFace.operateRect(10, 10, obj.getTalkerImage(), 0, 0, 200, 200);
+		charactorFace.visible = true;
+	}
+
+	function open(obj)
+	{
+		// cover は使わないのでスーパークラスは呼ばない
+		curGuild = obj;
+		visible = true;
+		clear();
+		font.height = 27;
+		drawText(width - font.getTextWidth(obj.displayName) >> 1, 18, obj.displayName, 0xFFFFFF);
+		font.height = 33;
+		drawText(934, 15, obj.isWaitingRoom ? 0 : obj.maxMembers, 0xFFFFFF);
+		targetLayers = members = obj.members;	// 参照はここで入れないとカーソル移動ができない
+		disableLayer.width = (12 - obj.maxMembers) * (cellWidth + spacing);
+		disableLayer.left = 1017 - disableLayer.width;
+		updateFormation();
+		master.setPrev(close);
+		openCommand();
+		playMusic("guild");
+	}
+
+	function close()
+	{
+		if(master.party.members.count == 0)
+		{
+			playSound("buzzer");
+			master.guildMenu.close();
+			master.notice.open(openCommand);
+			master.notice.write("<y>Please form a party with at least one person.");
+			return;
+		}
+		if(! master.isFreeMode && ! curGuild.isWaitingRoom && master.party.members.count < 4)
+		{
+			playSound("buzzer");
+			master.guildMenu.close();
+			master.notice.open(openCommand);
+			master.notice.write("<y>The number of party members can't be less than 3 in story mode.");
+			return;
+		}
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].visible = false;
+		}
+		visible = false;
+		master.guildMenu.close();
+		master.view.goToStreet(curGuild);
+	}
+
+	function checkGuildEvent()
+	{
+		// イベントの発生をチェックし真ならば該当イベントシナリオに飛ぶ
+		if(curGuild.checkEvent())
+		{
+			enabled = false;
+			return true;
+		}
+	}
+
+	function openCommand()
+	{
+		// コマンド
+		master.gameFrame.formationBar.visible = false;	// 先に消しておく
+		if(checkGuildEvent()) return;	// イベントチェック
+		master.exitTravelMode();
+		enabled = master.party.enabled = false;	// 最初は両方無効に
+		darkCoverLayer.visible = master.party.darkCoverLayer.visible = false;
+		curChara = void;
+		master.setPrev(openCommand);
+		master.clearWindows();
+		charactorFace.visible = false;
+		master.itemWin.close();	// キャラ作成で使用するので閉じる
+		var cmds = [];
+		cmds.add(%[text: "Add Member", func: enterAddPartyMemberMode, cond: members.count > 0]);
+		if(! curGuild.isWaitingRoom)
+		{
+			cmds.add(%[text: "Remove Member", func: enterRemovePartyMemberMode
+				, cond: master.party.members.count > 0]);
+			cmds.add(%[text: "Create Character", func: enterCreateCharaMode]);
+			cmds.add(%[text: "Delete Character", func: enterDeleteCharaMode, cond: members.count > 0]);
+			cmds.add(%[text: "Change Job", func: enterChangeJobMode]);
+			cmds.add(%[text: "Arrange Party", func: enterArrangeMode, cond: members.count > 1]);
+		}
+		if(curGuild.isWaitingRoom)
+		{
+			cmds.add(%[text: "Rehire Mercenary", func: enterReemployMode, cond: master.hiring.count > 0]);
+			cmds.add(%[text: "Dismiss Mercenary", func: dismiss, cond: master.guest.getHiring() !== void]);
+			cmds.add(%[text: "Maternity Visit", func: enterTalkMode, cond: getPregnantHeroine() !== void]);
+		}
+		else
+		{
+			cmds.add(%[text: "Rename", func: enterChangeNameMode]);
+			cmds.add(%[text: "Change Hair Color", func: enterChangeColorMode]);
+		}
+		cmds.add(%[text: "Check Status", func: enterViewStatusMode]);
+		master.guildMenu.focusLastCommand = sf.rememberLastCommand;
+		master.guildMenu.open(cmds, curGuild.isWaitingRoom ? "Waiting area menu" : "Guild menu");
+		clearPermission();	// 加入許可を元に戻す
+	}
+
+	function updateFormation()
+	{
+		// キャラ一覧を更新
+		for(var i = 0; i < members.count; i++)
+		{
+			var one = members[i];
+			if(one.dragging) continue;
+			one.left = (i % columnsCount) * (one.width + spacing) + frameMargin;
+			one.top = (i \ columnsCount) * (one.height + spacing) + topMargin - one.holding * sortingMargin;
+			one.absolute = i;	// どうせアニメーションしないのでドラッグの時だけ上になっていれば良い
+			one.visible = true;
+		}
+	}
+
+	function addMember(obj, id = members.count)
+	{
+		// ギルドにキャラを追加
+		members.insert(id, obj);
+		obj.transformToGuildType();
+		if(visible) updateFormation();
+	}
+
+	function removeMember(obj)
+	{
+		// ギルドからキャラを外す
+		members.remove(obj);
+		obj.visible = false;
+		updateFormation();
+	}
+
+	function arrangeMember(obj, id)
+	{
+		// ギルド内キャラの位置を入れ替え
+		if(id < 0 || id >= members.count) return;
+		members.remove(obj);
+		members.insert(id, obj);
+		updateFormation();
+		pointToObject(obj);
+	}
+
+	function enterAddPartyMemberMode()
+	{
+		// 追加するキャラを選ぶ
+		if(master.party.members.count == master.party.maxMembers)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>Up to <p>" + master.party.maxMembers + "<y> party members can be added");
+			return;
+		}
+		master.setPrev();
+		master.onSelectAction = addPartyMember;
+		master.guildMenu.close();
+		enabled = true;
+		members[0].focus();
+		master.instruct("Select the members you want to join the party", 482);
+		master.gameFrame.formationBar.visible = true;
+		master.party.darkCoverLayer.visible = true;
+		setPermission();
+	}
+
+	function setPermission()
+	{
+		// 加入許可を設定する
+		var algn = master.party.getAdmittedAlingments();	// 現在加入を許可されている属性
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].selectable = algn.has(members[i].alignment);
+		}
+	}
+
+	function clearPermission()
+	{
+		// 加入許可設定をすべてクリアする
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].selectable = true;
+		}
+	}
+
+	function addPartyMember(obj)
+	{
+		// パーティーにキャラを追加
+
+		if(obj.pregnant >= 0)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>Pregnant characters are not allowed in the party.");
+			return;
+		}
+
+		if(! master.isFreeMode && ! obj.regular && obj.model.edit == "freeModeOnly")
+		// if(! obj.regular && obj.model.edit == "freeModeOnly")
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>This character cannot be used in Story Mode.");
+			return;
+		}
+
+		var nextID = obj.slot == members.count - 1 ? obj.slot - 1 : obj.slot;
+		removeMember(obj);
+		master.party.addMember(obj);
+		obj.onNodeDisabled();	// 親が enabled == false の場所に移動するので手動で処理する必要あり
+		if(! visible) return;
+		if(master.party.members.count == master.party.maxMembers) master.processPrev();
+		else if(members.count == 0) master.processPrev();
+		else members[nextID].focusAndPointToObject();
+		setPermission();
+	}
+
+	function enterRemovePartyMemberMode()
+	{
+		// 外すキャラを選ぶ
+		if(members.count == curGuild.maxMembers)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>Up to <p>" + curGuild.maxMembers + "<y> can be added to this guild");
+			return;
+		}
+		master.setPrev();
+		master.onSelectAction = removePartyMember;
+		master.guildMenu.close();
+		master.party.enabled = true;
+		master.party.magicButtonsEnabled = false;
+		master.party.members[0].focus();
+		master.instruct("Remove who?", 478);
+		master.gameFrame.formationBar.visible = true;
+		darkCoverLayer.visible = true;
+	}
+
+	function removePartyMember(obj)
+	{
+		// パーティーからキャラを外す
+
+		if(! master.isFreeMode && obj.regular && ! obj.semiRegular)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>Main character and event characters cannot be removed from the party");
+			return;
+		}
+
+		if(! master.isFreeMode && obj == master.wife)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			if(obj.married) master.notice.write("<y>Wife can't be removed from the party.");
+			else master.notice.write("<y>Fiancée can't be removed from the party.");
+			return;
+		}
+
+		if(obj.sleep >= 6)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>Can't remove from party unless fatigue under 5");
+			return;
+		}
+
+		var nextID = obj.slot == master.party.members.count - 1 ? obj.slot - 1 : obj.slot;
+		master.party.removeMember(obj);
+		addMember(obj);
+		obj.onNodeDisabled();	// 親が enabled == false の場所に移動するので手動で処理する必要あり
+		if(! visible) return;
+		if(master.party.members.count == 0) master.processPrev();
+		else master.party.members[nextID].focusAndPointToObject();
+	}
+
+	function enterCreateCharaMode()
+	{
+		// キャラ作成画面へ
+		if(master.chara.count >= master.maxUserCharas)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>Game can't register any more characters");
+			return;
+		}
+		if(members.count == curGuild.maxMembers)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>Up to <p>" + curGuild.maxMembers + "<y> can be added to this guild");
+			return;
+		}
+		master.clearWindows();
+		master.charaEdit.open();
+	}
+
+	function enterDeleteCharaMode()
+	{
+		// 削除するキャラを選ぶ
+		master.setPrev(enterDeleteCharaMode);
+		master.onSelectAction = confirmDeleteChara;
+		master.clearWindows();
+		enabled = true;
+		if(members.count == 0) master.processPrev();
+		else focusToChara();
+		master.instruct("Delete which character?", 492);
+		master.party.darkCoverLayer.visible = true;
+	}
+
+	function confirmDeleteChara(obj)
+	{
+		// 削除確認
+		if(! master.isFreeMode && obj.semiRegular)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>Event characters cannot be deleted");
+			return;
+		}
+
+		master.setPrev();
+		master.clearWindows();
+		enabled = false;
+		curChara = obj;
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: deleteChara, param: obj]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "<c>Delete " + obj.displayName
+			 + "?<r><p>You won't be able to restore this character!");
+	}
+
+	function deleteChara(obj)
+	{
+		// 削除実行
+
+		// フォーカスを別のキャラに移す
+		curChara = getNextChara(obj, true);
+		if(master.curChara == obj) master.curChara = master.party.getFirstChara();
+
+		// 表示
+		master.yesNoWin.close();
+		members.remove(obj);
+		updateFormation();
+		master.notice.open(master.processPrev);
+		master.notice.write("<p>" + obj.displayName + "<y> was removed");
+		if(members.count == 0) master.popPrev();
+
+		// 情報をすべて削除
+		obj.clearRelativeEvents();	// 関連イベントを削除
+		obj.storeAllItemsInOthers();	// 所持アイテムをどこかに移動
+		master.playersRoommates.remove(obj, true);	// すべて削除する
+		master.deleteChara(obj);
+	}
+
+	function enterChangeJobMode()
+	{
+		// 転職するキャラを選ぶ
+		darkCoverLayer.visible = master.party.darkCoverLayer.visible = false;
+		master.clearWindows();
+		charactorFace.visible = false;
+		master.setPrev(enterChangeJobMode);
+		master.onSelectAction = selectJob;
+		enabled = true;
+		master.party.enabled = true;
+		master.party.magicButtonsEnabled = false;
+		focusToChara();
+		master.instruct("Change whose job?", 492);
+	}
+
+	function selectJob(obj)
+	{
+		// 転職先を選ぶ
+		if(obj.noChangeOfJob)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>This character cannot change jobs.");
+			return;
+		}
+		darkCoverLayer.visible = master.party.darkCoverLayer.visible = true;
+		enabled = false;
+		master.party.enabled = false;
+		curChara = obj;
+		obj.selectJob();
+	}
+
+	function returnFromChangeJob()
+	{
+		// 転職後に戻ってくる時に呼び出す
+		master.resetPrev();
+		master.setPrev(close);
+		kag.bgm.resume();
+		openCommand();
+	}
+
+	function enterChangeNameMode()
+	{
+		// 名前変更するキャラを選ぶ
+		master.setPrev(enterChangeNameMode);
+		master.onSelectAction = openInputNameDialog;
+		master.clearWindows();
+		charactorFace.visible = false;
+		master.instruct("Rename which character?", 492);
+		enabled = true;
+		master.party.enabled = true;
+		master.party.magicButtonsEnabled = false;
+		focusToChara();
+	}
+
+	function openInputNameDialog(obj)
+	{
+		// 名前変更ダイアログを開く
+		if(! master.isFreeMode && obj.regular && obj != master.playerChara)
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<p>" + obj.displayName + "<y> can't be renamed");
+			return;
+		}
+		master.setPrev();
+		master.clearWindows();
+		enabled = false;
+		master.party.enabled = false;
+		curChara = obj;
+		master.textEdit.open(9, obj.changeNameInGuild);
+		master.textEdit.write("Please enter a new name");
+		master.textEdit.setDefaultName(obj.displayName);
+		displayChara(obj);
+		master.textEdit.left = 350;
+	}
+
+	function fixCharaName()
+	{
+		// 名前確定
+		master.clearWindows();
+		master.popPrev();
+		playSound("click", 1);
+		master.notice.open(master.processPrev);
+		master.notice.write("<y>Renamed.");
+		master.notice.left = 350;
+	}
+
+	function enterChangeColorMode
+	{
+		// 髪の色を変更するキャラを選ぶ
+		master.setPrev(enterChangeColorMode);
+		master.onSelectAction = selectColor;
+		master.clearWindows();
+		charactorFace.visible = false;
+		master.instruct("Please select the character whose hair color you want to change.", 492);
+		enabled = true;
+		master.party.enabled = true;
+		master.party.magicButtonsEnabled = false;
+		focusToChara();
+	}
+
+	function selectColor(obj)
+	{
+		// 髪色変更ダイアログを開く
+		if(! master.isFreeMode && obj.regular && obj != master.playerChara)
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<p>" + obj.displayName + "<y> can't change hair color.");
+			return;
+		}
+		master.setPrev();
+		master.clearWindows();
+		enabled = false;
+		master.party.enabled = false;
+		curChara = obj;
+
+		var cmds = [];
+		for(var i = 0; i < obj.model.color.count; i++)
+		{
+			var col = obj.model.color[i];
+			cmds.add(%[text: col, func: obj.changeColor, param: col]);
+		}
+		master.cmdWin.open(cmds, "Choose a new color");
+		master.cmdWin.left = 350;
+		displayChara(obj);
+	}
+
+	function enterTalkMode()
+	{
+		// 妊娠しているメンバーと会話する
+		master.setPrev(enterTalkMode);
+		master.onSelectAction = talkToPregnantHeroine;
+		master.clearWindows();
+		enabled = true;
+		master.instruct("Speak to who?", 482);
+		master.party.darkCoverLayer.visible = true;
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].selectable = (members[i].pregnant >= 0);
+		}
+		focusToChara();
+	}
+
+	function talkToPregnantHeroine(obj)
+	{
+		// 妊娠しているメンバーと会話する
+		enabled = false;
+		master.instruction.close();
+		master.curChara = obj;
+		master.onGameBreak(true);
+		kag.process("speech.ks", "*maternity_" + obj.keyName);
+	}
+
+	function getPregnantHeroine()
+	{
+		// 妊娠しているメンバーを１人返す
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].pregnant >= 0) return members[i];
+		}
+	}
+
+	function enterArrangeMode()
+	{
+		// 並べ替え
+		master.setPrev();
+		master.onSelectAction = master.holdCharaObjectLayer;
+		master.guildMenu.close();
+		enabled = true;
+		members[0].focus();
+		master.instruct("Sort the characters with the keyboard and mouse", 492);
+		master.party.darkCoverLayer.visible = true;
+	}
+
+	function enterViewStatusMode()
+	{
+		// ステータスを見るキャラを選択する
+		master.setPrev(enterViewStatusMode);
+		master.onSelectAction = viewStatus;
+		master.guildMenu.close();
+		master.itemWin.close();
+		master.instruct("Which character?", 492);
+		enabled = true;
+		master.party.enabled = true;
+		master.party.magicButtonsEnabled = false;
+		focusToChara();
+	}
+
+	function viewStatus(obj)
+	{
+		// ステータスを見る
+		master.clearWindows();
+		enabled = false;
+		master.party.enabled = false;
+		curChara = obj;
+		master.itemWin.openStatus(obj, "guild");
+		master.itemWin.setLRSwitch(changeChara, 665, 575);
+	}
+
+	function enterReemployMode(initial = 0)
+	{
+		// 再雇用するキャラを選ぶ
+
+		var charaNum = 5;	// １ページの表示キャラ数
+		var win = master.longMenu;	// 使用枠
+		master.setPrev();
+		master.clearWindows();
+
+		// 雇用キャラ表示
+		var cmds = [];
+		for(var i = initial; i < master.hiring.count; i++)
+		{
+			if(i >= initial + charaNum) break;
+			var obj = master.hiring[i];
+			if(! obj.contracted) continue;
+			var whitespace = " ";
+			whitespace = whitespace.repeat((230 - font.getTextWidth(obj.displayName)) \ font.getTextWidth(whitespace));
+			var str = "   　" + obj.displayName + whitespace + "LV%3d %s".sprintf(obj.level, obj.jobDisplayName());
+			cmds.add(%[text: str, func: reemploy, param: obj, cond: ! master.guest.members.has(obj)]);
+		}
+		win.open(cmds, "Which mercenary will you rehire?");
+
+		// 顔アイコン貼り付け
+		for(var i = 0; i < cmds.count; i++)
+		{
+			win.stretchCopy(36, i * 40 + 62, 32, 32, cmds[i].param.charaLayer, 24, 24, 96, 96);
+		}
+
+		// ページボタン。短めのボタンを使う
+		var len = win.cmdLength;
+		win.cmdLength = 5;
+		win.putCommand(%[text: "Previous", func: enterReemployMode, param: initial - charaNum
+			,left: 150, top: win.height - 60, img: "btn_cmd_white_5"
+			, cond: initial > 0]);
+		win.commands[-1].type = ltDodge;
+		win.putCommand(%[text: "Next", func: enterReemployMode, param: initial + charaNum
+			,left: 333, top: win.height - 60, img: "btn_cmd_white_5"
+			, cond: initial < master.hiring.count - charaNum]);
+		win.commands[-1].type = ltDodge;
+		win.cmdLength = len;	// 他で使用するときのために元に戻しておく
+	}
+
+	function reemploy(obj)
+	{
+		// 傭兵を再雇用
+		master.guest.summonHiring(obj);
+		master.clearWindows();
+		playSound("up1");
+		master.notice.open(master.processPrev);
+		master.notice.write("<y>" + obj.displayName + "<w> rejoined the party");
+	}
+
+	function dismiss()
+	{
+		// 現在の傭兵キャラを解雇
+		master.setPrev();
+		master.clearWindows();
+		var obj = master.guest.getHiring();
+		master.guest.removeMember(obj);
+		playSound("paper");
+		master.notice.open(master.processPrev);
+		master.notice.write("<y>" + obj.displayName + "<w> left the party");
+	}
+
+	function focusToChara()
+	{
+		// 現在または最初のキャラにフォーカスを合わせる
+		if(curChara !== void && curChara.visible && curChara.parent.enabled) curChara.focus();
+		else if(enabled && members.count > 0) members[0].focus();
+		else master.party.members[0].focus();
+	}
+
+	function changeChara(forward)
+	{
+		// ステータス・アイテムを見るキャラを順番に切り替える
+		curChara = getNextChara(curChara, forward);
+		if(curChara === void) return;
+		if(master.itemWin.mode == "status") master.itemWin.openStatus(curChara, "guild");
+		else master.itemWin.openInventory(curChara, "guild");
+	}
+
+	function getNextChara(charaObj, forward)
+	{
+		// 指定したキャラの次のキャラを返す
+		var mems = charaObj.parent.members;
+		var another = mems == members ? master.party.members : members;
+		var num = mems.find(charaObj);	// 見つからなかったら -1 が入るのでそれを前提に計算
+		num += forward * 2 - 1;
+		if(num == mems.count)
+		{
+			if(another.count > 0) mems = another;
+			num = 0;
+		}
+		if(num < 0)
+		{
+			if(another.count > 0) mems = another;
+			num = mems.count - 1;
+		}
+		return mems[num];
+	}
+
+	function getAreaUnderMouse(obj)
+	{
+		// マウスで並べ替え時にドラッグ中のキャラをどの位置に入れるか返す
+		var n = (obj.left + obj.width + spacing - 1) \ (obj.width + spacing)
+			 + (obj.top + obj.height \ 2 + spacing) \ (obj.height + spacing) * columnsCount;
+		if(n < members.count) return n;
+		else return members.count - 1;
+	}
+
+	function getLayerByKey(curLayer, key)
+	{
+		// 最下段で下を押した時パーティー領域にフォーカスを移動
+		if(master.party.enabled)
+		{
+			if(((key == BT_DOWN || key == BT_DOWN2) && curLayer.slot + columnsCount >= members.count)
+				 || ((key == BT_UP || key == BT_UP2) && curLayer.slot < columnsCount))
+			{
+				var num = cap(curLayer.slot % columnsCount, master.party.members.count - 1);
+				master.party.members[num].focus();
+				return;
+			}
+		}
+		return super.getLayerByKey(...);
+	}
+}
+
+
+class EditLayerOnBoard extends EditLayer
+{
+	// キャラメイクで使用する名前入力欄
+
+	var cautionBoard;	// 名前入力に関する警告を表示する
+	var usedNames = [];	// 作中で使われている名前のリスト
+	var onlyStoryMode = [];	// ストーリーモードでのみ使われる名前
+
+	function EditLayerOnBoard(par)
+	{
+		super.EditLayer(par.window, par);
+		maxChars = 9;
+		cautionBoard = new global.TextWindow(par);
+		with(cautionBoard)
+		{
+			.setSize(400, 25);
+			.marginL = 3;
+			.marginR = 3;
+			.marginT = 3;
+			.marginB = 3;
+			.lineSpacing = 2;
+			.visible = true;
+			.font.height = 16;
+			//.font.face = "Tahoma";
+			.font.bold = true;
+		}
+		usedNames.split(",", global.usedCharactorNames);
+		onlyStoryMode.split(",", global.onlyStoryModeNames);
+	}
+
+	function setPos(left, top)
+	{
+		super.setPos(...);
+		cautionBoard.setPos(left + 50, top + height - 1);
+	}
+
+	function update()
+	{
+		super.update();
+		checkInputedNames();
+	}
+
+	function onFocus(focused, direction)
+	{
+		parent.pointToObject(this);
+		parent.pointerMark.left = 405;	// 左にずらす
+		super.onFocus(...);
+	}
+
+	function onBlur(focused)
+	{
+		parent.disappearPointer();
+		super.onBlur(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		// Below intercepts WASD so interferes with EN name entry.
+		/*
+		if(key == SET_BT_DOWN || key == SET_BT_DOWN2
+			 || (Edit_selStart == Edit_text.length && (key == BT_RIGHT || key == BT_RIGHT2))
+			 || (Edit_selStart == 0 && (key == BT_LEFT || key == BT_LEFT2)))
+		{
+			var target = parent.getLayerByKey(this, key);
+			if(target !== void) target.focus();
+		}
+		else if(key == SET_BT_UP || key == SET_BT_UP2)
+		{
+			var target = parent.getLayerByKey(this, VK_UP);
+			if(target !== void) target.focus();
+		}
+		else if(key == SET_BT_LEFT || key == SET_BT_RIGHT || key == SET_BT_LEFT2 || key == SET_BT_RIGHT2)
+		{
+			var target = parent.getLayerByKey(this, VK_RIGHT);
+			if(target !== void) target.focus();
+		}
+		else */
+		if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			window.onPrimaryRightClick();
+		}
+		else
+		{
+			window.preProcessKeys(key, shift);
+			super.onKeyDown(...);
+		}
+	}
+
+	function checkInputedNames()
+	{
+		if(text.length == 0) displayCaution("Enter name");
+		else if(text.length >= 9) displayCaution("Name shouldn't be over 9 characters");
+		else if(usedNames.find(text) != -1 && (! game.isFreeMode || onlyStoryMode.find(text) == -1))
+			displayCaution("Name reserved");
+		else displayCaution();
+	}
+
+	function displayCaution(str)
+	{
+		// 各種警告を表示する
+		if(cautionBoard === void) return;
+		cautionBoard.clear();
+		if(str === void) return;
+		cautionBoard.chColor = 0xFFA080;
+		cautionBoard.write(str);
+	}
+}
+
+
+class AdjustParamSpinButton extends NumberSpinButton
+{
+	// パラメータ増減スピンボタン
+
+	var paramDetail;	// 各パラメータの説明を書き込む変数
+	var detailRef;	// 詳細表示レイヤーへの参照
+
+	function AdjustParamSpinButton(par)
+	{
+		super.NumberSpinButton(...);
+	}
+
+	function drawState(n)
+	{
+		super.drawState(n);
+		detailRef.showDetail(n == 1 ? paramDetail : "");
+	}
+
+	function onFocus(focused, direction)
+	{
+		super.onFocus(...);
+		parent.pointerMark.left = 405;	// 左にずらす
+	}
+}
+
+
+class SelectAlignmentSpinButton extends ArraySpinButton
+{
+	// 属性選択スピンボタン
+
+	var detailRef;	// 詳細表示レイヤーへの参照
+
+	function SelectAlignmentSpinButton(par)
+	{
+		super.ArraySpinButton(...);
+	}
+
+	function drawState(n)
+	{
+		super.drawState(n);
+		detailRef.showDetail(n == 1 ? array[index].detail : "");
+	}
+
+	function updateValue()
+	{
+		super.updateValue();
+		detailRef.showDetail(array[index].detail);
+	}
+}
+
+
+class SelectModelSpinButton extends ArraySpinButton
+{
+	// 素体選択スピンボタン
+
+	var detailRef;	// 詳細表示レイヤーへの参照
+
+	function SelectModelSpinButton(par)
+	{
+		super.ArraySpinButton(...);
+	}
+
+	function drawState(n)
+	{
+		super.drawState(n);
+		detailRef.showDetail(n == 1 ? array[index].race.detail : "");
+	}
+
+	function updateValue()
+	{
+		var str = array[index].race.displayName;
+		var l = valueBox.width - valueBox.font.getTextWidth(str) >> 1;
+		var t = valueBox.height - valueBox.font.height >> 1;
+		valueBox.clear();
+		valueBox.drawText(l, t, str, 0xFFFFFF,,, 2048, 0x000000, 2);
+		detailRef.showDetail(array[index].race.detail);
+	}
+}
+
+
+class JobCommandBoard extends CommandBoard
+{
+	// 職業ボード
+
+	var jobCommands = [];
+	var cmdParent;
+	var detailRef;	// 詳細表示レイヤーへの参照
+
+	function JobCommandBoard(par, master)
+	{
+		super.CommandBoard(...);
+		loadImages("frame_joblist");
+		absolute = 1;
+		marginL = 25;
+		marginT = 18;
+		cover.visible = false;
+		hitThreshold = 256;
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < jobCommands.count; i++) invalidate jobCommands[i];
+		super.finalize();
+	}
+
+	function open(jobs, func)
+	{
+		// 職業一覧を表示
+		if(notification) master.notifyWindowOpened(this);
+		visible = true;
+		clearJobCommands();
+		if(jobs.count == 0)
+		{
+			displayInstructionAtNoJob();
+			return;
+		}
+		var l = 0, t = 0;
+		if(cmdParent == parent)
+		{
+			l = left;
+			t = top;
+		}
+		for(var i = 0; i < jobs.count; i++)
+		{
+			var cmd = new JobCommandButton(cmdParent, detailRef);
+			var num = jobCommands.count;
+			cmd.setPos(i % 3 * 180 + l + marginL, i \ 3 * 35 + t + marginT);
+			cmd.onSelectAction = func;
+			cmd.onSelectActionParam = jobs[i];
+			cmd.absolute = absolute + 1;
+			write(jobs[i].displayName, cmd.left - l + 8, cmd.top - t + 5);
+			jobCommands.add(cmd);
+			cmdParent.targetLayers.add(cmd);
+		}
+	}
+
+	function close()
+	{
+		clearJobCommands();
+		if(notification) master.notifyWindowClosed(this);
+		visible = false;
+	}
+
+	function clearJobCommands()
+	{
+		// 職業一覧をクリア
+		for(var i = 0; i < jobCommands.count; i++)
+		{
+			cmdParent.targetLayers.remove(jobCommands[i]);
+			jobCommands[i].selectable = false;
+			jobCommands[i].visible = false;
+		}
+		jobCommands = [];
+		clear();
+	}
+
+	function displayInstructionAtNoJob()
+	{
+		// 職業が表示されていないときに代わりに注意書きを表示する
+		var defaultFontSize = font.height;
+		clear();
+		font.height = 20;
+		chColor = 0xD0D0D0;
+		write(
+			"Available jobs are based on alignment, stats, and<r>extra conditions.<r>"
+			 + "Example jobs include:<r>"
+			 + "    Warrior: Strength >= 11<r>"
+			 + "    Mage: Intelligence >= 11<r>"
+			 + "    Priest: Faith >= 11, non-neutral alignment<r>"
+			 + "    Thief: Speed >= 10, Luck >= 12<r>"
+			 + "<r>"
+		, 10, 20);
+		chColor = 0xFFFFFF;
+		font.height = defaultFontSize;
+	}
+}
+
+
+class JobCommandButton extends CommandButton
+{
+	// 職業ボードに乗せるコマンド
+
+	var detailRef;	// 詳細表示レイヤーへの参照
+
+	function JobCommandButton(par, ref)
+	{
+		super.CommandButton(par);
+		name = "職業ボタン";
+		loadImages("btn_cmd_white_5");
+		type = ltDodge;	// ボタンは ltAddAlpha 形式で作ること
+		detailRef = ref;
+	}
+
+	function drawState(n)
+	{
+		super.drawState(n);
+		if(n != 3 && detailRef !== void)
+		{
+			detailRef.showDetail(n == 2 ? onSelectActionParam.detail : "");
+		}
+	}
+}
+
+
+class DetailBoard extends TextWindow
+{
+	// 解説を表示するレイヤー
+
+	function DetailBoard(par, master)
+	{
+		super.TextWindow(...);
+		loadImages("frame_detail");
+		marginL = 21;
+		marginR = 25;
+		marginT = 36;
+		lineSpacing = 2;
+		font.height = 18;
+		//font.face = "ＭＳ ゴシック";
+		edge = false;
+	}
+
+	function open()
+	{
+		super.open();
+		clear();
+	}
+
+	function showDetail(str)
+	{
+		clear();
+		write(str);
+	}
+}
+
+
+class CharaEditBoard extends BoardLayer
+{
+	// キャラエディットを作るクラス
+
+	var parameters = [];
+	var jobCommands = [];
+	var sampleLayer;
+	var nameEdit;	// エディット
+	var modelSelect;
+	var colorSelect;
+	var alignmentSelect;
+	var bonusLayer;
+	var bonusPoint = 0;
+	var initialBonus = 0;
+	var jobBoard;
+	var nameBoard;
+	var modelBoard;
+	var sexBoard;
+	var detailBoard;
+	var cautionBoard;
+	var randomButton;
+
+	function CharaEditBoard(par, master)
+	{
+		super.BoardLayer(...);
+		name = "Edit Character";
+		adjustX = 1;
+		adjustY = 100;
+		//font.face = "ＭＳ 明朝";
+		font.bold = true;
+		font.height = 27;
+		loadImages("back_charaedit");
+		setSizeToImageSize();
+		hitThreshold = 256;
+
+		sampleLayer = new DecoLayer(this);
+		with(sampleLayer)
+		{
+			.setPos(-20, 0);
+			.setSize(420, 768);
+			.visible = true;
+		}
+
+		bonusLayer = new DecoLayer(this);
+		with(bonusLayer)
+		{
+			.loadImages("frame_bonus");
+			.setPos(769, 210);
+			.visible = true;
+			.font.height = 72;
+			.font.face = "Tahoma";
+			.font.bold = true;
+		}
+
+		detailBoard = new DetailBoard(this, master);
+		with(detailBoard)
+		{
+			.setPos(742, 376);
+			.visible = true;
+		}
+
+		cautionBoard = new global.TextWindow(this, master);
+		with(cautionBoard)
+		{
+			.setPos(760, 168);
+			.setSize(240, 60);
+			.marginL = 3;
+			.marginR = 3;
+			.marginT = 3;
+			.marginB = 3;
+			.lineSpacing = 2;
+			.visible = true;
+			.font.height = 16;
+			//.font.face = "Tahoma";
+			.font.bold = true;
+		}
+
+		nameEdit = new EditLayerOnBoard(this);
+		with(nameEdit)
+		{
+			.font.height = 24;
+			.setPos(539, 50);
+			.setSize(9 * 24 + 7, 30);	// 幅はこれ以上小さくしてはならない
+			.visible = true;
+			.selectable = true;
+		}
+		targetLayers.add(nameEdit);
+
+		nameBoard = new DecoLayer(this);
+		with(nameBoard)
+		{
+			.setPos(560, 52);
+			.setSize(256, 30);
+			.visible = true;
+			.font.height = 26;
+		}
+
+		randomButton = new LightCommandButton(this);
+		with(randomButton)
+		{
+			.loadImages("btn_random");
+			.setPos(805, 49);
+			.visible = true;
+			.onSelectAction = setRandomName;
+		}
+		targetLayers.add(randomButton);
+
+		modelSelect = new SelectModelSpinButton(this);
+		with(modelSelect)
+		{
+			.valueLength = 6;
+			.loadImages("spinbtn");
+			.setPos(530, 106);
+			.onChangeAction = setModel;
+			.detailRef = detailBoard;
+		}
+		targetLayers.add(modelSelect);
+
+		modelBoard = new DecoLayer(this);
+		with(modelBoard)
+		{
+			.setSize(256, 32);
+			.setPos(560, 111);
+			.visible = true;
+			.font.height = 26;
+			.detailRef = detailBoard;
+		}
+
+		sexBoard = new DecoLayer(this);
+		with(sexBoard)
+		{
+			.setSize(32, 32);
+			.setPos(910, 109);
+			.visible = true;
+			.font.height = 30;
+		}
+
+		colorSelect = new ArraySpinButton(this);
+		with(colorSelect)
+		{
+			.loadImages("spinbtn");
+			.setPos(530, 165);
+			.onChangeAction = setColor;
+		}
+		targetLayers.add(colorSelect);
+
+		alignmentSelect = new SelectAlignmentSpinButton(this);
+		with(alignmentSelect)
+		{
+			.name = "alignment";
+			.loadImages("spinbtn");
+			.setPos(530, 224);
+			.array = master.alignment;
+			.onChangeAction = setAlignment;
+			.detailRef = detailBoard;
+		}
+		targetLayers.add(alignmentSelect);
+
+		var paramKey = ["power", "intellect", "piety", "vitality", "speed", "luck"];
+		var paramDetail = [
+			 "Affects hit chance"
+			,"Affects spirit & alchemy magic learning speed and MP growth,<r>magic success rate,<r>identification chance"
+			,"Affects holy & summoning magic learning speed and MP growth,<r>status resistance,<r>purification chance"
+			,"Affects HP growth and<r>resurrection success<r>chance"
+			,"Affects action order<r>and disarm/unlock<r>success chance"
+			,"Affects trap evasion<r>rate and resistance to<r>special attacks and more"
+		];
+		for(var i = 0; i < paramKey.count; i++)
+		{
+			parameters[i] = new AdjustParamSpinButton(this);
+			with(parameters[i])
+			{
+				.name = paramKey[i];
+				.paramDetail = paramDetail[i];
+				.loadImages("spinbtn");
+				.setPos(530, 283 + 40 * i);
+				.onChangeAction = setParameter;
+				.detailRef = detailBoard;
+			}
+			targetLayers.add(parameters[i]);
+		}
+
+		jobBoard = new JobCommandBoard(this, master);
+		with(jobBoard)
+		{
+			.name = "職業ボード";
+			.setPos(431, 541);
+			.absolute = 1;
+			.cmdParent = this;
+			.detailRef = detailBoard;
+			.visible = true;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate sampleLayer;
+		invalidate bonusLayer;
+		invalidate jobBoard;
+		invalidate detailBoard;
+		invalidate nameEdit;
+		invalidate modelSelect;
+		invalidate nameBoard;
+		invalidate randomButton;
+		invalidate modelBoard;
+		invalidate sexBoard;
+		invalidate colorSelect;
+		invalidate alignmentSelect;
+		for(var i = 0; i < parameters.count; i++) invalidate parameters[i];
+		super.finalize();
+	}
+
+	function open()
+	{
+		super.open();
+		master.setPrev(checkBonusPoint);
+		master.setPrev();
+
+		// ボーナスポイント
+		initialBonus = bonusPoint = getBonusPoint();
+
+		// 属性選択を初期化
+		alignmentSelect.setControl(2);
+
+		// 素体選択を初期化
+		modelSelect.array = master.getEditableModels();
+		// Use the last race selected, if there was one.
+		var modelId = (!modelSelect.value)? 0 : Math.max(0, modelSelect.array.find(modelSelect.value));
+		modelSelect.setControl(modelId);
+		setModel(modelSelect.array[modelId]);
+		modelSelect.visible = true;
+		modelBoard.visible = false;
+
+		// 説明欄を初期化
+		detailBoard.clear();
+
+		// 名前欄にフォーカス
+		nameEdit.focus();
+		nameBoard.visible = false;
+		randomButton.visible = true;
+		jobBoard.visible = true;
+	}
+
+	function continueEdit()
+	{
+		// キャンセルしようとしたのをやめて作成を続ける
+		master.yesNoWin.close();
+		enabled = true;
+	}
+
+	function cancelEdit()
+	{
+		// 警告を無視してキャンセルする
+		master.yesNoWin.close();
+		enabled = true;
+		master.popPrev();
+		master.popPrev();
+		master.processPrev();	// ギルドメニューへ
+	}
+
+	function checkBonusPoint()
+	{
+		// キャンセルする前にＢＰをチェックして高いＢＰだった場合は問い合わせる
+		if(bonusPoint < sf.thresholdOfBonusNotified)
+		{
+			master.processPrev();	// ギルドメニューへ
+			return;
+		}
+		playSound("buzzer");
+		enabled = false;
+		master.setPrev(continueEdit);
+		master.setPrev();
+		var cmds = [];
+		cmds.add(%[text: "Edit", func: master.processPrev]);
+		cmds.add(%[text: "Cancel", func: cancelEdit]);
+		master.yesNoWin.open(cmds, "<y>Bonus points are high. Continue editing?");
+	}
+
+	function setModel(dic)
+	{
+		// 使用する素体を選択する
+		bonusPoint = initialBonus;	// ボーナスを元に戻す
+		updateBonusLayer();
+		jobBoard.clearJobCommands();	// 職業欄を初期化
+		setRandomName(dic); // Custom: Might as well use this rather than a translated default JP name.
+		sampleLayer.loadImages(dic.img + "_sample_" + dic.color[0]);
+
+		// 色を設定
+		colorSelect.array = [];
+		for(var i = 0; i < dic.color.count; i++)
+		{
+			colorSelect.array.add(%[name: dic.color[i], key: dic.color[i]]);
+		}
+		colorSelect.setControl(0);	// 初期化
+
+		// 性別表示
+		sexBoard.clear();
+		sexBoard.drawText(0, 0, master.sexSymbol(dic.sex)
+			, 0xC0C0FF + (dic.sex == "女") * 0x3EFFC1,,, 2048, 0x002244, 2);
+
+		// パラメータを種族に合わせた表示に
+		parameters[0].value = dic.power;
+		parameters[1].value = dic.intellect;
+		parameters[2].value = dic.piety;
+		parameters[3].value = dic.vitality;
+		parameters[4].value = dic.speed;
+		parameters[5].value = dic.luck;
+		for(var i = 0; i < 6; i++)
+		{
+			parameters[i].min = parameters[i].value;
+			parameters[i].max = parameters[i].value + 10;	// 種族基本値 + 10（後で変えるかも）
+			parameters[i].setControl(parameters[i].value);
+			parameters[i].enabled = true;
+		}
+
+		// 現時点でなれる職業があれば表示
+		displayPossibleJob();
+
+		return true;
+	}
+
+	function setRandomName(model=null)
+	{
+		// ランダムな名前を名前欄に入力する
+		model = modelSelect.value if(model === null);
+		var arr = [];
+		var str = model.sex == "男" ? sampleMaleNames : sampleFemaleNames;
+		arr.split(",", str);
+		arr.remove(nameEdit.text);	// 続けて同じ名前を出さないため現在の名前は除外しておく
+		nameEdit.text = arr.draw();
+	}
+
+	function fixName(name)
+	{
+		// 名前を固定してメイキングするとき
+		nameEdit.text = name;
+		nameBoard.clear();
+		nameBoard.drawText(0, 0, name, 0xFFFFFF,,, 2048, 0x002244, 2);
+		nameBoard.visible = true;
+		nameEdit.visible = false;
+		randomButton.visible = false;
+	}
+
+	function fixModel(dic)
+	{
+		// 素体を固定してメイキングするとき
+		setModel(dic);
+		modelSelect.value = dic;
+		modelBoard.clear();
+		modelBoard.drawText(0, 0, dic.race.displayName, 0xFFFFFF,,, 2048, 0x002244, 2);
+		modelBoard.visible = true;
+		modelSelect.visible = false;
+	}
+
+	function setColor(val, btn)
+	{
+		// 髪の色を選択する
+		var dic = modelSelect.value;
+		colorSelect.value = val.key;
+		sampleLayer.loadImages(dic.img + "_sample_" + val.key);
+		return true;
+	}
+
+	function setAlignment(val, btn)
+	{
+		// 属性を選択する
+		alignmentSelect.value = val;	// ジョブを出すために先に入れる
+		displayPossibleJob();
+		return true;
+	}
+
+	function setParameter(val, meter)
+	{
+		// 能力値を設定する
+		var d = meter.value - val;
+		if(bonusPoint + d < 0)
+		{
+			playSound("buzzer");
+			return false;
+		}
+		bonusPoint += d;
+		updateBonusLayer();
+		meter.value = val;	// ジョブを出すために先に入れる
+		displayPossibleJob();
+		return true;
+	}
+
+	function closeConfirmView()
+	{
+		// 作成をキャンセル
+		master.yesNoWin.close();
+		master.itemWin.close();
+		visible = true;
+		master.itemWin.curChara = void;	// 作成中のキャラでステータスを開いた後始末
+	}
+
+	function setJobAndConfirm(job)
+	{
+		// 職業を決定して仮作成キャラ表示後ユーザーに最終確認
+
+		// ボーナスポイントのチェック
+		if(bonusPoint > 0)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("Bonus points remain");
+			return;
+		}
+
+		// 名前入力のチェック
+		if(nameEdit.text.length == 0)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<y>No name entered");
+			return;
+		}
+
+		// 仮作成キャラ表示
+		visible = false;
+		master.setPrev(closeConfirmView);
+		master.setPrev();
+		var obj =  createChara(job);
+		master.itemWin.openStatus(obj, "single");
+
+		// 最終確認
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: registerChara, param: obj]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "Create <p>" + obj.name + "<y>?");
+		master.yesNoWin.setPos(245, 543);
+	}
+
+	function displayPossibleJob()
+	{
+		// 就職可能な職業を表示
+
+		// 一覧取得
+		var arr = getJobsFromControls();
+
+		// チェックと警告
+		if(arr.count == 0) displayCaution("Change alignment and<r>stats to select jobs");
+		else if(bonusPoint > 0) displayCaution("Allocate all points");
+		else displayCaution("Please pick a job");
+
+		// 表示
+		jobBoard.open(arr, setJobAndConfirm);
+	}
+
+	function getJobsFromControls()
+	{
+		// 各コントロールの結果から就業可能な職業をすべて返す
+		var dic = %[];
+		dic.sex = modelSelect.value.sex;
+		dic[alignmentSelect.name] = alignmentSelect.value;
+		for(var i = 0; i < parameters.count; i++)
+		{
+			dic[parameters[i].name] = parameters[i].value;
+		}
+		return getJobsMeetRequirement(dic);
+	}
+
+	function getJobsMeetRequirement(dic)
+	{
+		// 条件を満たしている職業をすべて返す
+		var arr = [];
+		for(var i = 0; i < master.job.count; i++)
+		{
+			var jb = master.job[i];
+			if(jb.sex.find(dic.sex) == -1) continue;
+			if(jb.alignment.find(dic.alignment) == -1) continue;
+			if(jb.power > dic.power) continue;
+			if(jb.intellect > dic.intellect) continue;
+			if(jb.piety > dic.piety) continue;
+			if(jb.vitality > dic.vitality) continue;
+			if(jb.speed > dic.speed) continue;
+			if(jb.luck > dic.luck) continue;
+			if(! jb.appeared) jb.appeared = true;	// 発見おめでとう
+			arr.add(jb);
+		}
+		return arr;
+	}
+
+	function updateBonusLayer()
+	{
+		// ボーナスポイント表示
+		bonusLayer.clear();
+		bonusLayer.drawText(60 + 24 * (bonusPoint < 10), 48, bonusPoint, 0xC9FFDF);
+	}
+
+	function getBonusPoint()
+	{
+		// ボーナスポイントの式。書いてみると結構シンプル
+		var base = 6;
+		var rate = 0.1;	// この値を大きくするとでかいボーナスが出やすくなる
+		while(true)
+		{
+			if(base > 50 || random > rate) return base + intrandom(0, 4);
+			base += 10;
+		}
+	}
+
+	function displayCaution(str)
+	{
+		// 各種警告を表示する
+		cautionBoard.clear();
+		if(str === void) return;
+		cautionBoard.chColor = 0xFFA080;
+		cautionBoard.write(str);
+	}
+
+	function createChara(job)
+	{
+		// キャラクターを作成
+
+		// 空いてる番号を探す
+		var num = master.chara.count;
+		for(var i = 0; i < num; i++)
+		{
+			if(master.chara[i] !== void) continue;
+			num = i;
+			break;
+		}
+
+		// 作成
+		var obj = new CharaObject(master.gameBase, master, num);
+		with(obj)
+		{
+			// エディットの結果を代入
+			.name = master.convertName(nameEdit.text);
+			.displayName = nameEdit.text;
+			.alignment = alignmentSelect.value;
+			.model = modelSelect.value;
+			.color = colorSelect.value.key;
+			.power = parameters[0].value;
+			.intellect = parameters[1].value;
+			.piety = parameters[2].value;
+			.vitality = parameters[3].value;
+			.speed = parameters[4].value;
+			.luck = parameters[5].value;
+			.setJob(job, true);
+		}
+		obj.initialize();	// キャラ初期化
+		obj.setInitialItems();	// 初期アイテムを持たせる
+		if(sf.usedJobsByCreating.find(job.name) == -1) sf.usedJobsByCreating.add(job.name);	// 記録
+		return obj;
+	}
+
+	function registerChara(obj)
+	{
+		// 登録
+		master.itemWin.close();
+		master.popPrev();
+		master.popPrev();
+		master.yesNoWin.close();
+		playSound("click");
+		master.notice.open(master.processPrev);
+		master.notice.write("<p>" + obj.name + "<y> was created");
+		obj.activate();
+		master.chara[obj.id] = obj;
+		master.guildWin.addMember(obj);
+		if(master.inEvent) kag.trigger("registerNewCharactor");	// シナリオ用
+	}
+}
+//----------------------------------------------------------------------------------------

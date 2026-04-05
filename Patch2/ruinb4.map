@@ -1,0 +1,232 @@
+﻿; 沼地の廃墟
+
+name = 沼地の廃墟Ｂ４
+insideName = Ｂ４
+upper = 沼地の廃墟Ｂ３
+pool = 沼地の廃墟Ｂ４水中
+level = 44
+bgm = shrine
+roof = stone
+shadow = dark
+sky = black
+blank = rock
+outfield = grass
+
+; パーツ画像
+━ = stoneg
+… = halfg
+　 = grass
+～ = pool
+☖ = arch
+⧻ = stonegate
+︻ = panel
+㊤ = ladderu
+Ⓐ = warp
+① = star
+⑹ = monument
+
+; 敵情報
+maxGroups = 2
+monsters = ローパー,フェアリー,ウィルオーウィスプ,マーメイド
+traps = 石つぶて,毒針,毒ガス,しびれ針,酸スプレー,ラミアの瞳,スモーク,亡霊の群れ,警報
+
+; 移動ポイント
+(A) = map:沼地の廃墟Ｂ１, x:10, y:8
+
+; 宝箱
+box[1] = 罠はない,スターカード・剣
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  
+  ┏━━━┳━━━━━━︻━━━━━━━━━━┳━━━━━━━━━━━┓
+15┃④　④☖～～～～～～⑤　　　　　　　　　　┃～～～～～～～～～～～┃
+  ┃　　　┃～～～～～～～～～～～～～～～～　┃～～～～～～～～～～～┃
+14┃④　④☖～～～～～～～～～～～～～～～～　┃～～～～　　　　　～～┃
+  ┣☖━☖┛～～～～～～～～～～～～～～～～　┃～～～～　　　　　～～┃
+13┃　～～～～～～～～～～～～～～～～～～～⑦⧻　　　　　　①　　～～┃
+  ┃　～～～～～～～～┏☖━☖┓～～～～～～　┃～～～～　　　　　～～┃
+12┃　～～～～～～～～☖　　　☖～～～～～～　┃～～～～　　　　　～～┃
+  ┃　～～～～～～～～┃　　　┃～～～～～～　┃～～～～～～～～～～～┃
+11┃　　　　　　　　　☖　　　☖　　　　　　　┃～～～～～～～～～～～┃
+  ┃　～～～～～～～～┗☖━☖┛～～～～～～　┣━━━━━━━━━━━┛
+10┃　～～～～～～～～～～～～～～～～～～～　┃
+  ┃　～～～～～～～～～～～～～～～～～～～　┃	┏━━━━━━━━━┓
+ 9┃　～～～～～～～～～～～～～～～～～～～　┃	┃　　　～～～～～～┃
+  ┃　～～～～～～～～～～～～～～～～～～～　┃	┃　　　～～～～～～┃
+ 8┃　～～～～～～～～～～～～～～～～～～～　┃	┃❶　　～～～～～～┃
+  ┃　～～～～～～┏⧻━⧻┓～～～～～～～┏━┛	┃　　　～～～～～～┃
+ 7┃　～～～～～～⧻Ⓐ　　⧻～～～～～～～┃			┃　　　～～～～～～┃
+  ┃　～～～～～～┃　　　┃～～～～～～～┗━┓	┗━━━━━━━━━┛
+ 6┃　～～～～～～⧻　　　⧻　　　　　　　　㊤┃
+  ┃　～～～～～～┗⧻━⧻┛～～～～～～　　　┗━━━━━━━━━━━┓
+ 5┃　　　～～～～～～～～～～～～～～～　　　　　　　　　　　　　　　┃
+  ┗━┓　～～～～～～～～～～～～～～～～～～～～～～～～～～～～～　┃
+ 4		┃　～～～～～～～～～～～～～～～～～～～～～～～～～～～～～　┃
+  		┃　～～～～～～～～～～～～～～～～～～～～～～～～～～～～～　┃
+ 3		┃　～～～～～～～～～～～～～～～～～～～～～～～～～～～～～　┃
+  		┣☖━☖┓～～～～～～～～～～～～～～～～～～～～～～～┏☖━☖┫
+ 2		┃③　③☖～～～～⑹～～～～～～～～～～～～～～～～～～☖②　②┃
+  		┃　　　┃～～～～　～～～～～～～～┏☖━☖┓～～～～～┃　　　┃
+ 1		┃③　③☖　～～～　～～～～～～～～☖　　　☖　　　　　☖②　②┃
+  		┗━━━┫　～～～　～～～～～～～～┃　　　┣━━━━━┻━━━┛
+ 0						┃　　　　　　　　　　　　　☖　　　┃
+  						┗━━━━━━━━━━━━━┻━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(2, 3, 4);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsMove || inSearching
+
+[if exp='! o.精霊の力を宿す石.accepted']
+	@fg c=9009 left=450 top=0
+	[texton]
+	There is a large rock emitting beautiful light. What could this be?[k]
+	[textoff]
+	@clf
+	[eventoff]
+[endif]
+
+[if exp='o.精霊の力を宿す石.completed || game.findItem(o.精霊の石) !== void']
+	@fg c=9009 left=450 top=0
+	[texton]
+	There is a spirit rock. I don't think I need any more spirit stones.[k]
+	[textoff]
+	@clf
+	[eventoff]
+[endif]
+
+@fg c=9009 left=450 top=0
+@wait time=500
+
+[texton]
+In the center of the hall was a large rock formation that emitted a beautiful light.[k]
+[if exp='game.isFreeMode']
+	Could this be the spirit stone the client was talking about?[k]
+[else]
+	[テオ f=05]「Could this be the Spirit Stone...?」[k]
+[endif]
+For now, if all we need to do is satisfy the client's request, then we should just bring back a piece of the rock.[k]
+With that in mind, I reached out my hand toward the rock. Then [――――][k]
+[textoff]
+
+@playse storage=magic6 loop=true
+@image layer=e0 storage=screen_blue left=0 top=0
+@anime_fadein layer=e0
+@image layer=e1 storage=PE_base_view visible=true left=0 top=0 mode=psdogde5
+@startemit layer=e1 storage=PE_energy time=-1
+@wait time=5000
+
+[texton]
+[if exp='game.isFreeMode']
+	...![k]
+[else]
+	[テオ f=05]「...!」[k]
+[endif]
+Numerous balls of light gathered from the surrounding area! What on earth is going on?[k]
+[textoff]
+
+@playse storage=shakin4
+@flash on=1000
+@layopt layer=e0 visible=false
+@clearemit layer=e1
+@fgf c=slime_great left=450 top=-90
+@flash off=1000
+@wait time=1000
+
+[texton]
+[name n=Slime]「...」[k]
+[if exp='game.isFreeMode']
+	Suddenly, a giant slime appeared right in front of me![k]
+[else]
+	[テオ f=12]「What, a giant slime?!」[k]
+[endif]
+[textoff]
+@clf
+
+@monster pos=3 name=グレートスライム
+@callbattle escape=false bgm=boss
+
+@fgf c=9009 left=450 top=0
+[texton]
+[if exp='game.isFreeMode']
+	After defeating the giant slime, we breathed a sigh of relief.[k]
+	Perhaps it was a guardian deity trying to protect the spirit rock.[k]
+	We cut off a small piece of the spirit rock to take with us.[k]
+[else]
+	[テオ f=10]「Phew, that was a surprise.」[k]
+	Perhaps it was a guardian deity trying to protect the spirit rock.[k]
+	We cut off a small piece of the spirit rock to take with us.[k]
+[endif]
+[textoff]
+@getitem item=精霊の石
+@clf
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+*event_3
+;[exp] true
+*event_4
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Some doors cannot be opened no matter what you do.<r>Stay calm and look for another entrance."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] inSearching || onObjectTrigger
+
+
+@question title="There is a stone monument. Would you like to touch it?"
+[eventoff cond='! tf.result']
+@wait time=500
+@playse storage=tremble
+@quake time=3000 hmax=5 vmax=0
+@wq
+@playse storage=rockdrop
+@changewall x=4 y=7 way=n himg=arch type=space behind=true
+@changewall x=5 y=7 way=n himg=arch type=space behind=true
+@changewall x=4 y=6 way=s himg=arch type=space behind=true
+@changewall x=5 y=6 way=s himg=arch type=space behind=true
+@changewall x=4 y=7 way=w himg=arch type=space behind=true
+@changewall x=4 y=6 way=w himg=arch type=space behind=true
+@changewall x=5 y=7 way=e himg=arch type=space behind=true
+@changewall x=5 y=6 way=e himg=arch type=space behind=true
+@wait time=800
+@notice text="I heard the sound of something heavy moving somewhere!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] inSearching && WAY == "e"
+
+@notice text="The door was tightly shut and didn't seem to be moving at all."
+
+[eventoff]
+;-------------------------------------------------------------------------------

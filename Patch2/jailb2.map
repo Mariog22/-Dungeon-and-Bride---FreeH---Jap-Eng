@@ -1,0 +1,115 @@
+﻿;  ◆牢獄　Ｂ２◆
+
+name = 牢獄Ｂ２
+insideName = Ｂ２
+upper = 牢獄Ｂ１
+lower = 牢獄Ｂ３
+level = 44
+bgm = bad
+margin = 1
+roof = stone
+shadow = dark
+sky = black
+outfield = soil
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = stone
+　 = marble
+／ = door
+ノ = prison
+メ = prison
+┯ = button
+㊦ = ladderd
+
+; 敵情報
+maxGroups = 2
+monsters = ウインターコボルド
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+  				┏━━━┳━━━┳━━━┳━━━┳━━━┓
+ 5				┃　　　┃　　　┃　　　┃　　　┃　　　┃
+  				┃　　　┃　　　┃　　　┃　　　┃　　　┃
+ 4				┃④　　┃⑥　　┃②　　┃⑨　　┃⑪　　┃
+  ┏━┳━┻メ━━┻メ━━┻ノ━━┻メ━━┻メ━━┻━━━┓
+ 3┠①／③　　　③　　　③　　　　　　　③　　　③　　　㊦┃
+  ┗━┻━┳━━メ┳━━メ┳━━メ┳━━メ┳━━メ┳━━━┛
+ 2				┃　　⑤┃　　⑦┃　　⑧┃　　⑩┃　　⑫┃
+  				┃　　　┃　　　┃　　　┃　　　┃　　　┃
+ 1				┃　　　┃　　　┃　　　┃　　　┃　　　┃
+  				┗━━━┻━━━┻━━━┻━━━┻━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(0, 3);
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="Ｂ１" exp='tf.result = ["牢獄Ｂ１", "up"]'
+@select text="Ｂ３" exp='tf.result = ["牢獄Ｂ３", "down"]'
+@select text="Ｂ４" exp='tf.result = ["牢獄Ｂ４", "down"]'
+@select text="No" exp='tf.result = []'
+[ask]
+@elevator map=&'tf.result[0]' lift=&'tf.result[1]' cond='tf.result.count > 0'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] WAY == "s"
+
+@delevent
+@jump storage="main10.scn" target=*jail_02
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove && random < 0.4
+
+@jump storage="main10.scn" target=*jail_03
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+*event_5
+;[exp] true
+*event_6
+;[exp] true
+*event_7
+;[exp] true
+*event_8
+;[exp] true
+*event_9
+;[exp] true
+*event_10
+;[exp] true
+*event_11
+;[exp] true
+*event_12
+;[exp] true
+
+@jump storage="main10.scn" target=*jail_04
+
+[eventoff]
+;-------------------------------------------------------------------------------

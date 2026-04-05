@@ -1,0 +1,241 @@
+﻿; ヤネクの森
+
+name = ヤネクの森・霧の谷
+insideName = Mist Valley
+level = 20
+bgm = field
+external = s:4
+isOutdoor = true
+shadow = light
+sky = mistysea
+blank = rock
+effect = BE_fog
+
+; 画像パーツ
+━ = rockw
+〓 = wood
+　 = soilw
+❖ = soilw
+☗ = gatew
+⑴ = bulletin
+⑵ = empty
+⑷ = bulletin
+
+; 敵情報
+maxGroups = 2
+monsters = バルキリー,チャンピオン,ユニコーン,ファントム
+
+; 移動ポイント
+(A) = map:ヤネクの森・トンネル, x:9, y:11, way:w, symbol:cave, ask:Go to the next map?
+(B) = map:ヤネクの森・トンネル, x:9, y:9, way:w, symbol:cave, ask:Go to the next map?
+(C) = map:神の山１Ｆ, x:16, y:16, way:s, symbol:movev, ask:Go to the next map?
+
+; 宝箱
+box[1] = 破魔の短剣_u,経験のコイン（中）
+box[2] = マジカルボートの巻物,経験のコイン（中）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  ┏━━━━━━━━━━━━━┓
+39☗Ⓐ　　　　　　　　　　　　┃		❖
+  ┗━━━━━━━┓▼▼▼▼　┃
+38							❖┃▼▼▼▼　┃
+  ┏━━━━━━━┛▼▼▼▼　┗━┓
+37☗Ⓑ　　　　▼▼▼▼▼▼▼　　　┃❖
+  ┗━━━┓　▼▼▼▼▼▼▼　　　┃
+36				┃　▼▼▼▼▼▼▼　　　┃
+  				┃　▼▼▼▼▼▼▼　　　┃
+35				┃　▼▼▼▼▼▼▼⑵　　┃
+  				┃　▼▼▼▼▼▼┏━┓　┃
+34				┃　▼▼▼▼▼▼┃❖┃　┃
+  				┃　▼▼▼▼▼▼┃	┃　┃
+33				┃　　　　　　　┃	┃❷┃
+  				┗━━━━━┓　┃	┗━┛
+32										┃　┃
+  								┏━┛　┃
+31								┃　　　┃
+  								┃　　　┃
+30								┃⑴　　┃
+  								┃　　　┃
+29								┃　　　┃
+  								┃　　　┃
+28	❖	❖	❖	❖┃　　　┃❖	❖	❖
+  ━━━━━━━━┛　　　┗━━━━━
+27▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼
+  ▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼
+26▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼
+  ▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼
+25▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼
+  ▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼
+24▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼
+  ━━━━━━━━━━┓　　　┏━━━
+23	❖	❖	❖	❖	❖┃　　　┃❖	❖
+  										┗━┓　┃
+22												┃　┃
+  												┃　┗━┓
+21												┃　　　┃
+  				┏━━━━━━━┛　　　┃
+20				┃　　　　　　　　　　　┃
+  				┃　┏━━━━━━━┓　┃
+19				┃　┃							┃　┃
+  				┃　┃							┃　┃
+18				┃　┃							┃　┃
+  				┃　┃							┃　┃
+17				┃　┃							┃　┃
+  		┏━┛　┃					┏━┛　┃
+16		┃　　敵┃					┃　　　┃
+  		┃　　　┃					┃　┏━┛
+15		┃　　　┃					┃　┃
+  		┗━┓　┗━┓			┃　┃
+14				┃　　❶┃			┃　┃
+  				┗━━━┛			┃　┃
+13												┃　┃
+  												┃　┃
+12												┃　┃
+  								┏━━━┛　┃
+11								┃　　　　　┃
+  						┏━┛　┏━━━┛
+10						┃　　　┃
+  						┃　　　┃
+ 9						┃　　　┃
+  						┃　　　┗━┓
+ 8						┃　　　　　┃
+  						┃　　　　　┃
+ 7						┃　　　　　┃
+  				┏━┛　　　　　┗━┓
+ 6				┃　　　　　　　　　┃
+  				┃　　　　　　　　　┃
+ 5	❖	❖┃　　　　⑷　　　　┃❖	❖
+  ━━━━┛▼▼▼▼〓▼▼▼▼┗━━━
+ 4▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼
+  ▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼
+ 3▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼
+  ▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼
+ 2▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼
+  ▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼
+ 1▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼
+  ▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼
+ 0▼▼▼▼▼▼▼▼▼Ⓒ▼▼▼▼▼▼▼▼
+  									▲
+-1									〓
+  									〓
+-2									〓
+  									〓
+-3									〓
+  									〓
+-4									〓
+  
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[4][0].f.img = "wood";
+pos[4][0].f.icon = 7;
+pos[5][26].event = pos[5][25].event = 3;
+pos[4][2].event = pos[4][1].event = 5;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(3);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@roadguide s="Mountain of God"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@mu f=pururun
+[texton w=0]
+[name n=Slime f=slime_01]「Ugh, help me!」[k]
+When I looked into the barrel, I saw a slime that was stuck inside and unable to get out.[k]
+[textoff]
+@question title="Try pulling the slime out?"
+
+[if exp='! tf.result']
+	[texton w=0]
+	[name n=Slime f=slime_01]「Oh no. Help me please. I'll be grateful.」[k]
+	[textoff]
+	@playmapsound
+	[eventoff]
+[endif]
+
+@wait time=500
+@se f=cork
+@quake time=200 hmax=5 vmax=0
+[texton w=0]
+When I pulled the slime, it came out with a pop![k]
+[textoff]
+
+@wait time=500
+@walk turn=s cond='WAY != "s"'
+@walk move=n
+@wait time=500
+
+@fg c=slime_01 left=450 top=360
+[texton w=1]
+[name n=Slime f=slime_01]「Whew, that was rough.」[k]
+[name n=Slime f=slime_01]「Thank you for your help. This is a token of my appreciation.」[k]
+[textoff]
+
+@getitem item=温泉チケット
+
+[texton w=1]
+[name n=Slime f=slime_01]「Actually, I sell hot spring tickets.」[k]
+[name n=Slime f=slime_01]「Tickets are sold in the woods near Sapphire City, so come and buy some if you want more.」[k]
+[textoff]
+@cl
+
+@delevent
+@addevent map=ヤネクの森・西 num=9
+@changefloor map=ヤネクの森・西 x=5 y=3 pimg=human
+
+@playmapsound
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="Mountain of God ahead."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@walk turn=s cond='WAY != "s"'
+@fg l=valkyrie_blue left=290 top=60 b
+@fg r=valkyrie_blue left=610 top=60
+[texton]
+[nw]Soldiers stood before us with spears at the ready. They informed us that no one was permitted to enter the Mountain of God while the demon Murmur was active.
+ 
+ [k]
+[textoff]
+@clf
+@walk move=n
+@walk move=n cond='game.party.curY == 2'
+
+[eventoff]
+;-------------------------------------------------------------------------------

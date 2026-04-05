@@ -1,0 +1,152 @@
+﻿; 水竜の神殿
+
+name = 水竜の神殿Ｂ５
+insideName = Ｂ５
+upper = 水竜の神殿Ｂ４
+level = 35
+bgm = labyrinth
+isOutdoor = true
+shadow = dark
+sky = black
+roof = stone
+underWater = true
+effect = PE_water_bubble
+outfield = marble
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = stone_h
+－ = stone
+　 = marble
+☐ = marble
+〰 = water
+◇ = water
+⏁ = lighten
+／ = door
+﹃ = ladder
+︻ = panel
+
+; 敵情報
+maxGroups = 2
+monsters = ブルースライム,電気ねずみ,サンダーウィスプ,ウンディーネ,セイレーン,ラミア
+
+; 宝箱
+box[1] = 罠はない,水門の鍵
+box[2] = 罠はない,アクアマリンの魔石
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  
+  													━━━┳━━━━━┓
+19																ⅼ　　　　　┃
+  																ⅼ　　　　　┃
+18																『　　　　　┃
+  				┏━━━━━┓					┣━━／━━┫
+17				┃☐☐➊☐☐┃					┃　　　　　┃
+  				┃☐☐☐☐☐┃					┃　　　　　┃
+16				┃☐☐☐☐☐┃					┃⏁　　　⏁┃
+  				┃☐☐☐☐☐┃	┏━━━┛〰〰〰〰〰┗━━━┓
+15				┃☐☐☐☐☐┃	┃〰〰〰〰〰〰〰〰〰〰〰〰〰┃
+  				┗━┓☐┏━┛	┃〰〰〰〰〰〰〰〰〰〰〰〰〰┃
+14						┃☐┃			┃〰〰　　　　　　　　　〰〰┃
+  						┃☐┃			┃〰〰　　　　　　　　　〰〰┃
+13						┃☐┃			┃〰〰　　　　　　　　　〰〰┃
+  						┃☐┃			┃〰〰　　　　　　　　　〰〰┃
+12						┃☐┃			┃〰〰　　　　　　　　　〰〰┃
+  						┃☐┃			┃〰〰　　　　　　　　　〰〰┃
+11						┃☐┃			┃〰〰　　　　　　　　　〰〰┃
+  						┃☐┃			┃〰〰　　　　　　　　　〰〰┃
+10						┃☐┃			┃〰〰　　②　②　②　　〰〰┃
+  						┃☐┃			┃〰〰〰〰〰〰〰〰〰〰〰〰〰┃
+ 9						┃☐┃			┃〰〰〰〰〰〰〰〰〰〰〰〰〰┃
+  						┃☐┃			┗━━━┓〰〰〰〰〰┏━━━┛
+ 8						┃☐┃							┃⏁　　　⏁┃
+  						┃☐┃							┃　　　　　┃
+ 7						┃☐┃							┃　　❷　　┃
+  						┃☐┃							┗━━━━━┛
+ 6┃					┃☐┃
+  ┃					┃☐┃
+ 5┃					┃☐┃
+  ┣﹃－－┳━┛☐┗━┓
+ 4┃　　⏁┃☐☐☐☐☐┃
+  ┃　　　┃☐☐☐☐☐┃
+ 3┃　　　／⓵☐☐☐☐┃
+  ┃　　　┃☐☐☐☐☐┃
+ 2┃　　⏁┃☐☐☐☐☐┃
+  ┃　　　┗━━━━━┻━┳━━━
+ 1┃　　　　　　　　　　　ⅼ
+  ┃　　　　　　　　　　　ⅼ
+ 0┃　　　　　　　　　　　ⅼ
+  ┗━━━━━━━━━━━┻━━━
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[0][4].n.img = "stone";
+pos[8][18].w.img = "stone";
+pos[2][16].f.pimg = pos[4][16].f.pimg = "lighten";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+sky = o.水竜の神殿Ｂ４.underWater ? "black" : "deepwater";
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@wait time=500
+[texton]
+[？？？]「I am the guardian of the temple. You are not allowed to proceed beyond this point.」[k]
+Something attacked![k]
+[textoff]
+@monster pos=3 name=ストーンゴーレム
+@callbattle bgm=boss gameover=true
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@wait time=500
+[texton]
+[リーダー f=12]「...!」[k]
+Suddenly, I felt a terrifying killing intent from behind that made my whole body tremble![k]
+[？？？]「Who disturbs my slumber?」[k]
+An eerie voice echos around me! Something is here![k]
+[textoff]
+@wait time=500
+@walk move=w cond='game.party.curX > 9'
+@walk move=e cond='game.party.curX < 9'
+@walk turn=n cond='WAY == "s"'
+@walk move=n
+@walk move=n
+@wait time=500
+@se f=bashan1
+@flash on=200
+@wait time=1000
+@fgf c=dragon_blue left=450 top=-90
+@flash off=500
+@wait time=1000
+[texton]
+Behind me stood a huge blue dragon![r]
+The dragon suddenly attacked![k]
+[textoff]
+@clf
+@monster pos=3 name=アクアドラゴン
+@callbattle bgm=dragon gameover=true escape=false
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------

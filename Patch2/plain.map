@@ -1,0 +1,267 @@
+﻿;  平原
+
+name = エミール平原
+insideName = Plain
+level = 15
+bgm = trip
+isOutdoor = true
+shadow = dark
+roof = wood
+sky = mountain
+outfield = soil
+
+; 画像パーツ
+━ = rock
+ᆖ = stone
+－ = wood
+　 = soil
+☐ = wood
+◇ = sand
+☆ = soilr
+❖ = sand
+△ = rock
+⏃ = woods
+⏁ = pedestal
+〰 = water
+／ = door
+＋ = rock
+☗ = downstair
+⑴ = bulletin
+⑵ = empty
+⑶ = br_maxhp
+⑸ = bulletin
+⑽ = bulletin
+
+; 敵情報
+maxGroups = 2
+monsters = ブレイズマン,ウォーロック,ハイウェイマン,ユニコーン,ピクシー
+traps = 石つぶて,毒針,しびれ針,酸スプレー,爆弾,スモーク
+
+; 移動ポイント
+(A) = map:ブレイブタウン, enter:ブレイブタウン・西門, ask:Enter town?
+(B) = map:ワイルド・ブルの隠れ家, x:0, y:0, way:e, symbol:cave, ask:Go to the dungeon?
+(C) = map:海岸, x:19, y:29, way:s, symbol:movev, ask:Go to the next map?
+(D) = map:タルハ砂漠・北, x:0, y:56
+(E) = map:大洞窟Ｂ５, x:8, y:0
+(F) = map:火山島１Ｆ, x:22, y:11
+(G) = map:タルハ砂漠・南, x:0, y:10
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+  
+39			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃‖	┃❖┃
+  			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃‖	┃	┃
+38			⏃⏃　　⑧　⑧　　⏃⏃⏃⏁　　　　　　　　　　　　　　　　　　　Ⓐ☗	┃❖┃
+  			⏃⏃　┏－－－┓　⏃⏃⏃⏃⏃⏃⏃△△　△△⏃⏃⏃　　　　　　　　　‖	┃	┃
+37			⏃⏃⑧ⅼ☐☐☐ⅼ⑧⏃⏃⏃⏃⏃⏃⏃△△　△△⏃⏃⏃　　　　　　⑴　　‖	┃❖┃
+  			⏃⏃　┣－－／┫　⏃⏃			⏃⏃△△　△△⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃‖	┃	┃
+36	⏃⏃⏃⏃　ⅼ☐☐☐ⅼ　⏃⏃			⏃⏃△△　△△⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃‖	┃❖┃
+  	⏃⏃⏃⏃　┗／－－┛　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃						┃	┃
+35	⏃⏃　　　　⑦　　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃				┃❖┃
+  	⏃⏃　　　　　　　　　⏃⏃											⏃⏃　　　⏃⏃⏃⏃
+34	⏃⏃　　　　　　　　　⏃⏃									⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃　　　　　　　　　⏃⏃									⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃
+33	⏃⏃⑸　　　⑥　　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　　　　　☆☆☆⏃⏃
+  	⏃⏃　　　　　　　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃☆⏃⏃
+32	⏃⏃　　　　　　　　　⏃⏃			⏃⏃⑨　　　　　　　　　　　　⏃⏃⏃⏃⏃☆⏃⏃
+  	⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃　⏃⏃⏃⏃⏃⏃⏃◇◇◇◇◇⏃⏃	⏃⏃☆⏃⏃
+31	⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃　⏃⏃⏃⏃⏃⏃⏃◇◇◇◇◇⏃⏃	⏃⏃☆⏃⏃
+  	⏃⏃　⏃⏃⏃⏃									⏃⏃　⏃⏃			⏃⏃⏃⏃◇⏃⏃⏃⏃	⏃⏃☆⏃⏃
+30	⏃⏃　⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃	⏃⏃⏃⏃◇⏃⏃⏃⏃	⏃⏃☆⏃⏃
+  	⏃⏃　⏃⏃					⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃			⏃⏃⏃⏃⏃			⏃⏃☆⏃⏃
+29	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　　　　　⏃⏃			⏃⏃⏃⏃⏃			⏃⏃☆⏃⏃
+ 		⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　　　　　⏃⏃											⏃⏃⏃⏃⏃
+28	⏃⏃　⏃⏃	⏃⏃　　　　　　　　　　　　　⏃⏃⏃⏃									⏃⏃⏃⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃　　　　　　　　　　　　　⏃⏃⏃⏃
+27	⏃⏃　⏃⏃⏃⏃⏃　　　　　　　　　　　　　　　⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃　　　　　⏃⏃⏃　　　　　　　⏃⏃
+26	⏃⏃　⏃⏃⏃　　　　　　　⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃〰〰　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+25	⏃⏃　　　　　　　⏃⏃⏃⏃⏃〰〰〰〰　　　　　　　　　　　　　⏃⏃⏃⏃┃
+  	⏃⏃　　　　　　　⏃⏃⏃⏃⏃〰〰〰〰　　　　　　　　　　　　　⏃⏃⏃⏃┃
+24	⏃⏃　　　　　　　　　　　〰〰〰〰〰　　　　　　　　　　　　　〰〰〰〰┃
+  	⏃⏃⏃⏃⏃　　　　　　　　〰〰〰〰〰　　　　　　　　　　　　　〰〰〰〰┃
+23	⏃⏃⏃⏃⏃　　　　　　　　　　　　　　　　　　　　　　　　　　〰〰〰〰┃
+  			⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃　　　　　　　　　〰〰〰〰〰〰〰〰┃
+22			⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃　　　　　　　　　〰〰〰〰〰〰〰〰┃
+  							━━━┓　　　　　⏃⏃⏃　　　　　　　〰〰〰〰〰〰┏━┓〰┃
+21										┃　　　　　　　　　　　　　　　〰〰〰〰〰〰┃	┃〰┃
+  										┗━┓　　　　　　　　　　　┏━━━━━━━┛	┃〰┃
+20												┃　　　　　　　　　　　┃									┃〰┃
+  												┗━━━┓　　　┏━━━┛									┃〰┃
+19																┃　　　┃													┃〰┃
+  																┃　　　┃			┏━━━━━━━━━┛〰┃
+18																┃　　　┃			☗Ⓑ　　　　〰〰〰〰〰〰┃
+  																┃　　　┃			┗━━━━━━━━━━━┛
+17																┃　　　┃
+  																┃　　　┃
+16																┃　　　┃
+  																┃　　　┃
+15																┃⑽　　┃
+  																┗━┓　┃
+14																		┃　┃
+  																		┃　┃
+13																		┃　┃
+  										┏━━━━━━━┛　┃
+12										┃④　　　④　　　④┃
+  										┃　┏━━━━━━━┛											┏━━━┓
+11										┃　┃																			┃　　　┃
+  										┃　┃													┏━━━━━┛　　　┃
+10										┃④┃													┃△△　△△△　　敵┃
+  										┃　┃													┃△△　△△△△△　┗━┓
+ 9										┃　┃													┃　　　△△△△△　△△┃
+  										┃　┗━━━━━━━━━━━━━┛　　　　　△△△　△△┗━┓
+ 8										┃④　　　④　　　④　　　④　　　　　　　　　　　　◇◇△△┃
+  										┗━━━━━━━━━━━━━━━━━┓　┏━━━┓◇◇◇△△┃
+ 7																												┃　┃			┃◇◇◇◇◇┃
+  																												┣＋┫			┗━┓◇◇◇┃
+ 6																												┃　┃					┃◇◇◇┃
+  																												┃　┃					┃△△◇┃
+ 5																												┃　┃					┃△△◇┃
+  						┏━━━━━━━━━━━━━━━━━━━━━┛　┃					┗━┓◇┃
+ 4						┃⑵　　　　　　　　　　　　　　　　　　　　　　┃							┃◇┃
+  						┃　　　　　　　┏━━━━━━━━━━━━━━━┛							┃◇┃
+ 3						┃⑶　　　　　　┃																							┃◇┃
+  						┗━━━━━━━┛																							┃◇┃
+ 2																																						┃◇┃
+  																																						┃◇┃
+ 1																																						┃◇┃
+  																																						┃◇┃
+ 0																																						┃Ⓒ┃
+  																																							▲
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[17][38].e.himg = "gate";
+pos[17][38].e.img = "stone";
+pos[19][0].f.img = pos[18][5].f.img = pos[19][8].f.img = "sand";
+pos[18][5].f.icon = pos[19][8].f.icon = 0;
+for(var i = 15; i <= 19; i++) pos[i][16].f.img = "soil";
+for(var y = 32; y <= 34; y++) for(var x = 2; x <= 5; x++) pos[x][y].f.img = "grass";
+pos[4][36].n.img = pos[4][37].s.img = "wood";
+pos[3][35].n.img = pos[3][36].s.img = "wood";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+events.remove(6);
+events.remove(7);
+events.remove(8);
+if(! o.妻の浮気調査.accepted)
+{
+	pos[3][33].f.pimg = void;
+	pos[3][35].n.type = "door";
+	pos[3][35].n.click = false;
+}
+else if(! f.hasMetElenorAlready || game.date % 2 == 0)
+{
+	pos[3][33].f.pimg = "human";
+	pos[3][35].n.type = "door";
+	pos[3][35].n.click = false;
+	events.push2(6);
+}
+else
+{
+	pos[3][33].f.pimg = void;
+	pos[3][35].n.type = "wall";
+	pos[3][35].n.click = true;
+	events.push2(7, 8);
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 5, 10]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Adventurer's Town - Bravetown"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@delevent
+@notice text="When I peered into the barrel, I found a large amount of gold coins hidden inside!"
+@getitem gold=200000
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 20)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 20!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] ! protectHeroines && o.ホーク・ウイング.interruption == 0 && ! game.guest.members.has(o.ミレディ) && random < 0.1
+
+; ホーク・ウイングとの決闘
+@jump storage="duel.ks" target=*hawkwing_encounter
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="The Grojean family's fields"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Eleanor f=elenor_02]「Can I help you?」[k]
+[textoff]
+@eval exp='f.hasMetElenorAlready = true'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] WAY == "n" && onObjectTrigger
+
+[texton]
+I tried to open the door, but it seemed to be locked from the inside and wouldn't budge.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] party.status.has(o.透視) && map.getWallInfo().type == "wall"
+
+@delevent
+@jump storage="main11.scn" target=*barn_2
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] true
+
+@delevent
+@wait time=500 cond='WAY != "s"'
+@walk turn=s cond='WAY != "s"'
+@wait time=500
+@jump storage="main11.scn" target=*troll_3
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] onObjectTrigger
+
+@roadguide n=Bravetown s=Coast
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,2060 @@
+﻿; サファイアシティ到達～古代の迷宮
+
+
+
+; ここで今まで通り過ぎた場所の状態をまとめて更新する
+
+*_setting_for_game
+;-----------------------------------------------------------------------------------------
+[iscript]
+
+// 噴水の機能を停止
+f.fountainForOpeningEvent = false;
+
+// コリンズの森
+o.コリンズの森.events = [1, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+o.コリンズの森.sky = "forest";
+
+// ランドン渓谷
+o.ランドン渓谷・谷底.events = [1];
+
+// ブレイブタウン
+o.冒険者ギルド.appeared = true;
+o.ホテル琥珀.appeared = true;
+o.マジカル☆ウェンディ.appeared = true;
+o.冒険者の保管庫.appeared = true;
+o.ブレイブタウン・西門.appeared = true;
+
+o.マルティナの酒場.events = [];
+o.剣の店リーネ.events = [1];
+o.アイザック防具店.events = [1];
+o.ドナの道具屋.events = [1, 2];
+o.森の中の廃屋入口.events = [];
+o.町外れの遺跡入口.events = [];
+o.自宅.events = [];
+o.ブレイブタウン・北門.events = [];
+
+// シーガルの村
+o.海岸ギルド.appeared = true;
+o.潮風のペンション.appeared = true;
+o.かもめ亭.appeared = true;
+o.魔法の店うみねこ.appeared = true;
+o.シーサイド保管庫.appeared = true;
+o.マーメイドビューティ.appeared = true;
+
+o.海の男の武器店.events = [1];
+o.シーガルの村・東門.events = isDemoVersion ? [2] :[];
+o.シーガルの村・南門.events = [];
+o.砂浜.events = [];
+
+// 品揃え
+o.剣の店リーネ.selection = [o.良い短剣, o.ロングソード, o.グラディウス, o.カトラス, o.サーベル];
+o.剣の店リーネ.specialItem = [o.スティレット, o.シャムシール, o.クレイモア];
+o.剣の店リーネ.restockItems();
+o.アイザック防具店.selection = [o.ブロンズバックラー, o.身かわしの服, o.硬い革鎧, o.胸当て, o.レンジャーブーツ, o.鉄の小手];
+o.アイザック防具店.specialItem = [o.銀の小手, o.銀のブーツ, o.支えの盾];
+o.アイザック防具店.restockItems();
+o.ドナの道具屋.selection = [o.はちみつパン, o.はちみつパン, o.ポーション, o.ポーション, o.魔法の砂, o.魔法の砂, o.麻痺治療薬, o.麻痺治療薬, o.冒険者のブラ,, o.革のズボン];
+o.ドナの道具屋.specialItem = [o.ハイポーション, o.エーテル, o.強力眠気ざまし, o.特効薬, o.敏捷性の秘薬, o.復活の粉];
+o.ドナの道具屋.restockItems();
+o.海の男の武器店.selection = [o.カトラス, o.サーベル, o.木の槍, o.ジャベリン, o.鉄の槍];
+o.海の男の武器店.specialItem = [o.シャムシール, o.パルチザン, o.トライデント];
+o.海の男の武器店.restockItems();
+o.マジカル☆ウェンディ.selection[7] = o.キュアポイズンの魔法書;
+o.マジカル☆ウェンディ.restockItems();
+
+// その他
+game.clock = game.timeOfADay * 5 \ 8;	// 正午すぎ
+game.lapse = true;
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+@return
+
+
+
+
+;■新たなギルドへの登録とパーティー編成
+
+;◇イベント01・サファイアシティ到達
+*city_1
+; 町中
+@call target=*_setting_for_game
+@saveon
+@eval exp='game.party.minimumRecovery()'
+@wait time=500
+[texton]
+[テオ f=05]「This is Sapphire City...」[k]
+[マックス f=01]「Haa～, it's a big town, isn't it?」[k]
+[マリア v=va069 f=07]「Hey! Stop scurrying around, you disgusting country bumpkin!」[k]
+We finally arrived at Sapphire City.[k]
+It's a huge city, incomparable to Bravetown. It's rather overwhelming.[k]
+[textoff]
+@fg c=シュバルツ f=00
+[texton w=1]
+[シュバルツ f=00]「Well, [テオ], I'm done here.」[k]
+[シュバルツ f=00]「Here's a letter of introduction to the guild. Present this to the guild receptionist, and you'll be given the right to form a party.」[k]
+[textoff]
+@getitem item=ギルドへの紹介状
+[texton]
+[テオ f=02]「Thank you so much for everything. We'll never forget our debt of gratitude to you.」[k]
+[シュバルツ f=01]「I hope you'll become a fine adventurer like your father. Work hard.」[k]
+[テオ f=01]「Yes!」[k]
+[textoff]
+@cl
+@wait time=500
+@se f=period
+@eval exp='game.guest.removeMember(o.シュバルツ)'
+@eval exp='game.guest.removeMember(o.シュバルツ)' cond='game.guest.members.has(o.シュバルツ)'
+@notice text="<y>Schwarz left the party."
+[texton w=0]
+[テオ f=05]「So what shall we do? Will you be leaving now, Maria and Riselle?」[k]
+[マリア v=va070 f=02]「Since there are only a few of us, why don't the four of us stay together for a while?」[k]
+[マックス f=03]「Oh, I love it! I couldn't agree more!」[k]
+[マリア v=va071 f=01]「How does that sound, Riselle?」[k]
+[リーゼル v=vl026 f=06]「Yeah... if you say so, Maria...」[k]
+[マックス f=03]「Let's make it a permanent party! We'd get along so well!」[k]
+[マリア v=va072 f=07]「That's just what you think!」[k]
+[テオ f=02]「It's a good idea. It's dangerous to be in a small group, so if it's not a problem, we might as well stay together.」[k]
+[マリア v=va073 f=02]「Then it's settled!」[k]
+[マックス f=01]「So, what next?」[k]
+[テオ f=02]「Max and I need to go to the guild reception for now. Also, I'd like to take a look around the town, since I don't know where anything is.」[k]
+[マリア v=va074 f=02]「Then come with me, I'll show you around. We also want to stop by the tavern to check the quests.」[k]
+[テオ f=02]「All right. Then let's go together.」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント02・マリアとマックス離脱
+*city_2
+
+; 酒場
+@saveon
+@bgf f=0012
+@w05
+[texton w=1]
+Maria led us around the town and finally to a bar.[k]
+[マリア v=va075 f=02]「Now, let's see what kind of requests are available here. Let's take the quests we can do.」[k]
+[マックス f=01]「That's right. We adventurers have to do our jobs!」[k]
+The four of us immediately checked the bulletin board where requests are posted.[k]
+[マックス f=03]「Now, let's see if we can get any good requests!」[k]
+[リーゼル]「...」[k]
+@fg c=マリア e=通常 f=01
+[マリア v=va076 f=01]「Hey, guys! Look at this one!」[k]
+Maria excitedly pointed to one of the requests.[k]
+[マックス f=05]「Let's see, what's this...」[k]
+[テオ f=06]「Two thieves of level 4 or above with least one year of experience... wanted for a few months...」[k]
+Among the requests posted in the taverns is a rare one that calls for the extended dispatch of adventurers. What's most surprising, however, is the reward.[k]
+[テオ f=12]「10,000G per day?!」[k]
+[マックス f=11]「Wow, I've never seen such a well paying request!」[k]
+[マリア v=va077 f=01]「And, you know, the client is Hawk Wing!」[k]
+[テオ f=05]「Are they famous?」[k]
+[マリア v=va078 f=01]「Famous?! They're one of the best adventuring parties in Sapphire City, and have completed many difficult quests! Such a famous name is bound to pay us well!」[k]
+[マックス f=05]「Ah...」[k]
+That's great. It would be a significant increase in revenue.[k]
+The problem is... that the request is to send adventurers.[k]
+We have two thieves, Max and Maria.[k]
+However, we are a small group of four. We can't afford to send half our members out of the country.[k]
+[テオ f=06]「Hmmm, this request is a bit...」[k]
+@fgf c=マリア f=07
+[マリア v=va079 f=07]「Everybody! Let's take this request!」[k]
+[テオ f=11]「E-eeeeeeh?!」[k]
+I was about to say we shouldn't take the request, but to my surprise, Maria expressed her willingness to do it.[k]
+[マリア v=va080 f=07]「We should definitely take it! It's not every day you get an offer this good!」[k]
+[テオ f=12]「Um, that means...」[k]
+[マリア v=va081 f=02]「It's obvious. Me and Max will go.」[k]
+[テオ f=12]「Yes...」[k]
+That leaves me and Riselle as the only remaining members. The party had only just grown to four members...[k]
+[テオ f=12]「You really want to take it?」[k]
+[マリア v=va082 f=01]「Obviously. How can you not take it under these conditions? We have two thieves. It's a perfect match!」[k]
+[テオ f=10]「B-but...」[k]
+[マリア v=va083 f=07]「Here we go! Let's go to the reception now! If we wait too long, someone else will snatch it away!」[k]
+[テオ f=11]「Hey, wait a minute! Maria!」[k]
+[マリア v=va084 f=07]「What, is there a problem?」[k]
+[テオ f=12]「You know we only have four members, right? If you both leave, the party is just me and Riselle...」[k]
+[リーゼル f=09]「...」[k]
+[マリア f=06]「...」[k]
+[マリア v=va085 f=05]「...Hey, you got the right to recruit a party from the old man, didn't you?」[k]
+[テオ f=10]「Y-yeah...」[k]
+[マリア v=va086 f=05]「So why don't you go to the guild to fill the vacancies? You should be able to get as many new members as you want.」[k]
+[テオ f=10]「...」[k]
+[マリア v=va087 f=07]「But if we miss this exciting request, we'll definitely regret it. This has to be our number one priority right now!」[k]
+[テオ f=10]「...」[k]
+Ah... Maria is too blinded by the high pay to listen...[k]
+[マックス f=03]「I don't mind! I'll happily go with Maria!」[k]
+@fgf c=マリア f=01
+[マリア v=va088 f=01]「Hey, Riselle. I can take this request, right?」[k]
+[リーゼル f=09]「...」[k]
+[リーゼル v=vl027 f=10]「It's fine, but... I want to go with you too...」[k]
+[テオ f=06]「...」[k]
+Riselle did not object, but she still did not want to leave Maria.[k]
+[マックス f=05]「I get it, Riselle, but the request was for two thieves... [if exp='o.テオ.job == o.テオ'][テオ]'s a thief too, but he doesn't have 2 years of experience, and more importantly, no-one else can recruit new members.[endif]」[k]
+[マリア v=va089 f=02]「Hmmm... okay, I'll ask the client to take Riselle too.」[k]
+[テオ f=12]「What...?!」[k]
+So I'd be the only one left... which means I'd have to start looking for new members by myself?[k]
+[マックス f=01]「Sorry, [テオ]! Good luck finding new members!」[k]
+[テオ f=10]「Oh, no...」[k]
+You're all terrible... I'm the only one left behind...[k]
+[マリア v=va090 f=01]「Now we've decided, I'll talk to the receptionist right now!」[k]
+[textoff]
+@out
+@w1
+[texton]
+30 minutes later.[k]
+@bgf f=0012
+@fg c=マリア f=10
+[マリア v=va091 f=10]「No good... I can't believe they won't accept anything but two people who meet the criteria...」[k]
+[リーゼル f=09]「...」[k]
+After speaking with the client's representative, the receptionist said that the client wouldn't accept anything other than the initial requirement of two Thieves with the requisite experience.[k]
+So if we accept it, it has to be just Max and Maria.[k]
+[テオ f=01]「Then I guess we've got no choice but to give up on this request...」[k]
+@fgf c=マリア f=01
+[マリア v=va092 f=01]「Sorry, Riselle! I'm going to have to leave for a while! You go with him!」[k]
+[テオ f=11]「E-eehh?!」[k]
+I thought you were going to cancel the request![k]
+[リーゼル v=vl028 f=09]「Oh no, Maria...」[k]
+Riselle protests with a tearful look on her face, as if it is hard for her to leave Maria.[k]
+@fgf c=マリア f=02
+[マリア v=va093 f=02]「Come on, don't make that face, Riselle. You might be a little nervous at first, but you'll get used to it! Don't worry!」[k]
+[マリア v=va094 f=02]「And you know, he seems pretty reliable, too.」[k]
+Maria points at me.[k]
+[リーゼル v=vl029 f=10]「But...」[k]
+[マリア v=va095 f=02]「I don't want to struggle with money anymore. If I didn't have any money, I might have to stop adventuring with you, after all...」[k]
+[リーゼル f=10]「...」[k]
+[マリア v=va096 f=02]「But I want to continue adventuring with you. So, be patient, okay?」[k]
+[リーゼル v=vl030 f=09]「Maria...」[k]
+[マリア v=va097 f=02]「I'll be back here regularly, too. Okay?」[k]
+[リーゼル f=06]「...」[k]
+[リーゼル v=vl031 f=05]「Yeah, okay... If you're thinking that far ahead, Maria, I'm not against it.」[k]
+@fgf c=マリア f=01
+[マリア v=va098 f=01]「Riselle...!」[k]
+Riselle finally nods her head at Maria's persuasion.[k]
+[リーゼル v=vl032 f=02]「Good luck to you, Maria.」[k]
+[マリア v=va099 f=03]「Thank you, Riselle.」[k]
+[テオ f=06]「...」[k]
+[マリア v=va100 f=01]「Come on, you're good with this too, right? It's for all four of us. Please.」[k]
+Maria now turns to me and pleads.[k]
+[テオ f=06]「...」[k]
+[テオ f=05]「...Okay, Maria.」[k]
+[マリア v=va101 f=03]「Thank you!」[k]
+Since Riselle accepted it, I should as well.[k]
+Besides, I won't be the only one left behind. Riselle will be here, and we can make new friends in the future.[k]
+[マックス f=01]「All right! That's a deal! Then let's go tell the receptionist that we accept the request!」[k]
+[textoff]
+
+@se f=period
+@notice text="Quest <y>Experienced Thieves Wanted<w> accepted."
+@out
+@wait time=1000
+
+; 町中
+@bg f=0019
+[texton]
+@fg l=マリア f=01 b
+@fg r=マックス f=01
+[マリア v=va102 f=02]「Well, we'd better get going. See you soon.」[k]
+[リーゼル v=vl033 f=01]「Yeah, Maria, good luck.」[k]
+[テオ f=02]「Take care, Maria and Max.」[k]
+[マリア v=va103 f=02]「Take care of Riselle for me.」[k]
+[テオ f=01]「Yes, I'll do my best to protect her.」[k]
+@fg r=マックス f=03 left=500
+[マックス f=03]「Well then, Maria, it's time to go!」[k]
+Saying that, Max tried to fling an arm around Maria's shoulder.[k]
+@fg l=マリア f=07
+[マリア v=va104 f=07]「Hey! Don't get too friendly! Get away from me!」[k]
+[マックス f=03]「See you! [テオ]! Riselle!」[k]
+@cl
+[テオ f=06]「...」[k]
+Max and Maria left with some friendly(?) bicker.[k]
+[テオ f=02]「Well then, Riselle. We should go too.」[k]
+[リーゼル v=vl034 f=05]「Y-yeah...」[k]
+First is the guild. With a party of about six people, it shouldn't be difficult to complete quests.[k]
+[if exp='! isDemoVersion']
+	In the previous town, no one would get involved with us because of our involvement with Blue, but that's not the case any more. What's more, I now have the Commander's Medal.[k]
+[endif]
+I can't wait to form a party and start my adventure![k]
+[textoff]
+@out
+@wait time=500
+
+;-----------------------------------------------------------------------------------------
+; 設定
+[iscript]
+o.王立ギルド.events = [1];
+o.待合所.events = [1];
+o.冒険者の宿.events = [1];
+o.ベトリヌスの酒場.events = [1];
+o.アイテム保管庫.events = [];
+o.サファイア城.events = [1];
+o.公園.events = [1];
+o.サファイアシティ・北西門.events = [1];
+o.サファイアシティ・北東門.events = [1];
+o.サファイアシティ・南西門.events = [1];
+o.サファイアシティ・南東門.events = [1];
+o.下水道入口.events = [1];
+o.マックス.storeAllItemsInOthers();
+game.party.removeMember(o.マックス);
+game.guest.removeMember(o.マリア);
+o.マックス.dressEquipment(o.硬い革鎧);
+o.マックス.dressEquipment(o.布のズボン);
+o.マックス.dressEquipment(o.良い短剣);
+o.盗賊メンバー派遣の依頼.accepted = true;
+[endscript]
+;-----------------------------------------------------------------------------------------
+@gameon
+@wait time=500
+
+[texton]
+[テオ f=06]「Now, let's go to the guild and get some new members to join!」[k]
+[テオ f=06]「I'd like to add at least two more people. A party of at least four seems safest.」[k]
+[textoff]
+
+[eventoff]
+
+
+;◇イベント03・キャラメイク＆パーティー編成
+*city_3
+
+; ギルド
+@saveon
+@mu f=guild
+@bgf f=0013
+@wait time=500
+@jump storage="free01.scn" target=*city_3 cond='game.isFreeMode'
+[texton w=0]
+Riselle and I entered the guild in Sapphire City.[k]
+[受付 f=desk_00]「Here is a list of adventurers who have not yet joined a party.」[k]
+[リーゼル v=vl035]「There aren't many...」[k]
+[テオ f=06]「Oh no... is this all that's left...?」[k]
+I was shown a list of adventurers currently registered at the guild I visited. The list contained only a dozen or so low-level adventurers.[k]
+To put it bluntly, they are what we call leftovers. They are not expected to be very strong or capable.[k]
+And it's all women. All the male adventurers had already been taken by other parties, since they're viewed as better fighters.[k]
+...Still, it's better than not having anyone. Right now, we urgently need more people to join us.[k]
+Besides, physical strength isn't everything, and Riselle would probably feel safer if she were surrounded by girls. It's not all bad.[k]
+[テオ f=06]「...Okay, let's pick one of these.」[k]
+I started browsing the profiles of the adventurers on the list. Now, who would be best...?[k]
+[受付 f=desk_00]「By the way, what is the name of your party?」[k]
+[テオ f=05]「Oh...」[k]
+Come to think of it, I still hadn't decided on a name for the party.[k]
+No-one's going to join a party without a name after all, and with few people, quest opportunities are limited.[k]
+[textoff]
+
+*input_party_name
+; パーティー名の決定
+@textedit default=&'game.restoreName(game.party.name)' length=15 title="Enter a new name (15 characters max)"
+@notice text="<y>Renamed." se=click cond='game.party.name != tf.result'
+@eval exp='game.party.name = tf.result'
+@eval exp='game.party.displayName = tf.result'
+
+[texton]
+[受付 f=desk_00]「[emb exp='game.party.displayName']. Certainly, sir.」[k]
+[受付 f=desk_00]「So please go ahead and look for an adventurer. I hope you find some good company.」[k]
+[textoff]
+@out
+@wait time=500
+@saveoff
+
+; ギルド画面へ
+@gameon
+@eval exp='o.王立ギルド.func()'
+
+
+;◇チュートリアル・ギルド画面
+*tutorial_4
+
+@eval exp='game.guildWin.enabled = false'
+@eval exp='game.clearWindows()'
+@wait time=500
+[texton w=1]
+[nw][b]Here you can add new characters to the party.[k]
+[nw][b]To create a new character, choose Create New Character. You may also choose a pre-made character.[k]
+[nw][b]After you have organized your party, leave the guild and proceed with the story. Note that you can also re-create your character or reorganize your party later.[k]
+[textoff]
+
+@question title="Do you want to hear an explanation of character creation?"
+[guildoff cond='! tf.result']
+
+; チュートリアル・キャラ新規作成
+@bg f=tutorial13
+@wait time=500
+[texton w=1]
+[受付 f=desk_00]「Select [b]Create New Character[/b] from the menu to switch screens and create a new character!」[k]
+[受付 f=desk_00]「First decide on [b]name, race, hair color, and alignment[/b]. Choose whatever you like.」[k]
+[受付 f=desk_00]「There are five [b]races[/b] to choose from. Please choose carefully, as it affects appearance, events, and storyline. You cannot change it later.」[k]
+[受付 f=desk_00]「[b]Alignment[/b] reflects a person's values. It doesn't affect the storyline, but does limit available jobs, so please consider this before you choose one!」[k]
+[受付 f=desk_00]「Importantly, [b red]those whose alignments are too far apart cannot party together[/b].」[r]
+[nw][b]∗Excluding protagonists and fixed characters[/b].[k]
+[受付 f=desk_00]「For example, [b]Holy cannot be paired with Bad or Evil[/b] and [b]Evil cannot be paired with Good or Holy[/b]. [b]Neutral[/b] can be paired with anyone. [b]Good and Bad[/b] can only just be paired. You need to consider the final party composition and choose carefully!」[k]
+[textoff]
+@bg f=tutorial14
+@wait time=500
+[texton w=1]
+[受付 f=desk_00]「Next, assign [b]bonus points[/b]. Feel free to assign the given bonus points to any parameter!」[k]
+[受付 f=desk_00]「You can increase or decrease the value by using the △ buttons on either side of each parameter. Please assign bonus points until they reach 0!」[k]
+[textoff]
+@bg f=tutorial15
+@wait time=500
+[texton w=0 top=320]
+[受付 f=desk_00]「Bonus points are allocated, and when certain conditions are met, job options become available. For example, [b]Fighter[/b] if [b blue]Strength[/b] is 11 or higher, and Mage if [b blue]Intelligence[/b] is 11 or higher.」[k]
+[受付 f=desk_00]「Choose the job you want from among the candidates that appear, and your character is complete!」[k]
+[textoff]
+@bg f=tutorial16
+@wait time=500
+[texton w=1 top=580]
+[受付 f=desk_00]「When you return to the guild screen, you will see the character you just created in the list. Choose [b]Add Member[/b] to add her to your party!」[k]
+[受付 f=desk_00]「If you don't want to bother with creating a character, there are already sample characters in the guild list, so you can add them to your party and start adventuring!」[k]
+[textoff]
+@out
+@gameon
+[guildoff]
+
+
+;◇イベント04・新メンバーへの挨拶
+*first_greeting
+
+; ギルド
+@saveon
+@bgf f=0013
+@wait time=500
+
+@eval exp='f.num = 0'
+*_first_greeting_loop
+@eval exp='game.curChara = game.party.members[f.num]'
+[if exp='game.curChara != o.テオ && game.curChara != o.リーゼル']
+	; 初期キャラ限定おまけ
+	@eval exp='game.curChara.trust = 10'
+	@call target=&'"*first_greeting_" + game.curChara.keyName'
+	@wait time=500
+[endif]
+@eval exp='f.num ++'
+@jump target=*_first_greeting_loop cond='f.num < game.party.members.count'
+@jump target=*first_greeting_end
+
+*first_greeting_リム
+; ヒューマン
+@fg c=リム
+[texton w=1]
+[name n="Human Woman" v=vh001 key=リム f=05 buf=4]「Um... did you hire me?」[k]
+[テオ f=02]「You must be [リム]. Nice to meet you, I'm [テオ].」[k]
+[リム v=vh002 f=03]「Yes! I'm looking forward to working with you!」[k]
+[リム] gave a friendly smile. She seems a little unreliable, but I think we'll get along just fine.[k]
+[textoff]
+@cl
+@return
+
+*first_greeting_クレア
+; エルフ
+@fg c=クレア f=06
+[texton w=1]
+[name n="Elf Woman" v=ve001 key=クレア f=19 buf=5]「...Are you the one who hired me?」[k]
+[テオ f=01]「Uh, [クレア], right? Nice to meet you, my name is [テオ].」[k]
+[クレア v=ve002 f=06]「Hmmm... Well, so be it. Nice to meet you.」[k]
+[クレア] returns a curt greeting.[k]
+[クレア] seems a little uptight... Well, she doesn't seem to hate me, so I'm sure we can work something out.[k]
+[textoff]
+@cl
+@return
+
+*first_greeting_フレデリカ
+; ドワーフ
+@fg c=フレデリカ f=13
+[texton w=1]
+[name n="Dwarf Woman" v=vd001 key=フレデリカ f=09 buf=6]「Um... sorry...」[k]
+A dwarf woman spoke to me.[k]
+[テオ f=01]「Oh, maybe she's the one who's going to join my party?」[k]
+[フレデリカ v=vd002 f=13]「Ah, yes. Nice to meet you, I'm [フレデリカ].」[k]
+[テオ f=02]「Nice to meet you, [フレデリカ].」[k]
+[フレデリカ] seems a little confused. Are you nervous?[k]
+But dwarves are very reliable in battle. Let's make it work.[k]
+[textoff]
+@cl
+@return
+
+*first_greeting_ミューズ
+; ノーム
+@fg c=ミューズ
+[texton w=1]
+[name n="Gnome Girl" key=ミューズ f=05]「...」[k]
+[テオ f=06]「？」[k]
+Suddenly, I noticed a petite woman standing silently by my side.[k]
+[テオ f=05]「Oh... are you the gnome who's joining my party?」[k]
+[name n="Gnome Girl" key=ミューズ f=06]「... ∗nod∗」[k]
+[テオ f=02]「Ah, good. I'm [テオ]. Nice to meet you. And you are?」[k]
+I shook the girl's hand.[k]
+[ミューズ v=vg001 f=05]「...[ミューズ].」[k]
+; ↑ 「ミューズ」は発音せず、「です」だけ言って下さい
+[テオ f=01]「You're [ミューズ]? Let's work well together.」[k]
+[ミューズ f=06]「... ∗nod∗」[k]
+[ミューズ] also shook my hand, albeit weakly.[k]
+It's hard to tell what she's thinking... Can we really get along? But she doesn't seem like a bad person.[k]
+[textoff]
+@cl
+@return
+
+*first_greeting_マルエット
+; シルフ
+[texton w=1]
+[？？？ v=vs001 key=マルエット noface buf=8]「Hey!」[k]
+[テオ f=06]「？」[k]
+Suddenly, I heard a girl's voice from below.[k]
+@fg c=マルエット f=07
+[name n="Sylph Girl" v=vs002 key=マルエット f=07 buf=8]「Down here! Don't you even know who you hired?!」[k]
+I looked down to see a Sylph girl. I hadn't noticed her since she was so small.[k]
+[テオ f=01]「Oh, sorry. So you're [マルエット]. I'm [テオ]. Nice to meet you.」[k]
+[マルエット v=vs003 f=08]「Honestly... I'm having second thoughts about this...」[k]
+I'm seem to have offended her already... I have to be more careful in the future, because we need to get along as a party.[k]
+[textoff]
+@cl
+@return
+
+*first_greeting_end
+; みんなの前で挨拶
+[texton w=1]
+I decided to gather all the members who had signed up with the guild and greet them.[k]
+[テオ f=01]「Thank you all so much for joining my party!」[k]
+[テオ f=05]「We're going to work together to complete various quests and turn [emb exp='game.party.displayName'] into an S rank party. I look forward to working with you.」[k]
+[if exp='HUM'][リム v=vh003 f=03]「Yes! Let's go for it!」[k][endif]
+[if exp='ELF'][クレア v=ve003 f=16]「Well, if that's your intent, I'll help you.」[k][endif]
+[if exp='DWA'][フレデリカ v=vd003 f=01]「Yes, I'll help in any way I can.」[k][endif]
+[if exp='GNO'][ミューズ f=05]「... ∗nod∗」[k][endif]
+[if exp='SYL'][マルエット v=vs004 f=19]「I've been hired to do this job, so I'll do it right. You should too.」[k][endif]
+[リーゼル v=vl036 f=01]「Thank you, everyone...」[k]
+[テオ f=02]「Well then, once we're all set up in town, we'll accept some quests tomorrow, and then we'll be off on our adventure!」[k]
+[   if exp='HUM'][リム v=vh004 f=05]「Umm, Captain.」[k]
+[elsif exp='DWA'][フレデリカ v=vd004 f=05]「Umm, Captain.」[k]
+[elsif exp='GNO'][ミューズ v=vg002 f=05]「Umm... Captain...」[k]
+[elsif exp='SYL'][マルエット v=vs005 f=05]「Umm, Captain.」[k]
+[elsif exp='ELF'][クレア v=ve004 f=05]「Umm, Captain.」[k]
+[endif]
+[テオ f=12]「Captain?」[k]
+I was a little surprised to be called captain so suddenly.[k]
+Though... since I recruited everyone, it's only natural I'd get called captain...[k]
+[テオ f=13]「Y-yes, [キャラ]?」[k]
+[   if exp='HUM'][リム v=vh005 f=05]「Is the person beside you your girlfriend...?」[k]
+[elsif exp='DWA'][フレデリカ v=vd005 f=05]「Is the person beside you your girlfriend...?」[k]
+[elsif exp='GNO'][ミューズ v=vg003 f=05]「Is the person beside you your girlfriend...?」[k]
+[elsif exp='SYL'][マルエット v=vs006 f=05]「Hey, is she your girlfriend?」[k]
+[elsif exp='ELF'][クレア v=ve005 f=05]「Hey, is she your girlfriend?」[k]
+[endif]
+[キャラ] pointed to Riselle.[k]
+[リーゼル v=vl037 f=25]「Eh...」[k]
+[テオ f=25]「N-no! It's not like that at all...」[k]
+Well, it's not an unreasonable conclusion if a young man and woman are traveling together...[k]
+[テオ f=21]「The party was just recently reduced to only the two of us...」[k]
+[   if exp='DWA'][フレデリカ f=06]「... ∗stare∗」[k]
+[elsif exp='HUM'][リム f=06]「... ∗stare∗」[k]
+[elsif exp='GNO'][ミューズ f=06]「... ∗stare∗」[k]
+[endif]
+[   if exp='ELF'][クレア v=ve006 f=19]「Hmm... well, that's fine.」[k]
+[elsif exp='SYL'][マルエット v=vs007 f=19]「Hmm... well, that's fine.」[k]
+[endif]
+[テオ f=26]「...」[k]
+The members give me quizzical glances.[k]
+I, on the other hand, was flustered and had a hard time keeping my cool...[k]
+[textoff]
+@out
+@wait time=500
+
+@gameon
+@wait time=500
+[texton w=0]
+[テオ f=06]「Okay, I've managed to put a party together.」[k]
+[テオ f=05]「Now, it's time for the adventure to begin! First, let's go to the tavern and get some quests!」[k]
+[textoff]
+
+;-----------------------------------------------------------------------------------------
+; ここで今まで通り過ぎた場所の状態をまとめて更新する
+[iscript]
+
+game.events.push(46);
+
+o.王立ギルド.events = [];
+o.待合所.events = [2];
+o.ベトリヌスの酒場.events = [2];
+o.冒険者の宿.events = [2];
+o.サファイア城.events = [2, 3];
+o.公園.events = [];
+o.サファイアシティ・北西門.events = [];
+o.サファイアシティ・北東門.events = [];
+o.サファイアシティ・南西門.events = [];
+o.サファイアシティ・南東門.events = isDemoVersion ? [6] :[];
+o.下水道入口.events = [];
+o.サファイアシティ・北西門.requireMembers = true;
+o.サファイアシティ・北東門.requireMembers = true;
+o.サファイアシティ・南西門.requireMembers = true;
+o.下水道入口.requireMembers = true;
+o.シーガルの村・北門.requireMembers = true;
+o.シーガルの村・東門.requireMembers = true;
+o.シーガルの村・南門.requireMembers = true;
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+[eventoff]
+
+
+;◇チュートリアル・宿泊解説
+*tutorial_5
+
+@out t=0
+@bg f=tutorial09
+@wait time=500
+[texton w=1]
+[フロント係]「The reservation screen starts with all party members gathered in the inn's lounge. Please drag them all to an empty room.」[r]
+[b]∗ Can also be operated with a keyboard[/b].[k]
+[フロント係]「Each room has a fixed price and a capacity which can't be exceeded.[r]
+In addition, rooms may be unavailable due to reservations by other guests.」[k]
+[textoff]
+
+@bg f=tutorial10
+@wait time=500
+[texton]
+[フロント係]「Once everyone has been assigned a room, press the "Stay" button. You will be taken to the night conversation screen.[r]
+Please note that if even one member remains in the lounge, check in cannot proceed.」[k]
+[フロント係]「If you are short of money, you can still stay, but will have to pay the debt later. (While your balance is negative, you cannot make new purchases, etc.)」[k]
+[textoff]
+
+@bg f=tutorial11
+@wait time=500
+[texton]
+[フロント係]「Once you move to the night conversation screen, you can talk with any member. Select the person you wish to converse with.[r]
+At this time, events may occur.」[k]
+[フロント係]「When you're ready for bed, press the Sleep button. HP and MP will be restored in the morning.」[r]
+[b]∗Note that members who stay in the stable won't recover any HP or MP![/b][k]
+[textoff]
+
+@bg f=tutorial12
+@wait time=500
+[texton w=1 top=550]
+[フロント係]「Members who have accumulated enough experience level up.[r]
+Parameters are increased and new magic is learned.」[k]
+[フロント係]「[b]Leveling up can only be done at the inn[/b].[r]
+Please note that no matter how much EXP you accumulate, you won't level up unless you stay at an inn. [r]
+Also, only one level can be gained per stay.」[k]
+[textoff]
+
+[texton]
+[フロント係]「That's all for the explanation. Now, please go to the [b]reservation screen[/b] to reserve a room for all members!」[k]
+[textoff]
+@out
+@gameon
+[hoteloff]
+
+
+;◇チュートリアル・隊列解説
+*tutorial_6
+
+; 最初のダンジョンに入ったところで
+@wait time=500
+[if exp='! game.isFreeMode']
+	[texton w=5]
+	[テオ f=06]「Now that we have more people in the party, let's think carefully about our formation.」[k]
+	[textoff]
+[endif]
+
+@question title="Would you like to hear an explanation about party formation?"
+[eventoff cond='! tf.result']
+
+[texton w=4]
+[nw][b blue]About formation[/b][r]
+In combat, enemies and allies have a front line and a rear line. Each have different attack ranges. [r]
+Allies and enemies with short range weapons can only attack opponents in the opposite front row, and must be in the front row themselves to do so. Anyone in the rear is safe from them.[r]
+[b]Long-range attacks (magic, some special attacks) or weapons (bow, spear, etc) can reach other rows and don't require the user to be in the front row. The range of each weapon is different, so please check on the item screen.[k]
+[b]Your party's formation can be changed any time outside battle (except for guests). The first 3 members are the front row, and the last 3 are the back.
+[b]Guest characters have fixed rows of their own which can't be changed. Enemy parties may have a middle row as well as front and back.[k]
+[textoff]
+[eventoff]
+
+
+;◇チュートリアル・アイテム補足説明
+*tutorial_7
+
+@command type=long cancel title="Would you like to hear additional information about items?"
+@select text="About item weight" target=*_アイテム説明_重量
+@select text="Damage and Repair of Items" target=*_アイテム説明_破損
+@select text="About unidentified items" target=*_アイテム説明_鑑定
+@select text=No target=*_アイテム説明_終了
+[s]
+
+*_アイテム説明_重量
+@image layer=0 storage=tutorial06 visible=true
+[texton w=6]
+[nw][b blue]About item weight[/b][r]
+There is a limit to the total weight of items that can be equipped.[r]
+If equipping an item would exceed that limit, the character can't do so.[k]
+[nw]Many heavy items are powerful, but could limit equipping heavier items in other slots, reducing performance there. It's important to strike a balance in this area.[k]
+[nw]If the item is only in the inventory rather than equipped, this does not affect the weight limit.[k]
+[textoff]
+@layopt layer=0 visible=false
+@jump target=*tutorial_7
+
+*_アイテム説明_破損
+@image layer=0 storage=tutorial07 visible=true
+[texton w=6]
+[nw][b blue]Damage and Repair of Items[/b][r]
+Items may get damaged.[r]
+Traps in dungeons and accumulated hits in battle can damage items, breaking or destroying them.[k]
+[nw]Damaged items must be repaired, as their performance degrades when in a damaged state, and further damage may destroy them completely.[k]
+[nw]Repairs can be made in the following ways:[r]
+・[b]Pay a store[/b] to do it for you.[r]
+・[b red]Smith[/b], [b red]Alchemist[/b] and other characters with repair skills can do this themselves.
+　 [k]
+[nw]If you leave it to a Smith or Alchemist party member, a [b]hammer-type weapon[/b] and [b]magic sand[/b] must be available in someone's inventory.[r]
+Note that one [b]magic sand[/b] is consumed for each repair.[k]
+[textoff]
+@layopt layer=0 visible=false
+@jump target=*tutorial_7
+
+*_アイテム説明_鑑定
+@image layer=0 storage=tutorial08 visible=true
+[texton w=6]
+[nw][b blue]About item appraisal[/b][r]
+You may pick up unidentified items while exploring.[r]
+These can be [b]appraised[/b] at a store or by using the [b]Identify command[/b] on the [b]item screen[/b] to find out their identity.[k]
+[nw]Unidentified items must be appraised before they can be used or equipped.[r]
+[b red]Everyone[/b] can try to appraise, but [b]Bishops, Alchemists, and Sorcerers[/b] are more likely to succeed.[k]
+[nw]Note that appraisals by skill are not always successful.[r]
+They can fail, break, or put the appraiser in a state of fear.[k]
+[nw]Also, if the item you appraise is [b]cursed[/b], you may [b]accidentally equip it[/b] if the appraisal fails.[r]
+Be careful when appraising.[k]
+[nw][b red]∗Note[/b][r].
+Appraisal will be performed by the [b]character[/b] who is in possession of the item. To increase the chance of success, transfer the item to a character with high appraisal skill first.[k]
+Please note that items can be appraised while in a treasure chest, but the appraiser will be [b]random[/b].[k]
+[textoff]
+@layopt layer=0 visible=false
+@jump target=*tutorial_7
+
+*_アイテム説明_終了
+@question title="Are you sure you want to end the explanation?" cancel
+@jump target=*tutorial_7 cond='! tf.result'
+[townoff]
+
+
+
+
+;■ポラリスの神殿
+
+;◇イベント01・姫と会話
+*shrine_1
+
+; サファイア城
+[texton]
+[name n=Fiona f=fiona_00]「Welcome to my home. I am Fiona, the King's daughter.」[k]
+[name n=Fiona f=fiona_00]「Unfortunately, my father is away from the castle at the moment, so I am fulfilling his duties.」[k]
+[name n=Fiona f=fiona_01]「I see that you have accepted my request to the guild. Thank you very much.」[k]
+[name n=Fiona f=fiona_02]「I'm most concerned about this. The [b]Temple of Polaris[/b] is being vandalized, and I wish you to stop it!」[k]
+[name n=Fiona f=fiona_02]「The temple is dedicated to Polaris, the god of harmony, one of the four great gods of the world. Polaris is revered in this country, so we cannot leave those who would destroy the temple unpunished!」[k]
+[name n=Fiona f=fiona_02]「Adventurers, could you please go to the Temple of Polaris and drive out those who are destroying it?」[k]
+[name n=Fiona f=fiona_00]「The Temple of Polaris is located northwest of this town, at the end of the first side road after entering Dale Coin Forest. Thank you.」[k]
+[textoff]
+[otheroff]
+
+
+;◇イベント02・シュバルツと再会
+*shrine_2
+
+; ☆フリーモード
+@jump storage="free01.scn" target=*shrine_2 cond='game.isFreeMode'
+
+; 神殿内
+@saveon
+@fg c=シュバルツ e=通常 f=00
+[texton w=1]
+[シュバルツ f=00]「Oh...!」[k]
+[テオ f=05]「Mr. Schwarz!」[k]
+To my surprise, I met Mr. Schwarz again deep in the temple.[k]
+[シュバルツ f=00]「Fancy meeting you here. What brings you here?」[k]
+[テオ f=05]「I'm here at the request of the Princess of Sapphire Castle. Why are you here, Mr. Schwarz? Didn't you retire from being an adventurer?」[k]
+[シュバルツ f=00]「Yes, I was supposed to, but when I heard that the Temple of Polaris was being raided, I couldn't stand still.」[k]
+[シュバルツ f=00]「...This temple is an important place dedicated to the god Polaris, who brought peace to this world. We must protect it.」[k]
+[テオ f=06]「I didn't know that...」[k]
+[シュバルツ f=00]「I'd like to ask for your help.」[k]
+[テオ f=05]「You would?」[k]
+[シュバルツ f=00]「You see, many monsters are gathered in the room ahead.」[k]
+[シュバルツ f=00]「And... one of them is that devil we met before.」[k]
+[テオ f=11]「What...?!」[k]
+That devil girl I met in the basement of the ruins... Is she up to something again?![k]
+[シュバルツ f=00]「They intend to enter the Hall of the Gods ahead and destroy the altar. We must stop them at all costs.」[k]
+[シュバルツ f=00]「When I see an opportunity, I intend to rush into the room and defeat the monsters. Would you guys be willing to fight with me?」[k]
+It is a request from Mr. Schwarz, of all people. We have the same goal, so there's no way we wouldn't agree.[k]
+[テオ f=05]「Yes! I'm willing to help!」[k]
+[textoff]
+@clf
+@eval exp='game.guest.entry(o.シュバルツ)'
+@se f=period
+@notice text="<y>Schwarz joined the party!"
+[eventoff]
+
+
+;◇イベント03・暴れる悪魔の手下たちと戦闘
+*shrine_3
+
+; ☆フリーモード
+@jump storage="free01.scn" target=*shrine_3 cond='game.isFreeMode'
+
+; 神殿の一室
+@saveon
+[texton w=0]
+[テオ f=05]「...!」[k]
+We looked into the room and saw a large number of orcs loitering.[k]
+We stay where we are and observe the room.[k]
+[テオ f=05]「That's...!」[k]
+Beyond the orcs, I spotted a familiar figure.[k]
+@mu f=murmur
+[悪魔 v=vm026 f=07]「Seriously! Why won't it open?!」[k]
+It's that demon...! I thought I'd never see her again...![k]
+The demon looks quite frustrated, as if something is not going her way.[k]
+[悪魔 v=vm027 f=08]「Grr～! How is this wretched door supposed to open?! I push and pull, and use unlocking magic, but it won't even budge!」[k]
+Apparently the demon is really struggling to open the stone door in front of her.[k]
+[悪魔 v=vm028 f=07]「That damn god is really pissing me off! There's no way a door should be enough to keep me out!」[k]
+; ↑ 「クソ神（くそかみ）」
+∗bang!∗[k]
+The demon, perhaps considerably annoyed, kicks the hard stone door with hatred.[k]
+[悪魔 v=vm029 f=08]「Grr～! If that's how it is, I'll get in there, even if I have to smash through the wall!」[k]
+[悪魔 v=vm030 f=07]「You lot! Smash through this wall with everything you've got!」[k]
+[オーク]「Rrrragh!」[k]
+Obeying the demon's orders, all the orcs began to attack the temple walls![k]
+They slam their axes and hammers vigorously against the wall, over and over again. The temple shakes slightly, and a sound like a rumbling of the earth echoes throughout the temple.[k]
+And... the stone walls began to fall apart due to the destructive activities of these orcs.[k]
+[テオ f=08]「Not good...!」[k]
+We cannot let them destroy our precious temple. We must stop it...![k]
+[シュバルツ f=00]「Let's go, [テオ]!」[k]
+[テオ f=05]「Yes!」[k]
+[textoff]
+@wait time=500
+@walk move=n
+@walk move=n
+@wait time=500
+[texton w=1]
+[テオ f=07]「Stop!」[k]
+@fg c=悪魔 f=06
+[悪魔 v=vm031 f=06]「Hmm? Is someone here?」[k]
+[シュバルツ f=07]「I will not allow you to desecrate the Temple any further!」[k]
+[悪魔 v=vm032 f=05]「What? Adventurer! You're not going to get in my way!」[k]
+@fgf c=悪魔 f=07
+[悪魔 v=vm033 f=07]「...Hmph, it's you guys again～!」[k]
+[シュバルツ f=07]「You're up to no good again, devil!」[k]
+[テオ f=05]「Stop the destruction of the Temple now!」[k]
+[悪魔 v=vm034 f=07]「Shut up! Who's going to stop, you idiot! Don't you dare give me orders like that!」[k]
+[悪魔 v=vm035 f=07]「Orcs! Defeat these disgusting humans!」[k]
+@se f=wing1
+@fg c=8001 left=440 top=-60
+The demon unfurled her wings and soared out of reach.[k]
+[オーク]「Rrrragh!」[k]
+[テオ f=06]「...!」[k]
+Suddenly, all the orcs attack![k]
+[シュバルツ f=00]「We'll deal with the demon later! Let's clean up these orcs first!」[k]
+[テオ f=07]「Yes!」[k]
+[textoff]
+@clf
+
+; 悪魔の手下たちと戦闘
+@monster pos=0 name=オーク
+@monster pos=1 name=オーク
+@monster pos=2 name=オーク
+@monster pos=3 name=オーク
+@monster pos=4 name=オーク
+@monster pos=5 name=オーク
+@monster pos=6 name=オーク
+@monster pos=8 name=オークソルジャー
+@monster pos=9 name=オークソルジャー
+@monster pos=10 name=オークソルジャー
+@monster pos=11 name=オークソルジャー
+@monster pos=12 name=オークソルジャー
+@callbattle escape=false
+; 戦闘に勝利
+
+@mu f=murmur
+@fg c=8002 left=440 top=-60
+[texton w=1]
+[悪魔 v=vm036 f=12]「Wow, seriously? ...Pathetic!」[k]
+[悪魔 v=vm037 f=08]「Unh～! I hate you～! Seriously, what the hell is wrong with you people!」[k]
+The devil, who had been watching the battle from the air, yells her frustration.[k]
+[テオ f=07]「I won't let you do whatever you want! I'll never allow you to destroy the temple!」[k]
+[シュバルツ f=07]「Get down here, Devil!」[k]
+[悪魔 v=vm038 f=07]「Hmph! Who the hell would?!」[k]
+[テオ f=07]「Why are you attacking this temple?! What do you want?!」[k]
+[悪魔 v=vm039 f=05]「Huh? This place is dedicated to a god. It's only natural that I, a devil, want to destroy it, isn't it?」[k]
+[テオ f=06]「...」[k]
+Well, that's certainly not surprising...[k]
+[悪魔 v=vm040 f=08]「Besides, Polaris, the god here, was the one who was dumb enough to seal me away in the past!」[k]
+[テオ f=05]「What...?」[k]
+So the god Polaris has a connection with this devil...?[k]
+[悪魔 v=vm041 f=08]「That's why I'm so pissed off! I won't be satisfied unless I get my revenge!」[k]
+[悪魔 v=vm042 f=06]「There are still other monsters in this world that were sealed away in the previous crusade...」[k]
+[悪魔 v=vm043 f=15]「I'm going to set them all free and let them ravage this world! I'm going to ruin everything!」[k]
+[テオ f=11]「No... why would you do that?!」[k]
+[悪魔 v=vm044 f=05]「Huh? I'm a demon. Of course I want to destroy the human world!」[k]
+[悪魔 v=vm045 f=06]「The world was originally ruled by us demons, you know? Then, the annoying gods and angels sided with you humans and drove the demons out of this world...」[k]
+[悪魔 v=vm046 f=15]「That's why I'm going to free all the sealed demons and monsters over the world. Then I'll rule it once again! Get it?」[k]
+[テオ f=12]「What the...!」[k]
+If that were to happen, this world would be in trouble.[k]
+[シュバルツ f=07]「I will not let you and your demons have your way! You won't get away with what you're up to!」[k]
+[悪魔 v=vm047 f=15]「If you can, why don't you try it? There's no way you idiots can stop me, though～」[k]
+[textoff]
+@se f=wing2
+@cl
+@wait time=500
+@walk turn=s
+@wait time=500
+[texton]
+With that, the demon flapped her wings furiously as she headed for the temple exit.[k]
+[シュバルツ f=07]「Wait! Don't let it get away!」[k]
+@fg c=8002 left=440 top=-60
+[悪魔 v=vm048 f=07]「Who the hell is going to get caught by you people! Just die already, you idiot!」[k]
+@se f=wing2
+@fa
+@cl
+And with that final retort, she left the temple...[k]
+@mu f=shrine
+[テオ f=10]「...」[k]
+She escaped again... There's nothing you can do if your opponent can fly.[k]
+[シュバルツ f=00]「What on earth... I can't let this stand.」[k]
+[テオ f=06]「...」[k]
+It's a big deal... I had no idea that the devil wanted to overthrow the world...[k]
+[if exp='game.party.members.has(o.リーゼル)']
+	[リーゼル v=vl038 f=05]「Hey, is that the devil you were talking about before...?」[k]
+	[テオ f=02]「Yeah, that's right. Despite how she looks, she's really a force to be reckoned with.」[k]
+	[リーゼル v=vl039 f=01]「At any rate, I'm glad everyone is safe and sound... Now that we've accomplished what we were asked, why don't we go back to town?」[k]
+	[テオ f=02]「Yeah, I guess so.」[k]
+	[シュバルツ f=00]「Hmm. There's no point in staying here too long.」[k]
+[else]
+	[テオ f=06]「...」[k]
+[endif]
+The demon's movements are worrisome, but we have achieved our initial goal, so let's go back to the town.[k]
+[？？？ v=vp001 key=ポラリス noface buf=12]「Adventurers... please come to the altar room...」[k]
+[テオ f=05]「?」[k]
+[シュバルツ f=00]「Hmm? Who are you?」[k]
+Suddenly, someone's voice echoed throughout the room.[k]
+Who on earth is calling to us?[k]
+[？？？ v=vp002 key=ポラリス noface buf=12]「Please come to the altar room...」[k]
+[テオ f=06]「...」[k]
+[textoff]
+@wait time=500
+@walk turn=n
+@wait time=500
+[texton]
+The mysterious voice seems to come from behind the closed stone door.[k]
+[シュバルツ f=00]「The altar room is the very place the demon was trying to enter earlier. It appears we're being invited inside.」[k]
+[テオ f=06]「...」[k]
+That said, the stone door is still in the way...[k]
+The demon couldn't budge it earlier.[k]
+So how do we get to the altar...?[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント04・神殿の扉が勝手に開く
+*shrine_4
+
+; ☆フリーモード
+@jump storage="free01.scn" target=*shrine_4 cond='game.isFreeMode'
+
+; 神殿内・大きな扉の前
+@saveon
+[texton]
+[テオ f=06]「...」[k]
+I took another look at the stone door.[k]
+It looks really heavy, and I can't tell how to open it. How on earth can I...[k]
+@wait time=500
+@playse storage=tremble
+@quake time=3000 hmax=5 vmax=0
+∗rumble∗[auto time=1000]
+[テオ f=05]「...!」[auto time=1000]
+@stopquake
+@playse storage=rockdrop
+@changewall himg=arch type=space behind=true
+Standing in front of the door, it began to move with a heavy thud, opening the way to the altar room![k]
+[if exp='game.party.members.has(o.リーゼル)']
+	[リーゼル v=vl040 f=05]「Wow... how did you do that?」[k]
+	[テオ f=05]「Well, I don't know either. The door moved on its own...」[k]
+[else]
+	[テオ f=05]「The door opened by itself...?」[k]
+[endif]
+The door opened as if inviting us in. Did whoever spoke to us open it?[k]
+[シュバルツ f=02]「Well, at any rate, the door is open. Let's go inside for now.」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント05・ポラリス神と会話
+*shrine_5
+
+; ☆フリーモード
+@jump storage="free01.scn" target=*shrine_5 cond='game.isFreeMode'
+
+; 祭壇の間
+@saveon
+[texton]
+At the far end of the altar room was a large stone pillar, with a stone monument standing in front of it.[k]
+[テオ f=05]「Is this...?」[k]
+I brought my face close to the stone monument to read the words on it, when...[k]
+[textoff]
+@image layer=e0 mode=psdodge5 opacity=0 storage=screen_white visible=true
+@move layer=e0 time=500 path=,,96
+@wm
+@wait time=1000
+[texton]
+∗pweeew∗[k]
+[テオ f=05]「...!」[k]
+Suddenly, the surrounding walls began to glow![k]
+The light fills the entire room with a gentle glow.[k]
+[？？？ v=vp003 key=ポラリス f=polaris_99 buf=12]「You... have the blood of a demon hunter, do you not...?」[k]
+[テオ f=12]「Hey...!」[k]
+It is the voice from earlier! The voice, wherever it is coming from, echoes throughout the room.[k]
+[テオ f=05]「Is there... someone there...?」[k]
+[？？？ v=vp005 key=ポラリス f=polaris_99 buf=12]「I am Polaris, god of harmony.」[k]
+[テオ f=12]「...!」[k]
+[シュバルツ f=00]「Lady Polaris?!」[k]
+Polaris, god of harmony. One of the four great gods who watch over this world.[k]
+So, this voice is the voice of God?![k]
+I never said I was a demon hunter, so that could very well be the case.[k]
+[ポラリス v=vp006 f=polaris_99]「I have been waiting for you for a long time. You are a demon hunter, and I have been waiting for you to visit here.」[k]
+[ポラリス v=vp007 f=polaris_99]「I've been waiting for brave souls like you.」[k]
+[テオ f=05]「Me...?」[k]
+[ポラリス v=vp008 f=polaris_99]「Thank you for protecting the temple from the demons earlier. This is the only place where my voice can be heard by the people. Such an important place was about to be lost.」[k]
+[ポラリス v=vp009 f=polaris_99]「That demon you drove away just now is one of the senior demons who bring chaos to this world. Her name is Murmur.」[k]
+[テオ f=05]「Murmur...」[k]
+[ポラリス v=vp010 f=polaris_99]「Murmur is very magical and also very cunning. For the sake of world peace, she must not be left unchecked.」[k]
+[テオ f=06]「...」[k]
+[ポラリス v=vp011 f=polaris_99]「As you know, you have special powers. In order to fight that demon, your power as a demon hunter will be indispensable.」[k]
+[ポラリス v=vp012 f=polaris_99]「However she is a very high-ranking demon. To destroy her completely, your power alone will not be enough.」[k]
+[ポラリス v=vp013 f=polaris_99]「I, the God Polaris, need your help. Assist me in manifesting in this world.」[k]
+[テオ f=05]「Manifesting?」[k]
+[ポラリス v=vp014 f=polaris_99]「I reside in the world of gods. I cannot wield sufficient power as it is. For me to be powerful, I must descend to this world!」[k]
+[テオ f=05]「So, what should I do...?」[k]
+[ポラリス v=vp015 f=polaris_99]「Collect 12 Magic Stones.」[k]
+[テオ f=05]「12 Magic Stones?」[k]
+[ポラリス v=vp016 f=polaris_99]「Magic Stones are special gems that contain my divine power. Collecting them all can accomplish miracles!」[k]
+[ポラリス v=vp017 f=polaris_99]「Please visit here again after you have collected the 12 Magic Stones. Then I will be able to descend to earth.」[k]
+[テオ f=05]「So, where are these Magic Stones?」[k]
+[ポラリス v=vp018 f=polaris_99]「I do not know that. They were once enshrined in this temple, but over the last several hundred years, they have been pillaged.」[k]
+[テオ f=09]「Oh, no...」[k]
+So you're saying it's impossible to contain that demon...?[k]
+[ポラリス v=vp019 f=polaris_99]「They are lost, but not destroyed. Although it is slight, I can sense the power of the twelve Magic Stones.」[k]
+[ポラリス v=vp020 f=polaris_99]「Some may not be far off. You simply need search for them.」[k]
+[テオ f=06]「...」[k]
+It's like trying to catch a cloud... finding a rock who knows where...[k]
+[シュバルツ f=00]「Magic Stones. Well, I heard that someone I know has one in his possession.」[k]
+[テオ f=05]「Really?!」[k]
+[ポラリス v=vp021 f=polaris_99]「Magic Stones are very beautiful and luminous gemstones, and are of incomparably higher value.」[k]
+[ポラリス v=vp022 f=polaris_99]「Therefore, the inhabitants of this world must be taking good care of them. You would not treat one roughly or throw it away.」[k]
+[テオ f=06]「...」[k]
+[シュバルツ f=00]「I have heard many rumors, not only from my acquaintances but also from others, of people possessing what may be Magic Stones. Following those rumors could well be valuable.」[k]
+[テオ f=06]「...」[k]
+[テオ f=05]「...Okay, I'll look for the 12 Magic Stones.」[k]
+[ポラリス v=vp023 f=polaris_99]「Thank you, demon hunting youth.」[k]
+It's going to be a long job, but we can't leave the devil alone. I'll try my best somehow.[k]
+Along with other adventures, I will try to gather information about the Magic Stones. I have to travel around as an adventurer anyway.[k]
+If we persevere in gathering information, they should be discoverable over the course of our adventure.[k]
+[ポラリス v=vp025 f=polaris_99]「Please observe the monument in front of you.」[k]
+[テオ f=06]「...」[k]
+[textoff]
+@reduceinfo
+@image layer=4 storage="crystal_slot" left=227 top=102 visible=true
+[texton w=2]
+I look at the top of the monument.[k]
+On it, several crystals were laid out in a circle.[k]
+There were 12 crystals in total. This is consistent with the number of Magic Stones mentioned by the god Polaris.[k]
+[ポラリス v=vp026]「Each of these crystals reacts and glows when a Magic Stone is brought close to it, if it is real.」[k]
+[ポラリス v=vp027]「In other words, when all these 12 crystals light up, I can descend unto this world.」[k]
+[テオ f=06]「...」[k]
+[ポラリス v=vp028]「Right now, not a single crystal is lit, but as you collect Magic Stones, the number of crystals that light up will gradually increase.」[k]
+[ポラリス v=vp029]「Once you have collected all the Magic Stones, approach this monument again. Then I will be able to appear before you.」[k]
+[テオ f=06]「...Understood.」[k]
+[textoff]
+@layopt layer=4 left=0 top=0 visible=false
+@w05
+[texton w=0]
+[ポラリス v=vp030 f=polaris_99]「Then I will return once more to the world of the gods. If you need anything else, please come back here and call on me.」[k]
+[textoff]
+@move layer=e0 time=500 path=,,0
+@wm
+@layopt layer=e0 opacity=255 visible=false
+[texton]
+The ambient light gradually faded, and the voice of Lady Polaris could no longer be longer heard.[k]
+[textoff]
+@fg c=シュバルツ f=00
+[texton w=1]
+[シュバルツ f=00]「I know it's a lot of work, but this is a job that only you, a demon hunter, can do. I'm counting on you. I will help you as much as I can.」[k]
+[テオ f=05]「Yes, I will try my best.」[k]
+[シュバルツ f=02]「Well, things are about to get busy...」[k]
+[テオ f=05]「What about you, Mr. Schwarz?」[k]
+[シュバルツ f=00]「I'm not retiring. We can't let that demon run wild, so I'll try to track it.」[k]
+[テオ f=05]「Okay... Please be careful.」[k]
+[シュバルツ f=01]「Well, I'll leave you now. See you later, [テオ].」[k]
+[textoff]
+@cl
+@se f=period
+@eval exp='game.guest.removeMember(o.シュバルツ)'
+@notice text="<y>Schwarz left the party."
+@wait time=500
+[texton w=0]
+[if exp='game.party.members.has(o.リーゼル)']
+	[リーゼル v=vl041 f=05]「What a mess...」[k]
+	[テオ f=02]「Yeah, but we have to do it. We can't leave that demon alone.」[k]
+[endif]
+[テオ f=05]「...I know I'm going to put you all through a lot of trouble, but please help me. Let's fight the demon Murmur together!」[k]
+[if exp='HUM'][リム v=vh006 f=03]「Of course!」[k][endif]
+[if exp='ELF'][クレア v=ve007 f=16]「It's just the way things are. I'll cooperate.」[k][endif]
+[if exp='DWA'][フレデリカ v=vd006 f=01]「Yes, I'll help in any way I can.」[k][endif]
+[if exp='GNO'][ミューズ f=05]「... ∗nod∗」[k][endif]
+[if exp='SYL'][マルエット v=vs008 f=16]「I don't have a choice. I'll help you, too.」[k][endif]
+[テオ f=02]「Thank you all! Well, it's time to head back to town.」[k]
+[textoff]
+@addevent name=サファイア城 num=4
+@eval exp='o.ポラリス神殿を守ってほしい.flag = 1'
+[eventoff]
+
+
+;◇イベント06・姫に報告後、町中でリーゼルの過去メンバーに会う
+*shrine_6
+
+; サファイア城
+@saveon
+@mu f=city
+[texton]
+[name n=Fiona f=fiona_00]「Thank you all for your hard work!」[k]
+A detailed report was given to Princess Fiona of what had happened at the Temple of Polaris.[k]
+[name n=Fiona f=fiona_02]「I'm so sorry that happened to you! That's rather momentous...」[k]
+[name n=Fiona f=fiona_02]「This is a major crisis. We cannot leave it unattended. Our royal family will cooperate with you all.」[k]
+@se f=coin
+@eval exp='game.party.gold += 200000'
+[nw][b]Princess Fiona gave me 200,000G in military funds in addition to the reward![/nw][k]
+[textoff]
+@eval exp='game.party.gold += 25000'
+@complete name=ポラリス神殿を守ってほしい
+[texton]
+[name n=Fiona f=fiona_01]「Please return if you need anything else. I'll be praying for you all!」[k]
+[textoff]
+
+; ☆フリーモードは新規クエストだけ追加してここで終了
+@jump storage="free01.scn" target=*shrine_6 cond='game.isFreeMode'
+@jump target=*skip_prologue cond='game.notPlayInFullVersion'
+
+; 町中
+@out
+@w05
+@bg f=0019
+[texton w=1]
+[テオ f=02]「Well... I think it's time to head back to the inn.」[k]
+After reporting to the princess, our party left the castle and walked along the main street of the town toward the inn.[k]
+[   if exp='ELF'][クレア v=ve008 f=16]「Oh...? Something smells good.」[k]
+[elsif exp='SYL'][マルエット v=vs009 f=16]「Oh...? Something smells good.」[k]
+[elsif exp='HUM'][リム v=vh007 f=16]「Oh... Something smells good.」[k]
+[elsif exp='DWA'][フレデリカ v=vd007 f=16]「Oh... Something smells good.」[k]
+[elsif exp='GNO']
+	[ミューズ f=19]「... ∗sniff∗」[k]
+	[テオ f=05]「Hmm? What's wrong, [ミューズ]?」[k]
+	[ミューズ v=vg004 f=05]「Something smells good...」[k]
+[endif]
+[テオ f=05]「Oh... Yes.」[k]
+It sure smells good. It's a very sweet and fragrant smell.[k]
+I looked around and saw a stall nearby selling apple pies. It seemed to be popular, as there were crowds of people around it.[k]
+The apple pies were freshly baked and smelled delicious.[k]
+
+@eval exp='tf.i = game.party.members.count - 1'
+*_park_1_loop
+@eval exp='game.curChara = game.party.members[tf.i]'
+[if exp='game.curChara != o.テオ && game.curChara != o.リーゼル']
+	[キャラ f=25]「...」[k]
+[endif]
+@eval exp='tf.i --'
+@jump target=*_park_1_loop cond='tf.i >= 0'
+
+[テオ f=06]「...」[k]
+Our members are staring at the pie stall as if entranced.[k]
+[テオ f=02]「...Go ahead and eat if you want. I'll wait for you here.」[k]
+[   if exp='HUM'][リム v=vh008 f=03]「Are you sure? Then I'll go!」[k]
+[elsif exp='DWA'][フレデリカ v=vd008 f=03]「Are you sure? Then I'll go!」[k]
+[elsif exp='ELF'][クレア v=ve009 f=01]「Are you sure? Well, if it's okay.」[k]
+[elsif exp='SYL'][マルエット v=vs010 f=01]「Are you sure? Well, if it's okay.」[k]
+[else][ミューズ v=vg005 f=05]「...Excuse me then.」[k]
+[endif]
+@se f=footstep2
+The members trotted over to the stall, their eyes sparkling.[k]
+...Girls really do have a sweet tooth, don't they?[k]
+[textoff]
+@fg c=リーゼル f=00
+[texton w=1]
+[リーゼル f=06]「...」[k]
+That said, Riselle remained beside me.[k]
+[テオ f=02]「You're not going?」[k]
+[リーゼル v=vl042 f=05]「I don't really like apple pie...」[k]
+[テオ f=02]「Oh, I see.」[k]
+Well, everyone has a few likes and dislikes.[k]
+[テオ f=12]「...」[k]
+[リーゼル f=06]「...」[k]
+Riselle and I wait there for the others to return, just the two of us.[k]
+[テオ f=12]「...」[k]
+[リーゼル f=06]「...」[k]
+A long silence passes between us.[k]
+It's rather awkward... let's talk about something.[k]
+[テオ f=13]「H-hey, Riselle.」[k]
+[リーゼル f=05]「...?」[k]
+[テオ f=14]「You... always wear that hairpiece, don't you?」[k]
+@fgf c=リーゼル f=05
+[リーゼル v=vl043 f=05]「What... My hair ornament...?」[k]
+@fgf c=リーゼル f=06
+[リーゼル v=vl044 f=06]「U-uh, yes, but... is that odd?」[k]
+[テオ f=13]「Oh, no! It's pretty and... I think it suits you.」[k]
+I couldn't help but say something like that.[k]
+@fgf c=リーゼル f=05
+[リーゼル v=vl045 f=05]「Really?」[k]
+@fgf c=リーゼル f=22
+[リーゼル v=vl046 f=22]「Thank you, Captain... I'm glad...」[k]
+Then Riselle gave a rare smile and looked genuinely happy.[k]
+[テオ f=05]「...」[k]
+I had never seen her like this before. I want her to like me, but I don't believe just a few words made her so happy...[k]
+@fgf c=リーゼル f=01
+[リーゼル v=vl047 f=01]「This hair ornament is a memento of my mother's.」[k]
+[テオ f=05]「What...?」[k]
+You mean the mother who died when you were very young?[k]
+[リーゼル v=vl048 f=01]「Originally, she wore it all the time, as a talisman for happiness...」[k]
+[テオ f=05]「A good luck charm to make you happy...?」[k]
+@fgf c=リーゼル f=02
+[リーゼル v=vl049 f=02]「When I was five years old, my mother gave it to me. She said, "I'm happy enough, now you should be happy."」[k]
+[テオ f=06]「...」[k]
+[リーゼル v=vl050 f=02]「My mother is gone, but I have this hair ornament. I feel like it's always protected me.」[k]
+[テオ f=05]「Riselle...」[k]
+So... it was precious to her. That's why she was so happy when I praised her hair ornament.[k]
+[テオ f=02]「You... had a good mother.」[k]
+@fgf c=リーゼル f=23
+[リーゼル v=vl051 f=23]「...Yup!」[k]
+Saying this, Riselle gave me a big smile.[k]
+This was a new side of the uncommunicative Riselle. I felt as if I could see her true self and was secretly pleased.[k]
+[name n="Female Adventurer" f=witch_white_00]「Huh? That's never Riselle?」[k]
+[リーゼル v=vl052 f=05]「Aaa...」[k]
+[textoff]
+@cl b
+@fg l=9005 top=50 b
+@fg a=リーゼル left=768
+[texton w=1]
+Suddenly, a group of female adventurers walked toward us.[k]
+[name n="Female Adventurer" f=archer_purple_01]「Oh, it is. You're still in town, are you?」[k]
+[テオ f=06]「...」[k]
+Are they old acquaintances of Riselle's? Despite that, she doesn't look too happy...[k]
+[name n="Female Adventurer" f=witch_white_00]「I wondered what you were gonna do when you said you were leaving our party. Looks like you're adventuring with this guy now～」[k]
+[name n="Female Adventurer" f=bladesman_black_06]「Well, I guess a newbie like you will get in trouble again with the new party and get kicked out anyway!」[k]
+[テオ f=06]「...」[k]
+Apparently, they were members of Riselle's previous party.[k]
+Maria said she often had bad experiences in the party and didn't get much of a share of the reward...[k]
+[name n="Female Adventurer" f=witch_white_00]「Hey, you, come back to our party.」[k]
+@fgf a=リーゼル f=09 left=768
+[リーゼル v=vl053 f=09]「Ehh...」[k]
+[name n="Female Adventurer" f=archer_purple_01]「Yeah, surely there's some use we can find for you again! Ahahahahaha!」[k]
+[テオ f=06]「...」[k]
+They're clearly mocking Riselle. She's completely deflated.[k]
+...I have to stop this...![k]
+[name n="Female Adventurer" f=witch_white_00]「Join us again. We'll forgive you if you apologize right here. But we'd still have to pay you a lousy share ♪」[k]
+[リーゼル v=vl054 f=09]「Let's see... well...」[k]
+[テオ f=05]「Riselle will not be returning to your party.」[k]
+I intervened between the girls.[k]
+[name n="Female Adventurer" f=bladesman_black_00]「Huh? Who are you?」[k]
+@fgf a=リーゼル f=25 left=768
+[リーゼル v=vl055 f=25]「Captain...!」[k]
+I can't stand by and watch any longer. I am the captain. I have to protect my party.[k]
+[name n="Female Adventurer" f=witch_white_00]「Oh, maybe you're the leader of Riselle's new party?」[k]
+[テオ f=05]「Riselle is an important member of our party. We will never give her up.」[k]
+[name n="Female Adventurer" f=witch_white_00]「Ohh? Ohhh? That's cool, Captain!」[k]
+[name n="Female Adventurer" f=archer_purple_01]「You say that, but you'll end up kicking that liability out eventually.」[k]
+[テオ f=07]「Riselle is not a liability! She's an indispensable member of our party.」[k]
+[name n="Female Adventurer" f=witch_white_00]「That sounds so nice～ good, good!」[k]
+[name n="Female Adventurer" f=bladesman_black_01]「What? Are you in love with her?」[k]
+[テオ f=26]「No, no, I never meant...」[k]
+[name n="Female Adventurer" f=witch_white_00]「Oh～ oh～ he's turning red.」[k]
+I was teased, and for a moment, I was upset. To be honest, I can't argue because she's right on the money...[k]
+[テオ f=12]「Anyway! I'm not going to give up Riselle! So you guys, give up on her!」[k]
+[name n="Female Adventurer" f=bladesman_black_00]「Yes, yes, I understand.」[k]
+[name n="Female Adventurer" f=archer_purple_08]「We don't really need that useless girl. We'd just feel sorry for her if she had nowhere to go, so we asked out of pity...」[k]
+@cl b
+@fg c=リーゼル f=10
+With much swearing, the former members left.[k]
+...I have a lot of angry feelings, but anyway, I'm glad I was able to protect Riselle.[k]
+[テオ f=02]「You shouldn't worry about it. Come on, let's get going.」[k]
+[リーゼル v=vl056 f=10]「Umm... Captain...」[k]
+[テオ f=02]「What?」[k]
+[リーゼル v=vl057 f=10]「What you said... isn't true...」[k]
+[テオ f=07]「That's not true!」[k]
+@fgf c=リーゼル f=12
+[リーゼル v=vl058 f=12]「Captain...!」[k]
+[テオ f=05]「It's just like I said. You're not a liability. You're a good friend. I'm sure everyone else feels the same way.」[k]
+@fgf c=リーゼル f=25
+[リーゼル f=25]「...」[k]
+[テオ f=10]「So, you know... I don't want you to feel down about yourself... I want you to think positively... I mean...」[k]
+[リーゼル f=25]「...」[k]
+I can't think of any good words. How on earth can I comfort her?[k]
+[テオ f=25]「Anyway! I just want you to smile. There's no need to be depressed at all...」[k]
+[リーゼル f=05]「...」[k]
+@fgf c=リーゼル f=02
+[リーゼル f=02]「... ∗sniff∗」[k]
+[テオ f=10]「Oh... What? Did I say something funny...?」[k]
+@fgf c=リーゼル f=22
+[リーゼル v=vl059 f=22]「...You're very kind.」[k]
+[テオ f=92]「Eh?」[k]
+[リーゼル v=vl060 f=22]「Okay... I'll try to be more confident like you said.」[k]
+[テオ f=01]「Riselle...!」[k]
+Thank goodness you're feeling better.[k]
+@fgf c=リーゼル f=23
+[リーゼル v=vl061 f=23]「I'm so glad I joined your party...」[k]
+[テオ f=92]「...！ ∗badump∗」[k]
+Her bashful smile attracts me strongly.[k]
+For a moment, I forgot myself and felt the urge to hug her.[k]
+@fgf c=リーゼル f=25
+[リーゼル v=vl062 f=25]「Um... Captain?」[k]
+[テオ f=25]「...! (Ah!)」[k]
+[テオ f=33]「Nah, it's nothing, ahahaha.」[k]
+Oh no... I just stared at her... I managed to fake it by smiling, but did she think I was suspicious?[k]
+My heart is still pounding. I can't believe I can't stay calm...[k]
+@cl b
+@fg r=リーゼル f=25 b
+[if exp='ELF']
+	@fg l=クレア f=01
+	[クレア v=ve010 f=01]「Sorry to keep you waiting, Captain.」[k]
+[elsif exp='SYL']
+	@fg l=マルエット f=01
+	[マルエット v=vs011 f=01]「Sorry to keep you waiting, Captain.」[k]
+[elsif exp='DWA']
+	@fg l=フレデリカ f=03
+	[フレデリカ v=vd009 f=03]「Thanks for waiting, Captain!」[k]
+[elsif exp='HUM']
+	@fg l=リム f=03
+	[リム v=vh009 f=03]「Thanks for waiting, Captain!」[k]
+[elsif exp='GNO']
+	@fg l=ミューズ
+	[ミューズ v=vg006 f=05]「Thank you for your patience...」[k]
+[endif]
+[テオ f=21]「Aaa...」[k]
+The people who went to eat apple pie came back.[k]
+@fgf l=キャラ f=05
+[   if exp='DWA'][フレデリカ v=vd010 f=05]「Huh? What were you two talking about?」[k]
+[elsif exp='HUM'][リム v=vh010 f=05]「Huh? What were you two talking about?」[k]
+[elsif exp='GNO'][ミューズ v=vg007 f=05]「...? What were you two talking about...?」[k]
+[elsif exp='SYL'][マルエット v=vs012 f=05]「Hmm? What were you two talking about?」[k]
+[elsif exp='ELF'][クレア v=ve011 f=05]「Hmm? What were you two talking about?」[k]
+[endif]
+[リーゼル f=26]「...」[k]
+[テオ f=33]「It's not a big deal. Well, let's get going.」[k]
+I deliberately urged everyone in a cheerful voice, trying to mask my inner turmoil.[k]
+[textoff]
+@out
+@w05
+@eval exp='o.リーゼル.moveHeart(o.テオ, 5)'
+@addevent name=リーゼル num=0
+@eval exp='o.ドロシーの魔法店.visible = o.ドロシーの魔法店.appeared = true'
+@gameon
+@jump storage="street.ks" target=*event_サファイアシティ_2
+
+
+
+
+;■体験版で、プロローグをスキップした上で、ポラリス神殿をクリア後
+
+*skip_prologue
+
+;-----------------------------------------------------------------------------------------
+; 設定
+[iscript]
+
+o.サファイアシティ.events.add(2);
+o.ドロシーの魔法店.visible = o.ドロシーの魔法店.appeared = true;
+o.ベトリヌスの酒場.quests.add(o.コボルド退治);
+o.ベトリヌスの酒場.quests.add(o.スライム軍団の討伐);
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+[townoff]
+
+
+
+
+;■古代の迷宮
+
+;◇イベント01・少女たち救出のクエスト受領
+*labyrinth_1
+
+; シーガルの村の酒場
+[texton]
+[if exp='! game.isFreeMode && ! game.notPlayInFullVersion']
+	[テオ f=05]「The reward is an Emerald Magic Stone...!」[k]
+	[リーゼル v=vl063 f=05]「Isn't that one of the magic stones Lady Polaris needed in order to be summoned here...?」[k]
+	[テオ f=06]「In that case, we're going to have to accomplish this quest at all costs.」[k]
+[endif]
+[name n="Village Chief" f=mayor_02]「I am the chief of Seagull Village.」[k]
+[if exp='! game.isFreeMode && ! game.notPlayInFullVersion']
+	While I was talking with Riselle about the magic stone, our client, the village chief, came over.[k]
+[endif]
+[name n="Village Chief" f=mayor_03]「The girls in the village are being kidnapped by a [b]Lesser Devil[/b] and his minions, one by one.」[k]
+[name n="Village Chief" f=mayor_03]「A girl who escaped told us that they are being held in a place called the [b]Ancient Labyrinth[/b]. We want to rescue them, but the labyrinth is full of monsters so there is nothing we can do.」[k]
+[name n="Village Chief" f=mayor_04]「Please rescue these women! The [b]Ancient Labyrinth[/b] is located [b]under the northern cliffs[/b] of Landon Canyon. It's a large canyon that stretches north of this village, just down those cliffs. You've probably passed through it before.」[k]
+[name n="Village Chief" f=mayor_02]「In the course of your search, you may have to fight that Lesser Devil. He is a formidable foe. Take care of yourself.」[k]
+[textoff]
+[baroff]
+
+
+;◇イベント02・レッサーデビルと最初の戦闘
+*labyrinth_2
+
+; ☆フリーモード
+@jump storage="free01.scn" target=*labyrinth_2 cond='game.isFreeMode'
+
+; 古代の迷宮・入口の部屋
+@saveon
+@w05
+@fg c=devil_yellow left=450 top=-15
+[texton]
+[name n="Lesser Devil" f=devil_00]「What?! What the hell are you doing?」[k]
+[テオ f=05]「Lesser Devil...!」[k]
+To my surprise, as soon as we entered, there was the ringleader of the incident![k]
+[テオ f=07]「Hey! Return the girls you took from the village!」[k]
+[name n="Lesser Devil" f=devil_00]「Oh? You're to rescue the women?」[k]
+[name n="Lesser Devil" f=devil_00]「That's not going to happen. They're part of the nursery.」[k]
+[テオ f=06]「...?」[k]
+[name n="Lesser Devil" f=devil_00]「I need them to build up a big army of Headless. You can't have them.」[k]
+[テオ f=05]「What...?!」[k]
+A headless army? What on earth is it talking about?[k]
+[name n="Lesser Devil" f=devil_00]「...Hey, some of you guys would work too. Great, I'll catch you and add you to the nursery!」[k]
+[textoff]
+@clf
+
+; レッサーデビルと戦闘
+@monster pos=3 name=レッサーデビル
+@callbattle bgm=boss escape=true gameover=true
+
+; 勝利
+[texton]
+[name n="Lesser Devil" f=devil_00]「Damn, too strong! Time to retreat!」[k]
+The Lesser Devil, now afraid of us, ran out of the room in a panic![k]
+[テオ f=07]「Stop!」[k]
+We can't let him get away! We need to find out from him where the girls are![k]
+[textoff]
+@walk move=n
+@walk move=n
+@walk move=n
+[eventoff]
+
+
+;◇イベント03・落とし穴
+*labyrinth_3
+
+; ☆フリーモード
+@jump storage="free01.scn" target=*labyrinth_3 cond='game.isFreeMode'
+
+; 古代の迷宮・奥の通路
+@fgf c=9003 left=450 top=140
+[texton]
+[テオ f=06]「...!」[k]
+There the Lesser Devil is![k]
+[name n="Lesser Devil" f=devil_00]「Damn! Persistent bastards!」[k]
+@cl
+[テオ f=05]「I won't let you get away!」[k]
+[textoff]
+@wait time=200
+@walk move=s
+@wait time=100
+@playse storage=door2
+@changefloor type=air trap=air img=void info=空中 x=6 y=3
+@changefloor type=air trap=air img=void info=空中 x=6 y=2
+@wait time=500
+[texton]
+[テオ f=05]「...!」[k]
+Woah! A trap![k]
+[name n="Lesser Devil" f=devil_00]「Pfft, you idiot!」[k]
+[テオ f=09]「Damn...!」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント04・ヘッドレスと戦闘
+*labyrinth_4
+
+; ☆フリーモード
+@jump storage="free01.scn" target=*labyrinth_4 cond='game.isFreeMode'
+; リーゼルの髪飾りが消える
+@eval exp='o.リーゼル.color = "nocomb"'
+@eval exp='o.リーゼル.makeBustups()'
+@eval exp='o.リーゼル.makeOtherFaceWindowPictures()'
+
+@saveon
+[texton]
+[if exp='ELF'][クレア v=ve012 f=17]「Kya!」[k][endif]
+[if exp='HUM'][リム v=vh011 f=18]「Oww oww oww!」[k][endif]
+[if exp='SYL'][マルエット v=vs999 f=27]「W-what?!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd011 f=18]「I was so surprised!」[k][endif]
+[if exp='GNO'][ミューズ v=vg008 f=95]「What happened...?」[k][endif]
+[テオ f=10]「Damn...!」[k]
+We were dropped underground. It seems we fell right into a cunning trap...[k]
+[テオ f=10]「What is this place?!」[k]
+Looking around, it's a large underground room. It is dimly lit and there is nothing around.[k]
+[テオ f=11]「...!」[k]
+[textoff]
+@wait time=200
+@walk move=s
+@wait time=50
+@walk turn=w
+@wait time=300
+[texton]
+And looking more closely, there's something moving in the darkness of the room.[k]
+Then I heard the gasps of many women![k]
+[テオ f=12]「This is...!」[k]
+[textoff]
+@w05
+@eval exp='sf["picevent46"] = true'
+*_replay_labyrinth_4
+@bg f=event46_p0_01
+[texton w=2]
+[少女]「Haa, haa...」[k]
+[少女]「Ahh... no...!」[k]
+[少女]「Ahh... it feels good...!」[k]
+[少女]「Ah... Ah... Ah... Ah...」[k]
+[テオ f=12]「What...?!」[k]
+Dozens of naked men and women were copulating in front of me.[k]
+The girls are forced to lie prone on the floor or on all fours in a state of undress, while muscular men fuck them with single-minded devotion.[k]
+It is a very bizarre sight, but what amazes me most is the way the men look.[k]
+The men's heads are all missing![k]
+The men, who had lost everything from the neck up, were vigorously shaking their hips, with only their crotches standing strong.[k]
+It is alive. Even without a head, its body is rather full of vitality. The reproductive functions are clearly functioning.[k]
+If you look, you can see an opening where the head should have been, and what looks like fangs or a tongue are peeking out from inside. Could it be that they eat with the hole in the neck?[k]
+@bg f=event46_p0_02
+[name n=Monster f=headless_00]「Kooooooooooooo...!」[k]
+[少女]「Ah, nooooo...!」[k]
+Suddenly, one of the monsters ejaculated.[k]
+A large amount of semen pours into the girl's widely spread vagina, flooding outward from where they're joined.[k]
+Could she become pregnant... with a monster's child?[k]
+[少女]「An an an an an an an...」[k]
+[少女]「Ah... Mmm... ah... Ahh...!」[k]
+[少女]「No... I'm cumming... Aahhh!」[k]
+The girls gasp and writhe around. Even if it's a monster's penis, if it's thrust into their vaginas, they can't help but feel pleasure.[k]
+With nipples hard, and love juices flowing endlessly from where they join, they surrender to the pleasure of being violated.[k]
+Some of the girls seem innocent. For some of them, their first sexual experience may be with these monsters.[k]
+But they were shaking their hair wildly and their breasts, with their hard, pointed tips, bounced up and down in excitement.[k]
+As the monster's hard rod stirred their beautiful, inexperienced pink vaginas, they moaned with pleasure.[k]
+[少女]「Ahhh...! I'm cumming...!」[k]
+The girl who just came, came again. Soon, the monster that had been ramming into her also ejaculates into the girl with an eerie yelp.[k]
+[少女]「Ahh no... stop, not inside...!」[k]
+[name n=Monster]「Gooooooooooooo!」[k]
+∗spurt! spurt!∗[k]
+[少女]「Oh no!」[k]
+Some of the girls try to squirm to escape being filled with their captor's filthy semen, but then they're grabbed firmly around the waist and sperm is mercilessly poured into them anyway.[k]
+[name n=Monster]「Wooooooooooo...」[k]
+[少女]「Ugh... It's no good... Ugh...」[k]
+Looking at them, I feel that those monsters are particularly obsessed with ejaculation. Could it be that those monsters are really capable of impregnating humans with their children?[k]
+[少女]「Haa haa... I'm cumming again...!」[k]
+[少女]「Aaah... Aaah... It feels so good... Aaahhh...!」[k]
+[少女]「Aaaah...! Please just fuck me hard...! Aaaah!」[k]
+[テオ f=06]「...」[k]
+The sexual acts continue endlessly. It's an unceasing repetition of the collision of flesh and flesh.[k]
+In this bizarre place, the girls are now in a state of delirium. They are about to be consumed by madness.[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+@gameon
+@fg c=悪魔
+[texton w=1]
+[？？？ v=vm049 key=ムールムール buf=13]「Ha! Surprised, you new sacrifices?」[k]
+[テオ f=12]「...! (Ah!)」[k]
+A familiar female voice brought me back to myself.[k]
+That is... the devil Murmur![k]
+...Is she up to something yet again?[k]
+[ムールムール v=vm050 f=01]「This is a factory for the creation of Headless soldiers. Here, human women are impregnated with Headless children to create new soldiers.」[k]
+[ムールムール v=vm051 f=04]「A Headless is literally a person without a head. In layman's terms, a brainless moron! ♪」[k]
+[ムールムール v=vm052 f=15]「No brain, no ability to think about anything. They just eat and fuck... Gahahahaha! Isn't that funny?
+ 」[k]
+[テオ f=12]「What...?!」[k]
+I can't believe such a creature exists in this world...![k]
+[ムールムール v=vm053 f=01]「Headless grow up very fast ♪ They're born within a week of conception and become adults within three weeks.」[k]
+[ムールムール v=vm054 f=04]「So just a month after conception, you've got a mature man with a strong body and cock ♪」[k]
+[テオ f=06]「...」[k]
+[ムールムール v=vm055 f=01]「The Headless that grow will create more new Headless, doubling in one month and quadrupling in two months.」[k]
+[ムールムール v=vm056 f=15]「As long as there are human women, the number of Headless will increase super fast! Isn't that great?」[k]
+[ムールムール v=vm057 f=01]「They're stupid, so if you offer them food and sex, they'll do whatever you say.」[k]
+[ムールムール v=vm058 f=03]「Keep making more and more, and in no time at all, we'll have a large army of Headless soldiers! Then, no adventurers will be able to compete with them! Hehe, I'm so smart～!」[k]
+[テオ f=10]「...」[k]
+Don't even think of such a horrifying plan... Such a horrible scheme must be foiled![k]
+[ムールムール v=vm059 f=01]「Hehe, you guys will soon become their playthings too.」[k]
+[ムールムール v=vm060 f=15]「But don't be afraid! Soon enough, you'll feel so good about having sex with those guys that you won't care about anything else! Gahahaha!」[k]
+[テオ f=10]「What bad taste...」[k]
+[ムールムール v=vm061 f=06]「Hmm? Why is there a guy in there?」[k]
+[ムールムール v=vm062 f=07]「...Hey, you're that demon hunter! Why are you here?!」[k]
+[テオ f=07]「That's my line, devil! You're trying to do evil again!」[k]
+[ムールムール v=vm063 f=08]「What the hell is that Lesser Devil doing?! ...He's even lesser than I thought, if he lets adventurers invade...」[k]
+[ムールムール v=vm064 f=04]「Well, never mind ♪ I'll take the opportunity to kill you right here! No matter how strong your demon hunter powers are, you're no match for the Headless horde!」[k]
+[テオ f=09]「Damn...!」[k]
+[ムールムール v=vm065 f=15]「Come on, Headless! Strip them and make the women your cock slaves! The men are food!」[k]
+
+@fg l=headless_beige left=150 top=50 b
+@fg c=headless_beige left=350 top=50 b
+@fg a=headless_beige left=550 top=50 b
+@fg r=headless_beige left=750 top=50
+
+[name n=Headless f=headless_00]「...!」[k]
+With the devil's command, the Headless all turned towards us.[k]
+[name n=Headless f=headless_00]「...」[k]
+[name n=Headless f=headless_00]「Gooooo...」[k]
+The monsters approach us one after another. Their penises erect, and with drool dripping from their gigantic mouths, they creep closer.[k]
+These guys are planning to rape the members of my party...![k]
+[if exp='GNO'][ミューズ f=12]「...! (Eek!)」[k][endif]
+[if exp='HUM'][リム v=vh012 f=12]「Eeek... Those dicks...!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd012 f=09]「I'm scared...」[k][endif]
+[if exp='ELF'][クレア v=ve013 f=09]「Oh no... All those erect monsters...! 」[k][endif]
+[if exp='SYL'][マルエット v=vs013 f=27]「Hey! Don't point that dirty thing at me!」[k][endif]
+[テオ f=12]「Damn...!」[k]
+[name n=Headless f=headless_00]「Gooooooooo...」[k]
+A group of Headless approach with an eerie low growl. Behind them is a wall, and there is no way out.[k]
+...It appears we have no choice but to take these guys down.[k]
+[テオ f=07]「Guys! Let's go!」[k]
+[if exp='DWA'][フレデリカ v=vd013 f=07]「Yes!」[k][endif]
+[if exp='GNO'][ミューズ f=08]「... ∗nod∗」[k][endif]
+[if exp='HUM'][リム v=vh013 f=06]「Yes, Captain!」[k][endif]
+[if exp='ELF'][クレア v=ve014 f=16]「I don't blame you.」[k][endif]
+[if exp='SYL'][マルエット v=vs014 f=07]「I'll blow you away!」[k][endif]
+[textoff]
+@clf
+
+; ヘッドレスと戦闘
+; 一時的にコマンドを外す
+@eval exp='m.ヘッドレス.btcmd.remove(o.化物陵辱)'
+@eval exp='m.ヘッドレス.btcmd.remove(o.仲間を呼ぶ)'
+@monster pos=0 name=ヘッドレス
+@monster pos=1 name=ヘッドレス
+@monster pos=2 name=ヘッドレス
+@monster pos=3 name=ヘッドレス
+@monster pos=4 name=ヘッドレス
+@monster pos=5 name=ヘッドレス
+@monster pos=6 name=ヘッドレス
+@monster pos=7 name=ヘッドレス
+@monster pos=8 name=ヘッドレス
+@monster pos=9 name=ヘッドレス
+@monster pos=10 name=ヘッドレス
+@monster pos=11 name=ヘッドレス
+@monster pos=12 name=ヘッドレス
+@monster pos=13 name=ヘッドレス
+@callbattle bgm=boss gameover=true escape=false
+
+; 戦闘勝利
+; コマンドを元に戻す
+@eval exp='m.ヘッドレス.btcmd.push2(o.化物陵辱, o.仲間を呼ぶ)'
+@eval exp='game.party.minimumRecovery()'
+@fg c=悪魔 f=12
+[texton w=1]
+[ムールムール v=vm067 f=12]「Seriously...? Defeating that large army...!」[k]
+@fgf c=悪魔 f=07
+[ムールムール v=vm068 f=07]「Damn! Headless are way too weak! They're totally useless!」[k]
+[テオ f=05]「Release the girls now! And stop your evil plans!」[k]
+[ムールムール v=vm069 f=07]「Who's going to listen to you?」[k]
+@se f=wing2
+@cl b
+@fg c=8002 left=440 top=-60
+Murmur spreads her wings and flies up in a flurry of wingbeats.[k]
+[テオ f=07]「Stop!」[k]
+[ムールムール v=vm070 f=07]「You're never getting out of there anyway! Go die in that dark hole! Idiots!」[k]
+[textoff]
+@se f=wing2
+@cl
+[texton w=0]
+With another parting insult, Murmur flew out through the hole in the ceiling through which we'd fallen.[k]
+[テオ f=10]「...」[k]
+Never getting out? Does she mean...?[k]
+Come to think of it, I wonder if the girls who were held captive are okay?[k]
+[テオ f=05]「Are you guys okay?」[k]
+[textoff]
+@fg c=priest_purple_nude left=450
+[texton w=1]
+[少女 f=priest_purple_02]「Mostly... Thank you very much.」[k]
+The girls thank us one after another. They seem to be completely exhausted, but their condition isn't bad, all things considered.[k]
+Nevertheless, the girls look somewhat unhappy, even though they have been liberated from their enemies.[k]
+Come to think of it, they weren't restrained in any way. They weren't bound with ropes, nor were they shackled.[k]
+Earlier, a dozen or so girls were sitting in a corner of the room, but no one was trying to escape...[k]
+[少女 f=priest_purple_02]「I am glad you were able to help us. But I don't think we can be saved anymore.」[k]
+[テオ f=05]「Why?」[k]
+[少女 f=priest_purple_02]「Beyond this room is a vast labyrinth.」[k]
+[テオ f=05]「Labyrinth...?」[k]
+[少女 f=priest_purple_02]「It is a very complicated maze. If you don't have a map, you could be wandering around in there forever!」[k]
+[テオ f=06]「...」[k]
+[少女 f=priest_purple_02]「And there are more Headless roaming around. No ordinary person can break through. They'll just run out of energy on the way.」[k]
+[テオ f=06]「I see...」[k]
+That's why no one tried to escape.[k]
+[テオ f=05]「But there is a way to the surface somewhere, right? So we can't give up. We can't just die here.」[k]
+[少女 f=priest_purple_02]「...」[k]
+[テオ f=06]「We are adventurers. We came here to rescue you.」[k]
+[テオ f=06]「We will find a way out of the labyrinth. Until we get back, wait here for us. See you later.」[k]
+[少女 f=priest_purple_03]「Oh, wait a minute, Adventurer!」[k]
+[テオ f=05]「Hmm? What's wrong?」[k]
+[少女 f=priest_purple_02]「Actually, I have a knack for healing magic. Before you go, I could help you recover?」[k]
+[テオ f=01]「Oh, then please do, thank you.」[k]
+[textoff]
+@clf
+; 回復とレベルアップ
+@call storage="anime.ks" target=*fountain_star
+@eventsleep effect=false
+@changefloor pimg=human
+@fgf c=priest_purple_nude left=450
+[texton w=1]
+[テオ f=01]「Thanks, I feel all better.」[k]
+[少女 f=priest_purple_02]「If you need to be healed again, you're welcome to come back here.」[k]
+[少女 f=priest_purple_02]「We have a sister of the Aura Church here too. She's well versed in various treatments, so please let her know if you need anything.」[k]
+[テオ f=01]「All right. Well, I'm off.」[k]
+[少女 f=priest_purple_02]「Adventurers, please be careful.」[k]
+[textoff]
+@cl
+[eventoff cond='game.notPlayInFullVersion']
+[texton w=0]
+The fate of not only ourselves, but the former prisoners, rests on our shoulders. We will find a way out, no matter what it takes.[k]
+[リーゼル v=vl064 f=93]「...It's gone!」[k]
+[テオ f=05]「What's wrong?」[k]
+Suddenly, Riselle sounded very anxious.[k]
+[テオ f=05]「What's wrong? What's gone?」[k]
+[リーゼル v=vl065 f=93]「My hair ornament... My mother's hair ornament is missing...!」[k]
+[テオ f=12]「What?!」[k]
+Riselle lost the hair accessory she loves so much? Could it have been when she fell down the hole earlier?![k]
+[ムールムール v=vm071 f=03]「Gahahahaha!」[k]
+[テオ f=06]「...!」[k]
+[textoff]
+@se f=wing2
+@fg c=8003 left=440 top=-30
+[texton w=0]
+Suddenly, Murmur's voice echoed from the sky above.[k]
+[テオ f=07]「Devil! You're still there?!」[k]
+[ムールムール v=vm072 f=02]「This is what you're looking for, right?」[k]
+[リーゼル v=vl066 f=93]「Ah...!」[k]
+[name f=other_01]Murmur held Riselle's hair ornament. Gliding out of reach, she showed it off.[k]
+[ムールムール v=vm073 f=15]「Your hair ornament is pretty, so I think I'll keep it! See you～!」[k]
+[textoff]
+@se f=wing3
+@cl
+[texton w=0]
+∗flap!∗ ∗flap!∗[k]
+[リーゼル v=vl067 f=93]「Wait, wait...!」[k]
+[テオ f=07]「Wait! Devil! Give it back!」[k]
+Our calls were in vain, and Murmur flew away with the hair ornament in her hand.[k]
+Damn... That devil...! She even stole Riselle's precious hair ornament...[k]
+[リーゼル v=vl068 f=10]「...I'll never get my hair ornament back...」[k]
+[テオ f=12]「That's not true. I'll get it back someday...」[k]
+I tried to put her mind at ease for now, but honestly, it seemed unlikely.[k]
+[リーゼル f=10]「...」[k]
+Riselle looks completely depressed.[k]
+[テオ f=10]「Anyway, our first priority now is to escape. If we get out of here, then maybe we can find a way to get it back.」[k]
+[リーゼル f=10]「...∗nod∗」[k]
+Riselle's expression remained gloomy. But for the sake of the other party members and the girls who are being held captive, we have to put it behind us for now.[k]
+Damn you devil...! Just how much trouble do you have to cause us before you're satisfied...?![k]
+[textoff]
+
+; ヘッドレスに捕まった時に途中で解放されるかどうか
+@eval exp='f.safeReturnFromHeadless = true'
+
+[eventoff]
+
+
+;◇イベント05・レッサーデビル再戦・事件解決
+*labyrinth_5
+
+; ☆フリーモード
+@jump storage="free01.scn" target=*labyrinth_5 cond='game.isFreeMode && ! game.notPlayInFullVersion'
+
+; 古代の迷宮・入口の部屋
+@fg c=devil_yellow left=450 top=-15
+[texton]
+[テオ f=05]「Hey! Lesser Devil!」[k]
+[name n="Lesser Devil" f=devil_00]「What?」[k]
+[name n="Lesser Devil" f=devil_00]「Y-you guys...?! How the hell did you get out of that labyrinth?!」[k]
+[テオ f=05]「This time I will defeat you! I won't let you kidnap more girls!」[k]
+[name n="Lesser Devil" f=devil_00]「Damn...! If that's how it is, I'll do whatever it takes to take you guys down! Hey, guys, gather round!」[k]
+At the order of Lesser Devil, his minions gathered from all over the place. The other side was also fighting with all its might.[k]
+It's time to end this. We need to save the girls in the labyrinth![k]
+[textoff]
+@clf
+
+; 再びレッサーデビルと戦闘
+@monster pos=1 name=オークソルジャー
+@monster pos=2 name=スケルトンガード
+@monster pos=4 name=スケルトンガード
+@monster pos=5 name=オークソルジャー
+@monster pos=10 name=レッサーデビル
+@callbattle bgm=boss escape=false gameover=true
+
+; 勝利
+[texton]
+[テオ f=01]「Alright! We finally beat the Lesser Devil! This incident is now resolved!」[k]
+[textoff]
+@out
+@wait time=500
+@saveon
+[texton]
+Having defeated the enemy, we lowered a rope ladder into the underground room and succeeded in rescuing all the girls.[k]
+We then returned safely to the village with the rescued girls.[k]
+[textoff]
+@wait time=500
+@eval exp='game.view.close()'
+@eval exp='game.openTownView(o.シーガルの村)'
+@gameon
+
+; シーガルの村
+@mu f=beach
+[texton]
+[name n=Villager]「Thank you! Thank you so much!」[k]
+[name n=Villager]「It is truly a dream come true to see my daughter again. How can I ever thank you guys enough...」[k]
+The villagers greeted us with a huge ovation.[k]
+[name n="Village Chief" f=mayor_01]「You guys have been such a great help. This is just a small thank you from the villagers. Please accept it.」[k]
+[textoff]
+@complete name=さらわれた少女たちの救出
+@treasure item=エメラルドの魔石
+
+[texton]
+[テオ f=05]「This is the magic stone...!」[k]
+[name f=other_05]It was a beautiful jewel with a green glow.[k]
+[name f=other_05]Unlike an ordinary gemstone, the light of magic flickers inside it, illuminating its surroundings with a subtle green light.[k]
+[name n="Village Chief" f=mayor_02]「Do you know anything about magic stones?」[k]
+[テオ f=06]「Yes. Actually, I'm collecting these magic stones for a reason...」[k]
+I told the Seagull Village chief about what had happened at the Temple of Polaris.[k]
+[name n="Village Chief" f=mayor_02]「I see, that was the situation...! To defeat the demons that threaten the world...!」[k]
+[name n="Village Chief" f=mayor_01]「Since that is the case, I am even more glad that I was able to give you the magic stone. Please use it for the good of the world.」[k]
+[テオ f=01]「Yes, thank you.」[k]
+[name n="Village Chief" f=mayor_02]「Well, I guess we'll leave it at that.」[k]
+[name n="Village Chief" f=mayor_01]「We have prepared a banquet for you, our village's heroes. Please enjoy yourselves to the fullest this evening.」[k]
+[textoff]
+@out
+@wait time=500
+@jump target=*labyrinth_end_after_skip_prologue cond='game.notPlayInFullVersion'
+
+@bg f=0020
+@mu f=happy
+[texton w=1]
+That evening, a party was held in the square of Seagull Village for us.[k]
+The villagers prepared many treats and we received generous hospitality.[k]
+It was very enjoyable, full of the laughter of the villagers. Seeing the villagers dancing happily around the bonfire, I was truly happy to have accomplished this quest.[k]
+[テオ e=通常 f=02]「You look unhappy, Riselle.」[k]
+@fg c=リーゼル e=通常・大 f=10
+[リーゼル v=vl069 f=10]「Y-yeah...」[k]
+While the other party members were happily eating and dancing, Riselle was the only one looking downcast.[k]
+[テオ f=05]「...Your hair ornament?」[k]
+[リーゼル f=10]「...」[k]
+It was a precious memento from her mother, so she must still be in shock.[k]
+[テオ f=02]「It might not be gone forever. If we can follow that demon's tracks, we might find it again.」[k]
+@fgf c=リーゼル e=通常・大 f=05
+[リーゼル v=vl070 f=05]「Do you really think so...?」[k]
+[テオ f=02]「I can't say for sure, but we might if we keep looking. I'll look for it with you, so let's not give up yet.」[k]
+[リーゼル f=05]「...」[k]
+@fg c=リーゼル e=通常・大 f=02
+[リーゼル v=vl071 f=02]「...Yeah, okay. I'll do my best to find it.」[k]
+Finally, she smiled a little.[k]
+@fg c=リーゼル e=通常・大 f=01
+[リーゼル v=vl072 f=01]「Thank you, Captain. I knew you were kind.」[k]
+[テオ f=13]「Oh, no... 」[k]
+I'm embarrassed to hear Riselle say that again...[k]
+[テオ f=01]「That's right! Hey, Riselle. Do you want to dance?」[k]
+@fg c=リーゼル e=通常・大 f=25
+[リーゼル v=vl073 f=25]「Eh...」[k]
+@fg c=リーゼル e=通常・大 f=22
+[リーゼル v=vl074 f=22]「Yeah... that's fine. If it's with you...」[k]
+[テオ f=01]「Well, let's go!」[k]
+[textoff]
+@cl
+[texton]
+I took Riselle's hand and we joined the dancing circle of villagers.[k]
+I hold Riselle's small hands and stand in front of her. Our faces are close, facing each other head-on.[k]
+[textoff]
+@fg c=リーゼル e=通常・大 f=21
+[texton]
+[リーゼル v=vl075 f=21]「Ahaha... I'm a little embarrassed... 」[k]
+[テオ f=02]「Let's forget about the bad stuff today and have fun.」[k]
+We were feeling the warmth of each other's hands as we took somewhat awkward steps.[k]
+[textoff]
+@fa
+@out
+@wait time=500
+
+@eventsleep
+@wait time=500
+@addevent name=サファイアシティ num=3
+@delevent map=古代の迷宮Ｂ２ num=3
+@delevent map=古代の迷宮Ｂ２ num=4
+@changefloor map=古代の迷宮Ｂ２ x=6 y=2 pimg=void
+@changefloor map=古代の迷宮Ｂ２ x=0 y=3 pimg=void
+@eval exp='o.リーゼル.moveHeart(o.テオ, 10)'
+@jump target=*trial_version_end cond='isDemoVersion'
+@eval exp='game.openTownView(o.シーガルの村)'
+@jump target=*past_episode_from_demo cond='! f.readPastEpisode'
+[eventoff bgm]
+
+
+
+;■体験版の通常ストーリー終了
+*trial_version_end
+
+@out
+@wait time=500
+[texton w=0]
+After this, there were twists and turns. Riselle left the party, and Max rejoined.[k]
+From here on, you will be able to play freely, which is only available in the trial version. Choose your own quests and explore the dungeons freely.[k]
+Note that the maximum level is [b][emb exp='game.levelCapOnDemo'][/b] and maximum magic level is [b][emb exp='game.magicLevelCapOnDemo'][/b].[r]
+Also, there is no ending.[k]
+[b][nw]※Note[r]
+Please note that if you save your game from this point, you will not be able to import the save into the commercial version, so use a different file.[r]
+(Characters and items can be imported into new games.)[k]
+[textoff]
+;-------------------------------------------------------------------------------------
+[iscript]
+
+o.マックス.dressEquipment(o.硬い革鎧);
+o.マックス.dressEquipment(o.布のズボン);
+o.マックス.dressEquipment(o.冒険者のパンツ);
+o.リーゼル.storeAllItemsInOthers();
+game.party.removeMember(o.リーゼル);
+game.party.entry(o.マックス);
+game.guest.entry(o.ライナス);
+game.guest.entry(o.ミレディ);
+
+o.ベトリヌスの酒場.quests.remove(o.ポラリス神殿を守ってほしい);
+o.ベトリヌスの酒場.quests.remove(o.盗賊メンバー派遣の依頼);
+o.ベトリヌスの酒場.quests.add(o.コボルド退治);
+o.ベトリヌスの酒場.quests.add(o.スライム軍団の討伐);
+o.盗賊メンバー派遣の依頼.complete();
+
+o.ランドン渓谷・崖上.events.add(7);
+game.notPlayInFullVersion = true;	// ここから先は製品版での継続不可
+
+// 移動制限
+o.サファイアシティ・南東門.events = [6];
+o.シーガルの村・東門.events = [2];
+o.コリンズの森.events.push2(19);
+o.コリンズの森.events.remove(10);
+o.ランドン渓谷・谷底.events.push2(4);
+o.フーラ雪原・南の森.events.push2(10);
+o.ヤネクの森・霧の谷.events.push2(5);
+
+// その他
+f.safeReturnFromHeadless = false;
+f.heroineEventProgress = true;
+game.lovers.add(o.ライナス);
+
+[endscript]
+;-------------------------------------------------------------------------------------
+@eval exp='game.enterTown(o.シーガルの村, o.かもめ亭, true)'
+[eventoff]
+
+
+
+
+;■体験版でプロローグスキップした場合   ※無しになった
+*labyrinth_end_after_skip_prologue
+@eventsleep
+@wait time=500
+@delevent map=古代の迷宮Ｂ２ num=3
+@delevent map=古代の迷宮Ｂ２ num=4
+@changefloor map=古代の迷宮Ｂ２ x=6 y=2 pimg=void
+@changefloor map=古代の迷宮Ｂ２ x=1 y=3 pimg=void
+@eval exp='game.enterTown(o.シーガルの村, o.かもめ亭, true)'
+[eventoff]
+
+
+
+
+;■体験版で語られなかったエピソード
+; 体験版でスキップしなかった場合でもブルーとの過去やムールムールとの初対面は
+; 描かれないので、ここで改めて描く
+
+*past_episode_from_demo
+@gameon fade
+@w1
+[texton w=0]
+[テオ e=通常 f=02]「...」[k]
+I've managed to get back on track. So far so good.[k]
+When I think back to a year ago, things have gone incredibly well. Yes, compared to the time when I was under Blue's control...[k]
+[テオ f=06]「...」[k]
+Blue. He's a scary guy. Max and I were in despair for a while after getting involved with him.[k]
+That was why Max and I had to escape Bravetown.[k]
+[textoff]
+@out
+@w1
+[texton]
+A year ago in Bravetown...[k]
+As a new adventurer, I was full of hope for the life of adventure that was about to begin.[k]
+[textoff]
+@w1
+;-------------------------------------------------------------------------------------
+[iscript]
+
+for(var i = game.party.members.count - 1; i >= 0; i--)
+{
+	var one = game.party.members[i];
+	if(one == game.playerChara) continue;
+	game.removeMemberTemporary(one);
+}
+game.party.entry(o.マックス);
+o.テオ.storeAllItemsInOthers(game.temporaryBox);
+o.テオ.dressEquipment(o.布の服);
+o.テオ.dressEquipment(o.トランクス);
+o.テオ.dressEquipment(o.ショートソード);
+o.テオ.makeBustups();
+
+o.冒険者ギルド.visible = o.冒険者ギルド.appeared = false;
+o.ホテル琥珀.visible = o.ホテル琥珀.appeared = false;
+o.冒険者の保管庫.visible = o.冒険者の保管庫.appeared = false;
+o.ブレイブタウン・西門.visible = o.ブレイブタウン・西門.appeared = false;
+o.自宅.visible = o.自宅.appeared = true;
+
+game.lapse = false;
+game.openTownView(o.ブレイブタウン);
+
+[endscript]
+;-------------------------------------------------------------------------------------
+@jump storage="main02.scn" target=*_past_1_from_demo
+
+
+
+
+; 回想から戻る
+*return_from_past_episode
+
+; 夕方・町の出口
+@saveon
+@out
+@w05
+@bg f=0017
+[texton w=1]
+That evening...[k]
+After preparing for the trip in a great hurry, Max, Mr. Schwartz, and I prepared to stealthily leave.[k]
+Fortunately, we weren't found by Blue's gang and were able to get out of town safely.[k]
+[シュバルツ f=02]「You're both ready. Let's go!」[k]
+[テオ f=01]「Yes!」[k]
+[マックス f=01]「Yeah!」[k]
+[textoff]
+@out
+@w1
+
+[texton w=0]
+Then Max and I headed for Sapphire City under the guidance of Mr. Schwartz.[k]
+Along the way, we reunited with Maria and Riselle, and despite being hindered by Alex, we manage to reach Sapphire City without being found by Blue's gang.[k]
+I gathered some new companions and began my life as an adventurer anew.[k]
+[テオ f=06]「...」[k]
+After Blue, I'd given up on a life as an adventurer, but that relationship has now come to an end.[k]
+This time, I will walk my ideal path of becoming an adventurer.[k]
+[textoff]
+@out
+@w1
+
+;-----------------------------------------------------------------------------------------
+; 設定
+[iscript]
+
+// 修正
+o.森の中の廃屋入口.events = [];
+o.町外れの遺跡入口.events = [];
+
+// 体験版からの縛り外し
+o.サファイアシティ・南東門.events = [];
+o.シーガルの村・東門.events = [];
+o.ノームの洞窟.events.push2(1);
+o.ヤネクの森・霧の谷.events.remove(5);
+
+// 本筋に戻る
+game.party.removeMember(o.マックス);
+game.restoreMembers();
+game.lapse = true;
+game.gameFrame.updateClock();
+game.enterTown(o.シーガルの村, o.かもめ亭, true);
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+[eventoff]
+

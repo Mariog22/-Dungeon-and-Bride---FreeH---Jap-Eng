@@ -1,0 +1,200 @@
+﻿// job.tjs
+// 職業オブジェクト
+
+
+class Job
+{
+	// 職業を作るクラス
+
+	var master;	// 管理オブジェクト
+	var id;	// 表示の並び順に影響
+	var name;	// 名前
+	var img;	// 画像の基本名
+	var uniKey;	// 他から参照する際に使われる漢字１文字の識別子
+	var expRate;	// レベルアップに必要な経験値を上昇させる係数
+	var sex = ["男", "女"];	// 性別制限
+	var alignment;	// 属性制限
+	var lifeUp;	// ＨＰの増加量
+	var acRate;	// 装備なしの時に発揮できる防御力の掛け率
+	var hitRate;	// 職業による命中力の掛け率
+	var power;	// 力の必要値
+	var intellect;	// 知恵 〃
+	var piety;	// 信仰心 〃
+	var vitality;	// 生命力 〃
+	var speed;	// すばやさ 〃
+	var luck;	// 運 〃
+	var muscle;	// 筋肉（装備重量制限）
+	var items;	// 作成時に持っているアイテム
+	var thief;	// シーフスキル（解錠などに利用）
+	var knowledge;	// 知識量（鑑定などに利用）
+	var craft;	// 工作スキル（修理に利用）
+	var detail;	// 説明
+	var btcmd;	// ＬＶ１の時の魔法・各種コマンド
+	var skill;	// ＬＶ１の時のスキル
+	var newAbility = [];	// レベルアップ時に追加される能力
+	var magic = [];	// 使用できる魔法のカテゴリ
+	var appeared = true;	// すでに出現済みかどうか
+	var displayName;
+
+	function Job(dic, master, id)
+	{
+		this.master = master;
+		this.id   = id;
+		name      =  dic.name;
+		uniKey    =  dic.uniKey;
+		img       =  dic.img;
+		expRate   = +dic.expRate;
+		lifeUp    = +dic.lifeUp;
+		acRate    = +dic.acRate;
+		power     = +dic.pow;
+		intellect = +dic.int;
+		piety     = +dic.pie;
+		vitality  = +dic.vit;
+		speed     = +dic.spd;
+		luck      = +dic.luc;
+		muscle    = +dic.muscle;
+		thief     = +dic.thief;
+		knowledge = +dic.knowledge;
+		craft     = +dic.craft;
+		detail    =  dic.detail;
+		displayName = dic.displayName;
+        if (displayName === void) {
+            displayName = name;
+        }
+		if(dic.sex != 0) sex = [dic.sex];
+		alignment = master.getObjArrayByText(dic.alignment);
+		items = master.getObjArrayByText(dic.items);
+		btcmd = master.getObjArrayByText(dic.btcmd);
+		skill = master.getObjArrayByText(dic.skill);
+		if(dic.newAbility != 0) newAbility = strToArray(dic.newAbility);
+		if(dic.magic != 0) magic = strToArray(dic.magic);
+	}
+
+	function getNewAbility(lv)
+	{
+		// レベルアップ時に追加されるスキルを得る
+		var arr, res = [];
+		for(var i = 0; i < newAbility.count; i++)
+		{
+			arr = newAbility[i].split(":");
+			if(+arr[1] <= lv) res.add(o[arr[0]]);
+		}
+		return res;
+	}
+
+	function getAvailableMagicLevel(lv)
+	{
+		// 今のレベルでどの魔法レベルまで扱えるかを返す
+
+		var score;
+		var res = %[];
+		var capOnDemo = master.magicLevelCapOnDemo;	// デモ版の魔法レベルの制限
+
+		if(magic.has("魔A") || magic.has("魔B") || magic.has("魔C"))
+		{
+			if(magic.has("魔A")) score = (lv + 1) \ 2;	// 魔法使い
+			if(magic.has("魔B")) score = (lv - 1) \ 3;	// サムライ
+			if(magic.has("魔C")) score = (lv - 1) \ 4 + 1;	// 司教,ソーサラー
+			if(isDemoVersion && score > capOnDemo) score = capOnDemo;	// デモ版の制限
+			else if(score > 9) score = 9;
+			res.mmagic = score;
+		}
+
+		if(magic.has("僧A") || magic.has("僧B") || magic.has("僧C"))
+		{
+			if(magic.has("僧A")) score = (lv + 1) \ 2;	// 僧侶
+			if(magic.has("僧B")) score = lv \ 3 - 1;	// 君主,バルキリー
+			if(magic.has("僧C")) score = lv \ 4;	// 司教,ドルイド
+			if(isDemoVersion && score > capOnDemo) score = capOnDemo;	// デモ版の制限
+			else if(score > 9) score = 9;
+			res.pmagic = score;
+		}
+
+		if(magic.has("錬A") || magic.has("錬B") || magic.has("錬C"))
+		{
+			if(magic.has("錬A")) score = (lv + 1) \ 2;	// 錬金術師
+			if(magic.has("錬B")) score = lv \ 3 - 1;	// アサシン
+			if(magic.has("錬C")) score = (lv - 1) \ 4 + 1;	// ソーサラー,ドルイド
+			if(isDemoVersion && score > capOnDemo) score = capOnDemo;	// デモ版の制限
+			else if(score > 9) score = 9;
+			res.amagic = score;
+		}
+
+		if(magic.has("召A") || magic.has("召B"))
+		{
+			if(magic.has("召A")) score = (lv + 1) \ 2;	// 召喚士
+			if(magic.has("召B")) score = lv \ 3 - 1;	// 狩人
+			if(score > 9) score = 9;
+			res.smagic = score;
+		}
+
+		return res;
+	}
+
+	function getNewMagic(lv)
+	{
+		// レベルアップ時に追加される魔法を得る
+
+		var res = [];
+		var scores = getAvailableMagicLevel(lv);
+
+		for(var i = 0; i < master.mmagic.count; i++)
+		{
+			if(! master.mmagic[i].getByLevelUp) continue;
+			if(scores.mmagic >= master.mmagic[i].magicLV) res.add(master.mmagic[i]);
+		}
+
+		for(var i = 0; i < master.pmagic.count; i++)
+		{
+			if(! master.pmagic[i].getByLevelUp) continue;
+			if(scores.pmagic >= master.pmagic[i].magicLV) res.add(master.pmagic[i]);
+		}
+
+		for(var i = 0; i < master.amagic.count; i++)
+		{
+			if(! master.amagic[i].getByLevelUp) continue;
+			if(scores.amagic >= master.amagic[i].magicLV) res.add(master.amagic[i]);
+		}
+
+		if(magic.has("召A") || magic.has("召B"))
+		{
+			for(var i = 0; i < master.smagic.count; i++)
+			{
+				// 召喚魔法は契約時にパーティーにいる使い手（契約スキル持ち）は無条件に、
+				// モンスターとの契約以降に覚える人はレベルアップ時に覚える
+				// 覚える魔法は習得レベルに達しつつすでに契約済みモンスターの中から選ばれる
+				if(master.smagic[i].contracted) res.add(master.smagic[i]);
+			}
+		}
+
+		return res;
+	}
+
+	function getPhysicalArmor(lv)
+	{
+		// アサシン、モンクなどが裸（に近い装備）のときに発揮できる防御力を返す
+		return int((lv + 5) * acRate);
+	}
+
+	function getHitPower(lv)
+	{
+		// 職業によって変動する命中力の補正値を返す
+		// 現在はレベル依存になっているが
+		// 命中率をレベル依存にすることの弊害が多々あるので今後検討が必要
+		return int((lv + 5) * hitRate);
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.name = name;
+		dic.appeared = appeared;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic === void) return;	// 後から追加された分をスルー
+		appeared = dic.appeared;
+	}
+}

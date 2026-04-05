@@ -1,0 +1,72 @@
+﻿; 魔女の隠れ家
+
+
+name = 魔女の隠れ家Ｂ７水中
+insideName = B7 Underwater
+upper = 魔女の隠れ家Ｂ７
+underWater = true
+level = 23
+bgm = hideout
+shadow = dark
+sky = deepwater
+roof = stone
+effect = PE_water_bubble
+blank = rock
+antiWarp = true
+
+; 各パーツ
+━ = stoney
+　 = marble
+☐ = marble
+／ = door
+☖ = gate
+﹃ = ladder
+⑴ = br_maxhp
+
+; 敵情報
+maxGroups = 2
+monsters = アネモネ
+traps = しびれ針
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3  
+  ┏━━━━━━━┓
+ 5┃☐☐☐☐☐☐☐┃
+  ┃☐┏━━━━━┛
+ 4┃☐┃
+  ┃☐┃
+ 3┃☐┃
+  ┣☖┫
+ 2┃　┃
+  ┃　┗━┳━━━┓
+ 1┃　　　／敵　　┃
+  ┃　┏━┫　　　┃
+ 0┃　☖☐』　　⑴┃
+  ┗━┻━┻━━━┛
+;    0   1   2   3  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 50)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 50!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+@jump storage=&'o.魔女の隠れ家Ｂ７.mapFile' target=*reset_floor
+
+;-------------------------------------------------------------------------------

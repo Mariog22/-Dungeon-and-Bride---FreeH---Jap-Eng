@@ -1,0 +1,118 @@
+﻿; ホテルの地下
+
+name = ホテルの地下Ｂ１
+insideName = Ｂ１
+lower = ホテルの地下Ｂ２
+level = 44
+bgm = hideout
+margin = 1
+roof = wood
+shadow = dark
+sky = black
+blank = rock
+outfield = soil
+antiWarp = true
+
+; パーツ画像
+━ = plasterp
+　 = wood
+／ = door
+〆 = heart
+① = ladderu
+㊤ = ladderu
+㊦ = ladderd
+⑺ = barrel
+
+; 敵情報
+maxGroups = 2
+monsters = ハイウェイマン,ブッシュワッカー
+traps = 石つぶて,毒針
+
+; 宝箱
+box[1] = 罠はない,良い短剣,良い短剣,グラディウス,カトラス,ハンマー,革のムチ,ショートボウ
+box[2] = 媚薬の霧,男の秘薬,女の秘薬,精力剤,精力剤
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━┳━━━┳━━━┳━━━┳━━━┳━━━┳━┓
+ 4┃⑺┃❷　　┃　　　┃　　　┃　　　┃　　　┃①┃
+  ┃　┃　　　┃　　　┃　　　┃　　　┃　　　┃　┃
+ 3┃　┃　　　┃　　⑥┃　　敵┃　　④┃　　③┃　┃
+  ┃　┗━━〆┻━━／┻━━／┻━━／┻━━／┛　┃
+ 2┃　　　　　　　　　　　　　　　　　　　　　　　┃
+  ┃　┏／━━┳／━━┳／━━┳／━━┳／━━┓　┃
+ 1┃　┃敵　　┃　　　┃⑤　　┃敵　　┃②　　┃　┃
+  ┃　┃　　　┃　　　┃　　　┃　　　┃　　　┃　┃
+ 0┃㊦┃　　　┃　　　┃　　　┃　　　┃　　　┃❶┃
+  ┗━┻━━━┻━━━┻━━━┻━━━┻━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[2][2].n.key = o.ハートの鍵;
+
+[endmap]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6 ,7, 8]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+[if exp='! o.売春組織の実体を暴け.completed']
+	[texton]
+	[サンドラ f=07]「It's dangerous to go back now! Let's find the organization executive's office instead!」[k]
+	[textoff]
+	@walk move=s
+	[eventoff]
+[endif]
+
+@question title="Are you going back to your room?"
+@jump storage="stay.ks" target=*_ホテル・クイーン_戻る cond='tf.result'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+*event_3
+;[exp] true
+*event_4
+;[exp] true
+*event_5
+;[exp] true
+*event_6
+;[exp] true
+
+@delevent
+@eval exp='f.rescuedGirls ++'
+@eval exp='tf.temp = ["priest_purple", "priest_red", "bladesman_red", "bladesman_black", "archer_purple"].draw()'
+@wait time=500
+@fg c=&'tf.temp + "_towel"'
+[texton w=1]
+[name n=Girl f=&'tf.temp + "_04"']「Oh... Are you a customer...?」[k]
+[サンドラ f=07]「We're here to help you! Now, get out of here as fast as you can!」[k]
+[name n=Girl f=&'tf.temp + "_04"']「Oh, thank you!」[k]
+[textoff]
+@clf
+@se f=period
+@notice text="<y>One girl rescued!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+[if exp='game.curTarget.isHiring']
+	@notice text="But nothing happened!"
+	[eventoff]
+[endif]
+@eval exp='game.curTarget.heat += 50'
+@notice text=&'"<p>" + game.curTarget.displayName + "’s<w> lust increased by 50!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

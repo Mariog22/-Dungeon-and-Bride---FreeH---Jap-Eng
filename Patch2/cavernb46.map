@@ -1,0 +1,512 @@
+﻿; 大洞窟
+
+name = 大洞窟Ｂ46
+insideName = Ｂ46
+upper = 大洞窟Ｂ45
+lower = 大洞窟Ｂ47
+level = 90
+bgm = dungeon
+isOutdoor = true
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+outfield = soild
+
+; 各パーツ
+━ = soild_h
+－ = stoney_h
+　 = soild
+◇ = marble
+♨ = lava
+△ = rock
+⏁ = pedestal
+／ = prison
+メ = prison
+⧻ = fence
+☖ = arch
+︻ = panel
+┯ = button
+㊤ = ladderl
+㊦ = ladderd
+Ⓐ = warp
+⑴ = bulletin
+② = human
+③ = human
+④ = human
+⑤ = human
+⑦ = human
+⑧ = human
+⑨ = human
+⑩ = human
+⒂ = candle
+⒃ = bulletin
+⒄ = br_maxmp
+⒅ = br_maxmp
+⒆ = br_maxmp
+
+; 敵情報
+monsters = インキュバス,ナイトインプ,見習いサキュバス,サキュバス,エルダーサキュバス,マウンテンデビル,グレーターデビル,グレーターデーモン
+
+; 移動ポイント
+(A) = map:大洞窟Ｂ６, x:0, y:4
+
+; 宝箱
+box[1] = 魔王の剣_u,邪悪な弓_u,回復の指輪,復活の粉,経験のコイン（大）,解呪の巻物・改
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  
+  																						┏━━━━━━━━━━━━━━━━━┓			┏－－－－－－－－－┓
+49	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┃　　　　　　　　　　　　　　　　　┃			ⅼ⏁　　　　　　　⏁ⅼ																									┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┃　┏━━━━━━━━━━━━━┓　┃	┏━┛　　　　　　　　　┗━┓			┏━━━━━━━━━━━━━┓					┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+48	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┃　┃													┃　┃	┃　　　　⏁　③　⏁　　　　┃			┃　　　　　　　　　　敵△△┃					┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┃　┃													┃　┃	┃♨♨♨♨♨♨　♨♨♨♨♨♨┃			┃　┏━━━━━━━┓　△△┗━┓			┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+47	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┃　┃													┃　┃	┃♨♨♨♨♨♨　♨♨♨♨♨♨┃			┃　┃							┃　　　　　┃			┃▼▼▼▼▼▼▼▼⏁　　　⏁▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┃　┃					┏━┓					┃　┃	┃♨♨♨♨♨♨　♨♨♨♨♨♨┃			┃　┃							┗━━━┓　┃			┃▼▼▼▼▼▼▼▼　　　　　▼▼▼▼▼▼
+46	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┃　┃					┃❶┃					┃　┃	┃♨♨♨♨⏁　敵　⏁♨♨♨♨┃			┃　┃											┃　┃			┃▼▼▼▼▼▼▼▼　　⑤　　▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┏━┛			┃　┃					┃　┃					┃　┃	┗━┓♨♨♨♨　♨♨♨♨┏━┛			┃　┃											┃　┃			┃▼▼▼▼▼▼▼▼　　　　　▼▼▼▼▼▼
+45	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃					┃　┃					┃　┃					┃　┃			┃♨♨♨♨　♨♨♨♨┃					┃　┃											┃　┃			┃▼▼▼▼▼▼▼▼⏁　　　⏁▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼┏━┛					┃　┗━━━━━┛　┃					┃　┃			┃♨♨♨♨　♨♨♨♨┃					┃　┃											┃　┃			┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+44	▼▼▼▼▼▼　　　　　　　┃							┃　　　　　　　　　┃					┃　┃			┃♨♨⏁　敵　⏁♨♨┃					┃　┃											┃　┃			┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  	▼┏━━━┓　┏━━━┓　┃							┗━━━━━━━━━┛					┃　┃			┃♨♨♨♨　♨♨♨♨┃			┏━┛　┃											┃　┃			┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+43	▼┃			┃　┃			┃　┃																							┃　┃			┃♨♨♨♨　♨♨♨♨┃			┃　　　┃											┃　┃			┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  	━┛			┃　┃			┃　┗━━━━━┓																	┃　┃			┃♨♨♨♨　♨♨♨♨┃	┏━┛　△△┃											┃　┃			┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+42						┃　┃			┃　　　　　　　┃																	┃　┃			┃♨♨⏁　敵　⏁♨♨┃	┃　　敵△△┃											┃　┃			┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  				┏━┛　┃			┃　┏━┓♨♨　┗━┓									┏━━━━━┛　┃			┃♨♨♨♨　♨♨♨♨┃	┃　┏━━━┛											┃　┗━━━┫▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+41				┃⑧　　┃			┃　┃	┃♨♨敵　　┃									┃　　　　　　　┃			┃♨♨♨♨　♨♨♨♨┃	┃　┃															┃　　敵△△┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  				┃　　　┃			┃　┃	┗━━━┓　┗━┓							┃　┏━━━━━┛			┃♨♨♨♨　♨♨♨♨┃	┃　┃															┗━┓　△△┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+40				┃　　　┃			┃　┃					┃　♨♨┃							┃　┃									┃♨♨⏁　敵　⏁♨♨┃	┃　┃																	┃　　　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  				┗━━━┛			┃　┃					┃　♨♨┃							┃　┃									┗━┓♨♨　♨♨┏━┛	┃　┃																	┗━┓　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+39												┃　┃					┃　♨♨┃							┃　┃											┃♨♨　♨♨┃			┃　┃																			┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  										┏━┛　┃					┃　♨♨┃							┃　┃											┃♨♨　♨♨┃			┃　┃																			┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+38										┃　　敵┃					┃　♨♨┃							┃　┃											┃⏁　敵　⏁┃			┃　┃																			┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  				┏━━━━━┛　♨♨┃					┃　♨♨┗━┓					┃　┃											┃♨♨　♨♨┃			┃　┗━━━━━━━━━┓									┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+37				┃　　　　　　　♨♨┃					┃　　　　　┃					┃　┃											┃♨♨　♨♨┃			┃　　　　　　　　　　　┃									┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  				┃　┏━━━━━━━┛					┃　　　　　┃					┃　┃											┃♨♨　♨♨┃			┗━━━━━━━┓　　　┃									┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+36				┃　┃													┃　　　　　┃					┃　┃											┃⏁　敵　⏁┃											┃　　　┃									┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  		┏━┛　┗━┓											┃　　　　　┗━┓			┃　┃											┃♨♨　♨♨┃											┃　　　┃									┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+35		┃♨♨　♨♨┃											┃　　　　　　⑦┃			┃　┃											┃♨♨　♨♨┃											┃　　　┃									┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  		┃♨♨　♨♨┃											┗━┓　　　　　┃			┃　┗━┓									┃♨♨　♨♨┃							┏━━━┛　　　┃									┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+34		┃♨♨　♨♨┃													┃　　　　　┃			┃　　　┃									┃⏁　　　⏁┃							┃　　　　　　⑥┨									┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  		┃♨♨　♨♨┃													┃　　　　　┗━━━┛　　　┗━━━━━━━━━┛　　　　　┗━━━━━━━┛　　　　　　　┣━━━━━┓			┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+33		┃♨♨　♨♨┃													┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　⧻　　　　　┃			┃　┃▼▼▼▼▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  		┃♨♨　♨♨┃													┗━┓　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┣━━━┓　┃	┏━┛　┣━━━┓▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+32		┃♨♨　♨♨┃															┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃			┃　┃	┃　　敵┃			┃▼▼▼▼▼▼　▼▼▼▼▼▼▼▼
+  		┃♨♨　♨♨┃															┗━━━━━┓　　　　　　　　　　　　　　　　　▼▼▼▼▼▼▼▼▼　　　　　　　　　　　┗━┓	┃　┃	┃　△△┃			┗━┓▼▼▼▼　▼▼▼▼▼▼┏━
+31		┃♨♨　♨♨┃																					┃　　　　　　　　　　　　　　　　　▼▼▼▼▼▼▼▼▼　　　　　　　　　　　　　┃	┃Ⓐ┃	┃　△△┃					┃▼▼▼▼　▼▼▼▼▼▼┃
+  		┃♨♨　♨♨┃					┏━━━┳━┓									┗━┓　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　　　┃	┗━┛	┃　┏━┛					┗━┓▼▼　▼▼┏━━━┛
+30		┃♨♨　♨♨┃					┃　　　メ　┃											┃　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　　　┃					┃　┃									┃　　　　　┃
+  		┃♨♨　♨♨┃					┃　　　┃　┃											┃　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┃					┃　┃									┗━┓　┏━┛
+29		┃♨♨　♨♨┃					┃⑨　　┃　┃											┃　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┃					┃　┃											┃　┃
+  		┃♨♨　♨♨┃					┣━━━┫　┃											┃　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┏━┛					┃　┃											┃　┃
+28		┃♨♨　♨♨┃					┃　　敵メ　┃											┃　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┃							┃　┃											┃　┃
+  		┃♨♨　♨♨┃					┃　　　┃　┃							┏━━━┛　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┃	┏━━━━━┛　┃											┃　┃
+27		┃♨♨　♨♨┃					┃　　　┃　┃							┃　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┃	┃△△敵　　　　┃											┃　┃
+  		┃♨♨　♨♨┃					┗━━━┫　┗━━━━━━━┫　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┏━┛	┃△△　┏━━━┛											┃　┗━━━━━┓
+26		┃♨♨　♨♨┃									┃　　　　　　　　　／　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┃			┃　　　┃															┃　　　　　△△┃
+  		┃♨♨　♨♨┃					┏━━━┫　┏━━━━━━━┫　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┃			┃　┏━┛															┗━━━┓　△△┃
+25		┃♨♨　♨♨┃					┃⑩　　┃　┃							┃　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　┃			┃　┃																					┃　　敵┃
+  		┃♨♨　♨♨┃					┃　　　┃　┃							┗━━━━━┓　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　┃			┃　┃																					┗━┓　┃
+24		┃♨♨　♨♨┃					┃　　　メ　┃													┃　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　┃			┃　┃																							┃　┃
+  		┃♨♨　♨♨┃					┣━━━┫　┃													┃　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┃			┃　┗━┓																					┃　┃
+23		┃♨♨　♨♨┃					┃　　　┃　┃													┃　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　┃			┃　　　┃																					┃　┃
+  		┃♨♨　♨♨┃					┃　　　┃　┃													┃　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　　┏━┛			┗━┓　┃																					┃　┃
+22		┃♨♨　♨♨┃					┃　　敵メ　┃													┃　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　　┃							┃　┃																					┃　┃
+  		┃♨♨　♨♨┃					┣━━━┫　┃													┃　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　┏━┛							┃　┃																					┃　┃
+21		┃♨♨　♨♨┃					┃　　　┃　┃													┃　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　　┃									┃　┃																					┃　┃
+  		┃♨♨　♨♨┃					┃　　　┃　┃													┃　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　　　　　┃									┃　┃																					┃　┃
+20		┃♨♨　♨♨┃					┃　　　メ　┃													┃　　　　　　　▼▼▼▼▼▼▼▼▼▼▼　　　　　　　　　┃									┃　┃																					┃　┃
+  		┃♨♨　♨♨┃					┣━━━┫　┃											┏━┛　　　　　　　▼▼▼▼▼▼▼▼▼▼▼　　　　　　　　　┗━┓							┃　┗━━━┓															┏━┛　┃
+19		┃♨♨　♨♨┃					┃　　　┃　┃											┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃							┃　　敵△△┃															┃　　　┃
+  ┏━┛♨♨　♨♨┗━┓			┃　　　┃　┃											┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃							┗━┓　△△┗━━━━━━━━━━━━━━━┛　△△┃
+18┃♨♨♨♨　♨♨♨♨┃			┃　　敵メ　┃											┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃									┃　　　　　　　　　　　　　　　　　　　　敵△△┃
+  ┃♨♨♨♨　♨♨♨♨┃			┗━━━┻━┛											┃　　　　　　　　　┏━━━━━━━━━━━━━━━━━┓　　　┗━┓							┗━━━━━━━━━━━━━━━━━━━━━━━┛
+17┃♨♨⏁　　　⏁♨♨┃																					┃　　　　　　　　　┃																	┃　　　♨♨┃
+  ┃♨♨　　　　　♨♨┃																			┏━┛　　　　　┏━━━┛																	┗━┓　♨♨┗━━━━━━━━━┓
+16┃♨♨　　④　　♨♨┃																			┃　　　　　　　┃																							┃　♨♨　　　　♨♨♨敵　　┃
+  ┃♨♨　　　　　♨♨┃															┏━━━┛　　　┏━━━┛																							┗━━━━━━━━━┓　　　┗━━━━━━━┓
+15┃♨♨⏁　　　⏁♨♨┃															┃　　　　　　　┃																																					┃　　　♨♨♨　　　♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃													┏━┛　　　　　┏━┛															┏━━━━━━━━━━━━━━━━━┓			┗━━━━━━━━━┓♨┗━┓
+14┃♨♨♨♨♨♨♨♨♨┃													┃　　　　　　　┃																	┃　　　　　　　　　　　　　　　　　┃													┃敵　　┃
+  ┗━━━━━━━━━┻━━━━━━━┓					┃　　　　　　　┃																	┃　┏━━━━━━━━━━━━━┓　┃													┃　　　┗━┓			┏━━━━━┓
+13	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃					┃　　　　　　　┃																	┃　┃													┃　┃													┃　　　♨♨┃			┃　♨♨♨⒄┃❖
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┗━┓			┃　　　　　　　┗━━━━━━━━━━━━━━━━━┛　┃													┃　┃													┗━━━┓♨┗━━━┛　♨♨♨　┃
+12	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┃　　　　　　　　　　　　　　　　　　　　　　　　　　　┃													┃　┃																	┃　　　　　　⒃♨♨♨⒅┃
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┗━━━┛　　　┏━━━━━━━━━━━━━━━━━━━━━━━┛													┃　┃																	┗━━━━━┓　♨♨♨　┃
+11	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　┃																																					┃　┃																							┃　♨♨♨⒆┃
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　┃																																	┏━━━┛　┗︻━━┓																			┗━━━━━┛
+10	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　┃																																	┃　　　　　　⑪　⑫┨
+  	━━━━━━━┓▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　┃													┏━━━━━━︻━━━━━━━━━━━━┛　　　　　　　　　┗━━━━━━━━━━━━━━━━━━━┓
+ 9								┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　┃													┃　　　　　　⑬　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  								┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼　　　┃													┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+ 8								┃　　　　　　　　　　　　　　　　　　　┃													┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  						┏━┛　　　　　　　　　　　　　　　　　┏━┛									┏━━━┻⧻━━━━┳━┳━━━━⧻━━━━┳━┳━━━━⧻━━━━┳━┳━━━━⧻━━━━┳━┳━━━━⧻┻━━━┓
+ 7						┃　　　　　　　　　　　　　　　　　　　┃											┃　　　　⑭　　　　┃	┃　　　　⑭　　　　┃	┃　　　　⑭　　　　┃	┃　　　　⑭　　　　┃	┃　　　　⑭　　　　┃
+  						┃　　　　　┏━━━┓▼▼▼▼▼▼▼▼▼┗━━━━━┓					┃　　　　　　　　　┃	┃　　　　　　　　　┃	┃　　　　　　　　　┃	┃　　　　　　　　　┃	┃　　　　　　　　　┃
+ 6						┃　　　　　┃			┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃					┃　　　　⑭　　　　┃	┃　　　　⑭　　　　┃	┃　　　　⑭　　　　┃	┃　　　　⑭　　　　┃	┃　　　　⑭　　　　┃
+  				┏━┛　　　┏━┛			┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┗━┓			┃　　　　　　　　　┃	┃　　　　　　　　　┃	┃　　　　　　　　　┃	┃　　　　　　　　　┃	┃　　　　　　　　　┃
+ 5				┃②　　　　┃					┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┃　　　　　　　　　┃	┃　　　　　　　　　┃	┃　　　　　　　　　┃	┃　　　　　　　　　┃	┃　　　　　　　　　┃
+  				┃　　　　　┗━━━┓	┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃			┗━┓　　　　　┏━┛	┗━┓　　　　　┏━┛	┗━┓　　　　　┏━┛	┗━┓　　　　　┏━┛	┗━┓　　　　　┏━┛
+ 4				┃　　　　　　　　　┃	┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃					┃　　⒂　　┃					┃　　⒂　　┃					┃　　⒂　　┃					┃　　⒂　　┃					┃　　⒂　　┃
+  		┏━┛　　　　　　　　　┃	┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃					┗━━━━━┛					┗━━━━━┛					┗━━━━━┛					┗━━━━━┛					┗━━━━━┛
+ 3		┃　　　　　　　　　　　┃	┃▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼┃
+  ┏━┛　　　┏━━━┓　　　┗━┻━━━━━┓▼▼▼▼▼▼▼▼▼▼▼┗━┓
+ 2┃　　　　⑴┃			┃　　　　　　　　　　　┃▼▼▼▼▼▼▼▼▼▼▼▼▼┃
+  ┃　　　　　┃			┗━━━━━━━┳━━⧻┻━┓▼▼▼▼▼▼▼▼▼▼▼┗━┓
+ 1┃　　㊤　　┃											┃　　　　　┃▼▼▼▼▼▼▼▼▼▼▼▼▼┃																																										❖	❖	❖	❖	❖	❖	❖	❖	❖	❖
+  ┗━━━━━┛											┃　　　　　┃▼▼▼▼▼▼▼▼▼▼▼▼▼┃
+ 0	❖	❖	❖	❖	❖	❖	❖	❖	❖┃⏁　㊦　⏁┃▼▼▼▼▼▼▼▼▼▼▼▼▼┃																																										❖	❖	❖	❖	❖	❖	❖	❖	❖	❖
+  																		┗━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(game.isFreeMode && events.has(20))
+{
+	pos[7][20].event = 20;
+	pos[7][20].f.pimg = "human";
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="The 54th Demon Realm"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Devil f=succubus_21]「This is the 54th demon realm... one of 72 demon realms...」[k]
+[name n=Devil f=succubus_21]「In the area ruled by the Three Great Demon Lords, where relatively powerful demons live, all creatures other than demons are treated like livestock...」[k]
+[name n=Devil f=succubus_21]「Since it became connected to the human world, people like you occasionally come here, but the demon world is a very frightening place, so it would be best for you to return home.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@wait time=500 cond='WAY != "n"'
+@walk turn=s cond='WAY != "n"'
+@wait time=500
+@fg c=succubus_queen left=450 top=-170
+[texton]
+[name n=Asmodeus]「What? Are you going to fight me?」[k]
+[name n=Asmodeus]「Huhuhu, you curious guy. Well, okay, I'll play with you to kill some time.」[k]
+[textoff]
+@clf
+@monster pos=3 name=アスモデウス
+@callbattle bgm=satan gameover=true
+@delevent
+@changefloor pimg=void
+@jump target=*_record_hunting_three_loads
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@wait time=500 cond='WAY != "s"'
+@walk turn=s cond='WAY != "s"'
+@wait time=500
+@fg c=demon_gold left=450 top=-228
+[texton]
+[name n=Diablo]「How dare you challenge me, one of the Three Great Demons... What reckless fools you are!」[k]
+[name n=Diablo]「Don't get too cocky, human! I'll show you how foolish you are!」[k]
+[textoff]
+@clf
+@monster pos=3 name=ディアブロ
+@callbattle bgm=satan gameover=true
+@delevent
+@changefloor pimg=void
+@jump target=*_record_hunting_three_loads
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+@wait time=500
+@fg c=devil_purple left=450 top=-111
+[texton]
+[name n=Bifrons]「What the hell are you doing? Are you screwing with me?!」[k]
+[name n=Bifrons]「You've got some nerve. Fine, I'll beat you to a pulp. Don't come crying to me later.」[k]
+[textoff]
+@clf
+@monster pos=3 name=ビフロンス
+@callbattle bgm=satan gameover=true
+@delevent
+@changefloor pimg=void
+@jump target=*_record_hunting_three_loads
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_record_hunting_three_loads
+
+; 記録
+[if exp='game.hyperBombsCount == 0 && ! game.map.events.has(3) && ! game.map.events.has(4) && ! game.map.events.has(5)']
+	@eval exp='sf.huntedThreeLordsWithoutHyperBombs = true'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=33 y=33 way=e mode=open
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Devil f=imp_00]「Hey, how did humans manage to come this far? How strong are you guys?」[k]
+[name n=Devil f=imp_00]「Well, even you guys can't beat the Three Great Demon Lords! The Demon Lords are seriously powerful!」[k]
+[name n=Devil f=imp_00]「If you ever encounter the Demon Lords, you'd better run away immediately!」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Devil f=succubus_10]「The Demon Lords are strong, but there's a dragon that's even stronger sleeping on the floor below.」[k]
+[name n=Devil f=succubus_10]「If you don't want to die, don't go near that dragon!」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Woman f=bladesman_silver_03]「Thank you for helping me. I am an adventurer like you. My party got carried away and we ended up here, but we lost against the demons.」[k]
+[name n=Woman f=bladesman_silver_03]「Everyone else in the party was killed, But I was captured and kept alive for the demons' sexual gratification.」[k]
+[name n=Woman f=bladesman_silver_03]「This is a terrifying place. There are many terrifying demons here that you have never seen on the surface. You should run away quickly.」[k]
+[textoff]
+@changefloor pimg=void
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Girl f=priest_pink_03]「Thank you for helping me... I was kidnapped by a demon who came to the human world and brought here...」[k]
+[name n=Girl f=priest_pink_03]「I've been forced to be the sexual partner of demons here for so long... Now I am finally free from them. Thank you so much.」[k]
+[textoff]
+@changefloor pimg=void
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] onObjectTrigger
+
+@notice text="If you want to fight dragons, press the button on the right."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@se f=fence
+@wait time=100
+@se f=fence
+@wait time=100
+@se f=fence
+@switchfence x=21 y=8 way=s mode=open
+@switchfence x=27 y=8 way=s mode=open
+@switchfence x=33 y=8 way=s mode=open
+@switchfence x=39 y=8 way=s mode=open
+@switchfence x=45 y=8 way=s mode=open
+@notice text="I heard the sound of several doors opening somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_13
+;[exp] onObjectTrigger
+
+@notice text="Light all the crystals to open the door to the abyss."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_14
+;[exp] true
+
+@eval exp='game.map.bgm = "dragon"'
+@eval exp='tf.chainedDragons = ["アクアドラゴン", "ブラックドラゴン", "ガスドラゴン", "フロストドラゴン", "ファイアドラゴン"]'
+@wait time=500 cond='WAY != "s"'
+@walk turn=s cond='WAY != "s"'
+@wait time=500 cond='game.party.curY == 7'
+@walk move=s cond='game.party.curY == 7'
+@wait time=1000
+@se f=roar
+@fgf c=&'m[tf.chainedDragons[(game.party.curX - 21) \ 6]].img' left=450 top=-90
+@wait time=1000
+[texton]
+A dragon appeared with a fierce roar![k]
+[textoff]
+@clf
+@monster pos=3 name=&'tf.chainedDragons[(game.party.curX - 21) \ 6]'
+@eval exp='tf.chainedDragons.erase((game.party.curX - 21) \ 6)'
+@callbattle bgm=dragon gameover=true escape=false
+@wait time=500
+@se f=rockdrop
+@wait time=1000
+@se f=rockdrop
+@wait time=1000
+[texton]
+Just when we thought the enemy defeated, something approaches from behind, making terrifying footsteps![k]
+[textoff]
+@wait time=500
+@walk turn=n
+@wait time=500
+@se f=roar
+@fgf c=&'m[tf.chainedDragons[2]].img' left=450 top=-90
+@wait time=1000
+[texton]
+Suddenly, another dragon appeared from behind![k]
+[textoff]
+@clf
+@monster pos=3 name=&'tf.chainedDragons[2]'
+@eval exp='tf.chainedDragons.erase(2)'
+@callbattle bgm=dragon gameover=true escape=false
+@wait time=500
+@se f=rockdrop
+@wait time=1000
+@se f=rockdrop
+@wait time=1000
+@se f=roar
+@fgf c=&'m[tf.chainedDragons[1]].img' left=450 top=-90
+@wait time=1000
+[texton]
+Another dragon has arrived![k]
+It seems that the dragons in the other cages heard the noise and are approaching. Now that this has happened, we have no choice but to fight.[k]
+[textoff]
+@clf
+@monster pos=3 name=&'tf.chainedDragons[1]'
+@eval exp='tf.chainedDragons.erase(1)'
+@callbattle bgm=dragon gameover=true escape=false
+@wait time=500
+@se f=rockdrop
+@wait time=1000
+@se f=roar
+@fgf c=&'m[tf.chainedDragons[0]].img' left=450 top=-90
+@wait time=1000
+[texton]
+Without a moment to catch our breath, another dragon arrived![k]
+With the exit blocked, the only way to survive is to fight and win. We have no choice but to do it.[k]
+[textoff]
+@clf
+@monster pos=3 name=&'tf.chainedDragons[0]'
+@eval exp='tf.chainedDragons.erase(0)'
+@callbattle bgm=dragon gameover=true escape=false
+@wait time=500
+@se f=roar
+@fgf c=&'m[tf.chainedDragons[0]].img' left=450 top=-90
+@wait time=1000
+[texton]
+Another dragon. The enemy was still there.[k]
+The end of the battle is still nowhere in sight. Will we survive?[k]
+[textoff]
+@clf
+@monster pos=3 name=&'tf.chainedDragons[0]'
+@eval exp='tf.chainedDragons.erase(0)'
+@eval exp='game.map.bgm = "cave"'
+@callbattle bgm=dragon gameover=true escape=false
+@wait time=1000
+[texton]
+...[k]
+...It seems that the battle is finally over. We successfully defeated all of the dragons.[k]
+[textoff]
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_15
+;[exp] inSearching || onObjectTrigger
+
+[if exp='game.map.getFloorInfo().pimg == "lighten"']
+	@notice text="Nothing happened."
+	[eventoff]
+[endif]
+@se f=kacha
+@changefloor pimg="lighten"
+[eventoff cond='game.map.pos[21][4].f.pimg == "candle"']
+[eventoff cond='game.map.pos[27][4].f.pimg == "candle"']
+[eventoff cond='game.map.pos[33][4].f.pimg == "candle"']
+[eventoff cond='game.map.pos[39][4].f.pimg == "candle"']
+[eventoff cond='game.map.pos[45][4].f.pimg == "candle"']
+@wait time=800
+@se f=fence
+@switchfence x=10 y=2 way=s mode=open
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_16
+;[exp] onObjectTrigger
+
+@notice text="Magical Source"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_17
+;[exp] onObjectTrigger
+*event_18
+;[exp] onObjectTrigger
+*event_19
+;[exp] onObjectTrigger
+
+@barrel noguest
+@damage v=&'game.curTarget.addParam("maxMagic", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max MP permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_20
+;[exp] party.lastIsMove
+
+[texton]
+[ブルー f=02]「I'm Blue. The strongest man in the world. I messed up a bit, and now I'm trapped here.」[k]
+[ブルー f=02]「I'm a badass. After all, I went toe-to-toe with a high-ranking demon.」[k]
+[ブルー f=02]「As a thank-you for setting me free, I might just agree to be your bodyguard.」[k]
+[ブルー f=02]「If you need me, I'll be back at my mansion above ground.」[k]
+[textoff]
+@changefloor pimg=void
+@addevent map=ブルーのアジト１Ｆ num=12
+@eval exp='game.lovers.push2(o.ブルー)'
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------

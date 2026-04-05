@@ -1,0 +1,98 @@
+﻿; ワイルド・ブルのアジト
+
+name = ワイルドブルのアジト１Ｆ
+insideName = １Ｆ
+upper = ワイルドブルのアジト２Ｆ
+showAllArea = true
+level = 8
+bgm = hideout
+margin = 1
+shadow = dark
+sky = black
+roof = wood
+blank = rock
+
+; 各パーツ
+━ = plaster
+　 = wood
+／ = door
+☗ = door
+︻ = panel
+㊤ = ladderu
+⑵ = br_maxhp
+⑶ = barrel
+⑷ = barrel
+
+; 敵情報
+monsters = ハイウェイマン,ブッシュワッカー,バンディット
+traps = 警報,毒針,酸スプレー,爆弾
+
+; 移動ポイント
+(A) = map:ランドン渓谷・崖上, x:2, y:79, way:s, symbol:exit, ask:Leave the dungeon?
+
+; 宝箱
+box[1] = グレートボウ_u,粉砕のメイス_u,ポーション,鑑定の巻物,気付けの花
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22
+  ┏━┳━━━━━┳━┳━━━━━┳━┓
+ 6┃㊤┃⑶　　　　／　┃　　　　敵／　┃
+  ┃　┃　　　　　┃　┃　　　　　┃　┃
+ 5┃　┃⑷　　　　┃　┃❶　　　　┃　┃
+  ┃　┣━━━━━┛　┗━━━━━┫　┃
+ 4┃　┃　　　　　　　　　　　　　┃　┃
+  ┃　┣／━━━━┓　┏━━━━／┫　┃
+ 3┃　┃敵　　　⑵┃　【①　　　敵┃　┃
+  ┃　┃　　　┏━┛　┗━┓　　　┃　┃
+ 2┃　┃　　　┃　　　　　┃　　　┃　┃
+  ┃　┗━━━┛　　　　　┗━━━┛　┃
+ 1┃　　　　　　　　　　　　　　　　　┃
+  ┗━━━━━━━┓　┏━━━━━━━┛
+ 0								┃Ⓐ┃
+  								┗☗┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="To become a <p>Pirate<w>!<r>Alignment:<y> Bad, Evil<r>Str: 12 Vit: 12 Luck: 10<w>"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 5)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP permanently increased by 5!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+*event_4
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;===============================================================================

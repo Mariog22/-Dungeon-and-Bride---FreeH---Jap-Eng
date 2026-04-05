@@ -1,0 +1,1761 @@
+﻿// inn.tjs
+// ホテル画面を作成
+// 「 guest 」を使った単語
+// guestMarks, guestRoom, GuestMarker, loadGuest, otherGuestReserve
+
+//----------------------------------------------------------------------------------------
+class HotelWindow extends MarkersBoard
+{
+	// ホテル画面
+
+	var curHotel;	// 現在のホテル
+	var visMarkers = [];	// 客マーカー
+	var rooms = [];	// 部屋エリア
+	var eventBtns = [];	// イベントボタン
+	var emitBase = [];	// 演出用レイヤー
+	var autoButton;	// 自動部屋割ボタン
+	var fixButton;	// 確定ボタン
+	var exitButton;	// 出るボタン
+	var sleepButton;	// 就寝ボタン
+	var sleepNowButton;	// すぐ寝るボタン
+	var totalCharge;	// 総額表示
+	var wallet;	// 残高表示
+	var actionMeter;	// 行動力メーター
+	var province;	// 領域をチェックし色を塗るレイヤー
+	var curButton = null;	// 今選択していたボタン
+	var robbyLayer;	// ロビー画面を表示するためのレイヤー
+	var sleepNow = true;	// すぐに就寝するかどうか
+	var suspendSleeping = false;	// すぐに就寝することを選んでも一旦止めるフラグ
+	var stopSleeping;	// イベント等で就寝を止める際はここにコメントを入れる
+	var breakingAnimeTime = 0;	// 盾破壊アニメの待ち時間
+
+	function HotelWindow(par, master)
+	{
+		super.MarkersBoard(...);
+		name = "宿ウインドウ";
+		setSize(window.scWidth, window.scHeight);
+		hitThreshold = 256;
+
+		// ロビー画面
+		robbyLayer = new DecoLayer(par);
+
+		// 領域レイヤー
+		province = new DecoLayer(this);
+		province.setSize(width, height);
+		province.absolute = 1;
+		province.clear();
+
+		// キャラマーカーと演出用レイヤーを作成
+		for(var i = 0; i < master.party.maxMembers + master.guest.maxMembers; i++)
+		{
+			visMarkers[i] = new GuestMarker(this, master, i);
+			visMarkers[i].absolute = 100 + i;
+			markers.add(visMarkers[i]);
+			emitBase[i] = new EffectLayer(par);
+			emitBase[i].loadImages(%[storage: "PE_base_sleep"]);
+			emitBase[i].absolute = 1001 + i;
+		}
+
+		// 部屋
+		areas = rooms;
+
+		// 自動部屋割ボタン
+		autoButton = new FixedButtonWithMarkers(this);
+		with(autoButton)
+		{
+			.name = "自動部屋割ボタン";
+			.setPos(5, 620);
+			.loadImages("btn_menu_autoplace");
+			.absolute = 90;
+			.onSelectAction = autoPlacement;
+		}
+		markers.add(autoButton);
+
+		// 確定ボタン
+		fixButton = new FixedButtonWithMarkers(this);
+		with(fixButton)
+		{
+			.name = "予約確定ボタン";
+			.setPos(5, 670);
+			.loadImages("btn_menu_checkin");
+			.absolute = 90;
+			.onSelectAction = finishReservation;
+		}
+		markers.add(fixButton);
+
+		// すぐ寝るボタン
+		sleepNowButton = new FixedButtonWithMarkers(this);
+		with(sleepNowButton)
+		{
+			.name = "すぐ寝るボタン";
+			.setPos(5, 720);
+			.loadImages("btn_menu_sleepnow");
+			.absolute = 90;
+			.onSelectAction = askGoToSleepNow;
+		}
+		markers.add(sleepNowButton);
+
+		// 就寝ボタン
+		sleepButton = new FixedButtonWithMarkers(this);
+		with(sleepButton)
+		{
+			.name = "就寝ボタン";
+			.setPos(5, 720);
+			.loadImages("btn_menu_sleep");
+			.absolute = 90;
+			.onSelectAction = askGoToSleep;
+		}
+		markers.add(sleepButton);
+
+		// 退出ボタン
+		exitButton = new FixedButtonWithMarkers(this);
+		with(exitButton)
+		{
+			.name = "退出ボタン";
+			.setPos(5, 720);
+			.loadImages("hotel_exit");
+			.absolute = 90;
+			.onSelectAction = exit;
+			.visible = true;
+		}
+		markers.add(exitButton);
+
+		// 財布
+		wallet = new WalletLayer(this, master);
+		wallet.setPos(width - 140, height - 40);
+		wallet.absolute = 10;
+
+		// 総額表示
+		totalCharge = new DecoLayer(this);
+		with(totalCharge)
+		{
+			.setPos(220, height - 37);
+			.loadImages("frame_charge");
+			.absolute = 90;
+			.font.height = 20;
+			//.font.face = "ＭＳ Ｐ明朝";
+			.font.bold = true;
+			.visible = true;
+		}
+
+		// 行動力メーター
+		actionMeter = new DecoLayer(this);
+		with(actionMeter)
+		{
+			.loadImages("frame_action");
+			.setSizeToImageSize();
+			.setPos(width - .width - 10, height - .height - 40);
+			.absolute = 90;
+			.visible = false;
+		}
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < emitBase.count; i++) invalidate emitBase[i];
+		invalidate wallet;
+		invalidate province;
+		super.finalize();
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.visible = visible;
+		dic.stopSleeping = stopSleeping;
+		dic.visMarkers = [];
+		for(var i = 0; i < visMarkers.count; i++) dic.visMarkers[i] = visMarkers[i].store();
+		dic.rooms = [];
+		for(var i = 0; i < rooms.count; i++) dic.rooms[i] = rooms[i].store();
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		visible = dic.visible;
+		stopSleeping = dic.stopSleeping;
+		if(curHotel !== void) loadHotelMap(curHotel);
+		for(var i = 0; i < dic.visMarkers.count; i++) visMarkers[i].restore(dic.visMarkers[i]);
+		for(var i = 0; i < dic.rooms.count; i++) rooms[i].restore(dic.rooms[i]);
+	}
+
+	property enabled
+	{
+		setter(v)
+		{
+			super.enabled = v;
+			fixButton.hitThreshold = exitButton.hitThreshold = sleepNowButton.hitThreshold
+			 = autoButton.hitThreshold = sleepButton.hitThreshold = v ? 16 :256;
+		}
+		getter{ return super.enabled; }
+	}
+
+	function resetPos()
+	{
+		setPos(0, 0);
+	}
+
+	function focus()
+	{
+		// このレイヤー自身はフォーカスを取らない
+		if(! KEY_PRESSED || ! MOUSE_HIDDEN) return;
+		if(curButton !== null && curButton.visible) curButton.focus();
+		else if(getFirstMarker() !== void) getFirstMarker().focus();
+	}
+
+	function getFirstMarker()
+	{
+		// 操作可能な最初の客マーカーを返す
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			if(visMarkers[i].visible && visMarkers[i].charaRef !== void) return visMarkers[i];
+		}
+	}
+
+	function open()
+	{
+		// ホテル画面を開く
+		visible = (master.hour == "night");
+	}
+
+	function close()
+	{
+		// 宿画面を閉じる
+		curButton = null;
+		clearHotel();
+		visible = false;
+		robbyLayer.visible = false;
+		enabled = false;
+	}
+
+	function leaveHotel()
+	{
+		// ホテルから去る・宿関連の作業を全て終えて元いた場所へ戻る
+		close();
+		master.openTownView(master.townView.curTown);
+		master.townView.goToStreet(curHotel);
+	}
+
+	function loadHotelMap(hotelObj)
+	{
+		// ホテルマップ作成
+
+		curHotel = hotelObj;	// open より先にここが呼ばれるのでここで指定
+		clearHotel();	// いったん全部クリアする
+		sleepNow = false;	// ここで元に戻しておく
+		province.loadProvinceImage(hotelObj.img + "_pv");
+		robbyLayer.loadImages(hotelObj.img + "_robby");
+
+		// 召喚獣がパーティーに残っていた場合消しておく
+		master.guest.eraseMonster();
+
+		// 部屋作成
+		for(var i = 0; i < hotelObj.rooms.count; i++)
+		{
+			rooms[i] = new HotelRoom(this, master, i);
+			rooms[i].createRoom(hotelObj.rooms[i]);
+			rooms[i].absolute = 10 + i;
+		}
+
+		// 客マーカー読み込み
+		for(var i = 0; i < master.party.allMembers.count; i++)
+		{
+			var charaObj = master.party.allMembers[i];
+			dm(charaObj.name + "を読み込み：" + i);
+			if(charaObj.knockOut) continue;
+			visMarkers[i].loadGuest(charaObj);
+			charaObj.moved = false;
+			charaObj.dontMove = false;
+			charaObj.priorTarget = void;
+		}
+
+		// 背景とイベントボタン設置・その他の状態
+		exitButton.setPos(hotelObj.exitBtnPos.x, hotelObj.exitBtnPos.y);
+		updateActionMeter();
+	}
+
+	function openReservationMap(hotelObj)
+	{
+		// 予約画面を作成
+
+		loadImages(hotelObj.img);	// 背景読み込み
+
+		// 宿泊客マーカーを配置
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			var charaObj = visMarkers[i].charaRef;
+			if(charaObj !== void)
+			{
+				// まずはラウンジに集める
+				rooms[0].putMarker(visMarkers[i]);
+			}
+		}
+		curButton = getFirstMarker();
+
+		// 部屋を表示
+		for(var i = 0; i < rooms.count; i++)
+		{
+			rooms[i].visible = true;
+		}
+		province.visible = true;
+
+		// その他のボタン
+		autoButton.visible = autoButton.selectable = true;
+		fixButton.visible = fixButton.selectable = true;
+		sleepNowButton.visible = sleepNowButton.selectable = ! master.isFreeMode;
+		sleepButton.visible = sleepButton.selectable = false;
+		exitButton.visible = exitButton.selectable = true;
+		totalCharge.visible = true;
+	}
+
+	function openRoamingMap(hotelObj)
+	{
+		// 散策画面を作成・すでに予約画面まで作成済みならこれを直接呼ぶ
+
+		master.gameVisible = true;
+		master.clearWindows();
+		loadImages(hotelObj.img + "_night");	// 背景読み込み
+
+		// 客マーカーをイベントボタン化。あと、怒りマークを消す
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			if(! visMarkers[i].visible) continue;
+			visMarkers[i].changeToFixedButton("*talk");
+		}
+
+		// 部屋を非表示に
+		for(var i = 0; i < rooms.count; i++)
+		{
+			rooms[i].visible = false;
+		}
+		province.visible = false;
+
+		// イベントボタンを設置
+		for(var i = 0; i < hotelObj.eventBtns.count; i++)
+		{
+			setEventButton(hotelObj.eventBtns[i]);
+		}
+
+		// その他のボタン
+		autoButton.visible = autoButton.selectable = false;
+		fixButton.visible = fixButton.selectable = false;
+		sleepNowButton.visible = sleepNowButton.selectable = false;
+		sleepButton.visible = sleepButton.selectable = ! sleepNow || suspendSleeping;
+		exitButton.visible = exitButton.selectable = false;
+		curButton = sleepButton;
+		totalCharge.visible = false;
+	}
+
+	function clearHotel()
+	{
+		// ホテルの表示・情報をすべてクリアする
+		for(var i = 0; i < visMarkers.count; i++) visMarkers[i].clear();
+		for(var i = 0; i < rooms.count; i++) rooms[i].clear(), invalidate rooms[i];
+		for(var i = 0; i < eventBtns.count; i++) eventBtns[i].clear(), invalidate eventBtns[i];
+		rooms.clear();
+		eventBtns.clear();
+		clearHotelView();
+		actionMeter.visible = false;
+	}
+
+	function clearHotelView()
+	{
+		// ホテルの表示のみをクリアする
+		autoButton.visible = autoButton.selectable = false;
+		fixButton.visible = fixButton.selectable = false;
+		sleepNowButton.visible = sleepNowButton.selectable = false;
+		sleepButton.visible = sleepButton.selectable = false;
+		exitButton.visible = exitButton.selectable = false;
+		province.visible = false;
+		province.clear();
+		for(var i = 0; i < emitBase.count; i++)
+		{
+			emitBase[i].visible = false;
+			particle_object.emitters[i].stop(true);
+		}
+	}
+
+	function checkEvent(lastChara)
+	{
+		// キャラやホテルのイベントをチェックする
+		// イベントが発生したらそちらに処理が移行
+		// 終わったら再びこれを呼んで、イベントが残っていれば再度イベントへ
+		// すべて終了していたら呼び出し元に終わった事を通知し、次の処理へ移行してもらう
+
+		// 次にチェックするキャラを特定
+		var arr = master.party.allMembers;
+		var num = 0;	// 初回は０番目のキャラ
+		if(lastChara !== void) num = arr.find(lastChara) + 1;	// 以降は今チェックしたキャラの次
+
+		// 各キャラクターのイベントや予約をチェック
+		for(var i = num; i < arr.count; i++)
+		{
+			if(arr[i].knockOut) continue;
+			if(arr[i].checkEvent()) return true;	// イベント発生
+		}
+
+		// 宿のイベントや予約をチェック
+		curHotel.inHouse = true;	// 宿の中にいるので入店後としてチェックする
+		if(curHotel.checkEvent())
+		{
+			return true;
+		}
+
+		// チェック終了
+		return false;	// イベントがもう発生しなかったという通知
+	}
+
+	function checkEarlyEvent(lastChara, endCheck = false)
+	{
+		// 先行予約と入店時のイベントをチェックする
+		master.hour = "early";	// 先行予約
+		playMusic("inn");
+		robbyLayer.visible = true;
+		visible = false;
+		if(! endCheck && checkEvent(lastChara)) return;
+		if(lastChara === void)
+		{
+			// １つもイベントが起きなかったらフロントの挨拶だけする
+			master.onGameBreak();
+			master.resetPrevForProcessOnly();
+			kag.process("script.ks", "*hotel_welcome");
+			return;
+		}
+		startReservation();
+	}
+
+	function startReservation()
+	{
+		// 先行予約をチェックした後受付へ・予約開始
+		master.hour = "day";
+		robbyLayer.visible = false;
+		kag.process("stay.ks", "*reservation_" + curHotel.name);
+		master.enterReservationMode();
+	}
+
+	function reserveRoom(charaObj, roomObj)
+	{
+		// プレイヤーの操作以外でメンバーが先に使用する部屋を決めてしまう
+		if(roomObj === void) roomObj = getReservableRoom();
+		if(roomObj === void || ! roomObj.selectable) return;
+		if(charaObj === void)
+		{
+			// キャラが指定されていなければ他の客が予約
+			// こちらは予約されたら完全シャットアウト
+			roomObj.reservedByOthers();
+		}
+		else
+		{
+			// 指定キャラが予約
+			// 定員に空きがある限り追加でその部屋に入れる
+			var mark = getMarkerFromChara(charaObj);
+			if(mark === void) return;
+			changeRoom(mark, roomObj);
+			mark.changeToFixedButton("*reserved");
+		}
+	}
+
+	function getReservableRoom()
+	{
+		// 予約できそうな部屋（空室）を１つランダムに得る
+		var arr = [];
+		for(var i = 0; i < rooms.count; i++)
+		{
+			if(rooms[i].reserved) continue;
+			if(rooms[i].visMarkers.count > 0) continue;
+			if(rooms[i].type != "guestRoom") continue;
+			arr.add(rooms[i]);
+		}
+		if(arr.count > 0) return arr[master.date % arr.count];
+	}
+
+	function exit()
+	{
+		// 宿から出ようとする
+		master.popPrev();
+		askCancel();
+	}
+
+	function askCancel()
+	{
+		// キャンセル確認
+		if(! exitButton.visible)
+		{
+			playSound("buzzer");
+			master.notice.open(master.enterReservationMode);
+			master.notice.write("<y>You are not currently allowed to leave the inn");
+			return false;
+		}
+		if(rooms[0].visMarkers.count == master.party.allMembers.count)
+		{
+			leaveHotel();
+			return;
+		}
+		curButton = window.focusedLayer;
+		enabled = false;
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: leaveHotel]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "<y>Cancel check in?");
+	}
+
+	function autoPlacement()
+	{
+		// 自動部屋割り
+
+		var rounge = rooms[0];	// ラウンジ
+		if(rounge.visMarkers.count == 0) return;	// すでに部屋割りが済んでいたら終わり
+
+		var roungeMarks = [];	// 宿泊先を探すラウンジのメンバーたちのマーカー
+		roungeMarks.assign(rounge.visMarkers);	// すでに手動でラウンジ外に移動したキャラは含まない
+		var bedrooms = [];	// 宿泊可能な部屋
+		bedrooms.assign(rooms);
+		bedrooms.erase(0);
+
+		// 前回泊まった部屋の情報を復帰させる
+		for(var i = 1; i < rooms.count; i++)
+		{
+			rooms[i].setRoomInfoToLastMembers(curHotel.rooms[i].lastMembers);
+		}
+
+		// より良い部屋割りにするため、注文の多そうなキャラから順に並べ替える
+		roungeMarks.assign(rounge.visMarkers);	// 残っているキャラマーカー
+		roungeMarks.sort(function(a, b){ return a.charaRef.sex == "男" && b.charaRef.sex == "女"; });
+		roungeMarks.sort(function(a, b){ return a.charaRef.isGuest && ! b.charaRef.isGuest; }, true);
+		roungeMarks.sort(function(a, b){ return b.charaRef == b.master.playerChara;}, true);	// 主人公はラスト
+
+		// 部屋割り開始
+		var changedPriority = false;
+		for(var i = 0; i < roungeMarks.count; i++)
+		{
+			var one = roungeMarks[i];
+
+			// 人数の少ない部屋から先に埋まる  馬小屋は最後に
+			bedrooms.sort( function(a, b){ return a.type != "stable" && a.capacity < b.capacity; } );
+
+			// 前回の部屋を最優先にする
+			if(one.lastRoom !== void)
+			{
+				bedrooms.remove(one.lastRoom);
+				bedrooms.unshift(one.lastRoom);
+			}
+
+			// とりあえず部屋に入れてみて（入れないと判定できない）ダメだったら次の部屋を探す
+			// 良い所がなければ最後の候補になる
+			for(var j = 0; j < bedrooms.count; j++)
+			{
+				if(! bedrooms[j].selectable) continue;
+				changeRoom(one, bedrooms[j]);
+				if(! master.isFreeMode && one.charaRef == master.playerChara)
+				{
+					// 主人公だったら嫉妬キャラと同じ部屋にしない
+					//（嫉妬の拒否判定は他のキャラから起こり本人の条件からはチェックできないのでここで確認する）
+					if(one.charaRef.inSameRoomOnly(master.getPlayersFavoriteHeroine())) continue;
+				}
+				if(checkAllRoomMatesApproval(bedrooms[j])) break;	// 各キャラの拒否条件に当てはまらなければ決定
+			}
+		}
+	}
+
+	function checkAllRoomMatesApproval(rm)
+	{
+		// 同室のメンバーたちが一緒に泊まる同意を得られるかどうかを返す
+		for(var i = 0; i < rm.visMarkers.count; i++)
+		{
+			if(rm.visMarkers[i].charaRef.checkReservation(true)) return false;
+		}
+		return true;
+	}
+
+	function askGoToSleepNow()
+	{
+		// 予約後すぐに寝るかどうか尋ねる
+		finishReservation();
+		sleepNow = true;
+	}
+
+	function finishReservation()
+	{
+		// 部屋割り当て決定確認
+		sleepNow = master.isFreeMode;
+		curButton = window.focusedLayer;
+		if(! checkReservation())
+		{
+			playSound("buzzer");
+			return;
+		}
+		master.popPrev();
+		enabled = false;
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: checkin]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		var str = "";
+		if(getRoomCharge() <= master.party.gold) str = "Would you like to stay overnight?";
+		else str = "Due to lack of money, you'll have to pay later. Is that okay?";
+		master.yesNoWin.open(cmds, "That will cost <y>" + getRoomCharge() + "G<g><r>" + str);
+
+	}
+
+	function checkReservation()
+	{
+		// 割り当てに問題がないかチェックする
+
+		// 割り当てが済んでいないキャラがいないかどうか
+		if(rooms[0].visMarkers.count > 0)
+		{
+			master.notice.open(master.enterReservationMode);
+			master.notice.write("Room allocation for everyone hasn't<r>been completed");
+			return false;
+		}
+
+		// キャラごとの条件を調べる
+		// コメントを言う人に偏りが出ないように配列をコピーして順不同にする
+		var arr = [];
+		arr.assign(visMarkers);
+		arr.shuffle();
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(! arr[i].visible || arr[i].belong === void) continue;
+			if(arr[i].charaRef.checkReservation()) return false;
+		}
+
+		return true;
+	}
+
+	function checkin()
+	{
+		// 部屋割確定・チェックイン
+
+		var aloneTogether = false;	// 主人公がヒロインと２人きりかどうか
+
+		// 体力などが回復する＆２人きりかどうかのチェック
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			var mk = visMarkers[i];
+			if(mk.charaRef === void) continue;
+			if(mk.belong === void) mk.visible = false;
+			var sleepInStable = (mk.belong !== void && mk.belong.type == "stable");
+			mk.charaRef.goToSleep(sleepInStable);
+			if(! master.isFreeMode && master.recordPlayersRoommate(mk.charaRef)) aloneTogether = true;
+		}
+
+		// 主人公と２人きりの記録を編集
+		if(! master.isFreeMode)
+		{
+			if(! aloneTogether) master.playersRoommates.unshift("");	// 空のデータを入れる
+			if(master.playersRoommates.count > 5) master.playersRoommates.pop();	// 記録上限
+		}
+
+		// 部屋に誰が泊まっていたか記録を取る
+		for(var i = 0; i < rooms.count; i++)
+		{
+			curHotel.rooms[i].lastMembers = rooms[i].storeStayInfo();
+		}
+
+		// 支払い
+		master.party.gold -= getRoomCharge();
+
+		// 次の画面へ
+		master.clearWindows();
+		master.onGameBreak();
+		kag.process("script.ks", "*hotel_checkin");
+	}
+
+	function checkEveningEvent(lastChara, endCheck = false)
+	{
+		// 散策前のイベントをチェックする
+		master.hour = "sunset";	// 昼から夜に切り替わる
+		if(! master.protectHeroines && ! endCheck && checkEvent(lastChara)) return;
+		master.hour = "night";	// 時間を夜に
+		openRoamingMap(curHotel);
+		if(stopSleeping === void && ! suspendSleeping && (sleepNow || master.innActionCount == 0))
+		{
+			// すぐに寝る選択をした or 主人公が外出やその他の行動等で行動力がすでに０になっている
+			suspendSleeping = false;
+			kag.process("script.ks", "*hotel_sleepnow");
+			return;
+		}
+		kag.process("script.ks", "*hotel_roaming");
+	}
+
+	function askGoToSleep()
+	{
+		// 散策モードを終了し寝るかどうか尋ねる
+		curButton = window.focusedLayer;
+		enabled = false;
+		if(stopSleeping !== void)
+		{
+			// 必須のイベントがあるときはまだ就寝できない
+			playSound("buzzer");
+			master.onGameBreak();
+			kag.process("stay.ks", "*stop_" + curHotel.name + "_" + stopSleeping);
+			return;
+		}
+		master.popPrev();
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: goToSleep]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "<y>Are you going to bed?");
+	}
+
+	function goToSleep()
+	{
+		// 就寝する
+		master.clearWindows();
+		master.exitTravelMode();
+		playSound("up1");
+		kag.process("script.ks", "*hotel_sleeping");
+	}
+
+	function checkTheftAtStable()
+	{
+		// 馬小屋で寝たメンバーに窃盗が行われたかどうかを返す
+		var res = "";
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			var mk = visMarkers[i];
+			if(mk.charaRef === void) continue;
+			if(mk.belong === void) continue;
+			if(mk.belong.type != "stable") continue;
+
+			// 窃盗を働かれる
+			if(master.party.gold > 10)
+			{
+				res = int(master.party.gold * (random / 10 + 0.2));	// 所持金の２～３割取られる
+				master.party.gold -= res;
+			}
+			if(res != "") res = "<y>" + number_format(res) + "G ";
+			if(mk.charaRef.isUserChara && mk.charaRef.ejectAnyItems(intrandom(4, 8)))
+			{
+				if(res != "") res += "<w>and<y> items";
+				else res = "<y>Items";
+			}
+			return res;
+		}
+		return res;
+	}
+
+	function membersMoving()
+	{
+		// パーティーメンバーたちが部屋を移動する
+
+		var res = false;	// 移動が起こったかどうか
+		if(master.protectHeroines) return false;
+
+		// まず男たちが移動
+		for(var i = 0; i < master.lovers.count; i++)
+		{
+			var guy = master.lovers[i];
+			if(guy == master.playerChara) continue;	// 主人公は勝手に移動しない
+			if(! getMarkerFromChara(guy)) continue;	// そもそもマーカーに読み込まれていない（宿泊していない）
+			if(guy.moving()) res = true;	// 移動を試みる
+		}
+
+		// 男たちが一通り移動し終わったら、女たちも移動する
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			var her = master.party.members[i];
+			if(! her.isHeroine) continue;
+			if(! getMarkerFromChara(her)) continue;	// そもそもマーカーに読み込まれていない（宿泊していない）
+			if(her.chaseGuy()) res = true;	// 移動を試みる
+		}
+
+		return res;
+	}
+
+	function increaseHeroinesHeatByGuys()
+	{
+		// 男たちが同室ヒロインの興奮度の上昇させたり浸食度を進行させたりする
+		if(master.protectHeroines) return false;
+		breakingAnimeTime = 0;
+		var res = false;
+		for(var i = 0; i < master.lovers.count; i++)
+		{
+			var guy = master.lovers[i];
+			if(guy == master.playerChara) continue;	// 主人公は関係ない
+			if(! getMarkerFromChara(guy)) continue;	// そもそもマーカーに読み込まれていない（宿泊していない）
+			if(guy.increaseHeroinesHeat()) res = true;
+		}
+		return res;
+	}
+
+	function increaseGuysHeatByWife()
+	{
+		// 主人公の妻が同室の男たちの興奮度の上昇させる
+		if(master.wife === void) return false;
+		if(! getMarkerFromChara(master.wife)) return false;	// そもそもマーカーに読み込まれていない（宿泊していない）
+		var mates = master.wife.getRoomMates();
+		if(mates.count != 1) return false;
+		if(! master.wife.wantToAdultery(mates[0])) return false;
+		mates[0].changeHeatByAnime(30);	// 浮気相手の興奮度上昇
+		return true;
+	}
+
+	function stopHeatCounterSound()
+	{
+		// 興奮度カウンター増減時に流れる効果音を止める
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			if(visMarkers[i].actionTimer.enabled) return;
+		}
+		kag.se[1].stop();
+		kag.trigger("waitHeatCounter");
+	}
+
+	function startSleepingEffect()
+	{
+		// 就寝中の演出効果を設定し、あれば開始する
+		master.hour = "midnight";
+		var emitters = [];
+
+		// 全て sleep で初期化
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			var mk = visMarkers[i];
+			if(! mk.visible) continue;
+			emitBase[i].setPos(mk.left - 150, mk.top - 150);
+			emitters[i] = "sleep";
+		}
+
+		// イベントがあったら同室のメンバー分を消去して１人にエミッターを設定
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			var mk = visMarkers[i];
+			if(! mk.visible) continue;
+			var emitterName = mk.charaRef.getEmitter();
+			if(emitterName === void) continue;
+			var mates = mk.belong.visMarkers;
+			var l = 0, t = 0;
+			for(var j = 0; j < mates.count; j++)
+			{
+				l += mates[j].left;
+				t += mates[j].top;
+				emitters[mates[j].id] = void;
+			}
+			emitBase[i].setPos(l \ mates.count - 150, t \ mates.count - 150);
+			emitters[i] = emitterName;
+		}
+
+		// エミッターが設定されていたら放出
+		for(var i = 0; i < emitters.count; i++)
+		{
+			if(emitters[i] === void) continue;
+			emitBase[i].visible = true;
+			particle_object.start(emitBase[i], i, "PE_" + emitters[i] + ".pee");
+		}
+	}
+
+	function checkMidNightEvent(lastChara, endCheck = false)
+	{
+		// 就寝中のイベントをチェックする
+		master.hour = "midnight";
+		if(! master.protectHeroines && ! endCheck && checkEvent(lastChara)) return;
+		checkSlaveEvent();
+	}
+
+	function checkSlaveEvent(lastChara, endCheck = false)
+	{
+		// 奴隷イベントをチェックする
+		master.hour = "slave";
+
+		// ここで１日経過
+		if(lastChara === void) master.elapseByStaying();
+		if(endCheck) morningRobby();	// チェックを中断する指定があったらすぐ朝のロビーへ
+
+		// 次にチェックする奴隷を特定
+		var arr = master.getAllSlaves();
+		var num = 0;
+		if(lastChara !== void) num = arr.find(lastChara) + 1;	// さっきチェックしたキャラの次
+
+		// 各奴隷のイベントをチェック
+		for(var i = num; i < arr.count; i++)
+		{
+			if(arr[i].checkEvent()) return;	// イベント発生
+		}
+
+		// 朝のロビーへ
+		morningRobby();
+	}
+
+	function morningRobby()
+	{
+		// 早朝のロビーへ移動する
+		clearHotel();
+		master.party.restoreFaces();	// 表情を更新
+		master.gameVisible = true;
+		visible = false;
+		sleepNow = false;
+		robbyLayer.visible = true;
+		robbyLayer.loadImages(curHotel.img + "_robby");
+		playMusic(master.townView.curTown.bgm);
+		checkMorningEvent();	// 早朝のイベントへ
+	}
+
+	function checkMorningEvent(lastChara, endCheck = false)
+	{
+		// 早朝のイベントをチェックする
+		master.hour = "morning";
+		if(! master.protectHeroines && ! endCheck && checkEvent(lastChara)) return;
+
+		// すべての宿屋イベントを消化。一部設定をクリアする（このタイミングでないとだめ）
+		for(var i = 0; i < master.party.allMembers.count; i++)
+		{
+			var one = master.party.allMembers[i];
+			one.priorTarget = void;
+			one.dontMove = false;
+			one.moved = false;
+		}
+
+		// チェックアウト・レベルアップへ
+		robbyLayer.visible = true;
+		master.onGameBreak();
+		kag.process("script.ks", "*hotel_checkout");
+	}
+
+	function checkLevelUp(idx = 0, serial)
+	{
+		// レベルアップ（宿泊後）
+		// 経験値がたまっていた人間ゲストキャラが宿屋に泊まらないままパーティーを離れたら
+		// 後で離れたはずのゲストのレベルアップが表示されてしまうのを防がないといけない
+
+		if(idx == master.party.members.count + master.helper.count)
+		{
+			// 終了
+			if(master.hour == "morning") leaveHotel();	// 宿の外へ
+			else kag.trigger("finishLevelUpInEvent");	// イベント等でレベルアップできるとき
+			return;
+		}
+
+		var one;
+		if(idx < master.party.members.count) one = master.party.members[idx];
+		else one = master.helper[idx - master.party.members.count];
+
+		// ここで性欲解消
+		if(one.isUserChara || one.isSpecial)
+		{
+			one.heat -= master.coolBySleep;
+			one.switchFaceState();
+		}
+
+		// レベルアップ
+		if(one.isLevelUp() && (master.party.allMembers.has(one) || one instanceof "SummonedObject"))
+		{
+			// レベルアップ表示。ゲストや召喚モンスターも表示する
+			if(serial === void && askUseLevelUpTicket(one, idx)) return;
+			var res = one.levelUp();	// レベルアップ
+			playSound("up1");
+			if(serial > 1) master.levelUpInfo.open(useLevelUpTicket, [idx, serial - 1]);
+			else master.levelUpInfo.open(checkLevelUp, idx + 1);
+			master.levelUpInfo.drawInfo(one, res);
+		}
+		else if(one.isUserChara && ! one.knockOut)
+		{
+			// 残り経験値表示。ゲストの場合は表示しない
+			master.reportWin.open(checkLevelUp, idx + 1);
+			master.reportWin.reportNeededExp(one);
+		}
+		else
+		{
+			// 何も表示せず次へ
+			checkLevelUp(idx + 1);
+		}
+	}
+
+	function askUseLevelUpTicket(one, idx)
+	{
+		// 連泊券を使用するかどうか尋ねる
+		if(! one.isUserChara) return false;
+		if(one.getReachableLevel() - one.level == 1) return false;	// １つしか上がらないなら聞かない
+		if(one.findItem(o.１０連泊券) === void && one.findItem(o.５連泊券) === void) return false;
+		var cmds = [];
+		cmds.add(%[text: "5 Night Coupon", func: useLevelUpTicket, param: [idx, 5, o.５連泊券]
+			, cond: one.findItem(o.５連泊券) !== void]);
+		cmds.add(%[text: "10 Night Coupon", func: useLevelUpTicket, param: [idx, 10, o.１０連泊券]
+			, cond: one.findItem(o.１０連泊券) !== void]);
+		cmds.add(%[text: "Don't use", func: useLevelUpTicket, param: [idx, 1]]);
+		master.longMenu.open(cmds, "<c>" + one.displayName + "<g> has a multi night coupon. Use it?<r>"
+);
+		master.previewActions = [master.longMenu.executeLastCommandByRightClick, void];
+		return true;
+	}
+
+	function useLevelUpTicket(params)
+	{
+		// 連泊券を使用してレベルアップする
+		master.longMenu.close();
+		var one = master.party.members[params[0]];
+		if(params[2] !== void) one.ejectItem(params[2]);
+		if(! one.isLevelUp()) checkLevelUp(params[0] + 1);
+		else checkLevelUp(params[0], params[1]);
+	}
+
+	function setEventButton(elm)
+	{
+		// イベントボタンを設置する
+		for(var i = 0; i < eventBtns.count; i++)
+		{
+			// 重複チェック
+			if(eventBtns[i].eventRef.name == elm.name) return;
+		}
+		var btn = new HotelEventButton(this);
+		btn.set(elm);
+		btn.absolute = 50;
+		eventBtns.add(btn);
+		markers.add(btn);
+	}
+
+	function removeEventButton(elm)
+	{
+		// イベントボタンを撤去する
+		for(var i = 0; i < eventBtns.count; i++)
+		{
+			var ref = eventBtns[i].eventRef;
+			if(ref.label != elm.label) continue;
+			var btn = eventBtns[i];
+			if(curButton == btn) curButton = markers[0];
+			eventBtns.remove(btn);
+			markers.remove(btn);
+			invalidate btn;	// 無効化すれば自動的に消える？
+			return;
+		}
+	}
+
+	function startButtonEvent(label)
+	{
+		// ボタンによるイベント開始
+
+		curButton = window.focusedLayer;
+		enabled = false;	// この瞬間にフォーカスが null になるので順番を後にする
+		master.onGameBreak();
+
+		// ストーリーモードでは主人公が死んでいたら何もできない
+		if(! master.isFreeMode && master.playerChara !== void && master.playerChara.knockOut)
+		{
+			kag.process("stay.ks", "*player_dead");
+			return;
+		}
+
+		// メンバーと会話
+		if(curButton instanceof "GuestMarker")
+		{
+			// フリーモードでは会話できない
+			if(master.isFreeMode)
+			{
+				kag.process("stay.ks", "*free_mode");
+				return;
+			}
+
+			// 行動力が０になっていたら会話できない
+			if(master.innActionCount == 0)
+			{
+				kag.process("stay.ks", "*no_action_count");
+				return;
+			}
+
+			// 行動力を消費して会話
+			master.curChara = curButton.charaRef;
+			if(master.hour == "night" && master.curChara != master.playerChara)
+			{
+				master.innActionCount --;
+				updateActionMeter();
+				if(master.curChara.checkEvent()) return;	// NIGHT イベントがあったら実行
+			}
+		}
+
+		// 会話イベント開始
+		// 先行予約コメントなら  *reserved_キャラ名
+		// 夜会話時の会話なら    *talk_キャラ名
+		// 特殊イベントなら      *map_宿名_イベント名
+		kag.process("stay.ks", label);
+	}
+
+	function getRoomCharge()
+	{
+		// 宿泊代を得る
+		var gold = 0;
+		for(var i = 0; i < rooms.count; i++)
+		{
+			if(rooms[i].visMarkers.count > 0) gold += rooms[i].price;
+		}
+		return gold;
+	}
+
+	function updateTotalCharge()
+	{
+		// 宿泊代の総額表示を更新する
+		totalCharge.clear();
+		totalCharge.drawText(48, 3, "%7d".sprintf(getRoomCharge()), 0xFFFF80);
+	}
+
+	function updateActionMeter()
+	{
+		// 行動力メーターを更新する
+		if(master.isFreeMode)
+		{
+			actionMeter.visible = false;
+			return;
+		}
+		actionMeter.clear();
+		actionMeter.visible = true;
+		for(var i = 0; i < master.innActionCount; i++)
+		{
+			actionMeter.fillRect(actionMeter.width - i * 24 - 24, 28, 20, 32, 0xFF00FF00);
+		}
+		actionMeter.fillRect(actionMeter.width - 6, 28, 2, 32, 0xFF00FF00);
+	}
+
+	function changeRoom(mark, room)
+	{
+		// ユーザー操作以外で部屋を変える時これを呼ぶ
+		if(! room.selectable) return false;
+		mark.belong.removeMarker(mark);
+		room.putMarker(mark);
+		return true;
+	}
+
+	function moveToOtherRoom(charaObj, room)
+	{
+		// 客マーカーが指定の部屋に移動していく。制限はない
+		var mark = getMarkerFromChara(charaObj);
+		if(mark.belong == room) return false;
+		mark.startMove(room);	// 移動開始
+		mark.belong.removeMarker(mark);	// 以下、情報を変更しておく
+		room.putMarker(mark);
+	}
+
+	function eraseCharaMarker(charaObj)
+	{
+		// 指定したキャラのマーカーを消す
+		var mark = getMarkerFromChara(charaObj);
+		mark.belong.removeMarker(mark);
+		mark.clear();
+	}
+
+	function getMarkerFromChara(charaObj)
+	{
+		// キャラからマーカーを得る
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			if(visMarkers[i] === void) continue;
+			if(visMarkers[i].charaRef === void) continue;
+			if(charaObj == visMarkers[i].charaRef) return visMarkers[i];
+		}
+	}
+
+	function getRoomFromRoomName(str)
+	{
+		// 部屋名から部屋を得る。同じ名前の部屋が複数あると上手く動作しない
+		for(var i = 0; i < rooms.count; i++)
+		{
+			if(rooms[i].name == str) return rooms[i];
+		}
+	}
+
+	function onMouseMove()
+	{
+		// キーボード操作でマーカーをホールド中にマウスを動かしたらホールド解除
+		if(holdingMarker === void) return;
+		holdingMarker.drawState(0);
+		holdingMarker.holding = false;
+		holdingMarker = void;
+	}
+
+	function getAreaUnderMouse()
+	{
+		// 領域画像から該当エリアを得る
+		var num = province.getProvincePixel(cursorX, cursorY);
+		if(num >= 0 && num < areas.count && areas[num].selectable) return areas[num];
+	}
+}
+
+
+class GuestMarker extends MarkerLayer
+{
+	// 客マーカー
+
+	var faceLayer;	// 顔を貼り付ける場所
+	var beatLayer;	// 鼓動するハート
+	var infoLayer;	// アイコン・数字等の情報表示用レイヤー
+	var effectLayer;	// その他演出のためのレイヤー
+	var charaRef;	// 読み込まれているキャラの参照
+	var movable = true;	// 動かせるかどうか。動かせない時はイベントボタン or 無効
+	var label;	// 押した時に発生するイベントのラベル
+	var actionTimer;	// 演出用タイマー
+	var onTimerAction;	// タイマー周期で行うアクション
+	var targetRoom;	// マーカーの移動先の部屋・目標
+	var deltaX, deltaY;	// マーカーの移動ベクトル
+	var targetX, targetY;	// マーカーの移動先座標
+	var _left, _top;	// 座標を実数で計算するための一時変数（なめらかにするため）
+	var speed = 20;	// マーカーの単位時間あたりの移動距離（スピード）
+	var counter;	// カウンター用の数値
+	var counterStep = 1;	// カウンターの単位時間あたりの上昇幅（スピード）
+	var targetNumber;	// カウンターの最終的な値
+	var breakingCount = 0;	// 盾破壊アニメが行われる回数
+	var lastRoom;	// 参照のキャラが前回泊まった部屋の情報
+
+	function GuestMarker(par, master, id)
+	{
+		super.MarkerLayer(par);
+		this.master = master;
+		this.id = id;
+		super.loadImages("hotel_marker_w");
+
+		faceLayer = new global.Layer(par.window, this);
+		faceLayer.setSize(width, height);
+		faceLayer.setImageSize(width * 4, height);	// これをやらないとエラーになる
+		faceLayer.visible = true;
+		faceLayer.hitThreshold = 256;
+		faceLayer.holdAlpha = true;
+
+		actionTimer = new Timer(this, "onTimerAction");
+		actionTimer.interval = 20;
+
+		beatLayer = new EffectLayer(this);
+		beatLayer.setSize(24, 22);
+		beatLayer.setPos(70, 20);
+
+		effectLayer = new EffectLayer(this);
+		effectLayer.setSize(80, 88);
+		effectLayer.setPos(5, 5);
+		effectLayer.name = "宿屋マーカー" + id;
+		effectLayer.visible = true;
+
+		infoLayer = new DecoLayer(this);
+		infoLayer.setSize(96, 20);
+		infoLayer.clear();
+		infoLayer.setPos(20, 78);
+		infoLayer.visible = true;
+		infoLayer.font.height = 16;
+		infoLayer.font.face = "MS PGothic";
+		infoLayer.font.bold = true;
+	}
+
+	function finalize()
+	{
+		invalidate faceLayer;
+		invalidate beatLayer;
+		invalidate effectLayer;
+		invalidate infoLayer;
+		invalidate actionTimer;
+		super.finalize();
+	}
+
+	property visible
+	{
+		setter(v){ selectable = super.visible = v; }
+		getter{ return super.visible; }
+	}
+
+	property selectable
+	{
+		setter(v){ drawState(v ? 0 : 3); enabled = super.selectable = v; }
+		getter{ return super.selectable; }
+	}
+
+	function store()
+	{
+		var dic = %[];
+		if(charaRef !== void && isvalid charaRef)
+		{
+			dic.isGuest = charaRef instanceof "GuestObject";
+			if(dic.isGuest) dic.charaRefID = master.helper.find(charaRef);
+			else dic.charaRefID = master.chara.find(charaRef);
+		}
+		dic.label = label;
+		dic.visible = visible;
+		dic.selectable = selectable;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		clear();
+		if(dic.charaRefID === void) return;
+		if(dic.isGuest)
+		{
+			if(+kag.pflags.saveDataVersion < 11.3) dic.charaRefID ++;	// ★不具合対策
+			loadGuest(master.helper[dic.charaRefID]);
+		}
+		else loadGuest(master.chara[dic.charaRefID]);
+		movable = false;
+		this.label = dic.label;
+		loadImages(charaRef);
+		visible = dic.visible;
+		selectable = dic.selectable;
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(button == mbLeft && ! movable) parent.startButtonEvent(label);
+		else super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbLeft && ! movable) return;
+		else if(button == mbRight) viewCharaInfo();
+		else super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if((key == BT_OK || key == BT_OK2) && ! movable) parent.startButtonEvent(label);
+		else if(key == BT_OPTION || key == BT_OPTION2) viewCharaInfo();
+		else super.onKeyDown(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		// ホールド中にマウスが動いたらその場に置いてしまう
+		if(holding)
+		{
+			parent.holdingMarker = void;
+			drawState(0);
+			holding = false;
+			return;
+		}
+		super.onMouseMove(...);
+	}
+
+	function drawState(n)
+	{
+		super.drawState(...);
+		faceLayer.imageLeft = -width * n;
+	}
+
+	function loadImages(src, suffix = "")
+	{
+		// キャラ画像読み込み。枠付きのマーカーに指定した顔が表示される
+		faceLayer.loadImages("hotel_marker_b" + movable);
+		var temp = new global.Layer(window, this);
+		temp.setSize(96, 96);
+		var img = src.img + "_icon" + (typeof src.color != "undefined" ? "_" + src.color : "") + suffix;
+		temp.loadImages(img);
+		faceLayer.face = dfOpaque;	// face はいつの間にか変わるので合成直前で指定する
+		faceLayer.operateRect(  4, 4, temp, 0, 0, 96, 96);
+		temp.light(100, 70);
+		faceLayer.operateRect(100, 0, temp, 0, 0, 96, 96);
+		faceLayer.operateRect(204, 4, temp, 0, 0, 96, 96);
+		temp.loadImages(img);
+		temp.light(-40, -40);
+		faceLayer.operateRect(304, 4, temp, 0, 0, 96, 96);
+	}
+
+	function clear()
+	{
+		if(belong !== void) belong.visMarkers.remove(this);
+		label = charaRef = belong = lastRoom = void;
+		visible = false;
+		beatLayer.stopAnim(1);
+		beatLayer.freeImage();
+		effectLayer.stopAnim(1);
+		effectLayer.clear();
+	}
+
+	function loadGuest(charaObj)
+	{
+		// 客マーカーにキャラを読み込む
+		var temp = new global.Layer(window, this);
+		visible = true;
+		movable = true;
+		charaRef = charaObj;
+		loadImages(charaRef, charaRef.getInnMarkerFace());
+		infoLayer.clear();
+		effectLayer.visible = true;
+		if(! master.isFreeMode && charaRef.isHeroine && master.getHeroineIsJealous() == charaRef)
+		{
+			temp.loadImages("icon_jealousy");
+			effectLayer.operateRect( 0, 0, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+		}
+		if(charaRef.isHeroine && charaRef.getOpponentOfQuarrel() !== void)
+		{
+			temp.loadImages("icon_angry_" + master.quarreling.find(charaRef) \ 2);
+			effectLayer.operateRect( 0, 26, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+		}
+		if(charaRef.isHeroine && charaRef.isNovice())
+		{
+			beatLayer.loadImages(%[storage: "icon_novice"]);
+			beatLayer.visible = true;
+		}
+		else if(charaRef.isHeartBeating())
+		{
+			beatLayer.loadImages(%[storage: "BE_heartbeat"]);
+			beatLayer.visible = true;
+			beatLayer.startAnim(%[seg: 3, target: "*start"]);
+		}
+		if(charaRef.isHiring)
+		{
+			temp.loadImages("image_slave");
+			effectLayer.operateRect( 18, 67, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+		}
+		if(charaRef.isLevelUp())
+		{
+			temp.loadImages("icon_levelup");
+			effectLayer.operateRect( 60, 77, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+		}
+	}
+
+	function changeToFixedButton(label)
+	{
+		// 客マーカーをイベントボタンに変化させる
+		movable = false;
+		this.label = label + "_" + charaRef.keyName;
+		loadImages(charaRef, charaRef.getInnMarkerFace());
+		effectLayer.visible = false;
+	}
+
+	function viewCharaInfo()
+	{
+		// キャラクターの簡易情報を表示する
+		master.reportWin.open(focus);
+		master.reportWin.viewCharaInfo(charaRef);
+	}
+
+	function startMove(room)
+	{
+		// 指定した部屋へマーカーを移動開始する
+		targetRoom = room;
+		targetX = void;	// トリガー代わり。ここに値が入ったら実際に移動する
+		onTimerAction = moving;
+		actionTimer.interval = 20;
+		actionTimer.enabled = true;
+	}
+
+	function setTargetPos()
+	{
+		// マーカーが移動する目標の座標を設定
+		var pos = targetRoom.getPos(targetRoom.visMarkers.find(this));
+		var d = Math.sqrt((pos.x - left) * (pos.x - left) + (pos.y - top) * (pos.y - top));
+		deltaX = speed * (pos.x - left) / d;
+		deltaY = speed * (pos.y - top) / d;
+		_left = left;
+		_top = top;
+		targetX = pos.x;
+		targetY = pos.y;
+		absolute += 10;
+		dm(charaRef.name + "が目標を設定   " + targetX + " , " + targetY);
+	}
+
+	function moving()
+	{
+		// 移動アニメ
+		if(targetX === void)
+		{
+			setTargetPos();
+			return;
+		}
+		_left += deltaX;
+		_top += deltaY;
+		if((deltaX > 0 && _left > targetX) || (deltaX < 0 && _left < targetX)) _left = targetX;
+		if((deltaY > 0 && _top > targetY) || (deltaY < 0 && _top < targetY)) _top = targetY;
+		setPos(_left, _top);
+		if(left == targetX && top == targetY)
+		{
+			actionTimer.enabled = false;
+			absolute -= 10;
+		}
+	}
+
+	function startHeatCounter(start, end, breaking)
+	{
+		// 数値を表示して興奮度カウンターを開始する start -> end に変化する
+		// breaking を指定するとカウンターの終わりに盾破壊アニメが起きる
+		targetNumber = end;
+		breakingCount = breaking;
+		counterStep = abs(end - start) \ 50 + 1;
+		counter = start + (start > end ? counterStep : -counterStep);
+		onTimerAction = counting;
+		actionTimer.interval = 40;
+		actionTimer.enabled = true;
+		infoLayer.visible = true;
+		playSound("meter", 1, true);
+	}
+
+	function counting()
+	{
+		// カウント表示
+		var finish = false;
+
+		if(counter > targetNumber)
+		{
+			// 減少
+			counter -= counterStep;
+			if(counter <= targetNumber) finish = true;	// 減少終了
+		}
+		else
+		{
+			// 増加
+			counter += counterStep;
+			if(counter >= targetNumber) finish = true;	// 増加終了
+		}
+
+		if(finish)
+		{
+			// 終了処理  盾破壊があったらそのアニメ
+			counter = targetNumber;
+			actionTimer.enabled = false;
+			parent.stopHeatCounterSound();	// カウンター音を止める
+			if(breakingCount > 0) shieldBroken(breakingCount);	// 盾破壊
+		}
+
+		// 数値描画
+		infoLayer.clear();
+		infoLayer.drawText(18, 0, "%3d".sprintf(counter), counter * 50 + 0xFF8080,,, 1024,, 2);
+	}
+
+	function shieldBroken(num)
+	{
+		// 盾破壊アニメ
+		effectLayer.loadImages(%[storage: "BE_shield_broken"]);
+		effectLayer.visible = true;
+		effectLayer.startAnim(%[seg: 1, target: "*start_" + num]);
+		var t = num * 200 + 500;	// アニメ待ち時間
+		if(parent.breakingAnimeTime < t) parent.breakingAnimeTime = t;
+	}
+
+	function releaseHeart()
+	{
+		// 愛情のハートを飛ばすアニメ
+		effectLayer.loadImages(%[storage: "BE_heartrelease"]);
+		effectLayer.visible = true;
+		effectLayer.startAnim(%[seg: 1, target: "*start"]);
+	}
+}
+
+
+class HotelEventButton extends FixedButtonWithMarkers
+{
+	// ホテル内で使用するイベントボタン
+
+	var eventRef;	// イベント情報への参照
+
+	function HotelEventButton(par)
+	{
+		super.FixedButtonWithMarkers(...);
+		setSize(90, 90);
+		onSelectAction = parent.startButtonEvent;
+	}
+
+	function clear()
+	{
+		selectable = visible = false;
+		parent.eventBtns.remove(this);
+		parent.markers.remove(this);
+	}
+
+	function set(dic)
+	{
+		// イベントボタンを設置する
+		eventRef = dic;
+		loadImages("hotel_" + dic.img);
+		setPos(dic.x, dic.y);
+		onSelectActionParam = "*map_" + dic.map + "_" + dic.label;
+		selectable = visible = true;
+	}
+}
+
+
+class HotelRoom extends AreaLayer
+{
+	// 各部屋
+
+	var master, id;
+	var reserveMark;	// 予約済み表示レイヤー
+	var lockMark;	// 魔法の錠前表示レイヤー
+	var _selectable = false;
+	var capacity = 1;	// 定員
+	var price = 0;	// 値段
+	var type = "guestRoom";	// 部屋のタイプ
+	var topX = 5;	// 先頭の客を表示する左上座標
+	var topY = 70;	//    同上
+	var colomn = 1;	// マーカーの最大列数
+	var visMarkers = [];	// 所属するマーカー
+	var reserved = false;	// すでに他の客に予約されているかどうか
+	var lock = false;	// 魔法の錠前がかかっているかどうか
+	var displayName;
+
+	function HotelRoom(par, master, id)
+	{
+		super.AreaLayer(par);
+		this.master = master;
+		this.id = id;
+		hitType = htProvince;
+		font.face = "MS PGothic";
+		font.height = 20;
+		font.bold = true;
+		reserveMark = new DecoLayer(this);	// 予約表示
+		reserveMark.loadImages("hotel_reserved");
+		reserveMark.setPos(0, 90);
+		lockMark = new DecoLayer(par);	// 錠前表示
+		lockMark.loadImages("hotel_lock");
+		absolute = 10;
+	}
+
+	function finalize()
+	{
+		invalidate reserveMark;
+		super.finalize();
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.memberRefs = storeStayInfo();
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		visMarkers = [];
+		var arr = restoreStayInfo(dic.memberRefs);
+		for(var i = 0; i < arr.count; i++)
+		{
+			putMarker(parent.getMarkerFromChara(arr[i]));
+		}
+	}
+
+	function storeStayInfo()
+	{
+		var res = [];
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			var ref = visMarkers[i].charaRef;
+			if(! isvalid ref) continue;
+			if(ref instanceof "CharaObject") res.add(master.chara.find(ref));
+			else res.add(ref.name);
+		}
+		return res;
+	}
+
+	function restoreStayInfo(arr)
+	{
+		var res = [];
+		for(var i = 0; i < arr.count; i++)
+		{
+			var key = arr[i];
+			res.add(typeof key == "String" ? o[key] : master.chara[key]);
+		}
+		return res;
+	}
+
+	function setRoomInfoToLastMembers(lastMems)
+	{
+		// 前回この部屋に泊まっていたメンバーにこの部屋の情報を付与する
+		var arr = restoreStayInfo(lastMems);
+		for(var i = 0; i < arr.count; i++)
+		{
+			var mrk = parent.getMarkerFromChara(arr[i]);
+			if(mrk !== void) mrk.lastRoom = this;
+		}
+	}
+
+	property selectable
+	{
+		setter(v){ _selectable = v; }	// 基本いじらないが特別な事情で非選択にしたい場合に使う
+		getter{ return (_selectable && visMarkers.count < capacity && ! reserved); }
+	}
+
+	function createRoom(dic, id)
+	{
+		// 部屋作成
+		clear();
+		name = dic.name;	// 部屋名
+		displayName = (dic.displayName !== void)? dic.displayName : name;
+		setPos(dic.x, dic.y);
+		type = dic.type;
+		capacity = type == "rounge" ? parent.visMarkers.count : dic.bed;
+		price = dic.price;
+		if(dic.col !== void) colomn = dic.col;
+		setSize(cap(font.getTextWidth(name) + 16,, 118), 160);
+		writeInfo(true);
+		selectable = visible = true;
+	}
+
+	function writeInfo(usable)
+	{
+		// 部屋の文字情報を記述する
+		var temp = new global.Layer(window, this);
+		temp.loadImages("hotel_plate");
+		copyRect(0, 0, temp, 0, 0, width - 8, temp.imageHeight);
+		copyRect(width - 8, 0, temp, temp.imageWidth - 8, 0, 8, temp.imageHeight);
+		fillRect(0, temp.imageHeight, width, height - temp.imageHeight, 0);
+		drawText(4, 4, displayName, 0x101020);	// 部屋名
+		if(type == "rounge" || ! usable)
+		{
+			drawText(12, 34, "No room", 0xC00000);	// 不可表示
+			return;
+		}
+		var goldStr = "%4d".sprintf(price) + " G";
+		var capacityStr = "Beds: " + capacity;
+		drawText(width - font.getTextWidth(goldStr) - 16, 24, goldStr, 0x101020);	// 値段
+		drawText(width - 84, 45, capacityStr, 0x101020);	// 人数
+		if(lock)
+		{
+			temp.loadImages("hotel_lock");
+			operateRect(10, 30, temp, 0, 0, temp.width, temp.height);
+		}
+	}
+
+	function clear()
+	{
+		// 部屋をクリアする
+		visMarkers.clear();
+		fillRect(0, 0, width, height, 0);	// レイヤーのクリア
+		selectable = visible = false;
+		lockMark.visible = lock = false;
+	}
+
+	function reservedByOthers()
+	{
+		// 他の客に部屋が予約され選択できなくなる
+		reserved = true;
+		reserveMark.visible = true;
+		parent.province.fillByProvince(parent.rooms.find(this), 0x80000000);
+		writeInfo(false);
+		parent.province.fillRect(0, 0, 128, 16, 0x00000000);	// 左上のガイドを消去
+	}
+
+	function setMagicalLock()
+	{
+		// この部屋に魔法の錠前をかける
+		lock = true;
+		lockMark.visible = true;
+		lockMark.setPos(left, top + 30);
+	}
+
+	function dropAction(mark)
+	{
+		putMarker(mark);
+	}
+
+	function putMarker(mark)
+	{
+		if(visMarkers.find(mark) != -1) return;
+		visMarkers.add(mark);
+		mark.belong = this;
+		if(mark.actionTimer.enabled) return;	// 移動中なら配置は後で
+		var pos = getPos(visMarkers.count - 1);
+		mark.setPos(pos.x, pos.y);
+		parent.updateTotalCharge();
+	}
+
+	function removeMarker(mark)
+	{
+		if(visMarkers.find(mark) == -1) return;
+		visMarkers.remove(mark);
+		for(var i = 0; i < visMarkers.count; i++)
+		{
+			if(visMarkers[i].actionTimer.enabled) continue;	// 移動中のマーカーは並べ直さない
+			var pos = getPos(i);
+			visMarkers[i].setPos(pos.x, pos.y);	// 並べ直し
+		}
+		parent.updateTotalCharge();
+	}
+
+	function getPos(n)
+	{
+		// n 番目のスペースの座標を得る
+		return %[x: left + topX + (n % colomn) * 95, y: top + topY + (n \ colomn) * 92];
+	}
+}
+//----------------------------------------------------------------------------------------

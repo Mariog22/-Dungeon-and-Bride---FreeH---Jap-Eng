@@ -1,0 +1,1553 @@
+﻿; ブルー再離脱～最終決戦
+
+
+
+
+;■ポラリスの降臨とブルーの最期
+
+;◇イベント01・魔石をそろえてポラリスを呼び出す
+*advent_1
+
+; ☆フリーモード
+@jump storage="free02.scn" target=*advent_1 cond='game.isFreeMode'
+
+; ポラリスの神殿・祭壇
+@saveon
+@eval exp='game.party.minimumRecovery()
+[texton w=1]
+[テオ f=01]「We did it! Finally, all 12 crystals are glowing!」[k]
+At last we have collected 12 magic stones and brought them to this altar. All the crystals on the altar reacted and began to glow with a divine light.[k]
+[ポラリス v=vp057 f=polaris_99]「Everyone, you did a great job!」[k]
+Out of nowhere, I hear the voice of Lady Polaris.[k]
+[ポラリス v=vp058 f=polaris_99]「You have collected 12 magic stones. Now I can descend to earth.」[k]
+[テオ f=01]「Lady Polaris...!」[k]
+At last, Lady Polaris is coming down to earth. Finally, that demon will be defeated![k]
+[ポラリス v=vp059 f=polaris_99]「Now, let us begin the ritual of the descent. Bring the 12 magic stones over here.」[k]
+[テオ f=01]「Okay. So then...」[k]
+[ムールムール v=vm217 f=07]「That's not gonna happen!」[k]
+; ↑ 突然、乗り込んでくるムールムール。怒り気味で
+[textoff]
+@st
+@image layer=e0 storage=PE_base_view visible=true mode=psdodge
+@image layer=e1 storage=9999 visible=false
+@playse storage=bomber
+@startemit layer=e0 storage=PE_bombfire time=500
+@wait time=300
+@anime_fadein layer=e1
+@wait time=500
+@clearemit layer=e0
+@quake time=500 hmax=20 vmax=10
+@walk turn=n cond='WAY != "n"'
+@walk move=s
+[texton]
+∗boom!∗[k]
+[テオ f=09]「...!」[k]
+[マックス f=11]「Wow! What is that?!」[k]
+@anime_fadeout layer=e1
+The moment we heard that voice, a fireball from behind burst into the altar and exploded![k]
+[テオ f=12]「W-what happened?!」[k]
+[textoff]
+@wait time=500
+@walk turn=s
+@wait time=500
+@mu f=murmur
+@fg c=ムールムール f=07
+[texton]
+[ムールムール v=vm218 f=07]「Idiot! I'll never let that god descend!」[k]
+[テオ f=12]「Y-you...!」[k]
+When I turned around, there was Murmur![k]
+@jump target=*_gameover_murmur cond='! game.guest.members.has(o.ブルー)'
+Damn... We were followed...![k]
+[ムールムール v=vm219 f=07]「I wondered what was going on since you were busy collecting gems, but I didn't realize it was to summon that damn god! If I'd found out a bit later, I'd have been in real trouble!」[k]
+[マックス f=12]「Damn it... what a jerk...!」[k]
+[テオ f=12]「...Ah!」[k]
+I rush to check the altar.[k]
+...Thank goodness, the altar is safe. We can still perform the ritual of descent for Lady Polaris.[k]
+[テオ f=05]「The ritual will have to wait! Come on everyone, let's stop her first!」[k]
+[マックス f=07]「Got it!」[k]
+[ムールムール v=vm220 f=07]「There's no way I'm gonna let a god come down here! I'll kill you all right here!」[k]
+[ブルー f=02]「You're going to kill us, are you?」[k]
+Blue steps in front of Murmur with a wry smile on his face.[k]
+[ブルー f=01]「You're a fool to come back to be killed again. A demon who doesn't learn.」[k]
+@fg c=ムールムール f=06
+[ムールムール f=06]「...」[k]
+@se f=sword
+∗draw∗[k]
+[ブルー f=01]「I'll burn you to ashes as many times as I have to. Brace yourself, Miredy!」[k]
+Blue draws his saber and confronts Murmur![k]
+@fg c=ムールムール f=07
+[ムールムール v=vm221 f=07]「That attitude really pisses me off! Okay, I'll kill you first! Breath of Death!」[k]
+[textoff]
+
+@image layer=5 storage=screen_deepblackfull
+@anime_fadein layer=5
+@playse storage=howling
+@image layer=6 storage=PE_base_full visible=true
+@layopt layer=6 top=0 left=0
+@startemit layer=6 storage=PE_smoke_red2 time=-1
+@wait time=1000
+
+[texton]
+[テオ f=11]「Blue! Please!」[k]
+Fatal breath is released from Murmur's mouth! But Blue's demon hunter power should be able to prevent it.[k]
+[ブルー f=15]「You idiot! Have you forgotten that your moves don't work on me?」[k]
+[textoff]
+
+@se f=shakin4
+@image layer=9 storage=9999 visible=true opacity=0
+@move layer=9 time=1000 path=,,255
+@wait time=1000
+@layopt layer=9 visible=false opacity=255
+@eval exp='tf.weaponImage = "cyan"'
+@image layer=7 storage=BE_barrierb
+@layopt layer=7 left=0 top=128 visible=true
+@wait time=500
+@playse storage=kira2 buf=2
+@anime layer=7
+@wait time=1000
+
+[texton]
+∗shing!∗[k]
+Blue's power of exorcism is activated and covers the party in a film of light! It is a shield of life that prevents the breath of death.[k]
+[ムールムール v=vm222 f=07]「Hmph! You're the idiot!」[k]
+[textoff]
+
+@se f=fire3
+@startemit layer=6 storage=PE_smoke_red3 time=-1
+@wait time=1000
+@blink layer=7 time=20 loop=3
+@wait time=1000
+@mu f=crisis
+
+[texton]
+[テオ f=11]「...!」[k]
+[ブルー f=11]「What?」[k]
+[ムールムール f=14]「... ∗grin∗」[k]
+The force of the breath is unstoppable?![k]
+Her fatal breath passes through the barrier of light, unable to be blocked by Blue's demon hunter power! That's ridiculous![k]
+[ムールムール v=vm223 f=03]「Gahahaha! That won't work anymore!」[k]
+; ↑ 優位に立って喜ぶ
+[ムールムール v=vm224 f=15]「This breath is more powerful than last time! Now, take a deep breath of death and die!」[k]
+[textoff]
+
+@layopt layer=3 visible=false
+@layopt layer=5 index=1000
+@se f=fire3
+@startemit layer=6 storage=PE_smoke_red4 time=-1
+@wait time=1000
+@fg c=ブルー f=11 b
+@forelay layer=3
+
+[texton]
+[ブルー f=11]「Guaaaaaaah!」[k]
+[サンドラ v=vn094 f=11]「Blue!」[k]
+; ↑ 叫ぶ
+Blue was hit directly by Murmur's fatal breath![k]
+[textoff]
+
+@anime_fadeout layer=5,6,7
+@layopt layer=5 index=6000
+@clearemit layer=7
+@wait time=500
+@fgf c=ブルー f=10
+
+[texton]
+[ブルー f=10]「S-shit...」[k]
+[textoff]
+
+@clf
+@se f=dosa
+@quake time=200 hmax=10 vmax=5
+@wait time=700
+@eval exp='o.ブルー.setStatus(o.死亡, true)'
+@eval exp='o.ブルー.retire()'
+
+[texton]
+[サンドラ v=vn095 f=27]「Blue!」[k]
+; ↑ 悲鳴
+Blue fell to the ground in a crumpled heap. The power of the fatal breath had killed him.[k]
+[サンドラ v=vn096 f=29]「Blue! Blue!」[k]
+Sandra violently shakes the fallen Blue, and frantically calls out to him. However, Blue does not respond.[k]
+[テオ f=09]「Damn...! What the...!」[k]
+I can't believe that even with demon hunter powers it couldn't be blocked...! Who would have thought that Murmur's power had increased to that extent...![k]
+@fg c=ムールムール f=15
+[ムールムール v=vm225 f=15]「You see? This is what I can really do! My fully recovered, full power breath of death can't be stopped!」[k]
+[ムールムール v=vm226 f=03]「After being hit with all that breath, even a church can't save him now! Gahahahahahaha! It feels great!」[k]
+[テオ f=09]「Damn...!」[k]
+[ムールムール v=vm227 f=15]「Now, I'll make you guys just like Blue!」[k]
+[マックス f=12]「Aaaaahhhh! Help meeeeeee!」[k]
+Max is in a panic, trying to find a way to escape.[k]
+But Murmur stands at the entrance of the room, blocking our way out. There is no escape for us.[k]
+[テオ f=09]「Damn... What do I do?!」[k]
+This means it's the end for us this time...![k]
+[ムールムール v=vm228 f=15]「Breath of Death!」[k]
+[textoff]
+
+@image layer=5 storage=screen_deepblackfull
+@anime_fadein layer=5
+@playse storage=howling
+@image layer=6 storage=PE_base_full visible=true
+@layopt layer=6 top=0 left=0
+@startemit layer=6 storage=PE_smoke_red3 time=-1
+@wait time=1000
+
+[texton]
+∗buoooooooo!∗[k]
+Murmur exhales a massive amount of fatal breath, to cover the entire party![k]
+[テオ f=09]「Damn...!」[k]
+[   if exp='HUM'][リム v=vh089 f=17]「Kyaaa!」[k]
+[elsif exp='DWA'][フレデリカ v=vd087 f=17]「Aaaaaa...!」[k]
+[elsif exp='SYL'][マルエット v=vs091 f=17]「Eek!」[k]
+[elsif exp='ELF'][クレア v=ve090 f=17]「Ahh!」[k]
+[elsif exp='GNO'][ミューズ v=vg077 f=17]「Kyaa...!」[k]
+[endif]
+@layopt layer=6 opacity=192
+@anime_fadeout layer=5
+@layopt layer=6 opacity=128
+@wait time=500
+@fa
+[マックス f=12]「Ahhhh, help meeeeeee... wait, what?」[k]
+[テオ f=12]「...?」[k]
+The breath... isn't reaching us...?[k]
+Shockingly, just as it seemed we were finished, Murmur's fatal breath failed to touch us.[k]
+@layopt layer=6 opacity=64
+@wait time=50
+@clearemit layer=6
+@fg c=ムールムール f=27
+[ムールムール v=vm229 f=27]「What's going on?! What happened?!」[k]
+Murmur is confused. She hastily looks around. Then [―――][k]
+[textoff]
+
+@image layer=7 page=back storage=screen_yellowlight visible=true
+@trans method=crossfade time=500
+@wt
+@se f=kira1
+@image layer=e2 storage=PE_base_full visible=true left=0 top=0
+@startemit layer=e2 storage=PE_powder8 time=-1
+@wait time=1000
+
+@mu f=shrine
+[texton]
+[テオ f=12]「This is...!」[k]
+Suddenly, our party was enveloped in a holy white light.[k]
+[テオ f=06]「This white light... Could it once again be the power to exorcise demons?」[k]
+But I didn't invoke this power, and since Blue is dead, neither did he.[k]
+So who on earth did it this time?![k]
+[name n=Polaris v=vp060 key=ポラリス buf=12]「Phew, I made it just in time.」[k]
+[テオ f=12]「...!」[k]
+I heard the voice of Lady Polaris.[k]
+But it wasn't a voice that echoed throughout the temple like before. It sounds like a person speaking right here.[k]
+[テオ f=12]「Lady Polaris?! Where are you?」[k]
+[textoff]
+
+@anime_fadeout layer=7,e2
+@layopt layer=7 page=back visible=false
+@clearemit layer=e2
+@clf
+@w05
+@walk turn=n
+@w05
+
+[texton]
+I hurriedly turned back toward the altar.[k]
+[textoff]
+
+@fg c=polaris_lighten top=-20
+@w05
+[texton]
+Then I saw a shining figure floating there, glowing with a soft light.[k]
+[テオ f=05]「...?」[k]
+A silhouette wrapped in light. Its radiance gradually subsides, and gradually a shape becomes visible.[k]
+[textoff]
+
+@fg c=ポラリス f=04 t=1000
+@w05
+[texton]
+[？？？]「...」[k]
+[テオ f=05]「A child...?」[k]
+It was a young girl. She had white wings on her back and floated in front of me, glowing faintly.[k]
+Could it be that this girl is...?![k]
+[textoff]
+
+@fg c=ポラリス f=02 t=1000
+@w05
+[texton]
+[ポラリス v=vp061 f=02]「I am Polaris, God of Harmony. I have descended to earth by the power of the magic stones.」[k]
+[マックス f=11]「What?!」[k]
+[   if exp='ELF'][クレア v=ve091 f=12]「S-seriously...? This girl...?!」[k]
+[elsif exp='SYL'][マルエット v=vs092 f=12]「S-seriously...? This girl...?!」[k]
+[elsif exp='GNO'][ミューズ v=vg078 f=12]「S-seriously...? This girl...?!」[k]
+[elsif exp='DWA'][フレデリカ v=vd088 f=12]「S-seriously...? This girl...?!」[k]
+[elsif exp='HUM'][リム v=vh090 f=12]「S-seriously...? This girl...?!」[k]
+[endif]
+[テオ f=12]「You're... Lady Polaris?」[k]
+A young girl like this is a god...?! I can't believe it...![k]
+[ポラリス v=vp062 f=01]「Are you surprised that I look like a child? But this is how I appear in the human world.」[k]
+[テオ f=10]「I-I see...」[k]
+What a surprise. Such a lovely girl was the god I had always worshiped.[k]
+So, it was you who protected us from the fatal breath just now, Lady Polaris?[k]
+[ポラリス v=vp063 f=02]「It was really a close call. I used my holy power to stop the breath of death!」[k]
+[テオ f=13]「I see... Thank you for your help.」[k]
+I knew it... No matter how powerful a devil's breath is, it's no wonder that a god's power can block it.[k]
+@fg c=ポラリス f=07
+[ポラリス v=vp064 f=07]「...Well, now we have to defeat Murmur!」[k]
+; ↑ 厳しい口調で
+Lady Polaris' expression changes and she glares at Murmur.[k]
+[textoff]
+@clf
+@w05
+@walk turn=s
+@w05
+@fgf c=ムールムール f=27
+@mu f=murmur
+[texton]
+[ムールムール v=vm230 f=27]「What is this?! What the hell are you all doing?!」[k]
+; ↑ かんしゃくを起こす
+@fgf c=ムールムール f=53
+[ムールムール v=vm231 f=53]「You're always getting in my way! How much are you gonna interfere before you're satisfied?! Ooooooh, you really piss me off!」[k]
+[ポラリス v=vp065 f=07]「Now that I am here, I will no longer allow you to do as you please! Now, be quiet and be sealed!」[k]
+@fgf c=ムールムール f=08
+[ムールムール v=vm232 f=08]「...Tch!」[k]
+@se f=wing2
+@fg c=8002 left=440 top=-60
+Murmur flapped her wings vigorously and quickly flew to the exit.[k]
+[テオ f=07]「Wait! You're running away?!」[k]
+[ポラリス v=vp066 f=07]「Wait! You intend to flee?!」[k]
+[ムールムール v=vm233 f=07]「Huh?! Why would I stick around for a fight I can't win right now?!」[k]
+[ムールムール v=vm234 f=07]「But don't get cocky! You're all gonna die once my tower is completed anyway!」[k]
+[ムールムール v=vm235 f=07]「So enjoy yourselves while you can! Die, idiots!」[k]
+[textoff]
+@fa
+@se f=wing2
+@cl
+@w05
+[texton]
+Murmur flew away again, cursing as she went.[k]
+Damn... She got away again...![k]
+@mu f=shrine
+@fg c=ポラリス f=01
+[ポラリス v=vp067 f=01]「Are you all right, everyone?」[k]
+[テオ f=12]「Y-yes... Except Blue.」[k]
+[ポラリス v=vp068 f=01]「I was surprised by Murmur's sudden attack. I almost couldn't descend.」[k]
+[テオ f=05]「Speaking of which, how did you descend, Lady Polaris? I thought we needed to complete the ritual.」[k]
+[ポラリス v=vp069 f=02]「Well... The ritual isn't strictly necessary.」[k]
+[ポラリス v=vp070 f=02]「All that is needed for my manifestation is the altar and the 12 magic stones. Since the magic stones were all here, all I had to do was wait for my body to materialize.」[k]
+[ポラリス v=vp071 f=02]「If the altar had been destroyed or the magic stones scattered before my descent was complete, it would have been the end. I am glad that we managed to avoid the worst!」[k]
+[テオ f=14]「I see... Anyway, I'm glad you descended safely.」[k]
+It was a close call... We can only be thankful for our good fortune.[k]
+Anyway, we have finally accomplished the great task of Lady Polaris' descent. Now it's our turn to go on the offensive.[k]
+Speaking of which, what happened to Sandra? ...And Blue.[k]
+[テオ f=12]「Sandra, is Blue...」[k]
+[textoff]
+@clf
+@w05
+@walk turn=e
+@w05
+[texton]
+[ブルー e=通常 f=19]「...」[k]
+When I looked, I saw that Blue was still lying still. Nearby, Sandra is wearing a very serious expression on her face.[k]
+@fg c=サンドラ f=56
+[サンドラ v=vn097 f=56]「...I tried using resurrection powder... But it doesn't seem to be working at all.」[k]
+; ↑ 意気消沈。『復活の粉』は回復アイテムの一種
+[テオ f=12]「Unbelievable...!」[k]
+Resurrection powder won't bring him back to life...?! That's ridiculous...[k]
+Blue was hit by a huge concentration of fatal breath. Maybe that's the cause...[k]
+Come to think of it, Murmur also said something to the effect that Blue could no longer be saved. Does this mean that too much exposure to the breath of death is truly fatal?[k]
+@fg c=サンドラ f=57
+[サンドラ v=vn098 f=57]「Hey, God. Can't you save this man?」[k]
+Sandra appeals to Lady Polaris with sullen eyes.[k]
+[ポラリス v=vp072 f=06]「...I'm sorry, but after being exposed to that much fatal breath, even I, a god...」[k]
+@fg c=サンドラ f=10
+[サンドラ v=vn099 f=10]「Oh no...」[k]
+Sandra's shoulders slump in resignation. She really did care for Blue...[k]
+[ポラリス v=vp073 f=51]「...I cannot return the dead to life. Life and death are the domain of Zola, the god of life and death. Only holy magic and human prayer can override that.」[k]
+[ポラリス v=vp074 f=06]「As you humans always do, place the body in a church and pray for the resurrection with the help of the clergy. That is all I can say.」[k]
+[サンドラ v=vn100 f=10]「...Understood.」[k]
+[textoff]
+@fa
+@out
+@w1
+
+; ポラリス神殿の外
+@eval exp='game.changePosition(%[map: "デールコインの森", x:21, y:1, way:"n"], true)'
+@gameon
+@mu f=garden
+@fg c=ポラリス f=01
+[texton w=1]
+[ポラリス v=vp075 f=01]「Now, I shall accompany you all. Let's defeat Murmur together!」[k]
+[テオ f=02]「Yes, thank you very much, Lady Polaris.」[k]
+[textoff]
+@clf
+@st
+@se f=up3
+@eval exp='game.guest.entry(o.ポラリス)'
+@notice text="<y>Polaris has joined the party!"
+@mu f=&'game.map.bgm'
+[texton w=1]
+We've finally come this far...! This time, we're going to settle it with Murmur.[k]
+With the addition of Lady Polaris, we are completely free from the fear of fatal breath. From now on, we can go into battle with that devil without hesitation.[k]
+@eval exp='game.curChara = game.wife'
+[   if exp='isHUM'][リム v=vh091 f=02]「We're finally here, aren't we, my love?」[k]
+[elsif exp='isELF'][クレア v=ve092 f=02]「We're finally here, my love.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd089 f=02]「We're finally here, aren't we, my love?」[k]
+[elsif exp='isGNO'][ミューズ v=vg079 f=02]「We're finally here, aren't we, my love?」[k]
+[elsif exp='isSYL'][マルエット v=vs093 f=02]「We're finally here, my love.」[k]
+[endif]
+[テオ f=02]「Yes.」[k]
+Now [ヒロイン] is free from Blue. We can finally be a couple again. I'm honestly happy about it, though I feel a little bad for the fallen Blue.[k]
+[マックス f=01]「It's time for the final showdown! Of course, I'll be with you guys until the end!」[k]
+[テオ f=02]「Thank you, Max.」[k]
+[サンドラ f=10]「...」[k]
+Sandra remained by Blue's body with her head bowed.[k]
+[テオ f=05]「...What will you do now, Sandra?」[k]
+@fg c=サンドラ e=戦闘 f=13
+[サンドラ v=vn101 f=13]「I shall go to the church to bet on Blue's revival. So I suppose this is goodbye.」[k]
+; ↑ 力なく笑う
+[テオ f=06]「Is that so... that's unfortunate」[k]
+@fg c=サンドラ f=14
+[サンドラ v=vn102 f=14]「I really wanted to stay with you until the end, but... I'm sorry.」[k]
+[テオ f=02]「No, it's fine. Thank you for everything.」[k]
+[textoff]
+@cl
+@se f=period
+@eval exp='game.guest.removeMember(o.ブルー)'
+@eval exp='game.guest.removeMember(o.サンドラ)'
+@notice text="<y>Blue and Sandra left the party."
+[texton]
+I never thought I would part ways with Blue in this way... I hated him, but things turning out like this is a little sad.[k]
+But this is no time for sentimentality. Next time we must defeat Murmur.[k]
+This time I'll settle it! Wait and see, demon![k]
+[textoff]
+;-----------------------------------------------------------------------------------------
+; 設定
+@delevent name=ポラリスの神殿 num=6
+@eval exp='o.大峡谷・崖上.events = [2, 3]'
+@changefloor map=大峡谷・崖上 x=1 y=5 pimg=void
+@changefloor map=大峡谷・崖上 x=1 y=2 pimg=void
+[if exp='game.wife.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）']
+	@eval exp='game.wife.equip.hip = void'
+	@eval exp='game.wife.equipStat.hip = void'
+[endif]
+@eval exp='o.ベトリヌスの酒場.quests.remove(o.売春組織の実体を暴け)'
+@delevent name=ベトリヌスの酒場 num=13
+@delevent name=ホテル・クイーン num=0
+@deleventbtn map=サファイアシティ label=マリアの家_1
+@addeventbtn map=サファイアシティ label=マリアの家_2 name=マリアの家 img=liesel x=552 y=155
+;-----------------------------------------------------------------------------------------
+[eventoff]
+
+
+;◇イベント02・ポラリスと会話
+*advent_2
+
+; 翌朝の宿屋ロビー
+@saveon
+@w05
+@bg f=0003
+@mu f=happy
+[texton w=1]
+Next morning.[k]
+[テオ f=05]「What do you think we should do now, Lady Polaris?」[k]
+[textoff]
+@fg c=ポラリス f=08
+[texton]
+[ポラリス v=vp076 f=08]「Head for the tower that Murmur was building. I am sure she will be there.」[k]
+[テオ f=06]「Understood.」[k]
+Thinking about it, she said before she left, that when the tower was complete, we'd all die.[k]
+Rumor has it that the tower is steadily getting higher. Maybe we should hurry.[k]
+[テオ f=01]「Speaking of which, what did you do last night, Lady Polaris?」[k]
+@fg c=ポラリス f=52
+[ポラリス v=vp077 f=52]「Eh? Of course, I slept in bed just like everyone else.」[k]
+@fg c=ポラリス f=04
+[ポラリス v=vp078 f=04]「I, who have come down to earth, am the same as all of you, except for my divine power.」[k]
+[ポラリス v=vp079 f=04]「I sleep at night, I eat, I even take a bath.」[k]
+[テオ f=13]「I-I see...」[k]
+@fg c=ポラリス f=01
+[ポラリス v=vp080 f=01]「So everyone, please treat me as one of your own!」[k]
+[テオ f=13]「Y-yes.」[k]
+@fg c=ポラリス f=03
+[ポラリス v=vp081 f=03]「Actually, I am really looking forward to my first adventure with humans in a long time!」[k]
+[ポラリス v=vp082 f=03]「I am very excited. Let's have fun together, everyone!」[k]
+[テオ f=10]「Y-yes...」[k]
+Lady Polaris seems to be very excited. Is it like a field trip?[k]
+Well, it's great that she's motivated. Lady Polaris' power is essential for the final battle, so let's join forces and truly defeat the devil this time.[k]
+[textoff]
+@fa
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ラドミラの塔
+
+;◇イベント01・ラドミラの塔へ
+*radmila_1
+
+; 大峡谷入口
+@jump storage="free02.scn" target=*radmila_1 cond='game.isFreeMode'
+@wait time=500 cond='WAY != "w"'
+@walk turn=w cond='WAY != "w"'
+@wait time=500
+[texton]
+[テオ f=05]「That's...!」[k]
+In the distance, a tower of tremendous height dominates the skyline.[k]
+That must be the tower Mr. Schwartz was talking about. When did it get so high...?![k]
+[ポラリス v=vp083 f=08]「That is the Radmira Tower that Murmur was trying to build. She must be in there.」[k]
+[テオ f=05]「Murmur is there...」[k]
+Murmur tricked or coerced many humans into building this tower.[k]
+But what on earth does that devil intend to do by building such a huge tower?[k]
+[ポラリス v=vp084 f=08]「I don't know what her purpose is, but being her, I am sure she is going to do something!」[k]
+[ポラリス v=vp085 f=07]「You are our only hope! Please stop Murmur's schemes!」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント02・塔の入口を開く
+*radmila_2
+
+; 塔の入口前
+@jump storage="free02.scn" target=*radmila_2 cond='game.isFreeMode'
+@wait time=500
+[texton]
+We reach a tower, but its entrance is closed by a solid stone door.[k]
+Its stone door is very sturdy and doesn't so much as budge when pushed hard.[k]
+[textoff]
+[eventoff cond='! game.guest.members.has(o.ポラリス)']
+@fg c=ポラリス f=01
+[texton]
+[ポラリス v=vp086 f=01]「With my power, a door of this size is nothing to worry about.」[k]
+[ポラリス v=vp087 f=02]「Please step back a little.」[k]
+[textoff]
+@cl
+@wait time=500
+@walk move=e
+@wait time=500
+@fg c=7001 left=600 top=100
+@wait time=500
+@playse storage=tremble
+@quake time=3000 hmax=5 vmax=0
+*rrrrumble*[auto time=1000]
+@stopquake
+@playse storage=rockdrop
+@changewall x=1 y=4 way=w himg=arch type=space behind=true
+@changefloor x=1 y=4 warp=b
+@wait time=500
+[texton]
+[テオ f=05]「Ah...!」[k]
+When Lady Polaris held out her hand, that heavy looking door was easily opened.[k]
+[テオ f=01]「Thank you, Lady Polaris.」[k]
+[textoff]
+@cl
+@fg c=ポラリス f=07
+[texton]
+[ポラリス v=vp088 f=07]「Now, let's climb this tower! Together, we will stop that devil's scheme!」[k]
+[テオ f=01]「Yes, Lady Polaris!」[k]
+@cl
+...Though having said that, how will we attack this huge tower?[k]
+From the looks of it, there are 20 or more floors. Climbing a tower of this magnitude will probably require some very careful preparation.[k]
+We could continue into the tower, but it might be better to go back to town and prepare first.[k]
+[textoff]
+@delevent
+[eventoff]
+
+
+;◇イベント03・女湯にワープさせられる
+*radmila_3
+@jump storage="free02.scn" target=*radmila_3 cond='game.isFreeMode'
+@warp map=温泉・浴場 x=9 y=17 way=w
+@eval exp='game.map.changeObject(%[pimg: "mob07"], 9, 16, "f")'
+@eval exp='game.updateView()'
+@wait time=2000
+[texton]
+[テオ f=05]「...Hmm? Is this...?」[k]
+I've been somewhere like this before... A hot spring?![k]
+[textoff]
+@walk turn=s
+@cl t=1000
+[texton]
+[name n="Female Bather" f=priest_white_03]「Kyaaa!」[k]
+[name n="Female Bather" f=archer_purple_03]「Hey! Why is there a man here?!」[k]
+[テオ f=37]「What...?!」[k]
+Oh no! It looks like we've warped into the women's bath![k]
+[マックス f=21]「Oh, wow! This is a spectacular sight!」[k]
+[name n="Female Bather" f=bladesman_red_03]「Don't look at me! Get the hell out of here!」[k]
+[テオ f=37]「I-I'm so sorry!」[k]
+[textoff]
+@walk move=n
+@walk move=e
+@walk move=e
+@walk move=e
+@walk move=e
+@walk move=e
+@black on
+@wait time=500
+[texton]
+We escaped from the women's bath in a panic![r]
+We were exploring the tower then got sent to a crazy place...[k]
+[name f=other_03]Damn you, Murmur. I can't believe you pulled this prank on us...![k]
+[textoff]
+@wait time=500
+@warp map=ヤネクの森・東 x=6 y=29 way=n sound=door1
+@black off
+[eventoff]
+
+
+;◇イベント04・サンダードラゴンと戦闘
+*radmila_4
+
+; 途中階
+@jump storage="free02.scn" target=*radmila_4 cond='game.isFreeMode'
+@saveon
+@mu f=murmur
+[texton]
+[ムールムール v=vm236 f=07]「Hey! You guys!」[k]
+[テオ f=05]「...!」[k]
+Suddenly, I heard Murmur's voice from behind me![k]
+[textoff]
+@wait time=800
+@walk turn=e
+@walk turn=n
+@walk move=n
+@walk move=w
+@walk move=w
+@wait time=800
+@fg c=8005 left=450 top=60
+[texton w=1]
+[テオ f=05]「Murmur...!」[k]
+Halfway up the tower, Murmur made a surprise appearance.[k]
+Murmur is in the middle of the room, wielding her spear and glaring at us hatefully.[k]
+[ムールムール v=vm237 f=07]「You guys are really persistent! Why are you following me?」[k]
+[ポラリス v=vp089 f=07]「To stop your plans, Murmur!」[k]
+[ムールムール v=vm238 f=08]「Polaris...! You came here too...」[k]
+[ポラリス v=vp090 f=07]「Murmur, why are you building such a tower? Stop harming humans!」[k]
+[ムールムール v=vm239 f=07]「You're so annoying! Don't try and order me around!」[k]
+[ムールムール v=vm240 f=07]「This tower was built so that anyone could get to the heavenly realm where the gods live!」[k]
+[ポラリス v=vp091 f=07]「To heaven...? What are you going to do once you get there?!」[k]
+@fg c=satan left=450 top=60
+[ムールムール v=vm241 f=15]「Isn't it obvious? I'm going to take revenge on those annoying gods!」[k]
+[ムールムール v=vm242 f=15]「Inciting the the demons of the underworld to climb this tower and invade the heavens would cause chaos there! And the earth where humans live might be destroyed too!」[k]
+[ポラリス v=vp092 f=11]「W-why would you do that...?!」[k]
+[ムールムール v=vm243 f=15]「I told you! Revenge! This is punishment for all the suffering you've caused us! You deserve it!」[k]
+[テオ f=10]「Damn you... devil...!」[k]
+We must stop her evil schemes at all costs. We must protect the earth... and humanity.[k]
+[ムールムール v=vm244 f=07]「I won't let anyone interfere with my plans! You're all going to die here! Come out, Thunder Dragon!」[k]
+@se f=roar
+@fg l=9011 left=220 top=0
+[name n="Thunder Dragon" f=dragon_02]「Roaaaaar!」[k]
+A huge dragon appeared before us![k]
+@fg c=satan left=450 top=60
+[ムールムール v=vm245 f=04]「Well then, I'll leave the rest to you!」[k]
+@cl c
+[ポラリス v=vp093 f=08]「Stop! Murmur!」[k]
+[テオ f=11]「Wait! Murmur!」[k]
+[textoff]
+@cl l b
+@se f=roar
+@fg c=9012 left=450 top=0
+[texton]
+[name n="Thunder Dragon" f=dragon_02]「Roaaaaar!」[k]
+[テオ f=10]「Damn...!」[k]
+When I tried to chase after the fleeing Murmur, the dragon she had summoned blocked the way.[k]
+[ポラリス v=vp094 f=08]「There's no other choice. Let's defeat this dragon first!」[k]
+[テオ f=05]「I understand!」[k]
+[textoff]
+@clf
+
+; サンダードラゴンと戦闘
+@monster pos=3 name=サンダードラゴン
+@callbattle bgm=dragon gameover=true escape=false
+@notice text="Defeated the Thunder Dragon!"
+@delevent
+
+@eval exp='dm("シナリオ  ")'
+[texton w=0]
+Somehow, we managed to defeat the dragon. However, Murmur escaped somewhere.[k]
+[ポラリス v=vp095 f=07]「Let's hurry and chase after Murmur! We must stop her plans!」[k]
+[テオ f=05]「Yes, Lady Polaris!」[k]
+[textoff]
+[eventoff bgm]
+
+
+;◇イベント05・ムールムールと最終決戦
+*radmila_5
+
+; 最上階
+@jump storage="free02.scn" target=*radmila_5 cond='game.isFreeMode'
+[texton]
+[テオ f=05]「There she is...!」[k]
+We discovered Murmur standing alone on what finally appears to be the roof![k]
+[textoff]
+@fg c=8006 left=450 top=60
+[texton w=1]
+[ムールムール v=vm246 f=11]「What? You've already got this far?」[k]
+@fg c=8004 left=450 top=60
+[ムールムール v=vm247 f=53]「Ugh! You're so annoying! Annoying, annoying, annoying! When are you gonna give up chasing me?!」[k]
+[ポラリス v=vp096 f=07]「Murmur! Give up! There's nowhere left for you to run!」[k]
+@fg c=8005 left=450 top=60
+[ムールムール v=vm248 f=07]「What? What are you getting so cocky about? There's no way the great Murmur would lose to the likes of you!」[k]
+[ムールムール v=vm249 f=07]「Since it comes to this, I'll crush you guys with all my might! I'll make you regret coming this far!」[k]
+[テオ f=05]「...!」[k]
+The devil raised her spear high and yelled skywards.[k]
+[ムールムール v=vm250 f=07]「Come! Greater Demons!」[k]
+@fg l=demon_black left=230 top=-40 b
+@fg c=8005 left=450 top=60 b
+@fg r=demon_black left=630 top=-40
+Then, two Greater Demons appeared on either side of her![k]
+[ムールムール v=vm251 f=07]「Let's settle this!」[k]
+[テオ f=05]「Here it comes! Everyone, get ready!」[k]
+This time, I'll defeat this devil! I will put an end to this dreadful battle![k]
+[textoff]
+@clf
+
+@anireset
+@eval exp='game.backScreen.loadImages(%[storage: "PE_base_view"])'
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream1.pee")'
+@eval exp='game.dungeonView.skyLayer.loadImages("0000")'
+@eval exp='game.backScreen.visible = true'
+@eval exp='game.backScreen.absolute = -113'
+
+@monster pos=10 name=ムールムール
+@monster pos=1 name=グレーターデーモン
+@monster pos=5 name=グレーターデーモン
+@callbattle bgm=devil gameover=true escape=false stopbgm=true
+
+@eval exp='particle_object.stopparticle(%[slot: 10, force: true])'
+@eval exp='game.backScreen.clear()'
+@eval exp='game.backScreen.absolute = -105'
+@eval exp='game.dungeonView.skyLayer.loadImages("sky_nightforest")'
+@saveon
+
+@mu f=cave
+@fg c=8008 left=450 top=60
+[texton]
+[ムールムール v=vm252 f=28]「I can't believe it! How could I lose to you guys? That's impossible!」[k]
+[ムールムール v=vm253 f=28]「You gotta be kidding... I can't lose here! Not until I unleash my true demonic power to take revenge on the heavenly realm...」[k]
+[ムールムール v=vm254 f=28]「...If I lose here, I'll lose everything... So there's no choice but to use it now! My true power!」[k]
+[テオ f=05]「What...?!」[k]
+@fg c=8007 left=450 top=60
+[ムールムール v=vm255 f=17]「Ooooooooooooooooooooo!」[k]
+[textoff]
+
+@image layer=e2 storage=PE_base_full visible=true left=0 top=0
+@startemit layer=e2 storage=PE_smoke_black3 time=-1
+
+[texton]
+Murmur lets out a mighty roar that is unimaginable from her small body![k]
+Then, a vortex of evil energy converged on Murmur and she began to release enormous magical power![k]
+[ポラリス v=vp097 f=11]「No! Don't let her use that power!」[k]
+[テオ f=12]「What do you mean, Lady Polaris?!」[k]
+[ポラリス v=vp098 f=11]「Murmur is unleashing her hidden magical powers to awaken her true demonic abilities! Once that happens, there's no stopping her!」[k]
+[テオ f=11]「What?! Then we have to stop it quickly!」[k]
+[ムールムール v=vm256 f=15]「You idiot! It's too late!」[k]
+[textoff]
+
+@se f=thunder1
+@flash time=500
+@w05
+@se f=thunder1
+@flash time=500
+@w05
+@se f=thunder1
+@quake hmax=5 vmax=2
+@clearemit layer=e2
+@fg l=screen_white left=450 top=0 b
+@fg c=8009 left=450 top=60
+@image layer=e3 storage=PE_base_view visible=true left=0 top=0
+@startemit layer=e3 storage=PE_rising_rocks time=-1
+@w2
+@quake hmax=3 vmax=1
+
+[texton]
+With a loud crackling sound, Murmur transforms![k]
+[textoff]
+
+@w1
+@se f=devilroar
+@fg c=8010 left=450 top=-100 t=1000
+@w1
+
+@quake hmax=2 vmax=1
+[texton]
+Parts of her body became covered in scales, and her wings spread wider. She had transformed into a powerful, dragon-like creature![k]
+[ポラリス v=vp099 f=08]「It may already be too late...!」[k]
+[textoff]
+
+@w05
+@stopquake
+@mu f=murmur
+@anime_fadeout layer=e3
+@clearemit layer=e3
+@cl b
+@fg c=murmur left=450 top=-100 t=1000
+@w1
+
+[texton w=1]
+[テオ f=12]「Ah...」[k]
+[魔公ムールムール v=vm257 f=03]「Hahahahaha! Now you guys will never be able to beat me! Serves you right!」[k]
+[魔公ムールムール v=vm258 f=01]「In this form, I can ascend to the heavens! I'll take revenge on the gods and rule over both gods and mortals from the heavens! Hahahaha!」[k]
+[ポラリス v=vp100 f=08]「Damn...!」[k]
+[魔公ムールムール v=vm259 f=02]「...But first, I have to deal with you annoying people.」[k]
+[魔公ムールムール v=vm260 f=15]「I'm going to kill all of you right now! Be prepared!」[k]
+[textoff]
+@saveoff
+
+; ムールムール上昇
+@mu f=devil
+@se f=byun2
+@move layer=3 time=100 path=0,-768,255
+@wm
+@layopt layer=3 visible=false left=0 top=0
+@wait time=500
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=500
+@image layer=e0 storage=0043 left=0 top=-720 visible=true
+@move layer=e0 time=500 path=0,0,255
+@wait time=1000
+
+@se f=wing2
+[texton]
+With that, Murmur flapped her large wings and soared high into the sky![k]
+[テオ f=12]「W-what are you doing?!」[k]
+[魔公ムールムール v=vm261 f=07]「Take this! Meteor Shower!」[k]
+[textoff]
+
+; メテオシャワー
+@wait time=500
+@image layer=e1 storage=screen_blue
+@image layer=e3 storage=PE_base_full left=0 top=0 visible=true mode=psdodge
+@image layer=9 page=back storage=9999 visible=true left=0 top=0
+@anime_fadein layer=e1
+@playse storage=meteor
+@startemit layer=e3 storage=PE_meteor time=4000
+@wait time=2000
+@eval exp='game.view.top -= 600'
+@eval exp='game.view.skyLayer.top -= 600'
+@layopt layer=e0 visible=false
+@wait time=1000
+@playse buf=1 storage=bashan3
+@trans method=universal rule=rule_45 time=1000
+@wt
+@wait time=500
+@layopt layer=9 visible=false
+@layopt layer=9 page=back visible=false
+@layopt layer=e1 visible=false
+@layopt layer=e0 visible=false
+@layopt layer=3 visible=false
+@layopt layer=3 visible=false page=back
+@clearemit layer=e3
+
+; 元の画面に戻る
+@saveon
+[texton]
+@quake time=1000
+[マックス f=11]「Aaah!」[k]
+[   if exp='isHUM'][リム v=vh092 f=17]「Kyaa!」[k]
+[elsif exp='isELF'][クレア v=ve093 f=17]「Kyaa!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd090 f=17]「Kyaa!」[k]
+[elsif exp='isGNO'][ミューズ v=vg080 f=17]「Kyaa!」[k]
+[elsif exp='isSYL'][マルエット v=vs094 f=17]「Kyaa!」[k]
+[endif]
+Murmur caused a cascade of burning meteorites to rain down from the sky![k]
+[テオ f=12]「Damn... that demon...!」[k]
+[魔公ムールムール v=vm262 f=03]「Hahahaha! Humans are such weaklings! You can't even fight back, so take this!」[k]
+[テオ f=12]「Damn... What do I do?!」[k]
+The enemy is attacking from above, so we are at a significant disadvantage, with limited means to fight back. If this continues...[k]
+@fgf c=ポラリス f=07
+[ポラリス v=vp101 f=07]「It's okay! Leave it to me!」[k]
+[テオ f=05]「Lady Polaris?」[k]
+[textoff]
+@cl
+@wait time=500
+
+@mu f=lastboss
+@playse buf=0 storage=byun2
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@playse buf=1 storage=fire3
+@eval exp='game.backScreen.loadImages(%[storage: "PE_base_view"])'
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream2.pee")'
+@eval exp='game.dungeonView.effectLayer.loadImages(%[storage: "0000"])'
+@eval exp='game.dungeonView.effectLayer.visible = true'
+@eval exp='game.backScreen.visible = true'
+@eval exp='game.view.top -= 600'
+@eval exp='game.view.skyLayer.top -= 600'
+@wait time=1000
+
+[texton]
+[マックス f=11]「Whoa! What's this?!」[k]
+Suddenly, our party was launched into the air![k]
+[textoff]
+
+@stopse buf=1
+@eval exp='particle_object.stopparticle(%[slot: 10])'
+@wait time=1000
+@image layer=e0 left=0 top=0 opacity=0 visible=true storage=BE_sky_back
+@image layer=e1 left=0 top=560 visible=true storage=BE_sky_cloud clipwidth=900 clipheight=300
+@layopt layer=e1 index=-95
+@move layer=e1 time=2000 path=0,260,255
+@wm
+@move layer=e0 time=2000 path=0,0,255
+@wm
+@wait time=1000
+
+[texton]
+[テオ f=12]「T-this is...!」[k]
+[   if exp='isHUM'][リム v=vh093 f=12]「W-we're flying in the sky...?」[k]
+[elsif exp='isELF'][クレア v=ve094 f=12]「W-we're flying in the sky...?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd091 f=12]「W-we're flying in the sky...?」[k]
+[elsif exp='isGNO'][ミューズ v=vg081 f=12]「W-we're flying in the sky...?」[k]
+[elsif exp='isSYL'][マルエット v=vs095 f=12]「W-we're flying in the sky...?」[k]
+[endif]
+The party stood in midair, as if it were solid ground. Could this be the power of Lady Polaris?[k]
+[ポラリス v=vp102 f=08]「I used my power to lift you all up! Now we should be able to fight Murmur!」[k]
+[テオ f=01]「Lady Polaris...!」[k]
+[マックス f=01]「As expected of a god! Amazing!」[k]
+[ポラリス v=vp103 f=08]「Let's go! Let's chase Murmur!」[k]
+[textoff]
+
+@layopt layer=e0 visible=false
+@layopt layer=e1 index=-1 visible=false
+@eval exp='game.dungeonView.effectLayer.loadImages(%[storage: "0000"])'
+@playse buf=0 storage=byun2
+@playse buf=1 storage=fire3
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream3.pee")'
+@wait time=2000
+@stopse buf=1
+@eval exp='particle_object.stopparticle(%[slot: 10])'
+@wait time=1000
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream1.pee")'
+@wait time=1000
+@fgf c=8011 left=-900 top=-560
+@move layer=3 time=3000 path=32,-110,255 accel=-2
+@wm
+
+@se f=wing2
+[texton]
+Thanks to Lady Polaris blessing us with the ability to fly, our party was able to catch up with Murmur midair.[k]
+[魔公ムールムール v=vm263 f=08]「Tch...! So you're still at it...!」[k]
+; ↑ ボソッとつぶやく
+[ポラリス v=vp104 f=07]「This power won't last very long, but it should be enough to defeat Murmur! I'll leave the rest to you! Please defeat her!」[k]
+[テオ f=05]「I understand! Thank you, Lady Polaris!」[k]
+[魔公ムールムール v=vm264 f=07]「Huh? What kind of ridiculous drivel is that? You think you can defeat me? Impossible!」[k]
+[魔公ムールムール v=vm265 f=07]「It doesn't matter if you guys can fly now! Either way, I'm going to kill you! Be prepared!」[k]
+[テオ f=07]「We won't lose! Let's do this, Murmur!」[k]
+[textoff]
+
+; 最終戦
+@monster pos=3 name=魔公ムールムール
+@layopt layer=3 visible=false
+@layopt layer=3 page=back visible=false
+@eval exp='game.eraseCharactorLayer(3)'
+@callbattle bgm=lastboss skipstart=true stopbgm=true gameover=true escape=false
+
+; 勝利
+@anireset
+@eval exp='game.backScreen.loadImages(%[storage: "PE_base_view"])'
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream1.pee")'
+@eval exp='game.dungeonView.skyLayer.loadImages("0000")'
+@eval exp='game.backScreen.visible = true'
+@eval exp='game.dungeonView.effectLayer.loadImages(%[storage: "0000"])'
+
+[texton w=0]
+[魔公ムールムール v=vm266 f=17]「Gyaah!」[k]
+[テオ f=13]「Yes!」[k]
+After a fierce battle, our party finally dealt the final blow to Murmur![k]
+She loses her strength and plummets to the ground, unable to flap her wings.[k]
+[ポラリス v=vp105 f=07]「I'll bring everyone down to the rooftop for now. Then I'll seal Murmur!」[k]
+[テオ f=05]「Please, Lady Polaris!」[k]
+[textoff]
+@cl
+
+@outf f=0000
+@playse buf=0 storage=byun2
+@playse buf=1 storage=fire3
+@image layer=e3 storage=PE_base_full visible=true
+@startemit layer=e3 storage=PE_lightstream4 time=600
+@wait time=1000
+@stopse buf=1
+@clearemit layer=e3
+@wait time=1000
+@image layer=e3 storage=PE_base_full visible=true
+@startemit layer=e3 storage=PE_lightstream5 time=-1
+@wait time=1000
+@image layer=2 storage=7002 visible=true left=600 top=-435
+@image layer=1 storage=8012 visible=true left=-100 top=700
+@move layer=1 time=5000 path=,0, accel=-2
+@wait time=2000
+@move layer=2 time=3000 path=,100, accel=-2
+@wm
+
+[texton w=1]
+Lady Polaris quickly lowered us to the roof of the tower, then flapped her white wings and chased after Murmur as she fell.[k]
+[ポラリス v=vp106 f=07]「Be sealed!」[k]
+[textoff]
+@se f=shakin3
+@flash time=200
+@w05
+@se f=shakin3
+@flash time=200
+@w05
+[texton]
+Then, she showered Murmur in holy light.[k]
+@shake layer=1 loop=10 time=50 length=5
+[魔公ムールムール v=vm267 f=17]「Waaaaahhh!」[k]
+Murmur, began to suffer under the bombardment of holy power. Drained from the previous battle, she had no way to escape.[k]
+[ポラリス v=vp107 f=07]「Now, sleep, Murmur!」[k]
+[textoff]
+@se f=shakin3
+@flash time=200
+@w05
+@se f=shakin3
+@flash time=200
+@w05
+@shake layer=1 loop=10 time=50 length=5
+@w05
+[texton]
+[魔公ムールムール v=vm268 f=09]「Oh no! Stop it! Stop it, you damn god!」[k]
+; ↑ 「くそかみ」
+Murmur has always revived, no matter how many times she was defeated. However, if sealed away by divine power, she will no longer be able to easily resurrect.[k]
+[ポラリス v=vp108 f=07]「This is it!」[k]
+[textoff]
+@se f=shakin3
+@flash time=200
+@w05
+@se f=shakin3
+@flash time=200
+@w1
+@se f=shakin4
+@flash on=0
+@image layer=1 storage=8013 left=-110 top=-10
+@wait time=1000
+@flash off=2000
+@w05
+@shake layer=1 loop=20 time=50 length=5
+[texton]
+[魔公ムールムール v=vm269 f=17]「Gyaaaaaaaaaaaaaaa!」[k]
+@move layer=1 time=5000 path=,800, accel=2
+[textoff]
+@wait time=2000
+[texton]
+Polaris intensifies her holy light! Murmur's agonized cries fill the air.[k]
+Enveloped in holy light, Murmur falls to the bottom of the canyon, unable to move.[k]
+@image layer=2 storage=7003 visible=true left=600 top=100
+Lady Polaris watched her quietly and intently.[k]
+[ポラリス v=vp109 f=51]「The sealing is complete. Goodbye, Murmur.」[k]
+[魔公ムールムール v=vm270 f=17]「Damn it! Damn it! Damn it!」[k]
+[魔公ムールムール v=vm271 f=09]「I'm not done yet! I'll never give up!」[k]
+[魔公ムールムール v=vm272 f=17]「I will definitely, definitely come back to life someday and take revenge on all you gods and mortals! Remember that!」[k]
+[textoff]
+@stopmove
+@w1
+@fa
+@image layer=e4 storage=0000 visible=true left=0 top=0 opacity=0
+@move layer=e4 time=2000 path=,,255
+@wm
+@clearemit layer=e3
+@outf
+@w2
+
+; 地上
+@saveon
+@eval exp='game.guest.removeMember(o.ポラリス)'
+@eval exp='o.ラドミラの塔１Ｆ.sky = "dawnforest"'
+@eval exp='game.changePosition(%[map: "ラドミラの塔１Ｆ", x: 12, y: 4, way: "n"], true)'
+@mu f=peace
+@gameon fade
+[texton w=1]
+[テオ f=01]「Thank you very much for your help, Lady Polaris.」[k]
+@fg c=ポラリス f=02
+[ポラリス v=vp110 f=02]「No, thank you all for defeating the devil. Without you, the world would have been in big trouble.」[k]
+@fg c=ポラリス f=03
+[ポラリス v=vp111 f=03]「All of you here are undoubtedly true heroes. I would like to express my heartfelt admiration for your courage.」[k]
+[テオ f=02]「Thank you very much, I am honored.」[k]
+[マックス f=03]「Oh my, God praised me! I'm so embarrassed!」[k]
+@fg c=ポラリス f=02
+[ポラリス v=vp112 f=02]「Well then, I will return to the heavenly realm. If anything else happens, please come to my temple.」[k]
+[textoff]
+
+@backlay
+@image layer=7 page=back storage=screen_yellowlight visible=true
+@trans method=crossfade time=500
+@wt
+@se f=kira1
+@image layer=e2 storage=PE_base_full visible=true left=0 top=0
+@startemit layer=e2 storage=PE_powder8 time=-1
+@cl t=1000
+@wait time=2000
+@anime_fadeout layer=7,e2
+@clearemit layer=e2
+@layopt layer=7 page=back visible=false
+@w05
+
+[texton w=1]
+With those words, Lady Polaris ascended to the heavens in a pillar of light.[k]
+[テオ f=05]「...」[k]
+@eval exp='game.curChara = game.wife'
+@fg c=キャラ f=02
+
+[   if exp='isHUM'][リム v=vh094 f=04]「It's finally over, isn't it?」[k]
+[elsif exp='isELF'][クレア v=ve095 f=02]「It's finally over, isn't it?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd092 f=03]「It's finally over, isn't it?」[k]
+[elsif exp='isGNO'][ミューズ v=vg082 f=02]「It's finally over, isn't it?」[k]
+[elsif exp='isSYL'][マルエット v=vs096 f=01]「It's finally over, isn't it?」[k]
+[endif]
+
+[テオ f=02]「Yes, it's finally over.」[k]
+My smiling wife... Yes, the greatest reward from this adventure is my beloved wife.[k]
+I will continue to be an adventurer. And I will always be with my precious companion.[k]
+@fg c=キャラ f=22
+
+[   if exp='isHUM'][リム v=vh095 f=22]「So, that... Actually, I have something to report to you.」[k]
+[elsif exp='isELF'][クレア v=ve096 f=22]「So, that... Actually, I have something to tell you.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd093 f=22]「So, that... Actually, I have something to report to you.」[k]
+[elsif exp='isGNO'][ミューズ v=vg083 f=22]「So, that... Actually, I have something to report to you...」[k]
+[elsif exp='isSYL'][マルエット v=vs097 f=22]「So, that... Actually, I have something to tell you.」[k]
+[endif]
+
+[テオ f=05]「Is something wrong?」[k]
+@fg c=キャラ f=24
+
+[   if exp='isHUM'][リム v=vh096 f=24]「Just now, Lady Polaris secretly told me as she was leaving... that there is a new life growing inside me...」[k]
+[elsif exp='isELF'][クレア v=ve097 f=24]「Just now, Lady Polaris secretly told me as she was leaving... that there is a new life growing inside me...」[k]
+[elsif exp='isDWA'][フレデリカ v=vd094 f=24]「Just now, Lady Polaris secretly told me as she was leaving... She said there's a new life growing inside me...」[k]
+[elsif exp='isGNO'][ミューズ v=vg084 f=24]「Just now, Lady Polaris secretly told me as she was leaving... that there is a new life growing inside me...」[k]
+[elsif exp='isSYL'][マルエット v=vs098 f=24]「Just now, Lady Polaris secretly told me as she was leaving... that there is a new life growing inside me...」[k]
+[endif]
+
+[テオ f=05]「Which means...!」[k]
+[ヒロイン f=22]「... ∗nod∗」[k]
+[ヒロイン] nodded with a smile. Her eyes were filled with joy.[k]
+@clf
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+[テオ f=01]「[ヒロイン]...」[k]
+Overcome with emotion, I hugged my wife tightly.[k]
+I love my wife so much...! I will continue to love this woman forever...![k]
+I've been through a lot of tough times. But I've overcome them all, and now I'm going to be happy with this woman.[k]
+Feeling her body heat, I was thrilled by the anticipation of the happiness that was to come.[k]
+[textoff]
+@fa
+@out t=2000
+@wait time=1500
+
+
+
+
+;■エンディング
+
+[texton w=0]
+A few months later.[k]
+I took my pregnant wife with me and returned to my parents' house for the first time in ages.[k]
+When I introduced my wife to my mother, and told her about the baby in [ヒロイン]'s womb, she was overjoyed.[k]
+I became a full-fledged adventurer and would produce a successor. I was relieved to be able to give good news.[k]
+
+; セックス回数等によりバッドエンディングへ
+@jump target=*bad_ending cond='game.date < f.lastBlueSexDay + 60 && game.wife.sexCount.blue > game.wife.sexCount.theo'
+
+After that, my wife gave birth safely, and a new life began for the three of us: me, my wife, and our child.[k]
+[textoff]
+@w1
+
+; 主人公の子を出産エンド → 各ヒロインシナリオへ
+@jump storage="heroine01b.scn" target=*good_ending cond='isHUM'
+@jump storage="heroine02b.scn" target=*good_ending cond='isELF'
+@jump storage="heroine03b.scn" target=*good_ending cond='isDWA'
+@jump storage="heroine04b.scn" target=*good_ending cond='isGNO'
+@jump storage="heroine05b.scn" target=*good_ending cond='isSYL'
+
+
+;◇バッドエンディング・ブルーの子を出産エンド
+*bad_ending
+After that, my wife gave birth safely, and our child grew up healthy and strong, and everything went smoothly.[k]
+[textoff]
+@w1
+[texton w=0]
+...Or so I thought.[k]
+[textoff]
+@w1
+
+@bg f=0007 cond='isHUM || isDWA || isSYL'
+@bg f=0060 cond='isGNO'
+@bg f=0048 cond='isELF'
+@mu f=evil
+[texton w=1]
+Three years later.[k]
+[   if exp='isHUM'][リム v=vh097 e=通常 f=01]「Hey, don't be naughty, Aoki!」[k]
+[elsif exp='isELF'][クレア v=ve098 e=通常 f=64]「Hey, don't be so naughty, Aoki.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd095 e=通常 f=03]「Hey, don't be naughty～, Aoki～!」[k]
+[elsif exp='isGNO'][ミューズ v=vg085 e=通常 f=05]「Hey, don't be naughty, Aoki.」[k]
+[elsif exp='isSYL'][マルエット v=vs099 e=通常 f=62]「Hey! Aoki! Eat your dinner properly!」[k]
+[endif]
+
+[テオ e=通常 f=06]「...」[k]
+It has been more than three years since I got married to my wife. Our child is growing up healthily, and the three of us are building a happy family.[k]
+However... there is something that really bothers me.[k]
+
+[   if exp='isHUM'][リム v=vh098 f=17]「Hey, Aoki! Listen to mommy!」[k]
+[elsif exp='isELF'][クレア v=ve099 f=07]「Hey, Aoki! Stop being so stubborn and listen to your mother!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd096 f=54]「Aoki～! Please listen to mom～!」[k]
+[elsif exp='isGNO'][ミューズ v=vg086 f=09]「Hey, please, Aoki... I want you to listen to your mother...」[k]
+[elsif exp='isSYL'][マルエット v=vs100 f=17]「Come on, Aoki, listen to your mother!」[k]
+[endif]
+
+[テオ f=06]「...」[k]
+Aoki is my son's name. He is so mischievous that he doesn't seem like my son, and even at the age of three, he already shows a strength of mind and shrewdness that is uncharacteristic of a child.[k]
+And... occasionally, he gives me, his father, a sharp look that makes me feel uneasy as a parent.[k]
+[name n=Azure]「... ∗stare∗」[k]
+[テオ f=12]「...! ∗gulp∗」[k]
+Those eyes... they held a frightening look that seemed somehow familiar.[k]
+For some reason, I can't shake off this uneasy feeling about my child.[k]
+Suddenly, a terrifying thought crossed my mind. I desperately tried to shake it off, telling myself over and over again that I must not destroy this happiness.[k]
+[textoff]
+@fa
+@out
+@jump target=*staff_roll
+
+
+
+
+;■スタッフロール・ゲーム継続
+
+*staff_roll
+
+; 設定・マクロ
+@macro name="ending_on"
+	@move layer=e5 path=,,0 time=1000
+	@wm
+@endmacro
+
+@macro name="ending_off"
+	[er]
+	@move layer=e5 path=,,255 time=1000
+	@wm
+	@stopanime layer=e4
+	@freeimage layer=e4
+	@clearemit layer=e3
+	@image layer=e3 storage=PE_base_view left=64 top=10 visible=true
+	@layopt layer=0 visible=false
+	@wait time=1000
+@endmacro
+
+@macro name="ending_staff"
+	@position frame="" opacity=0 visible=true
+	[if exp='+mp.line == 1']
+		@position left=192 top=580 width=640 height=200
+		@style linespacing=20
+	[elsif exp='+mp.line == 2']
+		@position left=192 top=560 width=640 height=240
+		@style linespacing=20
+	[endif]
+	@font face="ＭＳ 明朝" bold=true
+@endmacro
+
+@cancelskip
+@cancelautomode
+@saveoff
+@eval exp='game.party.statusLayer.visible = false'
+
+@anireset
+@image layer=e5 storage=screen_blackfull left=0 top=0 visible=true opacity=255
+@layopt layer=e4 left=64 top=10 visible=true opacity=255
+@layopt layer=e3 opacity=255
+@layopt layer=e2 left=64 top=10 visible=true opacity=255 index=1
+@current layer=message0 page=fore
+
+@nowait
+@trap target=*end_message
+
+;-------------------------------------------------------------------------------
+; スタッフロール
+
+@wait time=2000
+@mu f=ending
+@eval exp='tf.time = 4600'
+
+; 豪雨の町
+@ending_off
+@image layer=e4 storage=PE_storm
+@anime layer=e4
+@startemit layer=e3 storage=PE_storm time=-1
+@image layer=e2 storage=town_sapphire_night
+@ending_on
+
+@ending_staff line=1
+[font size=24][style align=left]Planning
+[r][font size=32][style align=center]Makura Cover Soft
+[wait time=&'tf.time'][er][wait time=500]
+
+@ending_staff line=2
+[font size=24][style align=left]Voice Cast
+[r][locate x=20][font size=24]Human[locate x=200][font size=24]Hayashi Kimuri
+[r][locate x=20][font size=24]Elf[locate x=200][font size=24]Honeymoon Heart
+[wait time=&'tf.time']
+
+; しとしと雨と遺跡
+@ending_off
+@startemit layer=e3 storage=PE_rain time=-1
+@image layer=e2 storage=9903
+@ending_on
+
+@ending_staff line=2
+[font size=24][style align=left]Voice Cast
+[r][locate x=20][font size=24]Dwarf[locate x=200][font size=26]Yuna Matsubara
+[r][locate x=20][font size=24]Gnome[locate x=200][font size=26]Ru～ri
+[wait time=&'tf.time'][er][wait time=500]
+
+@ending_staff line=2
+[font size=24][style align=left]Voice Cast
+[r][locate x=20][font size=24]Sylph[locate x=200][font size=26]Mijinko
+[r][locate x=20][font size=24]Riselle[locate x=200][font size=26]Chika Yumeno
+[wait time=&'tf.time']
+
+; 霧の山
+@ending_off
+@image layer=e4 storage=BE_fog clipwidth=900 clipheight=560 visible=true
+@anime layer=e4
+@image layer=e2 storage=9906
+@ending_on
+
+@ending_staff line=2
+[font size=24][style align=left]Voice Cast
+[r][locate x=20][font size=24]Maria[locate x=200][font size=26]Yui Shinan
+[r][locate x=20][font size=24]Sandra[locate x=200][font size=26]Kusanagi Mari
+[wait time=&'tf.time'][er][wait time=500]
+
+@ending_staff line=2
+[font size=24][style align=left]Voice Cast
+[r][locate x=20][font size=24]Murmur[locate x=200][font size=26]Yuu Shimotsuki
+[r][locate x=20][font size=24]Polaris[locate x=200][font size=26]Haruna Non
+[wait time=&'tf.time']
+
+; 雪山
+@ending_off
+@startemit layer=e3 storage=PE_snow2 time=-1 delay=500
+@image layer=e2 storage=9901
+@ending_on line=1
+
+@ending_staff line=1
+[font size=24][style align=left]Game Program
+[r][font size=32][style align=center]Futon Pasta
+[wait time=&'tf.time'][er][wait time=500]
+
+@ending_staff line=1
+[font size=24][style align=left]Game Design
+[r][font size=32][style align=center]Futon Pasta
+[wait time=&'tf.time']
+
+; 水中
+@ending_off
+@layopt layer=e0 index=-100
+@clearemit layer=e0
+@startemit layer=e3 storage=PE_water_bubble time=-1
+@image layer=e2 storage=9902
+@ending_on
+
+@ending_staff line=1
+[font size=24][style align=left]Scenario
+[r][font size=32][style align=center]Futon Pasta
+[wait time=&'tf.time'][er][wait time=500]
+
+@ending_staff line=1
+[font size=24][style align=left]Character Design
+[r][font size=32][style align=center]Futon Pasta
+[wait time=&'tf.time']
+
+; 嵐と城
+@ending_off
+@image layer=e4 storage=PE_storm
+@anime layer=e4
+@startemit layer=e3 storage=PE_storm time=-1
+@image layer=e2 storage=9904
+@ending_on
+
+@ending_staff line=1
+[font size=24][style align=left]Original Art, Coloring, Some Backgrounds
+[r][font size=32][style align=center]Futon Pasta
+[wait time=&'tf.time'][er][wait time=500]
+
+@ending_staff line=1
+[font size=24][style align=left]Item and Monster Design
+[r][font size=32][style align=center]Futon Pasta
+[wait time=&'tf.time']
+
+; 砂嵐
+@ending_off
+@startemit layer=e3 storage=PE_sandstorm time=-1
+@image layer=e2 storage=9905
+@ending_on
+
+@ending_staff line=2
+[font size=24][style align=left]Map Design
+[r][font size=32][style align=center]Futon Pasta
+[wait time=&'tf.time'][er][wait time=500]
+
+@ending_staff line=2
+[font size=24][style align=left]Background Material
+[r][font size=24][style align=center]Minikuru Background Material  　　　　
+[r][font size=24][style align=center]West Side Background Material Store  
+[wait time=&'tf.time']
+
+; 温泉
+@ending_off
+@startemit layer=e3 storage=PE_steam time=-1
+@image layer=e2 storage=9908
+@ending_on
+
+@ending_staff line=2
+[font size=24][style align=left]Music Material
+[r][font size=26][style align=center]Heromiu  
+[r][font size=26][style align=center]Kankoromochi  
+[wait time=&'tf.time'][er][wait time=500]
+
+@ending_staff line=2
+[font size=24][style align=left]Music Material
+[r][font size=26][style align=center]Beemy  
+[r][font size=26][style align=center]Mirror Reading  
+[wait time=&'tf.time']
+
+; 煮えたぎる溶岩
+@ending_off
+@image layer=e4 storage=PE_steam2 visible=true
+@startemit layer=e3 storage=PE_steam2 time=-1
+@image layer=e2 storage=9907
+@ending_on
+
+@ending_staff line=2
+[font size=24][style align=left]Special Thanks
+[r][font size=26][style align=center]W.Dee (Creator of Kirikiri)
+[r][font size=26][style align=center]Kaede Software  　　　　　　
+[wait time=&'tf.time'][er][wait time=500]
+
+@position frame="" opacity=0 visible=true left=192 top=560 width=720 height=240
+@style linespacing=20
+@font face="ＭＳ 明朝" bold=true
+[font size=24][style align=left]Special Thanks
+[r][font size=22][style align=center]Those who played the trial version and reported bugs
+[r][font size=22][style align=center]Everyone who sent their opinions and impressions
+[wait time=&'tf.time']
+
+; 月
+@ending_off
+@layopt layer=e4 top=0
+@layopt layer=e2 visible=false
+@image layer=0 storage=9909 left=0 top=0 visible=true
+@wait time=1000
+@ending_on
+
+@fa
+@position frame="" left=240 top=450 width=600 height=300 opacity=0 visible=true
+@font face="ＭＳ 明朝" bold=true
+@style linespacing=40
+@wait time=2000
+[font size=28][style align=left]Writing and Production
+[r][font size=36][style align=center]Makura Cover Soft
+[c]
+;-------------------------------------------------------------------------------
+
+
+*end_message
+
+; エンドメッセージ
+
+; 後処理
+@endtrap
+@ending_off
+@anireset
+@erasemacro name="ending_on"
+@erasemacro name="ending_off"
+
+; プレイ記録表示
+@fa
+@wait time=1000
+@se f=period
+@eval exp='sf.clearWithoutHyperBombs = true' cond='game.hyperBombsCount == 0'
+@eval exp='sf.gameCleared = true'
+@eval exp='sf.lastGameScore = game.getGameScore()'
+@eval exp='o.サファイア城.links.push2("プレイ記録")'
+@call storage="appendix.ks" target=*view_last_record
+
+; メッセージ
+[texton w=6 top=598]
+[nw]Congratulations on completing the game.[r]
+You may continue the current game as is.[r]
+If you want to play through the game again, [b]save your game first[/b], then return to the title screen and select New Game +[/nw][p]
+[textoff]
+@out t=2000
+@wait time=1000
+
+; 再開準備
+@eval exp='game.gameCleared = true'
+@eval exp='f.gameClearedFlag = true'
+@eval exp='game.party.statusLayer.visible = true'
+@eval exp='game.enterTown(o.サファイアシティ, o.闘技場, true)'
+@gameon
+[eventoff]
+
+
+
+
+*_gameover_murmur
+Didn't she die...?![k]
+[ムールムール v=vm219 f=07]「I wondered what was going on since you were busy collecting gems, but I didn't realize it was to summon that damn god! If I'd found out a bit later, I'd have been in real trouble!」[k]
+[マックス f=12]「Damn it... what a jerk...!」[k]
+[ムールムール v=vm220 f=07]「There's no way I'm gonna let a god come down here! I'll kill you all right here!」[k]
+[テオ f=09]「...Damn!」[k]
+What on earth... I can't believe Murmur is still alive...![k]
+What amazing regenerative abilities. This is what a great demon is like. It's beyond the comprehension of us humans.[k]
+But what will we do?! I no longer have the power to exorcise demons. Blue, who does, is no longer with us. If things continue like this, we'll...![k]
+[ムールムール v=vm228 f=15]「Breath of Death!」[k]
+[textoff]
+
+@image layer=5 storage=screen_deepblackfull
+@anime_fadein layer=5
+@playse storage=howling
+@image layer=6 storage=PE_base_full visible=true
+@layopt layer=6 top=0 left=0
+@startemit layer=6 storage=PE_smoke_red2 time=-1
+@wait time=1000
+
+[texton]
+[テオ f=12]「...!」[k]
+[マックス f=12]「Aaaaahhhh! Help meeeeeee!」[k]
+Murmur unleashed her fatal breath![k]
+[textoff]
+
+@anime_fadeout layer=5,6
+@clearemit layer=6
+@fa
+@out t=2000
+@wait time=1000
+
+[texton]
+However, with Blue gone, we had no way to defend against this attack...[k]
+[textoff]
+@w1
+@jump storage="script.ks" target=*_event_game_over
+; ゲームオーバー

@@ -1,0 +1,126 @@
+﻿; コボルドの砦
+
+name = コボルドの砦３Ｆ
+insideName = ３Ｆ
+lower = コボルドの砦２Ｆ
+level = 6
+bgm = hideout
+margin = 3
+isOutdoor = true
+shadow = dark
+sky = forest
+
+; 各種パーツ
+━ = stone
+… = half
+　 = marble
+㊦ = ladderd
+⑴ = br_maxhp
+⑵ = br_hp
+⑶ = barrel
+⑷ = br_hp
+⑸ = br_hp
+
+; 敵情報
+maxGroups = 1
+monsters = コボルド,シニアコボルド
+traps = 毒針,毒ガス,酸スプレー,しびれ針,魔力吸収,爆弾,スモーク
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  ┏……………………………………………┓
+ 6￤　　　　　　　　　　　　　　　　　￤
+  ￤　　　　　　　┏…………………┓　￤
+ 5￤㊦　　　　　　￤⑴　⑷　　　　￤　￤
+  ￤　　　　　　　￤　　　　　　　￤　￤
+ 4￤　　　　　　＋￤⑵　　　　　　　　￤
+  ￤　　　　　　　￤　　　　　　　￤　￤
+ 3￤　　　　　　＋￤⑶　⑸　　　　￤　￤
+  ￤　　　　　　　┗…………………┛　￤
+ 2￤　　　　　　　　　　　　　　　　　￤
+  ┗……………………………………………┛
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[0][5].event = 6;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 10)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 10!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+*event_4
+;[exp] onObjectTrigger
+*event_5
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("life", 100)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP restored!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@delevent
+@wait time=500 cond='WAY != "e"'
+@walk turn=e cond='WAY != "e"'
+@wait time=500
+@fg l=kobold_brown left=225 top=80 b
+@fg c=kobold_brown left=375 top=80 b
+@fg a=kobold_black left=525 top=80 b
+@fgf r=kobold_brown left=675 top=80
+[texton]
+[name n=Kobold]「What the hell, intruders?!」[k]
+Suddenly, some kobolds waiting on the roof attacked![k]
+[textoff]
+@clf
+@monster pos=1 name=コボルド
+@monster pos=2 name=コボルド
+@monster pos=3 name=コボルド
+@monster pos=4 name=コボルド
+@monster pos=5 name=コボルド
+@monster pos=9 name=シニアコボルド
+@monster pos=10 name=シニアコボルド
+@monster pos=11 name=シニアコボルド
+@callbattle escape=false gameover=true
+@treasure item=ボム,ボム,ボム,ボム trap=毒針 level=19
+
+[eventoff]
+;-------------------------------------------------------------------------------

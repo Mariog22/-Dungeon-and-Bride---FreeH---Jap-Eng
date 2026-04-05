@@ -1,0 +1,163 @@
+﻿;  神の山
+
+name = 神の山１Ｆ
+insideName = １Ｆ
+upper = 神の山２Ｆ
+level = 24
+bgm = forest
+external = n:4, e:5, s:3
+isOutdoor = true
+outfield = sand
+shadow = light
+sky = mistysea
+blank = rock
+effect = BE_fog
+
+; 画像パーツ
+━ = rockw
+〓 = wood
+‥ = soilw
+　 = soilw
+﹃ = ladder
+⑴ = bulletin
+⑶ = br_maxhp
+⑷ = br_agl
+⑤ = human
+⑥ = human
+
+; 敵情報
+maxGroups = 2
+monsters = バルキリー,チャンピオン
+
+; 移動ポイント
+(A) = map:ヤネクの森・霧の谷, x:4, y:0, way:n, symbol:movev, ask:Go to the next map?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  +1  +2  +3  +4  +5  
+  
++4	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
++3	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
++2	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
++1	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▲▼▼▼▼▼▼▼▼▼▼
+16	▼▼⑶　②▼▼▼▼▼▼▼⑤　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼Ⓐ▼▼▼▼▼▼▼▼▼▼
+  	▼▼　　　▼▼▼▼▼▼▼　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
+15	▼▼②　②〓〓〓〓〓　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
+14	▼▼▼▼▼▼▼▼　　　　　　　　　　　　　　　　　▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼　　　　　┏━━━━━┓　　　　　▼▼▼▼▼▼▼〓▼▼▼▼▼▼▼▼▼▼
+13	▼▼▼▼▼▼　　　　　　　┃					┃　　　　　　　▼▼▼▼▼　▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼　　　　　┏━┛					┗━┓　　　　　▼▼▼▼▼　▼▼▼▼▼▼▼▼▼▼
+12	▼▼▼▼▼▼　　　　　┃									┃　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼　　　┏━┛									┗━━━┓　　　　　　　▼▼▼▼▼▼▼▼▼▼
+11	▼▼▼▼　　　　　┃															┃　　⑴　　　　▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼　　　　　┃															┗━┓　　　　　▼▼▼▼▼▼▼▼▼▼
+10	▼▼▼▼　　　　　┃																	┃　　　　　▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼　　　　　┃																	┃　　　　　▼▼▼▼▼▼▼▼▼▼
+ 9	▼▼　　　　　　　┃																	┃　　　　　▼▼▼▼▼▼▼▼▼▼
+  	▼▼　　　　　┏‥┛																	┃　　　　　▼▼▼▼▼▼▼▼▼▼
+ 8	▼▼　　　　　：																			┃　　　　　▼▼▼▼▼▼▼▼▼▼
+  	▼▼　　　　　：																			┃　　　　　▼▼▼▼▼▼▼▼▼▼
+ 7	▼▼　　　　　：																			┃　　　　　▼▼▼▼▼▼▼▼▼▼
+  	▼▼　　　　　┃																			┃　　　　　▼▼▼▼▼▼▼▼▼▼
+ 6	▼▼　　　　　┃																			┃　　　　　▼▼▼▼▼▼▼▼▼▼
+  	▼▼　　　　　┃																	┏━┛　　　▼▼▼▼▼▼▼▼▼▼▼▼
+ 5	　　　　　　　┃																	┃　　　　　▼▼▼▼▼▼▼▼▼▼▼▼
+  	　　　　　　　┗━┓															┃　　　　　▼▼▼▼▼▼▼▼▼▼▼▼
+ 4	　　　　　　　　　┃															┃　　　　　▼▼▼▼▼▼▼▼▼▼▼▼
+  	　　　　　　　　　┗━┓											┏━┛　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+ 3	⑷　　　　　　　　　　：											┃　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  	▼▼　　　　　　　　　┗‥‥‥━━━━━━━━┛　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+ 2	▼▼　　　　　　　　　　　　　　　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼　　　　　　　　　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+ 1	▼▼▼▼▼▼　　　　　　　　　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼　　　　　　　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+ 0	▼▼▼▼▼▼⑥　　　　　　　　　　　　　　　　▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+-1	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+-2	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+-3	▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  +1  +2  +3  +4  +5  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[16][16].f.img = "wood";
+pos[16][16].f.icon = 7;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="This is a sacred mountain and the dwelling place of angels."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 20)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 20!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("speed", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Speed permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] party.lastIsMove
+
+@fg r=valkyrie_blue left=450 top=60
+[texton]
+[name n=Valkyrie f=valkyrie_blue_00]「This is the Mountain of the Gods... It is a mountain where the angel race, said to be the descendants of the gods, live...」[k]
+[name n=Valkyrie f=valkyrie_blue_00]「Angels have large wings on their backs...[r] With these wings, they can float in the air even without magical powers...」[k]
+[name n=Valkyrie f=valkyrie_blue_00]「It is said that the feathers dropped by angels and the feathered robes they wear possess mysterious powers...」[k]
+[textoff]
+@clf
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] party.lastIsMove
+
+@fg r=valkyrie_blue left=450 top=60
+[texton]
+[name n=Valkyrie f=valkyrie_blue_00]「We Valkyries have been entrusted by the angels with the task of protecting the Mountain of God on this earth.」[k]
+[name n=Valkyrie f=valkyrie_blue_00]「The angels reside on the mountain. The Mountain of God is a sacred place where we earthly people are not allowed to enter.」[k]
+[textoff]
+@clf
+
+[eventoff]
+;-------------------------------------------------------------------------------

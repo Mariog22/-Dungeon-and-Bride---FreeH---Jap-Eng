@@ -1,0 +1,250 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔10Ｆ
+insideName = 10Ｆ
+upper = ラドミラの塔11Ｆ
+lower = ラドミラの塔９Ｆ
+level = 56
+bgm = tower
+margin = 3
+shadow = dark
+sky = dawnforest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+✜ = stone_h
+… = half
+　 = marble
+／ = door
+∫ = pick
+☖ = arch
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+
+; 敵情報
+monsters = エキドナ,セイレーン,マッドウイング,見習いサキュバス,サキュバス,エルダーサキュバス,オークキング,コボルドリーダー,サイクロプス
+
+; 宝箱
+box[1] = 金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（超特大）
+box[2] = 復活の粉,修理の巻物,修理の巻物,修理の巻物,経験のコイン（大）
+box[3] = アウラの宝珠,アウラの宝珠,アウラの宝珠,アウラの宝珠,ポラリスの宝珠,ポラリスの宝珠,ポラリスの宝珠,ポラリスの宝珠
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  		┏━━━━━━━━━━━━━━━┓
+ 8		┃　　　　㊦　　　　　　　　　　／
+  		┃　┏／┳━━━┳━┳━━━━━┫
+ 7		┃　┃　┃　　　⧻⑪⧻　　　　　┃
+  		┃　┃　┃　　　┃　┃　　　　　┃
+ 6		┃　┃　⧻　　❷┃　┃　　㊤　　┃
+  		┃　┣━┻︻━━╋⧻╋━━︻━✜┫
+ 5		┃　┃　　⑦　　┃　┃　　⑨　　┃
+  		┃　┃　　　　　┃　┃　　　　　┃
+ 4		┃❸┃　　⑧　　┃　┃　　⑩　　┃
+  		┣━╋━━／━━┛　┗━━／━━┫
+ 3		┃㊦┃　　　　　　　　　　　　　┃
+  		┃　┣━━／━━┓　┏━━／━━┫
+ 2		┃　┃　　④　　┃　┃　　⑥　　┃
+  		┃　┃　　　　　┃　┃　　　　　┗━┓
+ 1		┃　┃　　③　　┃　┃　　⑤　　　❶┃
+  		┃　┗━━︼━︻┻∫┻━━︼━━┳━┫
+ 0		┃　　　　　　②　　　　　　　　／①┨
+  		┗━━━━━━━━━━━━━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(9, 0);
+pos[9][1].e.img = "stone";
+pos[3][5].n.himg = "pn_moon";
+pos[7][5].n.himg = "pn_sun";
+pos[3][1].s.himg = "pn_moon";
+pos[7][1].s.himg = "pn_star";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="11Ｆ" exp='tf.result = ["ラドミラの塔11Ｆ", "up"]'
+@select text="９Ｆ" exp='tf.result = ["ラドミラの塔９Ｆ", "down"]'
+@select text="７Ｆ" exp='tf.result = ["ラドミラの塔７Ｆ", "down"]'
+@select text="６Ｆ" exp='tf.result = ["ラドミラの塔６Ｆ", "down"]'
+@select text="４Ｆ" exp='tf.result = ["ラドミラの塔４Ｆ", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="If you want to proceed, defeat all the guardians of the four rooms."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Sea Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@monster pos=1 name=サラマンダー
+@monster pos=2 name=サラマンダー
+@monster pos=3 name=サラマンダー
+@monster pos=4 name=ゴースト
+@monster pos=5 name=ゴースト
+@monster pos=10 name=怒りの霊魂
+@monster pos=11 name=怒りの霊魂
+@callbattle gameover=true
+@delevent
+@call target=*_open_center_fence
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Star Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@monster pos=1 name=スライム
+@monster pos=3 name=ゴーレム
+@monster pos=5 name=スライム
+@callbattle gameover=true
+@delevent
+@call target=*_open_center_fence
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@notice text="Moon Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] true
+
+@monster pos=0 name=砂ぐも
+@monster pos=1 name=砂ぐも
+@monster pos=2 name=砂ぐも
+@monster pos=3 name=砂ぐも
+@monster pos=4 name=砂ぐも
+@monster pos=5 name=砂ぐも
+@monster pos=6 name=砂ぐも
+@monster pos=8 name=バンパイアバット
+@monster pos=9 name=バンパイアバット
+@monster pos=10 name=バンパイアバット
+@monster pos=11 name=バンパイアバット
+@callbattle gameover=true
+@delevent
+@call target=*_open_center_fence
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] onObjectTrigger
+
+@notice text="Sun Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] true
+
+@monster pos=1 name=ゴースト
+@monster pos=2 name=ゴースト
+@monster pos=3 name=ゴースト
+@monster pos=4 name=ゴースト
+@monster pos=9 name=怒りの霊魂
+@monster pos=10 name=怒りの霊魂
+@monster pos=11 name=怒りの霊魂
+@callbattle gameover=true
+@delevent
+@call target=*_open_center_fence
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] true
+
+@command title="Which room was guarded by the most monsters?"
+@eval exp='tf.temp = "moon"'
+@call target=*_ask_question
+
+@command title="Which room was guarded by the monster who loved money?"
+@eval exp='tf.temp = "star"'
+@call target=*_ask_question
+
+@command title="Which room has no monster footprints?"
+@eval exp='tf.temp = "sun"'
+@call target=*_ask_question
+
+@command title="Which room had the wrong inscription on the stone tablet?"
+@eval exp='tf.temp = "sea"'
+@call target=*_ask_question
+
+@wait time=800
+@se f=fence
+@switchfence x=5 y=7 way=w mode=open
+@switchfence x=5 y=7 way=e mode=open
+@switchfence x=3 y=6 way=w mode=open
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_open_center_fence
+[if exp='! game.map.events.has(4) && ! game.map.events.has(6)']
+	[if exp='! game.map.events.has(8) && ! game.map.events.has(10)']
+		@wait time=800
+		@se f=fence
+		@switchfence x=5 y=5 way=n mode=open
+		@wait time=800
+		@notice text="I heard a door open somewhere!"
+	[endif]
+[endif]
+@return
+
+*_ask_question
+@select text="Star Room" exp='tf.result = "star"'
+@select text="Sea Room" exp='tf.result = "sea"'
+@select text="Moon Room" exp='tf.result = "moon"'
+@select text="Sun Room" exp='tf.result = "sun"'
+[ask]
+@return cond='tf.result == tf.temp'
+@return target=*_failed
+
+*_failed
+@notice text="No, that's not right!"
+@eval exp='game.fallToLowerByChute(%[map: game.map.lower])'
+;-------------------------------------------------------------------------------

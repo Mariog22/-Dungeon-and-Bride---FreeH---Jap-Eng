@@ -1,0 +1,1550 @@
+﻿; 悪魔復活～ブルー加入まで
+
+
+
+
+;■初めて移籍したエリックに出会う
+
+;◇イベント・ワイルド・ブルの屋敷でエリックに会う
+*talk_to_eric_first
+
+; ワイルド・ブルの屋敷
+@saveon
+@w05
+[texton w=0]
+[？？？]「Hey, [テオ]! What are you doing here?」[k]
+[テオ f=05]「...!」[k]
+Suddenly, I heard a familiar voice behind me![k]
+[textoff]
+@w05
+@walk turn=n
+@w05
+@fg c=エリック e=通常 f=02
+[texton w=1]
+[テオ f=05]「Eric...!」[k]
+[エリック f=02]「Long time no see, [テオ].」[k]
+Surprisingly, I encountered Eric at Wild Bull's hideout.[k]
+[テオ f=05]「Why are you here of all places...!」[k]
+[エリック f=02]「Because I'm a member of Wild Bull.」[k]
+[テオ f=05]「Wild Bull...? Weren't you in Blue's party?」[k]
+[エリック f=02]「I was. But I gave up on him.」[k]
+[テオ f=05]「You... gave up on Blue?」[k]
+[エリック f=02]「I've got no use for Blue, who lost to someone like you.」[k]
+[エリック f=01]「Alex is stronger, and more importantly, he has money. So I decided to follow Alex. That's all there is to it.」[k]
+[テオ f=10]「Eric... you...!」[k]
+Changing allegiance so easily... What a heartless man...![k]
+[if exp='game.guest.members.has(o.ブルー)']
+	[ブルー f=54]「...」[k]
+	Blue listens silently to Eric's remarks.[k]
+[endif]
+[エリック f=02]「Are you here to pick a fight with Alex? Sorry, but you're no match for him. Give up and go home.」[k]
+[if exp='o.ワイルド・ブル.slaves.count > 0']
+	[テオ f=05]「Sorry, but that's not possible. I have to rescue my friends.」[k]
+	[エリック f=01]「What, you lost another woman? Hahahaha, that's hilarious!」[k]
+	[テオ f=07]「If you're one of Alex's gang, then you're our enemy too! We'll take you down!」[k]
+	[エリック f=02]「Hmph, do whatever you want.」[k]
+	@cl
+	Eric went into the room.[k]
+	...I was appalled by Eric's unprincipled attitude, but have no reason to care about someone like that. More importantly, I must get my friends back.[k]
+[else]
+	@cl
+[endif]
+[textoff]
+@w05
+[eventoff]
+
+
+;■初めて水中に入ったときのイベント 57
+;◇イベント・どこかの水中に初めて入る
+*into_water_first
+; 水中
+; 水中に入るために『貝の装備』という際どい衣装を身に着けねばならず
+; それらを着て恥じらうメンバーたち
+
+@saveon
+[texton w=1]
+
+[if exp='GNO'][fg c=ミューズ f=29][ミューズ f=29]「... (Kyaa)」[k][cl][endif]
+[if exp='HUM'][fg c=リム f=29][リム v=vh044 f=29]「Please don't look...」[k][cl][endif]
+[if exp='DWA'][fg c=フレデリカ f=29][フレデリカ v=vd044 f=29]「I'm so embarrassed...」[k][cl][endif]
+[if exp='SYL'][fg c=マルエット f=29][マルエット v=vs046 f=29]「I don't like this outfit...」[k][cl][endif]
+[if exp='ELF'][fg c=クレア f=29][クレア v=ve045 f=29]「Hey... do we really have to dress like this...?」[k][cl][endif]
+
+[テオ f=12]「I'm sorry, everyone... We can't dive underwater without wearing this.」[k]
+
+; マリアがパーティーにいる場合
+[if exp='game.guest.members.has(o.マリア)']
+	@fg c=マリア e=水着 f=94
+	[マリア v=va188 f=94]「It's really annoying. Couldn't they have come up with a better design?」[k]
+	Maria appears, hiding her overflowing voluptuous body with small seashells.[k]
+	Incidentally, Maria [if exp='game.guest.members.has(o.ライナス)'] and Linus [endif] apparently already had shell equipment, so they quickly changed and entered the water first.[k]
+	@cl c b
+	@fg l=マリア e=水着 f=28
+
+; ミレディがパーティーにいる場合
+[elsif exp='game.guest.members.has(o.ミレディ)']
+	@fg c=ミレディ e=水着 f=05
+	[ミレディ v=vm148 f=05]「What? I don't mind at all. It's fine to show your breasts.」[k]
+	[   if exp='ELF'][クレア v=ve046 f=27]「It's not fine!」[k]
+	[elsif exp='SYL'][マルエット v=vs047 f=27]「It's not fine!」[k]
+	[elsif exp='GNO'][ミューズ v=vg035 f=29]「It really isn't...」[k]
+	[elsif exp='HUM'][リム v=vh045 f=29]「It really isn't...」[k]
+	[elsif exp='DWA'][フレデリカ v=vd045 f=29]「It really isn't...」[k]
+	[endif]
+	Miredy seems unfazed. That's just like her...[k]
+	Incidentally, Miredy and Linus apparently already had shell armor, so they quickly changed into it and jumped into the water first.[k]
+	@cl c b
+	@fg l=ミレディ e=水着 f=05
+
+; マリアもミレディもいない場合
+[else]
+	Incidentally, Linus apparently already had shell armor, so he quickly changed into it and jumped into the water first.[k]
+[endif]
+
+; 男性用の貝の水着を身に着けたマックス登場
+; 男性用の貝の水着もかなり際どい
+@fg r=マックス f=01
+[マックス f=01]「Huh? What's wrong, everyone?」[k]
+Then Max appears, wearing men's shell swimwear.[k]
+
+[   if exp='GNO'][ミューズ v=vg036 f=31]「Eeek...!」[k]
+[elsif exp='HUM'][リム v=vh046 f=31]「Eeek...!」[k]
+[endif]
+[   if exp='DWA'][フレデリカ v=vd046 f=37]「Kyaa!」[k]
+[elsif exp='SYL'][マルエット v=vs048 f=37]「Kyaa!」[k]
+[elsif exp='ELF'][クレア v=ve047 f=37]「Kyaa!」[k]
+[endif]
+
+[   if exp='HUM2'][リム２ v=vh047 f=38]「Max...! Please put that thing inside...!」[k]
+[elsif exp='DWA2'][フレデリカ２ v=vd047 f=38]「Max...! Please put that thing inside...!」[k]
+[elsif exp='GNO2'][ミューズ２ v=vg037 f=38]「Max...! Please put that thing inside...!」[k]
+[elsif exp='SYL2'][マルエット２ v=vs049 f=27]「Hey! That! Put your thing away properly!」[k]
+[elsif exp='ELF2'][クレア２ v=ve048 f=27]「Hey! That! Put your thing away properly!」[k]
+[endif]
+
+[マックス f=01]「What? It is inside the shell.」[k]
+
+; マリアがパーティーにいる場合
+[if exp='game.guest.members.has(o.マリア)']
+	[マリア v=va189 f=27]「No, that's not it... It's sticking out! Your big penis is sticking out of the shell!」[k]
+
+; ミレディがパーティーにいる場合
+[elsif exp='game.guest.members.has(o.ミレディ)']
+	@fg l=ミレディ e=水着 f=14
+	[ミレディ v=vm149 f=14]「No, no, your cock's too big to fit in the shell.」[k]
+
+; マリアもミレディもいない場合
+[else]
+	[テオ f=12]「No, that's not it... It's your erect penis sticking out of the shell...」[k]
+[endif]
+
+@fg r=マックス f=03
+[マックス f=03]「Huh? Haha, so it is! ♪」[k]
+
+[   if exp='SYL'][マルエット v=vs050 f=27]「That isn't funny! Put it away quickly!」[k]
+[elsif exp='ELF'][クレア v=ve049 f=27]「That isn't funny! Put it away quickly!」[k]
+[elsif exp='HUM'][リム v=vh048 f=29]「This is no laughing matter! Please put it away it quickly.」[k]
+[elsif exp='DWA'][フレデリカ v=vd048 f=29]「This is no laughing matter! Please put it away it quickly.」[k]
+[elsif exp='GNO'][ミューズ v=vg038 f=29]「This isn't funny... I don't want to see it...」[k]
+[endif]
+
+[マックス f=03]「That's impossible. Everyone is dressed so sexily, I can't stop getting hard! Plus, my dick is huge!」[k]
+
+[   if exp='SYL2'][マルエット２ v=vs051 f=27]「Disgusting! You pervert!」[k]
+[elsif exp='ELF2'][クレア２ v=ve050 f=27]「Disgusting! You pervert!」[k]
+[endif]
+[   if exp='HUM2'][リム２ v=vh049 f=29]「Honestly, Max is so dirty!」[k]
+[elsif exp='DWA2'][フレデリカ２ v=vd049 f=29]「Honestly, Max is so dirty!」[k]
+[endif]
+[if exp='GNO2'][ミューズ２ v=vg039 f=30]「Max... you're the worst...」[k][endif]
+
+; マリアがパーティーにいる場合
+[if exp='game.guest.members.has(o.マリア)']
+	[マリア v=va190 f=28]「Really... You're such a man...!」[k]
+	The girls blush at the sight of the erect penis peeking out from under the shell.[k]
+	@fg r=マックス f=22
+	[マックス f=22]「Maria, that outfit looks awesome! You're the best! Show us more!」[k]
+	[マリア v=va191 f=27]「Hey, don't come near me! Stay away!」[k]
+
+; ミレディがパーティーにいる場合
+[elsif exp='game.guest.members.has(o.ミレディ)']
+	@fg l=ミレディ e=水着 f=03
+	[ミレディ v=vm150 f=03]「Huhuhu, how interesting!」[k]
+	The girls blushed at the sight of the erect penis peeking out from under the shell. Only Miredy watched with a grin on her face.[k]
+
+; マリアもミレディもいない場合
+[else]
+	The girls blush at the sight of the erect penis peeking out from under the shell.[k]
+	Really... Why doesn't Max even try to hide his sexual desires? It's a headache for me as a leader...[k]
+[endif]
+
+[テオ f=11]「Let's hurry up and go! Once we're done here, we can change back into our regular clothes!」[k]
+[nw][b]About diving[r]
+If all party members are wearing two pieces of diving gear, such as shell equipment, the party can enter the water.[k]
+[nw][b]You may keep other equipment on. As long as you have two or more pieces of diving equipment one, you are considered to be ready to dive.[k]
+[nw]Diving equipment cannot be removed while diving (or destroyed by enemies). Please note that weapons that interfere with diving equipment cannot be equipped.[k]
+[nw][b]Also, [b blue]you can't dive in all water tiles[b]. For example in dirty water or places that are too deep. When you can dive, it will be displayed as [b blue]Water (Diveable)[b] on the map.[k]
+[textoff]
+@cl
+[eventoff]
+
+
+
+
+;■悪魔の復活
+
+;◇イベント01・バーバリアン居住区で少女を助け出す
+*return_1
+
+; バーバリアン居住区
+@saveon
+@bg f=event18 p0=01
+@w05
+[texton w=2]
+[少女]「Aah... aah... aah...」[k]
+[name n=Barbarian]「Uugh, uugh, uugh!」[k]
+[if exp='! game.isFreeMode']
+	[テオ f=12]「This is...!」[k]
+[endif]
+Deep within the barbarian settlement, a human girl who was clearly not one of the barbarians was being raped by a barbarian man.[k]
+A muscular man exposes his genitals, grabs the naked, slender girl's butt, and thrusts his hips forward, driven by primal desire.[k]
+[name n=Barbarian]「Uugh, uugh, uugh!」[k]
+[少女]「Ah... no... stop it... ahh...!」[k]
+He thrust his hot black penis roughly into the girl's white slit.[k]
+Every time the man thrusts forward, the lewd sound of their genitals rubbing together echoes.[k]
+The girl's vagina was sufficiently wet and accepted the strong male organ completely.[k]
+[少女]「Ah... ah... stop... aaahh...!」[k]
+She writhes in pain.[k]
+Even though she was wet from her physiological response, the barbarian's member was clearly painful to her small body.[k]
+However, the man didn't care about that. He just followed his instincts and kept thrusting.[k]
+[少女]「Ahh... ahh... ahhh...」[k]
+@flash t=200
+@w05
+@flash t=200
+@bg f=event18 p0=02
+[name n=Barbarian]「Ugh!」[k]
+The man's violent movements come to a halt.[k]
+With his penis still inside the girl, he shook his whole body violently. He had reached climax.[k]
+[少女]「Ahh... Not inside...!」[k]
+The barbarian ignores the reluctant girl and continues to ejaculate.[k]
+With it still inside her, he unleashed a torrent of sexual desire.[k]
+[name n=Barbarian]「Hoo...」[k]
+[少女]「...」[k]
+The barbarian exhales contentedly.[k]
+The girl stared blankly into space with vacant eyes. She seemed completely exhausted, having been forced to satisfy the man's sexual desires...[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+@gameon
+[texton w=0]
+[name n=Barbarian f=barbarian_black_00]「...!」[k]
+Suddenly, the barbarian noticed our presence![k]
+[textoff]
+
+; バーバリアンと戦闘
+@monster pos=0 name=バーバリアン
+@monster pos=1 name=バーバリアン
+@monster pos=2 name=バーバリアン
+@monster pos=3 name=バーバリアン
+@monster pos=4 name=バーバリアン
+@monster pos=5 name=バーバリアン
+@monster pos=6 name=バーバリアン
+@monster pos=8 name=トログロダイト
+@monster pos=9 name=トログロダイト
+@monster pos=10 name=トログロダイト
+@monster pos=11 name=トログロダイト
+@monster pos=12 name=トログロダイト
+@se f=fingerwhistle
+@wait time=1000
+@call storage="anime.ks" target=*enemy_rushing
+
+[texton]
+When the barbarian whistled, a horde of other barbarians gathered![k]
+[name n=Barbarian f=barbarian_black_00]「Gooooo...」[k]
+[if exp='game.party.getFirstHeroine() !== void']
+	The barbarians who gathered saw the women in our party and their eyes glowed with lust![k]
+	They probably think they've found new victims to abuse.[k]
+[else]
+	They're certainly all hostile to us.[k]
+[endif]
+[name n=Barbarian f=barbarian_black_00]「Grrrrr!」[k]
+The bandits suddenly attacked![k]
+[textoff]
+
+@callbattle escape=false gameover=true
+@w05
+; 戦闘に勝利
+
+@fg c=priest_green_towel
+[texton w=1]
+[少女 f=priest_green_04]「Thank you very much. I am a resident of the underground town of Limestone.」[k]
+[if exp='! game.isFreeMode']
+	[テオ f=05]「The underground town...!」[k]
+	There really was an underground town. I wonder what it's like?[k]
+[endif]
+[少女 f=priest_green_04]「When I left town, I was kidnapped by the barbarians who live here and forced to marry one of them.」[k]
+[少女 f=priest_green_04]「I am truly grateful for your help. I would like to thank you, so please come to my town later if you can.」[k]
+[少女 f=priest_green_04]「Oh, I'll give you the key. This will let you enter the town. Please take it.」[k]
+[textoff]
+@getitem item=地下の町の鍵
+[texton]
+[少女 f=priest_green_04]「The underground town of Limestone is located on the fifth floor of this large cave.」[k]
+[少女 f=priest_green_04]「Well then, I'm going back right now. Please take care.」[k]
+[textoff]
+@cl
+@addevent map=大洞窟Ｂ４ num=1 cond='! game.isFreeMode'
+[eventoff]
+
+
+;◇イベント02・洞窟で泉に移動
+*return_2
+
+; 洞窟内・泉の近く
+@eval exp='game.party.minimumRecovery()'
+@fg c=ミレディ e=通常 f=05
+[texton w=1]
+[ミレディ v=vm151 f=05]「Hey, Captain!」[k]
+[テオ f=05]「Huh? What is it, Miredy?」[k]
+[ミレディ v=vm152 f=09]「I need to pee. Soon.」[k]
+[テオ f=12]「Eh...?! A-ah...」[k]
+Miredy utters embarrassing words without hesitation. It makes me feel embarrassed.[k]
+[ミレディ v=vm153 f=04]「Hey, is that a spring over there? There will do.」[k]
+[textoff]
+@cl
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+[texton]
+She pointed to a place that looked like a water source to the north.[k]
+[   if exp='HUM'][リム v=vh050 f=29]「Well, then, I guess I'll...」[k]
+[elsif exp='ELF'][クレア v=ve051 f=29]「Well, then, I guess I'll...」[k]
+[elsif exp='DWA'][フレデリカ v=vd050 f=29]「Well, then, I guess I'll...」[k]
+[elsif exp='GNO'][ミューズ v=vg040 f=29]「Well, then, I guess I'll...」[k]
+[elsif exp='SYL'][マルエット v=vs052 f=29]「Well, then, I guess I'll...」[k]
+[endif]
+[   if exp='SYL2'][マルエット２ v=vs053 f=29]「Actually, I...」[k]
+[elsif exp='GNO2'][ミューズ２ v=vg041 f=29]「Actually, I...」[k]
+[elsif exp='DWA2'][フレデリカ２ v=vd051 f=29]「Actually, I...」[k]
+[elsif exp='ELF2'][クレア２ v=ve052 f=29]「Actually, I...」[k]
+[elsif exp='HUM2'][リム２ v=vh051 f=29]「Actually, I...」[k]
+[endif]
+The members complain of needing to urinate one after another.[k]
+[テオ f=05]「It can't be helped... I'll wait here, so those who want to go, go ahead.」[k]
+@fgf c=ミレディ f=51
+[ミレディ v=vm154 f=51]「Hey! You're not seriously thinking of sending us alone, are you?」[k]
+[テオ f=12]「Eh...」[k]
+[ミレディ v=vm155 f=51]「You never know what might happen in a cave full of monsters like this. Come with us as our escort.」[k]
+[テオ f=10]「Well, that's...」[k]
+[マックス f=03]「Sure thing! I'll gladly go along!」[k]
+[ライナス f=01]「Me too!」[k]
+[テオ f=10]「...」[k]
+Oh well... I guess I'll have to... This place is definitely dangerous. I have to protect them while they're urinating.[k]
+[textoff]
+@cl
+[eventoff]
+
+
+;◇イベント03・ミレディが正体を現す
+*return_3
+
+; 洞窟内・泉
+@saveon
+[texton w=1]
+We arrived at the spring.[k]
+@fg c=ミレディ e=通常 f=03
+[ミレディ v=vm156 f=03]「Well, let's take off our panties!」[k]
+@cl
+[テオ f=12]「Oh no! Wait a minute!」[k]
+[   if exp='HUM'][リム v=vh052 f=29]「Um... Please don't look this way...」[k]
+[elsif exp='DWA'][フレデリカ v=vd052 f=29]「Um... Please don't look this way, Captain.」[k]
+[elsif exp='GNO'][ミューズ v=vg042 f=29]「Please don't look this way...」[k]
+[elsif exp='ELF'][クレア v=ve053 f=29]「I know you understand, but don't turn toward me.」[k]
+[elsif exp='SYL'][マルエット v=vs054 f=29]「...I'm sure you get it, but don't look this way!」[k]
+[endif]
+[テオ f=10]「I-I know, I won't...」[k]
+[マックス f=03]「Come on, ladies! Go ahead and pee!」[k]
+[テオ f=05]「Hey, Max, turn around too.」[k]
+[textoff]
+@wait time=500
+@walk turn=s
+@wait time=500
+[texton]
+Us three men stood with out backs to the fountain. After a while, the girls became quiet. Just as I was wondering if they were done...[k]
+@st
+[ミレディ v=vm157 f=56]「Hahahahahaha!」[k]
+[テオ f=12]「...!」[k]
+Suddenly, Miredy started laughing loudly![k]
+[ミレディ v=vm158 f=56]「Everyone started peeing for real, it was hilarious! The girls won't be able to move for a while now!」[k]
+[テオ f=05]「Miredy...?」[k]
+[textoff]
+@mu f=ghost
+@eval exp='game.guest.removeMember(o.ミレディ)'
+@fg c=ミレディ f=16
+[texton]
+[ミレディ v=vm159 f=16]「Now you guys can't escape. I've blocked your escape route.」[k]
+Miredy apparently didn't relieve herself, but stood at the entrance to the spring, facing us men who were standing guard.[k]
+[マックス f=11]「Hey, what are you doing, Miredy...?!」[k]
+[ミレディ v=vm160 f=16]「Ufufufu!」[k]
+[textoff]
+
+; ミレディ変身
+@playse storage=howling
+@image layer=e2 storage=PE_base_full visible=true
+@startemit layer=e2 slot=1 storage=PE_smoke_black2 time=-1
+@wait time=500
+[texton]
+An evil black aura rises from Miredy's body, making my hair stand on end![k]
+[ライナス f=11]「What the hell is this feeling?」[k]
+[テオ f=05]「Miredy! What are you doing?」[k]
+[ミレディ v=vm161 f=16]「Hehe...」[k]
+[textoff]
+@image layer=e3 storage=PE_base_full visible=true
+@startemit layer=e3 slot=2 storage=PE_smoke_black2 time=-1
+@image layer=7 storage=0000 visible=true opacity=0
+@move layer=7 time=3000 path=,,255
+@wait time=4000
+@clearemit layer=e2
+@clearemit layer=e3
+@wait time=1000
+@layopt layer=7 page=back opacity=255 visible=false
+@playse storage=magic2
+@image layer=0 storage=0000 page=back visible=true
+@fg c=悪魔 e=灰色 t=1000
+[texton]
+As the evil miasma enveloped her, I saw her silhouette change.[k]
+[テオ f=12]「What?!」[k]
+[マックス f=12]「H-hey, it's her again...?!」[k]
+[textoff]
+@layopt layer=0 page=back visible=false
+
+; ミレディがムールムールに
+@mu f=murmur
+@fg c=悪魔 e=通常 f=01 t=1000
+[texton]
+[ムールムール v=vm162 f=01]「Hehe...」[k]
+That devil appeared before us! That devil who was supposed to be dead![k]
+[テオ f=11]「Murmur...! Why are you still alive?!」[k]
+[ムールムール v=vm163 f=15]「You idiot! There's no way I'm going to die from something like that! Don't underestimate a high-level demon!」[k]
+[テオ f=10]「...」[k]
+It's true that she collapsed after spitting up a large amount of blood back then, but I didn't actually confirm whether she was dead or not.[k]
+If I recall, the only ones present other than our party were the soldiers who had fainted. And we were so focused on defeating the golem that we completely forgot about the demon.[k]
+Of course, normally, a person would die after coughing up that much blood. But she is a very high level demon.[k]
+High-ranking demons are said to have the toughest bodies imaginable. A human would die instantly, but a demon can revive.[k]
+@fg c=悪魔 e=通常 f=07
+[ムールムール v=vm164 f=07]「You did quite a number on me! It took me a long time to recover! But you shouldn't have messed with me!」[k]
+[ムールムール v=vm165 f=07]「I'll have my revenge on you now! I'm going to kill all of you for real!」[k]
+
+[   if exp='HUM'][リム v=vh053 f=29]「Captain... What do we do...?」[k]
+[elsif exp='DWA'][フレデリカ v=vd053 f=29]「Captain... What do we do...?」[k]
+[elsif exp='GNO'][ミューズ v=vg043 f=29]「Captain... What do we do...?」[k]
+[elsif exp='ELF'][クレア v=ve054 f=29]「Hey, Captain, what are you going to do?」[k]
+[elsif exp='SYL'][マルエット v=vs055 f=29]「Hey, Captain, what are you going to do?」[k]
+[endif]
+
+The girls, who had finished their business, hurriedly pulled their panties on and joined us without even having time to wipe their crotches.[k]
+They all looked very anxious at seeing someone they believed to be dead here.[k]
+[テオ f=12]「Relax. We beat her once. She's not an unbeatable opponent.」[k]
+The way out is blocked. We have no choice but to fight. We just have to focus on winning.[k]
+@fg c=悪魔 e=通常 f=15
+[ムールムール v=vm166 f=15]「Hehe...」[k]
+[textoff]
+
+@playse storage=howling
+@image layer=e2 storage=PE_base_full visible=true left=0 top=0
+@startemit layer=e2 storage=PE_smoke_black2 time=-1
+@wait time=500
+
+[texton]
+[テオ f=12]「...!」[k]
+Murmur radiates evil energy, and she's preparing to use her fatal breath.[k]
+[テオ f=10]「...」[k]
+But don't worry. I have my demon hunter powers.[k]
+With the power to defeat demons, her breath of death isn't to be feared. We just have to watch out for her other attacks.[k]
+[ムールムール v=vm167 f=15]「Dieeeeeeeee! Breath of Death!」[k]
+[textoff]
+
+; 死のブレス発動
+@clearemit layer=e2
+@image layer=e0 storage=screen_deepblack
+@clf
+@playse storage=howling
+@anime_fadein layer=e0
+@image layer=e2 storage=PE_base_full visible=true top=0 left=0
+@startemit layer=e2 storage=PE_smoke_red2 time=-1
+@wait time=1000
+
+@mu f=crisis
+[texton]
+[テオ f=10]「...!」[k]
+Here it comes! Her Breath of Death![k]
+Once again, my power will activate. Then I'll immediately attack.[k]
+[テオ f=12]「...?!」[k]
+My power... didn't activate?![k]
+[ムールムール f=16]「∗grin∗」[k]
+Why?! Why didn't my power activate?! What on earth happened...?[k]
+[テオ f=12]「...! (Ah!)」[k]
+As I was confused by this unexpected turn of events, her fatal breath approached me![k]
+Why?! Power of exorcism, activate! Please![k]
+@eval exp='game.curChara = game.party.getMostHeartsHeroine(o.テオ)'
+@layopt layer=e0 visible=false left=0 top=0
+@clearemit layer=e2
+@fgf c=キャラ f=27
+
+; ヒロインの１人が主人公をかばう
+[   if exp='isHUM'][リム v=vh054 f=27]「Captain! Watch out!」[k]
+[elsif exp='isELF'][クレア v=ve055 f=27]「Captain! Watch out!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd054 f=27]「Captain! Watch out!」[k]
+[elsif exp='isGNO'][ミューズ v=vg044 f=27]「Captain! Watch out!」[k]
+[elsif exp='isSYL'][マルエット v=vs056 f=27]「Captain! Watch out!」[k]
+[endif]
+@clf
+@se f=beat
+@quake time=500 hmax=20 vmax=5
+[テオ f=17]「Ah!」[k]
+[キャラ] protected me![k]
+The fatal breath brushed past my head.[k]
+[textoff]
+@image layer=e0 storage=screen_deepblack visible=true
+@anime_fadein layer=e0
+@image layer=e2 storage=PE_base_full visible=true top=0 left=0
+@startemit layer=e2 storage=PE_smoke_red2 time=-1
+@fg c=キャラ f=17
+; 主人公の代わりにヒロインの１人が死のブレスを浴びてしまう
+[texton]
+[   if exp='isHUM'][リム v=vh055 f=17]「Ahhhh...!」[k]
+[elsif exp='isELF'][クレア v=ve056 f=17]「Ahhhh...!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd055 f=17]「Ahhhh...!」[k]
+[elsif exp='isGNO'][ミューズ v=vg045 f=17]「Ahhhh...!」[k]
+[elsif exp='isSYL'][マルエット v=vs057 f=17]「Ahhhh...!」[k]
+[endif]
+[テオ f=12]「[キャラ]!」[k]
+[キャラ] took the fatal breath attack![k]
+[textoff]
+@wait time=500
+@anime_fadeout layer=e0,e2
+@clearemit layer=e2
+@fg c=キャラ f=20
+[texton]
+[   if exp='isHUM'][リム v=vh056 f=20]「Cap...tain...」[k]
+[elsif exp='isELF'][クレア v=ve057 f=20]「Cap...tain...」[k]
+[elsif exp='isDWA'][フレデリカ v=vd056 f=20]「Cap...tain...」[k]
+[elsif exp='isGNO'][ミューズ v=vg046 f=20]「Cap...tain...」[k]
+[elsif exp='isSYL'][マルエット v=vs058 f=20]「Cap...tain...」[k]
+[textoff]
+[endif]
+@clf
+@se f=dosa
+@quake time=500 hmax=5 vmax=5
+@eval exp='game.curChara.setStatus(o.死亡, true)'
+@eval exp='game.curChara.retire(o.死亡)'
+@eval exp='game.curChara.rip --'
+@wait time=500
+@waittrig name="arrangeMember" cond='game.party.arrangeTimer.enabled'
+∗thud∗[k]
+[テオ f=12]「[キャラ]!」[k]
+After being hit by the fatal breath, [キャラ] collapsed on the spot as if her strength had been drained out of her. She was killed while protecting me.[k]
+[テオ f=12]「[キャラ]! [キャラ]!」[k]
+[キャラ f=20]「...」[k]
+[キャラ] won't wake up. She really has died. Why...?![k]
+@fg c=悪魔 f=08
+[ムールムール v=vm168 f=08]「Damn... I only killed one person... I'm still rusty.」[k]
+@fg c=悪魔 f=04
+[ムールムール v=vm169 f=04]「...Well, fine ♪ I really wanted to kill you all in one blast, but one by one is fine ♪」[k]
+[ライナス f=11]「Hey, [テオ]! I thought the breath of death could be prevented with your demon hunter powers!」[k]
+[マックス f=28]「...Your power didn't trigger. What's wrong, [テオ]?」[k]
+@fg c=悪魔 f=03
+[ムールムール v=vm170 f=03]「Gahahaha! I wonder why it didn't trigger～!」[k]
+@fg c=悪魔 f=15
+[ムールムール v=vm171 f=15]「Well, too bad, huh? Now I'll kill the others too!」[k]
+[textoff]
+@clf
+; 再び死のブレス。マックスとライナスがやられる
+@playse storage=howling
+@image layer=e0 storage=screen_deepblack visible=false
+@anime_fadein layer=e0
+@image layer=e2 storage=PE_base_full visible=true top=0 left=0
+@startemit layer=e2 storage=PE_smoke_red2 time=-1
+@wait time=500
+
+[texton]
+Once again, Murmur assailed us with her fatal breath![k]
+@fg l=マックス f=11 b
+@fgf r=ライナス f=12
+[マックス f=11]「Waaaaah!」[k]
+[ライナス f=12]「Aaaah! I don't want to die!」[k]
+Murmur's fatal breath hit both Max and Linus![k]
+[textoff]
+@anime_fadeout layer=e0,e2
+@clearemit layer=e2
+@wait time=500
+@clf l
+@se f=dosa
+@quake time=200 hmax=5 vmax=5
+@wait time=500
+@clf r
+@se f=dosa
+@quake time=200 hmax=5 vmax=5
+@wait time=500
+@eval exp='o.マックス.setStatus(o.死亡, true)'
+@eval exp='o.ライナス.setStatus(o.死亡, true)'
+@eval exp='o.マックス.retire(o.死亡)'
+@eval exp='o.ライナス.retire(o.死亡)'
+@eval exp='o.マックス.rip --'
+@eval exp='o.ライナス.rip --'
+@wait time=500
+@waittrig name="arrangeMember" cond='game.party.arrangeTimer.enabled'
+[texton]
+[テオ f=11]「Max! Linus!」[k]
+Max and Linus, exposed to the fatal breath, fell one after the other, just like [キャラ].[k]
+[テオ f=09]「Damn... What the hell is going on...?!」[k]
+...As I thought, my power didn't activate this time either.[k]
+What happened to my demon-hunting powers?![k]
+[テオ f=09]「Damn...!」[k]
+Because my power didn't activate, three people were killed.[k]
+This is bad... If I don't do something, the party will be wiped out...![k]
+@fg c=悪魔 e=通常 f=15
+[ムールムール v=vm172 f=15]「Hehe, idiot! I sucked all of your demon hunting power out of you!」[k]
+[テオ f=12]「What the...?!」[k]
+[ムールムール v=vm173 f=15]「Why do you think I went to all the trouble of joining you for a while? It was all for this, of course!」[k]
+[テオ f=09]「Damn... So that's why...!」[k]
+While Miredy has been with us, my demon hunting power was gradually being drained away. Without me even realizing it...[k]
+That cunning devil, going that far in order to steal my power. She truly is a high level demon.[k]
+[ムールムール v=vm174 f=04]「Now, let's kill the rest off!」[k]
+[テオ f=09]「Damn...!」[k]
+Murmur is approaching, her evil aura surrounding her. This is really bad, we'll be annihilated if this continues![k]
+We need to do something! Some plan, anything![k]
+@fg c=悪魔 e=通常 f=51
+@image layer=e4 storage=PE_base_full visible=true top=0 left=0
+@startemit layer=e4 storage=PE_smoke_red2 time=100
+@fa
+[ムールムール v=vm175 f=51]「Take this, breath of death! ...Wait what?」[k]
+; ↑ 再び死のブレスを吐こうとしたが失敗
+@clearemit layer=e4
+[テオ f=12]「...?」[k]
+Murmur took a position to breathe over us again, but nothing came out. What happened?[k]
+[ムールムール v=vm176 f=51]「Huh...? I can't get the breath out... What the hell?!」[k]
+@fg c=悪魔 e=通常 f=08
+@mu f=cave
+[ムールムール v=vm177 f=08]「Damn, I'm still in bad shape... I only just took this form again, so my full strength isn't back.」[k]
+[テオ f=12]「Was I saved...?」[k]
+It seems she's not able to use her breath of death again.[k]
+[ムールムール v=vm178 f=08]「Damn... I almost wiped them out...」[k]
+@fg c=悪魔 e=通常 f=04
+[ムールムール v=vm179 f=04]「...Oh well... I can kill you anytime I want now. You can't use that power anymore!」[k]
+@fg c=悪魔 e=通常 f=15
+[ムールムール v=vm180 f=15]「Since it comes to this, let's play a little longer ♪ Once I'm feeling all better I'll definitely come and kill you guys, so look forward to it～!」[k]
+[テオ f=10]「Damn...!」[k]
+@se f=wing2
+@fg c=8001 left=440 top=-60
+[ムールムール v=vm181 f=03]「See you～!」[k]
+@se f=wing2
+@cl
+Murmur went away looking very amused...[k]
+[テオ f=10]「...」[k]
+For now, the crisis is over. However, three people were killed in the battle...[k]
+
+; 生きていた他のメンバーの発言
+[iscript]
+for(var i = 0; i < game.party.members.count; i++)
+{
+	var one = game.party.members[i];
+	if(! one.active || one == o.テオ) continue;
+	game.curChara = one;
+	break;
+}
+[endscript]
+[   if exp='isHUM'][リム v=vh057 f=05]「Captain, for now, we should carry the three of them to a church!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd057 f=05]「Captain, for now, we should carry the three of them to a church!」[k]
+[elsif exp='isGNO'][ミューズ v=vg047 f=05]「Captain, for now, we should carry the three of them to a church!」[k]
+[elsif exp='isELF'][クレア v=ve058 f=05]「Captain, we need to get the three of them to a church!」[k]
+[elsif exp='isSYL'][マルエット v=vs059 f=05]「Captain, we need to get the three of them to a church!」[k]
+[endif]
+
+[テオ f=12]「Yes, let's hurry!」[k]
+We can resurrect the three of them now. Let's quickly transport everyone to a church.[k]
+Currently, our forces are down significantly. If we are attacked by the enemy again, we are in danger of being wiped out. We must get to a safe place as soon as possible...[k]
+We were told that the underground town is on [b]B5[/b]. Since we're so close to the town, it might be safer to continue onward than to return to the surface from here.[k]
+[textoff]
+@eval exp='f.talkToPolaris = 2'
+@delevent map=ポラリスの神殿 num=5
+@changewall map=ポラリスの神殿 x=3 y=15 way=n himg=arch type=space behind=true
+@layopt layer=e3 visible=false left=0 top=0
+[eventoff]
+
+;◇イベント04・地下の町ライムストーンに到達
+*return_4
+
+; ☆フリーモード
+@jump storage="free02.scn" target=*return_4 cond='game.isFreeMode'
+
+; 地下の町ライムストーン
+@saveon
+@wait time=1000
+[texton w=0]
+[テオ f=05]「This is the underground city...!」[k]
+Passing through the narrow passageway that was the town gate, I found a huge cavern beyond, and to my surprise, a town where people lived had been built there.[k]
+It's unbelievable that people live in places so deep underground...[k]
+[少女 f=priest_green_00]「Ah, brave adventurer. Welcome to our town!」[k]
+[少女 f=priest_green_00]「Thank you very much for your help in helping me. As promised, I am pleased to present you all with a gift of thanks.」[k]
+[textoff]
+@getitem item=特効薬
+[texton w=0]
+[テオ f=02]「Thank you.」[k]
+[少女 f=priest_green_00]「There are many unusual things in this underground town that aren't found above ground. Please take your time to look around.」[k]
+The girl left, bowing repeatedly.[k]
+[if exp='game.party.hasPatient(o.死亡) || game.party.hasPatient(o.灰)']
+	[テオ f=06]「Now, first we have to resurrect the dead members...」[k]
+	[textoff]
+	@eval exp='game.party.minimumRecovery()'
+	@se f=up1
+	@notice text="<y>All deceased members were resurrected at the temple!"
+	[texton]
+[endif]
+[テオ f=06]「Everyone is tired. For now, let's spend the night at this underground town's inn.」[k]
+[textoff]
+@fa
+@out
+@wait time=1000
+
+; 夜・ライムストーンの宿屋
+@bg f=0001
+@mu f=worry
+[texton]
+[テオ f=06]「...」[k]
+Murmur is back...[k]
+I thought we'd beaten her, so I never thought I would have to fight her again. To be honest, I am very shocked. Especially since she was such a troublesome enemy.[k]
+What was even more devastating was that my demon hunting power was taken away from me.[k]
+The loss of it means that next time we encounter Murmur, we are finished.[k]
+This time she was out of shape, which saved my life, but that won't happen next time. She will unleash her fatal breath and we will all die.[k]
+[テオ f=06]「...」[k]
+I realized that our situation was now hopeless.[k]
+From now on, we can only continue our adventure, praying that we don't encounter Murmur.[k]
+But how is that possible? She said she'd be back to kill us. I don't think that cunning devil will let us off the hook so easily.[k]
+[テオ f=06]「...」[k]
+Now that this has happened, we must once again turn to the power of the god Polaris, but it will still take some time to collect all the remaining magic stones.[k]
+There is no way to protect ourselves, so the party is in danger.[k]
+We may no longer have any choice but to disband the party and quit the adventure...[k]
+[textoff]
+@fa
+@out
+@wait time=1000
+
+; 翌朝・宿屋のロビー
+@bg f=0003 b
+@fgf c=テオ f=06
+[texton w=1]
+[テオ f=05]「Everyone, before we leave, listen to what I have to say!」[k]
+Before I left, I decided to gather everyone in the party and talk about my thoughts from last night.[k]
+Everyone became gloomy after hearing it.[k]
+[テオ f=06]「...So, I am considering disbanding the party. Let me know what you guys think.」[k]
+Well, what will they all say...?[k]
+
+@mu f=brave
+
+[   if exp='HUM'][リム v=vh058 f=07]「I don't want that!」[k]
+[elsif exp='ELF'][クレア v=ve059 f=07]「I cannot accept that!」[k]
+[elsif exp='DWA'][フレデリカ v=vd058 f=51]「No, we can't～!」[k]
+[elsif exp='GNO'][ミューズ v=vg048 f=08]「That's... no way...!」[k]
+[elsif exp='SYL'][マルエット v=vs060 f=07]「Absolutely not! No way!」[k]
+[endif]
+
+[テオ f=05]「[キャラ]...!」[k]
+
+[   if exp='SYL2'][マルエット２ v=vs061 f=07]「That's a terrible idea! Of course I want to continue adventuring with everyone!」[k]
+[elsif exp='GNO2'][ミューズ２ v=vg049 f=08]「I don't like it either...! I want to continue adventuring with everyone...!」[k]
+[elsif exp='DWA2'][フレデリカ２ v=vd059 f=51]「I don't like it either! Of course I want to continue my adventures with everyone～!」[k]
+[elsif exp='ELF2'][クレア２ v=ve060 f=07]「I also can't accept it! I definitely want to continue adventuring with everyone!」[k]
+[elsif exp='HUM2'][リム２ v=vh059 f=07]「Don't do it! I want to continue my adventures with everyone!」[k]
+[endif]
+
+[マックス f=05]「That's right, [テオ]. It's not like you to suddenly say something like that.」[k]
+[ライナス f=06]「I'm against it too... I'd be in trouble if I lost my livelihood...」[k]
+The members unanimously oppose the dissolution.[k]
+[テオ f=06]「However, there is a definite risk of total annihilation by Murmur. Once her power is restored, there is no guarantee that we'll be safe.」[k]
+[マックス f=01]「We can think about that later.」[k]
+[マックス f=01]「It'll take some time for her to recover her strength, right? So there's no need to rush into a decision to disband now, is there?」[k]
+[テオ f=06]「...」[k]
+@fg c=テオ f=02
+[テオ f=02]「...Well, that's true. Okay, I'll wait a little longer before making a decision.」[k]
+[name n=Members]「... (Phew)」[k]
+[マックス f=03]「All right! Now that we've decided, let's go find some work for today! Let's gather information on magic stones too!」[k]
+When they heard my announcement, everyone looked relieved. For now, it seems that we won't have to disband.[k]
+...However, my concerns remain unresolved. The fact remains that the devil will eventually come to deliver us our final blow.[k]
+If all the magic stones are collected by then, it will be possible to borrow the power of the god Polaris, but that is not realistic.[k]
+[テオ f=06]「...」[k]
+We need to seriously consider new measures to protect everyone while we still can...[k]
+[textoff]
+@clf
+@addevent map=ヤネクの森・霧の谷 num=5
+@eval exp='game.party.recovery()'
+@eval exp='game.elapseByStaying()'
+@eval exp='game.hotelView.checkLevelUp()'
+[waittrig name="finishLevelUpInEvent"]
+@fa
+@w05
+[townoff]
+
+
+
+
+;■ブルー加入
+
+;◇イベント01・宝物庫の近くに行く
+*treasury_1
+
+; 地下迷宮・宝物庫の近く
+[texton]
+[テオ f=05]「This is...!」[k]
+Deep inside the cave were the ruins of a stone structure. It looked old but very sturdy.[k]
+[マックス f=01]「Hey, isn't this the treasure vault we heard about?」[k]
+[テオ f=06]「Probably...」[k]
+The client's instructions were to bring back three artifacts from here. However, this place is a treasure trove of items that once belonged to royalty. There are likely many other valuable items here as well.[k]
+[テオ f=06]「...」[k]
+[マックス f=01]「What's up, [テオ]? Is there something bothering you?」[k]
+[テオ f=06]「No... not really...」[k]
+I'm sure I've had a request like this before... I have a bad feeling about this...[k]
+[マックス f=01]「Let's find the entrance first, [テオ]!」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント02・宝物庫の扉の前でブルーたちに出会う
+*treasury_2
+
+; 宝物庫の扉の前
+@fg l=ブルー f=08 b
+@fg r=サンドラ f=05
+@mu f=anxiety
+[texton w=1]
+[サンドラ v=vn004 f=05]「Oh...」[k]
+[ブルー f=08]「Oh. It's you...!」[k]
+[マックス f=11]「Ugh!」[k]
+[テオ f=10]「B-Blue...!」[k]
+To my surprise, Blue was right in front of the entrance.[k]
+He and the elf he had with him before had come to this ruin together.[k]
+Their objective is likely the same as ours; the treasure from the quest.[k]
+[ブルー f=08]「...」[k]
+[テオ f=10]「Blue...」[k]
+Tension and hostility runs high between us.[k]
+From Blue's perspective, our party is one of the few opponents who have defeated him. What's more, the leader of that party is someone he once treated like a subordinate and looked down on, so his anger is even greater.[k]
+On the other hand, for me, Blue is someone I'll forever bear a grudge against, and at the same time, someone who instinctively inspires fear.[k]
+Even though we defeated him once, Blue is still a formidable opponent, and I can't say I've overcome my fear of him yet.[k]
+If Blue decides to do so, we could face retaliation at any time. It's difficult to remain calm when faced with such an opponent.[k]
+[ブルー f=08]「...」[k]
+[テオ f=10]「...」[k]
+[マックス f=12]「H-hey, what should we do...?」[k]
+Blue and I continue to stare each other down.[k]
+Along with hostility, there is a sense of mutual suspicion, as if we're each trying to figure out what the other is thinking.[k]
+@cl b
+@fg c=サンドラ f=53
+@st
+[サンドラ v=vn005 f=53]「Okay, okay, both of you, stop it now.」[k]
+[テオ f=12]「Aaa...」[k]
+[ブルー f=06]「...What, Sandra?」[k]
+Sandra broke the tension with a lighthearted voice, clapping her hands.[k]
+@mu f=cave
+[サンドラ v=vn006 f=55]「There's no point in glaring at each other. Let's just complete the quest. We have the same goal, right?」[k]
+[ブルー f=06]「...」[k]
+[テオ f=12]「Y-yes...」[k]
+Sandra scolded us, and I remembered my original purpose.[k]
+Let's put Blue aside for now. Right now, we need to enter the treasure vault and complete the request...[k]
+[テオ f=06]「...」[k]
+At the entrance, there is a stone door that looks very sturdy. How can it be opened?[k]
+@fg c=サンドラ f=02
+[サンドラ v=vn007 f=02]「...This is a structure that opens when you chant a few ancient words.」[k]
+[マックス f=51]「Oh! You understand! Sandra, you're amazing!」[k]
+[サンドラ v=vn008 f=01]「It's not an uncommon mechanism in ancient buildings. The ancient language used in the chant is simple, so it's not that difficult.」[k]
+Sandra replied calmly. She seemed to have figured out the secret of the door at a glance.[k]
+If it had been just our group here, we would have been stuck in front of this door. So I'm rather grateful.[k]
+[サンドラ v=vn009 f=01]「Well, I'll open it then.」[k]
+@cl
+Sandra stands in front of the door and chants some spell-like words. Then...[k]
+[textoff]
+
+; 石の扉が開く
+@wait time=500
+@playse storage=tremble
+@quake time=3000 hmax=5 vmax=0
+@wait time=500
+[texton]
+∗rrrrumble∗[auto time=1000]
+[textoff]
+@stopquake
+@playse storage=rockdrop
+@changewall himg=arch type=space behind=true
+@wait time=500
+
+[texton]
+With a deep rumbling sound, the stone door swung open with force.[k]
+[マックス f=03]「Wow! It's open!」[k]
+@fg c=サンドラ f=01
+[サンドラ v=vn010 f=01]「Well then, let's go inside.」[k]
+[textoff]
+@cl
+[eventoff]
+
+
+;◇イベント03・宝物庫内で悪魔と戦闘
+*treasury_3
+
+;☆フリーモード
+@jump storage="free02.scn" target=*treasury_3 cond='game.isFreeMode'
+
+; 宝物庫内
+@saveon
+[texton]
+[テオ f=06]「...?」[k]
+We went inside the treasure chamber, but it was empty and there was nothing inside. There were no treasures to be found.[k]
+[ブルー f=08]「Huh? Where's the treasure?」[k]
+[マックス f=11]「Hey, it's empty!」[k]
+[サンドラ v=vn011 f=05]「What do you mean, nothing? What on earth...」[k]
+Everyone seems irate and confused.[k]
+According to the quest, this place was supposed to be overflowing with treasure. However, no matter how much I look around the vault, I can't see any at all.[k]
+What on earth is going on? Could it be that this isn't the place we were looking for?[k]
+[？？？]「Hahahaha! You foolish adventurers!」[k]
+[テオ f=05]「...!」[k]
+Suddenly, someone behind me laughed mockingly![k]
+[テオ f=07]「Who's that?」[k]
+[textoff]
+@wait time=500
+@walk turn=n
+@wait time=500
+[texton]
+We immediately turn around and prepare our weapons. Then...[k]
+[textoff]
+@se f=roar
+@fg c=demon_white left=450 top=-232
+@wait time=500
+@mu f=satan
+[texton w=1]
+[マックス f=11]「Eek!」[k]
+[サンドラ v=vn012 f=09]「H-hey, what is that?!」[k]
+Behind us was something huge, shaped like a human with large wings.[k]
+[テオ f=10]「A... demon?」[k]
+[？？？ f=demon_00]「Kukukuku...」[k]
+It certainly looked like a demon. However, compared to a typical one, its body was clearly one or two sizes larger.[k]
+[テオ f=12]「Could it be a high-ranking demon...?」[k]
+[？？？ f=demon_00]「That's right. I'm Malphas.」[k]
+[サンドラ v=vn013 f=12]「M-Malphas...?!」[k]
+Sandra shouted this with a frightened expression, her body shaking.[k]
+No wonder. If what he said was true, then this place must be home to a high-ranking demon that most people have never seen before.[k]
+Malphas. A high-ranking demon on par with Murmur. Why are such high-ranking demons coming to the human realm one after another...?![k]
+[name n=Malphas f=demon_00]「Hah... You foolish human adventurers.」[k]
+[name n=Malphas f=demon_00]「That request was made by me to lure you all here! To consume the physical strength and magical power of you adventurers and fully restore my own power!」[k]
+[サンドラ v=vn014 f=11]「W-what did you say...?」[k]
+[name n=Malphas f=demon_00]「...Hmm, everyone has decent magical powers. This should be interesting. Hehhehheh.」[k]
+[マックス f=11]「Hey, wait a minute! This is no joke! I'm not going to let you eat me!」[k]
+[ブルー f=07]「Hey! You lot! Let's fight this guy!」[k]
+[テオ f=12]「I know that without being told!」[k]
+This is an emergency. We must work together with Blue and Sandra to defeat this demon.[k]
+[name n=Malphas f=demon_00]「Hahaha...」[k]
+[テオ f=12]「...!」[k]
+Suddenly, the demon Malphas clasped his hands together in front of his chest and made a sign. That stance was definitely...[k]
+[ブルー f=08]「W-what's it doing?」[k]
+[テオ f=11]「Everyone, be careful! She's about to unleash a fatal breath attack!」[k]
+[マックス f=11]「W-what?!」[k]
+[サンドラ v=vn015 f=11]「What do you mean, "fatal breath"?」[k]
+[テオ f=11]「If it hits us, we'll all die in an instant! We have to escape immediately or we'll be wiped out!」[k]
+I used to be able to block the fatal breath because I had the power to exorcise demons. However, now that I've lost that power, I have no way to defend myself against their attacks.[k]
+[ブルー f=07]「What?! Is that true?!」[k]
+[テオ f=11]「Everyone, run away quickly! Otherwise...」[k]
+
+; 死のブレス
+@image layer=6 storage=screen_deepblackfull
+@anime_fadein layer=6
+
+[name n=Malphas f=demon_00]「Hahaha, it's too late. Death Breath!」[k]
+[textoff]
+
+@playse storage=howling
+@image layer=7 storage=PE_base_full visible=true
+@layopt layer=7 top=0 left=0
+@startemit layer=7 storage=PE_smoke_red2 time=-1
+@wait time=2000
+
+[texton]
+[ライナス f=17]「Waaaaahhh!」[k]
+[マックス f=11]「Aaaaah, help me!」[k]
+[textoff]
+
+@wait time=500
+@anime_fadeout layer=6
+@clearemit layer=7
+
+; バリア出現
+@se f=shakin4
+@image layer=9 storage=9999 visible=true opacity=0
+@move layer=9 time=1000 path=,,255
+@wait time=1000
+@layopt layer=9 visible=false opacity=255
+@eval exp='tf.weaponImage = "cyan"'
+@image layer=e3 storage=BE_barrier
+@layopt layer=e3 left=0 top=408 visible=true
+@wait time=500
+@playse storage=kira2 buf=2
+@anime layer=e3
+@wait time=1000
+@blink layer=e3 time=20 loop=3
+
+[texton]
+∗buuuu∗[k]
+@fa
+[マックス f=11]「Aaaahhh, I'm gonna die... wait a second?」[k]
+[テオ f=12]「...?」[k]
+[サンドラ v=vn016 f=11]「What happened?」[k]
+[textoff]
+
+; バリア演出
+@image layer=9 storage=BE_barrier_light visible=false
+@image layer=7 storage=BE_barrier_big visible=true opacity=0
+@move layer=7 time=1000 path=,,255
+@anime layer=9
+@wait time=1200
+
+[texton]
+[テオ f=12]「This is…………!」[k]
+Looking around, I saw that we were all enveloped in a familiar wall of light.[k]
+The power to exorcise demons! Yes, that's right. This is the power to exorcise demons![k]
+The special ability of demon hunters has been activated. This prevented Malphas' fatal breath.[k]
+
+; バリア消去
+@move layer=7 time=2000 path=,,0
+@layopt layer=7 page=back visible=false
+@freeimage layer=9
+@freeimage layer=9 page=back
+
+But I didn't activate this power. So where did it come from?[k]
+[マックス f=03]「Hey, [テオ]! You got your demon hunting powers back! You really surprised me!」[k]
+[テオ f=12]「No, it's not me. That wasn't my power.」[k]
+[マックス f=05]「What? Then where did it come from?」[k]
+[textoff]
+
+; ブルーの身体から退魔の力の光が放たれる
+@stopmove
+@layopt layer=7 page=back visible=false
+@clf
+@wait time=500
+@fgf c=ブルー e=戦闘 f=05
+@se f=magic2
+@wait time=500
+@fg c=ブルー e=発光 f=05
+@wait time=1000
+
+@mu f=duel
+[texton]
+[ブルー f=05]「...」[k]
+[サンドラ v=vn017 f=11]「...Hey, Blue! Light is coming out of your body...!」[k]
+[ブルー f=05]「...Yeah. I don't know why, but white light is coming out of me.」[k]
+[テオ f=12]「...!」[k]
+I witnessed an unbelievable scene.[k]
+I couldn't believe it. Blue activated the power of exorcism![k]
+[name n=Malphas f=demon_00]「Why? Why isn't my fatal breath working?」[k]
+Malphas, whose fatal breath had been blocked, was completely shaken. He must have thought he could win for sure...[k]
+@fg c=ブルー e=発光 f=01
+[ブルー f=01]「...Looks like your trump card is worthless.」[k]
+Blue smirks as he addresses the devil.[k]
+[name n=Malphas f=demon_00]「Damn it! Humans...!」[k]
+Meanwhile, the devil was brimming with rage from head to toe.[k]
+[ブルー f=01]「Hey, [テオ]. Let's take care of this guy.」[k]
+[テオ f=05]「I understand! Everyone, let's defeat this demon!」[k]
+Even though its fatal breath is neutralized, the opponent is a high-ranking demon. He is undoubtedly a formidable opponent. I must stay focused and not let my guard down.[k]
+[textoff]
+
+; ブルー・サンドラ加入
+@wait time=500
+@clf
+@se f=period
+@eval exp='o.ブルー.recovery()'
+@eval exp='o.ブルー.skill.add(o.退魔の力)'
+@eval exp='game.guest.entry(o.ブルー)'
+@eval exp='game.guest.entry(o.サンドラ)'
+@notice text="<y>Sandra and Blue have joined the party!"
+
+; マイルフィックと戦闘
+@wait time=500
+@monster pos=3 name=マイルフィック
+@callbattle bgm=boss escape=false gameover=true stopbgm=true
+; マイルフィック撃破
+
+@wait time=500
+@mu f=worry
+[texton]
+Somehow, we managed to defeat the devil Malphas. For a moment, I thought it was all over.[k]
+@fg c=ブルー e=帯刀 f=06
+[ブルー f=06]「...」[k]
+[テオ f=06]「...」[k]
+...Without Blue's power, we would not have been able to win this battle. In fact, we would have been completely wiped out.[k]
+Blue saving us is something that gives me very mixed feelings, but I have to admit it.[k]
+[テオ f=05]「Blue...」[k]
+[ブルー f=06]「...What.」[k]
+[テオ f=12]「Well... thank you. You saved us.」[k]
+@fg c=ブルー e=帯刀 f=01
+[ブルー f=01]「...Why do you need to thank me? Don't do anything unnecessary.」[k]
+[サンドラ v=vn018 f=09]「Come on, Blue. Just be honest.」[k]
+[ブルー f=05]「...Hmph. Let's go, Sandra.」[k]
+@cl
+Blue urges Sandra to leave.[k]
+[テオ f=12]「Wait, Blue! Just tell me one thing!」[k]
+@fg c=ブルー e=帯刀 f=06
+[ブルー f=06]「...What?」[k]
+[テオ f=12]「Are you a demon hunter?!」[k]
+[ブルー f=05]「...Demon hunter?」[k]
+[ブルー f=05]「I don't know anything about that.」[k]
+[テオ f=10]「...」[k]
+He clearly has the ability though. Does that mean he isn't aware of it himself?[k]
+[テオ f=05]「Did you know about your power to exorcise demons?」[k]
+[ブルー f=06]「...I don't know about that either.」[k]
+[テオ f=12]「You don't know... Then what about that power from earlier...」[k]
+[ブルー f=06]「I don't know. It just happened.」[k]
+[テオ f=10]「...」[k]
+So, does that mean Blue was unknowingly a demon hunter?[k]
+[ブルー f=05]「That's enough. Sandra, let's go.」[k]
+@cl
+[サンドラ v=vn019 f=55]「Wait, Blue!」[k]
+Leaving me standing there in shock, Blue and Sandra quickly walked away.[k]
+[textoff]
+
+@se f=period
+@eval exp='game.guest.removeMember(o.ブルー)'
+@eval exp='game.guest.removeMember(o.サンドラ)'
+@notice text="<y>Blue and Sandra left the party."
+
+[texton]
+[テオ f=10]「...」[k]
+From what he said, Blue really seemed to know nothing about it.[k]
+In other words, he is unknowingly a demon hunter.[k]
+I don't know the details, but Blue also has the ability to hunt demons, and when he faced off against Malphas earlier, that power was activated. Just like when I unexpectedly manifested my power during my battle with Murmur.[k]
+Blue probably has demon-hunting blood running through his veins too... We may even be distant relatives or something. [k]
+The demon-hunting family line began about 400 years ago with a founding figure, and the power has been passed down to their descendants from generation to generation.[k]
+However, there are families with strong bloodlines and those without. Not many of those families can fight demons in actual combat by activating exorcism powers. My father was one of the few descendants of such a family.[k]
+However, not all descendants' family trees have been traced, and it cannot be denied that some bloodlines have been lost to history.[k]
+...Blue was among them. That possibility is quite likely.[k]
+At the very least, the exorcism power he unleashed was real. That much is certain.[k]
+[textoff]
+@eval exp='o.古代の宝物庫.flag = 1'
+@addevent name=地下の町ライムストーン num=1
+@fa
+[eventoff bgm]
+
+
+;◇イベント04・隠れていた店主発見
+*treasury_4
+
+; 宝物庫内
+[texton]
+[name n="Old Man" f=waroth_00]「Eeeek, demon, you won't find me tasty even if you eat me!」[k]
+[name n="Old Man" f=waroth_00]「Huh...? I thought it was a demon, but it's a human...? Where did that demon go?」[k]
+We told the old man that we had defeated the demon.[k]
+[name n="Old Man" f=waroth_00]「What! Is that so... I'm sorry. Thanks to you, I was saved.」[k]
+[name n="Old Man" f=waroth_00]「I am a resident of Limestone Town. I accepted a quest posted in town and came here to search for treasure.」[k]
+[name n="Old Man" f=waroth_00]「However, no matter how much I searched, I couldn't find the treasure. That's when I saw that terrifying demon. I've been hiding so that it wouldn't find me.」[k]
+[if exp='! game.isFreeMode']
+	[テオ f=05]「Is that so... As for the treasure, it seems that it was all a lie made up by the demon. So, no matter how much you search, you won't find any treasure.」[k]
+[else]
+	We told the old man that the story of the treasure was a lie made up by the demon.[k]
+[endif]
+[name n="Old Man" f=waroth_00]「I see... Well, that was a waste of time. Oh well, I guess I'll head back to town.」[k]
+[name n="Old Man" f=waroth_00]「Oh, by the way, I actually run a magic shop in Limestone Town. You're an adventurer, are you not? If you'd like, please come visit my shop. I'm sure it will be useful to you.」[k]
+[name n=Hawkwaros f=waroth_00]「My name is Hawkwaros. Nice to meet you. Well, I'll be off now.」[k]
+[textoff]
+@se f=period
+@eval exp='o.ホークワロスの魔法店.events = [1]'
+@eval exp='o.大洞窟バル.quests.push2(o.全てを見通せる鏡)'
+[eventoff]
+
+
+;◇イベント05・ブルーとサンドラ加入
+*treasury_5
+
+; 地下の町
+@w05
+[texton]
+[テオ f=06]「Phew, I was worried for a while, but we managed to get back to town safely.」[k]
+[テオ f=06]「Everyone is tired. Let's stay at the inn.」[k]
+[textoff]
+@fa
+@out
+@w1
+
+; 夜・宿の部屋
+@saveon
+@bg f=0001
+@mu f=worry
+[texton]
+[テオ f=06]「...」[k]
+Blue has the power to hunt demons...[k]
+We managed to defeat Malphas, the demon we encountered today, but Murmur is still out there somewhere.[k]
+Her goal is to overturn this world. We must stop her at all costs. We cannot ignore her actions.[k]
+But I don't have the power to exorcise demons right now.[k]
+Last time, thanks to Murmur's strength not being fully recovered, we managed to get away with it.[k]
+However, it is unclear what will happen next. If I encounter her again, she may wipe out the party with her fatal breath.[k]
+[テオ f=06]「...」[k]
+The power to exorcise demons is indeed necessary. As long as Murmur exists somewhere in this world, it is absolutely essential to have a means of protecting oneself from the Breath of Death.[k]
+As the leader of the party, I have to protect all the members. Knowing the threat, we simply can't afford not to take countermeasures. [k]
+[テオ f=06]「...」[k]
+I didn't want to make this choice if I could help it. I have my pride too. I don't want to bow down to a man like that.[k]
+But I have no choice but to rely on him.[k]
+[textoff]
+@out
+@wait time=500
+@eventsleep
+@wait time=500
+
+; 翌朝・宿屋のロビー・ブルーとサンドラ加入
+@bg f=0003
+@wait time=500
+[texton w=1]
+Next morning.[k]
+[テオ f=05]「Aaa...」[k]
+[マックス f=12]「Geh...!」[k]
+[textoff]
+@fg l=ブルー e=帯刀 f=08 b
+@fg r=サンドラ f=01
+@mu f=anxiety
+@wait time=500
+[texton]
+[ブルー f=08]「...!」[k]
+[サンドラ v=vn020 f=01]「Oh, good morning.」[k]
+As we were leaving the inn with everyone, we ran into Blue and Sandra.[k]
+[サンドラ v=vn021 f=01]「You guys stayed here too, huh? We're heading back to the surface, so would you like to come with us?」[k]
+[ブルー f=05]「Hey, ignore them. Let's go, Sandra.」[k]
+@cl l
+[サンドラ v=vn022 f=55]「Ah, wait a minute, Blue.」[k]
+@cl r
+Blue tries to quickly leave with Sandra.[k]
+[テオ f=11]「Wait! Blue!」[k]
+I hurriedly called out to Blue. I couldn't let him leave like that.[k]
+@fg c=ブルー f=08
+[ブルー f=08]「What the hell do you want?」[k]
+[テオ f=12]「Well... I have a favor to ask you...」[k]
+[ブルー f=08]「A... favor...?」[k]
+[ブルー f=08]「Why should I listen to your request? This is ridiculous. I'm leaving.」[k]
+[サンドラ v=vn023 f=11]「Wait a minute, Blue.」[k]
+[ブルー f=05]「Come on, let's go, Sandra.」[k]
+[サンドラ v=vn024 f=09]「You don't have to be so rude. Why don't you at least listen to what he has to say?」[k]
+[ブルー f=08]「...Tch.」[k]
+Sandra managed to keep Blue there. We couldn't miss this opportunity.[k]
+[テオ f=05]「This is important. Listen to me, Blue.」[k]
+[テオ f=06]「Yesterday, the power you unleashed is called the power of exorcism, and it's a very precious thing.」[k]
+@fg c=ブルー f=06
+[ブルー f=06]「...」[k]
+[テオ f=06]「It is a rare and valuable ability that can defend against the fatal breath used by some demons. Very few possess this ability.」[k]
+[ブルー f=06]「...So?」[k]
+[テオ f=05]「I'm currently fighting a high-ranking demon named Murmur. She's the true identity of Miredy, who was in your party a while ago.」[k]
+[サンドラ v=vn025 f=11]「Miredy?! She was a high-ranking demon?」[k]
+[テオ f=06]「Miredy, or rather Murmur, is plotting to overturn this world.」[k]
+[テオ f=06]「Once I discovered this, I had to take action. That's why I've been fighting Murmur until today.」[k]
+[テオ f=06]「Murmur is also a very dangerous demon who uses what she calls<r>"Breath of Death". However, I had the power to exorcise demons, just like you. That's why I've been able to fight until now.」[k]
+[テオ f=06]「...Unfortunately, for some reason, my demon hunting powers have been lost.」[k]
+[テオ f=06]「Fighting Murmur in my current state would lead to the destruction of the entire party. Therefore, in order to protect my precious allies, I have no choice but to give up the fight against Murmur.」[k]
+[ブルー f=06]「...」[k]
+[テオ f=05]「However, if we leave her alone, this world will be in danger. If we're not careful, everyone who lives here may end up being ruled by demons. In other words, someone has to fight Murmur.」[k]
+[テオ f=05]「...No one else but you has that power right now. Please, Blue. Will you fight that demon for me?」[k]
+@fg c=ブルー f=08
+[ブルー f=08]「Huh? Why me?」[k]
+[テオ f=10]「As far as I know, you are the only one with the power to exorcise demons.」[k]
+[テオ f=12]「You're the only one who can fight that demon! Please, fight! The future of this world depends on it!」[k]
+@fg c=ブルー f=05
+[ブルー f=05]「Hmph, who cares? It's none of my business.」[k]
+[サンドラ v=vn026 f=55]「That isn't true. If what he says is correct, then all of us are in trouble.」[k]
+[ブルー f=05]「Shut up. I don't care! I'm not a champion of justice or anything like that. I don't care what happens to the world.」[k]
+[ブルー f=06]「I do whatever I want. All that matters is whether I feel good or not.」[k]
+@fg c=ブルー f=01
+[ブルー f=01]「The world turning upside down? That's fine with me. It will be more interesting if there are demons roaming around everywhere!」[k]
+[サンドラ v=vn027 f=09]「Hey, what are you talking about, Blue...」[k]
+[テオ f=05]「...Sure, for a tough guy like you, it might not be a big deal. But for most people, it's a matter of life and death.」[k]
+[テオ f=05]「I can't just stand by and do nothing. After all, I was born into a family of demon hunters. Just like my father did, I want to protect people from the clutches of demons.」[k]
+@fg c=ブルー f=54
+[ブルー f=54]「...」[k]
+Blue doesn't respond.[k]
+...I knew it. There was no way he would accept my request. Considering his personality, it would be extremely difficult to persuade him.[k]
+But I can't back down. The fate of the world hangs in the balance in these negotiations![k]
+[テオ f=06]「...Then let's do this. Blue, come with our party.」[k]
+@fg c=ブルー f=08
+[ブルー f=08]「What?」[k]
+[テオ f=05]「You don't have to do anything. Just follow behind us. Can't you do that much?」[k]
+@fg c=ブルー f=06
+[ブルー f=06]「...」[k]
+[テオ f=06]「As long as you stand behind me, that's enough to protect everyone from a demon's deadly breath.」[k]
+[テオ f=05]「All you have to do is watch us fight. Okay? At least do that much for us!」[k]
+[テオ f=12]「I've thought about it a lot, but we have no choice but to rely on you!」[k]
+[テオ f=12]「I'll pay you properly! Please, Blue, listen to my plea! I want to protect my friends at all costs!」[k]
+I bow my head desperately. It's really frustrating to bow my head to someone I hate, but I have no choice.[k]
+@fg c=ブルー f=19
+[ブルー f=19]「...No way. I'm not going to bother with such a hassle.」[k]
+[テオ f=10]「Blue...」[k]
+Despite my feelings, Blue remained adamantly opposed. No matter how hard I tried to appease him, he wouldn't budge.[k]
+Damn it... what should I do...?![k]
+[サンドラ v=vn028 f=09]「Isn't it fine to do that much? You can't just ignore Miredy's misdeeds, can you?」[k]
+[ブルー f=19]「It's like I said. It's none of my business. I don't care what happens to other people.」[k]
+[サンドラ v=vn029 f=09]「After we lost, everyone left the party, and it's been tough finding work and making money, hasn't it? 」[k]
+@fg c=ブルー f=08
+[ブルー f=08]「...」[k]
+[マックス f=52]「...Pfft, seriously? ♪」[k]
+[サンドラ v=vn030 f=01]「This is a good offer. Why not go for it?」[k]
+[ブルー f=08]「Shut up! Why do I have to obey this guy?」[k]
+[サンドラ v=vn031 f=09]「Come on... You're just being stubborn...」[k]
+[テオ f=06]「...」[k]
+If I can offer Blue some kind of benefit, he might agree to my request. Something new, other than money.[k]
+[ブルー f=05]「If you go on a journey, you can't eat whenever you want, and there's few women around to play with.」[k]
+[サンドラ v=vn032 f=09]「What do you mean? If you want someone to keep you company at night, I'm right here!」[k]
+@fg c=ブルー f=01
+[ブルー f=01]「In Bravetown, I've got no trouble finding women. If I go on a journey, I'd have to look for women wherever I go. That's such a hassle.」[k]
+@fa
+@fg c=ブルー f=06
+[ブルー f=06]「...」[k]
+[テオ f=05]「...Blue?」[k]
+Suddenly, Blue fell silent and began to stare intently at our party.[k]
+
+[if exp='HUM'][リム f=09]「...」[k][endif]
+[if exp='ELF'][クレア f=09]「...」[k][endif]
+[if exp='DWA'][フレデリカ f=09]「...」[k][endif]
+[if exp='GNO'][ミューズ f=09]「...」[k][endif]
+[if exp='SYL'][マルエット f=09]「...」[k][endif]
+
+[マックス f=12]「Hey, what's up, Blue...?」[k]
+[ブルー f=06]「...」[k]
+@fg c=ブルー f=02
+[ブルー f=02]「...Well, I'll think about it.」[k]
+[マックス f=11]「What?!」[k]
+[サンドラ v=vn033 f=11]「Hey, why the change of heart?」[k]
+[テオ f=12]「R-really...?」[k]
+[ブルー f=02]「But there's a condition.」[k]
+[テオ f=10]「Condition...?」[k]
+...I have a bad feeling about this. However, now is not the time to dwell on minor concerns.[k]
+[テオ f=12]「Okay, tell me what that condition is.」[k]
+[ブルー f=02]「Heh...」[k]
+[ブルー f=02]「...Sex with women.」[k]
+[テオ f=12]「Eh?」[k]
+@fa
+@fg c=ブルー f=15
+[ブルー f=15]「At night, let me have sex with the women in your party as I please. That's the condition.」[k]
+@mu f=darkside
+[テオ f=12]「...!」[k]
+[マックス f=12]「What the hell?!」[k]
+
+[if exp='HUM'][リム v=vh060 f=31]「What?!」[k][endif]
+[if exp='ELF'][クレア v=ve061 f=93]「What did you say...?!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd060 f=93]「H-huh～?!」[k][endif]
+[if exp='GNO'][ミューズ f=29]「...!」[k][endif]
+[if exp='SYL'][マルエット v=vs062 f=28]「What kind of condition is that...」[k][endif]
+
+[テオ f=12]「Well, that condition is a bit much...」[k]
+@fg c=ブルー f=02
+[ブルー f=02]「What? Didn't you want to protect your friends?」[k]
+[ブルー f=02]「...Like I said, I can't stand being deprived of women when I go on a trip. I can't have sex with women whenever I want to.」[k]
+[ブルー f=01]「Your party has some pretty good-looking women, so if I can sleep with them freely, I'll go along with it. With Sandra joining in, I'm sure I won't get bored at night.」[k]
+[サンドラ v=vn034 f=09]「Well... what do you need those kids for? I can satisfy you on my own...」[k]
+
+[if exp='HUM'][リム f=28]「...」[k][endif]
+[if exp='ELF'][クレア f=28]「...」[k][endif]
+[if exp='DWA'][フレデリカ f=28]「...」[k][endif]
+[if exp='GNO'][ミューズ f=28]「...」[k][endif]
+[if exp='SYL'][マルエット f=28]「...」[k][endif]
+
+Everyone in the party fell silent, looking nervous.[k]
+[ブルー f=02]「If you don't like that, find another woman. Just make sure I always have a woman. That's the condition.」[k]
+[テオ f=10]「...」[k]
+Asking everyone in the party to provide sexual services... I can't accept such conditions.[k]
+[テオ f=12]「...Hey, Blue. There must be some other way...」[k]
+@fg c=ブルー f=51
+[ブルー f=51]「I won't accept anything else. If you don't agree, I won't accompany your party, or fight that devil.」[k]
+[テオ f=10]「...」[k]
+What a despicable man...! Taking advantage of our weakness and demanding sexual favors...![k]
+Once again, I feel sickened by Blue's humanity. This man really doesn't care if he tramples on other people.[k]
+I can't accept such a terrible request. But if I can't get Blue to join us here, the moment we encounter Murmur, we're done for.[k]
+I want to continue adventuring with everyone. If I quit now, all my hard work until now may have been for nothing.[k]
+However... I can't ask my friends to sacrifice their bodies for that...[k]
+Is this where our adventure ends...?[k]
+@fg c=ブルー f=02
+[ブルー f=02]「You won't do it? Then forget it. Bye, I'm going home.」[k]
+@cl
+With that, Blue starts to leave.[k]
+[テオ f=12]「Ah...!」[k]
+Damn it...! It's no good after all...! Is it over already...?![k]
+@eval exp='f.heroineNumbers = [0, 1, 2, 3, 4, 5]'
+@eval exp='f.heroineNumbers.remove(game.party.members.find(o.テオ))'
+@eval exp='f.heroineNumbers.remove(game.party.members.find(o.マックス))'
+@eval exp='game.curChara = game.party.members[f.heroineNumbers[0]]'
+@st
+@fg c=キャラ f=09
+
+[   if exp='isHUM'][リム v=vh061 f=09]「Wait! Blue!」[k]
+[elsif exp='isELF'][クレア v=ve062 f=09]「Wait!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd061 f=09]「Wait! Blue!」[k]
+[elsif exp='isGNO'][ミューズ v=vg050 f=09]「Please wait...!」[k]
+[elsif exp='isSYL'][マルエット v=vs063 f=09]「Wait a minute!」[k]
+[endif]
+
+Suddenly, [キャラ] shouts loudly to Blue. It echoed throughout the area.[k]
+[キャラ f=30]「...」[k]
+[キャラ] stares at Blue with a determined expression.[k]
+[テオ f=12]「[キャラ]...?」[k]
+[ブルー f=06]「Hmm? What?」[k]
+@fg c=キャラ f=30
+
+[   if exp='isHUM'][リム v=vh062 f=30]「I accept your conditions. So please join this party.」[k]
+[elsif exp='isELF'][クレア v=ve063 f=30]「Those conditions are tolerable. So do as the captain says.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd062 f=30]「I'll do as you say... So Blue, please come with us.」[k]
+[elsif exp='isGNO'][ミューズ v=vg051 f=30]「That's fine... So please protect us...!」[k]
+[elsif exp='isSYL'][マルエット v=vs064 f=30]「I'll do what you say. So join this party. Please.」[k]
+[endif]
+
+@mu f=worry
+[テオ f=12]「[キャラ]...!」[k]
+@fg c=キャラ f=13
+
+[   if exp='isHUM'][リム v=vh063 f=13]「...Captain, I'm fine. I want to keep you and everyone else safe...」[k]
+[elsif exp='isELF'][クレア v=ve064 f=13]「...Captain, I can accept it. If it means you and everyone else will be safe...」[k]
+[elsif exp='isDWA'][フレデリカ v=vd063 f=13]「...Captain, it's okay. If it means you and everyone else will be safe...」[k]
+[elsif exp='isGNO'][ミューズ v=vg052 f=13]「...Captain, it's okay. If it keeps you and everyone else safe...」[k]
+[elsif exp='isSYL'][マルエット v=vs065 f=13]「A-ah, I'm fine, Captain! If it means you and everyone else will be safe, then I don't mind!」[k]
+[endif]
+
+[テオ f=12]「[キャラ]...」[k]
+@cl b
+@fg l=キャラ f=13 b
+@eval exp='game.curChara = game.party.members[f.heroineNumbers[1]]'
+@fg r=キャラ f=35
+
+[   if exp='isHUM'][リム v=vh064 f=35]「I'm fine with that, Captain. More than anything, I want to continue my adventure with everyone.」[k]
+[elsif exp='isELF'][クレア v=ve065 f=35]「I can accept it too. I want to continue adventuring with everyone.」[k]
+[elsif exp='isDWA'][フレデリカ v=vd064 f=35]「Oh, I'm fine too! I want to continue my adventures with everyone!」[k]
+[elsif exp='isGNO'][ミューズ v=vg053 f=35]「I'm fine too... It's more important to continue the adventure with everyone...」[k]
+[elsif exp='isSYL'][マルエット v=vs066 f=35]「I'll put up with it too! I don't want to give up our adventure just because of something like this!」[k]
+[endif]
+
+The party members declare that they will accept Blue's proposal one after another.[k]
+[if exp='game.party.members.count >= 5']
+	@eval exp='game.curChara = game.party.members[f.heroineNumbers[2]]'
+	[テオ f=12]「Um... What about everyone else...?」[k]
+	[キャラ f=08]「... ∗nod∗」[k]
+	[if exp='game.party.members.count == 6']
+		@eval exp='game.curChara = game.party.members[f.heroineNumbers[3]]'
+		[キャラ f=08]「... ∗nod∗」[k]
+		The remaining members nod in unison with determined looks on their faces.[k]
+	[else]
+		[キャラ] nods with a determined look in her eyes.[k]
+	[endif]
+[endif]
+Despite the fact that the women are required to do something unreasonably harsh, they say they are willing to do so in order to protect their friends.[k]
+I was moved by everyone's feelings. They care about their friends. They're passionate about justice... I can't help but feel proud to be able to fight alongside them.[k]
+[テオ f=10]「...」[k]
+...Earlier, Blue said that another woman would be fine.[k]
+If I don't neglect that, I might be able to protect everyone in the party. There's no guarantee, but we don't have to sacrifice everyone unconditionally.[k]
+...Right now, it wouldn't be surprising if everyone were slaughtered by Murmur at any moment.[k]
+So I can't let Blue get away. Right now, I have to get this guy on our side. I can always reconsider later.[k]
+@cl b
+@fg c=ブルー f=02
+[ブルー f=02]「Well, you heard your friends. What are you going to do, [テオ]?」[k]
+[テオ f=10]「...」[k]
+[テオ f=12]「...I understand. Your terms are acceptable.」[k]
+[ブルー f=02]「It's settled then. All right. I'll go with you guys.」[k]
+@fg c=ブルー f=03
+[ブルー f=03]「Hey, you guys! If you want me to be your demon bodyguard, you'd better serve me well. Wahahahaha!」[k]
+@cl
+[テオ f=09]「...」[k]
+Seeing Blue laughing cheerfully, I feel my anger boiling up.[k]
+But I have to contain it. I have no choice but to rely on this guy...![k]
+@fg c=サンドラ f=01
+[サンドラ v=vn035 f=01]「Hey, can I come along too?」[k]
+[テオ f=01]「Yes, please do. It will be very reassuring to have someone like you with us.」[k]
+[サンドラ v=vn036 f=03]「Ufufu, thank you.」[k]
+@fg c=サンドラ e=通常・大 f=01
+Sandra then leaned close to my ear and whispered softly.[k]
+[サンドラ v=vn037 f=01]「I'll do my best to stop Blue, so you protect the other girls.」[k]
+; ↑ ひそひそ声
+[テオ f=13]「...Y-yes! Thank you very much!」[k]
+@cl
+I appreciate Sandra's feelings... I'm so glad she's here.[k]
+But... I never imagined I would actually go on an adventure with Blue.[k]
+With Blue joining us, I feel like I can't let my guard down anymore. This adventure will be even more difficult than before.[k]
+[textoff]
+@fa
+
+;-----------------------------------------------------------------------------------------
+; ここで今まで通り過ぎた場所の状態をまとめて更新する
+[iscript]
+
+// キャラの設定
+game.guest.entry(o.ブルー);
+game.guest.entry(o.サンドラ);
+o.ブルー.recovery();
+o.サンドラ.recovery();
+for(var i = 0; i < 10; i++)
+{
+	o.サンドラ.diary.add(o.サンドラ.getSexRecord(o.ブルー,,,, game.date - 10 + i));
+}
+// o.ブルー.events = [1];
+
+// クエスト
+if(! o.オークの拠点を制圧せよ.accepted) o.ベトリヌスの酒場.quests.remove(o.オークの拠点を制圧せよ);
+f.policeChiefIsOut = false;
+
+// 町
+o.ベトリヌスの酒場.events.push(17, 13);
+o.マルティナの酒場.events.push(3);
+o.サファイアシティ.addEventButton(%[label: "マリアの家_1", name: "マリアの家", img: "maria", x: 552, y: 155]);
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+
+@se f=up3
+@notice text="<y>Sandra and Blue have joined the party!"
+@ws buf=2
+@out
+@w05
+[eventoff bgm]
+
+
+
+【クエスト変遷メモ】
+
+☆は大会終了前のみ登場し大会終了で削除されるもの
+
+＜サファイアシティ＞
+☆盗賊メンバー派遣の依頼
+☆ポラリス神殿を守ってほしい
+☆コボルド退治
+オークの拠点を制圧せよ → 売春組織の実体を暴け（サンドラ加入で発生。サンドラ脱退でこれも削除）
+墓参り → 教団を壊滅させろ（同上）
+若さを維持したい → 人身売買の証拠をつかめ
+ワイルド・ブルのアジトを探せ → ワイルド・ブル壊滅作戦
+スライム軍団の討伐 → オーケストラを作りたい → 飛び入り参加求む！（スライム関連）
+
+＜シーガルの村＞
+☆さらわれた少女たちの救出
+モデル募集 → モデル募集その２ → モデル募集その３
+怪鳥マッドウイングの羽 → 不死鳥フェニックスの羽
+夫の捜索 → 娘を助け出してほしい
+黄金のリンゴを届けてくれ → 殺人バチの根絶
+精霊の力を宿す石 → 世界グルメ紀行
+
+＜ブレイブタウン＞
+☆赤いネックレスを探してほしい
+☆遺跡の財宝
+王の短剣
+黄金の人魚像を探してほしい
+妻の浮気調査
+兄に手紙を届けてくれ
+倉庫整理のお仕事
+
+＜ノースロップ村＞
+牢獄への潜入作戦（マリア離脱で発生）
+つるはしを取ってきてくれ
+鉱山のインプ軍団
+父を捜してほしい
+アダマンタイト採集
+
+＜地下の町＞
+古代の宝物庫
+サキュバスに会いたい
+全てを見通せる鏡
+銀のユニコーン像
+鎧のテスター募集 → 鎧のテスター募集その２ → 鎧のテスター募集その３
+
+＜ダストウェルの町＞
+砂漠の主を退治してほしい
+金のフェアリーを探して！
+死霊魔術の研究
+

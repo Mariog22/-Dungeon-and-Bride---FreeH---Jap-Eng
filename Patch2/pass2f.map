@@ -1,0 +1,277 @@
+﻿;  ペンスキー峠
+
+name = ペンスキー峠・峠道
+insideName = Mountain Pass
+level = 10
+bgm = forest
+isOutdoor = true
+shadow = dark
+sky = mountain
+roof = stone
+blank = rock
+
+; 画像パーツ
+━ = rock
+‥ = soil
+　 = soil
+❑ = cube
+⏃ = woods
+☗ = gate
+︻ = panel
+⑶ = bulletin
+⑷ = br_maxhp
+
+; 敵情報
+maxGroups = 2
+monsters = ジャンボスライム,スナイパー,グラディエイター,ユニコーン
+traps = 石つぶて
+
+; 移動ポイント
+(A) = map:ジョセフの森, x:1, y:1, fall:true
+(B) = map:ジョセフの森, x:2, y:1, fall:true
+(C) = map:ジョセフの森, x:1, y:0, fall:true
+(D) = map:ジョセフの森, x:2, y:0, fall:true
+(E) = map:パワーの森, x:8 ,y:9, fall:true
+(F) = map:パワーの森, x:9 ,y:9, fall:true
+(G) = map:パワーの森, x:8 ,y:8, fall:true
+(H) = map:パワーの森, x:9 ,y:8, fall:true
+(I) = map:ワイルド・ブルの砦１Ｆ, x:4, y:2, way:w, symbol:cave, ask:Go to the dungeon?
+(J) = map:ペンスキー峠・崖, x:2, y:1, climb:true
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  			▲	▲
+59	⏃⏃■■■⏃⏃							⏃⏃❖	❖⏃⏃
+  	⏃⏃■■■⏃⏃							⏃⏃			⏃⏃
+58	⏃⏃■■■⏃⏃							⏃⏃❖	❖⏃⏃
+  	⏃⏃■■■⏃⏃
+57	⏃⏃　　　⏃⏃
+  	⏃⏃　　　⏃⏃
+56	⏃⏃　　　⏃⏃
+  	⏃⏃　　　⏃⏃
+55	⏃⏃　　　⏃⏃
+  	━┓　　　┏━
+54		┃　　　┃
+  		┃　　　┃
+53		┃　　　┃
+  		┃　　　┃
+52		┃　　　┃
+  		┃　　　┃
+51		┃⑶　　┃
+  		┗━┓　┃							┏‥┓
+50				┃　┃							┃Ⓙ┃
+  				┃　┃							┃　┃
+49				┃　┃							┃　┃
+  				┃　┃							┃　┃
+48				┃　┃							┃　┃
+  				┃　┗━━━━━┓	┃　┃
+47				┃　　　　　　　┃	┃　┃
+  				┗━━━━━┓　┃	┃　┃
+46										┃　┃	┃　┃
+  										┃　┃	┃　┗━━━━━┓
+45										┃　┃	┃　　　　　　　┃
+  										┃　┃	┗━━━━━┓　┃
+44										┃　┃							┃　┃
+  										┃　┗━┓					┃　┃
+43										┃　　　┃					┃　┃
+  								┏━┛　　　┃					┃　┃
+42								┃　　　　　┃					┃　┃
+  						┏━┛　　　　　┗━┓			┃　┃
+41						┃　　　　　　　　　┃			┃　┃
+  						┃　　　┏━┓　　　┃			┃　┃
+40						┃　　　┃	┃　　　┃			┃　┃
+  						┃　┏━┛	┃　　　┃			┃　┃
+39						┃　┃			┃　　　┃			┃　┃
+  						┃　┃			┃　　　┃			┃　┃
+38						┃　┃			┃　　　┃			┃　┃
+  						┃　┗━┓	┃　┏━┛			┃　┃
+37						┃　　　┃	┃　┃					┃　┃
+  						┗━┓　┃	┃　┃					┃　┃
+36								┃　┃	┃　┃					┃　┃
+  		┏━━━━━┛　┃	┃　┗━┓			┃　┃
+35		┃　　　　　　　┃	┃　　　┃			┃　┃
+  		┃　┏━━━┓　┃	┗━┓　┃			┃　┃
+34		┃⑷┃			┃　┃			┃　┃			┃　┃
+  		┗━┛			┃　┃			┃　┗━━━┛　┃
+33								┃　┃			┃　　　　　　　┃
+  						┏━┛　┃			┃　┏━━━━━┛
+32						┃①　　┃			┃　┃
+  				┏━┛　┏━┛			┃　┃
+31				┃①　　┃					┃②┃
+  				┃　　　┃					┃　┃
+30				┃　　①┃					┃　┃
+  				┃　　　┃					┃　┃
+29				┃①　　┃					┃②┃
+ 					┃　　　┃					┃　┃
+28				┃　　①┃					┃　┃
+  				┗━┓　┃					┃　┃
+27						┃　┃					┃②┃
+  						┃　┗━┓			┃　┃
+26						┃①　　┃			┃　┃
+  						┗━┓　┃			┃　┃
+25								┃①┃			┃②┃
+  								┃　┃			┃　┗━┓
+24								┃　┃			┃　　②┃
+  								┃　┗━┓	┃　　　┗━┓
+23								┃①　　┃	┃②　　　②┃
+  								┗━┓　┃	┗━━━┓　┗━┓
+22										┃①┃					┃　　②┃
+  										┃　┃					┗━┓　┃
+21										┃　┃							┃　┃
+  										┃　┃							┃　┃
+20										┃①┃							┃②┃
+  										┃　┗━┓					┃　┃
+19										┃　　①┃					┃　┃
+  										┃　　　┃					┃　┃
+18										┃①　　┃					┃②┃
+  										┗━┓　┃					┃　┃
+17												┃　┃					┃　┃
+  												┃　┗━┓			┃　┃
+16												┃　　　┃			┃　┃
+  												┗━┓　┗━━━┛　┃
+15														┃　　　　　　　┃
+  														┗━┓　　　　　┃
+14																┃　　　　　┃
+  				┏━━━━━━━━━━━┛　　　┏━┛
+13				┃　　　　　　　　　　❑　　　　┃
+  				┃　　　┏━━━━━━━┓　　　┃
+12				┃　　　┃							┃　　　┃
+  				┗━┓　┃							┃　　　┃
+11						┃　┃							┃　　　┃
+  						┃　┃							┃　　　┃
+10						┃　┃							┃　　　┃
+  						┃　┃							┃　　　┃
+ 9						┃　┃							┃　　　┃
+  ┏━━━┓	┃　┃							┃　　　┃
+ 8┃　　　┃	┃　┃							┃　　　┃
+  ┃　　　┗━┛　┃							┃　　　┃
+ 7☗Ⓘ　　　　　⑥┃							┃　　　┃
+  ┃　　　┏━━━┛							┃　　　┃
+ 6【⑤　　┃											┃　　　┃
+  ┗━━━┛											┃　　　┃
+ 5																┃　　　┃
+  															━┛　　　┗━
+ 4															⏃⏃　　　⏃⏃
+  															⏃⏃　　　⏃⏃
+ 3															⏃⏃⑧　⑧⏃⏃
+  															⏃⏃　　　⏃⏃
+ 2															⏃⏃⑧　⑧⏃⏃
+  															⏃⏃■■■⏃⏃
+ 1	⏃⏃❖	❖⏃⏃							⏃⏃■■■⏃⏃
+  	⏃⏃			⏃⏃							⏃⏃■■■⏃⏃
+ 0	⏃⏃❖	❖⏃⏃							⏃⏃■■■⏃⏃
+  																	▲	▲
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[1][59].f.warp = "A";
+pos[2][59].f.warp = "B";
+pos[1][58].f.warp = "C";
+pos[2][58].f.warp = "D";
+pos[8][1].f.warp = "E";
+pos[9][1].f.warp = "F";
+pos[8][0].f.warp = "G";
+pos[9][0].f.warp = "H";
+for(var i = 6; i <= 8; i++) pos[0][i].w.img = "stone_h";
+pos[0][7].event = 7;
+pos[10][7].f.img = "soil";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] ! game.protectHeroines && o.ワイルド・ブル.interruption == 0 && game.date % 2 == 0 && random < 0.4
+*event_2
+;[exp] ! game.protectHeroines && o.ワイルド・ブル.interruption == 0 && game.date % 2 == 1 && random < 0.4
+
+; ワイルド・ブルとの決闘（日によって安全なルートが違う）
+@jump storage="duel.ks" target=*wildbull_encounter
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Be careful of bandits on the mountain pass ahead!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 20)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 20!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Wild Bull's Fort"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@delevent
+@eval exp='o.ワイルド・ブルのアジトを探せ.flag ++'
+@wait time=500
+@walk turn=w cond='WAY != "w"'
+@wait time=100
+@walk move=w
+@wait time=500
+[texton]
+[リーダー f=05]「This is...!」[k]
+At the end of the mountain pass stood a magnificent fortress. The sign above the entrance read "Wild Bull Fort".[k]
+[if exp='! game.isFreeMode']
+	[テオ f=06]「Alex...! Their hideout is in a place like this...!」[k]
+[endif]
+Alex and his gang must be using this place as a base to do all sorts of evil.[k]
+[textoff]
+@se f=period
+@notice text="<y>Found one Wild Bull hideout."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+; イベント時の移動制限。ダンジョンに入れないようにする
+[texton]
+[テオ f=06]「We should go somewhere else.」[k]
+[textoff]
+@walk move=e
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] true
+
+[texton]
+[テオ f=06]「The mountain top that [マルエット] was talking about can't be much further ahead...」[k]
+[textoff]
+
+[if exp='game.party.curX == 0']
+	@walk move=e
+[else]
+	@walk move=n cond='game.party.curY < 4'
+	@walk move=n cond='game.party.curY < 4'
+	@walk move=n cond='game.party.curY < 4'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

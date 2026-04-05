@@ -1,0 +1,155 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔８Ｆ
+insideName = ８Ｆ
+upper = ラドミラの塔９Ｆ
+lower = ラドミラの塔７Ｆ
+level = 52
+bgm = tower
+margin = 3
+shadow = dark
+sky = dawnforest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+　 = marble
+〰 = water
+／ = door
+∫ = pick
+＋ = stone_h
+☖ = arch
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+
+; 敵情報
+monsters = エキドナ,セイレーン,マッドウイング,見習いサキュバス,サキュバス,エルダーサキュバス,オークキング,コボルドリーダー,サイクロプス
+
+; 移動ポイント
+
+; 宝箱
+box[1] = ボム,ボム,チーズ,リターンの巻物,アンロックの巻物,経験のコイン（中）
+box[2] = 大地のドラム_u,戦女神の鎧・上_u,信仰心の秘薬,１０連泊券
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  		┏━━┯┳━━━━━━━┳━━━┳━┓
+ 8		┃　　⑤┃　　　　　　　／敵　　┃㊦┃
+  		┃　　　┃　┏━━━┓　┃　　　┃∴┃
+ 7		┃　　　┃　┃∴∴∴┃　┃　　❶┃∴┃
+  		┣／━━┛　┃∴∴∴┣⧻┻━━━┛∴┃
+ 6		┃　　　　　┃断∴∴【①∴∴∴∴∴∴┃
+  		┃　┏━━┯╋／┳━┛∴┏━━━┓∴┃
+ 5		┃　┃　　②┃∴☖∴∴∴┃∴∴∴┃∴┃
+  		┃　┃　　　┃∴┣━━━┫∴∴∴┣⧻┫
+ 4		┃　┃　　　┃∴┃∴∴∴┃∴∴断／∴┃
+  		┃　┗／┳━┛∴┗━┓∴┗━━━┫∴┃
+ 3		┃　　　☖∴∴∴∴∴⧻∴∴∴∴∴☖∴┃
+  		┣︻━┯┫∴∴∴┏━┻＋┳┯━━┫∴┃
+ 2		┃③　④┃∴∴∴☖∴∴〰┃②∴∴┃∴┃
+  		┃　　　┣⧻┳━┻／┓∴┃∴∴∴┃∴┃
+ 1		┃　　　┃　┃∴∴∴┃∴┃∴∴∴／∴┃
+  		┣∫━━┛　┃∴∴∴┃∴┣━━━╋━┫
+ 0		┃　　　　㊤┃②∴∴┃∴⧻∴∴❷┃	┃
+  		┗━━━━━┻┷━━┻━┻━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[4][0].f.antiWarp = true;
+pos[4][7].f.antiWarp = true;
+pos[6][2].f.antiWarp = true;
+pos[6][6].f.antiWarp = true;
+pos[7][2].f.antiWarp = true;
+pos[8][0].f.antiWarp = true;
+pos[9][8].f.antiWarp = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! game.inLoading && events.has(4))
+{
+	switchFence(2, 3, "e", "open");
+	switchFence(3, 1, "n", "close");
+	switchFence(4, 5, "e", "open");
+	switchFence(4, 2, "e", "open");
+	switchFence(5, 3, "e", "close");
+	switchFence(6, 6, "n", "close");
+	switchFence(6, 0, "e", "close");
+	switchFence(8, 3, "e", "open");
+	switchFence(9, 4, "n", "close");
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="The switch on this floor opens all closed doors and closes all open doors."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=2 y=3 way=e mode=switch
+@switchfence x=3 y=1 way=n mode=switch
+@switchfence x=4 y=5 way=e mode=switch
+@switchfence x=4 y=2 way=e mode=switch
+@switchfence x=5 y=3 way=e mode=switch
+@switchfence x=6 y=6 way=n mode=switch
+@switchfence x=6 y=0 way=e mode=switch
+@switchfence x=8 y=3 way=e mode=switch
+@switchfence x=9 y=4 way=n mode=switch
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Switch to open everything"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=2 y=3 way=e force=open
+@switchfence x=3 y=1 way=n force=open
+@switchfence x=4 y=2 way=e force=open
+@switchfence x=4 y=5 way=e force=open
+@switchfence x=5 y=3 way=e force=open
+@switchfence x=6 y=6 way=n force=open
+@switchfence x=6 y=0 way=e force=open
+@switchfence x=8 y=3 way=e force=open
+@switchfence x=9 y=4 way=n force=open
+@delevent num=2
+@delevent num=4
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@eval exp='game.fallToLowerByChute(%[map: game.map.lower])'
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,133 @@
+﻿; 試練の迷宮
+
+name = 試練の迷宮Ｂ２
+insideName = Ｂ２
+upper = 試練の迷宮Ｂ１
+lower = 試練の迷宮Ｂ３
+level = 50
+bgm = labyrinth
+roof = stone
+shadow = dark
+sky = black
+
+; 各パーツ
+━ = stoner
+　 = marble
+〰 = water
+❑ = cube
+／ = door
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+Ⓐ = warp
+
+; 移動ポイント
+(A) = x:0, y:7, way:n
+
+; 宝箱
+box[1] = 召喚びん_u,生命力の秘薬_u,武芸の秘薬_u,敏捷性の秘薬_u,知恵の秘薬_u,信仰心の秘薬_u,特効薬_u
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━━━━━━━━━━━━━━━━━━━━━━━┓
+11┃　　❑　　　❑　　　　　❑　　　❑　　　　　　┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　┃
+10┃　　❑　　　❑　　　　　❑　　　❑　　　　　❶┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　┃
+ 9┃　　❑　　　❑　　　　　❑　　　❑　　　　　　┃
+  ┃　┏━━━━━━━━━━━━━━━━━━━━︻┫
+ 8┃　┃　　　　　　❑　　　　　❑　　　　　　　②┃
+  ┃　┃　　　　　　　　　　　　　　　　　　　　　┃
+ 7┃　／　　❑　❑　　　❑　　　❑　❑　　　　　　┃
+  ┣━┫　　　　　　　　　　　　　　　　　　　　　┃
+ 6┃㊦┃❑　　　❑　❑　　　❑　　　❑　❑　　　　┃
+  ┃　┗━┓　　　　　　　　　　　　　　　　　　　┃
+ 5┃　　　／❑　　　❑　❑　❑　❑　❑　　　❑　　┃
+  ┃　┏━┛　　　　　　　　　　　　　　　　　　　┃
+ 4┃　┃❑　　　　　　　❑　　　❑　　　❑　　　　┃
+  ┃　┃　　　　　　　　　　　　　　　　　　　　　┃
+ 3┃　┃　　❑　❑　❑　❑　　　❑　❑　❑　　　①┃
+  ┃　┃　　　　　　　　　　　　　　　　　　　┏⧻┫
+ 2┃　┃❑　　　　　❑　　　❑　❑　　　　　　┃①┃
+  ┃　┃　　　　　　　　　　　　　　　　　　　┃　┃
+ 1┃　┃　　❑　　　❑　　　❑　　　❑　　　❑┃　┃
+  ┃　┗━┳━━━━━━━━━━━━︼━━━━┛　┃
+ 0┠④　　⧻㊤　　　　　　　　　　　　　　　　　　┃
+  ┗━━━┻━━━━━━━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[8][1].event = 3;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+f.saveIsForbidden = false;
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] map.isPartition(11, 2, "n")
+
+[if exp='! game.party.hasItem(o.時のスイッチ)']
+	@notice text="I hear a voice from somewhere:<y><r>This door will not be opened to those without a <p>Time Switch<y>."
+	[eventoff]
+[endif]
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=11 y=2 way=n mode=open
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="The staircase leading down is located in the center of the west wall of the floor."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="There is no answer here.<r>Attack from the north side of the room.<r>          From a certain adventurer."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=1 y=0 way=e mode=open
+@wait time=800
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+@se f=dragstone
+@eval exp='game.map.reset()'
+@switchfence x=1 y=0 way=e mode=open cond='! game.map.events.has(4)'
+@wait time=800
+@warp x=11 y=1 way=n
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

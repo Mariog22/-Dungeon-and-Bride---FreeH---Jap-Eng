@@ -1,0 +1,1687 @@
+﻿// statwin.tjs
+// ステータス表示画面各種
+
+
+//----------------------------------------------------------------------------------------
+class TextWindow extends Layer
+{
+	// 文字表示ウインドウの基底となるクラス
+	// これを継承すると clearWindows ですべて閉じたりなどができる
+
+	var master;	// 管理オブジェクト
+	var notification = true;	// このウインドウが master に自分を通知するかどうか
+
+	// テキスト描画用
+	var frameGraphic;
+	var x, y, indentPos;
+	var lineSpacing = 6;
+	var marginL = 30;
+	var marginR = 30;
+	var marginT = 30;
+	var marginB = 30;
+	var chColor = 0xFFFFFF;
+	var edge = true;
+	var edgeColor = 0x000000;
+	var align = "left";
+	var valign = "top";
+
+	function TextWindow(par, master)
+	{
+		super.Layer(par.window, par);
+		this.master = master;
+		font.face = "MS PGothic";
+		font.height = 26;
+		hitThreshold = 256;	// 一切操作させない
+		focusable = false;
+		name = "テキストウインドウ";
+	}
+
+	function loadImages(storage)
+	{
+		super.loadImages(storage);
+		setSizeToImageSize();
+		frameGraphic = storage;
+	}
+
+	function clear()
+	{
+		if(frameGraphic === void) super.clear();
+		else super.loadImages(frameGraphic);
+		x = marginL;
+		y = marginT;
+		indentPos = 0;
+		chColor = 0xFFFFFF;
+	}
+
+	function open()
+	{
+		if(notification) master.notifyWindowOpened(this);
+		visible = true;
+	}
+
+	function close()
+	{
+		if(notification) master.notifyWindowClosed(this);
+		visible = false;
+		chColor = 0xFFFFFF;
+	}
+
+	function write(text, l, t)
+	{
+		// KAG の代わりに使う簡易文章表示
+
+		// 文字がなければ何もしない
+		text = "" + text;
+		if(text == "") return;
+
+		// センタリング
+		if((l === void && align == "center") || (t === void && valign == "middle"))
+		{
+			// １つの文章は全体のかたまりでセンタリングしたい
+			var maxWidth = 0;
+			var limitWidth = width - marginL - marginR;
+			var arr = text.split(/<r>/);
+			var lineCount = arr.count;
+
+			for(var i = 0; i < arr.count; i++)
+			{
+				var w = calculateTextWidth(arr[i]);
+				if(w > maxWidth) maxWidth = w;
+				if(maxWidth > limitWidth)
+				{
+					lineCount += maxWidth \ limitWidth;
+					maxWidth = limitWidth;
+				}
+			}
+			if(align == "center")
+			{
+				indentPos = (limitWidth - maxWidth) \ 2;
+				x = marginL + indentPos;
+			}
+			if(valign == "middle")
+			{
+				y = (height + marginT - marginB - (font.height + lineSpacing) * lineCount) \ 2;
+				if(y < marginT) y = marginT;
+			}
+		}
+
+		// 座標が指定してあったらそこに
+		if(l !== void) x = l;
+		if(t !== void) y = t;
+
+		var word = "";
+		var wordWidth = 0;
+
+		// 文字描画・一部の指定文字があったらその動作をする
+		for(var i = 0; i < text.length; i++)
+		{
+			if(text[i] === "`") i++;
+			var character = text[i];
+			var displayChar = true;
+
+			if (character === '<' && text[i+2] === '>') {
+				character = text[i+1];
+				i += 2; //Advance past assumed control character, even if it doesn't get matched below.
+				displayChar = false;
+			}
+
+			// If last letter, buffer must be cleared.
+			var endWord = i >= text.length - 1;
+			var endLine = false;
+			var newColor = null;
+
+			if (!displayChar) {
+				if (character === "r") {
+					endLine = true;
+					endWord = true;
+					displayChar = false;
+				} else {
+					newColor = lookupColorCharacter(character);
+					if (newColor !== void) {
+						displayChar = false;
+						endWord = true; // Or it won't print the last word in the previous color.
+					}
+				}
+			}
+
+			if (displayChar) {
+				// 何もなければ文字描画
+				if (' ' === character) {
+					endWord = true;
+				}
+				word += character;
+				wordWidth += font.getTextWidth(character);
+			}
+
+			if (endWord) {
+				if (x + wordWidth > textBoundaryRight()) {
+					reline();
+					endLine = false; // Prevent double reline if one was requested explicitly.
+				}
+				// Apparently drawText adds 1 pixel, according to original comment drawTextは必ず 1px 足すので文字列最後の 1px が邪魔になる This is ignored here
+				drawText(x - imageLeft, y - imageTop, word, chColor,,, edge * 2048, edgeColor, 3);
+            	x += wordWidth;
+				word = "";
+				wordWidth = 0;
+            }
+			if (endLine) {
+				reline();	// r : 改行
+			}
+			if (newColor) {
+				chColor = newColor;
+			}
+		}
+	}
+
+    function writeRightAligned(value, xEnd, yPos) {
+        // Write right-aligned, regardless of font proportionality and window setting.
+        if (xEnd === void) xEnd = textBoundaryRight();
+		write(value, xEnd - calculateTextWidth(value), yPos);
+    }
+
+    function writeCentered(value, xStart, xEnd, yPos) {
+    	// Write centered, regardless of font proportionality and window setting.
+    	if (xStart === void) xStart = marginL;
+    	if (xEnd === void) xEnd = textBoundaryRight();
+		var startPos = xEnd - calculateTextWidth(value);
+		if (startPos > xStart) startPos -= (startPos - xStart) \ 2;
+		if (startPos < xStart) {
+			writeToFit(value, xStart, yPos, 8, xEnd);
+		} else {
+			write(value, startPos, yPos);
+		}
+    }
+
+    function writeLeftAligned(value, xStart, yPos) {
+        // Write left-aligned, regardless of font proportionality and window setting.
+        if (xStart === void) xStart = marginL;
+		write(value, xStart, yPos);
+    }
+
+	function writeToFit(text, xPos, yPos, minTextSize = 8, xEnd) {
+		if (xPos === void) xPos = marginL;
+		if (xEnd === void) xEnd = textBoundaryRight();
+		var originalHeight = font.height;
+		var yAdjust = adjustFontSizeToFit(stripControlChars(text), font, xPos, xEnd);
+		write(text, xPos, yPos + yAdjust);
+		font.height = originalHeight;
+	}
+
+	function textBoundaryRight() {
+		return width - marginR;
+	}
+
+	function calculateTextWidth(text) {
+		return font.getTextWidth(stripControlChars(text));
+	}
+
+	function stripControlChars(text) {
+        return /<[a-z]>/g.replace(text, "");
+	}
+
+	// Can be called outside context of window object, so must be self contained.
+	// Must pass an unformatted string.
+	function adjustFontSizeToFit(text, fontObj, xStart, xEnd, minTextSize = 8) {
+		var yAdjust = 0;
+		while (fontObj.height >= minTextSize && xStart + fontObj.getTextWidth(text) - 1 > xEnd) {
+			--fontObj.height;
+			++yAdjust;
+		}
+		return yAdjust \ 2;
+	}
+
+	function lookupColorCharacter(character) {
+		switch(character){
+			case "g": return 0x80FF80;	// g : 緑
+			case "y": return 0xFFFFC0;	// y : 黄色
+			case "p": return 0xFFC0C0;	// p : ピンク
+			case "c": return 0xC0E0FF;	// c : シアン
+			case "b": return 0x0000C0;	// b : 青
+			case "w": return 0xFFFFFF;	// w : 白
+			case "k": return 0x010101;	// k : 黒
+		}
+		return void;
+	}
+
+
+
+	function reline()
+	{
+		x = marginL + indentPos;
+		y += font.height + lineSpacing;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class BaseWindow extends TextWindow
+{
+	// マウス操作等を受け付けるウインドウ
+	// あらゆるコマンドウインドウ等の基底となる
+
+	var cover;	// 他の操作をさせないためのカバーレイヤー
+
+	function BaseWindow(par, master)
+	{
+		super.TextWindow(...);
+		cover = new CoverLayer(this);
+		hitThreshold = 16;	// このレイヤーの描画領域がマウスイベントを受け取るのに必要
+	}
+
+	function finalize()
+	{
+		invalidate cover;
+		super.finalize();
+	}
+
+	function open()
+	{
+		super.open();
+		cover.visible = true;
+		cover.absolute = absolute - 1;
+	}
+
+	function close()
+	{
+		super.close();
+		cover.visible = false;
+	}
+
+	function onMouseUp(x, y, button)
+	{
+		if(button == mbRight) window.onPrimaryRightClick();
+		super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if(! window.preProcessKeys(key, shift) && (key == BT_CANCEL || key == BT_CANCEL2))
+		{
+			window.onPrimaryRightClick();
+		}
+		super.onKeyDown(...);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class CoverLayer extends Layer
+{
+	// カバーレイヤーを作るクラス
+	// 下のレイヤーにカバーを掛けてマウスイベントを他に回せるようにしたレイヤー
+
+	var owner;	// マウスイベントを受け取るレイヤー
+
+	function CoverLayer(owner)
+	{
+		super.Layer(owner.window, owner.parent);
+		setSize(owner.window.scWidth, owner.window.scHeight);
+		visible = false;	// true にすることでマウスイベントを受け取れるようになる
+		opacity = 0;	// 透明だけども見えてはいる
+		hitThreshold = 0;	// このレイヤーがマウスイベントを受け取るのに必要
+		fillRect(0, 0, width, height, 0xFF000000);
+		this.owner = owner;
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		owner.onMouseUp(...);
+		super.onMouseUp(...);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class NoticeWindow extends BaseWindow
+{
+	// 一度だけ警告表示するウインドウ
+	// クリックすると消える
+
+	var waitTimer;	// ウェイト用タイマー。ウェイトが設定されているとすぐには閉じない
+	var onCloseAction;	// 閉じた時に実行するアクション
+	var onCloseParam;	// ↑ のパラメータ
+	var iconLeft = 12;	// アイコン画像左端
+	var iconTop = 10;	// アイコン画像上端
+	var iconWidth = 140;	// アイコン画像幅
+	var iconHeight = 140;	// アイコン画像高さ
+	var iconBackColor = 0x000010;	// アイコン背景画像（透明部分がある場合）
+
+	function NoticeWindow(par, master)
+	{
+		super.BaseWindow(...);
+		waitTimer = new Timer(stopWait, "");
+		name = "Notice";
+		marginL = 32;
+		marginT = 32;
+		marginR = 39;
+		marginB = 45;
+		edgeColor = 0x201040;
+		focusable = true;
+	}
+
+	function finalize()
+	{
+		invalidate waitTimer;
+		super.finalize();
+	}
+
+	property visible
+	{
+		setter(v)
+		{
+			super.visible = v;
+			cover.visible = v;
+		}
+		getter
+		{
+			return super.visible;
+		}
+	}
+
+	function stopWait()
+	{
+		waitTimer.enabled = false;
+	}
+
+	function open(nextAction, param, wait = 200)
+	{
+		super.open();
+		clear();
+		setPos(kag.scWidth - width >> 1, kag.scHeight - height >> 1);
+		onCloseAction = nextAction;
+		onCloseParam = param;
+		focus();
+		waitTimer.interval = wait;
+		waitTimer.enabled = true;
+	}
+
+	function close()
+	{
+		super.close();
+		waitTimer.enabled = false;
+		if(onCloseAction !== void) onCloseAction(onCloseParam);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(waitTimer.enabled) return;
+		close();
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if(window.preProcessKeys(key, shift)) return;
+		if(waitTimer.enabled) return;
+		window.hideMouseCursor();
+		close();
+	}
+
+	function processScenario()
+	{
+		// 通常のＫＡＧシナリオ中で使うとき用
+		kag.trigger("noticeClick");
+	}
+
+	function printIcon(img, trimLeft, trimTop)
+	{
+		// 文章の左にアイコン画像を表示する
+		colorRect(iconLeft, iconTop, iconWidth, iconHeight, iconBackColor);	// 背景
+		operateRect(iconLeft, iconTop, img, trimLeft, trimTop, iconWidth, iconHeight);
+		var idt = indentPos + trimLeft + iconWidth;
+		if(idt > indentPos) indentPos = idt;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class PopupInfoWindow extends NoticeWindow
+{
+	// 通知をポップアップ表示するウインドウ
+	// 操作を必要とせず一定時間で勝手に消える
+
+	function PopupInfoWindow(par, master)
+	{
+		super.NoticeWindow(...);
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function stopWait()
+	{
+		waitTimer.enabled = false;
+		close();
+		kag.trigger("popupClose");
+	}
+
+	function open(param1 = 500, param2, param3 = 500)
+	{
+		// 基本は NoticeWindow と同じだが、第１、２引数は省略できる
+		var omit = (typeof param1 == "Integer");
+		onCloseAction = omit ? void : param1;
+		onCloseParam = omit ? void : param2;
+		visible = true;
+		clear();
+		setPos(kag.scWidth - width >> 1, kag.scHeight - height >> 1);
+		waitTimer.interval = omit ? param1 : param3;
+		waitTimer.enabled = true;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class TextEditWindow extends BaseWindow
+{
+	// テキスト入力ウインドウ
+
+	var editBox;
+	var okButton;
+	var onButtonAction;
+
+	function TextEditWindow(par, master)
+	{
+		super.BaseWindow(...);
+		name = "名前入力ダイアログ";
+		loadImages("frame_notice");
+		setPos(kag.scWidth - width >> 1, kag.scHeight - height >> 1);
+		focusable = false;
+
+		editBox = new EditLayer(window, this);
+		with(editBox)
+		{
+			.name = "テキスト入力ボックス";
+			.font.height = 24;
+			.visible = true;
+			.onKeyDown = function(key, shift, process=true)
+			{
+				if(key == BT_OK || key == BT_OK2) parent.fix();
+				else if(key == BT_CANCEL || key == BT_CANCEL2) parent.cancel();
+				else global.EditLayer.onKeyDown(...);
+			} incontextof editBox;
+		}
+
+		okButton = new ButtonLayer(window, this);
+		with(okButton)
+		{
+			.loadImages("btn_cmd_white_f7");
+			.focusable = false;
+			.type = ltDodge;
+			.visible = true;
+			.setPos(width - okButton.width >> 1, 130);
+			.onExecute = function(x, y, button, shift)
+			{
+				if(button == mbLeft) fix();
+				else cancel();
+			} incontextof this;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate editBox;
+		invalidate okButton;
+		super.finalize();
+	}
+
+	function open(length, buttonAction)
+	{
+		super.open();
+		clear();
+		editBox.maxChars = length;
+		editBox.setSize(length * 24 + 7, 30);	// この幅より1pxでも小さいと文字列が横に動く
+		editBox.setPos(width - editBox.width >> 1, 80);
+		editBox.focus();
+		onButtonAction = buttonAction;
+	}
+
+	function write(text, l, t)
+	{
+		super.write(...);
+		super.write("OK", width \ 2 - font.height - 1, 134);
+	}
+
+	function setDefaultName(text)
+	{
+		editBox.text = text;
+	}
+
+	function openByTag(elm)
+	{
+		// ＫＡＧのタグ（マクロ）から開く
+		open(elm.length);
+		write(elm.title);
+		setDefaultName(elm.default);
+	}
+
+	function fix()
+	{
+		kag.trigger("askQuestion");
+		close();
+		if(onButtonAction !== void) onButtonAction(editBox.text);
+	}
+
+	function cancel()
+	{
+		editBox.text = "";
+		kag.trigger("askQuestion");
+		close();
+		if(onButtonAction !== void) onButtonAction(editBox.text);
+	}
+
+	function onMouseUp(x, y, button)
+	{
+		if(button == mbRight) cancel();
+		else super.onMouseUp(...);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class BattleInfoWindow extends MessageLayer
+{
+	// 戦闘メッセージウインドウ
+
+	var backImage;	// ウインドウ画像
+	var backFrame;	// このレイヤーの表示範囲を制限するための親レイヤー
+	var messageMarginL = 24;	// メッセージのマージン この値を元に枠の位置と大きさを決める
+	var messageMarginT = 5;
+	var messageMarginR = 20;
+	var messageMarginB = 22;
+
+	function BattleInfoWindow(par, master)
+	{
+		backImage = new global.KAGLayer(par.window, par);
+		backImage.hitType = htProvince;
+		backImage.loadImages("frame_battle");
+		backImage.setSizeToImageSize();
+
+		backFrame = new global.KAGLayer(par.window, par);
+		backFrame.hitType = htProvince;
+		backFrame.width = backImage.width - messageMarginL - messageMarginR;
+		backFrame.height = backImage.height - messageMarginT - messageMarginB;
+		backFrame.clear();
+		backFrame.visible = true;
+
+		super.MessageLayer(par.window, par, "戦闘メッセージ", 0, true);
+		parent = backFrame;
+		setPosition(%[marginl: 0, margint: 0, marginr: 0, marginb: 0, frame: "", visible: true
+			, width: backFrame.width, height: backFrame.height, left: 0, top: 0]);
+		setDefaultFont(%[face: "MS PGothic", size: 20, edge: true, bold: false]);
+		defaultEdgeColor = 0x201040;
+	}
+
+	function finalize()
+	{
+		invalidate backImage;
+		invalidate backFrame;
+		super.finalize(...);
+	}
+
+	property absolute
+	{
+		setter(v){ backImage.absolute = (backFrame.absolute = v) - 1; }
+		getter{ return backFrame.absolute; }
+	}
+
+	function setPos(l, t)
+	{
+		backImage.setPos(l, t);
+		backFrame.setPos(l + messageMarginL, t + messageMarginT);
+	}
+
+	function open()
+	{
+		kag.current = this;
+		backFrame.visible = backImage.visible = true;
+		backImage.opacity = sf.battleFrameOpacity;
+		kag.setDelay(%[speed: "nowait"]);
+	}
+
+	function close()
+	{
+		backFrame.visible = backImage.visible = false;
+		kag.setDelay(%[speed: "user"]);
+	}
+
+	function ready()
+	{
+		kag.current = this;
+		open();
+		clear();
+		top = 0;
+		height = backFrame.height;
+		imageHeight = height;	// reline の判定は imageHeight を参照してるのでこれも直さないといけない
+	}
+
+	function write(str)
+	{
+		kag.current = this;
+		for(var i = 0; i < str.length; i++)
+		{
+			processCh(str[i]);
+		}
+	}
+
+	function reline()
+	{
+		// ページ末尾まで行ったら１行上に送る
+		if(x <= marginL) return false;	// 空行は作らない
+		if(super.reline())
+		{
+			decideSizeChange();
+			fixLineLayer();
+			y += lineSize + lineSpacing;
+			x = indentxpos;
+			isLastLine=true;
+			initLineLayer();
+			top -= lineSize + lineSpacing;
+			height += lineSize + lineSpacing;
+				// lineLayer のサイズは height を参照している。reline の判定と違うので注意
+		}
+		return false;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class BattleResultWindow extends Layer
+{
+	// 戦闘で獲得した経験値とゴールドを表示するウインドウ
+	// なお、この画面を経ることで経験値と金が実際に加算される
+
+	var master;	// 管理オブジェクト
+	var timer;	// アニメ用タイマー
+	var textLayer;	// 文字表示
+	var faceLayer = [];	// キャラの顔
+	var barLayer = [];	// 経験値バー
+	var targetLV = [];	// 今の経験値で何レベルまで上がれるかを保存
+	var nextLayer = [];	// 上がれるレベルを記述するレイヤー
+	var counter = 0;	// アニメカウント
+	var maxCounter = 100;	// 最終アニメカウント
+	var gotExp;	// 得られた経験値
+	var unitGold;	// １コマ毎に増えるゴールド
+	var totalGold;	// 獲得金加算後の最終的なゴールドの総額
+	var wallet;	// 手持ちのゴールド表示
+
+	function BattleResultWindow(par, master)
+	{
+		super.Layer(par.window, par);
+		this.master = master;
+		name = "結果ウインドウ";
+		loadImages("frame_result");
+		setSizeToImageSize();
+		setPos(30, 12);
+		hitThreshold = 256;
+		font.height = 27;
+		font.face = "MS PGothic";
+		font.bold = true;
+
+		textLayer = new DecoLayer(this);
+		textLayer.loadImages("frame_result_text");
+		textLayer.setSize(textLayer.imageWidth, textLayer.imageHeight \ 2);
+		textLayer.setPos(149, 10);
+		textLayer.visible = true;
+
+		for(var i = 0; i < master.party.maxMembers; i++)
+		{
+			faceLayer[i] = new global.Layer(window, this);
+			faceLayer[i].setPos(70, i * 70 + 104);
+			faceLayer[i].setSize(60, 60);
+			faceLayer[i].setImageSize(96, 96);
+			faceLayer[i].setImagePos(-18, -24);
+			barLayer[i] = new DecoLayer(this);
+			barLayer[i].setPos(145, i * 70 + 116);
+			barLayer[i].loadImages("image_expbar");
+			barLayer[i].visible = true;
+			nextLayer[i] = new DecoLayer(this);
+			nextLayer[i].setPos(661, i * 70 + 119);
+			nextLayer[i].setSize(135, 30);
+			nextLayer[i].visible = true;
+			nextLayer[i].font.face = "MS PGothic";
+			nextLayer[i].font.bold = true;
+		}
+
+		wallet = new WalletLayer(this, master);
+		wallet.loadImages("frame_wallet_l");
+		wallet.setPos(width - 176, 18);
+		wallet.font.height = 24;
+
+		timer = new Timer(updateWindow, "");
+		timer.interval = 20;
+	}
+
+	function finalize()
+	{
+		invalidate textLayer;
+		for(var i = 0; i < faceLayer.count; i++) invalidate faceLayer[i];
+		for(var i = 0; i < barLayer.count; i++) invalidate barLayer[i];
+		for(var i = 0; i < nextLayer.count; i++) invalidate nextLayer[i];
+		invalidate wallet;
+		invalidate timer;
+		super.finalize(...);
+	}
+
+	function open(exp, gold, viewQuestResult = false)
+	{
+		// 画面を開く
+		loadImages("frame_result");
+		textLayer.imageTop = - viewQuestResult * textLayer.height;
+		for(var i = 0; i < master.party.maxMembers; i++)
+		{
+			faceLayer[i].visible = false;
+			barLayer[i].width = 0;
+			nextLayer[i].clear();
+		}
+		gotExp = master.party.getExpPerHead(exp);	// １人あたりの経験値
+		totalGold = cap(master.party.gold + gold, master.party.maxGold);
+		unitGold = gold \ maxCounter + 10;	// アニメの１サイクルで増える金
+		if(gold > 0) playSound("coinlong", 2);	// お金の入る音をスタート
+		counter = 0;
+		loadParty();
+		drawText(172, 56, "%7d".sprintf(gotExp), 0xFFFFFF);	// 獲得経験値表示
+		drawText(502, 56, "%7d".sprintf(gold), 0xFFFFFF);	// 獲得ゴールド表示
+		visible = true;
+		timer.enabled = true;
+	}
+
+	function close()
+	{
+		// 画面を閉じる
+		visible = false;
+		master.party.giveExpToMembers(gotExp);	// 経験値を実際に加算
+		master.distributeExpToSlaves(gotExp);	// 囚われたメンバーにも一部与える
+	}
+
+	function loadParty()
+	{
+		// パーティーの情報を読み込んで初期表示
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			var one = master.party.members[i];
+			faceLayer[i].loadImages(one.img + "_icon_" + one.color);
+			faceLayer[i].visible = true;
+			targetLV[i] = one.getReachableLevel();	// 今の経験値で何レベルまで上がれるか
+			writeNextLevel(i, targetLV[i]);	// 次のレベルを記述
+		}
+		updateWindow();	// 経験値バーの表示
+	}
+
+	function writeNextLevel(num, nextLevel)
+	{
+		// 次に上がれるレベルを記述する
+		var one = master.party.members[num];
+		var nextColor = (one.level >= nextLevel ? 0xFFFFFF : 0xFFFF80);
+		nextLayer[num].clear();
+		nextLayer[num].drawText(9, 1, "%3d".sprintf(one.level), 0xFFFFFF);
+		nextLayer[num].drawText(83, 1, "%3d".sprintf(nextLevel), nextColor);
+	}
+
+	function updateWindow()
+	{
+		// アニメ
+		counter ++;
+		if(counter >= maxCounter) timer.enabled = false;
+
+		// 経験値加算（表示だけ）
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			var one = master.party.members[i];
+			if(isDemoVersion && one.level >= master.levelCapOnDemo) continue;
+			if(one.dead || (counter > 1 && one.isEquipmentsHasSkill(o.呪・停滞))) continue;
+			var unit = (gotExp + one.getExtraExp(gotExp)) * counter \ maxCounter;
+			if(one.exp + unit >= one.getNeedExp(targetLV[i] + 1))
+			{
+				playSound("up1", 1);
+				targetLV[i] ++;
+				writeNextLevel(i, targetLV[i]);
+			}
+			barLayer[i].width = 500 * (one.exp + unit - one.getNeedExp(targetLV[i]))
+				 \ (one.getNeedExp(targetLV[i] + 1) - one.getNeedExp(targetLV[i]));
+		}
+
+		// ゴールド加算。このアニメが終わることで実際に加算される
+		if(master.party._gold == master.party.maxGold) kag.se[2].stop();
+		if(master.party._gold == totalGold) return;
+		master.party._gold += unitGold;	// 他の wallet を更新させない
+		if(master.party._gold >= totalGold)
+		{
+			master.party.gold = totalGold;	// ここで他の wallet も更新
+			kag.se[2].stop();	// お金の入る音をストップ
+		}
+		wallet.update();
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class LevelUpInfoWindow extends NoticeWindow
+{
+	// レベルアップ情報ウインドウ
+	// クリックすると消える
+
+	function LevelUpInfoWindow(par, master)
+	{
+		super.NoticeWindow(...);
+		loadImages("frame_levelup");
+		marginR = 0;
+		font.height = 24;
+		//font.face = "ＭＳ 明朝";
+		font.bold = true;
+		edge = false;
+	}
+
+	function drawInfo(obj, result)
+	{
+		CharaReportWindow.copyCharaImage(81, 110, obj, 2, 2, 160, 160);
+		write("<y>" + obj.displayName + "<w> levelled up!", 42, 62);
+		var lv = obj.level < 10 ? han2zen(string(obj.level)) : obj.level;
+		write(lv, 195, 288);
+		var xPos = 272;
+		y = 90;
+		writeStat("<w>HP", obj.maxLife);
+		writeStat("Strength", obj.power);
+		writeStat("Intelligence", obj.intellect);
+		writeStat("Faith", obj.piety);
+		writeStat("Vitality", obj.vitality);
+		writeStat("Speed", obj.speed);
+		writeStat("Luck", obj.luck);
+
+		if(result.magic.count == 0) result.magic[0] = "None";
+		for(var i = 0; i < result.magic.count; i++)
+		{
+			// JP does a lookup here to get the display name, but here it's the displayName already. 
+			write(result.magic[i], 60, i * 27 + 372);
+		}
+		if(result.ability === void) result.ability = "None";
+		write(result.ability, 321, 372);
+		var res = cap(obj.getNeedExp(obj.level + 1) - obj.exp);
+		write(((res == 0 ? "<g>" : "") + "%8d".sprintf(res)), 350, 450);
+		for(var i = 0; i < result.param.count; i++)
+		{
+			if(result.param[i] === void) continue;
+			write("<g>" + result.param[i], 416, i * 27 + 117);
+		}
+	}
+
+	function writeStat(name, value) {
+		write(name, 272, y + 27);
+		writeRightAligned(value, 506, y);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class CharaReportWindow extends NoticeWindow
+{
+	// その他のキャラクター情報ウインドウ
+	// クリックすると消える
+
+	function CharaReportWindow(par, master)
+	{
+		super.NoticeWindow(...);
+		loadImages("frame_report");
+		marginR = 0;
+		font.height = 22;
+	}
+
+	function copyCharaImage(dl, dt, obj, sl, st, sw, sh)
+	{
+		// キャラクターの画像を表示する
+		operateRect(dl, dt, obj.charaLayer, sl, st, sw, sh);
+		if(obj.isHiring) return;
+		var l = obj.faceLayer;
+		var cl = obj.isGuest ? -obj.charaLayer.imageLeft : -obj.charaLayer.left;
+		var ct = -obj.charaLayer.imageTop;
+		operateRect(l.left + cl + dl - sl, l.top + ct + dt - st, l, -l.imageLeft, 0, l.width, l.height);
+	}
+
+	function reportNeededExp(obj)
+	{
+		// 必要な残り経験値を表示する
+		copyCharaImage(13, 11, obj, 10, 20, 138, 138);
+		write("<c>" + obj.displayName + "<w> needs", 180, 40);
+		write(cap(obj.getNeedExp(obj.level + 1) - obj.exp) + " EXP <w>to level up", 210, 90);
+	}
+
+	function viewCharaInfo(obj)
+	{
+		// キャラクターの簡易情報を表示する
+
+		y = 20;
+		copyCharaImage(13, 11, obj, 10, 20, 138, 138);
+		write("<y>" + obj.displayName + "<w>", 180, y);
+
+		write((obj.trust == 100 ? "<p>" : "<y>") + "Trust", 518, 12);
+		write("%2d".sprintf(int(obj.trust)), 592, 13);
+
+		y = 55;
+		write("HP " + "%4d".sprintf(obj.life) + "/" + "%4d".sprintf(obj.maxLife), 200, y);
+		write("LEVEL UP  " + obj.level + " → ", 370, y);
+		
+		if(obj.isLevelUp()) chColor = 0x80FF80;
+		write(obj.getReachableLevel(), 546, y);
+
+		y = 85;
+		write("<w>Lust " + "%3d".sprintf(obj.heat \ 1), 370, y);
+		write("<w>Libido " + "%3d".sprintf(obj.desire \ 1), 520, y);
+
+		if(obj.isUserChara)
+		{
+			var mp = obj.mmagic.sum() + obj.pmagic.sum() + obj.amagic.sum() + obj.smagic.sum();
+			var maxMP = obj.mmagicMax.sum() + obj.pmagicMax.sum() + obj.amagicMax.sum() + obj.smagicMax.sum();
+			write("MP " + "%4d".sprintf(mp) + "/" + "%4d".sprintf(maxMP), 200, y);
+		}
+		else write("MP  -- / --", 200, y);
+
+		if(obj.isUserChara && obj.sex == "女")
+		{
+			y = 120;
+			var w = 96, x = 166;
+			var temp = new global.Layer(window, this);
+			for(var i = 0; i < master.lovers.count; i++)
+			{
+				var guy = master.lovers[i];
+				if(guy.isUserChara) temp.loadImages("icon_lovemini_" + guy.img + "_" + guy.color);
+				else temp.loadImages("icon_lovemini_" + guy.img);
+				copyRect(i * w + x, y - 2, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+				temp.loadImages("image_love_guard");
+				var showGuard = (obj.guard[guy.img] > 0);
+				chColor = showGuard ? 0xC0C0FF : 0xFFC0C0;
+				operateRect(i * w + x + 25, y + 2, temp
+					, showGuard * temp.imageWidth \ 2, 0, temp.imageWidth \ 2, temp.imageHeight);
+				write("%2d".sprintf(showGuard ? obj.guard[guy.img] : obj.love[guy.img]), i * w + x + 46, y);
+			}
+
+			if(obj.isNovice())
+			{
+				temp.loadImages("icon_novice");
+				operateRect(480, 10, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+			}
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class PartyInfoWindow extends NoticeWindow
+{
+	// パーティー情報ウインドウ
+	// クリックすると消える
+
+	function PartyInfoWindow(par, master)
+	{
+		super.NoticeWindow(...);
+		loadImages("frame_partymenu");
+		marginL = 20;
+		marginR = 0;
+		edge = false;
+		font.bold = true;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function viewInfo(party, inDuel = false, playersParty = false)
+	{
+		// 情報表示
+
+		// ウインドウを開く
+		open();
+
+		// 名前
+
+		font.height = 27;
+		write(party.displayName, 195, 24);
+
+		// 所持金
+		font.height = 22;
+		var goldStr = inDuel || playersParty ? number_format(party.gold) : "--- ";
+		write(" ".repeat(10 - goldStr.length) + goldStr, 680, 29);
+
+		// メンバーのスペック
+		var members = playersParty ? party.allMembers : party.members;
+		for(var i = 0; i < members.count; i++)
+		{
+			var y = i * 28 + 85;
+			if(i == 9 && members.count > 10)
+			{
+				write("<p>And <b>" + (party.members.count - 9) + " <p>more", 180, y);
+				break;
+			}
+			var one = members[i];
+			var id = [m.奴隷ヒロイン０, m.奴隷ヒロイン１, m.奴隷ヒロイン２].find(one);
+			if(id != -1) one = party.slaves[id];
+			//font.face = "ＭＳ Ｐ明朝";
+			write(one.displayName             ,  30, y - 1);
+			if(one instanceof "CharaObject")
+			{
+				var temp = new global.Layer(window, this);
+				temp.loadImages("jobss_" + one.job.img);
+				operateRect(224, y, temp, 0, 0, temp.width, temp.height);
+			}
+			//font.face = "ＭＳ 明朝";
+			if(playersParty && one.isLevelUp()) chColor = 0x80FF80;		
+			writeRightAligned(one.level       , 274, y);
+			chColor = 0xFFFFFF;
+			writeRightAligned(one.life        , 330, y);
+			writeRightAligned(one.defense     , 400, y);
+			writeRightAligned(one.times       , 450, y);
+			writeRightAligned(one.attack[0] + "～" + one.attack[1], 572, y);
+			writeRightAligned(one.power       , 630, y);
+			writeRightAligned(one.intellect   , 680, y);
+			writeRightAligned(one.piety       , 730, y);
+			writeRightAligned(one.vitality    , 780, y);
+			writeRightAligned(one.speed       , 830, y);
+			writeRightAligned(one.luck        , 880, y);
+		}
+
+		// 所持アイテム（一部）
+		var str = "";
+		if(inDuel)
+		{
+			var arr = party.itemsList.split(",");
+			for(var i = 0; i < arr.count; i++)
+			{
+				var itemName = o[arr[i]].displayName;
+				if(font.getTextWidth(str + itemName) > 700) break;
+				str += itemName + " ";
+			}
+			if(str == "") str = "None";
+		}
+		else str = " ---";
+		drawText(195, 365, str, 0xBCEDC3);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HeartMeter extends Layer
+{
+	// 興奮度を表示する棒形のメーター
+
+	var barLayer;
+	var numberLayer;
+	var barTop = 26;
+	var maxValue = 200;
+
+	function HeartMeter(par, master)
+	{
+		super.Layer(par.window, par);
+		loadImages("heartmeter_frame");
+		setSizeToImageSize();
+		hitThreshold = 256;
+		maxValue = master.maxHeat;
+
+		barLayer = new global.Layer(par.window, par);
+		barLayer.loadImages("heartmeter_bar");
+		barLayer.setSizeToImageSize();
+		barLayer.hitThreshold = 256;
+
+		numberLayer = new global.Layer(par.window, this);
+		numberLayer.setSize(50, 30);
+		numberLayer.clear();
+		numberLayer.setPos(10, 326);
+		numberLayer.visible = true;
+		numberLayer.font.face = "Tahoma";
+		numberLayer.font.height = 26;
+	}
+
+	property visible
+	{
+		setter(v)
+		{
+			super.visible = v;
+			barLayer.visible = v;
+		}
+		getter
+		{
+			return super.visible;
+		}
+	}
+
+	property absolute
+	{
+		setter(v)
+		{
+			super.absolute = v;
+			barLayer.absolute = v - 1;
+		}
+		getter
+		{
+			return super.absolute;
+		}
+	}
+
+	function setPos(l, t)
+	{
+		super.setPos(l, t);
+		barLayer.setPos(left + 20, top + barTop);
+	}
+
+	function open(val)
+	{
+		var h = barLayer.imageHeight * val \ maxValue + (val > 0);
+		barLayer.height = h;
+		barLayer.imageTop = h - barLayer.imageHeight;
+		barLayer.top = top + barTop - barLayer.imageTop;
+		numberLayer.clear();
+		numberLayer.drawText(28 - (string(int(val))).length * 7, 6, int(val), 0xFFFFFF);
+		visible = true;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class HeroineDiary extends DecoLayer
+{
+	// １日分のＨ記録を表示するレイヤー
+
+	var master;
+
+	function HeroineDiary(par, master)
+	{
+		super.DecoLayer(par);
+		this.master = master;
+		loadImages("frame_diary");
+		//font.face = "ＭＳ Ｐ明朝";
+		font.bold = true;
+	}
+
+	function drawRecord(dic)
+	{
+		clear();
+		font.height = 14;
+		font.italic = true;
+		drawText(6, 3, "%3d".sprintf(master.date - dic.date), 0x313FA6);
+		font.height = 18;
+		font.italic = false;
+		var guy = o[dic.guyKey];
+		drawText(145, 16, guy.displayName, 0xFF4040);
+		drawText(205, 35, +dic.sexCount, 0x645959);
+		drawText(205, 55, +dic.orgasmCount, 0x645959);
+		font.height = 11;
+		var lines = makePlayingText(dic.acts);
+		drawText( 15, 78, lines[0], 0x645959);
+		if (lines.count > 1) {
+			drawText( 15, 95, lines[1], 0x645959);
+		}
+		var temp = new global.Layer(window, this);
+		if(guy instanceof "CharaObject") temp.loadImages("icon_love_" + guy.img + "_" + guy.color);
+		else temp.loadImages("icon_love_" + guy.img);
+		operateRect(11, 19, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+		temp.loadImages("image_satisfy");
+		for(var i = 0; i < dic.satisfy; i++)
+		{
+			operateRect(150 + i * 22, 110, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+		}
+		visible = true;
+	}
+
+	function makePlayingText(acts)
+	{
+		var lines = [];
+		var str = "";
+		var availableSpace = [260, 250];
+		var row = 0;
+		for(var i = 0; i < acts.count; i++) {
+			var current = master.getTranslation(acts[i]) + " ";
+			var test = str + current;
+			if (font.getTextWidth(test) > availableSpace[row]) {
+				if(row < availableSpace.count) {
+					lines[row] = str;
+					++row;
+					test = current;
+				} else {
+					if (i < acts.count) {
+						str += "+";
+					}
+					break;
+				}
+			}
+			str = test;
+		}
+		lines[row] = str;
+		return lines;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class CharaStatusWindow extends TextWindow
+{
+	// キャラのステータス画面
+	// ItemBoardWindow から呼び出される
+
+	var diary = [];	// ヒロインのＨ記録
+	var skillButtons = [];	// スキルの説明を表示するボタン
+
+	function CharaStatusWindow(par, master)
+	{
+		super.TextWindow(...);
+		//font.face = "ＭＳ 明朝";
+		font.bold = true;
+		edge = false;
+		marginR = 0;
+
+		// ヒロインのＨ記録・10枠
+		for(var i = 0; i < 10; i++)
+		{
+			diary[i] = new HeroineDiary(this, master);
+		}
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < diary.count; i++) invalidate diary[i];
+		super.finalize();
+	}
+
+	function close()
+	{
+		if(! visible) return;
+		for(var i = 0; i < diary.count; i++) diary[i].visible = false;
+		visible = false;
+		clearSkillButtons();
+	}
+
+	function putSkillButton(cmd, l, t)
+	{
+		var btn = new CommandButton(parent);
+		btn.onSelectAction = viewSkillDetail;
+		btn.onSelectActionParam = cmd;
+		btn.loadImages("btn_cmd_skill_" + cap(font.getTextWidth(cmd.displayName) \ font.height, 9, 6));
+		btn.setPos(l + left - 10, t + top - 2);
+		drawText(l, t, cmd.displayName, chColor);
+		btn.name = cmd.name;
+		btn.type = ltDodge;
+		skillButtons.add(btn);
+		parent.markers.add(btn);
+	}
+
+	function clearSkillButtons()
+	{
+		for(var i = 0; i < skillButtons.count; i++)
+		{
+			parent.markers.remove(skillButtons[i]);
+			skillButtons[i].visible = false;
+			invalidate skillButtons[i];
+		}
+		skillButtons.clear();
+	}
+
+	function viewSkillDetail(cmd)
+	{
+		// スキルの詳細表示
+		var btn = kag.focusedLayer;
+		master.notice.open(btn.focus);
+		master.notice.write("<y>" + cmd.displayName + "<r><w>" + cmd.detail);
+	}
+
+	function drawStatus(obj)
+	{
+		// パーティーメンバー・ゲスト・モンスターステータス表示
+
+		loadImages("back_status");
+		clearSkillButtons();
+
+		// 名前・性別・種族
+		//font.face = "ＭＳ 明朝";
+		font.height = 32;
+		write("<y>" + obj.displayName, 86, 38);
+		font.height = 24;
+		var raceDetails = ((obj.sex == "男") ? "<c>♂ " : (obj.sex == "女") ? "<p>♀ " : "<y>") + obj.raceDisplayName();
+		writeRightAligned(raceDetails, 495, 44); // Can overlap with Monster encyclopedia box if left aligned.
+		y = 52;
+
+		// 職業
+		writeStat("<w>LV", obj.level, false);
+		var blockY = y;
+		writeStat("Job", obj.jobDisplayName(), false);
+		if(obj instanceof "CharaObject")
+		{
+			// 職業マーク・属性
+			var temp = new global.Layer(window, this);
+			temp.loadImages("job_" + obj.job.img);
+			operateRect(15, 20, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+			writeStat("Alignment",obj.alignment.displayName, false);
+		}
+
+		// その他情報
+		if(typeof obj.formation != "undefined")
+		{
+			writeStat("Type", (obj.formation == "fore" ? "Foreguard" : "Vanguard"), false);
+		}
+		if(typeof obj.trust != "undefined")
+		{
+			writeStat("Trust", (obj == master.playerChara ? "--" : obj.trust), false);
+		}
+		if(obj instanceof "CharaObject" || (obj instanceof "GuestObject" && ! obj instanceof "HiringObject"))
+		{
+			// ↑ instanceof 演算子は比較したクラスのサブクラスのオブジェクトに対しても真を返すので
+			//    スーパークラスだけを真にするにはサブクラスでないことの確認も必要
+			var c = obj.heat >= master.heatToLet ? "<p>" : (obj.heat >= master.heatToMove \ 2 ? "<y>" : "<w>");
+			writeStat("Lust", (obj == master.playerChara ? "--" : c + obj.heat), false);
+		}
+
+		// ＨＰ
+		write("<w>HP", 350, blockY);
+		var life = obj.life;
+		var maxLife = (obj instanceof "MonsterData")? life : obj.maxLife;
+		chColor = (life == 0 ? 0xFFA0A0 : (life < maxLife \ 4 ? 0xFFFF80 : 0xFFFFFF));
+		writeRightAligned(life + " / " + maxLife, 562, y);
+
+		// 経験値・所持金・その他記録
+		if(obj instanceof "MonsterObject")
+		{
+			writeStat("<w>EXP", obj.data.exp, true);
+			writeStat("<w>GOLD", obj.data.gold, true);
+		}
+		else if(obj instanceof "MonsterData")
+		{
+			writeStat("<w>EXP", obj.exp, true);
+			writeStat("<w>GOLD", obj.gold, true);
+		}
+		else
+		{
+			var nextExp = cap(obj.getNeedExp(obj.level + 1) - obj.exp);
+			writeStat("<w>EXP" + (nextExp == 0 ? "<g>" : ""), obj.exp, true);
+			writeStat("<w>NEXT", nextExp, true);
+            writeStat("Kills", obj.marks, true);
+            writeStat("Deaths", obj.rip, true);
+		}
+
+		// 能力値
+		chColor = 0xFFFFFF;
+		//write("Stats<w>", 80, 237);
+		//font.face = "ＭＳ 明朝";
+		y = 210; // For vertical positioning of below
+		writeStat("Strength", obj.power, false);
+		writeStat("Intelligence", obj.intellect, false);
+		writeStat("Faith", obj.piety, false);
+		writeStat("Vitality", obj.vitality, false);
+		writeStat("Speed", obj.speed, false);
+		writeStat("Luck", obj.luck, false);
+
+		// スキル
+		//font.face = "ＭＳ Ｐ明朝";
+		chColor = 0xD0D0FF;
+		write("Skills", 330, 237);
+		//font.face = "ＭＳ 明朝";
+		var arr = [];
+		arr.assign(obj.skill);
+		for(var i = 0; i < obj.btcmd.count; i++)
+		{
+			var cmd = obj.btcmd[i];
+			if(cmd == o.攻撃) continue;
+			if(cmd.magicLV <= 0) arr.add(cmd);
+		}
+		var adjust = cap(arr.count - 6, 2);	// スキルが多すぎた場合の調整（原則６ 最大８）
+		for(var i = 0; i < arr.count; i++)
+		{
+			putSkillButton(arr[i], 415, i * (27 - adjust * 2) + 237 - adjust * 2);
+		}
+		if(arr.count == 0) write("None", 415, 237);
+
+		// 魔法
+		if(obj instanceof "CharaObject")
+		{
+			var magicArrays = ["mmagicMax", "pmagicMax", "amagicMax", "smagicMax"];
+			var magicLabels = ["<p>Spirit<w>", "<c>Holy<w>", "<y>Alchemy<w>", "<g>Summon<w>"];
+			var learnedMagicLabels = [];
+			var learnedMagicLevels = [[1, 2, 3, 4, 5, 6, 7, 8, 9]]; // Includes level headings
+
+			for (var i = 0; i < magicArrays.count; i++) {
+				var magicLevels = obj[magicArrays[i]];
+				for (var j = 0; j < magicLevels.count; j++) {
+					if (magicLevels[j] > 0) {
+						learnedMagicLabels.add(magicLabels[i]);
+						learnedMagicLevels.add(magicLevels);
+						break;
+					}
+				}
+			}
+			var magicStartY = 411 + (4 - learnedMagicLabels.count) * 27;
+
+			// プレイヤーキャラはＭＰ一覧を表示
+			chColor = 0xD0D0FF;
+
+			if (learnedMagicLabels.count > 0) {
+				y = magicStartY;
+				write("Spell MP", 80, y);
+
+				for(var i = 0; i < learnedMagicLevels.count; i++) {
+					if (i > 0) {
+						font.height = 23;
+						write(learnedMagicLabels[i-1], 100, y);
+					}
+					font.height = 16;
+					y += 4;
+					for(var j = 0; j < learnedMagicLevels[i].count; j++) {
+						write(learnedMagicLevels[i][j], 208 + 22 * j, y);
+					}
+					y += 23;
+				}
+			}
+		}
+		else
+		{
+			// ゲスト・モンスターは使用できる魔法名を表示
+			chColor = 0xD0D0FF;			
+			write("Magic<w>", 80, 411);
+			var wroteMagic = false;
+			var num = 0;
+			for(var i = 0; i < obj.btcmd.count; i++)
+			{
+				var cmd = obj.btcmd[i];
+				if(cmd.magicLV <= 0) continue;
+				putSkillButton(cmd, 150, num * 27 + 411);
+				num ++;
+				wroteMagic = true;
+			}
+			if(! wroteMagic) write("None", 170, 411);
+		}
+		
+		// プレイヤーからの指示
+		if(! obj instanceof "MonsterData" && obj.isGuest)
+		{
+			chColor = 0xD0D0FF;
+			write("Tactics<y>", 440, 411);
+			var str = obj.direction === void ? "Auto" : translateDirection(obj.direction);
+			write(str, 440, 442);
+		}		
+	}
+
+    function writeStat(name, value, secondColumn) {
+        var xStart = 100;
+        var xEnd = 312;
+        if (secondColumn) {
+             xStart = 350;
+             xEnd = 562;
+        }
+		write(name, xStart, y + 27);
+		writeRightAligned(value, xEnd, y);
+    }
+
+	function drawHeroineStatus(her)
+	{
+		// ヒロインステータス表示
+
+		loadImages("back_hstatus");
+		var temp = new global.Layer(window, this);
+
+		// 名前
+		//font.face = "ＭＳ 明朝";
+		font.height = 32;
+		write("<y>" + her.displayName, 65, 33);
+
+		// 初めての男
+		var str = "None";
+		if(her.firstPartnerKey !== void)
+		{
+			var guy = o[her.firstPartnerKey];
+			str = guy.displayName;
+			if(guy.isUserChara) temp.loadImages(guy.img + "_icon_" + guy.color + "_heat");
+            else temp.loadImages(guy.img + "_icon_heat");
+			operateRect(21, 440, temp, 16, 16, 64, 64);
+		}
+		font.height = 16;
+		chColor = 0xFFFFFF;
+		writeCentered(str, 0, 103, 510);
+
+		var currentParty = master.findChara(her);
+		if (currentParty !== master.party) {
+			font.height = 18;
+            write("Party: " + currentParty.displayName, 83, 9);
+		}
+
+		// スリーサイズ
+		font.height = 20;
+		chColor = 0x804020;
+		edge = true;
+		edgeColor = 0xFFFFFF;
+		var sizeB = her.threeSize[0];
+		var sizeW = her.threeSize[1];
+		var sizeH = her.threeSize[2];
+		if(her.isPregnant())
+		{
+			sizeB += int(her.pregnant * 0.3);
+			sizeW += int(her.pregnant * 0.8);
+			sizeH += int(her.pregnant * 0.15);
+		}
+		write("B:" + sizeB + "  W:" + sizeW + "  H:" + sizeH, 90, 68);
+
+		// 処女表示
+		font.height = 24;
+		var hStatus;
+		if(her.pregnantCount > 1 || (her.pregnantCount > 0 && ! her.isPregnant()))
+		{
+			chColor = 0x600000;
+			edgeColor = 0xFFC0C0;
+			hStatus = "Mother";
+		}
+		else if(her.isSeasoned())
+		{
+			chColor = 0x200000;
+			edgeColor = 0xFF4040;
+			hStatus = "Experienced";
+		}
+		else if(her.getTotalSexCount() > 0)
+		{
+			chColor = 0xA00000;
+			edgeColor = 0xFFC0C0;
+			hStatus = "Non-virgin";
+		}
+		else
+		{
+			chColor = 0xFFFFFF;
+			edgeColor = 0xFF6060;
+			hStatus = "Virgin";
+		}
+		writeRightAligned(hStatus, 376, 40);
+		edge = false;
+
+		// 最新のＨ記録
+		var dic = her.diary[her.diary.count - 1];
+		if(dic !== void && master.date - dic.date < 100)
+		{
+			diary[0].drawRecord(dic);
+			diary[0].setPos(73, 128);
+		}
+		else diary[0].visible = false;
+
+		// パラメータ（12項目くらいまでが限界）
+		font.height = 22;
+		chColor = 0x645959;
+		var arr = [];
+		if(her.desire > 0) arr.add(["Libido", her.desire]);
+		if(her.feel > 0) arr.add(["Sensitivity", her.feel]);
+		if(her.loversCount >= 0) arr.add(["Lovers", her.loversCount]);
+		if(her.pourCount > 0) arr.add(["Creampies", her.pourCount]);
+		if(her.expose >= 50) arr.add(["Exhibitionism", her.expose]);
+		if(her.sellCount >= 1) arr.add(["Prostituted", her.sellCount]);
+		if(her.affairCount >= 1) arr.add(["Affairs", her.affairCount]);
+		if(her.getSexCountAWeek() >= 7) arr.add(["Sex/week", her.getSexCountAWeek()]);
+		if(her.pregnantCount >= 1) arr.add(["Pregnancies", her.pregnantCount]);
+		var h = arr.count < 8 ? 30 : 225 \ arr.count;
+		//font.face = "ＭＳ 明朝";
+		for(var i = 0; i < arr.count; i++)
+		{
+			write(arr[i][0], 403, 40 + i * h);
+			writeRightAligned(cap(arr[i][1], 9999), 595, 40 + i * h);
+		}
+
+		// 男キャラボタン・愛情度・セックス回数表示
+		var w1 = 95;	// １人分の幅
+		font.height = 12;
+		for(var i = 0; i < master.lovers.count; i++)
+		{
+			var guy = master.lovers[i];
+			if(guy.isUserChara) temp.loadImages("icon_love_" + guy.img + "_" + guy.color);
+			else temp.loadImages("icon_love_" + guy.img);
+			copyRect(141 + i * w1, 495, temp, 0, 0, temp.imageWidth, temp.imageHeight);
+			write("#", i * w1 + 200 + (her.sexCount[guy.img] > 9) * 10, 528);
+		}
+
+		font.height = 20;
+		for(var i = 0; i < master.lovers.count; i++)
+		{
+			var guy = master.lovers[i];
+
+			// セックス回数
+			write(cap(her.sexCount[guy.img], 999), i * w1 + 198, 508);
+
+			if(her.guard[guy.img] != 0)
+			{
+				// ガードマークの書き込み。これがあるうちはハートは書き込まれない
+				var num = her.guard[guy.img];
+				temp.loadImages(num > 0 ? "image_guard" : "image_guard_hard");
+				var h = (num == -1 ? 5 : num) * 39;
+				operateRect(148 + w1 * i, 494 - h, temp, 0, temp.imageHeight - h, temp.imageWidth, h);
+				continue;
+			}
+
+			// ハートマークの書き込み
+			var herLove = her.love[guy.img];
+			if(herLove == 0) continue;
+			var num = (herLove + 1) \ 2;
+			temp.loadImages("image_love_full");
+			for(var j = 0; j < num; j++)
+			{
+				if(j == num - 1 && herLove % 2 == 1) temp.loadImages("image_love_half");
+				operateRect(155 + w1 * i + 22 * (j \ 10) - (num - 1) \ 10 * 22 \ 2
+					, 472 - 20 * (j % 10), temp, 0, 0, temp.imageWidth, temp.imageHeight);
+			}
+			if(herLove < 99)
+			{
+				drawText(156 + w1 * i + 22 * (num \ 10) - (num - 1) \ 10 * 22 \ 2
+					, 472 - 20 * (num % 10), "%2d".sprintf(herLove), 0xC00000,,, 1024, 0xFFFFFF, 1);
+			}
+		}
+	}
+	
+	function translateDirection(direction) {
+	
+		// Translate values from guest.directionList for display, since JP string is stored & used for logic.
+		switch(direction) {
+			case "直接攻撃": return "Attack only";
+			case "身を守る": return "Defend only";
+			case "魔法優先": return "Magic only";
+			case "スキル優先": return "Skills only";
+			default: return direction; // In case of new values
+		}	
+	}
+
+	function drawHeroineDiaries(her)
+	{
+		// ヒロインの日記一覧
+		diary[0].visible = false;
+		var dic = her.diary;
+		loadImages("back_diaries");
+		if(dic.count == 0) return;
+		var num;
+		for(var i = dic.count - 1; i >= dic.count - 10 && i >= 0; i--)
+		{
+			if(master.date - dic[i].date >= 100) break;	// 100日以上前の記録は表示しない
+			num = i;
+		}
+		if(num === void) return;
+		for(var i = 0; i < dic.count - num; i++)
+		{
+			diary[i].drawRecord(dic[dic.count - 1 - i]);
+			diary[i].setPos(24 + i \ 5 * 310, 42 + i % 5 * 144);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------

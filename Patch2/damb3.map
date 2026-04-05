@@ -1,0 +1,250 @@
+﻿; 水竜の神殿
+
+name = 水竜の神殿Ｂ３
+insideName = Ｂ３
+upper = 水竜の神殿Ｂ２
+lower = 水竜の神殿Ｂ４
+pool = 水竜の神殿Ｂ４
+level = 35
+bgm = labyrinth
+external = n:1
+isOutdoor = true
+shadow = dark
+sky = black
+roof = stone
+outfield = marble
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = stone_h
+― = stone_h
+✜ = stone_h
+－ = stone
+　 = marble
+☐ = marble
+～ = pond
+и = pond
+❖ = marble
+⏁ = lighten
+／ = door
+〆 = key
+√ = gold
+﹃ = ladder
+︻ = panel
+┯ = button
+⒌ = fountain
+⑹ = box
+
+; 敵情報
+maxGroups = 2
+monsters = ブルースライム,電気ねずみ,サンダーウィスプ,ウンディーネ,セイレーン,ラミア
+
+; 宝箱
+box[1] = ハイポーション,聖者のフレイル_u,雷のドラム_u,サンダーバーストの巻物,修理の巻物
+box[2] = 貝のお守り,メイルシュトロームの魔法書,行動力増加袋,男の秘薬
+box[3] = チーズ,チーズ,マジカルボートの巻物,マジカルボートの巻物,マジカルボートの巻物,マジカルボートの巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  
+  
++1									❖	❖	❖	❖	❖	❖	❖
+  ┏━━━━━━━━━━━━━━━━━━━━━┓
+19┃⒌☐☐☐☐☐☐☐☐ииииииииииии┃
+  ┃☐☐☐☐☐☐☐☐☐ииииииииииии┃
+18┃☐☐☐☐☐☐☐☐☐ииииииииииии┃
+  ┗━┳━━／━︻┳━━━━━━━━━━━┳━┫
+17		┃　　　　③┃											┃⑹┃
+  		┃　　　　　┃			┏━━━━━┳━┻✜┫	┏━━━━━━━━━┓
+16		┃⏁　　　⏁┃			┃☐☐☐☐☐〆　　　┃	┃☐☐☐☐☐☐☐☐➋┃
+  ┏━┛␣␣␣␣␣┗━┓	┃☐┏━━━┫　　　┃	┃☐☐☐☐☐☐☐☐☐┃
+15┃␣␣␣␣␣␣␣␣␣┃	┃☐┃			┃　　　┃	┃☐☐☐☐☐☐☐☐☐┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃☐┃	┣━┛　　　┃	┣―━━┳━━━━━┛
+14┃␣␣␣␣␣␣␣␣␣┃	┃☐┃	ⅼ　　　　　┃	┃☐☐➊┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃☐┃	ⅼ　　　　　┃	┃☐☐☐┃
+13┃␣␣␣␣␣␣␣␣␣┃	┃☐┃	ⅼ　　　　　┃	┃☐☐☐┃	┃			┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃☐┃	┣━┓　　　┃	┃☐☐☐┃	┃			┃
+12┃　　　　　　　　　┃	┃☐┃			┃　　　┃	┃Ｅ☐☐┃	┃			┃
+  ┃　　　　　　　　　┃	┃☐┃			┃　　　┗━┻／━━┻━┻－－﹃┫
+11【④　　　　　　　　┃	┃☐┃			┃　　　　　　　　　　　　　　　┃
+  ┗━┳－－﹄－－┳━┛	┃☐┃			┃　　　　　　　　　　　　　　　┃
+10		┃					┃			┃☐┃			┃　　　　　　　　　　　　　　　┃
+  		┃					┃			┃☐┃			┃　　　┏━┳／━━┳━┓　　　┃
+ 9		┃					┃			┃☐┃			┃　　　┃	┃Ｅ☐☐┃	┃　　　┃
+  												┃☐┃			┃　　　┃	┃☐☐☐┃	┃　　　┃
+ 8												┃☐┃			┃　　　┃	┃☐☐☐┃	┃　　　┃
+  												┃☐┗━┓	┃　　　┃	┗━━━┛	┣－－－┫
+ 7												┃☐☐☐┃	┃　　　┃							┃			┃
+  ┏━━━━━━━━━┓	┃☐☐☐┃	┃～～～┃							┃			┃
+ 6┃～～～～～～　　　┃	┃☐☐⓵┨	┃～～～┃	┃			┃	┃			┃
+  ┃～～～～～～　　　┃	┗━━━┛	┃～～～┃	┃			┃
+ 5┃～～～～～～　　　┃							┃～～～┃	┃			┃
+  ┃～～～┏━┓　　　┣━━━				┃～～～┃	┣－－﹃┫	┏━━━┓
+ 4┃～～～┃	┃　　　┃							┃～～～┃	┃　　　┃	┃➌☐☐┃
+  ┃～～～┃	┃　　　┃							┃～～～┃	┃　　　┃	┃☐☐☐┃
+ 3┃～～～┃	┃　　②┨							┃～～～┃	┃　　　┃	┃☐☐☐┃
+  ┃～～～┃	┗━━━┻━━━				┃～～～┃	┃　　　┃	┃☐☐☐┃
+ 2┃～～～┃													┃～～～┃	┃　　　┃	┃☐☐Ｅ┃
+  ┃～～～┗━━━━━━━━━━━━━┛～～～┗━┛　　　┣━┻━━／┫
+ 1┃～～～～～～～～～～～～～～～～～～～～～～　　　　　／☐☐☐☐☐┃
+  ┃～～～～～～～～～～～～～～～～～～～～～～　　　　　┣━━━━━┛
+ 0┃～～～～～～～～～～～～～～～～～～～～～～　　　　　┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[9][16].w.key = o.水門の鍵;
+pos[16][11].n.img = "stone";
+pos[13][4].n.img = "stone";
+pos[2][11].s.img = "stone";
+pos[7][6].e.himg = "bt_water";
+writeOpenedAreaRecord(10, 17);
+pos[10][17].f.antiWarp = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! f.filledEast_3F || (! f.filledWest_3F && game.party.curX <= 4 && game.party.curY >= 12))
+{
+	underWater = false;
+	sky = "black";
+	effect = void;
+}
+else if(! o.水竜の神殿Ｂ２.underWater)
+{
+	underWater = true;
+	sky = "deepwater";
+	effect = "PE_water_bubble";
+}
+else
+{
+	underWater = true;
+	sky = "black";
+	effect = "PE_water_bubble";
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+[if exp='game.map.pos[0][0].f.type == "water"']
+	@notice text="Nothing happened."
+	[eventoff]
+[endif]
+
+@eval exp='o.水竜の神殿Ｂ２.underWater = false'
+@eval exp='o.水竜の神殿Ｂ３.underWater = false'
+@eval exp='f.filledEast_3F = false'
+@eval exp='f.filledWest_3F = false'
+@eval exp='f.filledEast_4F = true'
+
+@eval exp='tf.temp = %[type: "air", img: void, trap: "drained"]'
+@call storage=&'o.水竜の神殿Ｂ１.mapFile' target=*_change_waterway_b1
+@call storage=&'o.水竜の神殿Ｂ２.mapFile' target=*_change_waterway_b2
+
+@eval exp='tf.temp = %[type: "water", img: "pond", trap: "water"]'
+@call storage=&'o.水竜の神殿Ｂ３.mapFile' target=*_change_waterway_b3
+
+@eval exp='tf.temp = %[type: "air", img: void, trap: "drained"]'
+@call storage=&'o.水竜の神殿Ｂ４.mapFile' target=*_change_waterway_b4
+
+@se f=bashan1
+@wait time=500
+@notice text="I heard the sound of water flowing somewhere."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_change_waterway_b3
+
+[iscript]
+o.水竜の神殿Ｂ３.changeFloorsOfWideArea(tf.temp,  0,  0,  1,  4);
+o.水竜の神殿Ｂ３.changeFloorsOfWideArea(tf.temp,  0,  5,  2,  6);
+o.水竜の神殿Ｂ３.changeFloorsOfWideArea(tf.temp,  2,  0, 10,  1);
+o.水竜の神殿Ｂ３.changeFloorsOfWideArea(tf.temp,  9,  2, 10,  6);
+if(tf.temp.type == "air" || f.filledWest_4F)
+{
+	o.水竜の神殿Ｂ３.changeFloorsOfWideArea(tf.temp,  0, 13,  4, 15);
+}
+if(game.map == o.水竜の神殿Ｂ３)
+{
+	game.map.sky = "black";
+	game.map.effect = void;
+	game.view.setEnvironmentInfo(game.map);
+	game.updateView();
+}
+[endscript]
+
+@return
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@changewall x=4 y=4 way=e img=stone
+@changewall x=4 y=3 way=e img=stone
+@changewall map=水竜の神殿Ｂ２ x=4 y=4 way=e type=space img=void behind=true
+@changewall map=水竜の神殿Ｂ２ x=4 y=3 way=e type=space img=void behind=true
+@se f=dragstone
+@wait time=500
+@notice text="I heard the sound of something heavy moving somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Altar Entrance"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+[texton]
+[nw][b]This is a temple built to appease the water dragon that brought disaster to Moise.[r]
+This place can drain water, but it cannot pour water.[r]
+It is necessary to transfer it from other areas.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@question title="<y>Will you drink water from the gushing spring?" cancel=true
+[eventoff cond='! tf.result']
+@eval exp='o.噴水.doDamage = o.グランドヒール.doDamage'
+@eval exp='o.噴水.resultMessage = o.グランドヒール.resultMessage'
+@btcmd name=噴水
+@notice text="Party's HP restored!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+; ハイパーボム専用宝箱
+@treasure trap=罠はない item=ハイパーボム,ハイパーボム,ハイパーボム,経験のコイン（大）,経験のコイン（大）,戦女神の鎧・上,戦女神の鎧・下
+[if exp='! tf.leaveTreasureBox']
+	@delevent
+	@changefloor pimg=void click=false
+	@changewall way=n type=space himg=arch mask=arch behind=true
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

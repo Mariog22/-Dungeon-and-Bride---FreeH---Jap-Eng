@@ -1,0 +1,148 @@
+﻿; 試練の迷宮
+
+name = 試練の迷宮Ｂ３
+insideName = Ｂ３
+upper = 試練の迷宮Ｂ２
+lower = 試練の迷宮Ｂ４
+level = 50
+bgm = labyrinth
+roof = stone
+shadow = dark
+sky = black
+
+; 各パーツ
+━ = stoner
+　 = marble
+〰 = water
+／ = door
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+Ⓐ = warp
+
+; 移動ポイント
+(A) = x:0, y:8, way:n
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━┳━━━━━━━━━━━━━━︻━━━━┳━┓
+11┃①／②　　　　　　　　　　　　　③　　　　┃㊦┃
+  ┃　┃　　　　　　　　　　　　　　　　　　　┃　┃
+10┃　┃　　　　　　　　　　　　　　　　　　　⧻　┃
+  ┃　┣／┳／┳／┳／┳／┳／┳／┳／┳／┳／┫　┃
+ 9┃　┃Ⓐ／Ⓐ／Ⓐ／Ⓐ／　／Ⓐ／Ⓐ／Ⓐ／Ⓐ／Ⓐ┃　┃
+  ┃　┣／╋／╋／╋／╋／╋／╋／╋／╋／╋／┫　┃
+ 8┃　┃Ⓐ／Ⓐ／Ⓐ／Ⓐ／　／Ⓐ／Ⓐ／Ⓐ／Ⓐ／Ⓐ┃　┃
+  ┃　┣／╋／╋／╋／╋／╋／╋／╋／╋／╋／┫　┃
+ 7┃　┃　／　／　／Ⓐ／Ⓐ／Ⓐ／　／　／　／　┃　┃
+  ┃　┣／╋／╋／╋／╋／╋／╋／╋／╋／╋／┫　┃
+ 6┃㊤┃　／Ⓐ／　／　／　／　／　／Ⓐ／Ⓐ／　┃　┃
+  ┣┯╋／╋／╋／╋／╋／╋／╋／╋／╋／╋／┫　┃
+ 5┃⑤┃Ⓐ／　／Ⓐ／Ⓐ／　／Ⓐ／　／Ⓐ／　／　┃　┃
+  ┃　┣／╋／╋／╋／╋／╋／╋／╋／╋／╋／┫　┃
+ 4┃　┃　／　／　／　／Ⓐ／　／　／Ⓐ／　／Ⓐ┃　┃
+  ┃　┣／╋／╋／╋／╋／╋／╋／╋／╋／╋／┫　┃
+ 3┃　┃Ⓐ／　／Ⓐ／　／　／Ⓐ／Ⓐ／　／　／　┃　┃
+  ┃　┣／╋／╋／╋／╋／╋／╋／╋／╋／╋／┫　┃
+ 2┃　┃　／　／　／Ⓐ／　／　／　／　／Ⓐ／　┃　┃
+  ┃　┣／╋／╋／╋／╋／╋／╋／╋／╋／╋／┫　┃
+ 1┃　┃Ⓐ／Ⓐ／　／Ⓐ／Ⓐ／Ⓐ／Ⓐ／Ⓐ／　／Ⓐ┃　┃
+  ┃　┗／┻／┻／┻／┻／┻／┻／┻／┻／┻／┛　┃
+ 0┃　　　　　　④　　　　　　　　　　　　　　　　┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+for(var x = 1; x <= 10; x++)
+{
+	for(var y = 1; y <= 9; y++)
+	{
+		pos[x][y].f.hide = true;
+	}
+	pos[x][11].f.antiWarp = pos[x][10].f.antiWarp = true;
+}
+allBlocks = 90;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+f.saveIsForbidden = false;
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] f.saveIsForbidden
+
+@eval exp='f.saveIsForbidden = false'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove
+
+[iscript]
+f.saveIsForbidden = true;
+game.map.reset();
+tf.arr = [1, 2, 3, 7, 8, 9, 10];
+tf.arr.shuffle();
+for(var i = 0; i < 5; i++)
+{
+	game.map.changeObject(%[warp: void, pimg: void], tf.arr[i], 9, "f");
+}
+game.map.changeObject(%[warp: void, pimg: void], tf.arr[0], 8, "f");
+[endscript]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="It is impossible to break through by force.<r>Use magical power."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@delevent
+@delevent num=1
+@delevent num=2
+[iscript]
+f.saveIsForbidden = false;
+for(var x = 1; x <= 10; x++)
+{
+	for(var y = 1; y <= 9; y++)
+	{
+		game.map.changeObject(%[hide: false], x, y, "f");
+		game.map.recordAreaOpened(x, y);
+	}
+}
+[endscript]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=11 y=10 way=w mode=open
+@wait time=800
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

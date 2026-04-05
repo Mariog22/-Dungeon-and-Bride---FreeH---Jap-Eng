@@ -1,0 +1,131 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔17Ｆ
+insideName = 17Ｆ
+upper = ラドミラの塔18Ｆ
+lower = ラドミラの塔16Ｆ
+level = 66
+bgm = tower
+shadow = dark
+sky = dawnforest
+roof = stone
+margin = 3
+
+; パーツ画像
+━ = stone_h
+　 = marble
+〰 = water
+／ = door
+∫ = pick
+⧻ = fence
+☖ = arch
+︻ = panel
+┯ = button
+
+; 敵情報
+monsters = マンイーター,怒りの霊魂,サイクロプス,ゴールドマン,ケイブジャイアント
+
+; 宝箱
+box[1] = 師範の腕輪_u,ボム,ボム
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  		┏━━━┳━━━━━━━━━┳┯┓
+ 8		┃　　　┃　　　〰〰〰〰〰　┃①┃
+  		┃　　　┃　　　〰〰〰〰〰　┣／┫
+ 7		┃敵　　┃　　　　　　　　　┃　┃
+  		┣／━━┫　　　〰〰〰〰〰　┃　┃
+ 6		┃　〰〰┃　　　〰〰〰〰〰④┃　┃
+  		┃　〰〰┣／┳━┳━━━┳┷┛　┃
+ 5		┃　〰〰┃　┠②／　　　⧻　　　┃
+  		┃　┏━┛　┗━┻━━━┻━━／┫
+ 4		┃　／　　　　　　　　　　　　　┃
+  		┣︻┻━┳∬━━━━━━┳━━━┫
+ 3		┃③　❶┃　　　　　　　／敵　　┃
+  		┃　　　┗━━━━━━━┛　　　┃
+ 2		┃　　　　　　　　　　　　　　　┃
+  		┗━━━━━━━━━━━━━━━┛
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(8, 8);
+setElevator(4, 5);
+pos[5][9].f.img = pos[6][9].f.img = "marble_h";	// こうする事で内側からは見え外からは見えない床が作れる
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger || (onUseEventItem && curItem == o.小さなボタン)
+
+[if exp='o.ラドミラの塔14Ｆ.events.has(2)']
+	@se f=kacha
+	@notice text="There is an elevator, but it does not seem to be working."
+	[eventoff]
+[endif]
+
+@jump storage="tower16f.map" target=*_set_16button cond='game.onUseEventItem'
+@command title="Which button will you press?" cancel=true
+@select text="16Ｆ" exp='tf.result = ["ラドミラの塔16Ｆ", "down"]' cond='f.floor16opened'
+@select text="15Ｆ" exp='tf.result = ["ラドミラの塔15Ｆ", "down"]'
+@select text="14Ｆ" exp='tf.result = ["ラドミラの塔14Ｆ", "down"]'
+@select text="11Ｆ" exp='tf.result = ["ラドミラの塔11Ｆ", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="23Ｆ" exp='tf.result = ["ラドミラの塔23Ｆ", "up"]'
+@select text="21Ｆ" exp='tf.result = ["ラドミラの塔21Ｆ", "up"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="There is a statue within the smoke."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=7 y=5 way=w mode=open
+@wait time=1000
+@notice text="I heard a door open somewhere!"
+@wait time=800
+@jump storage='main13.scn' target=*radmila_4
+
+[eventoff]
+;-------------------------------------------------------------------------------

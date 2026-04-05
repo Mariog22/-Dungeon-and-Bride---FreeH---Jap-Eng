@@ -1,0 +1,1549 @@
+﻿// アイテムコマンド詳細登録
+var Name;
+
+
+//--------------------------------------------------------------------
+Name = "悪魔の彫像";
+with(o[Name])
+{
+	.anime = "*nothing";
+
+	.doDamage = function(self, target)
+	{
+		if(! master.checkMapEvent())
+		{
+			playSound("buzzer");
+			return 0;
+		}
+		playSound("switch1");
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "But nothing happened!";
+		return "I put " + displayName + " on the pedestal!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "スライムの彫像";
+with(o[Name])
+{
+	.anime = "*nothing";
+	.doDamage = o.悪魔の彫像.doDamage;
+	.resultMessage = o.悪魔の彫像.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ネズミの彫像";
+with(o[Name])
+{
+	.anime = "*nothing";
+	.doDamage = o.悪魔の彫像.doDamage;
+	.resultMessage = o.悪魔の彫像.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "トカゲの彫像";
+with(o[Name])
+{
+	.anime = "*nothing";
+	.doDamage = o.悪魔の彫像.doDamage;
+	.resultMessage = o.悪魔の彫像.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "蛇の彫像";
+with(o[Name])
+{
+	.anime = "*nothing";
+	.doDamage = o.悪魔の彫像.doDamage;
+	.resultMessage = o.悪魔の彫像.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "くい";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(! master.checkMapEvent()) return 0;
+	};
+}
+//--------------------------------------------------------------------
+Name = "黄金のリンゴ";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		return 0;
+	};
+
+	.resultMessage = function(target, value)
+	{
+		return "But nothing happened!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "ロイヤルゼリー";
+with(o[Name])
+{
+	.doDamage = o.黄金のリンゴ.doDamage;
+	.resultMessage = o.黄金のリンゴ.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ワームの毒液";
+with(o[Name])
+{
+	.doDamage = o.黄金のリンゴ.doDamage;
+	.resultMessage = o.黄金のリンゴ.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "小さなボタン";
+with(o[Name])
+{
+	.anime = "*nothing";
+
+	.doDamage = function(self, target)
+	{
+		if(! master.checkMapEvent()) return 0;
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "But nothing happened!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "エレメントプレート・土";
+with(o[Name])
+{
+	.anime = "*nothing";
+
+	.doDamage = function(self, target)
+	{
+		if(! master.checkMapEvent()) return 0;
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "But nothing happened!";
+		return displayName + " placed in the slot!"
+;
+	};
+}
+//--------------------------------------------------------------------
+Name = "エレメントプレート・水";
+with(o[Name])
+{
+	.anime = "*nothing";
+	.doDamage = o.エレメントプレート・土.doDamage;
+	.resultMessage = o.エレメントプレート・土.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "エレメントプレート・火";
+with(o[Name])
+{
+	.anime = "*nothing";
+	.doDamage = o.エレメントプレート・土.doDamage;
+	.resultMessage = o.エレメントプレート・土.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "エレメントプレート・風";
+with(o[Name])
+{
+	.anime = "*nothing";
+	.doDamage = o.エレメントプレート・土.doDamage;
+	.resultMessage = o.エレメントプレート・土.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "千里の鏡";
+with(o[Name])
+{
+	.anime = "*view_mirror";
+}
+//--------------------------------------------------------------------
+Name = "モンスター図鑑";
+with(o[Name])
+{
+	.anime = "*view_encyclopedia";
+
+	.actionMessage = function(self, target)
+	{
+		return self.displayName + " opened " + displayName + "!"
+;
+	};
+}
+//--------------------------------------------------------------------
+Name = "時のスイッチ";
+with(o[Name])
+{
+	.anime = "*press_button";
+
+	.doDamage = function(self, target)
+	{
+		if(master.inBattle) return 0;
+		try
+		{
+			kag.process(master.map.mapFile, "*reset_floor");
+		}
+		catch(e)
+		{
+			master.noReturnMenu = true;
+			kag.process("anime.ks", "*failed_to_reset");
+			return 0;
+		}
+		master.battleInfo.close();
+	};
+}
+//--------------------------------------------------------------------
+Name = "取消しスイッチ";
+with(o[Name])
+{
+	.anime = "*press_button";
+
+	.doDamage = function(self, target)
+	{
+		if(master.inBattle) return 0;
+		master.noReturnMenu = true;
+		if(! master.party.lastIsPush) return 0;
+		var nextPos = master.map.getNextFloorInfo();
+		if(nextPos.type != "movable") return 0;	// 落下等で目の前に岩がなかったら戻れない
+		var p = master.map.getPosRelatively();
+		master.party.changeObjectPos(master.map, p.x, p.y, master.party.curX, master.party.curY);
+		master.walk("goBackward");
+		master.updateView();
+		master.battleInfo.open();
+		playSound("dragstone");
+		return true;
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "Nothing happened!";
+		return "It returned to the previous state!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "はちみつパン";
+with(o[Name])
+{
+	.determined = o.ヒール.determined;
+	.pickUpTarget = o.ヒール.pickUpTarget;
+}
+//--------------------------------------------------------------------
+Name = "カマンベール";
+with(o[Name])
+{
+	.determined = o.ヒール.determined;
+	.pickUpTarget = o.ヒール.pickUpTarget;
+}
+//--------------------------------------------------------------------
+Name = "気付けの花";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(master.checkMapEvent()) return;	// マップイベントで使用された場合通常使用はしない
+		if(target.dead || target.status.has(o.石化)) return 0;
+		if(! target.status.has(o.眠り) && ! target.status.has(o.恐怖) && ! target.status.has(o.混乱))
+		{
+			if(target.heat == 0) return 0;
+			target.heat -= 5;
+			return "0,0x80F0F0,5";
+		}
+		target.heat -= 5;
+		target.removeStatus(o.眠り);
+		target.removeStatus(o.恐怖);
+		target.removeStatus(o.混乱);
+		return "0,0x80F080,SANITY";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work on " + target.displayName + "!";
+		if(value.length == 12) return target.displayName + "'s excitement reduced by 5!"
+;
+		return "It cured " + target.displayName + "!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "毒消しの花";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(master.checkMapEvent()) return;	// マップイベントで使用された場合通常使用はしない
+		return o.キュアポイズン.doDamage(self, target);
+	};
+
+	.resultMessage = o.キュアポイズン.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ポーション";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(target.dead || target.status.has(o.石化)) return 0;
+		target.removeStatus(o.恐怖);
+		target.removeStatus(o.混乱);
+		target.heat -= 5;
+		target.life += life;
+		return "0,0x80F080," + life;
+	};
+}
+//--------------------------------------------------------------------
+Name = "ハイポーション";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(target.dead || target.status.has(o.石化)) return 0;
+		target.removeStatus(o.恐怖);
+		target.removeStatus(o.混乱);
+		target.heat -= 10;
+		target.life += life;
+		return "0,0x80F080," + life;
+	};
+}
+//--------------------------------------------------------------------
+Name = "眠気ざまし";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(target.dead || target.status.has(o.石化)) return 0;
+		target.removeStatus(o.眠り);
+		target.removeStatus(o.気絶);
+		if(target.isUserChara) target.sleep -= 10;
+		return "0,0x80F0F0,AWAKEN";
+	};
+}
+//--------------------------------------------------------------------
+Name = "強力眠気ざまし";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(target.dead || target.status.has(o.石化)) return 0;
+		target.removeStatus(o.眠り);
+		target.removeStatus(o.気絶);
+		if(target.isUserChara) target.sleep -= 50;
+		return "0,0x80F0F0,AWAKEN";
+	};
+}
+//--------------------------------------------------------------------
+Name = "麻痺治療薬";
+with(o[Name])
+{
+	.doDamage = o.キュアパラライズ.doDamage;
+	.resultMessage = o.キュアパラライズ.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "石化解除薬";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(! target.status.has(o.石化)) return 0;
+		target.removeStatus(o.石化);
+		return "0,0xC0C0C0,SOFTEN";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work on " + target.displayName + "!";
+		return target.displayName + " is no longer petrified!"
+;
+	};
+}
+//--------------------------------------------------------------------
+Name = "特効薬";
+with(o[Name])
+{
+	.doDamage = o.リカバリー.doDamage;
+	.resultMessage = o.リカバリー.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "命の聖杯";
+with(o[Name])
+{
+	.doDamage = o.リカバリー.doDamage;
+	.resultMessage = o.リカバリー.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ドライアドの霊薬";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(target.dead || target.status.has(o.石化)) return 0;
+		target.removeStatus(o.毒);
+		target.removeStatus(o.麻痺);
+		target.removeStatus(o.衰弱);
+		target.life += 300;
+		return "0,0x80F080,300";
+	};
+}
+//--------------------------------------------------------------------
+Name = "復活の粉";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(! target.dead) return 0;	// 灰も直せることにした
+		target.beRaised();
+		return "0,0xC0FFFF,RAISE";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work on " + target.displayName + "!";
+		return target.displayName + " returned to life!"
+;
+	};
+}
+//--------------------------------------------------------------------
+Name = "マッドウイングの羽";
+with(o[Name])
+{
+	.doDamage = o.キュアポイズン.doDamage;
+	.resultMessage = o.キュアポイズン.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "フェニックスの羽";
+with(o[Name])
+{
+	.doDamage = o.復活の粉.doDamage;
+	.resultMessage = o.復活の粉.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "フェロモンの粉";
+with(o[Name])
+{
+	.cond = function(owner)
+	{
+		if(master.inBattle)
+		{
+			range = 3;
+			owner.target = master.enemy.members;
+			master.curTarget = owner.getTarget();
+			return true;
+		}
+		if(master.isFreeMode) return false;
+		range = 1;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		if(master.inBattle)
+		{
+			self.useResource(true);
+			return o.チャーム.doDamage(...);
+		}
+
+		if(target.dead || target.status.has(o.石化)) return 0;
+		if(target.sex == "男")
+		{
+			for(var i = 0; i < master.party.members.count; i++)
+			{
+				var one = master.party.members[i];
+				if(one.sex == "男") continue;
+				one.moveHeart(target, 20);
+			}
+		}
+		else if(target.isUserChara)
+		{
+			target.guard.max = cap(target.guard.max - 1);
+			target.guard.linus = cap(target.guard.linus - 1);
+			target.guard.blue = cap(target.guard.blue - 1);
+			target.guard.alex = cap(target.guard.alex - 1);
+		}
+		return "0,0xFFC0C0,SEXY";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(master.inBattle) return o.チャーム.resultMessage(...);
+
+		if(value === 0) return "It didn't work on " + target.displayName + "!";
+		if(target.sex == "男") return target.displayName + " looks better to the party!";
+		else return target.displayName + " had shields for all men reduced by 1!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "男の秘薬";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(target.dead || target.status.has(o.石化)) return 0;
+		if(target.sex != "男") return 0;
+		target.penis += 1;
+		return "0,0xF0C080,GROW";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work on " + target.displayName + "!";
+		return target.displayName + "'s erect penis grew to " + target.penis + "!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "女の秘薬";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(target.dead || target.status.has(o.石化)) return 0;
+		if(target.sex != "女") return 0;
+		target.threeSize[0] += 1;
+		return "0,0xF080C0,GROW";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work on " + target.displayName + "!";
+		return target.displayName + "'s bust is now 1cm larger!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "アンロックの巻物";
+with(o[Name])
+{
+	// この魔法だけの特殊なメンバを巻物にも追加
+	.unlockTarget = "";
+	.checkUnlock = o.アンロック.checkUnlock;
+}
+//--------------------------------------------------------------------
+Name = "たいまつ";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(master.view != master.dungeonView) return 0;
+		return o.トーチ.doDamage(self, target);
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(master.map.getFloorInfo().eraseMagic) return "Magic was cancelled!";
+		if(value === 0) return "It didn't work!";
+		return o.トーチ.resultMessage(target, value);
+	};
+}
+//--------------------------------------------------------------------
+Name = "こじあけの鍵";
+with(o[Name])
+{
+	// 使い捨てじゃない属性のアイテムを使い捨てにするには以下２行を追加する
+	.isConsumed = function(){ return true; };	// 消費アイテムへ変更
+	&.disposable = true;	// １回使いきりへ変更
+
+	.checkCurrentAction = function(owner)
+	{
+		if(master.inBattle)
+		{
+			playSound("buzzer");
+			return "戦闘中に扉を開けることはできません";
+		}
+		var str;
+		if(master.map.kind != "dungeon")
+		{
+			str = "There is no door here";
+		}
+		else
+		{
+			var wall = master.map.getWallInfo();
+			if(wall.type != "door") str = "There is no door here";
+			else if(wall.key === void) str = "扉はすでに開いています";
+			else if(wall.key != "pickable") str = "The door can't be opened with this key.";
+		}
+		if(str === void) return;
+		playSound("buzzer");
+		master.notice.open(master.enterTravelMode);
+		master.notice.write("y" + str);
+		return str;
+	};
+
+	.doDamage = function(self, target)
+	{
+		playSound("kacha");
+		master.noReturnMenu = true;
+		master.map.unlockDoor();
+		master.notice.open(master.enterTravelMode);
+		master.notice.write("I used <p>" + displayName + "<y> to open the door!");
+		return "0,0x80FFFF,UNLOCK";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		return "The door was unlocked!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "精霊の縫い糸";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(! target instanceof "GuestObject") return 0;
+		if(target.equipLife == G_WHOLE) return 0;
+		if(target.sex == "男" && target.equipLife >= G_FLYING) return 0;	// わざわざ修復しなくて良い
+		target.equipLife = G_WHOLE;
+		target.makeBustups();
+		return "0,0xFFFFFF,REPAIR";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		return target.displayName + " had equipment repaired!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "行動力増加袋";
+with(o[Name])
+{
+	.cond = function(owner)
+	{
+		if(master.inBattle)
+		{
+			owner.target = master.party.allMembers;
+			master.curTarget = owner.getTarget();
+			return true;
+		}
+		if(! master.isFreeMode) return true;
+		return false;
+	};
+
+	.doDamage = function(self, target)
+	{
+		if(master.inBattle) return o.アクセラレート.doDamage(...);
+		master.maxInnActionCount ++;
+		return "0,0xFFFFFF,1";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(master.inBattle) return o.アクセラレート.resultMessage(...);
+		return "Inn action points increaded by 1!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "召喚の札";
+with(o[Name])
+{
+	.anime = "*summoning_card";
+
+	.checkCurrentAction = function(owner)
+	{
+		if(master.getBestSummoningMonster() == master.guest.getSummonedMonster())
+		{
+			return owner.displayName + " used a summoning card!\nBut summon was already present!";
+		}
+		owner.ejectItem(this, owner.reservedGrid);
+	};
+}
+//--------------------------------------------------------------------
+Name = "けむり玉";
+with(o[Name])
+{
+	.scene = "battle";
+	.anime = o.エスケープ.anime;
+	.cond = o.エスケープ.cond;
+	.doDamage = o.エスケープ.doDamage;
+	.resultMessage = o.エスケープ.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ボム";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 3;
+	.reach = 3;
+	.attrib = "爆発";
+
+	.cond = function(owner)
+	{
+		if(master.inBattle)
+		{
+			owner.target = master.enemy.members;
+			master.curTarget = owner.getTarget();
+		}
+		return true;	// これに限っては他で判定する
+	};
+
+	.checkCurrentAction = function(owner)
+	{
+		if(master.party.status.has(o.禁止))
+		{
+			return owner.displayName + "used " + displayName + "! But magical powers have been sealed!";
+		}
+		result = master.party.setBomb();
+	};
+
+	.doDamage = function(self, target)
+	{
+		if(! master.inBattle)
+		{
+			if(result.res == "forbidden" || result.res == "useless") return 0;
+			return;
+		}
+		if(result.res != "success") return 0;
+		var dmg = intrandom(24, 28);
+		target.life -= dmg;
+		return dmg;
+	};
+
+	.actionMessage = function(self, target)
+	{
+		if(result.res != "forbidden") return global.ItemObject.actionMessage(self, target);
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(master.inBattle && result.res == "success") return target.displayName + " took " + value + " damage!";
+		if(result.res != "forbidden") return result.msg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "ハイパーボム";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 3;
+	.reach = 3;
+	.attrib = "爆発";
+
+	.cond = o.ボム.cond;
+	.actionMessage = o.ボム.actionMessage;
+	.resultMessage = o.ボム.resultMessage;
+
+	.checkCurrentAction = function(owner)
+	{
+		if(master.party.status.has(o.禁止))
+		{
+			return owner.displayName + "used " + displayName + "! But magical powers have been sealed!";
+		}
+		result = master.party.setBomb(true);
+		if(result.res == "success") master.hyperBombsCount ++;
+	};
+
+	.doDamage = function(self, target)
+	{
+		if(! master.inBattle)
+		{
+			if(result.res == "forbidden" || result.res == "useless") return 0;
+			return;
+		}
+		if(result.res != "success") return 0;
+		var dmg = intrandom(300, 500);
+		target.life -= dmg;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "ハンドアックス";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 1;
+	.reach = 3;
+	.anime = "*throw_handax";
+	.attrib = "物理";
+
+	.doDamage = function(self, target)
+	{
+		var dmg = intrandom(24, 28);
+		target.life -= dmg;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "トマホーク";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.anime = "*throw_tomahawk";
+	.attrib = "物理";
+
+	.doDamage = function(self, target)
+	{
+		var dmg = intrandom(24, 28);
+		target.life -= dmg;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "ジャベリン";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 1;
+	.reach = 3;
+	.anime = "*throw_javelin";
+	.attrib = "物理";
+
+	.doDamage = function(self, target)
+	{
+		if(! master.inBattle) return;
+		var dmg = intrandom(24, 28);
+		target.life -= dmg;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "フレイムソード";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_mega_fire";
+	.doDamage = o.ファイアリング.doDamage;
+	.resultMessage = o.ファイアリング.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "氷の牙";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_mega_freeze";
+	.doDamage = o.ブリザード.doDamage;
+	.resultMessage = o.ブリザード.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "疾風の剣";
+with(o[Name])
+{
+	.scene = "explore";
+	.anime = o.レビテイト.anime;
+	.cond = o.レビテイト.cond;
+	.doDamage = o.レビテイト.doDamage;
+	.resultMessage = o.レビテイト.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "魔王の剣";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_hell_fire";
+	.doDamage = o.デモニックフレア.doDamage;
+	.resultMessage = o.デモニックフレア.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "いかずちの斧";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_mega_thunder";
+	.resultMessage = o.スパーク.resultMessage;
+
+	.doDamage = function(self, target)
+	{
+		if(! master.inBattle) return;
+		var dmg = intrandom(24, 28);
+		target.life -= dmg;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "大地の槌";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 3;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_earthquake";
+	.attrib = "物理";
+	.doDamage = o.アースクエイク.doDamage;
+	.resultMessage = o.アースクエイク.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "聖なるメイス";
+with(o[Name])
+{
+	.toGuest = true;
+	.scene = "battle";
+	.range = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_power_guard";
+	.doDamage = o.パワーガード.doDamage;
+	.resultMessage = o.パワーガード.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "いやしの杖";
+with(o[Name])
+{
+	.toGuest = true;
+	.range = 2;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_multi_heal";
+	.doDamage = o.マルチヒール.doDamage;
+	.resultMessage = o.マルチヒール.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ドクロの杖";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 1;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_death";
+	.doDamage = o.デス.doDamage;
+	.resultMessage = o.デス.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "炎のロッド";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_mega_fire";
+	.doDamage = o.ファイアリング.doDamage;
+	.resultMessage = o.ファイアリング.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "アイスロッド";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_mega_freeze";
+	.doDamage = o.ブリザード.doDamage;
+	.resultMessage = o.ブリザード.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "サンダーロッド";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_spark";
+	.doDamage = o.スパーク.doDamage;
+	.resultMessage = o.スパーク.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "スターロッド";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 3;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_star_burst";
+	.doDamage = o.スターバースト.doDamage;
+	.resultMessage = o.スターバースト.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "聖なる杖";
+with(o[Name])
+{
+	.toGuest = true;
+	.range = 1;
+	.anime = "*spell_raise_dead";
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.doDamage = o.レイズデッド.doDamage;
+	.resultMessage = o.レイズデッド.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "沈黙の杖";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_silence";
+	.doDamage = o.サイレンス.doDamage;
+	.resultMessage = o.サイレンス.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "アルテミスの杖";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_light_stream";
+	.doDamage = o.ライトストリーム.doDamage;
+	.resultMessage = o.ライトストリーム.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ねじれた杖";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*spell_fear";
+	.doDamage = o.フィアー.doDamage;
+	.resultMessage = o.フィアー.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "パールリング";
+with(o[Name])
+{
+	.scene = "explore";
+	.anime = o.ミスティックアイ.anime;
+	.cond = o.ミスティックアイ.cond;
+	.doDamage = o.ミスティックアイ.doDamage;
+	.resultMessage = o.ミスティックアイ.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "リターンの巻物";
+with(o[Name])
+{
+	.scene = "explore";
+	.checkCurrentAction = function(owner)
+	{
+		if(master.map.kind == "town" || master.map.isAntiWarpZone())
+		{
+			playSound("buzzer");
+			return "Used " + displayName + ". But warping is forbidden here!";
+		}
+		return global.BattleCommand.checkCurrentAction(owner);
+	};
+}
+//--------------------------------------------------------------------
+Name = "ワープの巻物";
+with(o[Name])
+{
+	.scene = "explore";
+
+	.checkCurrentAction = function(owner)
+	{
+		if(! master.warpSpellEnabled)
+		{
+			return owner.displayName + " used " + displayName + "!\nHowever the warp network is down!";
+		}
+		if(master.map.kind == "town" || master.map.isAntiWarpZone())
+		{
+			playSound("buzzer");
+			return "Used " + displayName + ". But warping is forbidden here!";
+		}
+		return global.BattleCommand.checkCurrentAction(owner);
+	};
+}
+//--------------------------------------------------------------------
+Name = "記念カップ";
+with(o[Name])
+{
+	.scene = "explore";
+	.bootTrap = true;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.cond = o.ワープ.cond;
+	.doDamage = o.ワープ.doDamage;
+	.resultMessage = o.ワープ.resultMessage;
+	.checkCurrentAction = o.ワープの巻物.checkCurrentAction;
+}
+//--------------------------------------------------------------------
+Name = "火花のマラカス";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.attrib = "火";
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*music_fire_cracker";
+
+	.doDamage = function(self, target)
+	{
+		var dmg = intrandom(16, 24) \ (self.equipStat.main > BROKEN ? 1 : 2);
+		if(self.equip.sub == this)
+		{
+			// 両手に同じ物を持っていたら威力増加
+			dmg += intrandom(16, 24) \ (self.equipStat.sub > BROKEN ? 1 : 2);
+		}
+		dmg = target.getAffectedDamage(dmg, "火");
+		target.life -= dmg;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "氷結の鈴";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.attrib = "冷";
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*music_diamonddust";
+
+	.doDamage = function(self, target)
+	{
+		var dmg = intrandom(12, 18) \ (self.equipStat.main > BROKEN ? 1 : 2);
+		if(self.equip.sub == this)
+		{
+			// 両手に同じ物を持っていたら威力増加
+			dmg += intrandom(12, 18) \ (self.equipStat.sub > BROKEN ? 1 : 2);
+		}
+		dmg = target.getAffectedDamage(dmg, "冷");
+		target.life -= dmg;
+		if(dmg > 0 && target.setStatus(o.凍結)) master.extraEffect = o.凍結;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "聖なるハンドベル";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.attrib = "聖";
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*music_holy_chimes";
+
+	.doDamage = function(self, target)
+	{
+		if(target.race.name != "アンデッド" && target.race.name != "幽霊") return 0;
+		var dmg = intrandom(24, 32) \ (self.equipStat.main > BROKEN ? 1 : 2);
+		if(self.equip.sub == this)
+		{
+			// 両手に同じ物を持っていたら威力増加
+			dmg += intrandom(24, 32) \ (self.equipStat.sub > BROKEN ? 1 : 2);
+		}
+		if(random < dmg / 100)
+		{
+			target.life = 0;
+			return "0,0x80F0F0,DISPEL";
+		}
+		dmg = target.getAffectedDamage(dmg, "聖");
+		target.life -= dmg;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "雷のドラム";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.attrib = "雷";
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*music_thunder_storm";
+
+	.doDamage = function(self, target)
+	{
+		var dmg = intrandom(40, 50);
+		if(self.equipStat.main <= BROKEN) dmg \= 2;
+		dmg = target.getAffectedDamage(dmg, "雷");
+		target.life -= dmg;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "大地のドラム";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 3;
+	.reach = 3;
+	.attrib = "物理";
+	.anime = "*music_earthquake";
+
+	.doDamage = function(self, target)
+	{
+		if(target.isFloating()) return 0;
+		var dmg = intrandom(84, 108);
+		if(self.equipStat.main <= BROKEN) dmg \= 2;
+		target.life -= dmg;
+		return dmg;
+	};
+}
+//--------------------------------------------------------------------
+Name = "戦いの銅鑼";
+with(o[Name])
+{
+	.toGuest = true;
+	.scene = "battle";
+	.range = 3;
+	.anime = "*music_gong";
+
+	.doDamage = function(self, target)
+	{
+		if(random > 0.3) return 0;
+		if(target.setStatus(o.祝福)) return o.祝福.doDamage(self, target);
+		if(target.setStatus(o.硬化)) return o.硬化.doDamage(self, target);
+		if(target.setStatus(o.抵抗)) return o.抵抗.doDamage(self, target);
+		if(target.setStatus(o.疾風)) return o.疾風.doDamage(self, target);
+		if(target.setStatus(o.付与)) return o.付与.doDamage(self, target);
+		if(target.setStatus(o.倍加)) return o.倍加.doDamage(self, target);
+		return 0;
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		return target.displayName + "'s abilities were enhanced!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "元気のタンバリン";
+with(o[Name])
+{
+	.toGuest = true;
+	.scene = "battle";
+	.range = 1;
+	.anime = "*music_encourage";
+
+	.doDamage = function(self, target)
+	{
+		return o.ためる.doDamage(target, target);
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		return target.displayName + " is storing power!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "眠りのハープ";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 3;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*music_sleep";
+
+	.doDamage = function(self, target)
+	{
+		if(random > 0.3) return 0;
+		if(! target.setStatus(o.眠り)) return 0;
+		return o.眠り.doDamage(self, target);
+	};
+}
+//--------------------------------------------------------------------
+Name = "狂気のハープ";
+with(o[Name])
+{
+	.toEnemy = true;
+	.scene = "battle";
+	.range = 2;
+	.reach = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*music_insanity";
+
+	.doDamage = function(self, target)
+	{
+		if(random > 0.6) return 0;
+		if(target.setStatus(o.混乱)) return o.混乱.doDamage(self, target);
+		if(target.setStatus(o.恐怖)) return o.恐怖.doDamage(self, target);
+		if(target.setStatus(o.魅了)) return o.魅了.doDamage(self, target);
+		if(target.setStatus(o.酩酊)) return o.酩酊.doDamage(self, target);
+		if(target.setStatus(o.気絶)) return o.気絶.doDamage(self, target);
+		return 0;
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		return "Disaster struck " + target.displayName + "!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "いやしの竪琴";
+with(o[Name])
+{
+	.toGuest = true;
+	.scene = "battle";
+	.range = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*music_healing";
+
+	.doDamage = function(self, target)
+	{
+		if(target.dead || target.status.has(o.石化)) return 0;
+		target.removeStatus(o.眠り);	// 目覚まし効果
+		target.removeStatus(o.恐怖);	// 鎮静効果
+		var heal = intrandom(48, 64);
+		if(self.equipStat.main <= BROKEN) heal \= 2;
+		target.life += heal;
+		return "0,0x80F080," + heal;
+	};
+}
+//--------------------------------------------------------------------
+Name = "天使の竪琴";
+with(o[Name])
+{
+	.toGuest = true;
+	.scene = "battle";
+	.range = 3;
+	.magicLV = -1;	// 反射・無効化の対象になる
+	.anime = "*music_angel";
+
+	.doDamage = function(self, target)
+	{
+		if(target.dead || target.status.has(o.石化)) return 0;
+		target.removeStatus(o.眠り);	// 目覚まし効果
+		target.removeStatus(o.恐怖);	// 鎮静効果
+		var heal = intrandom(192, 240);
+		if(self.equipStat.main <= BROKEN) heal \= 2;
+		target.life += heal;
+		return "0,0x80F080," + heal;
+	};
+}
+//--------------------------------------------------------------------
+Name = "背徳の鎧・下";
+with(o[Name])
+{
+	.curseScript = function(owner)
+	{
+		var rec = owner.getSexRecord(o["アイテム"], 1, 0, "膣挿入");
+		owner.addSexRecordAndChangeHeart(rec);
+		owner.events.push2(59);
+	};
+}
+//--------------------------------------------------------------------
+Name = "ＳＰ転職";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		var params = master.curItem.cmdParam.split(",");
+		var jobObj = o[params[master.curItem.special.find(this)]];
+		if(self.job == jobObj) return 0;
+		self.setJob(jobObj);
+		playSound("period");
+		return "0,0x80FF80,CHANGE";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		var params = master.curItem.cmdParam.split(",");
+		var jobObj = o[params[master.curItem.special.find(this)]];
+		return target.displayName + " changed jobs to " + jobObj.displayName + "!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "ＳＰパラメータ変化";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		var params = master.curItem.cmdParam.split(",");
+		var arr = params[master.curItem.special.find(this)].split(":");
+		var v = +arr[2];
+		self.addParam(arr[1], v);
+		return (v > 0 ? "0,0x80FF80,+" : "0,0xFFC0C0,") + v;
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		var params = master.curItem.cmdParam.split(",");
+		var arr = params[master.curItem.special.find(this)].split(":");
+		var v = +arr[2];
+		return target.displayName + "'s " + arr[0] + (v > 0 ? " increased by " : " decreased by ") + abs(v) + "!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "ＳＰパラメータ変化２";
+with(o[Name])
+{
+	.doDamage = o.ＳＰパラメータ変化.doDamage;
+	.resultMessage = o.ＳＰパラメータ変化.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ＳＰパラメータ変化３";
+with(o[Name])
+{
+	.doDamage = o.ＳＰパラメータ変化.doDamage;
+	.resultMessage = o.ＳＰパラメータ変化.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ＳＰ属性変化";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		var params = master.curItem.cmdParam.split(",");
+		var alignmentObj = o[params[master.curItem.special.find(this)]];
+		if(self.alignment == alignmentObj) return 0;
+		self.alignment = alignmentObj;
+		self.updateBadge();
+		self.mindBalance = 0;
+		playSound("period");
+		return "0,0xFF80FF,CHANGE";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		var params = master.curItem.cmdParam.split(",");
+		var alignmentObj = o[params[master.curItem.special.find(this)]];
+		return target.displayName + "'s alignment changed to " + alignmentObj.displayName + "!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "ＳＰＨＰ回復";
+with(o[Name])
+{
+	.doDamage = o.リカバリー.doDamage;
+	.resultMessage = o.リカバリー.resultMessage;
+}
+//--------------------------------------------------------------------
+Name = "ＳＰＭＰ回復";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		target.mmagic.assign(target.mmagicMax);
+		target.pmagic.assign(target.pmagicMax);
+		target.amagic.assign(target.amagicMax);
+		target.smagic.assign(target.smagicMax);
+		return "0,0x80F080,9";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work on " + target.displayName + "!";
+		return target.displayName + "'s MP has been restored!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "ＳＰＭＰ消滅";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		var arr = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+		target.mmagic.assign(arr);
+		target.pmagic.assign(arr);
+		target.amagic.assign(arr);
+		target.smagic.assign(arr);
+		return "0,0x80F080,-9";
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work on " + target.displayName + "!";
+		return target.displayName + "'s MP was reduced to 0!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "ＳＰ魔法忘却";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		var flag = false;
+		var arr = target.btcmd;
+		for(var i = arr.count - 1; i >= 0; i--)
+		{
+			if(arr[i].magicLV <= 0) continue;
+			arr.erase(i);
+			flag = true;
+		}
+		if(flag) return "0,0xF08080,FORGET";
+		else return 0;
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work on " + target.displayName + "!";
+		return target.displayName + " forgot all magic!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "ＳＰ石化";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(! target.setStatus(o.石化, true)) return 0;
+		return o.石化.doDamage(self, target);
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		else return target.displayName + " is petrified!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "ＳＰ死亡";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(! target.setStatus(o.死亡, true)) return 0;
+		return o.死亡.doDamage(self, target);
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		else return target.displayName + " died!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "ＳＰ灰";
+with(o[Name])
+{
+	.doDamage = function(self, target)
+	{
+		if(! target.setStatus(o.灰, true)) return 0;
+		return o.灰.doDamage(self, target);
+	};
+
+	.resultMessage = function(target, value)
+	{
+		if(value === 0) return "It didn't work!";
+		else return target.displayName + " has become ashes!";
+	};
+}
+//--------------------------------------------------------------------
+// オワリ

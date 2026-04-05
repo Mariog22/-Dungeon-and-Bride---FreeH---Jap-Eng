@@ -1,0 +1,134 @@
+﻿; 沼地の廃墟
+
+name = 沼地の廃墟Ｂ３
+insideName = Ｂ３
+upper = 沼地の廃墟Ｂ２
+lower = 沼地の廃墟Ｂ４
+pool = 沼地の廃墟Ｂ３水中
+level = 44
+bgm = shrine
+roof = stone
+shadow = dark
+sky = black
+blank = rock
+outfield = marble
+
+; パーツ画像
+━ = stoneg
+… = halfg
+― = stoneg
+ᆖ = stoneg
+　 = marble
+～ = pool
+〰 = pool
+☖ = arch
+⧻ = stonegate
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+⑹ = monument
+⑺ = br_luc
+
+; 敵情報
+maxGroups = 2
+monsters = ローパー,フェアリー,ウィルオーウィスプ,マーメイド
+traps = 石つぶて,毒針,毒ガス,しびれ針,酸スプレー,ラミアの瞳,スモーク,亡霊の群れ,警報
+
+; 宝箱
+box[1] = 金貨（大）,金貨（大）,毒消しの花,麻痺治療薬,ミスリルの砂,ボム,経験のコイン（中）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━┓
+11┃～～～～～～～～～～～～～～～～～～～～～～～～　　　☖　　　　　┃
+  ┃～～～～～～～～～～～～～～～～～～～～～～～～　　　┃　　　　　┃
+10┃～～　　　　　　　　　　　　　　　　　　　　　　　　　┃　　　　❶┃
+  ┃～～　┏━━━━━━━┳………………………┓　　　┏━┻━━━━━┛
+ 9┃～～　┃							┃　　　　　～～～～￤　　　┃
+  ┣━━☖┫	┏︻━━┓	┃　　　　　～～～～┣━━⧻┫	┏━━━━━┓
+ 8┃　　③┃	┃①　　┃	┃⑹　　　　～～～～┃　　　┃	┃■■■■■┃
+  ┃　　　┃	┃　　　┃	┃　　　　　～～～～┃　　　┃	┃■■■■■┃
+ 7┃　　　┃	┃　　㊤┃	┃　　　　　～～～～┃　　　┃	┃■■■■■┃
+  ┃　　　┃	┃　　　┃	┣━━━━━━━━━┫　　　┃	┃■■■■■┃
+ 6┃③　　┃	┃　　　┃	┃　　　　　　　　㊦┃　　　┃	┃∧～∧～∧┃
+  ┣☖━━┫	┃～～　┃	┃　　　　　　　┏━╋☖━━┫	┃～～～～～┃
+ 5┃　～～┃	┃～～　┃	┃　　　　　　　┃	┃④　　┃	┃∧～∧～∧┃
+  ┃　～～┃	┃～～　┃	┣━━☖┳━━━┛	┃　　　┃	┃～～～～～┃
+ 4┃　～～┃	┃～～　┃	┃　　⑤┃					┃　　　┃	┃∧～∧～∧┃
+  ┃　～～┃	┃～～　┃	┃　　　┃	┏━┓	┃　　　┃	┃～～～～～┃
+ 3┃　～～┃	┃～～　┃	┃　　　┃	┃⑺┃	┃　　④┃	┃∧～∧～∧┃
+  ┃　～～┃	┃～～　┃	┃　　　┃	┃　┃	┣━━☖┫	┃～～～～～┃
+ 2┃　～～┃	┃～～　┃	┃⑤　　┃	┃　┃	┃～～　┃	┃∧～∧～∧┃
+  ┃　～～┣━┻━━☖┫	┣☖━━┻━┻―┻━┛～～　┃	┃～～～～～┃
+ 1┃　～～┃　　　　②┃	┃　～～～～～～～～～～～　┃	┃∧～∧～∧┃
+  ┃　～～┃　　　　　┃	┃　～～～～～～～～～～～　┃	┃～～～～～┃
+ 0┃　　　☖②　　　　┃	┃　　　　　　　　　　　　　┃	┃∧～∧～∧┃
+  ┗━━━┻━━━━━┛	┗━━━━━━━━━━━━━┛	┗━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+for(var i = 14; i <= 16; i++){ pos[i][7].f.trap = "moveByForce"; pos[i][7].f.way = "n";}
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(2, 3, 4, 5);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="This is a temple for those who can dive underwater. You will find what you seek in the water."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+*event_3
+;[exp] true
+*event_4
+;[exp] true
+*event_5
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@question title="There is a stone monument. Would you like to touch it?"
+[eventoff cond='! tf.result']
+@wait time=500
+@playse storage=tremble
+@quake time=3000 hmax=5 vmax=0
+@wq
+@playse storage=rockdrop
+@changewall x=12 y=9 way=s himg=arch type=space behind=true
+@wait time=800
+@notice text="I heard the sound of something heavy moving somewhere!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("luck", 2)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Luck permanently increased by 2!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

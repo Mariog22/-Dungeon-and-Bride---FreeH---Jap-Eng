@@ -1,0 +1,125 @@
+﻿; アマゾネスの砦
+
+name = アマゾネスの砦１Ｆ
+insideName = １Ｆ
+upper = アマゾネスの砦２Ｆ
+level = 54
+bgm = brave
+margin = 3
+shadow = dark
+sky = forest
+roof = stone
+outfield = soil
+
+; パーツ画像
+━ = stone
+　 = marble
+／ = door
+∫ = pick
+☗ = gate
+㊤ = ladderu
+① = human
+② = human
+⑶ = br_maxhp
+⑷ = br_int
+⑸ = br_agl
+
+; 移動ポイント
+(A) = map:コリンズの森, x:3, y:55, way:s, symbol:exit, ask:Leave the dungeon?
+
+; 宝箱
+box[1] = 罠はない,女の秘薬,女の秘薬,革のビキニ・上,革のビキニ・下,ピンクのパンツ
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6  
+  ┏━━━━━┳━┳━━━━━┓
+ 5┃⑶　⑷　⑸┃㊤┃　　❶　　┃
+  ┃　　　　　┃　┃　　　　　┃
+ 4┃　　　　　┃　┃　　　　　┃
+  ┣━━∫━━┛　┗━━∫━━┫
+ 3┃　　　　　　　　　　　　　┃
+  ┣━━━┓　　　　　┏━━━┫
+ 2┃　　　┃　　　　　┃　　　┃
+  ┃　　　┃　　　　　┃　　　┃
+ 1┃①　　／　　　　　／　　②┃
+  ┃　　　┃　　　　　┃　　　┃
+ 0┃　　　┃　　Ⓐ　　┃　　　┃
+  ┗━━━┻━━☗━━┻━━━┛
+;    0   1   2   3   4   5   6  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[3][0].event = 6;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsMove
+
+@jump storage="quest.ks" target=*仲間を助け出してほしい_intro
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Amazoness f=bladesman_silver_00]「This is the fort where we, the members of Team Amazoness, live. It's basically our home.」[k]
+[name n=Amazoness f=bladesman_silver_00]「By living together here, members are able to deepen their bonds with each other and help each other train.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@barrel
+@eval exp='game.curTarget.addParam("maxLife", 20)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 20!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel
+@eval exp='game.curTarget.addParam("intellect", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Intelligence permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@barrel
+@eval exp='game.curTarget.addParam("speed", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Speed permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] ! isDemoVersion
+
+@delevent
+[texton]
+[name n=Amazoness f=bladesman_black_06]「Hello, members of [emb exp='game.party.displayName']! Welcome to our fort.」[k]
+[name n=Amazoness f=bladesman_black_06]「As a token of our friendship, feel free to go wherever you like on the second floor of this fort.」[k]
+[name n=Amazoness f=bladesman_black_06]「We sell magic spells there, so please stop by.」[k]
+[textoff]
+@eval exp='o.アマゾネスの砦２Ｆ.unlockDoor(3, 2, "w")'
+@eval exp='o.アマゾネスの砦２Ｆ.unlockDoor(3, 2, "e")'
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,77 @@
+﻿; ワイルド・ブルの砦
+
+name = ワイルド・ブルの砦２Ｆ
+insideName = ２Ｆ
+upper = ワイルド・ブルの砦３Ｆ
+lower = ワイルド・ブルの砦１Ｆ
+level = 55
+bgm = bad
+shadow = dark
+sky = mountain
+roof = stone
+margin = 3
+
+; パーツ画像
+━ = stone
+　 = marble
+／ = door
+∫ = pick
+㊤ = ladderu
+㊦ = ladderd
+⑴ = barrel
+⑵ = br_int
+
+; 敵情報
+maxGroups = 3
+monsters = パイレーツ,キャプテン,ブッシュワッカー,バーグラー
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4  
+  ┏━┳━━━━━━━┓
+ 4┃　∬敵　　　　　㊤┃
+  ┃　┃　　　　　┏━┫
+ 3┃　┃　　　　　┃㊦┃
+  ┃　┗━━━━━┛　┃
+ 2┃　　　　　　　　　┃
+  ┃　┏━━━━━┓　┃
+ 1┃　┃　　　　⑴┃㊦┃
+  ┃　┃　　　　　┗━┫
+ 0┃　∬敵　　　　　⑵┃
+  ┗━┻━━━━━━━┛
+;    0   1   2   3   4  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@barrel
+@eval exp='game.curTarget.addParam("intellect", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Intelligence permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

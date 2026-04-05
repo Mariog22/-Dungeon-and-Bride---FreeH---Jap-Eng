@@ -1,0 +1,339 @@
+﻿; 湿地帯
+
+name = モイーズ湿地帯・死者の沼
+insideName = Swamp of the Dead
+level = 30
+bgm = dungeon
+isOutdoor = true
+shadow = dark
+sky = redforest
+blank = rock
+effect = PE_rain
+antiWarp = true
+
+; 画像パーツ
+━ = stoner
+　 = soilr
+❖ = soilr
+〓 = wood
+〰 = water
+✜ = stoner
+⏃ = woodsd
+⏁ = pedestal
+⑹ = box
+
+; 敵情報
+monsters = スワンプデビル,マウンテンデビル,デーモンインプ,シャドウインプ,サキュバス,見習いサキュバス
+
+; 移動ポイント
+(A) = map:モイーズ湿地帯・死霊の森, x:19 ,y:0, way:n, symbol:movev, ask:Go to the next map?
+(B) = map:モイーズ湿地帯・死霊の森, x:20 ,y:0, way:n, symbol:movev, ask:Go to the next map?
+
+; 宝箱
+box[1] = 悪のサーベル_u,邪悪な弓_u,エルフの弓_u,経験のコイン（大）
+box[2] = 復活の粉,特効薬,特効薬,修理の巻物,修理の巻物,エーテル,ポーション,ポーション
+box[3] = 罠はない,マジカルボートの巻物,マジカルボートの巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  
+ 		▲	▲
+29	Ⓐ　Ⓑ⏃⏃					⏃⏃　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃									⏃⏃⏆⏃⏃							⏃
+  	　　　⏃⏃					⏃⏃　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃									⏃⏃⏆⏃⏃							⏃
+28	　　　⏃⏃					⏃⏃　　　⏃⏃			⏃⏃　　⏁　　⏃⏃									⏃⏃⏆⏃⏃							⏃
+  	　　　⏃⏃					⏃⏃　　　⏃⏃			⏃⏃　　　　　⏃⏃									⏃⏃⏆⏃⏃							⏃
+27	　　　⏃⏃					⏃⏃　　　⏃⏃			⏃⏃⏁　❶　⏁⏃⏃									⏃⏃⏆⏃⏃							⏃
+  	　　　⏃⏃					⏃⏃　　　⏃⏃			⏃⏃　　　　　⏃⏃									⏃⏃⏆⏃⏃							⏃
+26	　　　⏃⏃					⏃⏃　　　⏃⏃			⏃⏃　　⏁　　⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃⏆⏃⏃							⏃
+  	　　　⏃⏃					⏃⏃　　　⏃⏃			⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃⏆⏃⏃							⏃
+25	　　　⏃⏃					⏃⏃　　　⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏆⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  	　　　⏃⏃					⏃⏃　　　⏃⏃⏃⏃					⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏆⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+24	　　　⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　　　　　　　　　　　　　　
+  	⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃							━━━━━━━┳↑┳━━━┓⏃⏃⏃⏃⏃⏃⏃
+23	⏃⏃⏃⏃⏃	⏃⏃　　敵　　　　　　　　　　⏃⏃⏃⏃⏃⏃										┃⑹┃			┃⏃⏃⏃⏃⏃⏃⏃
+  							⏃⏃　　　⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃										┣✜┫
+22							⏃⏃　　　⏃⏃⏃⏃⏃　　　　　　　　　⏃⏃⏃⏃								┃　┃	┃⏃⏃⏃⏃⏃⏃⏃
+  							⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃								┃　┗━┛⏃⏃⏃⏃⏃⏃⏃
+21							⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃		┃❷　　　　⏆⏆⏆　⏃⏃
+  																			⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃		┗━━━┓⏃⏃⏃⏃　⏃⏃
+20	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　　　　　⏃⏃⏃⏃				┃⏃⏃⏃⏃　⏃⏃⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃					⏃⏃⏃⏃　　　　　　　⏃⏃⏃⏃							⏃⏃　⏃⏃⏃⏃
+19	　　　　　⏆⏆⏆⏆⏆　　　　　⏃⏃⏃⏃			⏃⏃⏃⏃　　　　　　　　①⏃⏃⏃⏃⏃⏃			⏃⏃　　　　　
+  	　　　⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃					⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃			⏃⏃　　　　　
+18	　　　⏃⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃①　　　　　　⏃⏃			⏃⏃　　　　　
+  	　　　⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃							⏃⏃⏃⏃　　　　　⏃⏃			⏃⏃　　　　　
+17	　　　　③⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃			⏃⏃⏃⏃　　　　　⏃⏃⏃⏃	⏃⏃　　　　　
+  	　⏃⏃⏃　⏃⏃					⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃					⏃⏃⏃⏃　　　⏃⏃⏃⏃	⏃⏃　　　　　
+16	　⏃⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃　　　　　　　　　⏃⏃⏃⏃			⏃⏃⏃⏃　　　　　⏃⏃	⏃⏃　　　　　
+  	⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃			⏃⏃　⏃⏃⏃　　　　　⏃⏃⏃⏃					⏃⏃　　　　　⏃⏃	⏃⏃⏃⏃⏃⏃⏃
+15	⏃⏃⏃⏃　　　　②⏃⏃			⏃⏃　⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃	⏃⏃　　　　　⏃⏃	⏃⏃⏃⏃⏃⏃⏃
+  			⏃⏃⏃⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃　　　⏃⏃
+14			⏃⏃⏃⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃	⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃
+  							⏃⏃　⏃⏃			⏃⏃　⏃⏃⏃⏃	⏃⏃　　　　　　　⏃⏃			⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃
+13	⏃⏃⏃⏃⏃	⏃⏃　⏃⏃			⏃⏃敵　　⏃⏃	⏃⏃⏃⏃　　　　　⏃⏃⏃⏃	⏃⏃　　　　　　　　　⏃⏃⏃⏃
+  	⏃⏃⏃⏃⏃	⏃⏃　⏃⏃			⏃⏃　　　⏃⏃	⏃⏃⏃⏃　　　　　⏃⏃⏃⏃	⏃⏃⏃⏃　　　　　　　⏃⏃⏃⏃
+12	　　　⏃⏃⏃⏃⏃　⏃⏃			⏃⏃　　❸⏃⏃			⏃⏃⏃⏃　　　　　⏃⏃	⏃⏃⏃⏃　　　　　　　　　　　
+  	　　　⏃⏃⏃⏃⏃⏆⏃⏃			⏃⏃⏃⏃⏃⏃⏃			⏃⏃⏃⏃　　　　　⏃⏃			⏃⏃⏃⏃⏃⏃　　　　　　　
+11	　　　　　⏃⏃⏃⏆⏃⏃			⏃⏃⏃⏃⏃⏃⏃					⏃⏃　　　　　⏃⏃			⏃⏃⏃⏃⏃⏃　　　　　　　
+  	⏃⏃　　　⏃⏃⏃⏆⏃⏃															⏃⏃　　　　　⏃⏃							⏃⏃⏃⏃　⏃⏃⏃⏃
+10	⏃⏃　　　⏃⏃⏃⏆⏃⏃	⏃⏃⏃⏃⏃⏃⏃					⏃⏃⏃⏃　　　　　⏃⏃⏃⏃					⏃⏃⏃⏃　⏃⏃⏃⏃
+  	⏃⏃　　　⏃⏃⏃⏆⏃⏃	⏃⏃⏃⏃⏃⏃⏃					⏃⏃⏃⏃　　　　　⏃⏃⏃⏃							⏃⏃　⏃⏃⏃⏃
+ 9	⏃⏃　　　⏃⏃⏃　⏃⏃	⏃⏃　　　⏃⏃			⏃⏃⏃⏃　　④　④　④　　⏃⏃⏃⏃					⏃⏃敵　　⏃⏃
+  	⏃⏃　　　⏃⏃⏃　⏃⏃	⏃⏃　　　⏃⏃			⏃⏃⏃⏃　　　　　　　　　⏃⏃⏃⏃					⏃⏃　　　⏃⏃
+ 8	⏃⏃　　　　　　　⏃⏃⏃⏃⏃敵　　⏃⏃	⏃⏃⏃⏃　　　　④　④　④　　　　⏃⏃⏃⏃			⏃⏃　　　⏃⏃
+  	⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃　⏃⏃⏃⏃	⏃⏃⏃⏃　　　　　　　　　　　　　⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃⏃
+ 7	⏃⏃⏃⏃　　　　　　　　　　　⏃⏃⏃⏃	⏃⏃　　　　　　　　　　　　　　　　　⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃
+  			⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃			⏃⏃　　　　　　　　　　　　　　　　　⏃⏃⏃⏃
+ 6			⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃　　　　　　　　　　　　　　　　　　　⏃⏃⏃⏃
+  							⏃⏃　　　⏃⏃⏃⏃			⏃⏃⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃⏃⏃
+ 5							⏃⏃　　　　　⏃⏃⏃⏃	⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃⏃⏃
+  							⏃⏃⏃⏃　　　⏃⏃⏃⏃	⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃⏃⏃
+ 4							⏃⏃⏃⏃　　　　　⏃⏃	⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃⏃⏃
+  									⏃⏃⏃⏃　　　⏃⏃	⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃⏃⏃
+ 3	❖	❖⏃⏃			⏃⏃⏃⏃　　　⏃⏃	⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃	⏃
+  				⏃⏃					⏃⏃　　　⏃⏃	⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃	⏃
+ 2	❖	❖⏃⏃					⏃⏃　　　⏃⏃	⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃	⏃
+  				⏃⏃					⏃⏃　　　⏃⏃	⏃⏃⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃⏃⏃	⏃
+ 1	❖	❖⏃⏃					⏃⏃　　　⏃⏃	⏃⏃⏃⏃〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰⏃⏃⏃⏃	⏃
+  				⏃⏃					⏃⏃　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏆⏃⏃⏃⏃⏃⏃			⏃
+ 0	❖	❖⏃⏃					⏃⏃　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏆⏃⏃⏃⏃⏃⏃			⏃
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+writeOpenedAreaRecord(19, 23);
+pos[19][23].f.antiWarp = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@delevent
+@wait time=500 cond='(game.party.curX == 16 && WAY != "n") || (game.party.curX == 17 && WAY != "s")'
+@walk turn=n cond='game.party.curX == 16 && WAY != "n"'
+@walk turn=s cond='game.party.curX == 17 && WAY != "s"'
+@wait time=500
+@jump storage="main11.scn" target=*pond_1
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@delevent
+@wait time=500 cond='WAY != "w"'
+@walk turn=w cond='WAY != "w"'
+@wait time=500
+[texton]
+[リーダー f=06]「...?」[k]
+The road ahead is strangely lively.[k]
+Is this a place where monsters gather? It might be better to be careful.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@delevent
+@addevent map=モイーズ湿地帯・死霊の森 num=10
+@wait time=500 cond='WAY != "w"'
+@walk turn=w cond='WAY != "w"'
+@wait time=500
+@walk move=w
+@walk move=w
+@wait time=500
+@jump storage="main11.scn" target=*pond_2
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@delevent
+@wait time=200
+[if exp='WAY != "s"']
+	@walk turn=s
+	@wait time=500
+[endif]
+@eval exp='game.map.bgm = "crisis"'
+@mu f=crisis
+[texton]
+[リーダー f=05]「...!」[k]
+From the swamp ahead, I sensed something incredibly sinister![k]
+[textoff]
+@wait time=500
+@walk move=s
+@wait time=500
+@walk move=s
+@wait time=500 cond='game.party.curY == 9'
+@walk move=s cond='game.party.curY == 9'
+@wait time=1000
+@se f=roar
+@fgf c=9010 left=450 top=80
+@wait time=500
+[texton]
+[リーダー f=12]「This is...!」[k]
+We beheld a very frightening scene![k]
+Countless animated corpses were coming toward us from the swamp, giving off a foul odor![k]
+...At this point, it seems like there's no choice but to fight.[k]
+[textoff]
+@clf
+
+@monster pos=0  name=ゾンビ
+@monster pos=1  name=ゾンビ
+@monster pos=2  name=ゾンビ
+@monster pos=3  name=ゾンビ
+@monster pos=4  name=ゾンビ
+@monster pos=5  name=ゾンビ
+@monster pos=6  name=ゾンビ
+@monster pos=7  name=ゾンビ
+@monster pos=8  name=ゾンビ
+@monster pos=9  name=ゾンビ
+@monster pos=10 name=ゾンビ
+@monster pos=11 name=ゾンビ
+@monster pos=12 name=ゾンビ
+@monster pos=13 name=ゾンビ
+@monster pos=14 name=ゾンビ
+@monster pos=15 name=ゾンビ
+@monster pos=16 name=ゾンビ
+@monster pos=17 name=ゾンビ
+@monster pos=18 name=ゾンビ
+@monster pos=19 name=ゾンビ
+@monster pos=20 name=ゾンビ
+@callbattle escape=false bgm=crisis gameover=true
+
+@wait time=500
+@se f=roar
+@fgf c=9010 left=450 top=80
+@wait time=500
+[texton]
+[リーダー f=06]「They're still coming...!」[k]
+We took out the enemies in front of us, but more undead keep coming![k]
+[textoff]
+@clf
+
+@monster pos=0  name=グール
+@monster pos=1  name=グール
+@monster pos=2  name=グール
+@monster pos=3  name=グール
+@monster pos=4  name=グール
+@monster pos=5  name=グール
+@monster pos=6  name=グール
+@monster pos=7  name=グール
+@monster pos=8  name=グール
+@monster pos=9  name=グール
+@monster pos=10 name=グール
+@monster pos=11 name=グール
+@monster pos=12 name=グール
+@monster pos=13 name=グール
+@monster pos=14 name=グール
+@monster pos=15 name=グール
+@monster pos=16 name=グール
+@monster pos=17 name=グール
+@monster pos=18 name=グール
+@monster pos=19 name=グール
+@monster pos=20 name=グール
+@callbattle escape=false bgm=crisis gameover=true
+
+@wait time=500
+@se f=roar
+@fgf c=9010 left=450 top=80
+@wait time=500
+[texton]
+[if exp='game.isFreeMode']
+	The undead relentlessly attack.[k]
+	However, if we turn our backs now, death awaits us. We once again take up our weapons.[k]
+[else]
+	[テオ f=10]「Damn it... there's no end to it...!」[k]
+	The undead relentlessly attack.[k]
+	However, if we turn our backs now, death awaits us. We once again take up our weapons.[k]
+[endif]
+[textoff]
+@clf
+
+@monster pos=0  name=ガスト
+@monster pos=1  name=ガスト
+@monster pos=2  name=ガスト
+@monster pos=3  name=ガスト
+@monster pos=4  name=ガスト
+@monster pos=5  name=ガスト
+@monster pos=6  name=ガスト
+@monster pos=7  name=ガスト
+@monster pos=8  name=ガスト
+@monster pos=9  name=ガスト
+@monster pos=10 name=ガスト
+@monster pos=11 name=ガスト
+@monster pos=12 name=ガスト
+@monster pos=13 name=ガスト
+@monster pos=14 name=ガスト
+@monster pos=15 name=ガスト
+@monster pos=16 name=ガスト
+@monster pos=17 name=ガスト
+@monster pos=18 name=ガスト
+@monster pos=19 name=ガスト
+@monster pos=20 name=ガスト
+@callbattle escape=false bgm=crisis gameover=true
+
+@wait time=500
+@se f=roar
+@fgf c=9010 left=450 top=80
+@wait time=500
+[texton]
+[if exp='! game.isFreeMode']
+	[テオ]「Is it over...? ...No, not yet!」[k]
+[endif]
+After a hard fight, we managed to reduce the number of corpses considerably.[k]
+However, behind those corpses, true terror awaited![k]
+[textoff]
+@clf
+
+
+@eval exp='m.リッチキング.life = 1666'
+@monster pos=1  name=レブナント
+@monster pos=2  name=レブナント
+@monster pos=4  name=レブナント
+@monster pos=5  name=レブナント
+@monster pos=9 name=リッチ
+@monster pos=10 name=リッチキング
+@monster pos=11 name=リッチ
+@eval exp='game.map.bgm = "dungeon"'
+@callbattle escape=false bgm=crisis gameover=true
+@eval exp='game.restoreMembers()'
+@eval exp='m.リッチキング.life = 3666'
+
+[texton]
+[if exp='! game.isFreeMode']
+	[テオ]「Did we do it...?」[k]
+[endif]
+The enemy leader was crushed, and the aura of death that had surrounded the area began to fade.[k]
+It seems that the wave of undead has subsided. Let's continue exploring the surrounding area.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+; ハイパーボム専用宝箱
+@treasure item=ウィローブレード,森の精の弓,経験のコイン（大）,経験のコイン（大）,経験のコイン（中）,経験のコイン（中）,回復の指輪,回復の指輪 trap=罠はない
+[if exp='! tf.leaveTreasureBox']
+	@delevent
+	@changefloor pimg=void click=false
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,135 @@
+﻿; ヤネクの森
+
+name = ヤネクの森・トンネル
+insideName = Tunnel
+level = 15
+bgm = evil
+external = n:1
+margin = 1
+shadow = dark
+sky = snowy
+roof = stone
+blank = rock
+outfield = soil
+
+; 画像パーツ
+━ = soil
+　 = soil
+❖ = snow
+〰 = water
+☁ = smoke
+☗ = exit
+︻ = panel
+⑴ = bulletin
+⑵ = br_hp
+⑶ = br_hp
+⑷ = br_maxhp
+
+; 敵情報
+maxGroups = 2
+monsters = 毒トカゲ,猛毒ヘビ,モンストラスバット,バンパイアラット,コールドウィスプ
+traps = 毒針,毒ガス,酸スプレー,しびれ針,魔力吸収,爆弾,スモーク
+
+; 移動ポイント
+(A) = map:フーラ雪原・南の森, x:4, y:0, way:n, symbol:exit, ask:Go to the next map?
+(B) = map:ヤネクの森・東, x:8, y:39, way:s, symbol:exit, ask:Go to the next map?
+(C) = map:ヤネクの森・東, x:3, y:39, way:s, symbol:exit, ask:Go to the next map?
+(D) = map:ヤネクの森・霧の谷, x:0, y:37, way:e, symbol:exit, ask:Go to the next map?
+(E) = map:ヤネクの森・霧の谷, x:0, y:39, way:e, symbol:exit, ask:Go to the next map?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  
++1									❖
+  ┏━━━┓			┏☗┓			┏━━━━━┓
+19┃　　　┃			┃Ⓐ┃			┃⑷　　　　┃
+  ┃　　　┃			┃　┃			┃　　　　　┃
+18┃敵　　┃			┃　┃			┃　　敵　　┃
+  ┃　┏━┛			┃　┃			┗━┓　┏━┛
+17┃　┃					┃　┃					┃　┃
+  ┃　┃	┏━━━┛　┗━━━━━┛　┃
+16┃　┃	┃⑵　⑶　　　　　　　　　　┃
+  ┃　┃	┃　　　　　　　┏━━━━━┛
+15┃　┃	┃　　　　　　　┃
+  ┃　┗━┛　　　〰〰〰〰┃
+14┃　　　　　　　〰〰〰〰┃
+  ┗━┓　　　〰〰〰〰〰〰┃
+13		┃　　　〰〰〰〰〰〰┃
+  		┃　　　〰〰〰〰〰〰┗━━━━━━━┓
+12		┃　　　〰〰〰〰〰〰〰〰〰〰〰　　　┃
+  		┃　　　〰〰〰〰〰〰〰〰〰〰〰　　　┃
+11		┃　　　〰〰〰〰〰〰〰〰〰〰〰　　Ⓔ☗
+  		┣━┳━┓〰〰〰〰〰〰〰〰〰┏━━━┛
+10		┃　┃	┃　〰〰〰〰〰〰〰〰┃
+  		┃　┗━┛　〰〰〰〰〰〰〰〰┗━━━┓
+ 9		┃　　　　　〰〰〰〰〰〰〰〰〰〰〰Ⓓ☗
+  		┃　┏━┓　〰〰〰〰〰〰〰〰〰〰〰　┃
+ 8		┃　┃	┃　　⑴〰〰〰〰〰〰〰〰〰　┃
+  		┃☁┃	┃　　　〰〰〰〰〰〰〰〰〰　┃
+ 7		┃☁┃	┃　　　　　　　　　　　　　┃
+  		┃☁┃	┃　　　┏━━━━━━━━━┛
+ 6		┃☁┃	┃　　　┃
+  		┃☁┃	┃　┏━┛
+ 5		┃☁┃	┃　┃
+  		┃☁┃	┃　┗━━━━━━━━━┓
+ 4		┃☁┃	┃　　　　　　　　　　　┃
+  		┃☁┃	┗━━━━━━━━━┓　┃
+ 3		┃　┃											┃　┃
+  		┃　┗━━━┓	┏━━━━━┛　┃
+ 2		┃　　　　　┃	┃　　敵　　　　┃
+  ┏━┛　┏━┓　┃	┃　　　┏━┓　┃
+ 1┃　　敵┃	┃　┃	┃　　　┃	┃　┃
+  ┃　　　┃	┃　┃	┗━━━┛	┃　┃
+ 0┃　　　┃	┃Ⓒ┃							┃Ⓑ┃
+  ┗━━━┛	┗☗┛							┗☗┛
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[3][0].s.antiScope = "exit";
+pos[8][0].s.antiScope = "exit";
+pos[4][19].n.antiScope = "exit";
+pos[9][11].e.antiScope = "exit";
+pos[9][9].e.antiScope = "exit";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@roadguide n="Northrop Village" s="Sapphire City" e="Mountain of God"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+*event_3
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("life", 200)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP restored!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 20)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 20!"'
+
+[eventoff]
+;------------------------------------------------------------------------------

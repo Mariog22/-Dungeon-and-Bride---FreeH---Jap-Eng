@@ -1,0 +1,646 @@
+﻿// magic.tjs
+// 魔法ウインドウ
+
+
+class MagicCommandBoard extends BoardLayer
+{
+	// 魔法選択ウインドウを作るクラス
+
+	var maxLevel = 9;		// 最大レベル
+	var magicButtons = [];	// 魔法ボタン
+	var partyButtons = [];	// パーティーボタン
+	var categoryButtons = [];	// カテゴリを切り替えるボタン
+	var restLayer = [];	// 残り使用回数を表示するレイヤー
+	var detailLayer;		// 詳細表示レイヤー
+	var curChara;				// 魔法を使用するキャラ
+	var curCharaTemp;		// 一時保存用（戦闘を経ると毎回最後のキャラになってしまうので）
+	var lastMagicButton;	// 前回選んだ魔法と同じ魔法を発するコマンドボタン
+	var selectedCategoryMark;	// 選択中のカテゴリ表示枠
+	var selectedCharaMark;	// 選択中のキャラ表示枠
+	var focusLastMagicSoon = false;	// すぐに次の魔法を使えるようにするフラグ（移動時のみ）
+
+	function MagicCommandBoard(par, master)
+	{
+		super.BoardLayer(...);
+		name = "魔法ウインドウ";
+		loadImages("frame_magic");
+		adjustX = 1;	// 縦横の差を十分に付けることでカーソルが斜めに移動しなくなる
+		adjustY = 100000;
+		font.height = 27;
+		setPos(20, 6);
+
+		// キャラ選択マーク
+		selectedCharaMark = new DecoLayer(this);
+		with(selectedCharaMark)
+		{
+			.setSize(106, 106);
+			.fillRect(0, 0, 106, 106, 0xFFFF00FF);
+			.fillRect(7, 7, 92, 92, 0x00000000);
+			.setPos(152, 14);
+			.absolute = 10;
+			.visible = true;
+		}
+
+		// パーティーボタン
+		for(var i = 0; i < master.party.maxMembers; i++)
+		{
+			partyButtons[i] = new MagicPartyButton(this);
+			partyButtons[i].setPos(105 * i + 162, 17);
+			partyButtons[i].absolute = i;
+		}
+
+		// カテゴリ選択マーク
+		selectedCategoryMark = new DecoLayer(this);
+		with(selectedCategoryMark)
+		{
+			.loadImages("btn_category_mark");
+			.setPos(42, 141);
+			.absolute = 10;
+			.visible = true;
+		}
+
+		// カテゴリボタン
+		categoryButtons[0] = new MagicCategoryButton(this);
+		with(categoryButtons[0])
+		{
+			.loadImages("btn_category_m");
+			.setPos(42, 142);
+			.category = "mmagic";
+			.name = "精霊魔法";
+		}
+
+		categoryButtons[1] = new MagicCategoryButton(this);
+		with(categoryButtons[1])
+		{
+			.loadImages("btn_category_p");
+			.setPos(252, 142);
+			.category = "pmagic";
+			.name = "神聖魔法";
+		}
+
+		categoryButtons[2] = new MagicCategoryButton(this);
+		with(categoryButtons[2])
+		{
+			.loadImages("btn_category_a");
+			.setPos(462, 142);
+			.category = "amagic";
+			.name = "錬金魔法";
+		}
+
+		categoryButtons[3] = new MagicCategoryButton(this);
+		with(categoryButtons[3])
+		{
+			.loadImages("btn_category_s");
+			.setPos(672, 142);
+			.category = "smagic";
+			.name = "召喚魔法";
+		}
+
+		// レベル別使用回数表示
+		for(var i = 0; i < maxLevel; i++)
+		{
+			restLayer[i] = new global.Layer(window, this);
+			with(restLayer[i])
+			{
+				.setSize(90, 24);
+				.setPos(64, i * 50 + 249);
+				.font.face = "MS PGothic";
+				.font.height = 16;
+				.visible = true;
+			}
+		}
+
+		// 詳細表示レイヤー
+		detailLayer = new global.Layer(window, this);
+		with(detailLayer)
+		{
+			.setSize(800, 30);
+			.setPos(181, 690);
+			.font.face = "MS PGothic";
+			.font.height = 24;
+			.visible = true;
+		}
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < partyButtons.count; i++) invalidate partyButtons[i];
+		for(var i = 0; i < categoryButtons.count; i++) invalidate categoryButtons[i];
+		for(var i = 0; i < restLayer.count; i++) invalidate restLayer[i];
+		invalidate selectedCharaMark;
+		invalidate selectedCategoryMark;
+		invalidate detailLayer;
+		super.finalize();
+	}
+
+	function open(charaObj)
+	{
+		// 魔法ウインドウを開く。最初はキャラの選択から入る（キーボードの場合）
+		// キャラ選択を禁止し、直接魔法を選択したい場合は、charaObj にキャラを入れる（戦闘時など）
+
+		// キャラ指定
+		if(master.inBattle) curCharaTemp = curChara;	// 退避
+		if(charaObj !== void) curChara = charaObj;
+		else curChara = curCharaTemp;
+		if(! master.party.members.has(curChara) || curChara.getMagicPermission() !== void)
+		{
+			curChara = master.party.getMagicUser();
+		}
+		if(! master.inBattle) curCharaTemp = curChara;
+
+		// 画面作成
+		super.open();
+		putPartyButtons(charaObj, master.inBattle);
+		switchCategoryButtons();
+		putMagicCommands();
+		master.instruction.close();
+
+		// 移動時魔法を使った直後なら同じ魔法にフォーカス（キーボード操作時のみ）
+		if(focusLastMagicSoon)
+		{
+			focusLastMagicSoon = false;
+			if(lastMagicButton !== void && MOUSE_HIDDEN)
+			{
+				lastMagicButton.focus();
+				return;
+			}
+		}
+
+		// キーボード操作時には先頭を選択状態に
+		if(KEY_PRESSED)
+		{
+			if(! master.inBattle) focusPartyButton();
+			else if(! focusCategoryButton()) focusMagicButton();
+		}
+	}
+
+	function close()
+	{
+		super.close();
+		clear();
+		for(var i = 0; i < partyButtons.count; i++)
+		{
+			partyButtons[i].visible = false;
+		}
+	}
+
+	function putPartyButtons(charaObj, useOnly)
+	{
+		// パーティーキャラ選択ボタンを表示
+		var valid;
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			var one = master.party.members[i];
+			partyButtons[i].loadImages(one);
+			if(one.getMagicPermission() !== void) valid = false;
+			else if(useOnly) valid = (charaObj == one);
+			else valid = one.isMagicUser();
+			partyButtons[i].selectable = valid;
+		}
+	}
+
+	function switchCategoryButtons()
+	{
+		// カテゴリ選択ボタンの選択状態を変更
+		if(! curChara.isMagicCategoryValid(curChara.lastPage)) curChara.lastPage = void;
+		for(var i = categoryButtons.count - 1; i >= 0; i--)
+		{
+			var cateName = categoryButtons[i].category;
+			var res = curChara.isMagicCategoryValid(cateName);
+			categoryButtons[i].selectable = res;
+			if(res && curChara.lastPage === void) curChara.lastPage = cateName;
+			if(cateName == curChara.lastPage) selectedCategoryMark.left = categoryButtons[i].left - 5;
+		}
+	}
+
+	function clear()
+	{
+		// クリア
+		super.clear();
+		for(var i = 0; i < magicButtons.count; i++)
+		{
+			magicButtons[i].visible = false;
+			invalidate magicButtons[i];
+		}
+		magicButtons = [];
+	}
+
+	function putMagicCommands()
+	{
+		// 魔法の一覧を描画する
+		clear();
+		lastMagicButton = void;
+		selectedCharaMark.left = partyButtons[curChara.slot].left - 3;
+		if(curChara.lastPage === void) return;
+		var spells = master[curChara.lastPage];
+		var columnLength = curChara.lastPage == "smagic" ? 300 : 240;
+		var rec = [, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		for(var i = 0; i < spells.count; i++)
+		{
+			var dic = spells[i];
+			if(curChara.btcmd.find(dic) == -1) continue;
+			var cmd = new MagicCommandButton(this);
+			magicButtons.add(cmd);
+			cmd.name = dic.displayName;
+			cmd.loadImages("btn_cmd_gold_" + cap(font.getTextWidth(cmd.name) \ font.height, 9, 7));
+			cmd.setPos(rec[dic.magicLV] * columnLength + 150, dic.magicLV * 50 + 169);
+			rec[dic.magicLV] ++;
+			cmd.onSelectAction = curChara.setAction;
+			cmd.onSelectActionParam = dic;
+			cmd.detail = dic.detail;
+			cmd.cond = (dic.cond(curChara) && curChara[dic.category][dic.magicLV - 1] > 0);
+			var colour = cmd.cond ? chColor : 0xA0A0A0;
+			drawText(cmd.left + 10, cmd.top + 5, master.restoreName(cmd.name), colour,,, 2048, 0x5B4D33, 3);
+			if(curChara.lastMagic == dic) lastMagicButton = cmd;
+		}
+		drawRestNumber(curChara[curChara.lastPage], curChara[curChara.lastPage + "Max"]);
+	}
+
+	function drawRestNumber(arr, maxArr)
+	{
+		// 使用回数を表示する
+		for(var i = 0; i < maxLevel; i++)
+		{
+			restLayer[i].clear();
+			restLayer[i].drawText(2, 2, arr[i] + "/" + maxArr[i], 0xFFFFFF,,, 2048, 0x5B4D33, 2);
+		}
+	}
+
+	function drawDetail(text)
+	{
+		// 魔法の詳細を表示する
+		detailLayer.clear();
+		detailLayer.drawText(0, 0, text, 0xFFFFFF, 255, true, 2048, 0x5B4D33, 2);
+	}
+
+	function switchChara(charaRef)
+	{
+		// 魔法使用キャラを切り替える
+		clear();
+		curCharaTemp = curChara = charaRef;
+		switchCategoryButtons();
+		putMagicCommands();
+	}
+
+	function focusPartyButton()
+	{
+		// パーティーボタンのどれかにフォーカスを合わせる
+		partyButtons[curChara.slot].focus();
+	}
+
+	function focusCategoryButton()
+	{
+		// カテゴリボタンのどれかにフォーカスを合わせる
+		var num = 0;
+		for(var i = 0; i < categoryButtons.count; i++)
+		{
+			if(categoryButtons[i].selectable) num ++;
+			if(categoryButtons[i].category != curChara.lastPage) continue;
+			categoryButtons[i].focus();
+		}
+		return (num >= 2);	// １つしかなかったらカテゴリ選択は飛ばす
+	}
+
+	function focusMagicButton()
+	{
+		// 魔法ボタンのどれかにフォーカスを合わせる
+		if(lastMagicButton !== void && lastMagicButton.cond) lastMagicButton.focus();
+		else if(magicButtons.count > 0) magicButtons[0].focus();
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbRight) close();
+		super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		super.onKeyDown(...);	// 順番重要
+		if(key == BT_CANCEL || key == BT_CANCEL2) close();	// 順番重要
+	}
+}
+
+
+class MagicPartyButton extends LightCommandButton
+{
+	// 魔法選択ウインドウ上で使用キャラを切り替えるボタン
+
+	var charaRef;
+
+	function MagicPartyButton(par)
+	{
+		super.LightCommandButton(...);
+		setSize(100, 100);
+		darkCoverLayer.paintAll(this);
+		lightingLayer.paintAll(this);
+		selectable = false;
+	}
+
+	function loadImages(chr)
+	{
+		charaRef = chr;
+		charaRef.infoVisible = false;
+		fillRect(0, 0, width, height, 0xFF5B4D33);
+		piledCopy(4, 4, chr, 22, 2, width - 8, height - 8);
+		charaRef.infoVisible = true;
+		visible = true;
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbRight)
+		{
+			parent.onMouseUp(...);
+		}
+		else if(button == mbLeft)
+		{
+			if(parent.master.inBattle) return;
+			parent.switchChara(charaRef);
+		}
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();
+		if(key == BT_LSTEP || key == BT_LSTEP2) key = BT_LEFT;
+		if(key == BT_RSTEP || key == BT_RSTEP2) key = BT_RIGHT;
+		if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			parent.onKeyDown(...);
+		}
+		else if(key == BT_LEFT || key == BT_RIGHT || key == BT_LEFT2 || key == BT_RIGHT2)
+		{
+			if(parent.master.inBattle) return;
+			parent.targetLayers = parent.partyButtons;
+			var target = parent.getLayerByKey(this, key);
+			if(target !== void)
+			{
+				target.focus();
+				parent.switchChara(target.charaRef);
+			}
+		}
+		else if(key == BT_OK || key == BT_UP || key == BT_DOWN || key == BT_OK2 || key == BT_UP2 || key == BT_DOWN2)
+		{
+			if(parent.curChara != charaRef && (key == BT_OK || key == BT_OK2))
+			{
+				// マウス操作からキーボードに移った直後など
+				// まれにフォーカスがあるのにこのキャラの画面が開いていない時があるので
+				parent.switchChara(charaRef);
+				return;
+			}
+			if(parent.curChara.lastPage === void) return false;
+			var res = (key != BT_UP && key != BT_UP2 && parent.focusCategoryButton());
+			if(! res)
+			{
+				if(key == BT_OK || key == BT_OK2)
+				{
+					parent.focusMagicButton();
+					return;
+				}
+				parent.targetLayers = parent.magicButtons;
+				var target = parent.getLayerByKey(this, key);
+				if(target !== void) target.focus();
+			}
+		}
+		else
+		{
+			super.onKeyDown(...);
+		}
+	}
+
+	function focusNextCharaAndMagic(key, shift)
+	{
+		// 魔法ボタンから呼び出され、隣のキャラを選んで最初の魔法を選択する
+		// 呼び出し元が無効化されるので、その対策
+		onKeyDown(key, shift);
+		parent.focusMagicButton();
+	}
+}
+
+
+class MagicCategoryButton extends CommandButton
+{
+	// 魔法選択ウインドウ上でカテゴリを切り替えるボタン
+
+	var category = "mmagic";	// 魔法の種別（カテゴリ）
+
+	function MagicCategoryButton(par)
+	{
+		super.CommandButton(par);
+		type = ltAlpha;
+		visible = true;
+		absolute = 1;
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(! selectable && button == mbLeft) return;
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbRight)
+		{
+			parent.onMouseUp(...);
+		}
+		else if(button == mbLeft)
+		{
+			if(! selectable) return;
+			parent.curChara.lastPage = category;
+			parent.switchCategoryButtons();
+			parent.putMagicCommands();
+		}
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();
+		if(key == BT_LSTEP || key == BT_LSTEP2 || key == BT_RSTEP || key == BT_RSTEP2)
+		{
+			if(parent.master.inBattle) return;
+			parent.focusPartyButton();
+			kag.focusedLayer.onKeyDown(key, shift);
+			if(selectable)
+			{
+				focus();
+				parent.curChara.lastPage = category;
+				parent.switchCategoryButtons();
+				parent.putMagicCommands();
+			}
+			else
+			{
+				parent.focusCategoryButton();
+			}
+		}
+		else if(key == BT_LEFT || key == BT_RIGHT || key == BT_LEFT2 || key == BT_RIGHT2)
+		{
+			parent.targetLayers = parent.categoryButtons;
+			var target = parent.getLayerByKey(this, key);
+			if(target !== void && target != this)
+			{
+				parent.curChara.lastPage = target.category;
+				parent.switchCategoryButtons();
+				parent.putMagicCommands();
+				target.focus();
+			}
+		}
+		else if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			if(parent.master.inBattle) parent.onKeyDown(...);
+			else parent.focusPartyButton();
+		}
+		else if((key == BT_UP || key == BT_UP2) && ! parent.master.inBattle)
+		{
+			parent.focusPartyButton();
+		}
+		else if(key == BT_OK || key == BT_OK2)
+		{
+			parent.focusMagicButton();
+		}
+		else if(key == BT_UP || key == BT_DOWN || key == BT_UP2 || key == BT_DOWN2)
+		{
+			parent.targetLayers = parent.magicButtons;
+			var target = parent.getLayerByKey(this, key);
+			if(target !== void) target.focus();
+		}
+		else
+		{
+			super.onKeyDown(...);
+		}
+	}
+}
+
+
+class MagicCommandButton extends CommandButton
+{
+	// 魔法選択ウインドウ上の各魔法コマンド
+
+	function MagicCommandButton(par)
+	{
+		super.CommandButton(par);
+		type = ltAlpha;
+		absolute = 1;
+	}
+
+	function onFocus(focused, direction)
+	{
+		parent.curChara.lastMagic = onSelectActionParam;	// 最後の魔法を記憶
+		parent.drawDetail(this.detail);
+		super.onFocus(...);
+	}
+
+	function onBlur(focused)
+	{
+		parent.drawDetail("");
+		super.onBlur(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbRight) parent.onMouseUp(...);
+		else super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();
+		if(key == BT_LSTEP || key == BT_LSTEP2 || key == BT_RSTEP || key == BT_RSTEP2)
+		{
+			if(parent.master.inBattle) return;
+			parent.focusPartyButton();
+			kag.focusedLayer.focusNextCharaAndMagic(key, shift);
+		}
+		else if(key == BT_OK || key == BT_OK2)
+		{
+			parent.focusLastMagicSoon = true;
+			super.onKeyDown(...);
+		}
+		else if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			if(! parent.focusCategoryButton())
+			{
+				if(parent.master.inBattle) parent.onKeyDown(...);
+				else parent.focusPartyButton();
+			}
+		}
+		else if(isArrowButton(...))
+		{
+			parent.targetLayers = parent.magicButtons;
+			var target = parent.getLayerByKey(this, key);
+			if(key == BT_DOWN || key == BT_DOWN2)
+			{
+				if(target === void || target.top <= top)
+				{
+					if(parent.master.inBattle)
+					{
+						if(parent.focusCategoryButton()) return;
+					}
+					else
+					{
+						parent.focusPartyButton();
+						return;
+					}
+				}
+			}
+			else if(key == BT_UP || key == BT_UP2)
+			{
+				if(target === void || target.top >= top)
+				{
+					if(parent.master.inBattle)
+					{
+						if(parent.focusCategoryButton()) return;
+					}
+					else
+					{
+						if(! parent.focusCategoryButton()) parent.focusPartyButton();
+						return;
+					}
+				}
+			}
+			if(target !== void) target.focus();
+		}
+		else
+		{
+			super.onKeyDown(...);
+		}
+	}
+}
+
+
+function renameMagicNames(master)
+{
+	// 魔法のリネームを実行する関数
+
+	if(! Storages.isExistentStorage(System.exePath + "/magic.txt")) return;
+
+	var lines = csvToArray(System.exePath + "/magic.txt");	// ファイル読み込み
+	for(var i = 0; i < lines.count; i++)
+	{
+		if(lines[i][0].indexOf("=>") == -1) continue;
+		var line = lines[i][0].split(/=>/);
+		var src = /　/g.replace(line[0], "  ");	// 全角空白を打っちゃう人への対処
+		var dest = /　/g.replace(line[1], "  ");
+		src = src.trim();
+		dest = dest.trim();
+		src = /\ \ /g.replace(src, "　");	// trim を使った後で一応元に戻す
+		dest = /\ \ /g.replace(dest, "　");
+		if(src.length == 0 || dest.length == 0) continue;
+		if(o[src] === void)
+		{
+			System.inform("魔法リネームファイルエラー：存在しない魔法名です   " + src);
+			continue;
+		}
+		var name = master.convertName(dest);
+		if(master.btcmd.has(o[src])) o[src].displayName = name;
+		if(master.items.has(o[src + "の巻物"])) o[src + "の巻物"].displayName = name + "の巻物";
+		if(master.items.has(o[src + "の魔法書"]))
+		{
+			o[src + "の魔法書"].displayName = name + "の魔法書";
+			o[src + "の魔法書"].inputData("cmdParam", src);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------

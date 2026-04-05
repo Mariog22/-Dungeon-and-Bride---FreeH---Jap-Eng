@@ -1,0 +1,136 @@
+﻿; 大洞窟
+
+name = 大洞窟Ｂ34
+insideName = Ｂ34
+upper = 大洞窟Ｂ33
+lower = 大洞窟Ｂ35
+level = 84
+bgm = shadow
+margin = 1
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+
+; 各パーツ
+━ = soild
+… = wood
+　 = soild
+㊤ = ladderu
+㊦ = ladderd
+⑴ = bulletin
+⑶ = barrel
+⑷ = barrel
+⑸ = br_mp
+⑹ = barrel
+
+; 敵情報
+monsters = スワンプデビル,ケイブデーモン,ナイトメア,エキドナ,サキュバス,見習いサキュバス
+
+; 宝箱
+box[1] = ボム,リターンの巻物,堕天使の指輪_u,暗殺者のかたびら_u,グレートアックス_u,武芸の秘薬_u
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4  
+  				┏━┓
+ 8				┃㊦┃
+  				┃　┃
+ 7				┃　┃
+  ┏━━━┛　┗━━━┓
+ 6┃⑸　　　　　　　⑹┃
+  ┣…………　…………┫
+ 5┃❶　　　②　　　⑶┃
+  ┃　　　　　　　　　┃
+ 4┃　　　　②　　　⑷┃
+  ┃　　　　　　　　　┃
+ 3┃　　　　②　　　　┃
+  ┣…………　…………┫
+ 2┃　　　　　　　　　┃
+  ┗━━━┓　┏━━━┛
+ 1				┃⑴┃
+  				┃　┃
+ 0				┃㊤┃
+  				┗━┛
+;    0   1   2   3   4  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(2);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text=Checkpoint
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@monster pos=0 name=ナイトインプ
+@monster pos=1 name=ナイトインプ
+@monster pos=2 name=ナイトインプ
+@monster pos=3 name=ナイトインプ
+@monster pos=4 name=ナイトインプ
+@monster pos=5 name=ナイトインプ
+@monster pos=6 name=ナイトインプ
+@monster pos=8 name=マウンテンデビル
+@monster pos=10 name=デュラハン
+@monster pos=12 name=マウンテンデビル
+@monster pos=16 name=アビスデーモン
+@monster pos=18 name=アビスデーモン
+@callbattle bgm=boss gameover=true
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.setStatus(o.灰, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> turned to ash!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.setStatus(o.麻痺, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> is paralyzed!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@barrel noguest
+@damage v=&'game.curTarget.addParam("magic", 9)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had MP restored!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.setStatus(o.石化, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> was petrified!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

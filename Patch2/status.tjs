@@ -1,0 +1,129 @@
+﻿// status.tjs
+// キャラの状態作成
+
+
+class CharaStatus
+{
+	// キャラの状態を作るクラス
+	// 追加効果スキルとして扱われることもある
+
+	var master;
+	var name;
+	var icon = "";
+	var sickTime = 0;
+	var control = true;	// キャラの行動を制御できるかどうか
+	var face;	// この状態のときのキャラの表情
+	var eraseAtEndOfBattle = false;
+	var eraseAtDungeonExit = false;
+	var category = "status";	// これが判定条件として扱われる際に参照される
+	var _displayName;	// 表示名。これが追加効果スキルとして扱われる場合の名前となる
+	var toGuest = true;	// 対象にゲストを含むかどうか（追加効果スキルとして扱われる場合）
+	var auto = true;	// 自動選択キャラが使えるどうか（追加効果スキルとして扱われる場合）
+	var anime = "*nothing";	// 追加効果を受けたときのアニメ
+	var magicLV = 0;
+	var detail = "";
+	var superior;	// 機能が重複する上位の別コマンド・スキル
+	var inferior;	// 機能が重複する下位の別コマンド・スキル
+	var result;	// 外部から結果を与えるときに一時保存しておく変数
+
+	function CharaStatus(name, master)
+	{
+		// やることなし
+		this.master = master;
+		this.name = name;
+		displayName = name;
+		kag.add(this);
+	}
+
+	property displayName
+	{
+		setter(v)
+		{
+			_displayName = v;
+			detail = "May apply the " + _displayName + " state to opponent";
+		}
+		getter {
+			return _displayName;
+		}
+	}
+
+	function cond(owner)
+	{
+		// オーバーライドとかする
+		// これが false のときはこの状態に変化しません
+		if(owner.status.has(this)) return false;
+		if(owner != master.party && owner.dead) return false;
+		return true;
+	}
+
+	function doDamage(self, target)
+	{
+		// オーバーライドとかする
+		// ここでは追加効果でこの状態になったときのポップアップ文字列を返す
+		// なお、判定は各コマンド内で行うものとし、ここでの成功判定はしない
+	}
+
+	function getPrice(owner)
+	{
+		// オーバーライドとかする
+		// 治療に必要な金を返す
+		return 0;
+	}
+
+	function onSetStatus(owner)
+	{
+		// オーバーライドとかする
+		// この状態になった瞬間の処理を書く
+	}
+
+	function onRemoveStatus(owner)
+	{
+		// オーバーライドとかする
+		// この状態が消えた瞬間の処理を書く
+	}
+
+	function effectInMoving(owner)
+	{
+		// オーバーライドとかする
+		// １歩移動したときに、この状態でいることによる作用を書く
+	}
+
+	function effectInBattle(owner)
+	{
+		// オーバーライドとかする
+		// 戦闘時に１ターン経過によりこの状態でいることによる作用を書く
+	}
+
+	function affectedParam(key, value)
+	{
+		// オーバーライドとかする
+		// ここに状態によって変化したパラメータ値を返す式を書く
+		// ここに値を入れるとそれを加工して返す
+		return value;
+	}
+
+	function effectMessage(owner, value)
+	{
+		// オーバーライドとかする
+		// その状態でいるときに発生したことの説明を返す
+	}
+
+	function catchMessage(target)
+	{
+		// オーバーライドとかする
+		// その状態になったときのメッセージを返す
+	}
+
+	function releaseMessage(target)
+	{
+		// オーバーライドとかする
+		// その状態から元に戻ったときのメッセージを返す
+	}
+
+	function isExtraEffectOccuring(self, target)
+	{
+		// オーバーライドとかする
+		// これが追加効果スキルとして扱われる際、使用者が効果を発生させられたかどうかを返す
+		return false;
+	}
+}

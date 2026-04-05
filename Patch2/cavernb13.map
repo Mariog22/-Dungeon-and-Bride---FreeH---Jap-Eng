@@ -1,0 +1,104 @@
+﻿; 大洞窟
+
+name = 大洞窟Ｂ13
+insideName = Ｂ13
+upper = 大洞窟Ｂ12
+lower = 大洞窟Ｂ14
+level = 80
+bgm = shadow
+margin = 1
+isOutdoor = true
+shadow = dark
+sky = black
+blank = rock
+outfield = soild
+
+; 各パーツ
+━ = soild_h
+‥ = soild
+　 = soild
+⏁ = pedestal
+① = human
+② = human
+
+; 敵情報
+monsters = デーモンインプ,シャドウインプ,ナイトメア,サキュバス,見習いサキュバス
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4  
+  ┏━━━
+11┃■■■
+  ┃■┏━
+10┃■┃
+  ┃■┃
+ 9┃■┃
+  ┃■┃
+ 8┃■┃
+  ┃■┃
+ 7┃　┃
+  ┃　┃
+ 6┃　┃
+  ┃　┗━━━━━━━┓
+ 5┃　　　　　　　　⏁┃
+  ┃　　　　　　　　　┃
+ 4┃　　　　　　　　②┃
+  ┃　　　　　　　　　┃
+ 3┃　　　　①　　　⏁┃
+  ┃　　　　　　　　　┃
+ 2┃　　　　　　　　　┃
+  ┃　┏━━━━━━━┛
+ 1┃　┃
+  ┃　┗━┳━━━
+ 0┃　　　：			
+  ┗━━━┻━━━
+;    0   1   2   3   4  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Devil f=imp_00]「Hey, you guys! Are you really planning to go down into this cave?」[k]
+[name n=Devil f=imp_00]「You'd better stop! There are tons of terrifying demons down there! You won't make it back alive!」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Devil f=succubus_10]「Would you like to purchase something?」[k]
+[textoff]
+
+@question title="Take a look?"
+[eventoff cond='! tf.result']
+
+@shop name=大人の魔法店
+
+[texton]
+[if exp='o.大人の魔法店.selection.has(o.リペアの魔法書)']
+	[name n=Devil f=succubus_10]「Come back again! [はーと] Hehehe!」[k]
+[else]
+	[name n=Devil f=succubus_10]「Do you have any worm venom?」[k]
+	[name n=Devil f=succubus_10]「If you give me some worm venom, I'll sell you a good spellbook [はーと].」[k]
+[endif]
+[textoff]
+
+[eventoff]
+;===============================================================================

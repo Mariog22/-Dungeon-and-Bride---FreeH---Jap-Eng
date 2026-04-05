@@ -1,0 +1,199 @@
+﻿; 水竜の神殿
+
+name = 水竜の神殿Ｂ１
+insideName = Ｂ１
+lower = 水竜の神殿Ｂ２
+pool = 水竜の神殿Ｂ２
+level = 30
+bgm = labyrinth
+shadow = dark
+sky = black
+roof = stone
+outfield = marble
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = stone
+　 = marble
+☐ = marble
+／ = door
+√ = gold
+☗ = upstair
+︻ = panel
+┯ = button
+⑹ = br_maxmp
+⑺ = br_maxmp
+⑻ = br_maxmp
+
+; 敵情報
+maxGroups = 2
+monsters = ブルースライム,電気ねずみ,サンダーウィスプ,ウンディーネ,セイレーン,ラミア
+
+; 移動ポイント
+(A) = map:モイーズ湿地帯・東の沼地, x:12, y:22, way:w, symbol:exit ,ask:Leave the dungeon?
+
+; 宝箱
+box[1] = 罠はない,スターカード・杖,マジカルボートの巻物
+box[2] = 銅のチャクラム_u,マジカルボウ_u,コールアウラの魔法書,マジカルボートの巻物,マジカルボートの巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+  		┏━━━━━┓			┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+19		┃　　❶　　┃			┃　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  		┃　　　　　┃			┃　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+18		┃　　　　　┃			┃　　　　　　④　　　　　　　　　　　　　　　　　　　　┃
+  		┣━━━━━┫			┃　　　┏━━︼━━━━┓　　　┏━┓␣␣␣┏━┓　　　┃
+17		┃␣␣␣␣␣┃			┃　　　┃							┃　　　┃	┃␣␣␣┃	┃　　③】
+  		┃␣␣␣␣␣┃			┃　　　┃	┏━━━┓	┃　　　┃	┃␣␣␣┃	┃　　　┃
+16		┃␣␣␣␣␣┃			┃　　　┃	┃␣␣␣┃	┃　　⑤┃	┃␣␣␣┃	┃　　　┃
+  ┏━┛␣␣␣␣␣┗━┓	┃␣␣␣┃	┃␣␣␣┃	┣√━︼┫	┃␣␣␣┃	┃　　　┃
+15┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃	┃　　　┃	┃␣␣␣┃	┃　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┗━┛␣␣␣┃	┃　　　┃	┃␣␣␣┃	┃　　　┃
+14┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣␣␣␣␣␣␣┃	┃　　⑹┃	┃␣␣␣┃	┃　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣␣␣␣␣␣␣┃	┃　　　┃	┃␣␣␣┃	┃　　　┃
+13┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣␣␣␣␣␣␣┃	┃⑺　⑻┃	┃␣␣␣┃	┃　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┏━┓␣␣␣┃	┗━━━┛	┃␣␣␣┃	┃　　　┃
+12┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃							┃␣␣␣┃	┃　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃	┃␣␣␣┗━━━━━━━┛␣␣␣┃	┃　　　┃
+11┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃	┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃	┃　　　┃
+  ┗━┓␣␣␣␣␣┏━┛	┃␣␣␣┃	┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃	┃　　　┃
+10		┃␣␣␣␣␣┃			┃␣␣␣┃	┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃	┃　　　┃
+  		┃␣␣␣␣␣┗━━━┛␣␣␣┃	┃␣␣␣┏━━━━━━━┓␣␣␣┃	┃　　　┃
+ 9		┃␣␣␣␣␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃							┃␣␣␣┃	┃　　　┃
+  		┃␣␣␣␣␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃	┏━━━┓	┃␣␣␣┃	┃　　　┃
+ 8		┃␣␣␣␣␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃	┃　　　┃	┃␣␣␣┃	┃　　　┃
+  		┗━━━━━━━━━━━━━┛	┃␣␣␣┃	┃　　　┃	┃␣␣␣┃	┃　　　┃
+ 7																		┃␣␣␣┃	┃　　　┃	┃␣␣␣┃	┃　　　┃
+  ┏━━━━━━━━━┓	┏━━━┓	┃␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃	┃　　　┃
+ 6┃␣␣␣␣␣␣␣␣␣┃	┃　　❷┃	┃␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃	┃　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃　　　┃	┃␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃	┃　　　┃
+ 5┃␣␣␣␣␣␣␣␣␣┃	┃　　　┃	┃␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃	┃　　　┃
+  ┃␣␣␣┏━┓␣␣␣┗━┻━━━┫	┃␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃	┃　　　┃
+ 4┃␣␣␣┃	┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃	┃　　　┃	┃　　　┃
+  ┃␣␣␣┃	┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃	┃　　　┃	┃　　　┃
+ 3┃␣␣␣┃	┃␣␣␣␣␣␣␣␣␣┃	┃␣␣␣┃	┃␣␣␣┃	┠①　　┃	┃　　　┃
+  ┃␣␣␣┃	┗━━━━━━━━━┛	┃␣␣␣┃	┃␣␣␣┃	┗━━━┛	┃　　　┃
+ 2┃␣␣␣┃													┃␣␣␣┃	┃␣␣␣┃							┃　　　┃
+  ┃␣␣␣┗━━━━━━━━━━━━━┛␣␣␣┗━┛␣␣␣┃			┏━━━┛　　　┃
+ 1┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃			┃　　　　　　　┃
+  ┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃			┃　　　　　　　┃
+ 0┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃			☗Ⓐ　　　　　②】
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛			┗━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[15][3].w.himg = "bt_water";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+[if exp='game.map.pos[0][0].f.type == "water"']
+	@notice text="Nothing happened."
+	[eventoff]
+[endif]
+
+@eval exp='o.水竜の神殿Ｂ２.underWater = true'
+@eval exp='f.filledEast_3F = true'
+@eval exp='f.filledWest_3F = true'
+@eval exp='f.filledEast_4F = true'
+@eval exp='f.filledWest_4F = true'
+
+@eval exp='tf.temp = %[type: "water", img: "pond", trap: "water"]'
+@call storage=&'o.水竜の神殿Ｂ１.mapFile' target=*_change_waterway_b1
+
+@eval exp='tf.temp = %[type: "air", img: void, trap: "drained"]'
+@call storage=&'o.水竜の神殿Ｂ２.mapFile' target=*_change_waterway_b2
+
+@se f=bashan1
+@wait time=500
+@notice text="I heard the sound of water flowing somewhere."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_change_waterway_b1
+; @return cond='tf.temp.type == o.水竜の神殿Ｂ１.pos[0][0].f.type'
+[iscript]
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  0,  0,  1,  4);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  0,  5,  4,  6);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  3,  3,  7,  4);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  2,  0, 11,  1);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp, 12,  0, 13,  6);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  9,  2, 10, 16);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp, 11, 10, 14, 11);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  8, 13,  8, 14);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp, 15,  5, 16, 17);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  6,  8,  7, 15);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  4,  8,  5,  9);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  1,  8,  3, 10);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  0, 11,  4, 15);
+o.水竜の神殿Ｂ１.changeFloorsOfWideArea(tf.temp,  1, 16,  3, 17);
+[endscript]
+@return
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+[texton]
+[nw][b]This is a temple built to appease the water dragon that brought disaster to Moise.[r]
+Never wake the sleeping water dragon.[/b]
+ [k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="The water drop button will flood the current level."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+[texton]
+[nw][b]This is a temple built to appease the water dragon that brought disaster to Moise.[r]
+[b]Those who cannot ride on water don't belong in this temple.[r]
+If you want to go further, try every means possible.[/b][k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Magical Source"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+*event_7
+;[exp] onObjectTrigger
+*event_8
+;[exp] onObjectTrigger
+
+@barrel noguest
+@damage v=&'game.curTarget.addParam("maxMagic", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max MP permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

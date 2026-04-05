@@ -1,0 +1,198 @@
+﻿// command.tjs
+// 戦闘・魔法などキャラの各種行動コマンドを作成
+
+
+//=======================================================================================
+class BattleCommand
+{
+	// 戦闘コマンドを作るクラス
+
+	var master;
+	var id;	// 表示の並び順に影響
+	var name;	// 名前
+	//var displayName;	// 表示名 //Official introduced this conflicting name
+	var anime = "*normal_attack";	// アニメ処理の書かれた場所のラベル
+	var showCutIn = true;	// 汎用カットインを挿入するかどうか
+	var category;	// カテゴリー
+	var scene = "none";	// 使用できる場面
+	var toEnemy = false;	// 敵への技かどうか
+	var toGuest = false;	// 対象にゲストを含むかどうか
+	var auto = false;	// 自動選択時に有効かどうか（オート攻撃 or 敵やゲスト用のコマンド）
+	var magicLV = 0;	// 消費される魔法ランク。０ならどのランクにも属さずＭＰを消費しない
+	var range = 1;	// 対象範囲
+	var reach = 1;	// 到達距離
+	var longHand = false;	// 大きな身体を生かしての遠距離攻撃。ミサイルシールドで防げない
+	var attrib;	// 各技の持っている属性。通常攻撃と違いレジストされる可能性がある
+	var bootTrap = false;	// このコマンドを実行したことによってダンジョンの罠を起動させるかどうか
+	var bootEvent = false;	// このコマンドを実行したことでマップイベントを起こすかどうか
+	var getByLevelUp = true;	// レベルアップで習得できるかどうか（ false だと別の手段が必要）
+	var hitCount = 0;	// 複数回攻撃する場合、当たった回数を数える変数
+	var superior;	// 機能が重複する上位の別コマンド・スキル
+	var inferior;	// 機能が重複する下位の別コマンド・スキル
+	var detail;	// 技の説明
+	var guide = "Select a target";	// 対象選択時に出る説明文
+	var result;	// 外部から結果を与えるときに一時保存しておく変数
+	var cmdParam;	// コマンドとして使用した際の補助情報を書き込む変数
+	var displayName;
+
+	function BattleCommand(dic, master, id)
+	{
+		// やることなし
+		this.master = master;
+		this.id  =  id;
+		name     =  dic.name;
+		anime    =  dic.anime;
+		category =  dic.category;
+		scene    =  dic.scene;
+		toEnemy  = +dic.toEnemy;
+		toGuest  = +dic.toGuest;
+		auto     = +dic.auto;
+		magicLV  = +dic.magicLV;
+		range    = +dic.range;
+		reach    = +dic.reach;
+		detail   =  dic.detail;
+		if(dic.attrib != 0) attrib = dic.attrib;
+		displayName = dic.displayName;
+		if (displayName === void) {
+		    displayName = name;
+		}
+		if(category == "trap" || category == "fixture") showCutIn = false;
+	}
+
+	function cond(owner)
+	{
+		// オーバーライドとかする
+		// これが false になると字が灰色になってクリックできなくなる
+		// コマンドごとの個別の判定はここで行うこと
+		if(scene == "all") return true;
+		if(scene == "battle" && master.inBattle) return true;
+		if(scene == "camp" && ! master.inBattle) return true;
+		if(scene == "dungeon" && master.map.kind == "dungeon") return true;
+		if(scene == "explore" && ! master.inBattle && master.map.kind== "dungeon") return true;
+		return false;
+	}
+
+	function checkCurrentAction(owner)
+	{
+		// 行動しようとした時に何らかの理由で実行できない状態だったらメッセージを返す
+		if(isForbiddenByAntiMagic()) return "Currently, all magic is blocked!";
+		if(magicLV <= 0) return;	// 魔法以外は制限を受けない
+		var str = owner.displayName + " cast " + displayName + "！\n";
+		if(owner.status.has(o.恐怖)) return str + " But cannot cast magic!";
+		if(category != "amagic" && owner.isSealedMagic()) return str + " But magic is sealed!";
+		if(! owner.hasMagicPoint(this)) return str + " But doesn't have enough MP!";
+		if(master.map.getMagicPermission() !== void) return str + " But can't use magic here!";
+	}
+
+	function useResource(res, owner)
+	{
+		// 行動に消費（アイテム、ＭＰ等）が必要な場合、消費する（プレイヤーキャラのみ）
+		if(magicLV <= 0) return;
+		owner[category][magicLV - 1] --;	// 成否(res)に関係なくＭＰを消費
+	}
+
+	function isForbiddenByAntiMagic()
+	{
+		// アンチマジックの効果により行動が禁じられるかどうかを返す
+		if(! master.party.status.has(o.禁止)) return false;
+		if(attrib == "消去") return false;
+		if(magicLV == 0) return false;	// 魔力を持った攻撃も防がれる
+		return true;
+	}
+
+	function isCancelSucceed(self, target, inCounter)
+	{
+		// オーバーライドとかする
+		// これがキャンセルスキルだった場合キャンセルできたかどうかを返す
+		return false;
+	}
+
+	function determined(owner, enemy)
+	{
+		// オーバーライドとかする
+		// 条件によってコマンドが自動的に決まるとき true を返す
+		// 逆に行動させたくないときは false を返す
+		return;
+	}
+
+	function pickUpTarget(array, owner)
+	{
+		// オーバーライドとかする
+		// 敵が個別のターゲットを選ぶ場合、適切なターゲットを１体選んで返す
+		return array.draw();
+	}
+
+	function doDamage(self, target)
+	{
+		// オーバーライドとかする
+		// ここで行動の効果を適用しその結果を文字列で返します
+	}
+
+	function doExtraEffect(self, target)
+	{
+		// 現在の行動によって追加効果を与える
+		var exfs = self.getExtraEffects(target);
+		exfs.shuffle();
+		for(var i = 0; i < exfs.count; i++)
+		{
+			if(target.setStatus(exfs[i])) return exfs[i];
+		}
+	}
+
+	function affectedParam(key, value)
+	{
+		// オーバーライドとかする
+		// ここにコマンドによって変化するパラメータ値を返す式を書く
+		return value;
+	}
+
+	function effectInMoving(owner)
+	{
+		// オーバーライドとかする
+		// １歩移動したときに、この状態でいることによる作用を書く
+	}
+
+	function effectInBattle(owner)
+	{
+		// オーバーライドとかする
+		// 戦闘時に１ターン経過によりこの状態でいることによる作用を書く
+	}
+
+	function actionMessage(self, target)
+	{
+		// オーバーライドとかする
+		// 攻撃を開始するときの文章を返します
+		if(category == "event") return "Activated " + displayName + "!";
+		if(category == "trap") return "Activated " + displayName + "!";
+		if(category == "amagic") return self.displayName + " cast " + displayName + "!";
+		if(magicLV > 0) return self.displayName + " cast " + displayName + "!";
+		if(category == "sp") return self.displayName + " released the hidden power of " + self.brokenItem.displayName + "!";
+		return self.displayName + "'s " + displayName + "!";
+	}
+
+	function resultMessage(target, value)
+	{
+		// オーバーライドとかする
+		// 攻撃の結果を示す文章を返します
+		// 初期値として、一般的な攻撃について記述しておく
+
+		if(target === void || ! toEnemy) return;	// 攻撃じゃなければメッセージなし
+		if(value === void) return;	// doDamage の結果が返らなければメッセージなし
+
+		var msg = "";
+		if(value > 0 && hitCount > 1) msg += hitCount + " hits! ";
+		msg += target.displayName + " ";
+		if(target instanceof "MonsterObject")
+		{
+			if(value > 0) msg += "took " + value + " damage!";
+			else msg += "wasn't damaged!";
+		}
+		else
+		{
+			if(value > 0) msg += "took " + value + " damage!";
+			else msg += "wasn't damaged!";
+		}
+		return msg;
+	}
+}
+//=======================================================================================

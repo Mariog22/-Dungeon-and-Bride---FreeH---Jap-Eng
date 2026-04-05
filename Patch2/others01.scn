@@ -1,0 +1,318 @@
+﻿; シナリオ・その他のＨイベント１
+
+
+
+;■ミレディ宿屋イベント
+
+; ミレディと最初に宿泊した時に発生
+
+;◇主人公と宿泊
+*miredy_theo
+
+@saveon
+@bg f=0001
+[texton w=1]
+[テオ e=通常 f=02]「Well, I'm going to bed. Good night, Miredy.」[k]
+I say this to Miredy, my roommate, and get into bed.[k]
+[ミレディ v=vm273 e=下着 f=05]「Hey, Captain!」[k]
+[テオ f=25]「Yes, Miredy? ...What the-!」[k]
+@fg c=ミレディ f=02
+Miredy called out to me, and when I turned around, to my surprise, there she was, dressed only in a pair of panties.[k]
+[テオ f=25]「Hey, what are you doing, Miredy?」[k]
+[ミレディ v=vm274 f=01]「Hey, Captain, don't you want to have sex with me?」[k]
+[テオ f=25]「I don't! Just get dressed...」[k]
+@fg c=ミレディ f=57
+[ミレディ v=vm275 f=57]「How boring.」[k]
+@cl
+Miredy goes to bed half naked.[k]
+Seriously... I'm really nervous... She's a really uninhibited girl when it comes to sex...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスと宿泊
+*miredy_max
+
+@saveon
+@bg f=event98 p0=01 p1=05
+[texton w=2]
+[ミレディ v=vm276]「Haaaaan... Your cock is so big and good...!」[k]
+[マックス]「You're a total sucker for it. You're too sexy for a kid.」[k]
+@bg f=event98 p0=01 p1=06
+[ミレディ v=vm277]「Kid...? I've been alive longer than you! Ahhh..!」[k]
+Miredy spreads her small vagina to the limit and takes [マックス]'s big dick all the way in. Then she grinds her hips on top of him lasciviously.[k]
+[マックス]'s big penis seemed to feel so good that she was moaning sweetly and enthusiastically shaking her hips.[k]
+@bg f=event98 p0=01 p1=05
+[ミレディ v=vm278]「Ahhh...! It's hitting me in the back...! Your cock is too good...!」[k]
+Miredy made lewd squishing noises as she became extremely wet, devouring the pleasure of the penis.[k]
+[マックス], too, was rapidly becoming excited by the stimulation of her tight vagina.[k]
+[マックス]「Ugh... Miredy... It's time...!」[k]
+@bg f=event98 p0=01 p1=06
+[ミレディ v=vm279]「Oh, I'm cumming too... Aaahhh!」[k]
+∗spuurt! spuurt!∗[k]
+[マックス]「Woohoo...! It's coming out...!」[k]
+[ミレディ v=vm280]「I'm going to cum!」[k]
+The two climaxed at the same time, deeply joined.[k]
+@bg f=event98 p0=01 p1=02
+[ミレディ v=vm281]「Haa haa... Your cock... is the best...! Hey, let's do it one more time?」[k]
+[マックス]「Well, what can you do?」[k]
+Despite having experienced sex with very many men, Miredy was particularly satisfied with sex with the well hung [マックス].[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスと宿泊
+*miredy_linus
+
+@saveon
+@bg f=event98 p0=02 p1=01
+[texton w=2]
+[ライナス]「I-I-I really don't like girls like you! Damn!」[k]
+[ミレディ v=vm282]「Hmmm, you say that, but your cock is super stiff, isn't it?」[k]
+; ↑ ニヤニヤ笑いながら
+Miredy is on top of Linus, shaking her hips happily.[k]
+She takes Linus' penis up to the base in her small vagina and grinds her hips hard, devouring the pleasure.[k]
+[ライナス]「Wow! That feels great...!」[k]
+@bg f=event98 p0=02 p1=05
+[ミレディ v=vm283]「Aha...! Your cock... Ahh..! It's pretty thick... It feels nice... Ahhh..!」[k]
+Miredy moans lasciviously while writhing around.[k]
+Miredy's style was to have sex with any man, given the opportunity, and to enjoy it.[k]
+[ミレディ v=vm284]「Haaaan... Your cock is so good...!」[k]
+[ライナス]「Ugh...! I can't take it anymore...!」[k]
+[textoff]
+
+@bgf f=0001
+@flash
+@w05
+@flash
+@w05
+@flash
+[texton w=1]
+∗spuurt!∗[k]
+[ライナス e=裸 f=57]「Haa haa haa...」[k]
+Linus came prematurely, probably because it felt so good inside Miredy.[k]
+[ミレディ v=vm285 e=裸 f=61]「What the...?! You fat fuck! You came first?!」[k]
+; ↑ 真顔に戻って怒る
+[ライナス f=09]「I'm sorry... I just couldn't resist.」[k]
+[ミレディ v=vm286 f=07]「You've got to be kidding me! I didn't feel good at all! I can't believe you're the only one who felt good!」[k]
+Miredy was furious. After this, Linus was forced to have sex with Miredy until she came...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■サンドラ宿屋イベント
+
+; サンドラと最初に宿泊した時に発生
+
+;◇主人公と宿泊
+*sandra_theo
+
+@saveon
+@bg f=0001
+[texton w=1]
+[テオ f=25]「I'm coming in, Sandra... Ahh!」[k]
+@fg c=サンドラ e=下着 f=01
+[サンドラ v=vn103 f=01]「Hey, Captain. Good to see you tonight.」[k]
+When I entered the room to go to bed, to my surprise, Sandra, my roommate, was standing there with her top half bare.[k]
+[テオ f=25]「Oh, I'm sorry! I didn't realize you were changing.」[k]
+[サンドラ v=vn104 f=05]「Oh, don't worry. You don't have to leave.」[k]
+As I hurriedly tried to leave the room, Sandra stopped me.[k]
+[テオ f=26]「B-but...」[k]
+[サンドラ v=vn105 f=15]「I don't mind. Don't worry about it. We're all in the same party.」[k]
+Sandra continued to change her clothes as if nothing had happened. She remains cool even when people see her body.[k]
+[サンドラ f=16]「... ∗stare∗」[k]
+[テオ f=26]「W-what is it?」[k]
+Sandra stops abruptly and looks into my eyes.[k]
+[サンドラ v=vn106 f=15]「...Do you want to have sex with me, captain?」[k]
+[テオ f=25]「I-I-I don't! Anyway, hurry up and get dressed...」[k]
+[サンドラ v=vn107 f=05]「Oh, am I unattractive?」[k]
+[テオ f=26]「N-no, it's not that...!」[k]
+[サンドラ v=vn108 f=03]「Well, that's okay. I have the other girls to consider, so I'll call it a night. Good night.」[k]
+@cl
+[テオ f=26]「Good night...」[k]
+Sandra put on a skimpy negligee and went to bed.[k]
+...Maybe she was just teasing me? I'm really no match for Sandra...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスと宿泊
+*sandra_max
+
+@saveon
+@bg f=event97 p0=01 p1=05
+[texton w=2]
+[サンドラ v=vn109 e=汗だく f=37]「Ahhhh, ahhhhh, that's good, [マックス], ahhhhhhh!」[k]
+[マックス e=汗だく f=24]「Your pussy is great too, Sandra! I think I'm going to cum soon!」[k]
+Sandra and [マックス] were physically joined.[k]
+When [マックス] pestered Sandra, Sandra decided to accept.[k]
+[マックス f=32]「I really wanted to have sex with you just once! I'm seriously thrilled that we actually got to have sex like this!」[k]
+[サンドラ v=vn110 f=29]「Well... Just this once... Ahhhhhh!」[k]
+Having said that, Sandra's also becoming more and more enthusiastic about the act with [マックス].[k]
+@bg f=event97 p0=01 p1=01
+[サンドラ v=vn111 f=63]「Oh, [マックス], you really do have a big penis, don't you? That's amazing.」[k]
+[マックス f=21]「Really? I'm happy you praised me!」[k]
+[サンドラ v=vn112 f=29]「But you know, boys can't just have big dicks, right? You have to think about how to make a girl feel good, right?」[k]
+[マックス f=24]「That's true, isn't it?! Sandra, please teach me the secrets of sex!」[k]
+[サンドラ v=vn113 f=33]「Oh, well. Okay, I'll teach you.」[k]
+And so the night went on for [マックス] and Sandra...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスと宿泊
+*sandra_linus
+
+@saveon
+@fg l=ライナス e=通常 f=21 b
+@fg r=サンドラ e=通常 f=53 b
+@bg f=0001
+[texton w=1]
+[ライナス f=21]「Ah... Um... Sandra... Will you have sex with me?」[k]
+[サンドラ v=vn114 f=53]「I'm sorry. I'm not such an easy woman that I'll have sex with anyone who asks. I do have certain standards for men.」[k]
+@fg l=ライナス f=29
+[ライナス f=29]「Oh, no...」[k]
+Linus approached Sandra with high hopes. However, he was rejected without a second thought.[k]
+@fg r=サンドラ f=15
+[サンドラ v=vn115 f=15]「If you want to have sex with me, you're going to have to become more manly! Okay, good night.」[k]
+@cl r
+@fg l=ライナス f=95
+[ライナス f=95]「W-wait...!」[k]
+Sandra quickly went to bed.[k]
+Linus' shoulders slumped. He had to give up and reluctantly go to bed alone.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーと宿泊
+*sandra_blue
+
+@saveon
+@bg f=event97 p0=02 p1=05
+[texton w=2]
+[サンドラ v=vn116]「Ahhh... Ahhh... Ahh...!」[k]
+Sandra was on top of Blue, passionately shaking her hips.[k]
+Her whole body is moist with sweat, and she grinds her hips heavily while her ample breasts are bouncing and swaying.[k]
+Blue's strong penis was being pumped in and out of her soaking wet crotch.[k]
+[ブルー]「You're horny again today, Sandra. You like my dick that much?」[k]
+@bg f=event97 p0=02 p1=02
+[サンドラ v=vn117]「Yes... it's great... aahh! More... give me more... aahh!」[k]
+[ブルー]「You're a real pain in the ass, aren't you? Here, I'll give you some more!」[k]
+∗sluuurp!∗[k]
+@bg f=event97 p0=02 p1=05
+[サンドラ v=vn118]「Aaaahhh! It feels good...!」[k]
+Blue thrusts up into Sandra forcefully. She shudders with pleasure as she is penetrated.[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ブルー]「Hey! How's it going, Sandra?! Ora, Ora!」[k]
+[サンドラ v=vn119]「Aang... There it is...! More...! More... Thrust more!」[k]
+Sandra's body is quickly heightened as she is thrust into by the strong meat rod.[k]
+Sandra responded by enthusiastically squeezing Blue's penis and shaking her hips violently.[k]
+[サンドラ v=vn120]「Aaah! I'm cumming!」[k]
+With an ecstatic moan, Sandra climaxed with Blue...[k]
+[textoff]
+@out
+@w1
+
+@bg f=0045
+[texton w=1]
+[サンドラ v=vn121 e=汗だく f=65]「Hey... Blue... I love you...」[k]
+Sandra looked exhausted and rested against Blue. Her expression was one of contentment.[k]
+The afterglow of sex lingers on as they pull their sweat-soaked bodies together.[k]
+[サンドラ v=vn122 f=65]「I... I want to be with you until I die...!」[k]
+[ブルー e=汗だく f=05]「Hmm? What did you say?」[k]
+[サンドラ v=vn123 f=62]「No... It's nothing...」[k]
+[サンドラ f=62]（Even if I told you how I feel, it would only be a burden to you... You should always be free and unrestrained.）[k]
+[サンドラ f=62]（Still, I'll be the last one by your side...）[k]
+[textoff]
+@out
+@w1
+[hoteloff cond='game.isFreeMode']
+[texton w=0]
+[サンドラ e=裸 f=06]「...」[k]
+As I lay there, my body exhausted from sex, I thought back to the past.[k]
+I used to be an adventurer who traveled alone, without a party.[k]
+I was recognized by those around me as a talented adventurer, and it was even said that there was no one better, especially in the field of magic.[k]
+One day, I was challenged to a duel by Blue's party.[k]
+I accepted the challenge. I didn't think he could win.[k]
+Blue's party was full of strong men, but none of them had particularly remarkable magical talent. So I thought my magic would easily defeat them.[k]
+...But I lost.[k]
+Blue was invincible. My magical abilities were completely useless. I was overwhelmed by Blue's power.[k]
+I lost and was taken to Blue's room and screwed all night.[k]
+He penetrated me over and over again with his strong penis, and the pleasure was so great that I went into a frenzy. I had never had such great sex in my life.[k]
+So I fell in love with Blue.[k]
+The more I got to know him, the more I was drawn to him. I honestly felt that I couldn't live without him.[k]
+...I've dated a few guys in the past, but none of them made me really horny.[k]
+I had come to feel that men were trivial things. Magic was more valuable to me than men, and life as an adventurer was more valuable to me than marriage.[k]
+...Blue taught me the joy of being a woman. He taught me the happiness of surrendering to a man.[k]
+So I began to think daily about how to stay by Blue's side.[k]
+Blue never had a stable partner. He was always changing girls and playing with them as he saw fit.[k]
+So I was aware that I was one of those playmates, and I knew very well that I would be discarded when he got bored.[k]
+To remain by the side of a man like that, you must excel as a woman.[k]
+I had to be the right woman for him, not only to satisfy him sexually, but also to be by his side as an adventuring partner. I spared no effort.[k]
+...I sometimes feel that it is strange for me to get so obsessed with just one man.[k]
+But I have fallen in love with Blue. I can't resist this feeling now.[k]
+Being close to Blue, I know very well how lecherous he is. Each new girl that comes along will threaten my position.[k]
+Most recently, Blue said that he'd pursue the girls in [テオ]'s party.[k]
+But I'm not willing to give up my place next to Blue to anyone. Because I am confident that I love Blue more than anyone else.[k]
+No matter how many new girls show up, I am the one who loves Blue the most, the one that Blue needs the most.[k]
+Whoever Blue loves, I will make sure he turns to me in the end...![k]
+[textoff]
+@w1
+[hoteloff]
+
+
+
+
+;■姫イベント
+
+*fiona_trophy
+
+[texton w=0]
+[フィオナ姫 f=04]「Well...! To win all those trophies... It's amazing.」[k]
+[フィオナ姫 f=05]「I have never met such an exceptional person as you. I am very interested in you.」[k]
+[フィオナ姫 f=07]「So, [テオ], would you like to come to my bedroom tonight? I would like to get to know you better.」[k]
+[textoff]
+
+@question title="Accept Princess Fiona's invitation?"
+
+[if exp='! tf.result']
+	[texton w=0]
+	[フィオナ姫 f=03]「I knew it... [if exp='o.テオ.married']You have a wife[else]You're a sincere person[endif], so you would never accept such an offer...」[k]
+	[フィオナ姫 f=01]「I am very sorry. Please forget what I just said.」[k]
+	[textoff]
+	[otheroff]
+[endif]
+@out
+@w1
+*_replay_iona_trophy
+@bg f=event93
+[texton w=2]
+[フィオナ姫]「Haa haa... Oh dear, [テオ], isn't it wrong to cum inside me?」[k]
+[テオ]「I'm sorry...」[k]
+[フィオナ姫]「But it was really good. I'm sure there's something special about someone who can collect all the trophies.」[k]
+[フィオナ姫]「I will never forget this night...! Thank you, [テオ], for listening to my selfish, lascivious desires today!」[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+@eval exp='o.テオ.sexCount.self += 2'
+@eval exp='o.テオ.loversCount ++'
+@eval exp='o.テオ.technic += 2'
+@eval exp='game.wife.love.theo -= min(20, game.wife.love.theo)' cond='game.wife !== void'
+[eventoff]
+
+; 続く

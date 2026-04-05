@@ -1,0 +1,145 @@
+﻿; 古代の迷宮
+
+
+name = 古代の迷宮Ｂ２
+insideName = Ｂ２
+upper = 古代の迷宮Ｂ１
+level = 6
+bgm = anxiety
+margin = 1
+shadow = dark
+sky = black
+blank = rock
+
+; 各パーツ
+━ = stoney_h
+＋ = stoney_h
+　 = marble
+／ = door
+︻ = panel
+㊤ = ladderl
+④ = human
+
+; 敵情報
+maxGroups = 1
+monsters = ヘッドレス
+traps = 石つぶて,毒針,しびれ針,酸スプレー,スモーク
+
+; 宝箱
+box[1] = ボム,ボム,ボム
+box[2] = チーズ,チーズ,チーズ,チーズ,ふっくらパン,ふっくらパン,ふっくらパン,りんご
+box[3] = ウィザードアイの巻物,ウィザードアイの巻物,ウィザードアイの魔法書
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  ┏━━━━━━━━━━━━━┳━┳━━━┓
+ 4┃❸　　　　　　　　　　　　＋　／⑤　　┃
+  ┣━━━━━━━━━━━━━┫　┃　　　┃
+ 3┃④　　　　　　　　　　　②┃　┃　　　┃
+  ┃　　　　　　　　　　　　　┃　┣━━━┫
+ 2┃　　　　　　　　　　　　③┃　／　　　┃
+  ┃　　　　　　　　　　　　　┃　┃　　　┃
+ 1┃　　　　　　　　　　　　　┃①】❶　❷┃
+  ┣／━━━━━━━━━━━━┛　┗━┳━┫
+ 0┃　　　　　　　　　　　　　　　　⑥＋㊤┃
+  ┗━━━━━━━━━━━━━━━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(5);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Food Storage"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+; ここからはボムが出るようにする
+@delevent
+@jump storage="main04.scn" target=*labyrinth_4
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove
+
+@fg c=priest_purple_nude left=450
+[texton]
+[name n="Captive Girl" f=priest_purple_02]「Adventurer, do you want to be healed?」[k]
+[textoff]
+@question title="Would you like to be healed?"
+[if exp='tf.result']
+	@call storage="anime.ks" target=*fountain_star
+	@eval exp='game.party.recovery()'
+	@notice text="The party regained HP and magic!"
+	@eval exp='game.hotelView.checkLevelUp()'
+	[waittrig name="finishLevelUpInEvent"]
+[endif]
+@clf
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] party.lastIsMove
+
+@fg c=priest_green_nude left=450
+[texton]
+[name n="Captive Girl" f=priest_green_02]「...Before I was captured, I was a nun in the village. Adventurer, is there anything I can help you with?
+ 」[k]
+[textoff]
+@question title="Would you like the Sister's assistance?"
+@clf
+@shop name=巡礼シスター cond='tf.result'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@callbattle gameover=true
+@delevent
+@eval exp='game.inEvent = false'
+@eval exp='game.treasureBox.drops = [%[itemData: o.ボム], %[itemData: o.ボム]]'
+@eval exp='game.appearTreasureBox()'
+@eval exp='f.saveEnabled = true'
+[s]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] WAY == "e"
+
+@delevent
+[if exp='game.map.pos[8][0].e.type == "space"']
+	[eventoff]
+[endif]
+
+[texton]
+[if exp='game.isFreeMode']
+	[リーダー f=06]「...?」[k]
+[else]
+	[テオ f=06]「Hmm...?」[k]
+[endif]
+If you look closely, there seems to be a crack in the wall.[k]
+...Perhaps, with sufficient force, the wall can be broken.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------

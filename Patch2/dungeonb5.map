@@ -1,0 +1,191 @@
+﻿; 試練の迷宮
+
+name = 試練の迷宮Ｂ５
+insideName = Ｂ５
+upper = 試練の迷宮Ｂ４
+lower = 試練の迷宮Ｂ６
+pool = 試練の迷宮Ｂ６
+level = 50
+bgm = labyrinth
+isOutdoor = true
+roof = stone
+shadow = dark
+sky = black
+antiWarp = true
+
+; 各パーツ
+━ = stoner_h
+－ = stoner
+　 = marble
+☐ = marble
+❐ = cube
+❑ = cube
+／ = door
+⧻ = fence
+﹃ = ladder
+︻ = panel
+┯ = button
+上 = ladderu
+下 = ladderd
+⒉ = br_str
+
+; 敵情報
+maxGroups = 2
+monsters = ダークサモナー,サンダーウィスプ,コールドウィスプ
+
+; 宝箱
+box[1] = 罠はない,スターカード・帽子
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━━━━━━━━━━━━━━━━━━━━━━━┓
+11┠⓷☐⓸☐⓸☐⓹☐⓹☐⓺☐⓺☐☐☐☐☐☐☐☐☐☐┃
+  ┣－－⧻┳－－⧻┳－－⧻┳－－⧻┳━━━━━┓☐┃
+10┃☐☐☐ⅼ☐☐☐ⅼ☐☐☐ⅼ☐☐☐┃␣␣␣␣␣┃☐┃
+  ┃☐☐☐ⅼ☐☐☐ⅼ☐☐☐ⅼ☐☐☐┃␣␣␣␣␣┃☐┃
+ 9┃☐☐☐ⅼ☐☐☐ⅼ☐☐☐ⅼ☐☐☐┃␣␣␣␣␣┃☐┃
+  ┣－－－┻－－－┻－－﹃╋━━━┫␣␣␣␣␣┃☐┃
+ 8┃␣␣␣␣❐␣␣␣␣␣　┃☐☐☐／␣␣␣␣␣┃☐┃
+  ┃␣␣␣␣␣␣␣␣␣␣␣┃☐☐☐┃␣␣␣␣␣┃☐┃
+ 7┃␣␣␣␣❐␣␣␣␣␣␣┃☐☐☐┃␣␣␣␣␣┃☐┃
+  ┃␣␣␣␣␣␣␣␣␣┏━┫☐☐☐┃␣␣␣␣␣┃☐┃
+ 6┃␣␣❐␣␣␣❐␣␣┃上┃➊☐☐┃␣␣␣␣␣┃☐┃
+  ┃␣␣␣␣␣␣␣␣␣┃☐┣━━━┫␣␣␣␣␣┃☐┃
+ 5┃␣␣␣␣❐␣␣␣␣┃☐┃☐☐⓵】❑␣❑␣❑┃☐┃
+  ┃␣␣␣␣␣␣␣␣␣┃☐┃☐☐☐┃␣␣␣␣␣┃☐┃
+ 4┃␣␣❐␣␣␣❐␣␣┃☐／Ｅ☐☐┃␣␣␣␣␣┃☐┃
+  ┃␣␣␣␣␣␣␣␣␣┃☐┣━━━┫␣␣␣␣␣┃☐┃
+ 3┃␣␣␣␣␣␣␣␣␣┃☐／Ｅ☐☐┃␣␣␣␣␣┃☐┃
+  ┃␣␣␣␣␣␣␣␣␣┃☐┃☐☐☐┃␣␣␣␣␣┃☐┃
+ 2┃␣␣␣␣␣␣␣␣␣┃☐┃☐☐☐┃␣␣␣␣␣┃☐┃
+  ┃␣␣␣␣␣␣␣␣␣┃☐┣━━━┻━━━━━┛☐┃
+ 1┃␣␣␣␣␣␣␣␣␣┃下┃☐☐☐☐☐☐☐☐☐☐☐┃
+  ┣－－－－－－－－－┻━┛☐┏━━━━━━━━━┫
+ 0┃下☐☐☐☐☐☐☐☐☐☐☐☐／☐☐☐☐☐☐☐☐⒉┃
+  ┗━━━━━━━━━━━━━┻━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[5][8].n.img = "stoner";
+pos[2][9].f.pimg = pos[3][9].f.pimg = "cube2_h";
+pos[1][10].f.pimg = pos[3][10].f.pimg = pos[4][10].f.pimg = "cube2_h";
+for(var i = 8; i <= 10; i++)
+{
+	pos[i][5].f.img = "cube";
+	pos[i][5].f.cubeTop = "air";
+	pos[i][5].f.pimg = "cube2_h";
+}
+
+pos[0][10].f.icon = 
+pos[1][ 9].f.icon = 
+pos[2][10].f.icon = 
+pos[4][10].f.icon = 
+pos[4][ 9].f.icon = 
+pos[5][10].f.icon = 
+pos[5][ 9].f.icon = 
+pos[6][10].f.icon = 
+pos[7][ 9].f.icon = 67;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+f.saveIsForbidden = false;
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Maps are important. If you get stuck, check the map carefully."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("power", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Strength permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@delevent
+@addevent num=4
+@addevent num=5
+@addevent num=6
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=1 y=11 way=s mode=open
+@switchfence x=3 y=11 way=s mode=open
+@switchfence x=5 y=11 way=s mode=open
+@switchfence x=7 y=11 way=s mode=open
+@wait time=1000
+@walk turn=e
+@wait time=500
+@notice text="The metal cages lining this passageway all opened at once! The monsters that had been trapped inside rushed out!"
+@monster pos=1 name=サラマンダー
+@monster pos=2 name=サラマンダー
+@monster pos=3 name=サラマンダー
+@monster pos=4 name=サラマンダー
+@monster pos=5 name=サラマンダー
+@callbattle escape=false
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@monster pos=1 name=デザートバイパー
+@monster pos=2 name=デザートバイパー
+@monster pos=3 name=デザートバイパー
+@monster pos=4 name=デザートバイパー
+@monster pos=5 name=デザートバイパー
+@callbattle escape=false
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@monster pos=1 name=マンイーター
+@monster pos=2 name=マンイーター
+@monster pos=3 name=マンイーター
+@monster pos=4 name=マンイーター
+@monster pos=5 name=マンイーター
+@callbattle escape=false
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@monster pos=1 name=バジリスク
+@monster pos=2 name=バジリスク
+@monster pos=3 name=バジリスク
+@monster pos=4 name=バジリスク
+@monster pos=5 name=バジリスク
+@callbattle escape=false
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+@jump storage=&'o.試練の迷宮Ｂ４.mapFile' target=*reset_floor
+;-------------------------------------------------------------------------------

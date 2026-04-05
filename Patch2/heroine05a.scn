@@ -1,0 +1,1513 @@
+﻿; シナリオ・シルフ編・Ａパート
+
+
+
+;■主人公編・前半
+
+;◇主人公イベント01
+*theo_01
+
+; 宿屋の一室
+@saveon
+@fg c=マルエット e=通常 f=06 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ e=通常 f=01]「Good to see you [マルエット]. I see I'm with you today.」[k]
+[マルエット v=vs179 f=06]「G-good to see you...」[k]
+[マルエット] is small, energetic, and very innocent.[k]
+I knew that sylphs have the appearance of children, but seeing her really reminds me.[k]
+I can't believe this girl wants to be an adventurer. I wonder why on earth she became one?[k]
+[マルエット v=vs180 f=06]「What is it, Captain? You've been glancing at me for a while now.」[k]
+[テオ f=01]「Hey, [マルエット], why did you decide to become an adventurer?」[k]
+[マルエット v=vs181 f=05]「Eh?」[k]
+[テオ f=02]「I think it takes a lot of courage for a girl like you to leave your parents, travel alone, and become an adventurer.」[k]
+[テオ f=01]「You're at that age where you still want to be with your parents, right? So I was wondering if you have a reason. You can talk to me if you want.」[k]
+@fg c=マルエット f=07
+[マルエット v=vs182 f=07]「Hey! Captain!」[k]
+; ↑ 怒る
+[テオ f=12]「What... What?」[k]
+Suddenly [マルエット] sharply interrupted.[k]
+@fg c=マルエット f=08
+[マルエット f=08]「...」[k]
+[テオ f=12]「What's wrong, [マルエット]?」[k]
+Maybe I offended her...? But why...?[k]
+[マルエット v=vs183 f=08]「I'm sure we'll have a long acquaintance, so I'll say this now.」[k]
+[マルエット v=vs184 f=07]「Don't treat me like a child!」[k]
+[テオ f=12]「Huh...?」[k]
+[マルエット v=vs185 f=57]「We sylphs may look like human children, but we are adults! I've been away from my parents for a long time!」[k]
+[マルエット v=vs186 f=58]「...As if I still want to be pampered like that... Don't make fun of me!」[k]
+[テオ f=13]「A-ah, I see. Sorry, I'll be careful from now on.」[k]
+I shouldn't treat her as if she were a child... I really have to be careful.[k]
+@fg c=マルエット f=06
+[マルエット v=vs187 f=06]「I became an adventurer for the future of the sylphs.」[k]
+[テオ f=05]「The sylphs' future?」[k]
+[マルエット v=vs188 f=06]「Sylphs are the wind race. We live in the highlands where the wind blows clean and fresh.」[k]
+[マルエット v=vs189 f=06]「But recently, more and more people are being chased out of their homes by dragons and flying monsters. So we need to find a new place to live.」[k]
+[マルエット v=vs190 f=06]「So young sylphs like me set out on a journey to find a new home. I volunteered to become an adventurer to find a new haven in the process.」[k]
+[テオ f=05]「I see...」[k]
+So that was the reason. She may look young, but she's quite mature in her thinking.[k]
+@fg c=マルエット f=57
+[マルエット v=vs191 f=57]「So don't get the idea I want to be pampered by my mother! Understand?!」[k]
+[テオ f=13]「Y-yes, I get it. I'm sorry for saying something demeaning.」[k]
+@fg c=マルエット f=58
+[マルエット v=vs192 f=58]「Hmph... It's fine if you understand.」[k]
+I didn't understand [マルエット] at all, on reflection.[k]
+But still, a journey to find a new home... It's a far greater purpose than I thought. I wish I could help her in some way.
+ [k]
+If I ever find a plateau where the air is clear, it might be good to tell [マルエット] about it.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント02
+*theo_02
+
+; 宿屋の一室
+@saveon
+@fg c=マルエット e=通常 f=06 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ e=通常 f=01]「Hey, can I ask you something I've been wondering for a while?」[k]
+[マルエット v=vs193 f=06]「What is it?」[k]
+[テオ f=01]「Sylphs always float in the air, right? How do you all do that?」[k]
+[マルエット v=vs194 f=06]「Our wings.」[k]
+[テオ f=05]「Wings?!」[k]
+Sylphs float with their wings?![k]
+But [マルエット] doesn't have any wings that I've seen. What on earth does she mean?[k]
+[マルエット v=vs195 f=06]「Sylphs have wings inside their bodies. And that's where they always stay.」[k]
+[マルエット v=vs196 f=06]「But our wings are blessed by the wind, so just having them gives you buoyancy. You don't need to flap your wings to float.」[k]
+[テオ f=05]「Ah...」[k]
+That's amazing. So they didn't just evolve from wind spirits?[k]
+[マルエット v=vs197 f=19]「Of course, a sylph could take out her wings and fly. But since we're heavier nowadays, we can't go far, so we just keep them tucked away. Even so, all sylphs have wings.」[k]
+[テオ f=05]「I see...」[k]
+Sylphs' wings... What do they look like?[k]
+[テオ f=01]「Hey [マルエット], can I see your wings?」[k]
+@fg c=マルエット f=25
+[マルエット v=vs198 f=25]「Eh...」[k]
+@fg c=マルエット f=59
+[マルエット v=vs199 f=59]「N-no way! I can't show you my wings!」[k]
+; ↑ 怒る
+[テオ f=05]「Eh...」[k]
+[マルエット v=vs200 f=60]「What are you thinking, Captain, wanting to see my wings?![r]I can't show them to you so easily!」[k]
+[マルエット] protests to me, her face bright red.[k]
+[テオ f=13]「No, no, it's okay if you don't want to show me. Sorry.」[k]
+[マルエット v=vs201 f=61]「Ahhhhh! Captain you idiot! Pervert!」[k]
+@clf
+With that said, [マルエット] angrily slipped into bed.[k]
+[テオ f=10]「Hmmm...」[k]
+I'm not sure why, but I think I offended [マルエット] again. I'll have to apologize later...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント03
+*theo_03
+
+; 宿屋の一室・真夜中
+@saveon
+@bg f=0045
+[texton w=1]
+At night...[k]
+[？？？ v=vs202 key=マルエット noface buf=8]「Ugh... ∗sniff∗」[k]
+; （ ↑ 小さくすすり泣く）
+[テオ e=通常 f=06]「...」[k]
+[マルエット v=vs203 e=マタニティドレス f=56]「Ugh... I want to go home... Ugh...」[k]
+; （ ↑ 小さい声で寝言）
+[テオ f=05]「...[マルエット]?」[k]
+I heard [マルエット], who was sleeping next to me, mumbling something.[k]
+I got up and looked at her. Then...[k]
+@mu f=sad
+[マルエット v=vs204 f=55]「Ugh... ∗sniff∗ I miss you...」[k]
+[テオ f=06]「Sleep talk...」[k]
+[マルエット] was sleeping soundly. Seems like she was talking in her sleep.[k]
+A small tear is running down her cheek, as if she is dreaming something sad.[k]
+[マルエット v=vs205 f=55]「Father... Mother... I miss you...」[k]
+[テオ f=05]「[マルエット]...」[k]
+That's right. Although she may not be as young as she looks, [マルエット] is still a girl. She must be lonely, leaving her parents to go on an adventure all by herself.[k]
+Even though I usually act stout, I still miss my parents.[k]
+[テオ f=06]「...」[k]
+[マルエット] always acts bravely and does her best to fulfill her duties, but she must actually feel a bit insecure.[k]
+As her captain, I wished to protect this strong girl...[k]
+[textoff]
+@out
+@w05
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+[hoteloff]
+
+
+
+
+;■マックス編
+
+;◇マックスイベント01
+*max_01
+
+; 宿屋の一室
+@saveon
+@fg l=マックス e=通常 f=06 b
+@fg r=マルエット e=通常 f=06 b
+@bg f=0001
+@mu f=trick
+[texton w=1]
+[マックス f=06]「Yo.」[k]
+[マルエット f=06]「...」[k]
+So I'm staying with [マックス] today...[k]
+Honestly, I don't like this guy... He's kind of vulgar, and he also seems very dirty.[k]
+[マックス f=09]「∗sigh∗」[k]
+[マルエット v=vs515 f=58]「...Why are you sighing so openly?」[k]
+[マックス f=09]「You're my roommate today... ∗sigh∗」[k]
+@fg r=マルエット f=57
+[マルエット v=vs516 f=57]「What? What's wrong with me?」[k]
+[マックス f=09]「I'm not into kids... I would have preferred a more mature woman in the same room...」[k]
+[マルエット v=vs517 f=57]「I'm not a child! Sylphs just look like young humans!」[k]
+[マックス f=09]「Okay, okay, I'll leave it at that. Well, I'm going to bed.」[k]
+@cl l
+With that said, [マックス] quickly fell asleep.[k]
+@fg r=マルエット f=58
+[マルエット v=vs518 f=58]「What the... You're so rude...」[k]
+[マルエット f=06]「...」[k]
+But if this guy doesn't care about me, that's probably a good thing.[k]
+@cl
+I fell asleep normally in the room where [マックス] had fallen asleep.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇マックスイベント02
+*max_02
+
+; 宿屋の一室・朝
+@saveon
+@bg f=0001
+@mu f=trick
+[texton w=1]
+[マルエット e=マタニティドレス f=97]「...」[k]
+Morning... It's already getting light...[k]
+I had a hard time last night because [マックス] snored so loud... It made it hard to sleep...[k]
+We still have some time before we leave, so let's get some more sleep...[k]
+@fg c=マックス e=下着・勃起 f=04
+[マックス f=04]「Haha, I slept well last night～!」[k]
+The person responsible for my lack of sleep woke up feeling good.[k]
+@fg c=マックス f=03
+[マックス f=03]「Yo! [マルエット], good morning!」[k]
+[マルエット v=vs519 f=06]「Good morning...」[k]
+; ↑ 疲れた感じで
+He wears only a pair of pants and no top. He always dresses like this when he sleeps. He is really a classless man.[k]
+[マックス f=03]「Well, let's get dressed first!」[k]
+@cl
+With that said, [マックス] suddenly begins to take off his pants![k]
+[マルエット v=vs520 f=57]「Hey! Change your clothes when I'm not here!」[k]
+[マックス f=01]「It's okay, you're weirdly shy for a kid.」[k]
+[マルエット v=vs521 f=58]「How many times have I told you I'm not a child...」[k]
+Ahhh... What does that man think he's doing in the same room as a lady...?![k]
+[マックス f=06]「What? Where's my change of clothes?」[k]
+[マックス f=01]「Oops, I must have put it by [マルエット]'s bed. My mistake.」[k]
+@fg c=マックス e=裸・勃起 f=01
+With that said, [マックス] came toward me with his pants off![k]
+[マルエット v=vs522 f=31]「Hey! Keep away!」[k]
+[マックス f=03]「Why are you so shy? You're just a kid. You shouldn't care if a guy is naked.」[k]
+[マルエット v=vs523 f=31]「I told you I'm not a child! Please, put your pants on!」[k]
+[マックス f=01]「I just need to grab a few things, don't worry about it.」[k]
+@fg c=9015
+[マックス] doesn't even listen to me, and walks towards me with his penis fully exposed![k]
+And... It is getting bigger...![k]
+[マルエット v=vs524 f=31]「Aah!」[k]
+[マックス f=03]「There they are, my pants...」[k]
+[マックス] reaches over my head for his bag that was on my pillow.[k]
+Suddenly, [マックス]'s hips came in front of me and his hardened penis was thrust out in front of me![k]
+[マルエット v=vs525 f=37]「Oh no! Help!」[k]
+@cl
+Terrified, I jumped out of bed and ran away from [マックス]![k]
+@fg c=マックス e=裸・勃起 f=05
+[マックス f=05]「What the hell, don't be so scared with just a dick.」[k]
+[マルエット v=vs526 f=31]「Shut up! You sexual predator! What were you gonna do to me?」[k]
+[マックス f=05]「I didn't do anything. I just wanted to get a change of clothes.」[k]
+[マルエット v=vs527 f=31]「That's a lie! Because your penis... is, is, s-standing up!」[k]
+@fg c=マックス e=裸・勃起 f=03
+[マックス f=03]「Oh, this. You know, men stand up like this in the morning. It's a normal physiological phenomenon! It's not like I was trying to make love to you.」[k]
+[マルエット v=vs528 f=32]「Physiological phenomenon...?」[k]
+[マックス f=03]「Yes! All men stand up in the morning! Adults and children alike! It's not just me! [テオ] will be standing up right now too.」[k]
+[マックス f=03]「Haha, you really are a child to not know that, [マルエット]!」[k]
+[マルエット f=58]「...!」[k]
+[マックス f=03]「Now's a good chance to take a closer look at what a grown man's dick looks like, see?」[k]
+Then he turns his growing penis toward me![k]
+[マルエット v=vs529 f=31]「I don't want to see it! Just put it away quickly!」[k]
+[マックス f=01]「You don't? Then I'm gonna put on some pants.」[k]
+@cl
+With that, [マックス] finally returned to his side of the bed and put on his pants.[k]
+What a... What an insensitive man... I can't believe it![k]
+[マルエット f=30]「...」[k]
+It was huge...! It was so big...! I was so scared...[k]
+Men are that big...?[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇マックスイベント03
+*max_03
+
+; 宿屋の一室・マックス１人だけ
+@saveon
+@bg f=0001
+@mu f=trick
+@fg c=マックス e=通常 f=03
+[texton w=1]
+[マックス f=24]「Kuuuuuu, Maria was really erotic today!」[k]
+[マックス] shouts his thoughts alone in his empty bedroom.[k]
+[マックス f=22]「She was wearing something that accentuated her boobs... Maria, did you want to you want to seduce me?!」[k]
+@fg c=マックス e=勃起 f=58
+[マックス f=58]「Ugh...! My dick is getting hard just thinking about it...!」[k]
+@fg c=マックス e=硬い革鎧,勃起 f=58
+∗swiiish!∗[k]
+[マックス f=32]「I can't take it anymore! There's no one here, so let's jerk off!」[k]
+@cl
+∗stroke stroke stroke stroke∗[k]
+[マックス f=69]「Ugh, Maria! Oh, Maria!」[k]
+∗slam∗[k]
+Suddenly, [マルエット], who is sharing a room with [マックス] today, came into the room.[k]
+@fg c=マルエット e=通常 f=05
+[マルエット v=vs530 f=05]「Hey, [マックス], where's my luggage...?!」[k]
+[マックス f=01]「Whoa, [マルエット], what's up?」[k]
+@fg c=マルエット f=31
+[マルエット v=vs531 f=31]「Aaahhh!」[k]
+@cl b
+@fg l=マックス e=硬い革鎧,勃起 f=05 b
+@fg r=マルエット f=31
+[マックス f=05]「Hey, don't yell. People will wonder what's going on.」[k]
+@fg r=マルエット f=59
+[マルエット v=vs532 f=59]「Hey, what do you think you're showing me?! You pervert!」[k]
+[マックス f=05]「What the hell, don't make a fuss over seeing a dick.」[k]
+[マルエット v=vs533 f=59]「I'll make a fuss! You can't show that filthy thing to a woman... You're a disgrace...!」[k]
+@fg l=マックス f=15
+[マックス f=15]「What? Are you afraid of a man's dick?」[k]
+[マルエット f=60]「...!」[k]
+@fg l=マックス f=67
+[マックス f=67]「Well, [マルエット] is a child. It's no wonder she's never seen a cock before.」[k]
+[マルエット v=vs534 f=59]「I'm not a child! Don't make fun of me!」[k]
+@fg l=マックス f=01
+[マックス f=01]「Take it easy. I'm going to continue masturbating, so just go away.」[k]
+@cl l
+∗stroke stroke stroke stroke∗[k]
+@fg r=マルエット f=77
+[マルエット v=vs535 f=77]「What...?!」[k]
+To [マルエット]'s surprise, [マックス] continued masturbating in front of her![k]
+[マルエット v=vs536 f=77]「Hey, hey, what are you doing?! Put your pants on!」[k]
+[マックス f=23]「Just a little more, I'm about to cum!」[k]
+∗stroke stroke stroke stroke∗[k]
+[マルエット v=vs537 f=77]「W-w-w-what...?!」[k]
+With the sight of his hard penis being squeezed right in front of her, [マルエット] was too distressed to move. Then...[k]
+[マックス f=58]「Ugh!」[k]
+@flash t=100
+@wait time=100
+@flash t=100
+∗spurt spurt!∗[k]
+@fg r=マルエット f=85
+[マルエット v=vs538 f=77]「Kyaa!」[k]
+[マックス]'s sperm flew so vigorously that it ended up on [マルエット]'s face![k]
+[マックス f=03]「Oops, my bad, my bad... My cum flew a long way, huh ♪」[k]
+@fg r=マルエット f=86
+[マルエット f=86]「～～～～～～～!」[k]
+@fg l=マックス e=下半身裸・射精 f=01
+[マックス f=01]「Here, use this towel. It's okay if it gets dirty!」[k]
+With that said, [マックス] approached [マルエット] to hand her the towel, leaving his lower half exposed.[k]
+@fg r=マルエット f=87
+[マルエット v=vs539 f=87]「Don't come near me, you idiot!」[k]
+@se f=beat
+@quake time=200 hmax=20 vmax=20
+@flash t=100
+@fgf l=マックス f=11 left=300
+∗bang!∗[k]
+[マックス f=11]「Wow!」[k]
+[マルエット] kicked [マックス] as hard as she could as he approached![k]
+@se f=beat
+@quake time=200 hmax=20 vmax=20
+@flash t=100
+[マックス f=11]「What are you doing? Ahh, don't do that!」[k]
+[マルエット] throws everything she can reach at [マックス]![k]
+@fg r=マルエット f=87
+[マルエット v=vs540 f=87]「Get ooout! You pervert!」[k]
+@se f=beat
+@quake time=200 hmax=20 vmax=20
+@flash t=100
+@wait time=200
+@se f=beat
+@quake time=200 hmax=20 vmax=20
+@flash t=100
+[マックス f=11]「I get it! I get it! I'm sorry! So don't throw things!」[k]
+[マルエット v=vs541 f=87]「Idiot...!」[k]
+@se f=door1
+@clf l
+@quake time=200 hmax=20 vmax=20
+The attack by a furious [マルエット] forced [マックス] out of the room at full pelt![k]
+@cl b
+@fg c=マルエット f=59
+[マルエット v=vs542 f=59]「Haa haa haa haa...」[k]
+[マルエット] breathes heavily. She kicked [マックス] out, but that did little to calm her rage.[k]
+[マルエット v=vs543 f=60]「I can't believe he would do such a disgusting thing in front of a lady... I can't believe it!」[k]
+[マルエット] is disgusted as she recalls the dirty penis being squeezed.[k]
+@fg c=マルエット f=68
+[マルエット f=68]（...）[k]
+[マルエット f=29]（Like that... Sperm coming out...）[k]
+The penis became so big and rigid that it frightened her. Then hot sperm was released at her with such great force.[k]
+@fgf c=マルエット f=38
+@shake layer=3 loop=3 time=50 length=5
+[マルエット f=38]「... ∗shiver∗」[k]
+Despite her discomfort, a dark excitement flickered deep within her.[k]
+[textoff]
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+@out
+[hoteloff]
+
+
+;◇マックスイベント04
+*max_04
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=guild
+@fg l=マルエット e=通常 f=02
+[texton w=1]
+[マルエット v=vs544 f=02]「Well... I think I'll go to bed.」[k]
+@fg r=マックス e=通常 f=03
+[マックス f=03]「Yo! [マルエット]!」[k]
+Just as [マルエット] was about to get into bed, [マックス] came into the room.[k]
+@fg l=マルエット f=08
+[マルエット v=vs545 f=08]「Oh... Am I rooming with you today?」[k]
+[マックス f=01]「Huh? Oh, yeah, I don't know.」[k]
+[マルエット f=08]「...」[k]
+A horrible memory comes back to [マルエット]. Seeing [マックス]'s penis...[k]
+@fg l=マルエット f=07
+[マルエット v=vs546 f=07]「Don't take off your pants in front of me!」[k]
+[マックス f=03]「I know.」[k]
+@fg l=マルエット f=08
+[マルエット v=vs547 f=08]「...Hmph!」[k]
+@cl l
+[マルエット] quickly went to bed and fell asleep under the covers with her back to [マックス].[k]
+[textoff]
+@out
+@w1
+
+@bg f=0045 b
+@mu f=tiptoe
+@fgf c=マックス f=15
+[texton w=1]
+[マックス f=15]「...」[k]
+[マックス f=15]（Ohhhhhh... Looks like she fell asleep.）[k]
+[マックス f=15]（Sorry [マルエット], but I'm going to have to play a little prank, hehe...）[k]
+@fgf c=マックス f=22
+[マックス f=22]（Rumor has it that sylph pussy is very tight and good.）[k]
+[マックス f=22]（I honestly didn't care about that childish girl, but having heard that rumor, I'm suddenly curious! I definitely want to try that pussy!）[k]
+[マックス f=22]（According to guys who have fucked sylphs, they have super sensitive clits. If I can make her feel good there with my finger technique, it will be a piece of cake!）[k]
+@clf
+[マックス] approaches [マルエット] and flips her covers.[k]
+[マックス f=15]（Okay, you haven't noticed. Well then, let's play with your clit...）[k]
+[マックス] reaches between [マルエット]'s legs. Then...[k]
+@st
+[マルエット v=vs548 f=77]「Hey!」[k]
+[マルエット], who was sound asleep, woke up when she realized someone touched her crotch![k]
+[マルエット v=vs549 f=77]「Who's there?!」[k]
+As [マルエット] tries to get up in a panic, [マックス] hugs her and makes sure she can't escape![k]
+@mu f=action
+[マックス f=22]「Uhihihihi, let's have sex!」[k]
+[マルエット v=vs550 f=37]「Huh, [マックス], what are you... Nnghhhh!」[k]
+Just as she was about to shake [マックス] off, his fingers rubbed her sensitive area![k]
+[マックス f=22]「Hihihi, your clit really is weak, huh? Hehehe.」[k]
+[マックス] further fingered her crotch![k]
+[マルエット v=vs551 f=37]「Oh no... Ahh..! Don't... Ahhhhh..!」[k]
+[マックス f=15]「This is getting good. Well then...」[k]
+∗slurp∗[k]
+[マルエット v=vs552 f=37]「Ohhhhhhh... No... There's... Aaaaahhh...! Oh, no!」[k]
+[マックス] puts his hand inside [マルエット]'s panties! And directly stimulated her clitoris![k]
+[マルエット v=vs553 f=37]「Ah... Oh... No... Don't do that... I'm weak there... Ahhh..!」[k]
+[マルエット] is getting more and more pleasure from [マックス]'s fingers.[k]
+I think about resisting, but my clitoris feels too good and my whole body is weak.[k]
+[マックス f=15]「Your pussy is already soaked. Now, let's get those panties off.」[k]
+[マルエット] was at the mercy of [マックス].[k]
+[textoff]
+@out
+
+[texton w=0]
+Because Sylphs have a very sensitive clitoris, they wear leather panties when sleeping.[k]
+These protect the sensitive area from mischief, and prevent stimulation even if touched.[k]
+They are also well made, so if someone attempts to take them off, the delay will allow the wearer to notice, so she can dart away from the attacker.[k]
+But that wasn't the case for [マルエット] today.[k]
+[textoff]
+@w05
+
+@bg chara=マルエット f=event62 p0=hair p1=01 p2=01
+[texton w=2]
+[マルエット]（I thought he wasn't interested in me, so I went with normal underwear...!）[k]
+[マルエット] was completely caught off guard by [マックス]'s words and actions so far.[k]
+[マックス] stimulated her secret area, and she was dominated by a feeling of disgust.[k]
+[マックス]「Hehehe, you're all messed up. Looking at you like this, you're pretty sexy after all ♪」[k]
+@bg chara=マルエット f=event62 p0=hair p1=02 p2=03
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[マルエット v=vs554]「No... No... Don't... Aaahhh...! No...!」[k]
+In her head, she wants to refuse, but she can't resist the pleasure washing over her. She opens her legs and exposes her crotch.[k]
+[マックス]「Oh, it's getting wetter and wetter. Wasn't it wet enough already?」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[マルエット v=vs555]「Ah... Ah... Ah... Ah...」[k]
+[マックス]「Hehehe, your pussy is open and it's pretty nice. It's going to feel so good when I stick my dick in there.」[k]
+[マルエット v=vs556]「An... Oh, no... Stop...」[k]
+[マックス]「Your pussy is getting a lot looser. Then, I think it's time to...」[k]
+@bg chara=マルエット f=event62 p0=hair p1=01 p2=01
+[マックス] enters between [マルエット]'s legs and places the tip of his hardened rod at her entrance.[k]
+[マルエット v=vs557]「No... you absolutely can't... 」[k]
+[マックス]「Now let's see how it feels. I'm looking forward to it!」[k]
+@bg chara=マルエット f=event62 p0=hair p1=03 p2=03
+∗squish∗[k]
+[マックス] leans forward and lets the tip of his penis slightly enter.[k]
+[マックス]「I'll put it in then... All right...」[k]
+∗slurp∗[k]
+[マルエット v=vs558]「Noooooooo...」[k]
+[マックス]「Damn!」[k]
+[マックス] pushes further in![k]
+[マックス]'s big cock was quickly swallowed, parting [マルエット]'s mucous membranes inside her![k]
+@quake time=200 hmax=20 vmax=20
+∗sluuurp!∗[k]
+[マックス]「Oh! I'm in!」[k]
+[マルエット v=vs559]「Aaaaahhhh!」[k]
+[マルエット]'s refusal was futile, and [マックス]'s penis went deep inside her.[k]
+[マックス]「Wow! It's so tight! I've never fucked a pussy like this before!」[k]
+[マルエット v=vs560]「Ugh... that's horrible...」[k]
+[マックス]「And it's super slippery and feels great! I can't get enough of it!」[k]
+@bg chara=マルエット f=event62 p0=hair p1=04 p2=03
+∗sluurp sluurp sluurp sluurp∗[k]
+[マルエット v=vs561]「Oh no... Don't move...」[k]
+[マックス]「Even if you say that, it feels so good I can't stop my hips!」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[マルエット v=vs562]「Ah, ah, ah, ah, ah.」[k]
+[マックス]「Ugh!」[k]
+@flash t=100
+@bg chara=マルエット f=event62 p0=hair p1=05 p2=01
+∗spuuurt!∗[k]
+[マックス]「Wow... It felt so good that I already came... I just had to cum inside...」[k]
+[マルエット v=vs563]「No way... You idiot... I can't believe it...!」[k]
+[マックス]「Ugh! I still can't get my dick to settle! I'm going to cum again, just like that!」[k]
+@bgf chara=マルエット f=event62 p0=hair p1=03 p2=03
+@quake time=200 hmax=20 vmax=20
+∗sluuurp!∗[k]
+[マルエット v=vs564]「Ah...!」[k]
+[マックス] inserted himself into [マルエット] again, even though he had just ejaculated![k]
+@bg chara=マルエット f=event62 p0=hair p1=04 p2=03
+∗sluurp sluurp sluurp sluurp∗[k]
+[マルエット v=vs565]「Ah... Ah... Ah... Ah... Ah...」[k]
+[マルエット] continues to be fucked. [マックス] is totally aroused and doesn't seem to stop.[k]
+He thrusts his penis into [マルエット] enthusiastically, seeking yet more pleasure.[k]
+[マックス]「Haaaaahhh... I'm gonna cum again.」[k]
+[マルエット v=vs566]「Nooooo... Stop it already... Aaaah...」[k]
+[マルエット] begins to feel something as she is repeatedly raped. But the pain is greater.[k]
+[マックス], on the other hand, continues his self-centered sex.[k]
+[マックス]「I can't get enough of this...! Ugh!」[k]
+@flash t=100
+@wait time=100
+@flash t=100
+∗spuurt! spuurt!∗[k]
+[マルエット v=vs567]「Aaaahhh...!」[k]
+[マックス]「Damn... I meant to take it out this time.」[k]
+After two ejaculations, [マックス]'s excitement finally subsided.[k]
+[textoff]
+@out
+@w05
+
+@bg f=0045
+[texton w=0]
+[マルエット v=vs568 e=汗だく・開き f=37]「Haa, haa...」[k]
+[マックス e=汗だく f=60]「Wheeeew! It was soooo tight. I've never been in such a nice pussy before, [マルエット], I'm going to get addicted to this!」[k]
+[マルエット f=48]「...」[k]
+[マックス f=15]「I'm sorry I was a little rough with you! I'll be gentler next time, so please let me fuck you from time to time! See you tomorrow!」[k]
+[マックス] quickly snored himself to sleep, leaving [マルエット] stunned...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント05
+*max_05
+
+; 宿屋の一室
+@saveon
+@bg f=0001 b
+@mu f=bad
+@fg l=マルエット e=通常 f=31 left=450 b
+@fg r=マックス e=硬い革鎧,腕上げ,勃起 f=03 left=600
+[texton w=1]
+[マックス f=03]「[マルエット]! Let's get dirty again!」[k]
+[マルエット v=vs569 f=31]「Aah!」[k]
+[マックス] suddenly took off his pants and attacked [マルエット] as soon as she entered the room![k]
+@fg l=マルエット f=61 fix
+[マルエット v=vs570 f=61]「No! Get off me!」[k]
+[マックス f=22]「I can't forget having sex with you! Please let me fuck you～!」[k]
+[マルエット v=vs571 f=59]「Absolutely not! I won't let you lay a finger on me!」[k]
+@se f=beat
+@quake time=200 hmax=20 vmax=20
+@flash t=100
+@fg l=マルエット f=59 b fix
+@fgf r=マックス f=11 left=850
+∗bang!∗[k]
+[マックス f=11]「Wow!」[k]
+[マルエット] kicked [マックス]'s erect crotch as hard as she could with her heel![k]
+[マックス f=11]「Ouch! What are you doing?」[k]
+[マルエット v=vs572 f=59]「Get it? One little touch and I'll break that dirty thing between your legs!」[k]
+@cl l
+With that said, [マルエット] quickly went to bed. Of course, she'd already put on her leather panties to avoid being attacked by [マックス].[k]
+@fg r=マックス e=硬い革鎧,勃起 f=09 fix
+[マックス f=09]「Damn...」[k]
+@cl
+[マックス] gave up and went to bed himself.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント06
+*max_06
+; 宿屋の一室・翌朝
+@saveon
+@bg f=0001
+[texton w=1]
+Next morning.[k]
+[マルエット e=冒険者のブラ,革のビキニ・下 f=06]「...」[k]
+When [マルエット] woke up, she looked around.[k]
+[マックス e=下着・勃起 f=70]「∗snore∗」[k]
+[マルエット v=vs573 f=06]「He's either still sleeping or...」[k]
+[マックス] is snoring and sleeping in the bed next to me. Apparently, [マックス] didn't do anything to me last night.[k]
+After a sigh of relief, [マルエット] begins to get dressed.[k]
+[if exp='! game.isFreeMode']
+	@fg c=マルエット f=02
+	[マルエット v=vs574 f=02]「I don't want the captain to know that I'm wearing such ugly panties... 」[k]
+[endif]
+@fg c=マルエット e=冒険者のブラ f=02
+[マルエット] removes the leather panties she wears to bed to change into her favorite cloth panties.[k]
+@fg c=マルエット f=05 b
+@fgf r=マックス f=15
+[マックス f=15]「I've been waiting for this moment!」[k]
+@fgf c=マルエット f=31
+[マルエット v=vs575 f=31]「Kya!」[k]
+@clf
+@se f=dosa
+@quake time=200 hmax=20 vmax=20
+@mu f=action
+[マックス] suddenly jumped out of bed and hugged [マルエット]![k]
+[マックス f=22]「Heh heh, come on, let's fuck, [マルエット].」[k]
+[マルエット v=vs576 f=61]「Ah, stop, let go!」[k]
+[マックス] had pretended to be asleep, waiting for the moment when [マルエット] would get changed.[k]
+[マックス] grabbed [マルエット]'s body tightly and ran his fingers over her crotch, her weak spot.[k]
+[マルエット v=vs577 f=63]「Ah... ahh...」[k]
+[マルエット]'s clitoris is stimulated. [マックス]'s skillful caresses make her melt instantly.[k]
+[マルエット v=vs578 f=37]「Ahh no... Stop it... Ahh...!」[k]
+[マックス f=03]「You really do have a weak clit! You got so wet in no time!」[k]
+[マックス f=15]「Now, it's time for the long-awaited insertion! I'm going to enjoy the best pussy ever!」[k]
+[textoff]
+@out
+@w05
+@bgf chara=マルエット f=event62 p0=hair p1=04 p2=03
+@mu f=adult
+[texton w=2]
+[マルエット v=vs579]「An... An... An...」[k]
+[マックス]「Muhyoooooo～! It really feels so good～!」[k]
+[マックス] swings his hips enthusiastically. [マルエット]'s vagina feels so good that he can't stop.[k]
+[マックス]「It was worth putting up with it all night! I'll play with your clit, too!」[k]
+[マルエット v=vs580]「Ahhh... no... not there...!」[k]
+[マックス] stimulates [マルエット]'s sensitive bean with his fingers while penetrating her.[k]
+The simultaneous stimulation of his penis and fingers caused [マルエット]'s sexual sensations to increase and increase.[k]
+[マルエット v=vs581]「Ahh... No... If you do that...」[k]
+[マックス]「What is it? Are you about to cum? Then I'm going to make you cum!」[k]
+[マックス] furiously attacks [マルエット]'s bean![k]
+[マルエット v=vs582 f=]「Aaaaahh...! Nooooooo...!」[k]
+[textoff]
+@out
+@w05
+
+@bg f=0001
+[texton w=0]
+[マックス e=汗だく f=59]「Ah～ that felt so good! I knew your pussy was an exquisite gem!」[k]
+[マルエット e=汗だく・開き f=48]「...」[k]
+[マックス f=01]「I guess you felt it too! How did you feel, cumming while having a cock in you?」[k]
+[マルエット f=48]「...」[k]
+[マックス f=59]「Well, that's enough for today! I really wanted to fuck more, but there isn't enough time in the morning. [マルエット], let's do it at night next time!」[k]
+[マルエット f=48]「...」[k]
+[マルエット] wiped her body and dressed in a hurry, her face red with the embarrassment of having been made to cum...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント07
+*max_07
+
+; 宿屋の一室
+@saveon
+@out
+@bg chara=マルエット f=event62 p0=hair p1=02 p2=03
+@mu f=bad
+[texton w=0]
+[マックス e=汗だく f=59]「There you go, [マルエット], doesn't your clit feel good?」[k]
+[マルエット v=vs583 e=汗だく・開き f=37]「Ah... no... I'm cumming...!」[k]
+[マックス f=59]「Did you cum already? You really cum easily.」[k]
+[textoff]
+@fa
+@out
+@w05
+
+@bgf f=0002
+[texton w=0]
+[テオ f=12]「[マルエット]...!」[k]
+When did [マルエット] and [マックス] become intimate...?[k]
+I'm sure [マックス] wasn't into girls like her... So why [マルエット]?[k]
+[テオ f=06]「...」[k]
+There's no point in prying... They're free to do as they wish. Let's go back to bed.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ライナス編
+
+;◇ライナスイベント01
+*linus_01
+
+; 宿屋の一室
+@saveon
+@bgf f=0001
+@mu f=trick
+@fg l=ライナス left=300 e=通常 f=06 b
+@fg r=マルエット e=通常 f=05
+[texton w=1]
+[マルエット v=vs584 f=05]「Oh...」[k]
+[マルエット] entered her room and found Linus there.[k]
+@fg l=ライナス left=300 f=22
+[ライナス f=21]「Well, I'm your roommate today. Good to see you, [マルエット].」[k]
+@fg r=マルエット f=58
+[マルエット v=vs585 f=06]「G-good to see you...」[k]
+With a scrunched-up face, [マルエット] replied to Linus.[k]
+[マルエット f=58]（I've been paired with someone I don't like...）[k]
+[マルエット f=58]（I don't like this guy... He's so creepy...）[k]
+[マルエット f=58]（Sometimes I feel like he's looking at me in a weird way... I don't know, like he's aiming at me or something.）[k]
+[マルエット] disliked Linus, so she made a very obvious disgusted face.[k]
+However, Linus was particularly interested in [マルエット].[k]
+[ライナス f=22]（I knew that Sylph girl was cute... I love it! When I look again, she's really adorable!）[k]
+[ライナス f=22]（I would love to get to know [マルエット]! And I want to have sex with her! I want to strip her naked, play tricks on her, and shove my cock in her!）[k]
+[ライナス f=22]（But... They say you can't touch sylphs easily... I hear they are very cautious... What to do...）[k]
+[ライナス f=22]「... ∗grin∗」[k]
+@fgf r=マルエット f=59
+@shake layer=1 loop=3 time=50 length=5
+[マルエット f=59]「...! (Creep!)」[k]
+[マルエット f=60]（Oh no... He's looking at me with those creepy eyes...!）[k]
+[マルエット f=60]（I still don't want to spend time with this person! What a pain!）[k]
+[マルエット f=60]（...Oh well. I'll just put on my leather panties and go to bed.）[k]
+[textoff]
+@out
+
+[texton w=0]
+A sylph has a very weak clitoris. Even a slight touch feels so good that the whole body relaxes.
+ [k]
+Sylph women with their small bodies tend to find sexual intercourse painful. To mitigate this, they get wet easily.[k]
+However, this characteristic puts sylphs' chastity in danger at the hands of men with evil intent.[k]
+Therefore, all Sylph women always carry a pair of leather panties with them to prevent someone from playing a prank on them at bedtime.[k]
+The thick leather material covers the crotch and protects the sensitive area. The sylph will not feel any touch through it.[k]
+Moreover, these panties are so well made that they don't come off easily, and if someone tries to force them off, the wearer will certainly notice. All that remains is to escape with sylph-like swiftness.[k]
+The only time a sylph wouldn't wear them is when they sleep with family members or other people they trust.[r]So that's why it's said, "you can't easily touch a sylph".[k]
+[textoff]
+@w05
+
+@bgf f=0001
+@fg l=ライナス left=300 e=通常 f=22 b
+@fg r=マルエット e=通常 f=58
+[texton w=1]
+[ライナス f=21]「Hey, [マルエット], let's chat.」[k]
+@fg r=マルエット f=96
+[マルエット v=vs586 f=96]「Sorry, I'm going to bed. Good night.」[k]
+@cl b r
+@fg l=ライナス left=300 f=95
+[ライナス f=95]「Ah...!」[k]
+[マルエット] quickly fell asleep, interrupting Linus.[k]
+Linus, cut short, stares dumbfounded at the back of [マルエット]'s head as she gets under the covers.[k]
+@fg l=ライナス left=300 f=52
+[ライナス f=52]（What the hell... I thought I could make friends with [マルエット]...）[k]
+[ライナス f=52]（Damn! This is not going to achieve my ambition to have sex with [マルエット]! I don't want to give up!）[k]
+[ライナス f=52]（I need to come up with some kind of a plan... Let's see...）[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇ライナスイベント02
+*linus_02
+
+; 宿屋の一室
+@saveon
+@w05
+@bgf f=0000
+[texton w=0]
+[マルエット v=vs587 e=通常 f=05]「Huh?」[k]
+[マルエット f=06]（My luggage is gone... I wonder where I left it.）[k]
+[textoff]
+@outf
+@w05
+
+@se f=door1
+@bg f=0001 b
+@mu f=tiptoe
+@fg l=ライナス e=通常 left=300 f=12 b
+@fgf r=マルエット f=05
+[texton w=1]
+[ライナス f=12]「Ah...!」[k]
+[マルエット v=vs588 f=05]「Hey, Linus, have you seen my luggage?」[k]
+[ライナス f=12]「Eh... [マルエット]'s luggage... What?」[k]
+@fg l=ライナス left=300 f=13 b
+[ライナス f=13]「Oh, oh! It had been dropped in the hallway earlier, so I picked it up!」[k]
+@fg r=マルエット f=06
+[マルエット v=vs589 f=06]「Oh, thanks...」[k]
+[マルエット f=06]（Why would I have dropped it in the hallway...?）[k]
+[マルエット f=06]（...I see what's inside is in order... Nothing was stolen, so...）[k]
+@fg l=ライナス left=300 f=10 b
+[ライナス f=10]「...」[k]
+@fg r=マルエット f=08
+[マルエット v=vs590 f=08]「...What is it, Linus? You wanted to see me?」[k]
+@fg l=ライナス left=300 f=13 b
+[ライナス f=13]「Nah, it's nothing! Good night!」[k]
+[マルエット f=08]「...?」[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスイベント03
+*linus_03
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=beach
+@fg c=マルエット e=通常 f=02
+[texton w=1]
+[マルエット v=vs591 f=02]「Phew, that was nice hot water.」[k]
+@fg c=マルエット e=通常 f=05
+[マルエット v=vs592 f=05]「Well, now that I'm done with my bath, it's time to... Hmm?」[k]
+[マルエット] notices Linus' luggage there.[k]
+@fg c=マルエット f=57
+[マルエット f=57]（Oh no... Is he sharing a room with me tonight? What a pain...）[k]
+[マルエット f=58]（Though, where is he? I don't see him. I wonder if he went out somewhere.）[k]
+[マルエット f=06]（Oh well. I've got my leather panties on, so let's get to bed.）[k]
+∗rustle rustle∗[k]
+@st
+@fgf c=マルエット f=37
+@shake layer=3 loop=3 time=50 length=5
+[マルエット v=vs593 f=31]「Yaaa!」[k]
+@fgf c=マルエット f=31
+[マルエット f=31]（What?! Something moved in my panties!）[k]
+∗rustle rustle rustle rustle∗[k]
+@fgf c=マルエット f=37
+@shake layer=3 loop=3 time=50 length=5
+[マルエット v=vs594 f=37]「Oh, no! What is this?」[k]
+@fgf c=マルエット f=31
+[マルエット f=31]（I knew it, my panties are moving on their own! Is there a bug in them or something!）[k]
+I thought something was wrong, and I was about to take off my panties, when...[k]
+∗rustle rustle rustle rustle∗[k]
+@mu f=bad
+@fgf c=マルエット f=37
+@shake layer=3 loop=3 time=50 length=5
+[マルエット v=vs595 f=37]「Nn ah ah!」[k]
+The fabric of the crotch area moved violently as it rubbed up [マルエット]'s crack![k]
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+@se f=dosa
+@clf
+@quake hmax=5 time=200
+[マルエット v=vs596 f=37]「Ohhhhh... No...」[k]
+[マルエット]'s sensitive bean was stimulated, and she collapsed in place from the sheer pleasure of the sensation.[k]
+∗rustle rustle rustle rustle∗[k]
+[マルエット v=vs597 f=37]「Oh... No... Don't move... Ahhh...! Ohh...!」[k]
+[マルエット]'s panties continued to move.[k]
+Her secret place is relentlessly stimulated, and she can do nothing but writhe in pleasure. She opens her legs sloppily and wiggles her hips.[k]
+Her panties were soggy and wet.[k]
+[マルエット v=vs598 f=37]「Ha ha ha ha ha ha ha... It feels so good...! I can't stand it...!」[k]
+[マルエット v=vs599 f=37]「Haaaah... I'm cumming...!」[k]
+@fg c=ライナス e=通常 f=04
+[ライナス f=03]「Kukuku, you're getting all naughty, [マルエット]!」[k]
+[マルエット v=vs600 f=53]「Uh... You...! Ahh!」[k]
+[ライナス f=04]「I made those vibrator panties. Do you like them?」[k]
+[マルエット v=vs601 f=53]「Y-you... I never expected something like this...!」[k]
+[マルエット] realized that the panties were the work of Linus.[k]
+[ライナス f=01]「I made a special pair of panties with alchemy and replaced yours with them. You put on those naughty panties and didn't even realize.」[k]
+[マルエット v=vs602 f=59]「Ugh...! You pervert...!」[k]
+[ライナス f=01]「Call me what you want. I want to be friends with you, and it's your fault for being cold.」[k]
+[ライナス f=04]「As far as I'm concerned, as long as I can have sex with you, I don't care if you don't like me!」[k]
+@fg c=ライナス f=21
+[ライナス f=21]「Now, let's see what's going on in your panties～!」[k]
+@cl
+[マルエット v=vs603 f=53]「Stop, stop...!」[k]
+[マルエット] utters words of refusal. But the pleasure takes over and her body doesn't move.[k]
+Linus removed his special panties from the unresisting [マルエット], revealing her soaking wet crotch.[k]
+[textoff]
+@out
+@w05
+
+@bg chara=マルエット f=event54 p0=hair p1=01 p2=01
+@mu f=action
+[texton w=2]
+[ライナス]「Woo hoo～! It's little [マルエット]'s tight pussy～!」[k]
+[ライナス]「By the way, you are totally soaking wet! You smell amazing!」[k]
+Linus is extremely aroused by the slippery, tightly closed crotch of [マルエット].[k]
+@bg chara=マルエット f=event54 p0=hair p1=02 p2=02
+He nuzzles her face between her legs and licks her tongue up and down along the slit.[k]
+[マルエット v=vs604]「Oh, no..! Don't... Ahh!」[k]
+[ライナス]「Nn～? Are you feeling it? Does my tongue make you feel good?」[k]
+Linus moves his tongue even more teasingly and violently.[k]
+@bg chara=マルエット f=event54 p0=hair p1=02 p2=01
+[マルエット v=vs605]「Hey, stop... Ah...! I'm telling you no... aahh!」[k]
+[マルエット] wiggles her hips. She is getting closer and closer to the limit due to the constant pleasure. And then...[k]
+@bg chara=マルエット f=event54 p0=hair p1=02 p2=03
+[マルエット v=vs606]「Ahh... I'm cumming...!」[k]
+[textoff]
+@flash on=500 t=100 off=500
+@bg chara=マルエット f=event54 p0=hair p1=01 p2=05
+[texton w=2]
+[マルエット]'s whole body shook with a jolt. She finally came.[k]
+[マルエット v=vs607]「Ahh ahh ahh ahh ahh...」[k]
+[ライナス]「Did you cum? You're really naughty, [マルエット]!」[k]
+[マルエット]「...」[k]
+[マルエット] is teary-eyed and stunned. It's true, so she can't argue.[k]
+[ライナス]「Well, now make my dick feel good!」[k]
+@bg chara=マルエット f=event54 p0=hair p1=03 p2=02
+With that, he takes out his penis and pushes both of [マルエット]'s legs apart, while she's still weak from cumming.[k]
+[マルエット v=vs608]「Ugh... Stop it...」[k]
+[マルエット] wants to resist, but her whole body is drained and she can't do anything.[k]
+Taking advantage of this, Linus tries to insert himself into [マルエット].[k]
+[マルエット v=vs609]「Oh... You can't do that...!」[k]
+[ライナス]「Damn...! This is gonna be tough... Can I even fit in...?」[k]
+Linus places the tip of his penis against her crack and thrusts his hips forward with gusto.[k]
+[マルエット v=vs610]「Nooooo... Stop it...!」[k]
+[ライナス]「Damn... I can't get in... Damn it!」[k]
+Linus pushes his penis against her. [マルエット]'s face twists in pain. Then...[k]
+@bg chara=マルエット f=event54 p0=hair p1=04 p2=01
+@se f=kucha
+∗slip!∗[k]
+[ライナス]「Whoa!」[k]
+[マルエット v=vs611]「Nooooooo...!」[k]
+Linus' penis was swallowed by [マルエット]'s vagina with a slurp![k]
+[ライナス]「Ohhhh, it's in! You're really wet, so it went in easily!」[k]
+[マルエット]「...」[k]
+[ライナス]「But it's so small. You have a tiny pussy, [マルエット], just like the rest of you.」[k]
+[ライナス]「Well, I'm getting ready to cum, let's get moving!」[k]
+@en f=kuchafast
+∗squish squish squish squish squish!∗[k]
+[マルエット v=vs612]「Nooo... Stop it... Ahh...!」[k]
+[マルエット]'s face twists with pain. Linus, however, is not concerned, and shakes his hips energetically.[k]
+∗squish squish squish squish squish!∗[k]
+[ライナス]「Ughhhhhhhhh, that feels so good! I love a tight pussy!」[k]
+@bg chara=マルエット f=event54 p0=hair p1=04 p2=03
+[マルエット v=vs613]「Please... Please don't do that... Ah...! No more..! No more... Ahhh..!」[k]
+[ライナス]「Is it painful? Then I'll have to be a little gentler!」[k]
+@en f=kuchaslow
+∗sluurp sluurp sluurp∗[k]
+[マルエット v=vs614]「Haa, haa...」[k]
+Linus slows down a bit. However... [k]
+@en f=kuchafast
+∗squish squish squish squish squish!∗[k]
+[マルエット v=vs615]「Ahh!」[k]
+[ライナス]「Sorry! It feels so good, I can't stop my hips! I can't take it anymore, oh!」[k]
+∗squish squish squish squish squish!∗[k]
+[マルエット v=vs616]「Ah, ah, ah, ah, ah.」[k]
+Linus shook his hips in a frenzy. [マルエット] just let him do what he wanted and accepted his thrusting penis.[k]
+[ライナス]「I can't hold it in any longer! I'm cumming!」[k]
+[textoff]
+@enst
+@flash t=100
+@wait time=200
+@bgf chara=マルエット f=event54 p0=hair p1=05 p2=05
+@flash t=100
+[texton w=2]
+∗spuurt! spuurt!∗[k]
+Linus couldn't resist the pleasure and shot deep inside her...[k]
+[textoff]
+@out
+@w05
+
+@bgf f=0001
+[texton w=0]
+[マルエット v=vs617 e=汗だく・開き f=37]「Phew...」[k]
+[ライナス e=汗だく f=03]「Phew～ that felt so good! That was the best sex I've ever had in my life!」[k]
+[マルエット f=48]「...」[k]
+[ライナス f=04]「[マルエット], you're cute and your pussy is really nice! Let's do it again!」[k]
+[マルエット f=48]「...」[k]
+With [マルエット] lying stunned with depressed eyes, Linus sat down, feeling good.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスイベント04
+*linus_04
+
+; 宿屋の一室
+@saveon
+@bg f=0001 b
+@mu f=evil
+@fg c=マルエット e=冒険者のブラ,革のビキニ・下 f=02
+[texton w=1]
+[マルエット v=vs618 f=02]「Okay, they're fine today.」[k]
+[マルエット] carefully checks the condition of her leather panties and then puts them on.[k]
+Last time, Linus replaced them with an imitation version. Today, she wanted to make sure that the panties were really hers.[k]
+[マルエット f=08]（I won't be raped by a guy like that...! Definitely not tonight...）[k]
+@cl b
+@fg l=マルエット f=05 b fix
+@fg r=ライナス e=通常 f=03
+[ライナス f=03]「Hi, [マルエット]. Nice to see you tonight!」[k]
+@fg l=マルエット f=80 fix
+[マルエット f=80]「...!」[k]
+Linus comes into the room and [マルエット] gives him a sharp look.[k]
+@fg r=ライナス f=09
+[ライナス f=09]「Don't look so scared... 」[k]
+[マルエット v=vs619 f=07]「I won't let you touch me again!」[k]
+@fg r=ライナス f=54
+[ライナス f=54]「Oh, no... Let's have sex again. It feels good, right?」[k]
+[マルエット f=80]「...!」[k]
+Linus flinched when [マルエット] glared at him again.[k]
+@fg r=ライナス f=60
+[ライナス f=60]「Ahaha... Do you hate me now...? What a shame... 」[k]
+[マルエット v=vs620 f=08]「...Hmph!」[k]
+@cl l
+[マルエット] turns her back on Linus and goes to her own bed. That's when...[k]
+@st
+@se f=buchi
+@flash t=100
+∗swiish!∗[k]
+@fg r=ライナス f=22 b
+@fgf l=マルエット e=冒険者のブラ f=11 left=420
+[マルエット f=11]「...!」[k]
+Suddenly, the string of the leather panties that [マルエット] was wearing broke![k]
+They slipped off and fell to the floor! [マルエット]'s crotch is exposed.[k]
+@fg r=ライナス f=92
+[ライナス f=92]「Now!」[k]
+@fg l=マルエット f=31 fix
+[マルエット v=vs621 f=31]「Aah!」[k]
+@clf
+@mu f=action
+@se f=dosa
+@quake time=200 hmax=20 vmax=20
+Linus immediately hugs her, grabs both of her legs, and gropes her crotch.[k]
+[ライナス f=94]「Heh heh, I got you!」[k]
+[マルエット v=vs622 f=37]「No... let go... please... ahhh...!」[k]
+[ライナス f=90]「I rigged the straps on your panties so they'd break on their own! You carefully inspected the leather, but not the straps!」[k]
+[ライナス f=94]「Come on, it's time to have some fun! Let's feel good together, [マルエット]!」[k]
+Linus relentlessly stimulated [マルエット]'s sensitive protrusions with his fingers.[k]
+[マルエット v=vs623 f=37]「Stop... no... no... not there... aaahhh...」[k]
+Pleasure hit [マルエット]. She felt so good that her whole body lost its strength and collapsed to the floor.[k]
+[textoff]
+@out
+@w05
+
+@bg chara=マルエット f=event54 p0=hair p1=04 p2=02
+@mu f=adult
+[texton w=2]
+[マルエット v=vs624]「Ah... ahh... ahhh...」[k]
+[ライナス]「Oh, hey, [マルエット], you're sounding nice now, hmm?」[k]
+[マルエット] was being penetrated by Linus for the third time today.[k]
+She wanted to resist, but nothing could be done about her exposed weakness.[k]
+I was at the mercy of Linus as he thoroughly attacked my sensitive prong. He forced me to feel good and all I could do was moan.[k]
+[マルエット v=vs625]「Aaah... aaah...」[k]
+[ライナス]「Maybe I'm starting to feel better?」[k]
+[マルエット v=vs626]「That's not... No... ahhh...! Oh, no...!」[k]
+∗squish squish squish squish∗[k]
+[ライナス]「See, see, it feels good when you do this, doesn't it?」[k]
+[マルエット v=vs627]「Aah, aah, no... aaahh...!」[k]
+[ライナス]「You're starting to feel something from my dick! Okay, I'll make you feel even better!」[k]
+∗squish squish squish squish squish!∗[k]
+[マルエット v=vs628]「Aaaaahhh...! Ohhhhhhhhh!」[k]
+[textoff]
+@flash on=500 t=100 off=500
+[texton w=2]
+[マルエット] cries out as her whole body trembles![k]
+Then, she collapsed in a heap.[k]
+[ライナス]「Oh? Did you cum, by any chance?」[k]
+[マルエット]「...」[k]
+[ライナス]「You came on my cock! I'm so glad! Okay, I'm gonna cum too!」[k]
+[textoff]
+@flash t=100
+@wait time=200
+@flash t=100
+@bg chara=マルエット f=event54 p0=hair p1=05 p2=02
+[texton w=2]
+∗spuurt! spuurt!∗[k]
+Linus held [マルエット] down and ejaculated a lot inside her![k]
+[マルエット v=vs629]「Aah... No way...!」[k]
+[ライナス]「Haha... I'm so glad I did it again. It felt good again this time.」[k]
+[ライナス]「I'm glad [マルエット] is a girl who likes cock! Let's have sex again!」[k]
+[マルエット]「...」[k]
+[マルエット] is covered in juices. Linus looked down at her with great satisfaction.[k]
+[textoff]
+@fa
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスイベント05
+*linus_05
+
+; 宿屋の一室
+@saveon
+@out
+@bg chara=マルエット f=event54 p0=hair p1=04 p2=02
+@mu f=adult
+[texton w=0]
+[マルエット v=vs630 e=汗だく・開き f=37]「Ah... ah... I feel it... aaahh...!」[k]
+[ライナス e=汗だく f=03]「[マルエット], you are so cute and your pussy is so nice!」[k]
+[textoff]
+@fa
+@out
+@w05
+
+; 宿屋の廊下
+@bgf f=0002
+[texton w=0]
+[テオ f=12]「[マルエット]...!」[k]
+[マルエット]... How long have you been in a relationship with Linus...?![k]
+If [マルエット] wants to have a relationship with Linus, I don't have any right to say anything about it...[k]
+I quietly closed the door and left.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ワイルド・ブル編
+
+;◇ワイルド・ブルイベント01
+*wildbull_01
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*syl_wildbull_01 cond='game.isFreeMode'
+@saveon
+@bgf f=0022 cond='f.replayMode'
+[texton w=0]
+We went into the Wild Bull stronghold to rescue our friends. Then...[k]
+[textoff]
+@fg l=thief_green_fight2 b
+@fg r=thief_red_fight2
+[texton w=1]
+[男 f=thief_green_02]「Who are you people? What are you doing here?」[k]
+[テオ f=05]「I'm looking for Alex. Where's Alex?」[k]
+[男 f=thief_red_02]「Alex is busy right now! Go home!」[k]
+[テオ f=12]「We're here to get our friend back! Let me talk to Alex. Where is he?」[k]
+@se f=door1
+[アレックス f=00]「Look, she's here.」[k]
+[テオ f=12]「Ah...!」[k]
+@fg l=アレックス b
+@fg r=マルエット e=奴隷の鎧・上,奴隷の鎧・下 f=30
+Suddenly, the back door opened and Alex entered with [マルエット].[k]
+[テオ f=12]「[マルエット]...!」[k]
+[マルエット] was wearing a bra that bared her nipples, and her crotch was only barely covered.[k]
+I can't believe they make you dress like a whore like this... It's unforgivable![k]
+[アレックス f=03]「Well, it's no use showing off such flat boobs, but this is our rule. As long as you're a woman, you wear this outfit! Gahahaha!」[k]
+[マルエット f=52]「...」[k]
+[テオ f=12]「[マルエット]...」[k]
+It was painful to look at her, red to the ears with shame.[k]
+[アレックス f=02]「I'm sure you know, but you've got no right to complain. You lost the duel. What I do with her is up to me!」[k]
+[テオ f=10]「Damn...!」[k]
+I hate to admit it, but Alex is right. There's nothing we can do about it.[k]
+[アレックス f=06]「Well, now that your friends are here, let's show them what you can do, eh, sylph girl?」[k]
+@fg l=アレックス e=下半身裸 b
+@fg r=マルエット f=29
+Saying this, Alex suddenly took off his pants, exposing his penis in full![k]
+[マルエット f=29]「...!」[k]
+[アレックス f=02]「Suck it. I taught you that before.」[k]
+[マルエット f=52]「...」[k]
+[textoff]
+@out
+@bg t=100 chara=マルエット f=event44 p0=hair p1=01 p2=03
+[texton w=2]
+[マルエット] silently kneels at Alex's feet and faces Alex's long, slack penis.[k]
+[アレックス]「Come on, come on, suck it.」[k]
+[マルエット]「...」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=02 p2=07
+[マルエット] holds Alex's penis in her hand and puts her mouth on the tip of it.[k]
+Then, she licked the glans with his tongue, making a slapping sound.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=02 p2=08
+[マルエット v=vs631]「∗lick lick slurp∗」[k]
+[アレックス]「All right, keep going.」[k]
+Alex's pole begins to swell as [マルエット] continues licking it.[k]
+[アレックス]「Okay, now suck my cock properly.」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=04 p2=02
+[マルエット] does as she is told, taking the tip of his penis in her mouth and sucking on the glans.[k]
+[マルエット v=vs632]「Mmm... Snap... Mmm... Much...」[k]
+[マルエット] looks very distressed, as if the penis is poking the back of her throat.[k]
+[アレックス]「Hey, suck it hard!」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=04 p2=01
+[マルエット v=vs633]「Mugu... I'm doing it...」[k]
+[アレックス]「Hey! Don't talk back to me!」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=04 p2=02
+[マルエット v=vs634]「Aah! I'm... I'm sorry...」[k]
+[テオ]「[マルエット]...!」[k]
+[マルエット] is smacked by Alex, but continues to suck his cock.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=05 p2=02
+[アレックス]「Okay? You're small and not sexy, so the only thing you can do is suck cock! At least suck it hard and make it feel good! You know what I mean!」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=04 p2=01
+[マルエット]「...!」[k]
+[アレックス]「What's that? Those defiant eyes?」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=05 p2=02
+[マルエット v=vs635]「...It's nothing. ∗slurp∗ ∗slurp∗」[k]
+[テオ]「Ahh...!」[k]
+They make [マルエット] suck their dirty penises and then beat her and insult her... What a horrible way to be treated.[k]
+But we cannot stop this. We cannot go against the rules of the duel.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=06 p2=02
+[アレックス]「All right, let's get it out! Make sure you drink it all.」[k]
+With that, he holds [マルエット]'s head and thrusts his penis into her mouth himself![k]
+[マルエット v=vs636]「Hmmm... Mmmmmm...! Muguugu...!」[k]
+[マルエット] grimaced in pain as Alex roughly thrust his penis into her.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=07 p2=02
+∗spuurt! spurt spurt spurt!∗[k]
+[マルエット v=vs637]「Nggghhhh! ∗cough! cough!∗」[k]
+Alex ejaculates in [マルエット]'s mouth! She chokes up at the force of the spurt of semen.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=08 p2=06
+[アレックス]「You idiot! I told you to drink all my cum!」[k]
+[マルエット v=vs638]「∗hak∗ ...I'm sorry...」[k]
+[テオ]「[マルエット]...」[k]
+[マルエット] apologized with tears in her eyes as she spat out the semen in agony. I was touched by her resilience.[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+@gameon
+@fg l=アレックス e=裸 f=02 b
+@fg r=マルエット f=56
+[texton w=1]
+[マルエット f=56]「... ∗sob∗」[k]
+[アレックス f=00]「So what are you gonna do? Fight us?」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [マルエット], fight hard!」[k]
+[マルエット v=vs639 f=29]「Really? Like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+Alex and [マルエット] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*wildbull_02
+
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*syl_wildbull_02 cond='game.isFreeMode'
+@saveon
+@bg t=100 chara=マルエット f=event44 p0=hair p1=05 p2=02
+[texton w=2]
+[マルエット v=vs640]「Ugh... ∗slurp∗ Mmmm... ∗lick∗」[k]
+[アレックス]「Kuku, you're getting better and better!」[k]
+[テオ]「[マルエット]...!」[k]
+[マルエット] was forced to suck Alex's thing today.[k]
+The sight of him forcing her to suck that extremely thick penis with her small mouth is painful.[k]
+We have to... We have to help her...![k]
+[アレックス]「All right, that's about right. Get your mouth off me.」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=03 p2=03
+[マルエット v=vs641]「What? But I haven't made you cum yet... 」[k]
+Alex instructs [マルエット] to stop the act. His penis has clearly not reached its limit yet, and remains taut.[k]
+[textoff]
+@w05
+@bgf f=0022 cond='f.replayMode'
+@gameon cond='! f.replayMode'
+@fg l=アレックス e=下半身裸・勃起 b
+@fg r=マルエット e=奴隷の鎧・下 f=56
+[texton w=1]
+[アレックス f=06]「That's fine. Now, lie on your back on the floor.」[k]
+[マルエット f=26]「...」[k]
+@cl r
+[マルエット] does as Alex says and lies on her back on the floor.[k]
+What the hell are you...? Wait, Alex...![k]
+[アレックス f=00]「Okay, stay in that pose, hold your knees with both hands and open your thighs.」[k]
+[マルエット v=vs642 f=25]「What...?」[k]
+[マルエット v=vs643 f=29]「No..! You'd see my vagina...」[k]
+[アレックス f=07]「Just get on with it!」[k]
+[マルエット f=38]「...! ∗gulp∗」[k]
+Alex intimidates [マルエット], who reluctantly complies.[k]
+[textoff]
+@out
+
+
+
+
+
+
+@bg chara=マルエット f=event63 p0=hair p1=01 p2=03
+[texton w=2]
+[マルエット v=vs644 f=51]「This... Like this...?」[k]
+[マルエット] strikes a disgusting pose, her face red with embarrassment. The important part of her body is completely visible.[k]
+[アレックス f=00]「All right... But it's a slippery, unsexy pussy. It's like a kid's pussy.」[k]
+[マルエット f=52]「...! (Eek!)」[k]
+[マルエット]'s face flushes red as she is humiliated, and she holds still with tears in her eyes.[k]
+[アレックス f=02]「Well, let's get it in before it shrivels up.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=01 p2=02
+[マルエット f=47]「...!」[k]
+[アレックス f=00]「I'm not into fucking people like you either, but I heard that sylph pussy is very good. I just thought I'd give it a try.」[k]
+With that said, Alex grabs both of [マルエット]'s legs and brings the tip of his penis closer to her vagina![k]
+@bg chara=マルエット f=event63 p0=hair p1=03 p2=01
+[マルエット v=vs645 f=47]「That... I don't want to do that!」[k]
+[アレックス f=02]「Let's see, what does this little pussy taste like? Heh heh...」[k]
+[テオ f=11]「Stop it! Alex!」[k]
+@bg chara=マルエット f=event63 p0=hair p1=03 p2=04
+∗sluurp∗[k]
+[マルエット v=vs646 f=49]「Oww!」[k]
+[アレックス f=08]「Damn, it's too tight to get in there.」[k]
+Alex places his tip at [マルエット]'s entrance and tries to forcefully insert it.[k]
+However, the penis is too big for the vagina. Even the tip does not fit.[k]
+[アレックス f=02]「Oh well, I guess I'll just wet myself a little more.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=02 p2=05
+Alex placed the rod part of his penis against [マルエット]'s crack and moved it back and forth as if rubbing it.[k]
+[マルエット v=vs647 f=37]「Ah... ah... ahhh...!」[k]
+[アレックス f=16]「Kuku, you're starting to feel it.」[k]
+Alex uses his rod to attack her sensitive areas.[k]
+[マルエット] was feeling pretty good, letting out a sweet sigh and twisted her hips erotically.[k]
+[マルエット v=vs648 f=37]「Ah... ahh... no... I can feel it... ahhh...!」[k]
+[アレックス f=00]「Kukuku, you are so sensitive. You have a body like a kid, but you're a dirty little thing.」[k]
+∗sluurp sluurp sluurp∗[k]
+Her pussy is getting wet and the sound of the disgusting water begins to echo.[k]
+@bg chara=マルエット f=event63 p0=hair p1=01 p2=02
+[マルエット v=vs649 f=39]「Phew...」[k]
+[アレックス f=01]「Oh, so wet. I didn't think you were such a dirty girl.」[k]
+[マルエット f=47]「... ∗sob∗」[k]
+[アレックス f=02]「Now, if it's this wet, it will go in easily.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=03 p2=02
+∗sluurp∗[k]
+[マルエット v=vs650 f=47]「Ah...!」[k]
+Alex tried again to insert it. When he placed the tip and put some force behind it, the tip sank in.[k]
+[アレックス f=02]「Now, let's put more in. Relax.」[k]
+[マルエット v=vs651 f=50]「Wait... It still hurts... Ahh..!」[k]
+Alex's rod went sliding in. [マルエット] grimaced, as if it was still hurting.[k]
+@bg chara=マルエット f=event63 p0=hair p1=04 p2=04
+∗sluurp!∗[k]
+[マルエット v=vs652]「Ahh!」[k]
+Finally, the penis was swallowed close to the base.[k]
+[アレックス]「Phew... This is tight. That's really tight.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=04 p2=05
+[マルエット v=vs653]「Ugh... it hurts...!」[k]
+[アレックス]「I can't help it, I have a big dick! You're gonna have to put up with me! Hey!」[k]
+@bg chara=マルエット f=event63 p0=hair p1=05 p2=05
+∗sluurp sluurp sluurp∗[k]
+[マルエット v=vs654]「Ah... ah... no... stop... ahh...!」[k]
+Ignoring [マルエット], who wrinkles her brow, Alex begins moving.[k]
+[アレックス]「Phew... I see... this is good. It feels as good as the rumors say.」[k]
+∗sluurp sluurp sluurp∗[k]
+[マルエット v=vs655]「Ah... Ah... Ugh... It hurts... Stop it... Ahh...!」[k]
+Alex moves in [マルエット] like it's cramped. Still, it clearly feels pretty good, as he lets out a sigh of satisfaction.[k]
+Meanwhile, [マルエット] still looks to be in pain as she patiently endures Alex's thrusts.[k]
+[アレックス]「Wow... that pussy is squeezing my dick tightly. I can't get enough of this!」[k]
+∗sluurp! sluurp! sluurp! sluurp!∗[k]
+Alex can't help but increase the speed of his thrusts![k]
+[マルエット v=vs656]「Ah... ah... stop it... nooooo...」[k]
+[アレックス]「Ugh! I can't take it anymore! Ugh!」[k]
+@flash t=200
+@w05
+@flash t=200
+∗spurt! spurt!∗[k]
+[マルエット v=vs657]「Nooooooo...!」[k]
+Alex ejaculated as soon as possible, even though he had only been inserted for a short time! He shoots his sperm as much as he can inside [マルエット]![k]
+@bg chara=マルエット f=event63 p0=hair p1=06 p2=06
+[アレックス]「Whew, I already came. I never knew a Sylph's pussy would feel so good.」[k]
+[マルエット]「...」[k]
+Alex is completely satisfied. Meanwhile, [マルエット] was crying from humiliation and pain...[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+*_skip_trial_version
+@gameon
+@fg l=アレックス e=汗だく b
+@fg r=マルエット e=汗だく f=56
+[texton w=1]
+[if exp='! isDemoVersion']
+	[アレックス f=03]「Phew, that felt good. I'm happy. Gahahaha!」[k]
+	[アレックス f=03]「I don't get excited at all when I see you naked, but when I fuck you, it's great!」[k]
+	[テオ f=08]「Damn...! Alex...!」[k]
+[endif]
+[マルエット f=56]「...」[k]
+[アレックス f=00]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [マルエット], fight hard!」[k]
+[マルエット v=vs658 f=29]「Really? Like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+Alex and [マルエット] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 2'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント03
+*wildbull_03
+
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*syl_wildbull_03 cond='game.isFreeMode'
+@saveon
+@fg r=thief_red_nude1 x=500 y=-40 b
+@fg l=bandit_red_nude x=100 b
+@fg c=マルエット e=汗だく f=38
+[texton w=1]
+[マルエット v=vs659 f=37]「Ahh ahh ahh ahh ahh...」[k]
+[男 f=thief_red_03]「Ahhhh, that felt good! Her pussy feels really good.」[k]
+[男 f=bandit_red_02]「I'm next! Let me fuck you!」[k]
+[男 f=bandit_yellow_02]「I can't wait to fuck her too! I can't take it anymore!」[k]
+[マルエット v=vs660 f=38]「Ugh... I can't take it anymore...」[k]
+[テオ f=10]「[マルエット]...!」[k]
+Today too, [マルエット] is being treated like a sex toy by the Wild Bull guys.[k]
+I can't let her stay like this...! I have to hurry and rescue her soon...![k]
+[textoff]
+@clf
+@eval exp='game.party.escape(true)'
+[eventoff]
+
+
+;◇ワイルド・ブル救出イベント・懐妊直後
+*wildbull_pregnant
+
+; 救出した直後
+@saveon
+@fg c=マルエット e=穴あき鎧・妊娠 f=09
+[texton w=1]
+[テオ f=02]「[マルエット], I'm sorry it took me so long to come help you. Come on, let's go home together.」[k]
+[マルエット v=vs661 f=09]「H-hey... Captain...」[k]
+[テオ f=05]「Hmm? What's wrong?」[k]
+@fg c=マルエット e=穴あき鎧・妊娠 f=10
+[マルエット v=vs662 f=10]「I think I'm... going to have a baby...」[k]
+[テオ f=12]「What?! Whose!」[k]
+[マルエット v=vs663 f=10]「I don't know... Maybe Alex or someone.」[k]
+[テオ f=10]「...」[k]
+Damn, Wild Bull doesn't even use birth control...! What do they think they're doing with [マルエット]'s body...?![k]
+@fg c=マルエット e=穴あき鎧・妊娠 f=50
+[マルエット v=vs664 f=09]「Hey, what do we do, Captain...」[k]
+[テオ f=05]「Anyway, let's go back to Sapphire City! If we talk to the guild, we might be able to work something out.」[k]
+[textoff]
+@out
+@w05
+[texton]
+I took [マルエット] back to Sapphire City.[k]
+After consulting with the guild, [マルエット] was able to rest for a while on the second floor of the waiting area.[k]
+@call storage="stay.ks" target=*describe_support
+[textoff]
+@w05
+
+; 待合所のベッド
+@bg f=0007
+[texton]
+[テオ f=02]「You can stay here until the baby is safely delivered.」[k]
+[マルエット e=マタニティドレス f=10]「...」[k]
+[テオ f=05]「Hmm? What's wrong?」[k]
+[マルエット v=vs665 e=マタニティドレス f=10]「I mean... I'm sorry...」[k]
+[テオ f=02]「It's nothing for you to apologize for. I'll be looking forward to the day when you're back.」[k]
+[textoff]
+@out
+@return
+
+
+;◇ワイルド・ブル救出イベント・臨月間近
+*wildbull_bigbelly
+
+; 救出した直後
+@saveon
+@fg c=マルエット e=穴あき鎧・ボテ腹 f=09
+[texton w=1]
+[マルエット v=vs666 f=09]「Captain...」[k]
+[テオ f=02]「[マルエット], I'm sorry I'm late helping you. Come on, let's go home together.」[k]
+[マルエット v=vs667 f=09]「Umm... Captain...」[k]
+[テオ f=02]「What?」[k]
+[マルエット v=vs668 f=09]「What am I going to do now? My stomach is like this...」[k]
+[テオ f=05]「Don't worry. There is a facility in Sapphire City where you can rest and recuperate, so let's go there first.」[k]
+[textoff]
+@out
+@w05
+[texton]
+I took [マルエット] back to Sapphire City.[k]
+After consulting with the guild, [マルエット] was able to rest for a while on the second floor of the waiting area.[k]
+@call storage="stay.ks" target=*describe_support
+[textoff]
+@w05
+
+; 待合所のベッド
+@bg f=0007
+[texton]
+[テオ f=02]「You can stay here until the baby is safely delivered.」[k]
+[マルエット v=vs669 e=マタニティドレス　 f=10]「Sorry... Captain...」[k]
+[テオ f=02]「It's nothing for you to apologize for. I'll be looking forward to the day when you're back.」[k]
+[textoff]
+@out
+@return
+
+
+
+
+;■背徳の鎧イベント
+
+;◇背徳の鎧イベント
+*sexy_armor
+
+@fg c=マルエット e=現在の装備,腕上げ f=37
+@saveon
+[texton w=1]
+[マルエット v=vs670 f=37]「Ahh...!」[k]
+The armor forced on [マルエット] by the power of a curse contained a shocking surprise![k]
+An object resembling a male penis extended from within the pants and penetrated all the way into [マルエット]'s vagina.[k]
+@fg c=マルエット f=61
+[マルエット v=vs671 f=61]「Idiot! Don't look at me... Ahhh..!」[k]
+She tried to speak forcefully, but the stimulation of insertion turns it into a sweet gasp.[k]
+@fg c=マルエット f=39
+[マルエット v=vs672 f=39]「Hahaha... I... I can't stand it... ahh...! Oh!」[k]
+I heard that Sylphs are very sensitive. She feels more and more pleasure, and I can't control my desires.[k]
+@fg c=マルエット f=37
+[マルエット v=vs673 f=37]「Aaahhh...! Oh!」[k]
+[textoff]
+@flash on=1000
+@fgf c=マルエット f=39
+@flash off=500
+[texton w=1]
+And finally, [マルエット] came.[k]
+@se f=dosa
+@clf
+@quake time=200 hmax=5 vmax=5
+With tears in her eyes and wet thighs, [マルエット] collapsed onto the ground.[k]
+At this rate, it will be difficult for her to even walk properly, let alone fight. I have to remove it quickly...![k]
+[textoff]
+@w05
+[eventoff]
+
+; 続く

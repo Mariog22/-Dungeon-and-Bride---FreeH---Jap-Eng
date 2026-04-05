@@ -1,0 +1,267 @@
+﻿; 城
+
+name = 常闇の城３Ｆ
+insideName = ３Ｆ
+upper = 常闇の城４Ｆ
+lower = 常闇の城２Ｆ
+level = 36
+bgm = shadow
+margin = 3
+shadow = dark
+sky = stormyforest
+roof = stone
+
+; パーツ画像
+━ = stone
+― = stone
+… = half
+　 = marble
+☐ = marble
+◇ = soilr
+／ = door
+〆 = key
+☖ = arch
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+⑾ = ladderu
+
+; 敵情報
+monsters = バンパイアラット,バンパイアバット,ナイトメア,ナイトスケルトン,ガスト,ヴァンパイア,ノスフェラトゥ
+
+; 宝箱
+box[1] = 罠はない,くい
+box[2] = 古代語の辞書,聖なるハンドベル_u,アシッドバーストの魔法書_u
+box[3] = 罠はない,ガーネットの魔石
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  ┏━━━━━┓									┏━━━━━┓
+10┃㊤　　　㊦┃									┃㊤　　　　┃
+  ┃　　　┏━┻━┳━━━━━━━╋━━〆┓　┃
+ 9┃　　　┃　　　┃　　　　　　　┃　　　┃　┃
+  ┃　　　┃　　　┃　┏⧻━━┓　┃　　　┃　┃
+ 8┃①　　┃　　④┃　┃③　　┃②┃❷　　┃㊦┃
+  ┗︼┳／┻━━⧻┛　┃　　　┣┷┻━━━╋━┛
+ 7		┃　　　　　　　┃　　　┃☐☐☐☐☐￤
+  		┃　┏━━━┳━┻━━━┫☐☐☐☐☐￤
+ 6		┃　⧻⑤　　┃◇　　　◇┃☐☐☐☐☐￤
+  		┃　┃　　　┃　　　　　┃☐☐☐☐☐￤
+ 5		┃　┃　　　┃　　◇　⑧／⓻☐⓾☐➌￤
+  		┃　┣━━━┫　　　　　┃☐☐☐☐☐￤
+ 4		┃　⧻⑥　　┃◇　　　◇┃☐☐☐☐☐￤
+  		┃　┃　　　┣／━━━━┫☐☐☐☐☐￤
+ 3		┃　┃　　　┃　　　　　┃☐☐☐☐☐￤
+  ┏━╋⧻┻━┳━┻━━━┳⧻┻━┳━━━┻━┓
+ 2┃㊤┃　　　┃　　　　❶┃　　　【⑫　　　㊦┃
+  ┃　┃　　　┃　　　　　┃　　　┃　　　　　┃
+ 1┃　┃　　　｜　　　　　┃　　　／　　　　　┃
+  ┃　┗━━━╋━━━━━┻━━━┫　　　　　┃
+ 0┃　　　　㊦┃									┃　　　　⑾┃
+  ┗━━━━━┛									┗━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[9][10].s.key = o.吸血鬼の鍵;
+pos[9][5].event = 9;
+pos[10][0].f.icon = 21;
+pos[10][0].f.info = "はしご";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+effect = isCeiling() ? void : "PE_storm";
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text=Gaol
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=1 y=6 way=e mode=open
+@switchfence x=1 y=4 way=e mode=open
+@switchfence x=1 y=3 way=s mode=open
+@switchfence x=3 y=7 way=n mode=open
+@switchfence x=5 y=9 way=s mode=open
+@wait time=1000
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+*event_4
+;[exp] true
+
+@delevent
+[texton]
+When I stepped into what appeared to be a prison cell, I saw a naked girl sitting there looking frightened.[k]
+[少女 f=priest_purple_03]「I was being held captive by the vampires of this castle.[r]
+You've been a great help, thank you very much.」[k]
+[textoff]
+@se f=period
+@notice text="<y>Rescued one girl from captivity!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@delevent
+[texton]
+When I stepped into what appeared to be a prison cell, I saw a naked girl sitting there looking frightened.[k]
+[name n=Carolina f=priest_pink_03]「I was being held captive by the vampires of this castle.[r]
+You've been a great help, thank you very much.」[k]
+[textoff]
+@se f=period
+@notice text="<y>We rescued Carolina!"
+@eval exp='o.娘を助け出してほしい.flag = 1'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@delevent
+@eval exp='game.curChara = game.party.members.draw()'
+[texton]
+When I stepped into what appeared to be a prison cell, I saw a naked girl sitting there looking frightened.[k]
+[少女 f=witch_blue_02]「I was being held captive by the vampires of this castle.[r]
+You've been a great help, thank you very much.」[k]
+[if exp='game.curChara.sex == "男"']
+	[キャラ f=12]「No, you don't have to thank me... [wait time=500][se f=slash1][nw]Aah![/nw]」[k]
+[else]
+	[キャラ f=12]「You're welcome... [wait time=500][se f=slash1][nw]Aah![/nw]」[k]
+[endif]
+Shockingly, the girl bit her supposed rescuer's neck![k]
+[少女 f=witch_blue_02]「Hehe! Thanks for the meal ♪」[k]
+She sucked a lot of blood from [キャラ]'s neck and quickly walked away.[k]
+Apparently, she was a vampire too. We were caught totally caught off guard.[k]
+@se f=liquid
+@eval exp='game.curChara.life = 1'
+[b][nw][キャラ]'s HP decreased significantly![/nw][/b][k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] map.effect === void
+
+@eval exp='game.map.effect = "PE_storm"'
+@eval exp='game.view.startEffect(game.map.effect)'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] map.effect == "PE_storm"
+
+@eval exp='game.map.effect = void'
+@eval exp='game.view.stopEffect()'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] true
+
+[texton]
+[if exp='! game.map.events.has(10)']
+	[？？？]「I will not allow you to steal my treasure from me...」[k]
+[else]
+	[？？？]「I will rise again and again... Leave this place quickly...」[k]
+[endif]
+[リーダー]「...?!」[k]
+[textoff]
+
+@wait time=200
+@walk move=w
+@walk turn=e
+@wait time=1000
+@se f=roar
+@fg c=vampire_white left=450 top=80
+@wait time=500
+[texton]
+[if exp='! game.map.events.has(10)']
+	A figure emerged from the darkness and attacked us![k]
+[else]
+	The vampire lord that we had supposedly defeated earlier came back to life and stood before us![k]
+[endif]
+[textoff]
+@clf
+
+@wait time=500
+@monster pos=2 name=バンパイアバット
+@monster pos=3 name=ヴァンパイアロード
+@monster pos=4 name=バンパイアバット
+@callbattle bgm=boss gameover=true
+@wait time=500
+[texton]
+We managed to defeat the vampire lord.[k]
+The body of the fallen vampire lord lies at our feet.[k]
+...[k]
+Could it start moving again? Did we really defeat the vampire lord?[k]
+[textoff]
+@addevent num=10
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] onUseEventItem && curItem == o.くい
+
+@eval exp='game.curChara = game.curFighter'
+[texton]
+[キャラ f=07]「Yaa!」[k]
+@se f=slash1
+@flash
+[キャラ] vigorously plunged the stake into the corpse of the fallen vampire lord![k]
+[？？？]「Aaaarghhhh!」[k]
+[textoff]
+@image layer=e0 storage=PE_base_view mode=psdodge5
+@layopt layer=e0 left=0 top=0 visible=true
+@startemit layer=e0 storage=PE_powder6 time=1000
+@wait time=2000
+[texton]
+The vampire lord's final screams echoed around him, and soon his body crumbled into tattered ashes and faded into mist.[k]
+This seems to have completely defeated the vampire lord.[k]
+[textoff]
+
+@delevent num=9
+@delevent num=10
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] onObjectTrigger
+
+@notice text="There is a ladder to the upper floor but it seems broken."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] onObjectTrigger
+
+@notice text="Ahead, the Audience Hall"
+
+[eventoff]
+;-------------------------------------------------------------------------------

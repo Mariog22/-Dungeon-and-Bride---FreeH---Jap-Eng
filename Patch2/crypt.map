@@ -1,0 +1,108 @@
+﻿; ほこら
+
+name = 砂漠の民のほこら
+insideName = Ｂ１
+level = 58
+bgm = shrine
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+
+; 画像パーツ
+━ = soil
+＝ = coffin
+　 = soil
+⧻ = stonegate
+☗ = upstair
+︻ = panel
+④ = star
+
+; 移動ポイント
+(A) = map:タルハ砂漠・北, x:2, y:47, way:e, symbol:exit, ask:Leave the dungeon?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4  
+  ┏━┳━━━━━┳━┓
+12┃　ⅱ					ⅱ　┃
+  ┃　┗＝＝＝＝＝┛　┃
+11┃　　　　④　　　　┃
+  ┃　　　　　　　　　┃
+10┃　　　　　　　　　┃
+  ┃　　　　　　　　　┃
+ 9┃　　　　　　　　　┃
+  ┃　　　　　　　　　┃
+ 8┃　　　　　　　　　┃
+  ┃　　　　　　　　　┃
+ 7┃　　　　　　　　　┃
+  ┣━━━━⧻━︻━━┫
+ 6┃　　　　③　②　　┃
+  ┃　　　　　　　　　┃
+ 5┃　　　　　　　　　┃
+  ┃　　　　　　　　　┃
+ 4┃　　　　　　　　　┃
+  ┗━━━┓　┏━━━┛
+ 3				┃　┃
+  				┃　┃
+ 2				┃　┃
+  				┃　┃
+ 1				┃①】
+  				┃　┃
+ 0				┃Ⓐ┃
+  				┗☗┛
+;    0   1   2   3   4  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Desert Shrine"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="If you would open the door, raise our people's crystal before it."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onUseEventItem && curItem == o.砂の水晶
+
+@delevent
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+@wait time=1000
+@playse storage=tremble
+@quake time=3000 hmax=5 vmax=0
+@wq
+@playse storage=rockdrop
+@changewall himg=arch type=space behind=true
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@delevent
+@changefloor pimg=void
+@getitem item=トパーズの魔石
+
+[eventoff]
+;-------------------------------------------------------------------------------
