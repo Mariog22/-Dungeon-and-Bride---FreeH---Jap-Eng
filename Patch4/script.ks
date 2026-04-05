@@ -387,17 +387,17 @@
 ; 蘇生成功
 @eval exp='game.curChara.beRaised()'
 @eval exp='game.notice.open(game.churchWin.enterRaiseMode)'
-@eval exp='game.notice.write("Revived " + game.curChara.displayName + "!")'
+@eval exp='game.notice.write("Revived " + game.curChara.name + "!")'
 [s]
 
 ; 蘇生失敗
 *raise_failure
 @eval exp='game.notice.open(game.churchWin.enterRaiseMode)'
 [if exp='game.curChara.status.has(o.灰)']
-	@eval exp='game.notice.write("Failed to revive!<r>" + game.curChara.displayName + " disappeared")'
+	@eval exp='game.notice.write("Failed to revive!<r>" + game.curChara.name + " disappeared")'
 	@eval exp='game.curChara.beLost()'
 [else]
-	@eval exp='game.notice.write("Failed to revive!<r>" + game.curChara.displayName + " turned into ashes")'
+	@eval exp='game.notice.write("Failed to revive!<r>" + game.curChara.name + " turned into ashes")'
 	@eval exp='game.curChara.setStatus(o.灰, true)'
 [endif]
 [s]
@@ -407,9 +407,9 @@
 *start_wedding
 [texton]
 [if exp='game.churchWin.curChurch.alignment == "good"']
-	[シスター]「[テオ] and [emb exp='game.wife.displayName'] are getting married. So first, please exchange rings.」[k]
+	[シスター]「[テオ] and [emb exp='game.wife.name'] are getting married. So first, please exchange rings.」[k]
 [else]
-	[ブラザー]「[テオ] and [emb exp='game.wife.displayName'] are getting married, aren't they? First of all, please exchange rings.」[k]
+	[ブラザー]「[テオ] and [emb exp='game.wife.name'] are getting married, aren't they? First of all, please exchange rings.」[k]
 [endif]
 [textoff]
 *_retry_wedding
@@ -550,12 +550,12 @@
 *hotel_welcome
 [texton w=5]
 [if exp='game.party.members.count == 0']
-	[フロント係][nw]「Welcome to [emb exp='game.hotelView.curHotel.displayName'].」[k]
+	[フロント係][nw]「Welcome to [emb exp='game.hotelView.curHotel.name'].」[k]
 	[フロント係][nw]「Please come again when you have a party.」[k]
 	[textoff]
 	@eval exp='game.hotelView.leaveHotel()'
 [else]
-	[フロント係][nw]「Welcome to [emb exp='game.hotelView.curHotel.displayName']!
+	[フロント係][nw]「Welcome to [emb exp='game.hotelView.curHotel.name']!
 	[r]Please reserve a room for all members[r]on the [b]reservation screen[/b].」[k]
 	[textoff]
 	@eval exp='game.hotelView.startReservation()'
