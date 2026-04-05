@@ -182,3 +182,134 @@ Usar el patrón:
 
 ```js
 var visibleName = obj.displayName ? obj.displayName : obj.name;
+```
+
+### Regla 2: no centrar ni alinear por cantidad de caracteres
+
+Si Patch11 agrega:
+
+listas
+precios
+estados
+cantidades
+nombres de skills/items/quests
+
+No usar:
+
+padding con espacios
+longitud fija
+cortes por número de caracteres
+
+Usar:
+
+ancho visual
+helpers del sistema
+lógica de render tomada de Patch2
+Regla 3: no cortar inglés con reglas japonesas
+
+Buscar y revisar especialmente patrones como:
+
+length > ...
+substr(...)
+slice(...)
+" ".repeat(...)
+
+Si aparecen en Patch11, revisar si hay que reemplazarlos por el criterio visual de Patch2.
+
+Regla 4: la traducción visible debe pasar por una capa
+
+No mostrar directamente en pantalla:
+
+valores internos de datos
+nombres crudos de objetos
+strings de sistema sin revisar
+
+Todo texto visible debería pasar por:
+
+displayName
+helper de traducción
+restauración de nombre limpio
+función de recorte si aplica
+Regla 5: no copiar archivos completos si el mod los expandió
+
+Si Patch11 trae una versión mucho más grande o más compleja de un archivo que también existe en Patch2:
+
+no copiar Patch2 encima
+no usar reemplazo directo
+hacer merge por bloques
+trasladar el patrón, no solo el texto
+Checklist por archivo compartido
+master.tjs
+ ¿Usa displayName?
+ ¿Hay traducciones especiales?
+ ¿Se mantiene la lógica interna del mod?
+ ¿El contenido nuevo del mod tiene nombre visible separado?
+bar.tjs
+ ¿Los nombres visibles salen desde displayName?
+ ¿Las listas se alinean correctamente?
+ ¿Los menús nuevos del mod siguen la misma lógica visual?
+ ¿Hay texto japonés hardcodeado aún visible?
+inventory.tjs
+ ¿Los objetos nuevos usan nombre visible?
+ ¿Las listas largas se ven bien en inglés?
+ ¿Hay categorías o labels nuevas sin adaptar?
+option.tjs
+ ¿Los labels caben correctamente?
+ ¿Las nuevas opciones del mod siguen el mismo estilo visual?
+ ¿Hay textos compactos que necesiten recorte o centrado?
+inn.tjs
+ ¿Los nombres de cuartos/opciones caben?
+ ¿Hay labels nuevos sin traducción visible?
+party.tjs
+ ¿Los nombres visibles del grupo están separados del dato interno?
+ ¿Los menús del party mantienen legibilidad en inglés?
+Estrategia recomendada de implementación
+Fase 1
+
+Portar a Patch11 la base conceptual:
+
+displayName
+helpers de traducción
+helpers de recorte y presentación
+Fase 2
+
+Aplicar esa base a archivos compartidos más importantes:
+
+master.tjs
+bar.tjs
+inventory.tjs
+option.tjs
+Fase 3
+
+Revisar UI secundaria y ventanas compactas:
+
+inn.tjs
+party.tjs
+board.tjs
+yesnodialog.tjs
+MainWindow.tjs
+Fase 4
+
+Adaptar contenido exclusivo del mod con esas mismas reglas
+
+Todo lo nuevo que exista solo en Patch11 debe seguir el mismo criterio visual que Patch2, aunque no haya un equivalente exacto en la traducción base.
+
+Qué NO hacer
+No sobrescribir Patch11 entero con Patch2
+No traducir reemplazando ciegamente claves internas
+No asumir que una traducción visible arregla sola la UI
+No confiar en longitud de caracteres para inglés
+No copiar solo strings sin copiar también el método de presentación
+Conclusión
+
+Patch2 es el modelo de representación inglesa.
+Patch11 es la capa de contenido nuevo del mod.
+
+La meta no es elegir uno u otro.
+La meta es:
+
+mantener la lógica y el contenido de Patch11
+injertar en él el sistema de presentación inglesa que ya resolvió Patch2
+Regla final
+
+Cuando Patch2 y Patch11 se superponen, se debe portar el método, no solo el texto.
