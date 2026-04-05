@@ -13,5 +13,6 @@ Carpeta Patch4, para archivos de la nueva traduccion a Ingles del juego base \[D
 Carpeta Patch11, archivos del mod FreeH en Japones
 
 Carpeta Patch12, para archivos de la nueva traduccion a Ingles del mod \[Data + Patch + Patch4 + Patch11]
+
 Carpeta Patch20, archivos que hacen compatible el patch2 con el patch11, pero son de una versión anterior
 
