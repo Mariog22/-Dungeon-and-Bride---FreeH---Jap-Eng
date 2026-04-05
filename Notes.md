@@ -220,3 +220,75 @@ Conclusión:
 
 
 
+\### Prueba 8
+
+Dejados:
+
+\- first.ks
+
+\- script.ks
+
+\- master.tjs
+
+\- extraTranslations.csv
+
+\- option.tjs
+
+\- board.tjs
+
+\- MainWindow.tjs
+
+
+
+Quitados:
+
+\- addfunc.tjs
+
+\- component.tjs
+
+\- gvolume.tjs
+
+\- historylayer.tjs
+
+\- yesnodialog.tjs
+
+\- menus.tjs
+
+\- messagelayer.tjs
+
+\- initialize.tjs
+
+\- config.tjs
+
+
+
+Resultado:
+
+\- arranque bien
+
+\- menú principal bien
+
+\- save/load bien
+
+\- Config bien
+
+
+
+Conclusión:
+
+\- Bloque mínimo funcional actual para UI inglesa:
+
+&#x20; - first.ks
+
+&#x20; - script.ks
+
+&#x20; - master.tjs
+
+&#x20; - extraTranslations.csv
+
+&#x20; - option.tjs
+
+&#x20; - board.tjs
+
+&#x20; - MainWindow.tjs
+
