@@ -330,3 +330,23 @@ Conclusión:
 
 &#x20; - MainWindow.tjs
 
+
+
+\### Estado actual
+
+\- Patch4 ya arranca correctamente después de corregir lecturas de `displayName` en `master.tjs`
+
+\- menú principal correcto
+
+\- save/load correcto
+
+\- problema restante aislado: UI de Config
+
+
+
+\### Conclusión
+
+\- el error de `displayName` y el problema de Config eran dos problemas distintos
+
+\- siguiente foco: comparar `option.tjs` de Patch4 contra la versión funcional de Patch99
+
