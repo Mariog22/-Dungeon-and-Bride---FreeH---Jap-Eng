@@ -1303,7 +1303,7 @@ class GameMaster extends KAGPlugin
 		f.saveDataDate = getNowTimeString();
 		f.saveDataVersion = "" + gameVersion;
 		f.saveDataDetail1 = getPlayerCharaString(isFreeMode ? party.members[0] : playerChara);
-		f.saveDataDetail2 = map !== void ? /'/.replace(map.displayName, "’") : ""; // Apostrophe gets escaped then escape displayed on file screen, so use alternate single quote
+		f.saveDataDetail2 = map !== void ? /'/.replace(map.name, "’") : ""; // Apostrophe gets escaped then escape displayed on file screen, so use alternate single quote
 		if(f.replayMode) {
 			f.saveDataDetail3 = " Replay";
 		} else {
@@ -1601,7 +1601,7 @@ class GameMaster extends KAGPlugin
 	{
 		// キャラクターの名前とレベルを合わせた文字列を取得
 		if(! isvalid chr || chr === void) return "(Unformed Party)";
-		return chr.displayName + " LV" + chr.level + " " + chr.job.displayName;
+		return chr.name + " LV" + chr.level + " " + chr.job.name;
 	}
 
 	function getGamePlayingTime()
@@ -2134,7 +2134,7 @@ class GameMaster extends KAGPlugin
 			return;
 		}
 		popup.open(view.goToStreet, exitPoint, 500);
-		popup.write("Entering " + town.displayName);
+		popup.write("Entering " + town.name);
 	}
 
 	function enterHotel(hotelObj)
@@ -3018,7 +3018,7 @@ class GameMaster extends KAGPlugin
 			{
 				var text = item.state > 0 ? item.itemData.displayName : item.itemData.getUnknownName();
 				notice.open(enterTravelMode);
-				notice.write("<y>" + mem.displayName + "<w> got <p>" + text + "<w>!");
+				notice.write("<y>" + mem.name + "<w> got <p>" + text + "<w>!");
 				return true;
 			}
 		}
