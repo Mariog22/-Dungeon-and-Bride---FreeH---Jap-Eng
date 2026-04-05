@@ -1,0 +1,795 @@
+﻿// addfunc.tjs
+// ここでいろいろ関数を追加しておく
+
+
+//----------------------------------------------------------------------------
+// プラグイン登録
+
+	Plugins.link("wuvorbis.dll");
+	Plugins.link("extrans.dll");
+	Plugins.link("gamepad.dll");
+	Plugins.link("particle.dll");
+	Plugins.link("arrayex.dll");
+	Plugins.link("layerExImage.dll");
+	Plugins.link("extNagano.dll");
+	Plugins.link("KAGParserEZ.dll");
+	Plugins.link("layerExBTOA.dll");	//  ← このプラグイン地味だけど凄く役に立つ
+
+//----------------------------------------------------------------------------
+// フォント選択ダイアログがオミットされたので復活させる
+
+	if(useKrkrZ)
+	{
+		KAGLoadScript("win32dialog.tjs");
+		KAGLoadScript("k2compat.tjs");
+		KAGLoadScript("k2compat_fontselect.tjs");
+	}
+
+//----------------------------------------------------------------------------
+// Dictionary クラスに関数を追加
+
+	// 指定した値を持つメンバの名前を返す
+	Dictionary.find = function(value)
+	{
+		var arr = [];
+		arr.assign(this);
+		var idx = arr.find(value);
+		if(idx != -1 && idx % 2 == 1) return arr[idx - 1];
+	};
+
+//----------------------------------------------------------------------------
+// Array クラスに関数を追加
+
+	// その要素があるかどうかを true or false で返す
+	Array.has = function(elm)
+	{
+		return find(elm) != -1;
+	};
+
+	// 重複なし追加
+	Array.push2 = function(value * )
+	{
+		for(var i = 0; i < value.count; i++)
+		{
+			if(find(value[i]) == -1) push(value[i]);
+		}
+		return count;
+	};
+
+	// メンバの一覧をコピー
+	Array.assignMembers = function(dic)
+	{
+		assign(dic);
+		for(var i = this.count - 1; i > 0; i -= 2)
+		{
+			erase(i);
+		}
+	};
+
+	// とりあえずランダムに１つ出す。引数に式をとると式の結果が true になる要素のみから選ぶ
+	Array.draw = function(exp)
+	{
+		if(this.count == 0) return;
+		if(exp === void) return this[intrandom(0, this.count - 1)];
+		var arr = [];
+		for(var i = 0; i < this.count; i++)
+		{
+			if(exp(this[i])) arr.add(this[i]);
+		}
+		if(arr.count > 0) return arr[intrandom(0, arr.count - 1)];
+	};
+
+	// 要素をシャッフル
+	Array.shuffle = function(seed)
+	{
+		var num;
+		for(var i = 0; i < this.count; i++)
+		{
+			if(seed !== void) num = intrandom2(i, this.count - 1, seed + i);
+			else num = intrandom(i, this.count - 1);
+			this[i] <-> this[num];
+		}
+	};
+
+	// 配列のすべての値の平均値を求める
+	Array.average = function(atReal = false)
+	{
+		var total;
+		for(var i = 0; i < this.count; i++) total += +this[i];
+		var average = total / this.count;
+		if(! atReal) average = int(average);
+		return average;
+	};
+
+	// 配列のすべての値の合計を求める
+	Array.sum = function()
+	{
+		var total;
+		for(var i = 0; i < this.count; i++) total += +this[i];
+		return total;
+	};
+
+	// キーの値が同じ要素を検索
+	Array.keyfind = function(keyName, value)
+	{
+		for(var i = 0; i < this.count; i++)
+		{
+			if(this[i][keyName] === value) return i;
+		}
+		return -1;
+	};
+
+	// キーの値が同じ要素を抽出
+	Array.keygrep = function(keyName, value)
+	{
+		var arr = [];
+		for(var i = 0; i < this.count; i++)
+		{
+			if(this[i][keyName] === value) arr.add(this[i]);
+		}
+		return arr;
+	};
+
+	// キーの値でソートする（ "+" = 昇順   "-" = 降順 ）
+	Array.keysort = function(keyName, order)
+	{
+		global.keyName_for_keysort_func = keyName;	// エラー回避のためグローバル変数を作って強引に参照する
+		sort(function(a, b){ return a[keyName_for_keysort_func] < b[keyName_for_keysort_func]; });
+		delete global.keyName_for_keysort_func;	// 一応後始末
+		if(order == "-") reverse();
+	};
+
+	// 配列内で重複した値を１つにする
+	Array.unique = function(value)
+	{
+		var idx = this.find(value);
+		if(idx == -1) return false;
+		this.remove(value);
+		this.insert(idx, value);
+		return true;
+	};
+
+	// 同名キーの値の配列を取得（プラグインで登録）
+	// Array.values = function(keyName){ return array; };
+
+	// 同名キーに同じ値を代入（プラグインで登録）
+	// Array.uniform = function(keyName, value){ return void; };
+
+	// 式が true になる要素を抽出（プラグインで登録）
+	// func の中身は function(elm) { return exp(elm); }  elm は任意の変数で配列の要素が入る
+	// 基本的に sort メソッドと同じような書き方をすれば良い
+	// Array.grep = function(func){ return array; };
+
+	// 配列の要素すべてに評価式を適用し、返り値があればそれの配列も返す（プラグインで登録）
+	// func の中身は上に同じ
+	// Array.eval = function(func){ return array; };
+
+//----------------------------------------------------------------------------
+// Layer クラスに関数を追加
+
+	// フォーカスを外す（何故かこういうのが無くて今回すごく困ったので）
+	Layer.unfocus = function()
+	{
+		if(window.focusedLayer == this) window.focusedLayer = null;
+	};
+
+	// 描画を全消去
+	Layer.clear = function()
+	{
+		fillRect(0, 0, imageWidth, imageHeight, 0);
+		hitType = htMask;
+	};
+
+	// 画像を読み込んで貼り付ける
+	Layer.pasteImage = function(left, top, storage, opa = 255)
+	{
+		var lay = new global.Layer(window, this);
+		lay.loadImages(storage);
+		operateRect(left, top, lay, 0, 0, lay.imageWidth, lay.imageHeight,, opa);
+	};
+
+	// 描画する長すぎる文字列を指定の長さに治まる文字数にして返す
+	Layer.chopTooLongString = function(str, len)
+	{
+		if(str.length == 0) return;
+		for(var i = 0; i < str.length; i++)
+		{
+			if(font.getTextWidth(str.substr(0, i + 1)) > len) return str.substr(0, i);
+		}
+		return str;
+	};
+
+	// ２点をつなぐ直線を引く
+	Layer.drawLine = function(fromX, fromY, toX, toY, thick = 1, color = 0xFF0000, opa = 255)
+	{
+		var dx = abs(toX - fromX);
+		var dy = abs(toY - fromY);
+		var sx = (toX - fromX > 0) ? 1 : -1;
+		var sy = (toY - fromY > 0) ? 1 : -1;
+		var arr = [];
+		var i = 0, j = 0;
+
+		if(dx > dy)
+		{
+			for(i = 0; i <= dx; i++)
+			{
+				if(dy * i > dx * j) j++;
+				arr.push(fromX + sx * i, fromY + sy * j);
+			}
+		}
+		else
+		{
+			for(j = 0; j <= dy; j++)
+			{
+				if(dx * j > dy * i) i++;
+				arr.push(fromX + sx * i, fromY + sy * j);
+			}
+		}
+
+		var lay = new global.Layer(window, this);
+		lay.setSize(width, height);
+		for(var i = 0; i < arr.count; i++)
+		{
+			lay.colorRect(arr[i * 2] - thick \ 2, arr[i * 2 + 1] - thick \ 2, thick, thick, color);
+		}
+		operateRect(0, 0, lay, 0, 0, width, height, , opa);
+	};
+
+	// 円を描く
+	Layer.drawCircle = function(cx, cy, range, thick = 1, color = 0xFF0000, opa = 255)
+	{
+		var lay = new global.Layer(window, this);
+		lay.setSize(width, height);
+		var dx = range;
+		cx -= thick \ 2; cy -= thick \ 2;
+		for(var dy = 0; dy <= dx; dy++)
+		{
+			if(dx * dx + dy * dy >= range * range) dx --;
+			lay.colorRect(cx + dx, cy + dy, thick, thick, color);	// 0-45
+			lay.colorRect(cx + dy, cy + dx, thick, thick, color);	// 45-90
+			lay.colorRect(cx - dy, cy + dx, thick, thick, color);	// 90-135
+			lay.colorRect(cx - dx, cy + dy, thick, thick, color);	// 135-180
+			lay.colorRect(cx - dx, cy - dy, thick, thick, color);	// 180-225
+			lay.colorRect(cx - dy, cy - dx, thick, thick, color);	// 225-270
+			lay.colorRect(cx + dy, cy - dx, thick, thick, color);	// 270-315
+			lay.colorRect(cx + dx, cy - dy, thick, thick, color);	// 315-360
+		}
+		operateRect(0, 0, lay, 0, 0, width, height, , opa);
+	};
+
+//----------------------------------------------------------------------------
+// 数値計算
+
+	function random2(seed = 0)
+	{
+		// seed値 に基づいた、0.0 ～ 1.0 までの乱数を返す
+		// seed値 が同じなら毎回かならず同じ値になる
+		var obj = new Math.RandomGenerator(seed);
+		return obj.random();
+	}
+
+	function intrandom2(min = 0, max = 0, seed = 0)
+	{
+		// min 以上 max 以下の整数の seed値 に基づいた乱数を返す
+		// seed値 が同じなら毎回かならず同じ値になる
+		if(min > max){ min <-> max; }
+		return int(random2(seed) * (max - min + 1)) + min;
+	}
+
+	// 階乗を求める（値が大きくなるとオーバーフローするので書き方を変えた）
+	function factorial(val)
+	{
+		var res = val;
+		while(val > 1) res *= --val;
+		return res;
+	}
+
+	// 等差級数を求める
+	// 値が大きくなるとオーバーフローするので書き方を変えた（今回はそういう値も取り得るので）
+	// 逆に言えば、それ以外に再起を避ける理由はない
+	// ネットで再起を使うべきかどうかの議論があったけど、その辺りがとっちらかってて
+	// 要領を得ないまま煽り合いっぽくなってるのが本当に残念
+	function series(val)
+	{
+		var res = val;
+		while(val > 1) res += --val;
+		return res;
+	}
+
+	// 絶対値を求める（ Math クラスの物は全部 real 型に変換されてちょっと使いづらいので…）
+	function abs(val)
+	{
+		if(val < 0) val = - val;
+		return val;
+	}
+
+	// 最大値を求める（ Math クラスのは２つだけ ＆ real 型に変換されて使いづらいので…）
+	function max(args*)
+	{
+		args.sort("-");
+		return args[0];
+	}
+
+	// 最小値を求める
+	function min(args*)
+	{
+		args.sort("");
+		return args[0];
+	}
+
+	// 値をすべて（上限ありの）正の整数にする
+	// RPG 等のヒットポイントや買い物の計算ではこういうのがやっぱり欠かせなかった
+	function cap(val, max, min = 0)
+	{
+		// max = 上限値  min = 下限値  指定しなくてもよい。
+		if(val < min) val = min;
+		if(val > max && max !== void) val = max;
+		return int(val);
+	}
+
+	// 値を指定した割合の分だけランダムに増減させた正の整数を返す
+	function fluc(val, rate = 0.1)
+	{
+		var v = int(val * rate * (2 * random - 1)) + val;
+		return v < 0 ? 0 : v;
+	}
+
+	// 数値を16進数の文字列で表す（開発用）
+	function hex(num)
+	{
+		return "0x" + num \ 16 + $(num % 16 + (num % 16 > 9 ? 0x37 : 0x30));
+	}
+
+//----------------------------------------------------------------------------
+// 文字列操作
+
+	// 文字列が数値を表すものかどうかを返す
+	function isNumber(str)
+	{
+		return +str != 0 || str == "0";
+	}
+
+	// 前後の空白を削り、文字列のうち数値にできる物は数値にする。できないものは文字列のまま返す
+	// なお、全角数字には敢えて対応していない
+	function strToValue(str)
+	{
+		var res = str.trim();
+		if(! /[^0-9\-\+\.]/.test(res)) return +res;
+		return res;
+	}
+
+	// 文字列をカンマで分けて配列に入れる。数値にできる物は数値にする
+	function strToArray(str)
+	{
+		var arr = [];	// 追加メンバが必要なので文字列クラスの split は使えない
+		if(str === void) return arr;
+		arr.split(",", str);	// split はカンマがない場合でも長さ１の配列として返してくれる
+		for(var i = 0; i < arr.count; i++) arr[i] = strToValue(arr[i]);
+		return arr;
+	}
+
+	// 辞書配列風に書かれた文字列をカンマとコロンで分けて辞書配列に入れる。数値にできる物は数値にする
+	function strToDic(str)
+	{
+		var dic = %[];
+		if(str === void) return dic;
+		var arr = str.split(",");	// 捨ててしまう配列なのでこれでいい
+		for(var i = 0; i < arr.count; i++)
+		{
+			var temp = arr[i].split(":");	// 捨ててしまう配列なのでこれでいい
+			if(temp.count < 2) { System.inform("情報が不足しています   " + str); return; }
+			dic[temp[0].trim()] = strToValue(temp[1]);
+		}
+		return dic;
+	}
+
+//-----------------------------------------------------------------------------
+// ＣＳＶファイルのパース
+
+	function csvToArray(file, tab, inHead, inIndex, blankLine)
+	{
+		// 取り込むＣＳＶファイルにはＫＡＧっぽくコメントを書けるようにしてある
+		// tab が true だとタブ区切り
+		// inHead が true だと一番上の段を名前（見出し）にして辞書配列を作成する
+		// inIndex が true だと一番左の列がインデックス扱いになる
+		// blankLine を true にすると空行も数えて空文字列として配列に入れる
+
+		var line = [];
+		var store = [];
+		var temp = [];
+		var dicNames = [];
+		var index = -1;
+		var regSemi = /^\t*\;/;
+		var regQuote = /^\".*\"$/;
+		var regNotNumber = /[^0-9\-\+\.]/;
+
+		// ファイル読み込み
+		line.load(file);
+
+		// 編集＆保存
+		for(var i = 0; i < line.count; i++)
+		{
+			if(regSemi.test(line[i]) || (line[i] == '' && ! blankLine)) continue;
+
+			// 切り出し
+			if(tab) temp.split(/\t/, line[i], , false);		// タブ区切り
+			else    temp.split("," , line[i], , false);		// カンマ区切り
+
+			// 出力された要素（文字列）を適当な型に変えてみる作業
+			for(var j = 0; j < temp.count; j++)
+			{
+				if(! regQuote.test(temp[j]))
+				{
+					// クォーテーションがなくても明らかに数値じゃないっぽいのは文字列のままにしておく
+					// （たまにそういうＣＳＶを吐くソフトがあるため……中国製のエクセルもどきとか）
+					if(! regNotNumber.test(temp[j]) || temp[j] == "true" || temp[j] == "false")
+						temp[j] = + temp[j];
+					else if(temp[j] == "")
+						temp[j] = void;
+				}
+				else
+				{
+					temp[j] = temp[j].replace(/^\"/, "");
+					temp[j] = temp[j].replace(/\"$/, "");
+				}
+			}
+
+			// 見出しが指定されている場合見出しを作成する
+			// 今さら気付いたけど count の代わりに length を使ってもいいっぽい マニュアルには書いてないけど
+			if(inHead && dicNames.length == 0)
+			{
+				dicNames.assign(temp);
+				if(inIndex) dicNames.erase(0);
+				continue;
+			}
+
+			// 出力データのインデックスを決定
+			if(inIndex)
+			{
+				if(temp[0] === void)
+				{
+					System.inform("最初の列にインデックスがありません      \n\" "
+						+ file + " \"    " + (i + 1) + " 行目", "CSVファイル読み込みエラー");
+					continue;
+				}
+				index = temp[0];	// inIndex が true のときは最初の要素をインデックスに変換
+				temp.erase(0);
+			}
+			else
+			{
+				index ++ ;	// inIndex が false のときは１つ足すだけ
+			}
+
+			// 変換した物を新しい配列に入れる
+			if(inHead)
+			{
+				// dicNames で指定された名前で辞書配列に入れる
+				store[index] = %[];
+				for(var j = 0; j < dicNames.count; j++)
+				{
+					store[index][dicNames[j]] = temp[j];
+				}
+			}
+			else
+			{
+				// 普通にコピーするだけ
+				store[index] = [];
+				store[index].assign(temp);
+			}
+		}
+
+		return store;
+	}
+
+//----------------------------------------------------------------------------
+// サウンド関連
+
+	// とりあえず音楽を流す
+	function playMusic(storage, loop = true)
+	{
+		if(kag.bgm.currentStorage != storage || kag.bgm.currentBuffer.inFading
+			 || kag.bgm.currentBuffer.paused)
+			kag.bgm.play(%[storage: storage, loop: loop]);
+	}
+
+	// とりあえず効果音を流す
+	function playSound(storage, buf = 0, loop = false)
+	{
+		kag.se[+buf].play(%[storage: storage, loop: loop]);
+	}
+
+	// ボイスを再生
+	function playVoice(storage, buf)
+	{
+		if(kag.skipMode) return;
+		stopAllVoices();
+		kag.se[buf].play(%[ storage: storage ]);
+	}
+
+	// すべてのボイスを止める
+	function stopAllVoices()
+	{
+		for(var i = +gvolumeObj.volumeMenu.children[2].control[0]; i < kag.numSEBuffers; i++)
+		{
+			kag.se[i].stop();
+		}
+	}
+
+	// ボイスを再生する履歴アクションを作成
+	function createHistoryActionExp(buf, storage)
+	{
+		return "stopAllVoices(), kag.se["
+			+ buf + "].play(%[storage: \'" + storage + "\', loop: sf.playRepeatLoop ])";
+	}
+
+//-----------------------------------------------------------------------------
+// キーアサイン関連
+
+	// システムボタン用のキーを追加
+	function useSystemButtonByKey(key, shift)
+	{
+		if(! global.sysBtnObj.foreSeen) return;
+
+		if(! kag.inStable) return;
+
+		if(key == BT_MAP || key == BT_MAP2)
+		{
+			// メッセージウインドウを消す
+			sysBtnFocusEscape();
+			kag.switchMessageLayerHiddenByUser();
+			return true;
+		}
+
+		if(kag.messageLayerHiding) return;
+
+		if(isArrowButton(...) && shift != ssRepeat)
+		{
+			// カーソルキーが押された
+			var numBtns = sysBtnObj.foreButtons.count;	// 移動チェーンに参加させるボタンの数
+
+			// 次の移動位置を得る
+			var change;
+			if(key == BT_DOWN || key == BT_RIGHT || key == BT_DOWN2 || key == BT_RIGHT2) change = 1;
+			if(key == BT_LEFT || key == BT_UP || key == BT_LEFT2 || key == BT_UP2) change = -1;
+			var btnNum = sysBtnObj.findLink(kag.fore.base.cursorX, kag.fore.base.cursorY);
+			var linknum = kag.current.findLink(kag.current.cursorX, kag.current.cursorY);
+			if(btnNum == -1)
+			{
+				if(kag.current.numLinks > 0)
+				{
+					linknum += change;
+					if(linknum >= kag.current.numLinks) btnNum = 0;
+					if(linknum == -1) btnNum = numBtns - 1;
+					if(linknum == -2) linknum = kag.current.numLinks - 1;
+				}
+				else if(sysBtnObj.findLink(kag.fore.base.cursorX, kag.fore.base.cursorY - 1) != -1)
+				{
+					//ボタンの真下だったら
+					btnNum = sysBtnObj.findLink(kag.fore.base.cursorX, kag.fore.base.cursorY - 1);
+				}
+				else
+				{
+					if(change == 1) btnNum = 0;
+					else btnNum = numBtns - 1;
+				}
+			}
+			else
+			{
+				btnNum += change;
+				if(kag.current.numLinks > 0)
+				{
+					if(btnNum < 0) linknum = kag.current.numLinks - 1;
+					if(btnNum > numBtns - 1) {linknum = 0; btnNum = -1;}
+				}
+				else
+				{
+					if(btnNum > numBtns - 1) btnNum = 0;
+					if(btnNum < 0) btnNum = numBtns - 1;
+				}
+			}
+
+			// 無効なボタンを回避
+			if(btnNum != -1)
+			{
+				for(var i = 0; i < numBtns; i++)
+				{
+					var btn = sysBtnObj.foreButtons[btnNum];
+					if(btn.visible && btn.enabled) break;
+					btnNum = (btnNum + numBtns + change) % numBtns;
+					if(i == numBtns - 1) btnNum = -1;	// 有効なボタンがなかった
+				}
+			}
+
+			// カーソルを移動させる
+			if(btnNum == -1)
+			{
+				kag.current.setFocusToLink(+ linknum, false);
+			}
+			else
+			{
+				var btn = sysBtnObj.foreButtons[btnNum];
+				kag.fore.base.cursorX = btn.left + btn.imageWidth \ 6;
+				kag.fore.base.cursorY = btn.top + btn.imageHeight \ 2;
+			}
+			return true;
+		}
+
+		if(key == BT_OK || key == BT_OPTION || key == BT_OK2 || key == BT_OPTION2)
+		{
+			// リターン、スペース
+			var n;
+			n = sysBtnObj.findLink(kag.fore.base.cursorX, kag.fore.base.cursorY);
+			if(n ==-1) return false;
+			sysBtnFocusEscape();
+			if(sysBtnObj.foreButtons[n].visible && sysBtnObj.foreButtons[n].enabled)
+			{
+				sysBtnObj.foreButtons[n].executeBtnFunc();
+			}
+			return true;
+		}
+
+		if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			// エスケープ
+			return sysBtnFocusEscape();
+		}
+
+		if(key == BT_LSTEP || key == BT_LSTEP2)
+		{
+			// 履歴
+			if(! kag.historyEnabled) return false;
+			sysBtnFocusEscape();
+			kag.showHistoryMenuItem.click();
+			return true;
+		}
+
+		if(key == BT_RSTEP || key == BT_RSTEP2)
+		{
+			// オートモード
+			if(! kag.autoModeMenuItem.enabled) return false;
+			sysBtnFocusEscape();
+			sysBtnFunc_enterAutoMode();
+			return true;
+		}
+
+		if(key == BT_SEARCH || key == BT_SEARCH2)
+		{
+			// スキップ
+			if(! kag.skipToNextStopMenuItem.enabled) return false;
+			sysBtnFocusEscape();
+			sysBtnFunc_skipToSkip();
+			return true;
+		}
+
+		if(key == BT_MAGIC || key == BT_MAGIC2)
+		{
+			// ボイス再生
+			if(f.lastVoice === void) return false;
+			sysBtnFocusEscape();
+			sysBtnFunc_playLastVoice();
+			return true;
+		}
+	}
+
+	// システムボタンにフォーカスが合っていたら外す
+	function sysBtnFocusEscape()
+	{
+		var btnNum;
+		btnNum = sysBtnObj.findLink(kag.fore.base.cursorX, kag.fore.base.cursorY);
+		if(btnNum == -1) return false;
+		kag.fore.base.cursorY = sysBtnObj.foreButtons[btnNum].top
+			+ sysBtnObj.foreButtons[btnNum].imageHeight;	// カーソルはじゃまなので端っこに置く
+		kag.hideMouseCursor();	// カーソルを一時的に隠す
+		return true;
+	}
+
+	// デスクトップのパスを返す（開発用）
+	property desktopPath
+	{
+		getter
+		{
+			var path = System.appDataPath;	// システムの返すパス名は全部小文字なので文字列比較する時は注意
+			var xp = (System.osName == "Windows NT 5.1.2600 Service Pack 3");
+			if(xp) return path.substring(0, path.indexOf("application data/")) + "デスクトップ";
+			else return path.substring(0, path.indexOf("appdata/")) + "Desktop";
+		}
+	}
+
+	// スクリーンショットを撮れるようにする（開発用）
+	function saveScreenShot(key, shift)
+	{
+		// なんか PrinsScreen キーは使えなかったので、手元にあって押しやすい無変換キーにしてみた…
+		if(key == VK_NONCONVERT && Storages.extractStorageName(System.exeName) == "krkr.exe")
+		{
+			var snapshotLayer = new Layer(kag, kag.primaryLayer);
+			snapshotLayer.setImageSize(kag.scWidth, kag.scHeight);
+			snapshotLayer.face = dfAlpha;
+			snapshotLayer.piledCopy(0, 0, kag._primaryLayer, 0, 0, kag.scWidth, kag.scHeight);
+			var date = new Date();
+			var name = "%02d%02d_%02d%02d_%02d".sprintf(
+				date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+			snapshotLayer.saveLayerImage(desktopPath + "/" + name + ".bmp", "bmp24");
+		}
+	}
+
+	// ゲームの様々なテスト（開発用）
+	function testGameByKey(key, shift)
+	{
+		if(! underDevelopment) return false;
+		if(key >= VK_0 && key <= VK_9 && shift == ssCtrl | ssShift)
+		{
+			// 戦闘カットイン画像のテスト
+			if(key == VK_0) game.cutOutFigure("alternate");
+			else game.testFigureOnBattle(key - 49);
+			return true;
+		}
+	}
+
+//-----------------------------------------------------------------------------
+// ＫＡＧ全般
+
+	// 全てのレイヤー・音声・その他状態を初期化する
+	function kagAllReset(keepBgm = false, updateAfter)
+	{
+		for(var i = 0; i < kag.fore.messages.count; i++)
+		{
+			if(! updateAfter) kag.fore.messages[i].setOptions(%[visible: false, left: 0, top: 0, opacity: 255]);
+			kag.back.messages[i].setOptions(%[visible: false, left: 0, top: 0, opacity: 255]);
+		}
+		for(var i = 0; i < kag.fore.layers.count; i++)
+		{
+			if(! updateAfter) kag.fore.layers[i].setOptions(%[visible: false, left: 0, top: 0, opacity: 255]);
+			kag.back.layers[i].setOptions(%[visible: false, left: 0, top: 0, opacity: 255]);
+		}
+		sysBtnObj.setOptions(%[forevisible: false, backvisible: false]);
+		if(! keepBgm) kag.bgm.stop();
+		for(var i = 0; i < kag.se.count; i++)
+		{
+			kag.se[i].stop();
+		}
+		kag.setHistoryOptions(%[output: false, enabled: false]);
+		kag.cancelSkip();
+		kag.cancelAutoMode();
+		kag.clickSkipEnabled = false;
+		game.charaNumsByKagLayer = [,,,];
+	}
+
+	// 指定したＫＡＧレイヤー（カンマ区切り）の設定をまとめて変える
+	function setOptionsOfAllLayers(elm)
+	{
+		var arr = elm.layer.split(",");
+		for(var i = 0; i < arr.count; i++)
+		{
+			kag.getLayerFromElm(%[layer: arr[i], page: elm.page]).setOptions(elm);
+		}
+	}
+
+	// Ｎスクでいうところの「トラップ」を設定する
+	function trapHook()
+	{
+		if(f.keyTrapEnabled && ! kag.inStable)
+		{
+			f.keyTrapEnabled = false;
+			kag.leftClickHook.remove(trapHook);
+			kag.keyDownHook.remove(trapHook);
+			kag.process(f.keyTrapStorage, f.keyTrapTarget);
+			return true;
+		}
+	}
+
+	// リストにある名前のファイルがストレージ内にあるかどうかを調べる（開発用）
+	function checkStorages(checkList)
+	{
+		if(! Storages.isExistentStorage(checkList)) return;
+		dm("-------------------------------------------------");
+		dm("＜ファイルテスト・以下のファイルは存在しません＞");
+		var arr = [];
+		arr.load(checkList);
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(! Storages.isExistentStorage(arr[i])) dm(arr[i]);
+		}
+		dm("-------------------------------------------------");
+	}
+
+//----------------------------------------------------------------------------
