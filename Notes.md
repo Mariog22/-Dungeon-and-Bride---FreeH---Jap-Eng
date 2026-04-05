@@ -292,3 +292,41 @@ Conclusión:
 
 &#x20; - MainWindow.tjs
 
+
+
+\### Prueba 10
+
+Validación completa de UI
+
+
+
+Resultado:
+
+\- menú principal bien
+
+\- save/load bien
+
+\- camp menu bien
+
+\- todas las pestañas de Config bien
+
+
+
+Conclusión:
+
+\- El bloque mínimo funcional provisional para la UI inglesa queda en:
+
+&#x20; - first.ks
+
+&#x20; - script.ks
+
+&#x20; - master.tjs
+
+&#x20; - extraTranslations.csv
+
+&#x20; - option.tjs
+
+&#x20; - board.tjs
+
+&#x20; - MainWindow.tjs
+
