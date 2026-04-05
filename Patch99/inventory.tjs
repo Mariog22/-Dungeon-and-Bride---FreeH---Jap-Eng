@@ -1,0 +1,4921 @@
+﻿// inventory.tjs
+// アイテム管理とその派生画面（ショップ・宝箱・ステータス表示）を作る
+
+// 作ってみて痛感したのは「アイテム」というオブジェクトのふるまいと情報量の多さ
+// アイテム回りのシステムを一通り作るだけで膨大な時間を要することとなった
+// コード量もたぶんアイテム関連がダントツに多い
+// これだけのシステムを1981年の時点で作っていたんだから恐ろしい…
+
+//----------------------------------------------------------------------------------------
+class ItemBoardWindow extends MarkersBoard
+{
+	// アイテム操作画面
+	// 所持アイテム・宝箱・ステータス画面等のほか、買い物画面も表示する
+	// ここで扱う画面は「アイテムマーカー」を共有しつつ使う必要があるため
+	// このクラスのウインドウを共通の親レイヤーとし、このクラス内で全て操作することとする
+
+	var curChara;	// 対象となるバッグを持つキャラ
+	var curShop;	// 対象となるお店
+	var curHelper;	// 対象となるヘルパー
+	var curHeroine;	// 対象となるヒロイン
+	var curMonster;	// 対象となるモンスター
+	var curList;	// 対象となるコレクションリスト（閲覧用）
+	var lastHeroine;	// 最後に表示していたヒロイン
+	var lastSlave;	// 最後に表示していた奴隷ヒロイン
+	var lastItemPlaceKey;	// 直前に選択していたアイテムの配置場所を表すキー
+	var mode = "inventory";	// 現在のモード
+	var lastMode = "inventory";	// 前回のモード（キャラ枠クリックで使う）
+	var lastHMode = "hstatus";	// 前回のヒロインモード（メニューボタンで使う）
+	var fixPortrait = false;	// 肖像を完全に固定するか
+
+	var portrait;	// 肖像エリア
+	var shopWin;	// ショップ店主エリア
+	var boxMenuWin;	// 宝箱メニューエリア
+	var boxGrid;	// 宝箱エリア
+	var backLayer;	// 背景
+	var closeButton;	// 閉じるボタン（戦闘時用）
+	var arrangeButton;	// アイテム整理ボタン
+	var leftSwitch;	// 対象を切り替えるボタン・左
+	var rightSwitch;	// 対象を切り替えるボタン・右
+	var switchFuncButton;	// アイテム・ステータス切替ボタン
+	var switchFuncButton2;	// アイテム・ステータス切替ボタン２
+	var switchTargetButton;	// ステータス対象切替ボタン
+	var switchHeroineButton;	// ヒロインステータス対象切替ボタン
+	var switchDiaryButton;	// ヒロイン日記表示切替ボタン
+	var switchBreakButton;	// 破損状態切替ボタン（閲覧用）
+	var cutInButton;	// カットイン表示ボタン（閲覧用）
+	var achievementLayer;	// 達成率などを表示するレイヤー
+
+	var itemMarkers = [];	// アイテムマーカー
+	var itemGrids = [];	// アイテムを入れるエリア
+	var partyGrids = [];	// パーティーの各キャラのエリア
+	var guestGrids = [];	// ゲストエリア
+	var priceTag = [];	// 値札（売り物の配置場所）
+	var maxItemMarkers;	// 必要となるアイテムマーカーの総数
+	var maxItemGrids;		// アイテムエリアのグリッドの総数
+	var maxPartyGrids;	// パーティーエリアのキャラ総数
+	var maxGuestGrids;	// ゲストエリアのキャラ総数
+
+	// 設定が必要なもの
+	var maxCols = 8;	// アイテムエリアの横グリッドの数
+	var maxRows = 7;	// アイテムエリアの縦グリッドの数
+	var maxDressGrids = 11;	// 各装備スロットの総数
+	var gridSize = 80;	// １つのグリッド（正方形）の辺の長さ
+	var borderX = 430;	// 肖像エリアとアイテムエリアの境目Ｘ座標
+	var borderY = 560;	// パーティーエリアとアイテムエリアの境目Ｙ座標
+	var charaBoxWidth = 107;	// パーティーエリアの１キャラの枠の幅
+	var guestBoxWidth = 60;	// ゲストエリアの１キャラの枠の幅
+	var guestBoxHeight = 104;	// ゲストエリアの１キャラの枠の高さ
+	var guestBoxCol = 11;	// ゲストエリアの１列あたりの数
+	var maxTagGrids = 28;	// 値札の数。あまり多段だと見栄えが悪いので 5 * 4 くらいまでが望ましい
+
+	function ItemBoardWindow(par, master)
+	{
+		// マーカーを保有する可能性のあるウインドウは親を同一とし、
+		// 原則非表示にはしない（一部表示を変えたい場合は上に重ねる）運用とする
+
+		super.MarkersBoard(...);
+		name = "アイテム画面";
+		setPos(-48, 0);	// 肖像の都合で少し左にはみ出る
+		setSize(kag.scWidth + 48, kag.scHeight);
+		maxItemGrids = maxCols * maxRows;
+		maxPartyGrids = master.party.maxMembers;
+		maxGuestGrids = 24;
+		maxItemMarkers = maxItemGrids + maxDressGrids;
+
+		for(var i = 0; i < maxItemMarkers; i++)
+		{
+			itemMarkers[i] = new ItemMarker(this, master, i);
+			itemMarkers[i].selectable = false;
+			markers.add(itemMarkers[i]);
+		}
+
+		for(var i = 0; i < maxItemGrids; i++)
+		{
+			itemGrids[i] = new ItemGrid(this, master, i, gridSize);
+			itemGrids[i].setPos((i \ maxRows) * gridSize + borderX, (i % maxRows) * gridSize);
+			itemGrids[i].absolute = 1001;
+			areas.add(itemGrids[i]);
+		}
+
+		for(var i = 0; i < maxPartyGrids; i++)
+		{
+			partyGrids[i] = new PartyGrid(this, master, charaBoxWidth, height - borderY);
+			partyGrids[i].setPos((i % maxPartyGrids) * charaBoxWidth + borderX, borderY + 1);
+			partyGrids[i].absolute = i + 1010;
+			partyGrids[i].visible = false;
+			partyGrids[i].name = "パーティーグリッド " + i;
+			areas.add(partyGrids[i]);
+			markers.add(partyGrids[i]);
+		}
+
+		for(var i = 0; i < maxGuestGrids; i++)
+		{
+			guestGrids[i] = new GuestGrid(this, master, guestBoxWidth, guestBoxHeight);
+			guestGrids[i].setPos((i % guestBoxCol) * (guestBoxWidth - 2) + borderX + 1
+				, i \ guestBoxCol * (guestBoxHeight - 2) + borderY + 2);
+			guestGrids[i].visible = false;
+			guestGrids[i].name = "ゲストグリッド " + i;
+			areas.add(guestGrids[i]);
+			markers.add(guestGrids[i]);
+		}
+
+		for(var i = 0; i < maxTagGrids; i++)
+		{
+			priceTag[i] = new MerchandiseGrid(this, master, i);
+			priceTag[i].absolute = 8000;
+		}
+
+		boxGrid = new ItemBoxGrid(this, master, 261, 210);
+		with(boxGrid)
+		{
+			.loadImages("btn_treasure_box");
+			.setPos(62 - left, 506);
+			.absolute = 1001;
+			.name = "宝箱";
+			.visible = false;
+			.onSelectAction = openChestMode;
+		}
+		partyGrids.add(boxGrid);
+		areas.add(boxGrid);
+		markers.add(boxGrid);
+
+		portrait = new PortraitGrid(this, master);
+		portrait.absolute = 1;
+		portrait.visible = false;
+		areas.add(portrait);
+
+		backLayer = new CharaStatusWindow(this, master);
+		with(backLayer)
+		{
+			.setPos(borderX, 0);
+			.visible = true;
+			.absolute = 1005;
+		}
+
+		shopWin = new ShopLayer(this, master);
+		shopWin.absolute = 9000;
+		for(var i = 0; i < shopWin.numButtons; i++)
+		{
+			shopWin.buttons[i].absolute = 9001 + i;
+		}
+
+		boxMenuWin = new ChestMenuLayer(this, master);
+		boxMenuWin.absolute = 5;
+
+		leftSwitch = new FixedButtonWithCharaSelector(this);
+		with(leftSwitch)
+		{
+			.loadImages("btn_arrow_left");
+			.absolute = 2000;
+			.selectable = true;
+			.onSelectActionParam = false;
+		}
+		markers.add(leftSwitch);
+
+		rightSwitch = new FixedButtonWithCharaSelector(this);
+		with(rightSwitch)
+		{
+			.loadImages("btn_arrow_right");
+			.absolute = 2000;
+			.selectable = true;
+			.onSelectActionParam = true;
+		}
+		markers.add(rightSwitch);
+
+		closeButton = new FixedButtonWithMarkers(this);
+		with(closeButton)
+		{
+			.name = "閉じるボタン";
+			.setPos(650, 646);
+			.loadImages("btn_menu_close");
+			.selectable = true;
+			.onSelectAction = master.processPrev;
+		}
+		markers.add(closeButton);
+
+		arrangeButton = new FixedButtonWithCharaSelector(this);
+		with(arrangeButton)
+		{
+			.name = "整理ボタン";
+			.loadImages("btn_arrange");
+			.setPos(borderX - .width - 2, height - .height - 2);
+			.selectable = true;
+			.onSelectAction = arrangeItems;
+		}
+		markers.add(arrangeButton);
+
+		switchFuncButton = new FixedButtonWithCharaSelector(this);
+		with(switchFuncButton)
+		{
+			.name = "アイテム・ステータス切替ボタン";
+			.loadImages("btn_switch_func");
+			.setSize(.width, .height \ 3);
+			.setPos(borderX - .width - 2, arrangeButton.top - .height);
+			.selectable = true;
+			.absolute = 2000;
+			.onSelectAction = switchFunc;
+		}
+		markers.add(switchFuncButton);
+
+		switchFuncButton2 = new FixedButtonWithCharaSelector(this);
+		with(switchFuncButton2)
+		{
+			.name = "アイテム・ステータス切替ボタン２";
+			.loadImages("btn_switch_func");
+			.setSize(.width, .height \ 3);
+			.setPos(switchFuncButton.left, switchFuncButton.top - .height);
+			.selectable = false;
+			.absolute = 2000;
+			.onSelectAction = switchFunc2;
+		}
+		markers.add(switchFuncButton2);
+
+		switchTargetButton = new FixedButtonWithCharaSelector(this);
+		with(switchTargetButton)
+		{
+			.name = "ステータス対象切替ボタン";
+			.loadImages("btn_switch_target");
+			.setSize(.width, .height \ 3);
+			.setPos(width - .width - 3, 4);
+			.selectable = true;
+			.onSelectAction = switchGroup;
+		}
+		markers.add(switchTargetButton);
+
+		switchHeroineButton = new FixedButtonWithCharaSelector(this);
+		with(switchHeroineButton)
+		{
+			.name = "ヒロインステータス対象切替ボタン";
+			.loadImages("btn_switch_heroine");
+			.setSize(.width \ 2, .height);
+			.setPos(width - .width, height - .height);
+			.selectable = true;
+			.onSelectAction = switchGroup;
+		}
+		markers.add(switchHeroineButton);
+
+		switchDiaryButton = new FixedButtonWithMarkers(this);
+		with(switchDiaryButton)
+		{
+			.name = "ヒロイン日記表示切替ボタン";
+			.loadImages("btn_switch_diary");
+			.setSize(.width, .height \ 2);
+			.selectable = true;
+			.onSelectAction = switchDiary;
+		}
+		markers.add(switchDiaryButton);
+
+		switchBreakButton = new FixedButtonWithCharaSelector(this);
+		with(switchBreakButton)
+		{
+			.name = "破損状態切替ボタン";
+			.loadImages("btn_switch_break");
+			.setSize(.width, .height \ 2);
+			.setPos(borderX - .width - 2, height - .height * 2 - 2);
+			.selectable = true;
+			.onSelectAction = switchStateOfBreak;
+		}
+		markers.add(switchBreakButton);
+
+		cutInButton = new FixedButtonWithCharaSelector(this);
+		with(cutInButton)
+		{
+			.name = "カットイン表示ボタン";
+			.loadImages("btn_cutin");
+			.setPos(borderX - .width - 2, height - .height - 2);
+			.selectable = true;
+			.onSelectAction = showCutIn;
+		}
+		markers.add(cutInButton);
+
+		achievementLayer = new DecoLayer(this);
+		with(achievementLayer)
+		{
+			.loadImages("frame_achievement");
+			.setPos(width - .width, 4);
+			.absolute = 20000;
+			//.font.face = "ＭＳ 明朝";
+			.font.bold = true;
+			.font.height = 22;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate boxGrid;
+		invalidate backLayer;
+		invalidate portrait;
+		invalidate shopWin;
+		invalidate boxMenuWin;
+		invalidate closeButton;
+		invalidate leftSwitch;
+		invalidate rightSwitch;
+		invalidate switchFuncButton;
+		invalidate switchFuncButton2;
+		invalidate switchTargetButton;
+		invalidate switchDiaryButton;
+		invalidate switchBreakButton;
+		invalidate cutInButton;
+		invalidate achievementLayer;
+		for(var i = 0; i < itemMarkers.count; i++) invalidate itemMarkers[i];
+		for(var i = 0; i < itemGrids.count; i++) invalidate itemGrids[i];
+		for(var i = 0; i < partyGrids.count; i++) invalidate partyGrids[i];
+		for(var i = 0; i < guestGrids.count; i++) invalidate guestGrids[i];
+		for(var i = 0; i < priceTag.count; i++) invalidate priceTag[i];
+		super.finalize();
+	}
+
+	function open()
+	{
+		visible = true;
+		backLayer.visible = true;
+		enabled = true;
+		fixPortrait = false;
+		if(master.previewActions.find(closeMenu) == -1) master.setPrev(closeMenu);
+	}
+
+	function changeEquipmentsInBattle(charaObj)
+	{
+		// バトル中に装備を変更する
+		master.clearWindows();
+		master.setPrev(close);
+		openInventory(charaObj, "change");
+		if(MOUSE_HIDDEN) focusToFirstItem();
+	}
+
+	function close()
+	{
+		visible = false;
+		backLayer.close();
+		portrait.close();
+		shopWin.close();
+		boxMenuWin.close();
+		clearItemMarkers();	// アイテムを消す
+		clearPriceTags();	// 値札を消す
+		boxGrid.visible = false;
+		closeButton.visible = false;
+		leftSwitch.visible = rightSwitch.visible = false;
+		switchFuncButton.visible = false;
+		switchFuncButton2.visible = false;
+		switchTargetButton.visible = false;
+		switchHeroineButton.visible = false;
+		switchDiaryButton.visible = false;
+		arrangeButton.visible = false;
+		switchBreakButton.visible = false;
+		cutInButton.visible = false;
+		achievementLayer.visible = false;
+		for(var i = 0; i < partyGrids.count; i++) partyGrids[i].visible = false;
+		for(var i = 0; i < guestGrids.count; i++) guestGrids[i].visible = false;
+		master.party.restoreFaces();	// 全員の表情を更新（これは閉じる時だけにする）
+		if(mode == "inventory")
+		{
+			master.party.allMembersAreHeatedUpByOthers();
+			master.view.resetPos();
+		}
+		if(mode == "change")
+		{
+			master.removePrev(closeMenu);
+			kag.trigger("closeInventory");
+		}
+	}
+
+	function closeMenu()
+	{
+		// メニューを閉じて、キーボード操作ならフォーカスをこれに戻す
+		// アイテム画面上でメニュー等を開いたら戻る時にこれが呼び出されるようにしておくこと
+		enabled = true;
+		restoreInventoryMode();
+		master.clearWindows();
+		if(KEY_PRESSED)
+		{
+			var mk = getLastItem();
+			if(mk !== void) mk.focus();
+			else focusToFirstItem();
+		}
+	}
+
+	function setLastItemKey(mark)
+	{
+		// 画面を開き直した際に再現するため、指定したマーカーの配置場所の情報を保存する
+		if(mark.equiped !== void) lastItemPlaceKey = mark.equiped;
+		else lastItemPlaceKey = mark.belong.id;
+	}
+
+	function getLastItem()
+	{
+		// 上で保存された配置場所の情報を元にアイテムの読み込まれたマーカーを返す
+		if(lastItemPlaceKey === void) return;
+		if(typeof lastItemPlaceKey == "String") return getEquipedMarker(lastItemPlaceKey);
+		if(mode == "buy" || mode == "special") return priceTag[lastItemPlaceKey].placedMarker;
+		if(itemGrids[lastItemPlaceKey] !== void) return itemGrids[lastItemPlaceKey].placedMarker;
+	}
+
+	function restoreInventoryMode()
+	{
+		// キャラ選択・アイテム使用モードから元の一覧画面に復帰する時に呼び出す
+		master.exitSelectTargetMode();	// キャラ選択モードを元に戻さないといけない
+		if(! visible)
+		{
+			var boxView = (curChara == master.itemBoxObj);
+			if(boxView) openChestMode();
+			else openInventory(void, master.inBattle ? "battle" : "party");
+		}
+	}
+
+	function setPartyGrid(func, members, heroineOnly = false)
+	{
+		// キャラ選択エリア設置
+		if(members === void) members = master.party.members;
+		var num = 0;
+		for(var i = 0; i < members.count; i++)
+		{
+			var chr = members[i];
+			if(heroineOnly && ! chr.isHeroine) continue;
+			var beCurrent = ((! heroineOnly && chr == curChara) || (heroineOnly && chr == curHeroine));
+			partyGrids[num].charaRef = chr;	// キャラオブジェクトへの参照
+			partyGrids[num].name = chr.name;
+			partyGrids[num].copyImage(chr, beCurrent);
+			partyGrids[num].onSelectAction = func;	// ボタンを押したときの処理
+			partyGrids[num].visible = true;	// visible が true じゃないとフォーカスされない
+			if(heroineOnly)
+			{
+				master.curEventNum = 1;
+				if(chr.checkEvent(true)) partyGrids[num].startEventSignal();
+				else partyGrids[num].stopEventSignal();
+			}
+			if(MOUSE_HIDDEN && beCurrent) partyGrids[num].focus();
+			num ++;
+		}
+
+		// 宝箱エリア
+		if(boxGrid.visible)
+		{
+			boxGrid.imageLeft = -boxGrid.width * (master.itemBoxObj == curChara);
+		}
+	}
+
+	function setGuestGrid(func)
+	{
+		// ゲスト選択エリア設置
+		var num = 0;
+		for(var i = 0; i < master.helper.count; i++)
+		{
+			var chr = master.helper[i];
+			if(chr instanceof "SummonedObject" && ! chr.contracted) continue;
+			if(chr instanceof "GuestObject" && ! master.guest.members.has(chr)) continue;
+			guestGrids[num].charaRef = chr;
+			guestGrids[num].name = chr.name;
+			guestGrids[num].copyImage(chr, chr == curHelper);
+			guestGrids[num].onSelectAction = openHelperStatus;
+			guestGrids[num].visible = true;
+			if(MOUSE_HIDDEN && chr == curHelper) guestGrids[num].focus();
+			num ++;
+		}
+	}
+
+	function setFemaleHelperGrid(func)
+	{
+		// 女性ゲスト・傭兵選択エリア設置
+		var num = 0;
+		for(var i = 0; i < master.helper.count; i++)
+		{
+			var chr = master.helper[i];
+			if(chr instanceof "SummonedObject") continue;
+			if(chr instanceof "SubActorObject") continue;
+			if(chr == o.ポラリス) continue;
+			if(chr.sex != "女") continue;
+			if(chr instanceof "HiringObject" && ! chr.contracted) continue;
+			if(chr instanceof "GuestObject" && ! master.guest.members.has(chr)) continue;
+			guestGrids[num].charaRef = chr;
+			guestGrids[num].name = chr.name;
+			guestGrids[num].copyImage(chr, chr == curHelper);
+			guestGrids[num].onSelectAction = openFemaleHelperStatus;
+			guestGrids[num].visible = true;
+			if(MOUSE_HIDDEN && chr == curHelper) guestGrids[num].focus();
+			num ++;
+		}
+	}
+
+	function setCollectionGrid(func, list)
+	{
+		// コレクション選択エリア設置（ゲスト選択エリアを流用する）
+		var curGridNum = 0;
+		for(var i = 0; i < guestGrids.count; i++)
+		{
+			guestGrids[i].visible = false;
+			if(list[i] === void) continue;
+			guestGrids[i].charaRef = list[i];
+			guestGrids[i].copyCollectionImage(list[i], list[i] == curMonster || list[i] == curList);
+			guestGrids[i].onSelectAction = func;
+			guestGrids[i].visible = true;
+			if(list[i] == curMonster || list[i] == curList) curGridNum = i;
+		}
+		if(MOUSE_HIDDEN) guestGrids[curGridNum].focus();
+	}
+
+	function setInventory()
+	{
+		// インベントリー（アイテム一覧）を設置
+		// アイテム収納情報を元にインベントリーエリアにその状態を再現する
+		clearPriceTags();
+		clearItemMarkers();
+		for(var i = 0; i < maxItemGrids; i++)
+		{
+			if(curChara.bag[i] === void) continue;
+			itemMarkers[i].loadItem(curChara.bag[i], curChara.bagStat[i]);
+			itemGrids[i].putMarker(itemMarkers[i]);
+		}
+		// 背景表示
+		if(curChara == master.itemBoxObj) backLayer.loadImages("back_itembox");
+		else backLayer.loadImages("back_inventory");
+	}
+
+	function openInventory(charaObj, selectorMode = "party")
+	{
+		// インベントリー（アイテム一覧）操作画面を開く
+		if(charaObj !== void) curChara = charaObj;	// ターゲットキャラを設定
+		if((selectorMode == "party" || selectorMode == "select") && ! master.party.members.has(curChara))
+		{
+			curChara = master.party.members[0];
+		}
+		open();
+
+		if(selectorMode == "guild" || selectorMode == "single")
+		{
+			mode = "view";
+			setLRSwitch();
+		}
+		else if(selectorMode == "party")
+		{
+			lastMode = mode = "inventory";
+			setPartyGrid(openInventory);
+		}
+		else if(selectorMode == "treasure")
+		{
+			mode = "treasure";
+			setPartyGrid(openInventoryByTreasure);
+		}
+		else if(selectorMode == "select")
+		{
+			mode = "select";
+			setPartyGrid(openInventoryBySelectItem);
+		}
+		else if(selectorMode == "battle")
+		{
+			mode = "battle";
+		}
+		else if(selectorMode == "change")
+		{
+			mode = "change";
+		}
+
+		setInventory();	// インベントリー表示
+		if(selectorMode == "treasure") return;	// 宝箱画面ならここで終わり
+		portrait.openPortrait(curChara);	// ポートレート
+
+		// スイッチボタン切り替え
+		switchFuncButton.visible = ! ["single", "battle", "change", "select"].has(selectorMode);
+		switchFuncButton.selectable = true;
+		switchFuncButton.imageTop = -switchFuncButton.height;
+		switchFuncButton2.visible = (selectorMode == "party");
+		switchFuncButton2.selectable = curChara.isHeroine;
+		switchFuncButton2.imageTop = -switchFuncButton2.height * 2;
+		arrangeButton.visible = (selectorMode == "party");
+	}
+
+	function openInventoryBySelectItem(charaObj)
+	{
+		// アイテム選択画面でインベントリーを開く
+		openInventory(charaObj, "select");
+	}
+
+	function openInventoryByTreasure(charaObj)
+	{
+		// 宝箱画面でインベントリーを開く
+		openInventory(charaObj, "treasure");
+	}
+
+	function selectItemAndClose(itemData, state, key)
+	{
+		// 何かアイテムを選んだ上で画面を閉じる（イベント用）
+		master.curItem = itemData;
+		master.curItemStat = state;
+		if(itemData !== void && curChara !== void)
+		{
+			// 後でどのアイテムを使ったか分かるようにしておく
+			curChara.reserveUsingItem(itemData, key);
+		}
+		close();
+		master.clearWindows();
+		kag.trigger("selectItemAndClose");
+	}
+
+	function arrangeItems()
+	{
+		// アイテムを整理する
+		curChara.arrangeItems();
+		setInventory();
+		if(mode != "treasure") portrait.openPortrait(curChara);
+	}
+
+	function switchFunc()
+	{
+		// アイテム・ステータスを切り替える
+		var selectorMode = master.guildWin.visible ? "guild" : "party";
+		close();
+		if(mode == "gstatus") openFemaleHelperStatus(curHelper);
+		else if(mode == "fstatus") openHelperStatus(curHelper);
+		else if(mode == "status") openInventory(curChara, selectorMode);
+		else openStatus(curChara, selectorMode);
+	}
+
+	function switchFunc2()
+	{
+		// アイテム・ステータスを切り替える
+		close();
+		if(mode == "hstatus") openInventory(curChara, "party");
+		else openHeroineStatus(curChara);
+	}
+
+	function switchGroup()
+	{
+		// ステータスの選択対象を切り替える
+		if(mode == "status")
+		{
+			if(! master.guest.members.has(curHelper) && ! master.smagic.has(curHelper))
+			{
+				curHelper = master.guest.getFirstGuest();
+			}
+			if(curHelper === void)
+			{
+				playSound("buzzer");
+				master.notice.open();
+				master.notice.write("No guests to show");
+				return;
+			}
+		}
+		close();
+		if(mode == "status") openHelperStatus(curHelper);
+		else openStatus(curChara);
+	}
+
+	function openStatus(charaObj, selectorMode = "party")
+	{
+		// ステータス画面を開く
+		lastMode = mode = "status";	// 装備の付け外しが出来るとまずいので viewOnly に
+		if(charaObj !== void) curChara = charaObj;	// ターゲットキャラを設定
+		if(selectorMode == "party" && ! master.party.members.has(curChara))
+		{
+			curChara = master.party.members[0];
+		}
+		open();
+		if(selectorMode == "guild") setLRSwitch();
+		if(selectorMode == "party") setPartyGrid(openStatus);
+		backLayer.drawStatus(curChara);	// ステータスの内容を描画
+		portrait.openPortrait(curChara, selectorMode == "single");
+
+		// スイッチボタン切り替え
+		switchTargetButton.onSelectAction = switchGroup;
+		switchTargetButton.visible = (selectorMode == "party");
+		switchTargetButton.imageTop = -switchTargetButton.height;
+		switchFuncButton.visible = (selectorMode != "single");
+		switchFuncButton.selectable = true;
+		switchFuncButton.imageTop = 0;
+		switchFuncButton2.visible = (selectorMode == "party");
+		switchFuncButton2.selectable = curChara.isHeroine;
+		switchFuncButton2.imageTop = -switchFuncButton2.height * 2;
+	}
+
+	function openHelperStatus(helperObj)
+	{
+		// ゲスト・召喚モンスターのステータス画面を開く
+		mode = "gstatus";
+		if(helperObj !== void) curHelper = helperObj;
+		open();
+		setGuestGrid();
+		backLayer.drawStatus(curHelper);
+		if(helperObj instanceof "SummonedObject") portrait.openMonsterPortrait(curHelper);
+		else portrait.openGuestPortrait(curHelper);
+
+		// 指示変更ボタン
+		setLRSwitch(switchHelperDirection, 846, 478);
+
+		// スイッチボタン切り替え
+		switchTargetButton.onSelectAction = switchGroup;
+		switchTargetButton.visible = true;
+		switchTargetButton.imageTop = 0;
+
+		switchFuncButton.selectable = (! helperObj instanceof "SummonedObject" && helperObj.sex == "女");
+		switchFuncButton.imageTop = -switchFuncButton.height * 2;
+		switchFuncButton.visible = true;
+	}
+
+	function switchHelperDirection(forward)
+	{
+		// ゲスト・雇用・召喚モンスターへの指示を変更する
+		curHelper.switchDirection(forward);
+		backLayer.drawStatus(curHelper);	// 再描画
+	}
+
+	function openFemaleHelperStatus(helperObj)
+	{
+		// 女性ゲスト・傭兵用のステータス画面を開く
+		lastHMode = mode = "fstatus";
+		curHelper = helperObj;
+		master.removePrev(switchDiary);
+		open();
+		setFemaleHelperGrid();
+		backLayer.drawHeroineStatus(curHelper);
+		portrait.openFemaleHelperPortrait(curHelper);
+
+		// スイッチボタン切り替え
+		switchDiaryButton.visible = true;
+		switchDiaryButton.imageTop = 0;
+		switchDiaryButton.setPos(borderX + 160, 100);
+		switchFuncButton.visible = true;
+		switchFuncButton.imageTop = -switchFuncButton.height;
+	}
+
+	function openEnemyStatus(monsterObj)
+	{
+		// 敵モンスターのステータス画面を開く（偵察魔法用）
+		mode = "estatus";
+		open();
+		backLayer.drawStatus(monsterObj);
+		portrait.openMonsterPortrait(monsterObj);
+		setCloseButton();
+	}
+
+	function openCollectionOfMonsters()
+	{
+		// モンスターの閲覧リストを開く
+		mode = "estatus";
+		master.setPrev(openCollectionOfMonsters);
+		if(sf[master.collectionList[0][0].name] === void)
+		{
+			// 最初のスライムを記録する
+			sf[master.collectionList[0][0].name] = 0;
+		}
+		if(! master.collectionList.has(curList)) curList = master.collectionList[0];
+		if(curMonster === void) curMonster = curList[0];
+		visible = true;
+		backLayer.visible = true;
+		enabled = true;
+		setCollectionGrid(openEnemyStatusForCollection, master.collectionList);
+		backLayer.drawStatus(curMonster);
+		portrait.openMonsterPortrait(curMonster);
+		var arr = master.getNumbersOfRecordedObjects(master.collectionList);
+		drawAchievement(arr[0], arr[1]);
+	}
+
+	function openEnemyStatusForCollection(obj)
+	{
+		// モンスター閲覧でステータス画面を開く
+		mode = "estatus";
+		master.setPrev();
+		if(obj instanceof "Array")
+		{
+			curList = obj;
+			if(sf[obj[0].name] !== void) curMonster = obj[0];
+		}
+		else
+		{
+			if(sf[obj.name] !== void) curMonster = obj;
+		}
+		setCollectionGrid(openEnemyStatusForCollection, curList);
+		if(sf[curMonster.name] === void) return;
+		backLayer.drawStatus(curMonster);
+		portrait.openMonsterPortrait(curMonster);
+	}
+
+	function openWindowByFaceClick(obj)
+	{
+		// 顔画像クリックから開くアイテム or ステータス画面
+		if(obj instanceof "CharaObject")
+		{
+			if(lastMode == "inventory") openInventory(obj);
+			else openStatus(obj);
+		}
+		else openHelperStatus(obj);
+	}
+
+	function switchHeroines()
+	{
+		// 他パーティーに捕らわれているメンバーの一覧に切り替える（ヒロイン情報用）
+		if(mode == "hstatus")
+		{
+			if(lastSlave === void || ! isvalid lastSlave) lastSlave = master.getFirstSlave();
+			if(lastSlave === void)
+			{
+				playSound("buzzer");
+				master.notice.open();
+				master.notice.write("No heroines have been captured");
+				return;
+			}
+			close();
+			openSlaveStatus(lastSlave);
+		}
+		else
+		{
+			if(lastHeroine === void || ! isvalid lastHeroine) lastHeroine = master.party.getFirstHeroine();
+			if(lastHeroine === void)
+			{
+				playSound("buzzer");
+				master.notice.open();
+				master.notice.write("No heroine in party");
+				return;
+			}
+			close();
+			openHeroineStatus(lastHeroine);
+		}
+	}
+
+	function openHeroineStatusFromMenu()
+	{
+		// ヒロイン・虜囚用のステータス画面を開く（メニューから）
+		if(! master.party.members.has(lastHeroine)) lastHeroine = void;
+		if(lastHeroine === void) lastHeroine = master.party.getFirstHeroine();
+		var team = master.findChara(lastSlave);
+		if(team === void || team == master.party || team instanceof "HouseOfGuild") lastSlave = void;
+		if(lastSlave === void) lastSlave = master.getFirstSlave();
+		if(lastHeroine === void && lastSlave === void)
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<y>There are no heroines");
+			return;
+		}
+		if(lastSlave !== void && (lastHMode == "sstatus" || lastHeroine === void)) openSlaveStatus(lastSlave);
+		else openHeroineStatus(lastHeroine);
+	}
+
+	function openHeroineStatus(charaObj)
+	{
+		// ヒロイン用のステータス画面を開く
+		lastHMode = mode = "hstatus";
+		lastHeroine = curHeroine = charaObj;
+		master.removePrev(switchDiary);
+		open();
+		setPartyGrid(openHeroineStatus,, true);
+		backLayer.drawHeroineStatus(curHeroine);
+		portrait.openHeroinePortrait(curHeroine);
+
+		// スイッチボタン切り替え
+		switchDiaryButton.visible = true;
+		switchDiaryButton.imageTop = 0;
+		switchDiaryButton.setPos(borderX + 160, 100);
+		switchFuncButton.visible = true;
+		switchFuncButton.imageTop = -switchFuncButton.height;
+		switchFuncButton2.visible = switchFuncButton2.selectable = true;
+		switchFuncButton2.imageTop = 0;
+		switchHeroineButton.onSelectAction = switchHeroines;
+		switchHeroineButton.imageLeft = -switchHeroineButton.width;
+		switchHeroineButton.visible = true;
+		switchHeroineButton.top = height - switchHeroineButton.height * (master.isFreeMode * 2 + 1);
+	}
+
+	function openSlaveStatus(charaObj)
+	{
+		// 捕らわれたヒロイン用のステータス画面を開く
+		lastHMode = mode = "sstatus";
+		lastSlave = curHeroine = charaObj;
+		master.removePrev(switchDiary);
+		open();
+		setPartyGrid(openSlaveStatus, master.getAllSlaves(), true);
+		backLayer.drawHeroineStatus(curHeroine);
+		portrait.openHeroinePortrait(curHeroine);
+		portrait.drawTermOfSlave(curHeroine);
+
+		// スイッチボタン切り替え
+		switchDiaryButton.visible = true;
+		switchDiaryButton.imageTop = 0;
+		switchDiaryButton.setPos(borderX + 160, 100);
+		switchHeroineButton.visible = true;
+		switchHeroineButton.imageLeft = 0;
+		switchHeroineButton.onSelectAction = switchHeroines;
+		switchHeroineButton.top = height - switchHeroineButton.height * (master.isFreeMode * 2 + 1);
+	}
+
+	function switchDiary()
+	{
+		// 日記の表示を切り替える（ヒロイン情報用）
+		close();
+		if(switchDiaryButton.imageTop == 0)
+		{
+			if(mode == "fstatus") openHeroineDiaries(curHelper);
+			else openHeroineDiaries(curHeroine);
+		}
+		else if(mode == "fstatus") openFemaleHelperStatus(curHelper);
+		else if(master.party.members.has(curHeroine)) openHeroineStatus(curHeroine);
+		else openSlaveStatus(curHeroine);
+	}
+
+	function openHeroineDiaries(charaObj)
+	{
+		// ヒロインの日記一覧を開く
+		// mode = "diary";
+		open();
+		master.popPrev();
+		master.setPrev(switchDiary);
+		master.setPrev();
+		if(charaObj.isUserChara) portrait.openHeroinePortrait(charaObj);
+		else portrait.openFemaleHelperPortrait(charaObj);
+		backLayer.drawHeroineDiaries(charaObj);
+
+		// スイッチボタン切り替え
+		switchDiaryButton.visible = true;
+		switchDiaryButton.imageTop = -switchDiaryButton.height;
+		switchDiaryButton.setPos(borderX + 10, 8);
+		if(MOUSE_HIDDEN) switchDiaryButton.focus();
+		switchFuncButton2.visible = false;
+	}
+
+	function setLRSwitch(func, l, t)
+	{
+		// 左右ボタンの位置と機能を設定する
+		if(func !== void)
+		{
+			leftSwitch.onSelectAction = func;
+			rightSwitch.onSelectAction = func;
+		}
+		if(l !== void && t !== void)
+		{
+			leftSwitch.setPos(-left + l, t);
+			rightSwitch.setPos(-left + l + leftSwitch.width + 5, t);
+		}
+		leftSwitch.visible = rightSwitch.visible = true;
+	}
+
+	function setCloseButton()
+	{
+		// 閉じるボタンを設置する（戦闘時用）
+		closeButton.selectable = closeButton.visible = true;
+		closeButton.focus();
+	}
+
+	function openTreasureBox()
+	{
+		// 宝箱を開く
+		master.itemBoxObj = master.treasureBox;
+		master.setPrev(askCloseTreasureBox);
+		openChestMode();
+		boxMenuWin.shareBtn.top = 235;
+		boxMenuWin.getUnknownBtn.visible = true;
+		boxMenuWin.getCoinBtn.visible = true;
+		if(MOUSE_HIDDEN) boxMenuWin.shareBtn.focus();
+	}
+
+	function openStockBox(trunkName)
+	{
+		// 保管庫画面を開く
+		master.itemBoxObj = master[trunkName];
+		master.setPrev(closeTreasureBox);
+		master.itemBoxObj.reloadItemsFromStock();
+		openChestMode();
+		boxMenuWin.shareBtn.top = 295;
+		boxMenuWin.storeBtn.visible = true;
+		boxMenuWin.updateStockPageNumber();
+		arrangeButton.visible = true;
+		boxMenuWin.setArrow();
+		if(MOUSE_HIDDEN) focusToFirstItem();
+	}
+
+	function openTemporaryBox()
+	{
+		// 一時預かり所画面を開く
+		master.itemBoxObj = master.temporaryBox;
+		master.setPrev(closeTreasureBox);
+		master.itemBoxObj.arrangeItemsInTrunk();
+		master.itemBoxObj.reloadItemsFromStock();
+		openChestMode();
+		boxMenuWin.shareBtn.top = 295;
+		boxMenuWin.sendBtn.visible = true;
+		boxMenuWin.updateStockPageNumber();
+		boxMenuWin.updateDaysLeftToDisposal();
+		boxMenuWin.setArrow();
+		if(MOUSE_HIDDEN) focusToFirstItem();
+	}
+
+	function openChestMode()
+	{
+		// アイテム収納箱画面を表示する
+
+		// 準備
+		mode = "treasure";
+		curChara = master.itemBoxObj;
+		open();
+
+		// 箱を表示
+		setInventory();
+
+		// キャラ選択エリア表示
+		setPartyGrid(openInventoryByTreasure);
+
+		// 箱メニュー表示
+		portrait.close();
+		boxMenuWin.open();
+
+		// 箱エリア表示
+		boxGrid.selectable = boxGrid.visible = true;
+		boxGrid.imageLeft = -boxGrid.width;
+	}
+
+	function askCloseTreasureBox()
+	{
+		// 宝箱を閉じる・問い合わせ
+		var res = master.treasureBox.getItemExist();
+		if(res == "none")
+		{
+			closeTreasureBox();
+			return;
+		}
+		enabled = false;
+		master.setPrev(closeMenu);
+		master.setPrev();
+		if(res == "important")
+		{
+			master.notice.open(master.processPrev);
+			master.notice.write("Important items left in chest.");
+			return;
+		}
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: closeTreasureBox]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "Not all items taken.<r>Really close chest?");
+	}
+
+	function closeTreasureBox()
+	{
+		// 宝箱を閉じる
+		close();
+		master.yesNoWin.close();
+		master.onCloseTreasureBox();
+	}
+
+	function openCollectionOfItems(noBrokenState)
+	{
+		// アイテムの閲覧画面を開く
+		mode = "collection";
+		master.setPrev(closeTreasureBox);
+		master.cutOutFigure("none");
+		open();
+		if(! master.party.members.has(curChara)) curChara = master.party.members[0];
+		setLRSwitch(openNextCharaInventory, 5, 15);
+		if(! master.collectionList.has(curList)) curList = master.collectionList[0];
+		if(noBrokenState) switchBreakButton.imageTop = 0;
+		setShelfOfCollection(curList);
+		switchBreakButton.visible = ! noBrokenState;
+		cutInButton.visible = true;
+		var arr = master.getNumbersOfRecordedObjects(master.collectionList);
+		drawAchievement(arr[0], arr[1]);
+	}
+
+	function setShelfOfCollection(info)
+	{
+		// 指定したアイテムを棚に表示
+		curList = info;
+		var stat = switchBreakButton.imageTop == 0 ? WHOLE : BROKEN;
+		setProductShelf(info, info.col, info.row, info.baseLine, true, stat);
+		setCollectionGrid(setShelfOfCollection, master.collectionList);
+		portrait.openPortrait(curChara);
+	}
+
+	function showCutIn()
+	{
+		// カットイン表示
+		if(visible) close();
+		master.popPrev();
+		master.setPrev(openCollectionOfItems);
+		master.setPrev();
+		if(curChara.equip.main === void) curChara.act = master.mmagic[0];
+		else if(curChara.equip.main.instrument) curChara.act = curChara.equip.main;
+		else curChara.act = o.攻撃;
+		curChara.cutInFigureOnBattle();
+	}
+
+	function switchStateOfBreak()
+	{
+		// 棚に表示されたアイテムの破損状態を切り替える
+		var broken = (switchBreakButton.imageTop != 0);
+		for(var i = 0; i < priceTag.count; i++)
+		{
+			if(priceTag[i].placedMarker === void) continue;
+			var itemData = priceTag[i].placedMarker.itemData;
+			if(itemData === void) continue;
+			var stat = broken ? WHOLE : BROKEN;
+			if(! sf[itemData.name]) stat = -stat;
+			itemMarkers[i].loadItem(itemData, stat);
+		}
+		switchBreakButton.imageTop = -switchBreakButton.height * ! broken;
+	}
+
+	function drawAchievement(got, total)
+	{
+		// 達成率とその件数を表示する
+		var colour = got == total ? 0x80FF80 : 0xF4E3DF;
+		achievementLayer.clear();
+		achievementLayer.drawText(22,  6, "%3d".sprintf(got), colour);
+		achievementLayer.drawText(80,  6, total, 0xF4E3DF);
+		achievementLayer.drawText(59, 31, "%3d".sprintf(got * 100 / total), colour);
+		achievementLayer.visible = true;
+	}
+
+	function openShop(shopObj)
+	{
+		// 店画面を開く
+		master.setPrev(closeShop);
+		playMusic("shop");
+		curShop = shopObj;
+		if(master.party.members.find(curChara) == -1) curChara = master.party.getFirstChara();
+		shopWin.loadSeller(shopObj.img);
+		open();
+		openBuyMode();	// 購入画面からスタート
+		shopWin.setSelectingMark(shopWin.buttons[0]);
+		shopWin.buttons[0].focus();
+		if(checkShopEvent()) return;	// イベントチェック
+		master.exitTravelMode();
+		master.notice.open(shopWin.buttons[0].focus);
+		master.notice.write(shopObj.welcome);
+	}
+
+	function checkShopEvent()
+	{
+		// イベントの発生をチェックし真ならば該当イベントシナリオに飛ぶ
+		if(curShop.checkEvent())
+		{
+			absolute = kag.fore.base.absolute - 5;
+			enabled = false;
+			return true;
+		}
+		focusToNextItem(lastItemPlaceKey);
+	}
+
+	function closeShop()
+	{
+		// 店画面を閉じる
+		clearItemMarkers();	// アイテムを消す
+		clearPriceTags();	// 値札を消す
+		master.view.goToStreet(curShop);
+	}
+
+	function setProductShelf(items, col, row, baseLine, forLibrary, itemState = WHOLE)
+	{
+		// 商品棚を表示する
+		if(items.count > col * row)
+		{
+			System.inform("商品が置ききれません   商品数 : " + items.count);
+		}
+		clearItemMarkers();	// いったんアイテムを消す
+		clearPriceTags();	// いったん値札を消す
+		for(var i = 0; i < col * row; i++)
+		{
+			priceTag[i].left = (i % col) * 618 \ col + (618 \ col - 100) \ 2 + borderX + 12;
+			priceTag[i].top = (i \ col + 1) * 500 \ row + (50 - baseLine);
+			priceTag[i].absolute = 20000;
+		}
+		for(var i = 0; i < items.count; i++)
+		{
+			if(items[i] === void) continue;
+			var stat = forLibrary && ! sf[items[i].name] ? -itemState : itemState;
+			itemMarkers[i].loadItem(items[i], stat);
+			itemMarkers[i].equiped = void;
+			priceTag[i].putMarker(itemMarkers[i]);
+			if(forLibrary) priceTag[i].visible = false;
+		}
+		backLayer.loadImages("back_itemrack");	// 背景表示
+	}
+
+	function openBuyMode()
+	{
+		// アイテム購入画面を開く
+		mode = "buy";
+		setPartyGrid(focusToChara);	// キャラ選択エリア表示
+		shopWin.open(, curShop.noService);	// 店主とボタン表示
+		setProductShelf(curShop.shopItem
+			, curShop.itemSeg[0], curShop.itemSeg[1], curShop.itemSeg[2]);	// 商品棚表示
+	}
+
+	function openSpecialBuyMode()
+	{
+		// 掘り出し物購入画面を開く
+		mode = "special";
+		setPartyGrid(focusToChara);	// キャラ選択エリア表示
+		shopWin.open(, curShop.noService);	// 店主とボタン表示
+		setProductShelf(curShop.specialItem
+			, curShop.spItemSeg[0], curShop.spItemSeg[1], curShop.spItemSeg[2]);	// 商品棚表示
+	}
+
+	function focusToChara(charaObj)
+	{
+		// キャラのフォーカスを変更する（購入時に利用）
+		curChara = charaObj;
+		for(var i = 0; i < partyGrids.count; i++)
+		{
+			var chr = partyGrids[i].charaRef;
+			if(! isvalid chr) continue;	// オブジェクトが無効化されているとそもそも何も調べてもらえずエラーになるので
+			if(chr instanceof "CharaObject") partyGrids[i].copyImage(chr, chr == curChara);
+			if(chr == curChara)
+			{
+				if(mode == "buy") openBuyMode();
+				else if(mode == "special") openSpecialBuyMode();
+				partyGrids[i].focus();
+			}
+		}
+	}
+
+	function openLeftShopMode(charaObj, modeName)
+	{
+		// アイテム売却・修理鑑定・整理画面を開く
+		if(modeName !== void) mode = modeName;
+		if(charaObj !== void) curChara = charaObj;
+		clearPriceTags();	// 値札を消す
+		setInventory();	// インベントリー表示
+		setPartyGrid(openLeftShopMode);	// キャラ選択エリア表示
+		shopWin.open(, curShop.noService);	// 店主とボタン表示
+	}
+
+	function openRightShopMode(charaObj, modeName)
+	{
+		// 呪いアイテム除去・装備中アイテム修理画面を開く
+		if(modeName !== void) mode = modeName;
+		if(charaObj !== void) curChara = charaObj;
+		clearPriceTags();	// 値札を消す
+		setPartyGrid(openRightShopMode);	// キャラ選択エリア表示
+		shopWin.open(true);	// 店主とボタン表示
+		for(var i = 0; i < maxItemGrids; i++)
+		{
+			itemMarkers[i].unloadItem();	// インベントリーのアイテムを消しておく
+		}
+		portrait.openPortrait(curChara);	// ポートレート表示
+	}
+
+	function clearItemMarkers()
+	{
+		// アイテムマーカーを全消去
+		for(var i = 0; i < maxItemMarkers; i++)
+		{
+			itemMarkers[i].unloadItem();
+		}
+	}
+
+	function clearPriceTags()
+	{
+		// 値札を全消去
+		for(var i = 0; i < maxTagGrids; i++)
+		{
+			priceTag[i].visible = false;
+		}
+	}
+
+	function getFreeMarker()
+	{
+		// 未使用のマーカーを得る
+		for(var i = 0; i < maxItemMarkers; i++)
+		{
+			if(itemMarkers[i].itemData === void) return itemMarkers[i];
+		}
+	}
+
+	function getEquipedMarker(part)
+	{
+		// 装備中のマーカーを得る
+		for(var i = 0; i < maxItemMarkers; i++)
+		{
+			var mk = itemMarkers[i];
+			if(mk.equiped === part) return mk;
+		}
+	}
+
+	function clearAllEquipedMarkers()
+	{
+		// 装備中のマーカーをすべて消去する
+		for(var i = 0; i < maxItemMarkers; i++)
+		{
+			if(itemMarkers[i].itemData === void) continue;
+			if(itemMarkers[i].equiped !== void) itemMarkers[i].unloadItem();
+		}
+	}
+
+	function focusToFirstItem()
+	{
+		// 先頭（左上）のアイテムにフォーカスを移動する
+		// アイテムがなければ現在のキャラに移動する
+		focusToNextItem(-1);
+	}
+
+	function focusToNextItem(id)
+	{
+		// 指定したエリア番号の次のアイテムにフォーカスを移動する
+		// アイテムがなければ現在のキャラに移動する
+		if(typeof id != "Integer" || id >= maxItemMarkers) id = -1;
+		var n;
+		id ++;
+		for(var i = 0; i < maxItemMarkers; i++)
+		{
+			n = (i + id) % maxItemMarkers;
+			if(itemMarkers[n].itemData === void) continue;
+			if(itemMarkers[n].holding || itemMarkers[n].dragging) continue;
+			itemMarkers[n].focus();
+			return;
+		}
+		if(partyGrids[curChara.slot].visible) partyGrids[curChara.slot].focus();
+	}
+
+	function focusToCloseBoxButton()
+	{
+		// 宝箱の中身が空のとき閉じるボタンにフォーカスを移動する
+		if(mode != "treasure") return;
+		if(master.itemBoxObj.getItemExist() != "none") return;
+		boxMenuWin.closeBtn.focus();
+	}
+
+	function openNextCharaInventory(toNext)
+	{
+		// 前後のキャラのインベントリーに切り替える（または買い物するキャラを切替）
+
+		if(mode == "collection")
+		{
+			// ポートレイトに表示するキャラのみを切り替える
+			// キャラ選択ボタンがない状態のとき直接調べて切り替える
+			var arr = master.party.members;
+			var num = arr.find(curChara) + (toNext ? 1 : -1);
+			curChara = arr[(num + arr.count) % arr.count];
+			portrait.openPortrait(curChara);
+			return;
+		}
+
+		if(master.guildWin.visible)
+		{
+			// ギルドで登録キャラも含め切り替える
+			leftSwitch.onSelectAction(toNext);
+			return;
+		}
+
+		// 通常の切替
+		var num, grids, curObj;
+
+		if(guestGrids[0].visible)
+		{
+			grids = guestGrids;
+			curObj = curHelper;
+		}
+		else
+		{
+			grids = partyGrids;
+			if(mode == "hstatus" || mode == "sstatus") curObj = curHeroine;
+			else curObj = curChara;
+		}
+
+		if(! grids[1].visible) return;	// １人しかいない
+
+		// 切替
+		if(curObj === void)
+		{
+			num = 0;
+		}
+		else
+		{
+			for(var i = 0; i < grids.count; i++)
+			{
+				if(grids[i].charaRef != curObj) continue;
+				num = i;
+				break;
+			}
+		}
+
+		if(toNext)
+		{
+			num ++;
+			if(num == grids.count || ! grids[num].visible) num = 0;
+		}
+		else
+		{
+			num --;
+			if(num < 0) num = grids.count - 1;
+			while(! grids[num].visible) num --;
+		}
+
+		grids[num].onSelectAction(grids[num].charaRef);
+		if(["inventory", "view", "treasure", "select", "collection"].has(mode)) focusToFirstItem();
+	}
+
+	function getAnyBagSpace(bagMap, item)
+	{
+		// 指定したアイテムが入りそうなスペースを検索して最初の番号を返す
+		for(var i = 0; i < maxItemGrids; i++)
+		{
+			if(isUsableArea(bagMap, item, i)) return i;
+		}
+	}
+
+	function getAnyBagSpaceRandom(bagMap, item)
+	{
+		// 指定したアイテムが入りそうなスペースをランダムに検索して最初の番号を返す
+		var num, startNum = intrandom(0, maxItemGrids - 1);
+		for(var i = 0; i < maxItemGrids; i++)
+		{
+			num = (startNum + i) % maxItemGrids;
+			if(isUsableArea(bagMap, item, num)) return num;
+		}
+	}
+
+	function isUsableArea(bagMap, item, gridID)
+	{
+		// アイテムが指定した番号に入るかどうかを返す
+		if(bagMap[gridID] !== void) return false;
+		var arr = getItemGrids(item, gridID);
+		if(arr === void) return false;
+		for(var i = arr.count - 1; i >= 0; i--)
+		{
+			if(bagMap[arr[i]] !== void) return false;
+		}
+		return true;
+	}
+
+	function allocateGrids(bagMap, write, item, gridID)
+	{
+		// アイテム配置図に配置情報を書き込む
+		var arr = getItemGrids(item, gridID);
+		if(arr === void) return;
+		for(var i = 0; i < arr.count; i++)
+		{
+			bagMap[arr[i]] = write ? item.id : void;
+		}
+	}
+
+	function getItemGrids(item, gridID)
+	{
+		// アイテム情報とその左上のスペース番号から収納に必要な全てのスペースの番号一覧を返す
+		if(gridID < 0) return;
+		var arr = [];
+		var tx = gridID \ maxRows;
+		var ty = gridID % maxRows;
+		if(tx + item.col > maxCols || ty + item.row > maxRows) return;
+		for(var i = 0; i < item.col; i++)
+		{
+			for(var j = 0; j < item.row; j++)
+			{
+				arr.add((i + tx) * maxRows + j + ty);
+			}
+		}
+		return arr;
+	}
+
+	function getAreaUnderMouse(mark)
+	{
+		// マーカーがドロップされた時ドロップされたエリアを返す
+
+		// エリアを検索する際の基準点は、通常マーカーの中心とするが、
+		// 下端から中心までの距離がパーティーグリッド高さを超えないようにする
+		// こうすることで槍などの縦に長いアイテムがドロップしやすくなる
+		//（ただし基準点はドロップ時に画面に収まるように）
+		var grid = mark.getLayerAt(mark.width \ 2
+			, cap(mark.height - cap(mark.height \ 2, partyGrids[0].height), height - mark.top - 1)
+			, true);
+
+		// 画面の外に出すぎ
+		if(grid === null) return;
+
+		// 肖像エリア or パーティーエリア
+		if(grid instanceof "PortraitGrid" || grid instanceof "PartyGrid")
+		{
+			if(! grid.selectable) return;
+			return grid;
+		}
+
+		// 肖像エリア内のアイテムマーカー上へのドロップは肖像エリアへのドロップとして扱う
+		if(grid instanceof "ItemMarker" && grid.equiped !== void)
+		{
+			if(! portrait.selectable) return;
+			return portrait;
+		}
+
+		// アイテムエリア
+		var corner = mark.getLayerAt(gridSize >> 1, gridSize >> 1, true);
+		if(! corner instanceof "ItemGrid") return;
+		var arr = getItemGrids(mark.itemData, corner.id);
+		if(arr === void) return;
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(curChara.bagMap[arr[i]] !== void) return;
+		}
+		return corner;
+	}
+
+	function getAreaByKey(curGrid, key)
+	{
+		// アイテムエリアはその配置状況を見て移動可・不可を切り替える
+		var mark = curGrid.placedMarker;
+		var onItemGrid = curGrid instanceof "ItemGrid";
+		if(onItemGrid) allocateGrids(curChara.bagMap, false, mark.itemData, curGrid.id);
+		for(var i = 0; i < maxItemGrids; i++)
+		{
+			if(mode == "treasure" && onItemGrid) areas[i].selectable = false;
+			else areas[i].selectable = isUsableArea(curChara.bagMap, mark.itemData, i);
+		}
+		if(onItemGrid) allocateGrids(curChara.bagMap, true, mark.itemData, curGrid.id);
+		return super.getAreaByKey(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		// キーボード操作でマーカーをホールド中にマウスを動かした際に
+		// パーティーエリア上にアイテムが残らないようにする
+		if(holdingMarker === void) return;
+		if(holdingMarker.lastItemGrid === void)
+		{
+			System.inform("エラーが発生しています   " + holdingMarker.itemData.name
+				 + "Storage location has disappeared");
+		}
+		holdingMarker.belong.removeMarker(holdingMarker);
+		holdingMarker.lastItemGrid.dropAction(holdingMarker);
+		holdingMarker.drawState(0);
+		holdingMarker.holding = false;
+		holdingMarker = void;
+		super.onMouseMove(...);
+	}
+}
+
+
+class ItemMarker extends MarkerLayer
+{
+	// アイテムマーカー
+
+	var master;
+	var id;
+	var itemData;	// アイテムのデータを記録したオブジェクトへの参照
+	var temp;			// 画像読み込み用の一時レイヤー
+	var state = 0;	// アイテムの状態（未鑑定 or 破壊 など）
+	var lastItemGrid;	// 最後にアイテムが置いてあったエリア。ホールド中にマウスが動いた時にここへ戻す
+	var equiped;	// 現在装備されている部位。装備中だとグラフィックも変化している
+
+	function ItemMarker(par, master, id)
+	{
+		super.MarkerLayer(par);
+		this.master = master;
+		this.id = id;
+		font.height = 16;
+		font.bold = true;
+		temp = new global.Layer(par.window, par);
+		temp.font.height = 9;
+		temp.font.bold = true;
+		temp.font.italic = true;
+		temp.font.face = "MS PGothic";
+	}
+
+	function finalize()
+	{
+		invalidate temp;
+		super.finalize();
+	}
+
+	function onNodeEnabled()
+	{
+		if(parent.fixPortrait) hitThreshold = 256;
+		else if(equiped !== void) hitThreshold = 1;
+		else hitThreshold = 1;
+	}
+
+	property name
+	{
+		getter
+		{
+			if(itemData === void) return;
+			if(state < 0) return itemData.getUnknownName();
+			return itemData.displayName;
+		}
+	}
+
+	property stateSuffix
+	{
+		getter
+		{
+			if(abs(state) <= BROKEN && itemData.hasBrokenState) return "_b";	// 半壊
+			return "";	// 完全
+		}
+	}
+
+	function loadItem(dic, stat = WHOLE)
+	{
+		// マーカーにアイテムデータをロードする
+		if(dic.img === void) return;	// データ上だけのアイテムは何もしない（食事メニューなど）
+		itemData = dic;
+		state = stat;
+		if(state == 0)
+		{
+			state = 1;
+			System.inform("耐久値が０のアイテムが存在していました  " + itemData.name);
+		}
+		selectable = visible = true;
+		if(state < 0) loadImages(dic.type + "_unknown" + stateSuffix);
+		else loadImages(dic.img + stateSuffix);
+		drawState(0);
+	}
+
+	function unloadItem()
+	{
+		// アイテムデータをアンロードする
+		state = 0;
+		equiped = void;
+		itemData = void;
+		selectable = false;
+		visible = false;	// 表示を消すとフォーカスを失い他にフォーカスが移るので注意
+		if(belong !== void) belong.placedMarker = void;
+	}
+
+	function loadImages(storage)
+	{
+		// マーカーに通常状態のアイテム画像を読み込む
+		// アイテム画像はグリッドサイズの倍数で作成すること
+		temp.loadImages(storage);
+		if(state > 0 && /letter|scroll|book/.test(itemData.type))
+		{
+			// 手紙・巻物・魔法書だった場合、名称を書き込む
+			master.drawDocumentTitle(temp, itemData);
+		}
+		var tw = temp.imageWidth;
+		var th = temp.imageHeight;
+		if(parent.fixPortrait)
+		{
+			// 装備画面でなければ１面画像を転写するだけで終わり
+			setSize(tw + 5, th + 5);
+			setImageSize(tw, th);
+			clear();
+			copyRect(5, 5, temp, 0, 0, tw, th);
+			hitThreshold = 256;	// 当たり判定を変更
+			selectable = false;
+			return;
+		}
+		setSize(tw + 5, th + 5);
+		setImageSize(width * 4, height);
+		clear();
+		copyRect(width + 5, 5, temp, 0, 0, tw, th);
+		light(-255, 0);
+		copyRect(5, 5, temp, 0, 0, tw, th);
+		temp.light(50, 50);
+		operateRect(width, 0, temp, 0, 0, tw, th);
+		copyRect(width * 2 + 5, 5, temp, 0, 0, tw, th);
+		temp.light(-50, -30);
+		copyRect(width * 3 + 5, 5, temp, 0, 0, tw, th);
+		if(! parent.fixPortrait) drawItemTag(width, height);	// 重量やインジケータを書き込み
+		hitThreshold = 1;	// 当たり判定を変更
+	}
+
+	function loadEquipImages(storage, charaObj)
+	{
+		// マーカーを装備状態に変形する
+		// なお、マウスオーバーしても光らせずインジケーターで表示する
+
+		// 画像を読み込む
+		// まずは属性付きで画像を探し、なければ代わりに通常画像を読み込む
+		var img = storage + charaObj.getExtraSuffixChangePortrait() + stateSuffix;
+		if(! Storages.isExistentStorage(img + ".png")) img = storage + stateSuffix;
+		if(! Storages.isExistentStorage(img + ".png")) img = storage;
+		if(! Storages.isExistentStorage(img + ".png")) return false;	// 読み込み失敗
+		temp.loadImages(img);
+		var tw = temp.imageWidth;
+		var th = temp.imageHeight;
+
+		// 装備画面でなければ１面画像を転写するだけで終わり
+		if(parent.fixPortrait)
+		{
+			setSize(tw, th);
+			setImageSize(tw, th);
+			copyRect(0, 0, temp, 0, 0, tw, th);
+			hitThreshold = 256;	// 当たり判定を変更
+			selectable = false;
+			return true;
+		}
+
+		// ブラとパンツは脱衣ハンドルを書き込むスペースを作る
+		if(itemData.part == "bust")
+		{
+			temp.imageWidth = parent.borderX - parent.portrait.bustLayer.left;
+		}
+		else if(itemData.part == "hip")
+		{
+			temp.imageWidth = parent.borderX - parent.portrait.hipLayer.left;
+		}
+
+		// 画像を４面に転写
+		var tw_upd = temp.imageWidth;	// 幅を計り直す
+		setImageSize(tw_upd * 4, th);
+		setSize(tw_upd, th);
+		copyRect(         0, 0, temp, 0, 0, tw_upd, th);
+		copyRect(tw_upd    , 0, temp, 0, 0, tw_upd, th);
+		copyRect(tw_upd * 2, 0, temp, 0, 0, tw_upd, th);
+		copyRect(tw_upd * 3, 0, temp, 0, 0, tw_upd, th);
+		hitThreshold = 1;	// 当たり判定を変更
+
+		// 領域画像が存在したらそれも読み込む
+		if(Storages.isExistentStorage(img + "_pv.png"))
+		{
+			loadProvinceImage(img + "_pv");
+			hitType = htProvince;
+				// hitType を変更して領域画像を認識できるようにする
+				// なお、マニュアルには書いてないが hitType は loadImages を行うと htMask に勝手に戻る
+		}
+
+		// 脱衣ハンドルとインジケータ・重量を書き込む
+		if(itemData.part == "hip" && charaObj.sex == "男")
+		{
+			drawText(tw_upd - 68, th - 33, "≪Under", 0xFFA0FF,,, 2048,,2);
+			drawText(tw_upd - 48, th - 18, "pants", 0xFFA0FF,,, 2048,,2);
+			drawText(tw_upd * 3 - 68, th - 33, "≪Under", 0xFFFF00,,, 2048,,2);
+			drawText(tw_upd * 3 - 48, th - 18, "pants", 0xFFFF00,,, 2048,,2);
+			drawItemTag(tw, th, 0, 0, width - 40, height - 53);
+		}
+		else if(itemData.part == "hip")
+		{
+			drawText(tw_upd - 80, th - 33, "≪Panties", 0xFFA0FF,,, 2048,,2);
+			drawText(tw_upd * 3 - 80, th - 33, "≪Panties", 0xFFFF00,,, 2048,,2);
+			drawItemTag(tw, th - 40, 0, 5, width - 40, height - 53);
+		}
+		else if(itemData.part == "bust")
+		{
+			drawText(tw_upd - 50, 20, "≪Bra", 0xFFA0FF,,, 2048,,2);
+			drawText(tw_upd * 3 - 50, 20, "≪Bra", 0xFFFF00,,, 2048,,2);
+			drawItemTag(tw, th - 20, 0, 0, width - 40, 0);
+		}
+		else if(itemData.part == "leg")
+		{
+			// 画面下端に会わせる
+			tw -= 20;
+			th = parent.height - parent.portrait.legLayer.top - 88;
+			drawItemTag(tw, th, 10, 90);
+		}
+		else
+		{
+			drawItemTag(tw, th);
+		}
+
+		return true;	// 読み込み成功
+	}
+
+	function drawItemTag(w, h, l, t, weightL, weightT)
+	{
+		// アイテムの補助情報を描画する
+
+		// インジケーターを描画
+		fillRect(width + l + 7, t + 6, 15, 3, 0xFFFF0000);
+		fillRect(width + l + 7, t + 6, 3, 15, 0xFFFF0000);
+		fillRect(width + l + w - 17, t + h - 6, 15, 3, 0xFFFF0000);
+		fillRect(width + l + w - 5, t + h - 18, 3, 15, 0xFFFF0000);
+		fillRect(width * 2 + l + 7, t + 6, 15, 3, 0xFFFFFF00);
+		fillRect(width * 2 + l + 7, t + 6, 3, 15, 0xFFFFFF00);
+		fillRect(width * 2 + l + w - 17, t + h - 6, 15, 3, 0xFFFFFF00);
+		fillRect(width * 2 + l + w - 5, t + h - 18, 3, 15, 0xFFFFFF00);
+
+		// 破壊されていたらマークを描画
+		if(sf.brokenIndicator && ! parent.fixPortrait && abs(state) <= BROKEN)
+		{
+			font.height = 26;
+			drawText(3, height - 26, "✹", 0xFF0000);
+			drawText(width * 2 + 3, height - 26, "✹", 0xFF8F00);
+			font.height = 22;
+			drawText(5, height - 24, "✹", 0xFFDF00);
+			drawText(width * 2 + 5, height - 24, "✹", 0xFFFF00);
+			font.height = 16;
+		}
+
+		// タグ（重量・費用等）を描画
+		if(parent.mode == "select") return;
+		if(! itemData.equipment && parent.mode != "sell" && parent.mode != "maintenance") return;
+		var tag = "×", color = 0xFF606000;
+		if(parent.mode == "sell")
+		{
+			if(! itemData.event) tag = itemData.getSellPrice(state) + " G";
+		}
+		else if(parent.mode == "maintenance")
+		{
+			if(state < 0) tag = itemData.getIdentifyPrice(state) + " G";
+			else if(state <= BROKEN) tag = itemData.getRepairPrice(state) + " G";
+		}
+		else if(parent.mode == "removeCurse")
+		{
+			if(itemData.isCursed(parent.curChara)) tag = itemData.getRemoveCursePrice() + " G";
+		}
+		else if(state < 0)
+		{
+			tag = "？";
+			color = 0xFF000000;
+		}
+		else if(! parent.curChara instanceof "CharaObject" || itemData.isEquipable(parent.curChara))
+		{
+			tag = itemData.getWeight(state) + "wp";
+			color = 0xFF006000;
+		}
+		if(tag == "×") color = 0xFFD00000;
+		if(weightL === void) weightL = (w - font.getTextWidth(tag)) \ 2 + l + 3;
+		if(weightT === void) weightT = h \ 2 + t - 25;
+		fillRect(weightL + width * 2 - 3, weightT - 2, font.getTextWidth(tag) + 6, 20, color);
+		drawText(weightL + width * 2, weightT, tag, 0xFFFFFF);
+	}
+
+	function beRemoved(force)
+	{
+		// 装備をキャラから脱がす
+		var res = parent.curChara.removeEquipment(itemData, equiped, force);
+		if(res !== void && res != "switchHand")
+		{
+			master.notice.open(focus);
+			master.notice.write(res);
+			playSound("buzzer");
+			return false;
+		}
+		equiped = void;
+		loadImages(itemData.img + stateSuffix);
+		if(parent.portrait.visible)
+		{
+			if(res == "switchHand")
+			{
+				var mk = parent.getEquipedMarker("sub");
+				mk.equiped = "main";
+			}
+			parent.portrait.restoreSkinLayer(parent.curChara, this);
+		}
+		if(parent.mode != "collection")
+		{
+			opacity = 0;	// 顔画像作成の邪魔になるので一時的に見えなくする
+			parent.curChara.updateByChangeEquipment(itemData);
+			opacity = 255;	// 元に戻す
+		}
+		parent.portrait.placedMarker = this;	// 宙に浮いている状態。キーボード操作で必要
+		return true;
+	}
+
+	function openMenu()
+	{
+		// 右クリックメニュー
+		var inCamp = (parent.mode == "inventory" || parent.mode == "treasure");
+		var user = ["inventory", "buy", "special", "sell", "maintenance", "arrange"].has(parent.mode)
+			 && parent.curChara instanceof "CharaObject" ? parent.curChara : void;
+		parent.enabled = false;
+		parent.restoreInventoryMode();
+		master.clearWindows();
+		master.setPrev(openMenu);
+		var cmds = [];
+		if(parent.mode == "select")
+		{
+			cmds.add(%[text: "Select", func: selectItem]);
+			master.itemMenu.open(cmds, this, user);
+			return;
+		}
+		cmds.add(%[text: "Item", func: useItem
+			, cond: ["inventory", "battle"].has(parent.mode) && state > 0]);
+		cmds.add(%[text: "Identify", func: indentifyItem
+			, cond: inCamp && state < 0]);
+		cmds.add(%[text: "Repair", func: repairItem
+			, cond: inCamp && master.party.isUsableSkill(o.修理) && state > 0 && state <= BROKEN]);
+		cmds.add(%[text: "Magic / Scroll", func: openMagicAndScrollMenu
+			, cond: inCamp && (state <= BROKEN || (equiped !== void && itemData.isCursed(parent.curChara)))]);
+		cmds.add(%[text: "Special Power", func: releaseSpecialPower
+			, cond: inCamp && equiped !== void && itemData.special !== void]);
+		cmds.add(%[text: "Discard", func: askDiscardItem
+			, cond: (inCamp || parent.mode == "arrange" || parent.mode == "change") && ! itemData.event]);
+		master.itemMenu.open(cmds, this, user);
+	}
+
+	function releaseSpecialPower()
+	{
+		// スペシャルパワーを解放する
+		master.setPrev();
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: released]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "Release the hidden power of <y>" + name + "<g>? (Item will be destroyed)");
+	}
+
+	function released()
+	{
+		// スペシャルパワーが解放されたら呼ぶ
+		master.yesNoWin.close();
+		master.popPrev();
+		master.popPrev();
+		var item = itemData;	// いったん閉じるので保存しておく
+		var part = equiped;	//  〃
+		parent.close();
+		parent.curChara.releaseSpecialPower(item, part);
+	}
+
+	function openMagicAndScrollMenu()
+	{
+		// 右クリックメニュー中の魔法・巻物メニュー
+		parent.visible = true;
+		master.exitSelectTargetMode();
+		master.setPrev();
+		var cmds = [];
+		if(master.party.isUsableMagic(o.リペア))
+		{
+			cmds.add(%[text: o.リペア.displayName, func: enterSelectCharaMode
+				, param: %[cmd: o.リペア, func: spellRepair], cond: state > 0 && state <= BROKEN]);
+		}
+		if(master.party.isUsableMagic(o.アナライズ))
+		{
+			cmds.add(%[text: o.アナライズ.displayName, func: enterSelectCharaMode
+				, param: %[cmd: o.アナライズ, func: spellCaldu], cond: state < 0]);
+		}
+		if(master.party.isUsableMagic(o.リムーブカース))
+		{
+			cmds.add(%[text: o.リムーブカース.displayName, func: enterSelectCharaMode
+				, param: %[cmd: o.リムーブカース, func: spellZilfe]
+				, cond: equiped !== void && itemData.isCursed(parent.curChara)]);
+		}
+		if(master.party.hasItem(o.修理の巻物))
+		{
+			cmds.add(%[text: "Repair (Scroll)", func: useScrollForMaintenance
+				, param: %[cmd: o.修理の巻物, func: spellRepair], cond: state > 0 && state <= BROKEN]);
+		}
+		if(master.party.hasItem(o.鑑定の巻物))
+		{
+			cmds.add(%[text: "Appraise (Scroll)", func: useScrollForMaintenance
+				, param: %[cmd: o.鑑定の巻物, func: spellCaldu], cond: state < 0]);
+		}
+		if(master.party.hasItem(o.解呪の巻物))
+		{
+			cmds.add(%[text: "Destroy Curse (Scroll)", func: useScrollForMaintenance
+				, param: %[cmd: o.解呪の巻物, func: spellZilfe]
+				, cond: equiped !== void && itemData.isCursed(parent.curChara)]);
+		}
+		if(master.party.hasItem(o.解呪の巻物・改))
+		{
+			cmds.add(%[text: "Dispel Curse (Scroll)", func: useScrollForMaintenance
+				, param: %[cmd: o.解呪の巻物・改, func: spellZilfeWithSaveItem]
+				, cond: equiped !== void && itemData.isCursed(parent.curChara)]);
+		}
+		cmds.add(%[text: "Back", func: master.processPrev]);
+		master.itemMenu.open(cmds, this);
+		master.itemMenu.specTextLayer.loadImages("dummy");
+	}
+
+	function enterSelectCharaMode(param)
+	{
+		// キャラ選択モードに入る
+		master.popPrev();
+		if(param.cmd == o.アナライズ && isDemoVersion && ! master.isItemToDropInDemoVersion(itemData))
+		{
+			// 体験版でドロップしないアイテムは識別できない
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<y>This item cannot be appraised in the trial version.");
+			return;
+		}
+		parent.visible = false;	// itemData への参照が消えるので非表示にするだけにしておく
+		master.itemMenu.close();
+		master.party.enabled = true;	// 下で focus() を実行するために先に有効にしておく必要がある
+		for(var i = master.party.members.count - 1; i >= 0; i--)
+		{
+			var one = master.party.members[i];
+			one.selectable = one.isUsableMagic(param.cmd);
+			if(one.selectable) one.focus();
+		}
+		master.instruct("Who should cast " + param.cmd.displayName + "?");
+		master.enterSelectTargetMode(param.func, false);
+	}
+
+	function useScrollForMaintenance(param)
+	{
+		// 巻物を１つ消費して鑑定・解呪・修理を行う
+		master.popPrev();
+		if(param.cmd == o.鑑定の巻物 && isDemoVersion && ! master.isItemToDropInDemoVersion(itemData))
+		{
+			// 体験版でドロップしないアイテムは識別できない
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<y>This item cannot be appraised in the trial version.");
+			return;
+		}
+		master.itemMenu.close();
+		master.party.ejectItem(param.cmd);
+		param.func();
+	}
+
+	function spellRepair(charaObj)
+	{
+		// 修理魔法実行
+		var boxView = (parent.curChara == master.itemBoxObj);
+		master.exitSelectTargetMode();
+		parent.visible = true;
+		if(charaObj !== void) charaObj[o.リペア.category][o.リペア.magicLV - 1] --;
+		repaired();	// 修理（下の一覧更新の前にやらないと矛盾が起こる）
+		openMenu();	// 一覧更新前にこのアイテムの情報を更新
+		if(boxView) parent.openChestMode();
+		else parent.openInventory(, parent.boxMenuWin.visible ? "treasure" : void);
+			// 一覧を更新（ここでマーカーが入れ替わるので注意）
+		master.miniNotice.open(master.processPrev);
+		master.miniNotice.write("I repaired it!");
+		playSound("up1");
+	}
+
+	function spellCaldu(charaObj)
+	{
+		// 識別魔法実行
+		var boxView = (parent.curChara == master.itemBoxObj);
+		master.exitSelectTargetMode();
+		parent.visible = true;
+		if(charaObj !== void) charaObj[o.アナライズ.category][o.アナライズ.magicLV - 1] --;
+		indentified();
+		openMenu();	// 一覧更新前にこのアイテムの情報を更新
+		if(boxView) parent.openChestMode();
+		else parent.openInventory(, parent.boxMenuWin.visible ? "treasure" : void);
+			// 一覧を更新（ここでマーカーが入れ替わるので注意）
+		master.miniNotice.open(master.processPrev);
+		master.miniNotice.write("I identified it!");
+		playSound("up1");
+	}
+
+	function spellZilfe(charaObj, saveItem)
+	{
+		// 解呪魔法実行
+		master.instruction.close();
+		master.exitSelectTargetMode();
+		parent.visible = true;
+		if(! beRemoved(true)) return;
+		if(charaObj !== void) charaObj[o.リムーブカース.category][o.リムーブカース.magicLV - 1] --;
+		if(saveItem) master.storeItemSomewhere(%[itemData: itemData, state: state], parent.curChara);
+		playSound(saveItem ? "up1" : "glassbreak");
+		unloadItem();	// 消滅
+		parent.openInventory();	// 一覧を更新（ここでマーカーが入れ替わるので注意）
+		master.miniNotice.open(master.processPrev);
+		master.miniNotice.write("I've broken the curse!");
+	}
+
+	function spellZilfeWithSaveItem(charaObj)
+	{
+		// アイテムを消さずに解呪魔法実行
+		spellZilfe(charaObj, true);
+	}
+
+	function selectItem()
+	{
+		// アイテムを選択する（イベント用）
+		if(itemData === void) return;	// アイテムへの参照が消えていることがあるので
+		master.removePrev(openMenu);	// メニューから呼ばれた時だけアクションを１つ削除
+		var key = equiped !== void ? equiped : belong.id;
+		parent.selectItemAndClose(itemData, state, key);
+	}
+
+	function useItem()
+	{
+		// アイテムを使用する
+		if(itemData === void) return;	// アイテムへの参照が消えていることがあるので
+		if(state < 0) return;	// 未鑑定品は使用できない
+		master.removePrev(openMenu);	// メニューから呼ばれた時だけアクションを１つ削除
+		var key = equiped !== void ? equiped : belong.id;
+		master.curItem = itemData;
+		master.onUseEventItem = true;
+		master.party.lastIsMove = master.party.lastIsTurn = false;
+		parent.curChara.setAction(itemData);
+		parent.curChara.reserveUsingItem(itemData, key);
+		parent.close();
+	}
+
+	function indentifyItem()
+	{
+		// アイテム鑑定
+
+		var chr = parent.curChara;	// 鑑定を実行するキャラ
+
+		// 宝箱画面ならランダムにキャラを返す
+		if(chr == master.itemBoxObj) chr = master.party.getIdentifier(true);
+		if(chr === void)
+		{
+			// 誰も鑑定できないなら失敗
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("y鑑定を行える状態のメンバーがいません");
+			return;
+		}
+
+		// そもそも鑑定を行える状態じゃない
+		if(! chr.active)
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<p>" + chr.displayName + "<y> cannot currently perform appraisal");
+			return;
+		}
+
+		// すでに恐怖状態
+		if(chr.status.has(o.恐怖))
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<p>" + chr.displayName + "<y> is too terrified to appraise this");
+			return;
+		}
+
+		// 体験版でドロップしないアイテムは識別できない
+		if(isDemoVersion && ! master.isItemToDropInDemoVersion(itemData))
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<y>This item cannot be appraised in the trial version.");
+			return;
+		}
+
+		// 鑑定成功
+		var score = chr.getItemKnowledge();	// キャラの鑑定スキル
+		var difficulty = itemData.getNeededIdentifyingSkill();	// アイテムの識別難易度
+		dm("鑑定スキル : " + score + "    識別難易度 : " + difficulty);
+		if(score > fluc(difficulty, 0.7))
+		{
+			playSound("up1");
+			indentified();
+			openMenu();	// 情報更新
+			master.miniNotice.open(master.processPrev);
+			master.miniNotice.write("<p>" + chr.displayName + "<y> identified it!");
+			return;
+		}
+
+		// 鑑定失敗
+		// 失敗したとき ( 運 - アイテムの消耗度合い * rate ) がランダムの数値を下回ったら
+		// 何らかのペナルティがある。そうでなければ無事で済む
+		// ただし、１回失敗するごとにアイテムは消耗するので徐々に災難に遭う確率は上がる
+
+		var point;	// ランダム点数。これが上記の数値を上回ったら災難発生
+		var rate = 2;	// アイテム消耗１に対し運の値から引かれる数
+		var score = chr.luck - (WHOLE + state) * rate;	// 鑑定能力・アイテム状態によるスコア
+		dm("ペナルティ回避スコア  " + chr.name + " : " + score);
+
+		// 間違って装備（呪いのアイテムはそう多くはないので確率を高めにする）
+		// 繰り返し鑑定し耐久度が下がると呪いにかかりやすくなる
+		point = intrandom(50, 80);	// 呪いのかかりやすさ
+		if((state < -BROKEN || itemData.halfState) && ! chr.isEquipedItems(itemData)
+			 && itemData.isCursed(chr) && score < point)
+		{
+			var boxView = (parent.curChara == master.itemBoxObj);
+			belong.removeMarker(this);	// いったんどける
+			var res = chr.dressEquipment(itemData, lastItemGrid, -state, true);
+			if(res === void || res == "main" || res == "sub")
+			{
+				indentified(true);
+				if(! parent.boxMenuWin.visible)
+				{
+					parent.portrait.setEquipmentLayer(chr, this, res !== void ? res : itemData.part);
+				}
+				openMenu();	// 情報更新
+				if(boxView) parent.boxMenuWin.visible = false;	// 正しい顔画像を作るため背景をいったん消す
+				if(! boxView) itemData.curseScript(chr);	// 呪われイベントがあれば発動
+				if(! parent.boxMenuWin.visible) chr.updateByChangeEquipment(itemData);
+				if(boxView) parent.openChestMode();
+				else if(parent.boxMenuWin.visible) parent.openInventory(, "treasure");
+				playSound("fear");
+				master.miniNotice.open(master.processPrev);
+				master.miniNotice.write("<p>" + chr.displayName + "<y> accidentally equipped it!");
+				return;
+			}
+			belong.dropAction(this);	// 装備されなかったら元に戻す
+		}
+
+		// 恐怖状態……なんだけど、このクソシステムを何とかしたい
+		point = intrandom(0, 5);	// 恐怖のかかりやすさ
+		if(score < point)
+		{
+			chr.setStatus(o.恐怖, true, 30);	// 通常より長い時間恐怖状態に置かれる
+			playSound("fear");
+			master.notice.open(master.processPrev);
+			master.notice.write("<p>" + chr.displayName + "<y> became terrified!");
+			return;
+		}
+
+		// 通常失敗
+		// ただし、１回失敗するごとに耐久度が下がっていく
+		if(! itemData.event) state ++;
+
+		if(itemData.hasBrokenState && state == -BROKEN)
+		{
+			// 耐久度が下がりすぎていたら破損する
+			indentified();
+			openMenu();	// 情報更新
+			playSound("glassbreak");
+			master.miniNotice.open(master.processPrev);
+			master.miniNotice.write("<p>" + chr.displayName + "<y> broke it!");
+		}
+		else if(state == 0 || state == -BROKEN)
+		{
+			// 耐久度がなくなっていたら破損して消滅
+			master.itemMenu.close();
+			parent.curChara.ejectItem(itemData, belong.id, true);
+			unloadItem();
+			playSound("glassbreak");
+			master.miniNotice.open(master.processPrev);
+			master.miniNotice.write("<p>" + chr.displayName + "<y> broke it!");
+		}
+		else
+		{
+			// 通常失敗（なにもなし）
+			master.miniNotice.open(openMenu);
+			master.miniNotice.write("<p>" + chr.displayName + "<y> couldn't appraise it.");
+		}
+	}
+
+	function indentified(equipNow)
+	{
+		// アイテムが鑑定されたら呼ぶ
+		state = -state;
+		sf[itemData.name] = true;	// アイテム履歴を記録（未鑑定アイテムは鑑定されて初めて記録される）
+
+		// 情報更新
+		// 呪いの強制装備で鑑定される時はここで情報の更新はしない
+		if(! equipNow) parent.curChara.bagStat[belong.id] = state;
+
+		// 画像更新
+		// 呪いの強制装備かつ装備画像があるものについてはここで画像の更新はしない
+		if(! parent.visible) return;
+		if(equipNow && ["chest", "waist", "bust", "hip", "arm", "leg"].has(itemData.part)) return;
+		loadImages(itemData.img + stateSuffix);
+	}
+
+	function repairItem()
+	{
+		// アイテムを修理する
+		parent.enabled = true;
+		var chr = master.party.getBestSmith();
+		var comment = chr.tryRepairItem(itemData, state);
+		if(comment !== void)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write(comment);
+			return;
+		}
+		// 修理成功
+		repaired();	// 修理（下の一覧更新の前にやらないと矛盾が起こる）
+		openMenu();	// 一覧更新前にこのアイテムの情報を更新
+		parent.openInventory();	// 修理素材消費につき一覧を更新（ここでマーカーが入れ替わるので注意）
+		master.miniNotice.open(master.processPrev);
+		master.miniNotice.write("<y>" + chr.displayName + "<w> repaired it!");
+		playSound("up1");
+	}
+
+	function repaired()
+	{
+		// アイテムが修理されたら呼ぶ
+		state = WHOLE;	// 耐久度が完全回復
+		if(equiped !== void)
+		{
+			parent.curChara.equipStat[equiped] = WHOLE;
+			parent.curChara.updateWeightIcon();
+			parent.curChara.switchFaceState();
+			if(/main|sub/.test(equiped)) loadImages(itemData.img);
+			else parent.portrait.setEquipmentLayer(parent.curChara, this, equiped);
+			if(parent.portrait.visible)
+			{
+				parent.portrait.drawWeight(parent.curChara);
+				parent.curChara.updateByChangeEquipment(itemData);
+			}
+		}
+		else
+		{
+			parent.curChara.bagStat[belong.id] = WHOLE;
+			if(parent.visible) loadImages(itemData.img);
+		}
+	}
+
+	function askDiscardItem()
+	{
+		// 問い合わせ・アイテムを捨てる
+		master.setPrev();
+		if(! sf.askDiscardItem)
+		{
+			discard();
+			return;
+		}
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: discard]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "Throw <y>" + name + "<g> away?<r>(Can't be undone)");
+	}
+
+	function discard()
+	{
+		// アイテム廃棄を実行
+		master.yesNoWin.close();
+		master.popPrev();
+		if(equiped === void) parent.curChara.ejectItem(itemData, belong.id, true);
+		else if(! beRemoved()) return;
+		playSound("paper");
+		unloadItem();
+		master.processPrev();
+	}
+
+	function askBuyItem()
+	{
+		// 問い合わせ・アイテムを買う
+		var price = itemData.getBuyPrice(state);
+		if(master.party.gold < price)
+		{
+			master.notice.open(focus);
+			master.notice.write("Not enough money.");
+			playSound("buzzer");
+			return;
+		}
+		var num = master.itemWin.getAnyBagSpace(parent.curChara.bagMap, itemData);
+		if(num === void)
+		{
+			master.notice.open(focus);
+			master.notice.write(parent.curChara.displayName + " is carrying too much");
+			playSound("buzzer");
+			return;
+		}
+		master.setPrev();
+		if(! sf.askExecTrade)
+		{
+			buyItem();
+			return;
+		}
+		parent.enabled = false;
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: buyItem]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "It costs <y>" + price + "G<g><r>Buy <p>" + name + "<g>?");
+	}
+
+	function buyItem()
+	{
+		// アイテムを買う
+		parent.enabled = true;
+		master.popPrev();
+		master.yesNoWin.close();	// 先に消す
+		parent.curChara.insertItem(itemData);	// 購入
+		master.party.gold -= itemData.getBuyPrice(state);
+		parent.priceTag[belong.id].visible = false;	// タグを消す
+		unloadItem();
+		if(parent.mode == "special") parent.curShop.specialItem[belong.id] = void;
+		else if(parent.mode == "buy") parent.curShop.shopItem[belong.id] = void;
+		parent.setLastItemKey(this);
+		if(sf.askExecTrade)
+		{
+			master.notice.open(parent.checkShopEvent);	// イベントチェック
+			master.notice.write(parent.curShop.thanks);
+		}
+		else parent.checkShopEvent();	// イベントチェック
+		playSound("coin");
+	}
+
+	function askSellItem()
+	{
+		// 問い合わせ・アイテムを売る
+		if(itemData.event)
+		{
+			master.notice.open(focus);
+			master.notice.write("Can't sell this.");
+			playSound("buzzer");
+			return;
+		}
+		master.setPrev();
+		if(! sf.askExecTrade)
+		{
+			sellItem();
+			return;
+		}
+		parent.enabled = false;
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: sellItem]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, 
+			"It's worth <y>" + itemData.getSellPrice(state) + "G<g><r>Sell <p>" + name + "<g>?");
+	}
+
+	function sellItem()
+	{
+		// アイテムを売る
+		parent.enabled = true;
+		master.popPrev();
+		master.yesNoWin.close();	// 先に消す
+		parent.curChara.ejectItem(itemData, belong.id, true);
+		master.party.gold += itemData.getSellPrice(state);
+		unloadItem();
+		if(sf.askExecTrade)
+		{
+			master.notice.open(parent.focusToNextItem, belong.id);
+			master.notice.write(parent.curShop.paid);
+		}
+		else parent.focusToNextItem(belong.id);
+		playSound("coin");
+	}
+
+	function askMaintenanceItem()
+	{
+		// 問い合わせ・アイテムを修理 or 鑑定
+		var func, price, act;
+		if(state < 0)
+		{
+			func = indentifyItemByShop;
+			price = itemData.getIdentifyPrice(state);
+			act = "鑑定";
+		}
+		else if(state > 0 && state <= BROKEN)
+		{
+			func = repairItemByShop;
+			price = itemData.getRepairPrice(state);
+			act = "修理";
+		}
+		else
+		{
+			master.notice.open(focus);
+			master.notice.write("This doesn't require repair or<r>appraisal.");
+			playSound("buzzer");
+			return;
+		}
+		master.setPrev();
+		if(! sf.askExecTrade)
+		{
+			func();
+			return;
+		}
+		parent.enabled = false;
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: func]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds
+			, "That will be <y>" + price + "G<g> for " + name + ".<r>Continue?");
+	}
+
+	function repairItemByShop()
+	{
+		// 店でアイテムを修理する
+		parent.enabled = true;
+		master.popPrev();
+		master.yesNoWin.close();	// 先に消す
+		var price = itemData.getRepairPrice(state);
+		if(master.party.gold < price)
+		{
+			playSound("buzzer");
+			master.notice.open(focus);
+			master.notice.write("<y>Not enough money");
+			return;
+		}
+		repaired();
+		master.party.gold -= price;
+		if(sf.askExecTrade)
+		{
+			master.notice.open(focus);
+			master.notice.write(parent.curShop.repaired);
+		}
+		else focus();
+		playSound("coin");
+	}
+
+	function indentifyItemByShop()
+	{
+		// 店でアイテムを鑑定する
+		parent.enabled = true;
+		master.popPrev();
+		master.yesNoWin.close();	// 先に消す
+
+		var price = itemData.getIdentifyPrice(state);
+		if(master.party.gold < price)
+		{
+			playSound("buzzer");
+			master.notice.open(focus);
+			master.notice.write("<y>Not enough money");
+			return;
+		}
+
+		if(isDemoVersion && ! master.isItemToDropInDemoVersion(itemData))
+		{
+			// 体験版でドロップしないアイテムは識別できない
+			playSound("buzzer");
+			master.notice.open(focus);
+			master.notice.write("<y>This item cannot be appraised in the trial version.");
+			return;
+		}
+
+		indentified();
+		master.party.gold -= price;
+		if(sf.askExecTrade)
+		{
+			master.notice.open(focus);
+			master.notice.write(parent.curShop.identified);
+		}
+		else focus();
+		playSound("coin");
+	}
+
+	function askRemoveCurse()
+	{
+		// 問い合わせ・呪いを解く
+		if(! itemData.isCursed(parent.curChara))
+		{
+			master.notice.open(focus);
+			master.notice.write("That item is not cursed");
+			playSound("buzzer");
+			return;
+		}
+		master.setPrev();
+		if(! sf.askExecTrade)
+		{
+			removeCurse();
+			return;
+		}
+		parent.enabled = false;
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: removeCurse, param: parent.curShop.keepItem]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds
+			, "It's <y>" + itemData.getRemoveCursePrice(parent.curShop.keepItem)
+			 + "G<g> to purify <r><p>" + name + "<g>. Break the curse?"
+);
+	}
+
+	function removeCurse(keepItem)
+	{
+		// 店で呪いを解く
+		// keepItem が true だとアイテムを消滅させずに収納する
+		var price = itemData.getRemoveCursePrice(keepItem);
+		if(master.party.gold < price)
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<y>Not enough money");
+			return;
+		}
+		master.party.gold -= price;
+		master.yesNoWin.close();	// 先に消す
+		beRemoved(true);	// 外す
+		if(keepItem) master.storeItemSomewhere(%[itemData: itemData, state: state]);	// 保管
+		unloadItem();	// 消滅
+		if(! sf.askExecTrade)
+		{
+			master.notice.open(master.processPrev);
+			master.notice.write(parent.curShop.uncursed);
+		}
+		else master.processPrev();
+		playSound("coin");
+	}
+
+	function getCoins()
+	{
+		// アイテム形式のお金を回収する
+		playSound("coin", 1);
+		master.party.gold += itemData.getMoneyFromCoins();
+		master.itemBoxObj.ejectItem(itemData, belong.id);
+		if(MOUSE_HIDDEN) parent.focusToNextItem(belong.id);
+		parent.focusToCloseBoxButton();
+		unloadItem();	// 消滅
+	}
+
+	function setAndRemoveEquipmentAtMuseum()
+	{
+		// 閲覧モードで装備を脱着する
+		if(equiped !== void)
+		{
+			// 現在のキャラが今着ている装備を選んだら強制的に脱がして消去
+			if(! beRemoved(true)) return;
+			playSound("paper");
+			unloadItem();
+		}
+		else
+		{
+			// 展示されている装備を選択したら現在のキャラに着せる
+			parent.curChara.showNipple = true;
+			playSound("switch1");
+			parent.portrait.dropAction(this);
+			// parent.curChara.showNipple = false;
+		}
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(button == mbLeft)
+		{
+			if(itemData === void) return;
+			if(itemData.type == "money" || itemData.type == "fixedMoney") getCoins();
+			else if(parent.mode == "collection") setAndRemoveEquipmentAtMuseum();
+			else if(parent.mode == "inventory" || parent.mode == "arrange" || parent.mode == "treasure"
+			 || parent.mode == "change")
+			{
+				if(equiped !== void)
+				{
+					if(! beRemoved()) return;
+					setPos(parent.cursorX - width \ 2, parent.cursorY - height \ 2);
+				}
+				super.onMouseDown(...);
+			}
+		}
+		else super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbLeft)
+		{
+			if(itemData === void) return;
+			if(parent.mode == "buy" || parent.mode == "special") askBuyItem();
+			else if(parent.mode == "sell") askSellItem();
+			else if(parent.mode == "maintenance") askMaintenanceItem();
+			else if(parent.mode == "removeCurse") askRemoveCurse();
+			else super.onMouseUp(...);
+		}
+		else if(button == mbRight)
+		{
+			if(itemData !== void) openMenu();
+		}
+		else super.onMouseUp(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		// キーボード操作中にマウスが動いたときの対処
+		parent.onMouseMove(...);
+		super.onMouseMove(...);
+	}
+
+	function onDoubleClick(x, y)
+	{
+		// ダブルクリックでアイテム使用
+		if(System.getKeyState(VK_RBUTTON)) return;
+		if(parent.mode == "inventory" || parent.mode == "battle" || parent.mode == "select")
+		{
+			if(parent.mode == "select") selectItem();
+			else useItem();
+			master.itemDoubleClicked = true;
+			super.onDoubleClick(...);
+		}
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if(dragging)
+		{
+			dragging = false;
+			drawState(0);
+			belong.dropAction(this);
+		}
+
+		if(key == BT_OK || key == BT_OK2)
+		{
+			parent.setLastItemKey(this);	// 店や装備を外せなかった時などに必要
+			if(itemData.type == "money" || itemData.type == "fixedMoney") getCoins();
+			else if(parent.mode == "view" || parent.mode == "status") return;
+			else if(parent.mode == "battle") useItem();
+			else if(parent.mode == "select") selectItem();
+			else if(parent.mode == "buy" || parent.mode == "special") askBuyItem();
+			else if(parent.mode == "sell") askSellItem();
+			else if(parent.mode == "maintenance") askMaintenanceItem();
+			else if(parent.mode == "removeCurse") askRemoveCurse();
+			else if(parent.mode == "collection") setAndRemoveEquipmentAtMuseum();
+			else if(equiped !== void)
+			{
+				if(! beRemoved()) return;
+				else super.onKeyDown(...);
+			}
+			else if(holding)
+			{
+				if(! belong.dropAction(this)) return;
+				else super.onKeyDown(...);
+			}
+			else super.onKeyDown(...);
+		}
+		else if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			if(kag.focusedLayerIsNull) return;	// フォーカス null 時のキー二重送信問題対策
+			parent.setLastItemKey(this);	// 宝箱を閉じる画面などで必要
+			if(holding)
+			{
+				if(! belong.dropAction(this)) return;
+				else super.onKeyDown(...);
+			}
+			else if(parent.shopWin.visible) parent.shopWin.lastFocusedButton.focus();
+			else master.processPrev();
+		}
+		else if(key == BT_OPTION || key == BT_OPTION2)
+		{
+			if(holding && ! belong instanceof "ItemGrid") return;
+			parent.setLastItemKey(this);	// メニューを開いた後のために必要
+			holding = false;
+			parent.holdingMarker = void;
+			openMenu();
+		}
+		else if(key == BT_LSTEP || key == BT_RSTEP || key == BT_LSTEP2 || key == BT_RSTEP2)
+		{
+			if(holding && ! belong instanceof "ItemGrid") return;
+			holding = false;
+			parent.holdingMarker = void;
+			parent.openNextCharaInventory(key == BT_RSTEP || key == BT_RSTEP2);
+			if(parent.mode == "buy" || parent.mode == "special") focus();
+		}
+		else
+		{
+			super.onKeyDown(...);
+		}
+	}
+}
+
+
+class InventoryGrid extends AreaLayer
+{
+	// アイテム画面内のグリッドの基本クラス
+
+	var master;
+	var id;
+	var placedMarker;
+
+	function InventoryGrid(par, master, id)
+	{
+		super.AreaLayer(par);
+		this.master = master;
+		this.id = id;
+		font.face = "MS PGothic";
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function putMarker(mark)
+	{
+		super.putMarker(...);
+		placedMarker = mark;	// どのグリッドも１つのマーカーの情報しか持てないので上書きする
+		mark.belong = this;
+	}
+
+	function removeMarker(mark)
+	{
+		super.removeMarker(...);
+		placedMarker = void;
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		// キーボード操作中にマウスが動いたときの対処
+		parent.onMouseMove(...);
+		super.onMouseMove(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbRight) parent.onMouseUp(...);	// 右クリックは透過
+		super.onMouseUp(...);
+	}
+}
+
+
+class ItemGrid extends InventoryGrid
+{
+	// アイテム置き場グリッドクラス
+
+	function ItemGrid(par, master, id, size)
+	{
+		super.InventoryGrid(...);
+		setSize(size, size);
+		name = "ItemGrid " + id;
+		visible = true;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function dropAction(mark)
+	{
+		putMarker(mark);
+		parent.curChara.insertItem(mark.itemData, mark.state, id, false);
+		return true;
+	}
+
+	function putMarker(mark)
+	{
+		super.putMarker(...);
+		mark.setPos(left - 4, top - 4);	// 持ち上げ画像のため左上に 5px 増やしているので
+		mark.absolute = absolute + 100 + id;	// ここで順位を決めれば矛盾は生じない
+		mark.lastItemGrid = this;
+	}
+
+	function removeMarker(mark)
+	{
+		super.removeMarker(...);
+		parent.curChara.ejectItem(mark.itemData, id, true);
+	}
+}
+
+
+class MerchandiseGrid extends InventoryGrid
+{
+	// 商品置き場グリッドクラス
+
+	function MerchandiseGrid(par, master, id)
+	{
+		super.InventoryGrid(...);
+		loadImages("frame_price_tag");
+		setSizeToImageSize();
+		name = "rack " + id;
+		//font.face = "ＭＳ ゴシック";
+		font.height = 18;
+		font.bold = true;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function putMarker(mark)
+	{
+		super.putMarker(...);
+		mark.setPos(left + width \ 2 - mark.width \ 2, top - mark.height + 10);
+		mark.absolute = absolute - 100 + id;	// ここで順位を決めれば矛盾は生じない
+		loadImages("frame_price_tag");
+		drawText(6, 3, "%7d".sprintf(mark.itemData.price) + " G", 0x202000);
+		visible = true;
+	}
+}
+
+
+class GuestGrid extends InventoryGrid
+{
+	// ゲスト選択エリア
+
+	var charaRef;
+	var lightingLayer;	// 一瞬明るくするレイヤー
+	var onSelectAction;
+	var _selectable = true;
+
+	function GuestGrid(par, master, w, h)
+	{
+		super.InventoryGrid(...);
+		focusable = true;
+		setSize(w, h);
+		lightingLayer = new LightingLayer(this);
+		lightingLayer.paintAll(this);
+	}
+
+	function finalize()
+	{
+		invalidate lightingLayer;
+		super.finalize();
+	}
+
+	property selectable
+	{
+		// 非選択状態のときは暗くなる
+		setter(v){ focusable = _selectable = v; }
+		getter{ return _selectable && visible; }
+	}
+
+	function piledCopy(dleft, dtop, src, sleft, stop, swidth, sheight)
+	{
+		// ★処理エラー対策
+		try{ super.piledCopy(...); }
+		catch(e){ dm("★レイヤの重ね合わせに失敗しました  GuestGrid.copyImage"); }
+	}
+
+	function copyImage(charaObj, beCurrent = false)
+	{
+		// キャラ一覧にキャラの顔をコピーする
+		// 現在選択中のキャラなら赤い枠が表示される
+		charaObj.infoVisible = false;
+		charaObj.lightingLayer.visible = false;
+		charaObj.darkCoverLayer.opacity = 0;
+		if(beCurrent)
+		{
+			fillRect(0, 0, width, height, 0xFFFF0000);
+			piledCopy(2, 2, charaObj, 25, 14, width - 4, height - 4);
+			absolute = 1011;
+		}
+		else
+		{
+			fillRect(0, 0, width, height, 0xFFFFFFFF);
+			piledCopy(2, 2, charaObj, 25, 14, width - 4, height - 4);
+			absolute = 1010;
+		}
+		charaObj.infoVisible = true;
+		charaObj.darkCoverLayer.opacity = 128;
+	}
+
+	function copyCollectionImage(obj, beCurrent = false)
+	{
+		// コレクション一覧にコレクションの画像をコピーする（閲覧用）
+
+		var gotObj;	// 討伐したモンスター or 獲得したアイテム
+		var lay = new global.Layer(window, this);
+
+		// 枠を描く
+		if(beCurrent)
+		{
+			fillRect(0, 0, width, height, 0xFFFF0000);
+			absolute = 1011;
+		}
+		else
+		{
+			fillRect(0, 0, width, height, 0xFFFFFFFF);
+			absolute = 1010;
+		}
+
+		// 背景を設定（ゲスト用枠を流用）
+		lay.loadImages("charaslot_guest");
+		if(obj instanceof "Array")
+		{
+			// カテゴリリスト
+			operateRect(2, 2, lay, 150, 15, width - 4, height - 4);
+			for(var i = 0; i < obj.count; i++)
+			{
+				if(obj[i] === void || sf[obj[i].name] === void) continue;
+				gotObj = obj[i];
+				break;
+			}
+		}
+		else
+		{
+			// 個別リスト
+			operateRect(2, 2, lay, 10, 15, width - 4, height - 4);
+			if(sf[obj.name] !== void) gotObj = obj;
+		}
+
+		// まだ不明なら「？」を書いて終了
+		if(gotObj === void)
+		{
+			//font.face = "ＭＳ Ｐ明朝";
+			font.height = 36;
+			font.bold = false;
+			drawText(15, 33, "？", 0x808080);
+			return;
+		}
+
+		// 対象の画像を貼り付け
+		if(Storages.isExistentStorage(gotObj.img + "_l.png")) lay.loadImages(gotObj.img + "_l");
+		else lay.loadImages(gotObj.img);
+		var l, t;
+		if(gotObj instanceof "MonsterData")
+		{
+			l = gotObj.facePos[0] + 15;
+			t = gotObj.facePos[1];
+		}
+		else
+		{
+			l = 15;
+			t = gotObj.row == 1 ? -10 : 15;
+		}
+		operateRect(2, 2, lay, l, t, width - 4, height - 4);
+
+		// カテゴリボタンならその名称を書き込む
+		if(obj instanceof "Array")
+		{
+			//font.face = "ＭＳ Ｐゴシック";
+			font.height = 13;
+			var margin = 3;
+			var yAdjust = global.TextWindow.adjustFontSizeToFit(obj.displayName, font, margin, width - margin);
+			drawText(margin, 5 + yAdjust, obj.displayName, 0xFFFFFF,,, 2048, 0x000000, 1);
+		}
+	}
+
+	function onFocus(focused, direction)
+	{
+		lightingLayer.visible = true;
+		parent.pointToObject(this);
+	}
+
+	function onBlur(focused)
+	{
+		lightingLayer.visible = false;
+		parent.disappearPointer();
+	}
+
+	function onMouseEnter()
+	{
+		if(! selectable) return;
+		if(MOUSE_HIDDEN) return;
+		focus();
+		super.onMouseEnter();
+	}
+
+	function onMouseLeave()
+	{
+		if(! selectable) return;
+		if(MOUSE_HIDDEN) return;
+		unfocus();
+		super.onMouseLeave();
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbLeft) onSelectAction(charaRef);
+		super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();	// 誤解を招かないため、カーソルを一時的に隠す
+		if(key == BT_LSTEP || key == BT_RSTEP || key == BT_LSTEP2 || key == BT_RSTEP2)
+		{
+			parent.openNextCharaInventory(key == BT_RSTEP || key == BT_RSTEP2);
+		}
+		else if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			if(kag.focusedLayerIsNull) return;	// フォーカス null 時のキー二重送信問題対策
+			parent.onKeyDown(...);
+		}
+		else if(key == BT_OK || key == BT_OK2)
+		{
+			if(charaRef != parent.curChara) onSelectAction(charaRef);
+		}
+		else if(isArrowButton(...))
+		{
+			var mk = parent.getMarkerByKey(this, key);
+			if(mk !== void) mk.focus();
+		}
+		else
+		{
+			window.preProcessKeys(key, shift);
+			super.onKeyDown(...);
+		}
+	}
+}
+
+
+class PartyGrid extends GuestGrid
+{
+	// パーティーメンバー選択エリア
+
+	var signalLayer;	// 警告表示を行うためのレイヤー
+
+	function PartyGrid(par, master, w, h)
+	{
+		super.GuestGrid(...);
+		signalLayer = new EffectLayer(this);
+		signalLayer.loadImages(%[storage: "image_event_sign"]);
+		signalLayer.setPos(24, 170);
+	}
+
+	property visible
+	{
+		setter(v)
+		{
+			super.visible = v;
+			if(! v) stopEventSignal();
+		}
+		getter{ return super.visible; }
+	}
+
+	function startEventSignal()
+	{
+		// イベントが発生している表示を出す
+		signalLayer.visible = true;
+		signalLayer.startAnim(%[seg: 1, target: "*start"]);
+	}
+
+	function stopEventSignal()
+	{
+		// イベントが発生している表示を消す
+		signalLayer.visible = false;
+		signalLayer.stopAnim(1);
+	}
+
+	function copyImage(chr, beCurrent = false)
+	{
+		// キャラ一覧にキャラの顔をコピーする
+		// 現在選択中のキャラなら赤い枠が表示される
+		chr.infoVisible = false;
+		if(beCurrent)
+		{
+			fillRect(0, 0, width, height, 0xFFFF0000);
+			piledCopy(4, 4, chr, 22, 2, width - 8, height - 8);
+		}
+		else
+		{
+			fillRect(0, 0, width, height, 0x80000000);
+			piledCopy(2, 2, chr, 20, 0, width, height);
+		}
+		chr.infoVisible = true;
+		operateRect(2, 2, chr.badgeLayer, 0, 0, 36, 51);	// 職業・属性マークを転写
+	}
+
+	function dropAction(mark)
+	{
+		// ここにアイテムを渡す処理を書く。入れるスペースがなければ渡せない
+		// 返り値は渡せたかどうか
+
+		if(charaRef == parent.curChara) return false;
+		if(charaRef.insertItem(mark.itemData, mark.state))
+		{
+			focus();	// ここで渡した相手にフォーカス。最短で渡したばかりのアイテムを操作できる
+			parent.focusToCloseBoxButton();	// 宝箱でアイテムが残っていなかったら閉じるボタンへ
+			mark.unloadItem();
+			return true;
+		}
+		playSound("buzzer");
+		master.notice.open(mark.focus);
+		master.notice.write("<p>" + charaRef.displayName + "<y> can't carry any more");
+		return false;
+	}
+
+	function putMarker(mark)
+	{
+		super.putMarker(...);
+		mark.setPos(left + (width - mark.width) \ 2, top + (height - mark.height) \ 2);
+	}
+
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if((key == BT_CANCEL || key == BT_CANCEL2) && parent.shopWin.visible)
+		{
+			parent.shopWin.lastFocusedButton.focus();
+		}
+		else if(key == BT_UP || key == BT_UP2)
+		{
+			if(parent.backLayer.skillButtons[0] !== void) parent.backLayer.skillButtons[-1].focus();
+			else if(parent.switchDiaryButton.visible) parent.switchDiaryButton.focus();
+			else if(parent.switchTargetButton.visible) parent.switchTargetButton.focus();
+			else super.onKeyDown(...);
+		}
+		else
+		{
+			super.onKeyDown(...);
+		}
+	}
+}
+
+
+class ItemBoxGrid extends PartyGrid
+{
+	// アイテム収納箱選択エリア
+
+	function ItemBoxGrid(par, master, w, h)
+	{
+		super.PartyGrid(...);
+	}
+
+	property charaRef
+	{
+		getter{ return master.itemBoxObj; }
+	}
+
+	function dropAction(mark)
+	{
+		// アイテムが今のページに入らなかった場合、別のページに入れることを試みる
+		if(charaRef == parent.curChara) return false;
+		if(charaRef.insertItem(mark.itemData, mark.state))
+		{
+			focus();
+			parent.focusToCloseBoxButton();
+			mark.unloadItem();
+			return true;
+		}
+		playSound("buzzer");
+		master.notice.open(mark.focus);
+		master.notice.write("<y>No space left.");
+		return false;
+	}
+}
+
+
+class SkinLayer extends KAGLayer
+{
+	// 肌のレイヤー
+
+	function SkinLayer(par)
+	{
+		super.KAGLayer(par.window, par);
+		name = "肌レイヤー";
+		hitThreshold = 256;
+	}
+
+	function loadImages(storage)
+	{
+		if(! Storages.isExistentStorage(storage + ".png")) return false;
+		super.loadImages(storage);
+		setSizeToImageSize();
+		visible = true;
+		return true;
+	}
+}
+
+
+class ChangableSkinLayer extends SkinLayer
+{
+	// 変化する肌のレイヤー
+	// キャラの状態によって読み込む画像が変化する
+
+	function ChangableSkinLayer(par)
+	{
+		super.SkinLayer(par);
+		name = "変化肌レイヤー";
+	}
+
+	function loadImages(storage, charaObj)
+	{
+		var img = storage + charaObj.getExtraSuffixChangePortrait();
+		if(! Storages.isExistentStorage(img + ".png")) img = storage;
+		return super.loadImages(img);
+	}
+}
+
+
+class PortraitGrid extends InventoryGrid
+{
+	// 肖像エリア
+
+	var _selectable;	// drop エリアとして選択できるかどうか
+	var bodyLayer;	// 全身レイヤー
+	var faceLayer;	// 表情レイヤー
+	var chestLayer;	// 上半身鎧の下の肌レイヤー
+	var waistLayer;	// 下半身鎧の下の肌レイヤー
+	var bustLayer;	// ブラの下の肌レイヤー
+	var hipLayer;		// パンツの下の肌レイヤー
+	var legLayer;		// ブーツの下の肌レイヤー
+	var armLayer;		// 小手の下の肌レイヤー
+	var subArmLayer;	// 背後の小手レイヤー（盾や握り手の都合で分けておく）
+	var gripLayer;	// 小手レイヤーの握り手部分
+	var hideGripLayer;	// 胸を隠す時の小手レイヤーの握り手部分
+	var accessaryLayer;	// 指輪とアクセサリーを乗せるレイヤー
+	var magicLayer;		// 魔法の玉のレイヤー（ポーズ替え時のみ使用）
+	var displayLayer;	// 演出表示等に使うレイヤー
+	var weightLayer;	// 重量を表示するレイヤー
+	var termLayer;	// 拘束期間を表示するレイヤー
+	var developLayer;	// 性の開発度合いを表示するレイヤー（ヒロイン情報用）
+	var heartMeter;	// 興奮度を表すメーター（ヒロイン情報用）
+	var signalLayer;	// 警告表示を行うためのレイヤー
+	var mainGrip = [];	// 武器の握り位置
+	var subGrip = [];		// 盾の握り位置
+	var hideMainGrip = [];	// 武器の握り位置
+	var hideSubGrip = [];		// 盾の握り位置
+	var weaponPos = %[];	// 武器を表示する位置と順位（ポーズ替え時のみ使用）
+	var subWeaponPos = %[];	// 武器を表示する位置と順位（ポーズ替え時のみ使用）
+	var waistShadowName = "";	// 下半身に落ちる影の識別名
+	var bustShadowName = "";	// ブラに落ちる影の識別名
+	var hipShadowName = "";		// パンツに落ちる影の識別名
+	var legShadowName = "";		// ブーツに落ちる影の識別名
+	var curGuy;	// 対象の男キャラ（ヒロイン情報用）
+	var adjustLeft = 20;	// 肖像左端の微調整
+
+	function PortraitGrid(par, master, id)
+	{
+		super.InventoryGrid(...);
+		loadImages("back_portrait");
+		setSizeToImageSize();
+		name = "肖像エリア";
+
+		// 指輪とアクセサリーを乗せるレイヤー
+		accessaryLayer = new DecoLayer(par);
+		accessaryLayer.loadImages("frame_accessary");
+		accessaryLayer.setPos(-parent.left, height - accessaryLayer.height);
+		accessaryLayer.absolute = 980;
+
+		// 総重量と防御力を表示するレイヤー
+		weightLayer = new DecoLayer(par);
+		weightLayer.loadImages("frame_total");
+		weightLayer.setPos(parent.borderX - weightLayer.width, 4);
+		weightLayer.absolute = 2000;
+		//weightLayer.font.face = "ＭＳ 明朝";
+		weightLayer.font.bold = true;
+		weightLayer.font.height = 22;
+
+		// 拘束期間を表示するレイヤー（ヒロイン情報用）
+		termLayer = new DecoLayer(par);
+		termLayer.loadImages("frame_term");
+		termLayer.setPos(parent.borderX - termLayer.width, 4);
+		termLayer.absolute = 2000;
+		//termLayer.font.face = "ＭＳ 明朝";
+		termLayer.font.bold = true;
+		termLayer.font.height = 32;
+
+		// 性の開発度合いを表示するレイヤー（ヒロイン情報用）
+		developLayer = new DecoLayer(par);
+		developLayer.loadImages("frame_develop");
+		developLayer.setPos(-parent.left + 4, 4);
+		developLayer.absolute = 2000;
+		//developLayer.font.face = "ＭＳ 明朝";
+		developLayer.font.bold = true;
+		developLayer.font.height = 40;
+
+		// 興奮度を表すメーター（ヒロイン情報用）
+		heartMeter = new HeartMeter(par, master);
+		heartMeter.setPos(-parent.left + 5, height - heartMeter.height - 5);
+		heartMeter.absolute = 2000;
+
+		// 警告表示を行うためのレイヤー
+		signalLayer = new EffectLayer(par);
+		signalLayer.loadImages(%[storage: "image_event_sign"]);
+		signalLayer.setPos(parent.borderX - signalLayer.width - 5, 70);
+		signalLayer.absolute = 2000;
+
+		// 肌のレイヤー
+		// この座標は上に着る装備の配置位置でもある
+
+		// 全身
+		bodyLayer = new SkinLayer(par);
+		bodyLayer.absolute = 50;
+
+		// 表情
+		faceLayer = new SkinLayer(par);
+		faceLayer.absolute = 51;
+
+		// 上半身（上鎧装備）
+		chestLayer = new ChangableSkinLayer(par);
+		chestLayer.absolute = 600;
+
+		// 下半身（下鎧装備）
+		waistLayer = new ChangableSkinLayer(par);
+		waistLayer.absolute = 400;
+
+		// 胸（ブラ装備）
+		bustLayer = new ChangableSkinLayer(par);
+		bustLayer.absolute = 500;
+
+		// お尻（パンツ装備）
+		hipLayer = new ChangableSkinLayer(par);
+		hipLayer.absolute = 200;
+
+		// 足（ブーツ装備）
+		legLayer = new SkinLayer(par);
+		legLayer.absolute = 300;
+
+		// 両手（小手装備）
+		armLayer = new SkinLayer(par);
+		armLayer.absolute = 100;
+		subArmLayer = new SkinLayer(par);
+		subArmLayer.absolute = 900;
+		gripLayer = new SkinLayer(par);
+		gripLayer.absolute = 900;
+		hideGripLayer = new SkinLayer(par);
+		hideGripLayer.absolute = 900;
+
+		// 魔法（ポーズ替え時のみ使用）
+		magicLayer = new SkinLayer(par);
+		magicLayer.absolute = 900;
+
+		// 演出表示
+		displayLayer = new SkinLayer(par);
+		displayLayer.absolute = 1000;
+		displayLayer.setPos(-parent.left, 0);
+		displayLayer.setSize(parent.borderX + parent.left, height);
+
+		// 武器表示順位（ポーズ替え時のみ使用）
+		weaponPos.left = 0;
+		weaponPos.top = 0;
+		weaponPos.absolute = 110;
+
+		// サブ武器表示順位（ポーズ替え時のみ使用）
+		subWeaponPos.left = 0;
+		subWeaponPos.top = 0;
+		subWeaponPos.absolute = 110;
+	}
+
+	function finalize()
+	{
+		invalidate bodyLayer;
+		invalidate faceLayer;
+		invalidate chestLayer;
+		invalidate waistLayer;
+		invalidate heartMeter;
+		invalidate bustLayer;
+		invalidate hipLayer;
+		invalidate legLayer;
+		invalidate armLayer;
+		invalidate subArmLayer;
+		invalidate gripLayer;
+		invalidate hideGripLayer;
+		invalidate accessaryLayer;
+		invalidate magicLayer;
+		invalidate displayLayer;
+		invalidate weightLayer;
+		invalidate termLayer;
+		invalidate developLayer;
+		invalidate heartMeter;
+		invalidate signalLayer;
+		super.finalize();
+	}
+
+	property selectable
+	{
+		setter(v){ _selectable = enabled = v; }
+		getter{ return _selectable && visible && enabled; }
+	}
+
+	function close()
+	{
+		bodyLayer.visible = false;
+		faceLayer.visible = false;
+		chestLayer.visible = false;
+		waistLayer.visible = false;
+		bustLayer.visible = false;
+		hipLayer.visible = false;
+		legLayer.visible = false;
+		armLayer.visible = false;
+		subArmLayer.visible = false;
+		gripLayer.visible = false;
+		hideGripLayer.visible = false;
+		accessaryLayer.visible = false;
+		magicLayer.visible = false;
+		displayLayer.visible = false;
+		weightLayer.visible = false;
+		termLayer.visible = false;
+		developLayer.visible = false;
+		heartMeter.visible = false;
+		stopEventSignal();
+		visible = false;
+		parent.clearAllEquipedMarkers();
+		bustShadowName = waistShadowName = hipShadowName = legShadowName = "";
+	}
+
+	function openPortrait(charaObj, makeFixedImage = false)
+	{
+		// 通常の全身像を開く
+		if(charaObj.status.has(o.石化) || charaObj.status.has(o.凍結)) makeFixedImage = true;
+		displayLayer.visible = false;
+		if(charaObj.status.has(o.灰)) createAshedFigure(charaObj);
+		else makePortrait(charaObj, charaObj.getEquipedItems(), FACE[charaObj.getFaceName()].num,,, makeFixedImage);
+		if(charaObj.status.has(o.石化)) createFixedFigure(charaObj, o.石化);
+		if(charaObj.status.has(o.凍結)) createFixedFigure(charaObj, o.凍結);
+		drawWeight(charaObj);
+		weightLayer.visible = true;
+		accessaryLayer.visible = true;
+		selectable = true;
+		loadImages("back_portrait");
+		visible = true;
+	}
+
+	function drawWeight(charaObj)
+	{
+		// 重量と防御力を表示する
+		weightLayer.clear();
+
+		// 防御力
+		var colour = charaObj.def > charaObj.defense ? 0x80FF80
+			 : (charaObj.def < charaObj.defense ? 0xFFC080 : 0xF4E3DF);
+		weightLayer.drawText(60, 6, "%3d".sprintf(charaObj.def), colour);
+
+		// 重量
+		var w = charaObj.getTotalWeight();
+		var par = w / charaObj.muscle;
+		colour = w <= SLIGHT ? 0x80FFFF : (par > 0.9 ? 0xFF8080 : (par > 0.7 ? 0xFFFF80 : 0x80FF80));
+		weightLayer.drawText(44, 31, "%3d".sprintf(charaObj.getTotalWeight()), colour);
+		weightLayer.drawText(90, 31, charaObj.muscle, 0xF4E3DF);
+	}
+
+	function openGuestPortrait(charaObj)
+	{
+		// ゲストの画像を開く
+		close();
+		loadImages("back_monster");
+		loadMonsterFigureImage(charaObj, "fight",, FACE[charaObj.getFaceName()].num);
+		if(charaObj.status.has(o.石化)) createFixedFigure(charaObj, o.石化);
+		if(charaObj.status.has(o.凍結)) createFixedFigure(charaObj, o.凍結);
+		visible = true;
+	}
+
+	function openMonsterPortrait(charaObj)
+	{
+		// モンスターの画像を開く
+		close();
+		loadImages("back_monster");
+		loadMonsterFigureImage(charaObj);
+		visible = true;
+	}
+
+	function openFemaleHelperPortrait(charaObj)
+	{
+		// 女性ゲスト・傭兵のヒロインステータス用画像を開く
+		close();
+		loadImages("back_heroine");
+		if(charaObj.lastGuyKey === void) charaObj.lastGuyKey = master.lovers[0].keyName;
+		curGuy = o[charaObj.lastGuyKey];
+		loadHelperStrippedFigure(charaObj, curGuy);
+		heartMeter.open(charaObj.heat);
+		drawDevelopment(charaObj, curGuy);
+		parent.setLRSwitch(changeCurrentGuy, 5, 155);
+		visible = true;
+	}
+
+	function loadMonsterFigureImage(charaObj, poseKey, figureKey, faceNum)
+	{
+		// ゲストやモンスターの画像を読み込んで表示する
+		if(figureKey !== void)
+		{
+			bodyLayer.loadImages(charaObj.img + "_" + figureKey + (poseKey !== void ? "_" + poseKey : ""));
+		}
+		else if(poseKey !== void)
+		{
+			bodyLayer.loadImages(charaObj.img + "_" + charaObj.getFigureImageKey(poseKey));
+		}
+		else if(! bodyLayer.loadImages(charaObj.img + "_l"))
+		{
+			bodyLayer.loadImages(charaObj.img);
+		}
+
+		if(charaObj instanceof "MonsterData" || charaObj instanceof "MonsterObject" || charaObj.isHiring)
+		{
+			bodyLayer.setPos((width - bodyLayer.width) \ 2 + parent.left, cap(height - bodyLayer.height) \ 2);
+		}
+		else
+		{
+			var l = -parent.left - adjustLeft;
+			var t = 0;
+			if(bodyLayer.width > 420) l -= (bodyLayer.width - 420) \ 2;
+			if(bodyLayer.height < 768) t += (768 - bodyLayer.height) \ 2;
+			bodyLayer.setPos(l, t);
+			faceLayer.loadImages(charaObj.img + "_" + "%02d".sprintf(faceNum));
+			faceLayer.setPos(charaObj.face[0] + l, charaObj.face[1] + t);
+		}
+	}
+
+	function openHeroinePortrait(charaObj)
+	{
+		// ヒロインステータス用の全身像を開く
+		if(charaObj.lastGuyKey === void) charaObj.lastGuyKey = master.lovers[0].keyName;
+		curGuy = o[charaObj.lastGuyKey];
+		loadImages("back_heroine");
+		heartMeter.open(charaObj.heat);
+		drawTermOfSlave(charaObj);
+		createStrippedFigure(charaObj, curGuy);
+		drawDevelopment(charaObj, curGuy);
+		parent.setLRSwitch(changeCurrentGuy, 5, 155);
+
+		master.curEventNum = 1;	// curEventNum を 1 にして true が返ってきたら奴隷イベントが発生している証拠
+		if(charaObj.checkEvent(true)) startEventSignal();
+		else stopEventSignal();
+
+		visible = true;
+	}
+
+	function changeCurrentGuy(forward)
+	{
+		// 対象の男キャラを切り替える
+		var num = master.lovers.find(curGuy);
+		if(forward) num = (num + 1) % master.lovers.count;
+		else num = (num + master.lovers.count - 1) % master.lovers.count;
+		curGuy = master.lovers[num];
+		var her = parent.mode == "hstatus" || parent.mode == "sstatus" ? parent.curHeroine : parent.curHelper;
+		her.lastGuyKey = curGuy.keyName;
+		if(parent.mode == "hstatus" || parent.mode == "sstatus") createStrippedFigure(her, curGuy);
+		else loadHelperStrippedFigure(her, curGuy);
+		drawDevelopment(her, curGuy);
+	}
+
+	function drawDevelopment(her, guy)
+	{
+		// 開発度合いを表示する（ヒロイン用）
+		developLayer.clear();
+		var dev = her.develop[guy.img];
+		developLayer.drawText(52 - ("" + dev).length * 10, 24, dev, 0xFFA0A0);
+		var temp = new global.Layer(window, this);
+		if(guy instanceof "CharaObject") temp.loadImages(guy.img + "_icon_" + guy.color);
+		else temp.loadImages(guy.img + "_icon");
+		developLayer.operateRect(8, 80, temp, 16, 16, 64, 64);
+		developLayer.visible = true;
+	}
+
+	function drawTermOfSlave(charaObj)
+	{
+		// 残りの拘束期間を表示する（ヒロイン用）
+		termLayer.visible = true;
+		termLayer.clear();
+		termLayer.drawText(63 + (charaObj.slaveTerm < 10) * 10, 21, charaObj.slaveTerm, 0xFFA0A0);
+	}
+
+	function startEventSignal()
+	{
+		// イベントが発生している表示を出す
+		signalLayer.visible = true;
+		signalLayer.startAnim(%[seg: 1, target: "*start"]);
+	}
+
+	function stopEventSignal()
+	{
+		// イベントが発生している表示を消す
+		signalLayer.visible = false;
+		signalLayer.stopAnim(1);
+	}
+
+	function createStrippedFigure(her, guy)
+	{
+		// 脱衣状態を表す画像を作る
+		var arr = [];
+		var key = her.strip[guy.img];
+		var info = her.model.dressInfo[key];
+		if(info === void) info = o[key];
+		if(info === void) System.inform("存在しない指定です   " + key);
+		if(info.img !== void)
+		{
+			her.createFigure(info.face, [],, info.img);
+			return;
+		}
+		var clothes = info.clothes.split(",");
+		for(var i = 0; i < clothes.count; i++)
+		{
+			if(clothes[i] == "裸") break;
+			arr.add(%[itemData: o[clothes[i]]]);
+		}
+		her.createFigure(info.face, arr, info.pose);
+	}
+
+	function loadHelperStrippedFigure(her, guy)
+	{
+		// 脱衣状態を表す画像を読み込む（ゲスト用）
+		var info = her.dressInfo[her.strip[guy.img]];
+		loadMonsterFigureImage(her,, info.img, info.face);
+	}
+
+	function createFixedFigure(charaObj, state)
+	{
+		// 石化・凍結全身像を作る
+		if(! charaObj.isHiring) changeFace(charaObj, FACE[state.face].num);
+		weightLayer.visible = false;
+		accessaryLayer.visible = false;
+		visible = false;
+		displayLayer.visible = true;
+		displayLayer.clear();
+		displayLayer.piledCopy(0, 0, parent, displayLayer.left, 0, displayLayer.width, height);
+		if(state == o.石化)
+		{
+			displayLayer.noise(128);
+			displayLayer.colorize(0, 0, 1);
+		}
+		else if(state == o.凍結)
+		{
+			displayLayer.doGrayScale();
+			displayLayer.adjustGamma(1, 0 ,255, 1, 64, 255, 1, 128, 255);
+		}
+		parent.clearAllEquipedMarkers();
+	}
+
+	function createAshedFigure()
+	{
+		// 灰化画像を作る
+		close();
+		displayLayer.clear();
+		displayLayer.loadImages("image_portrait_ashes");
+		displayLayer.visible = true;
+		parent.clearAllEquipedMarkers();
+	}
+
+	function loadSkinImages(charaObj, pose, wholeImg)
+	{
+		// 全身と各肌のレイヤーを読み込む
+
+		// 各身体パーツの基準位置・全身レイヤーの左端
+		// ここを基準にして各パーツを配置する
+		// 親となるアイテム画面レイヤーは左に大きく寄っており
+		// さらに配置されるパーツは若干枠からはみ出るのでこの位置が指定される
+		// なお、追加カットは左端は０で良い
+		var battlePose = master.isBattlePose(pose);	// 戦闘ポーズ中かどうか
+		var bodyLeft = battlePose ? 0 : -parent.left - adjustLeft;
+
+		// 画像のプレフィックス
+		var img = charaObj.img + (battlePose ? "ex" : "");
+
+		// 画像の配置場所の情報
+		var pos = battlePose ? charaObj.model.exPos : charaObj.model;
+
+		// いったん全て隠す
+		faceLayer.visible = false;
+		chestLayer.visible = false;
+		waistLayer.visible = false;
+		bustLayer.visible = false;
+		hipLayer.visible = false;
+		legLayer.visible = false;
+		armLayer.visible = false;
+		subArmLayer.visible = false;
+		gripLayer.visible = false;
+		hideGripLayer.visible = false;
+		magicLayer.visible = false;
+
+		// 重ね合わせ順を調整
+		armLayer.absolute = 100;
+		gripLayer.absolute = 900;
+		subArmLayer.absolute = pos.subArmOrder;
+		if(battlePose)
+		{
+			armLayer.absolute = pos.armOrder;
+			gripLayer.absolute = pos.gripOrder;
+			weaponPos.absolute = pos.weaponOrder;
+			subWeaponPos.absolute = pos.subWeaponOrder;
+			if(pose == "cast") weaponPos.absolute = pos.magicOrder;
+			else if(pose == "shot") weaponPos.absolute = pos.bowOrder;
+			else if(pose == "play") weaponPos.absolute = pos.harpOrder;
+			else if(pose == "beat") weaponPos.absolute = pos.drumOrder;
+		}
+
+		// 位置合わせ（と一部読み込み）
+		bodyLayer.setPos(bodyLeft, 0);
+		faceLayer.setPos(pos.face[0] + bodyLeft, pos.face[1]);
+		legLayer.setPos(pos.leg[0] + bodyLeft, pos.leg[1]);
+		chestLayer.setPos(pos.chest[0] + bodyLeft, pos.chest[1]);
+		armLayer.setPos(pos.arm[0] + bodyLeft, pos.arm[1]);
+		waistLayer.setPos(pos.waist[0] + bodyLeft, pos.waist[1]);
+		if(charaObj.sex == "女") bustLayer.setPos(pos.bust[0] + bodyLeft, pos.bust[1]);
+		hipLayer.setPos(pos.hip[0] + bodyLeft, pos.hip[1]);
+		subArmLayer.setPos(pos.subArm[0] + bodyLeft, pos.subArm[1]);
+		gripLayer.setPos(armLayer.left, armLayer.top);
+		if(battlePose)
+		{
+			weaponPos.left = pos.main[0];
+			weaponPos.top = pos.main[1];
+			subWeaponPos.left = pos.sub[0];
+			subWeaponPos.top = pos.sub[1];
+		}
+		else
+		{
+			mainGrip = [pos.main[0] + bodyLeft, pos.main[1]];
+			subGrip = [pos.sub[0] + bodyLeft, pos.sub[1]];
+			hideMainGrip = [pos.hideMain[0] + bodyLeft, pos.hideMain[1]];
+			hideSubGrip = [pos.hideSub[0] + bodyLeft, pos.hideSub[1]];
+			hideGripLayer.setPos(pos.hideArm[0] + bodyLeft, pos.hideArm[1]);
+		}
+
+		// 読み込み
+		bodyLayer.loadImages(img + "_body_" + charaObj.color);	// 読み込み
+		faceLayer.loadImages(img + "_00");	// 読み込み
+		if(wholeImg !== void)
+		{
+			// 完全指定ポーズ用の画像は chestLayer に読み込む。あとは何もしない
+			chestLayer.loadImages(img + "_" + wholeImg, charaObj);
+			return;	// 指定ポーズの作成だったらここで終了
+		}
+		legLayer.loadImages(img + "_leg");
+		waistLayer.loadImages(img + "_waist", charaObj);
+		hipLayer.loadImages(img + "_hip", charaObj);
+		if(pose === void && charaObj.coveringBust())
+		{
+			chestLayer.loadImages(img + "_chest_hide", charaObj);
+			return;
+		}
+		if(charaObj.sex == "女") bustLayer.loadImages(img + "_bust", charaObj);
+		chestLayer.loadImages(img + "_chest", charaObj);
+
+		// 腕パーツの読み込み
+		var actionSuffix = "";	// 追加カットがある時違う画像を呼び出すための接尾辞
+		if(pose == "cast")
+		{
+			magicLayer.loadImages(img + "_magic");
+			magicLayer.setPos(weaponPos.left, weaponPos.top);
+			magicLayer.absolute = weaponPos.absolute;
+			actionSuffix = "c";
+		}
+		else if(pose == "shot") actionSuffix = "s";
+		else if(pose == "play") actionSuffix = "p";
+		else if(pose == "beat") actionSuffix = "b";
+		if(battlePose)
+		{
+			armLayer.loadImages(img + "_arm_up" + actionSuffix);
+		}
+		else
+		{
+			armLayer.loadImages(img + "_arm_down");
+		}
+		subArmLayer.loadImages(img + "_arm_sub" + actionSuffix);
+		if(battlePose && pose != "cast")
+		{
+			gripLayer.loadImages(img + "_arm_grip" + actionSuffix);
+		}
+	}
+
+	function putMarker(mark)
+	{
+		// キーボード操作時にとりあえず仮置きする。ここで Enter を押すと装備される
+		super.putMarker(...);
+		switch(mark.itemData.part)
+		{
+			case "main":
+			case "double":
+				mark.setPos(mainGrip[0] - mark.itemData.grip[0] - 5, mainGrip[1] - mark.itemData.grip[1] - 5); break;
+			case "sub":
+			case "both":
+				mark.setPos(subGrip[0] - mark.itemData.grip[0] + 5, subGrip[1] - mark.itemData.grip[1] - 5); break;
+					// トンファーのキーボードでの左手装備に支障があるのでこの位置に配置する
+			case "chest":
+				mark.setPos(chestLayer.left, chestLayer.top); break;
+			case "waist":
+				mark.setPos(waistLayer.left, waistLayer.top); break;
+			case "bust":
+				mark.setPos(bustLayer.left, bustLayer.top); break;
+			case "hip":
+				mark.setPos(hipLayer.left, hipLayer.top); break;
+			case "leg":
+				mark.setPos(legLayer.left, legLayer.top); break;
+			case "arm":
+				mark.setPos(armLayer.left, armLayer.top); break;
+			case "finger":
+				mark.setPos(accessaryLayer.left - 6, accessaryLayer.top + 4); break;
+			case "pocket":
+				mark.setPos(accessaryLayer.left - 6, accessaryLayer.top + 93); break;
+			default:
+				mark.setPos(400 - mark.width, 200 - mark.height \ 2);
+		}
+	}
+
+	function dropAction(mark)
+	{
+		// ここに装備をドロップすると装備される。返り値は装備変更できたかどうか
+
+		var dropLefter = false;	// 左寄りにドロップされたかどうか（両手武器装備時に必要）
+		var charaObj = parent.curChara;	// 現在のキャラ
+		var fitting = (parent.mode == "collection");	// 試着かどうか
+		var lastGrid = mark.lastItemGrid;	// 直前にどこにこの装備があったか
+
+		// 両手武器を装備する際は左寄りにドロップされたかどうかを見る
+		if(mark.itemData.part == "both")
+		{
+			if(mark.left + mark.width \ 2 < parent.borderX \ 2 - parent.left) dropLefter = true;
+		}
+
+		// 装備できるかチェック
+		var res = charaObj.dressEquipment(mark.itemData, lastGrid, mark.state, fitting, dropLefter);
+		if(res !== void && res != "main" && res != "sub")
+		{
+			playSound("buzzer");
+			if(res == "") return false;
+			master.notice.open(mark.focus);
+			master.notice.write(res);
+			return false;
+		}
+
+		// 装備できたので画像等を変更
+		var prt = res !== void ? res : mark.itemData.part;
+		charaObj.updateLife();	// ＨＰ表示を更新
+		charaObj.updateWeightIcon();	// 重量表示を更新
+		charaObj.switchFaceState();	// 表情を更新
+		if(fitting)
+		{
+			addEquipment(charaObj, %[itemData: mark.itemData, state: mark.state, part: prt]);
+			return false;	// 試着ならここで終了
+		}
+
+		// 全身画像・バストアップを更新
+		mark.unloadItem();
+		charaObj.makeBustups();
+		mark = parent.getEquipedMarker(prt);	// mark が失われるので再度取得する
+		mark.focus();
+
+		// 呪いの装備かチェック
+		if(mark.itemData.isCursed(charaObj))
+		{
+			playSound("fear");
+			if(parent.mode == "change")
+			{
+				master.battleInfo.reline();
+				master.battleInfo.write(charaObj.displayName + " is cursed!");
+			}
+			else
+			{
+				master.notice.open(mark.focus);
+				master.notice.write("<p>" + charaObj.displayName + "<y> has been cursed!");
+			}
+			mark.itemData.curseScript(charaObj);	// 呪われイベントがあれば発動
+		}
+
+		// 装備変更
+		if(parent.mode == "change" && lastGrid != this)
+		{
+			o.装備変更.result = true;
+			parent.close();
+		}
+
+		return true;
+	}
+
+	function changeFace(charaObj, faceNum, pose)
+	{
+		// 表情を変える
+		var battlePose = master.isBattlePose(pose);	// 戦闘ポーズ中かどうか
+		var img = charaObj.img + (battlePose ? "ex" : "");
+		var res = faceLayer.loadImages(img + "_" + "%02d".sprintf(+faceNum));
+		if(! res) faceLayer.loadImages(img + "_00");
+	}
+
+	function makePortrait(charaObj, itemInfos, faceNum, pose, wholeImg, makeFixedImage = false)
+	{
+		// キャラと装備アイテムの情報から肖像を作成する
+		parent.fixPortrait = makeFixedImage;
+		parent.clearAllEquipedMarkers();	// 装備をいったん消去
+		bustShadowName = waistShadowName = hipShadowName = legShadowName = "";	// 影の情報を消す
+		loadSkinImages(charaObj, pose, wholeImg);	// 裸画像作成
+		if(faceNum !== void) changeFace(charaObj, faceNum, pose);	// 表情を変更
+		for(var i = 0; i < itemInfos.count; i++)
+		{
+			// 装備に応じて各部位の画像を変更
+			addEquipment(charaObj, itemInfos[i], pose);
+		}
+		dm(charaObj.name + "の服装のセクシー度 ：" + charaObj.getSexAppealOfAppearance());
+	}
+
+	function addEquipment(charaObj, itemInfo, pose)
+	{
+		// ドロップ以外で装備するときはこれを呼ぶ
+		var mark = parent.getFreeMarker();
+		mark.loadItem(itemInfo.itemData, itemInfo.state);
+		setEquipmentLayer(charaObj, mark, itemInfo.part, pose);
+	}
+
+	function removeAndStoreEquipment(part, gridID)
+	{
+		// ドラッグ以外で装備を外し収納先へ移動させる
+		dm("★外した装備を収納失敗  装備箇所   " + part);
+		var mark = parent.getEquipedMarker(part);
+		mark.equiped = void;
+		mark.loadImages(mark.itemData.img + mark.stateSuffix);
+		if(visible) restoreSkinLayer(parent.curChara, mark);
+		if(gridID !== void) parent.itemGrids[gridID].dropAction(mark);	// 次の収納先があればそこへ
+		else mark.unloadItem();	// ない場合は消去
+		return true;
+	}
+
+	function setEquipmentLayer(charaObj, mark, part, pose)
+	{
+		// 指定したアイテムが装備された状態にキャラ画像を変更し設定する
+		// キャラに装備させたときに呼ぶ
+
+		var itemObj = mark.itemData;	// アイテム情報
+		var battlePose = master.isBattlePose(pose);	// 戦闘ポーズ中かどうか
+		var img = charaObj.img + (battlePose ? "ex" : "");	// プレフィックス
+		mark.hitThreshold = 1;	// 当たり判定を変更
+		placedMarker = void;	// 見た目は置いてある状態だがこのグリッドからはすでに消えている
+		mark.belong = this;	// この肖像エリア所属に変更
+		mark.lastItemGrid = this;	// 特殊な状況に対処するため現在の収納場所を記憶
+
+		// いくつかの特殊な状況に対応するため、配置場所の情報を分けて記憶している
+		//  ・キーボードでのホールド状態でユーザーがマウスを触る
+		//  ・装備制限を超えて強制装備されたアイテムを肖像エリアにドロップし直す
+		// 記憶場所への動作は以下の通り
+		//  belong      : 移動・配置された瞬間に置かれた位置を常に記憶
+		// lastItemGrid : 通常はアイテムグリッドのみ記憶。装備が確定したときだけ肖像エリアを記憶
+
+		if(part === void) part = itemObj.part;	// 箇所の情報がなかったら装備の情報を使う
+		mark.equiped = part;	// 装備情報に箇所を書き込む
+
+		// 通常時
+		if(part == "finger")
+		{
+			mark.setPos(accessaryLayer.left - 6, accessaryLayer.top + 4);
+			mark.absolute = accessaryLayer.absolute + 1;
+		}
+		else if(part == "pocket")
+		{
+			mark.setPos(accessaryLayer.left - 6, accessaryLayer.top + 93);
+			mark.absolute = accessaryLayer.absolute + 1;
+		}
+		else if(part == "chest")
+		{
+			var coverSuffix = "";
+			if(itemObj.nakedByBreak && pose === void && charaObj.coveringBust()) coverSuffix = "_cover";
+			mark.setPos(chestLayer.left, chestLayer.top);
+			mark.loadEquipImages(img + "_" + itemObj.img + coverSuffix, charaObj);
+			chestLayer.visible = false;
+			mark.absolute = chestLayer.absolute + 1;
+		}
+		else if(part == "waist")
+		{
+			// 完全に隠れるなどして影無しの画像と結果が同じになる場合、装備物の画像をあらためて用意することはしない
+			// その際は該当する肌画像を代わりに読み込む（ブラ、下着、ブーツも同様）
+			// また、影の情報があるにも関わらず該当する装備・肌ともに画像がない場合
+			// 現在のキャラについてはこの部位に影が落ちないということなので影なしの装備画像を読み込む
+			var res = mark.loadEquipImages(img + "_" + itemObj.img + waistShadowName, charaObj);
+			if(! res) res = mark.loadEquipImages(img + "_waist" + waistShadowName, charaObj);
+			if(! res) mark.loadEquipImages(img + "_" + itemObj.img, charaObj);
+			mark.setPos(waistLayer.left, waistLayer.top);
+			waistLayer.visible = false;
+			mark.absolute = waistLayer.absolute;
+		}
+		else if(part == "bust")
+		{
+			var res = mark.loadEquipImages(img + "_" + itemObj.img + bustShadowName, charaObj);
+			if(! res) res = mark.loadEquipImages(img + "_bust" + bustShadowName, charaObj);
+			if(! res) mark.loadEquipImages(img + "_" + itemObj.img, charaObj);
+			mark.setPos(bustLayer.left, bustLayer.top);
+			bustLayer.visible = false;
+			mark.absolute = bustLayer.absolute;
+		}
+		else if(part == "hip")
+		{
+			var res = mark.loadEquipImages(img + "_" + itemObj.img + hipShadowName, charaObj);
+			if(! res) res = mark.loadEquipImages(img + "_hip" + hipShadowName, charaObj);
+			if(! res) res = mark.loadEquipImages(img + "_" + itemObj.img, charaObj);
+			mark.setPos(hipLayer.left, hipLayer.top);
+			hipLayer.visible = false;
+			mark.absolute = hipLayer.absolute;
+		}
+		else if(part == "leg")
+		{
+			var res = mark.loadEquipImages(img + "_" + itemObj.img + legShadowName, charaObj);
+			if(! res) res = mark.loadEquipImages(img + "_leg" + legShadowName, charaObj);
+			if(! res) mark.loadEquipImages(img + "_" + itemObj.img, charaObj);
+			mark.setPos(legLayer.left, legLayer.top);
+			legLayer.visible = false;
+			mark.absolute = legLayer.absolute;
+		}
+
+		// 戦闘時に追加カットが用意されているものを処理
+		if(battlePose)
+		{
+			var actionSuffix = "";	// 追加カットがある時違う画像を呼び出すための接尾辞
+			if(pose == "cast") actionSuffix = "c";
+			else if(pose == "shot") actionSuffix = "s";
+			else if(pose == "play") actionSuffix = "p";
+			else if(pose == "beat") actionSuffix = "b";
+
+			if(part == "main")
+			{
+				if(pose == "cast" || pose == "etc")
+				{
+					mark.visible = false;
+				}
+				else
+				{
+					mark.setPos(weaponPos.left, weaponPos.top);
+					mark.absolute = weaponPos.absolute;
+					mark.loadEquipImages(img + "_" + itemObj.img, charaObj);
+				}
+			}
+			else if(part == "sub")
+			{
+				if(pose == "strike" && itemObj.part == "both")
+				{
+					mark.setPos(subWeaponPos.left, subWeaponPos.top);
+					mark.absolute = subWeaponPos.absolute;
+					mark.loadEquipImages(img + "_sub_" + itemObj.img, charaObj);
+				}
+				else
+				{
+					mark.visible = false;
+				}
+			}
+			else if(part == "arm")
+			{
+				mark.setPos(armLayer.left, armLayer.top);
+				mark.absolute = armLayer.absolute;
+				armLayer.visible = false;
+				mark.loadEquipImages(img + "_" + itemObj.img + "_up" + actionSuffix, charaObj);
+				if(pose != "cast") gripLayer.loadImages(img + "_" + itemObj.img + "_grip" + actionSuffix);
+				subArmLayer.loadImages(img + "_" + itemObj.img + "_sub" + actionSuffix);
+			}
+		}
+
+		if(pose === void) equipAndChangePose(charaObj);	// ポーズ変更が必要なものを処理
+		if(weightLayer.visible) drawWeight(charaObj);	// 重量表示
+		changeShadowLayer(charaObj, mark, true, pose);	// 付けた装備が落とす影を描画
+		if(pose === void && itemObj.equipIndex !== void) mark.absolute = itemObj.equipIndex;
+			// 指定があればその順位に
+	}
+
+	function restoreSkinLayer(charaObj, mark)
+	{
+		// 下に隠れていた肌のレイヤーを元に戻す。装備を脱がした時に呼ぶ
+
+		var img = charaObj.img;	// 画像のプレフィックス
+		var prt = mark.itemData.part;	// 装備箇所
+
+		if(prt == "arm")
+		{
+			mark.hitType = htMask;
+			if(window.mouseCursorState == mcsVisible)
+			{
+				// 両手は離れているのでマウスカーソルの近くにレイヤーを移動させる
+				mark.setPos(parent.cursorX - mark.width \ 2, parent.cursorY - mark.height \ 2);
+			}
+		}
+		else if(prt == "chest")
+		{
+			if(! charaObj.coveringBust())
+			{
+				chestLayer.loadImages(img + "_chest", charaObj);
+			}
+		}
+		else if(prt == "waist")
+		{
+			waistLayer.loadImages(img + "_waist" + waistShadowName, charaObj);
+			waistLayer.visible = true;
+		}
+		else if(prt == "bust")
+		{
+			bustLayer.loadImages(img + "_bust" + bustShadowName, charaObj);
+			bustLayer.visible = true;
+		}
+		else if(prt == "hip")
+		{
+			hipLayer.loadImages(img + "_hip" + hipShadowName, charaObj);
+			hipLayer.visible = true;
+		}
+		else if(prt == "leg")
+		{
+			if(legShadowName == "") legLayer.loadImages(img + "_leg");
+			else legLayer.loadImages(img + "_leg" + legShadowName);
+			legLayer.visible = true;
+		}
+		else if(prt == "main" || prt == "sub" || prt == "both" || prt == "double")
+		{
+			mark.left -= 5;
+			mark.top -= 5;
+		}
+
+		mark.hitThreshold = 0;	// 当たり判定を変更
+		equipAndChangePose(charaObj);	// ポーズ変更が必要なものを処理
+		changeShadowLayer(charaObj, mark, false);	// 外した装備が落としていた影を消す
+		if(weightLayer.visible) drawWeight(charaObj);	// 重量表示
+	}
+
+	function changeShadowLayer(charaObj, mark, attach, pose)
+	{
+		// 装備したアイテムの影の情報を元に、影響を受けるレイヤーの影を描き直す
+		// なお、影を落とす可能性があるのは chest と waist のみ
+
+		if(mark.itemData.part != "chest" && mark.itemData.part != "waist") return;
+
+		var battlePose = master.isBattlePose(pose);
+		var img = charaObj.img + (battlePose ? "ex" : "");	// 画像のプレフィックス
+		var shadowKey;	// 影を指定するキー
+		var waistHipShadow, waistLegShadow;	// chest を外しても残る waist の落とす影
+		var chestHipShadow, chestLegShadow;	// waist を外すと復活する chest の落とす影
+
+		// 乳房に落ちる影を描画
+		shadowKey = "sdw_bust" + mark.stateSuffix;
+		if(charaObj.sex == "女" && mark.itemData[shadowKey] !== void)
+		{
+			bustShadowName = attach ? "_" + mark.itemData[shadowKey] : "";
+			bustLayer.visible = false;
+			var mk = parent.getEquipedMarker("bust");
+			if(mk === void)
+			{
+				if(! charaObj.coveringBust())
+				{
+					bustLayer.loadImages(img + "_bust" + bustShadowName, charaObj);
+				}
+			}
+			else if(bustShadowName == "")
+			{
+				mk.loadEquipImages(img + "_" + mk.itemData.img, charaObj);
+			}
+			else
+			{
+				var res = mk.loadEquipImages(img + "_" + mk.itemData.img + bustShadowName, charaObj);
+				if(! res) res = mk.loadEquipImages(img + "_bust" + bustShadowName, charaObj);
+				if(! res) mk.loadEquipImages(img + "_" + mk.itemData.img, charaObj);
+			}
+		}
+
+		// 腰に落ちる影を描画
+		shadowKey = "sdw_waist" + mark.stateSuffix;
+		if(mark.itemData[shadowKey] !== void)
+		{
+			waistShadowName = attach ? "_" + mark.itemData[shadowKey] : "";
+			var mk = parent.getEquipedMarker("waist");
+			if(mk === void)
+			{
+				waistLayer.loadImages(img + "_waist" + waistShadowName, charaObj);
+			}
+			else if(waistShadowName == "")
+			{
+				mk.loadEquipImages(img + "_" + mk.itemData.img, charaObj);
+			}
+			else
+			{
+				var res = mk.loadEquipImages(img + "_" + mk.itemData.img + waistShadowName, charaObj);
+				if(! res) res = mk.loadEquipImages(img + "_waist" + waistShadowName, charaObj);
+				if(! res) mk.loadEquipImages(img + "_" + mk.itemData.img, charaObj);
+			}
+		}
+
+		// leg, hip には chest と waist の両方が影を落とす可能性がある
+		// 両方とも影があった場合、waist の影を優先する
+		if(mark.itemData.part == "chest")
+		{
+			// chest を着脱する時、waist が影を落としていたら何もしない
+			var mk = parent.getEquipedMarker("waist");
+			if(mk !== void)
+			{
+				waistHipShadow = mk.itemData["sdw_hip" + mk.stateSuffix];
+				waistLegShadow = mk.itemData["sdw_leg" + mk.stateSuffix];
+			}
+		}
+		else if(mark.itemData.part == "waist" && ! attach)
+		{
+			// waist を外すときは chest の影があれば復活させる
+			var mk = parent.getEquipedMarker("chest");
+			if(mk !== void)
+			{
+				chestHipShadow = mk.itemData["sdw_hip" + mk.stateSuffix];
+				chestLegShadow = mk.itemData["sdw_leg" + mk.stateSuffix];
+			}
+		}
+
+		// 尻に落ちる影を描画（ややこしいので細かく解説を付ける）
+
+		shadowKey = "sdw_hip" + mark.stateSuffix;	// 尻の影を指定するキー
+
+		if(mark.itemData[shadowKey] !== void && waistHipShadow === void)
+		{
+			// 尻に落ちる影情報が存在し、chest の着脱によって変化する waist の影がない場合
+			if(chestHipShadow !== void)
+			{
+				// 復活した chest の影があったらそれを描画することにする
+				hipShadowName = "_" + chestHipShadow;
+			}
+			else
+			{
+				// なければ着脱に応じて
+				hipShadowName = attach ? "_" + mark.itemData[shadowKey] : "";
+			}
+
+			// 尻に装備されているものを調べる
+			var mk = parent.getEquipedMarker("hip");
+
+			// 装備と重ね合わせ順が同じなのでいったん消しておく
+			hipLayer.visible = false;
+
+			// 描画開始
+			if(mk === void)
+			{
+				// 何もはいていない
+				// 落ちる影があれば影付き、そうでなければ影無しの尻画像が読み込まれる
+				var res = hipLayer.loadImages(img + "_hip" + hipShadowName, charaObj);
+
+				if(! res)
+				{
+					// 落ち影の情報があったにも関わらず該当する画像がなかった。つまり影情報があっても
+					// このキャラの尻部には落ちないということなので代わりに影なしの尻を読み込む
+					hipLayer.loadImages(img + "_hip", charaObj);
+				}
+			}
+			else if(hipShadowName == "")
+			{
+				// ここに影を落とす装備がなくなったので
+				// 影なしの装備画像を読み込む
+				mk.loadEquipImages(img + "_" + mk.itemData.img, charaObj);
+			}
+			else
+			{
+				// 何かはいていて落とされる影の情報もある
+
+				// 指定通り読み込んでみる
+				var res = mk.loadEquipImages(img + "_" + mk.itemData.img + hipShadowName, charaObj);
+
+				// 上の装備で隠れたりして着脱同一の画像になっている可能性があるので
+				// 影が落ちている尻画像を代わりに読み込む
+				if(! res)
+				{
+					res = mk.loadEquipImages(img + "_hip" + hipShadowName, charaObj);
+				}
+
+				// 影あり画像が着脱双方になかった。つまり影情報があっても
+				// このキャラの尻部には落ちないということなので代わりに影なしの装備画像を読み込む
+				if(! res)
+				{
+					res = mk.loadEquipImages(img + "_" + mk.itemData.img, charaObj);
+				}
+			}
+		}
+
+		// 足に落ちる影を描画（尻の場合と同じ）
+		shadowKey = "sdw_leg" + mark.stateSuffix;
+		if(mark.itemData[shadowKey] !== void && waistLegShadow === void)
+		{
+			if(chestLegShadow !== void)
+			{
+				legShadowName = "_" + chestLegShadow;
+			}
+			else
+			{
+				legShadowName = attach ? "_" + mark.itemData[shadowKey] : "";
+			}
+			var mk = parent.getEquipedMarker("leg");
+			legLayer.visible = false;
+			if(mk === void)
+			{
+				var res = legLayer.loadImages(img + "_leg" + legShadowName);
+				if(! res) legLayer.loadImages(img + "_leg");
+			}
+			else if(legShadowName == "")
+			{
+				mk.loadEquipImages(img + "_" + mk.itemData.img, charaObj);
+			}
+			else
+			{
+				var res = mk.loadEquipImages(img + "_" + mk.itemData.img + legShadowName, charaObj);
+				if(! res) res = mk.loadEquipImages(img + "_leg" + legShadowName, charaObj);
+				if(! res) res = mk.loadEquipImages(img + "_" + mk.itemData.img, charaObj);
+			}
+		}
+	}
+
+	function equipAndChangePose(charaObj, pose)
+	{
+		// 胸を覆っているか、武器・盾を握っているかでポーズを変更しつつ装備
+		// pose は任意にポーズを指定したい時に使う
+
+		//【ややこしい小手の仕様についての説明】
+		//  down     下ろした右腕（通常状態）
+		//  up       武器を握るため上げた右腕
+		//  grip     武器を握るため上げた右腕の握り手。これで武器の柄を隠す
+		//  sub      下ろした左腕（通常状態）。盾を装備したら消える
+		//  hide     胸パーツ用の属性。胸を隠すために覆う両腕とその胸部（女性専用）
+		//  hideg    胸パーツ用の属性。胸を覆いながら武器を持つ両腕とその胸部（女性専用）
+		//  griph    胸を覆いながら武器を持つ時の握り手。武器の柄を隠す（女性専用）
+		//  pv       クリック判定用の領域画像
+		//  blank    ↑ の判定を利用するため読み込まれるダミー画像
+		//           小手は左右の画像が別々だが判定は同一の物として扱わなければならないため必要
+
+		// 腕を含み固定される装備の場合、腕が消え武器も盾も持てない
+		if(charaObj.equip.chest !== void && charaObj.equip.chest.fixHand)
+		{
+			armLayer.visible = false;
+			gripLayer.visible = false;
+			subArmLayer.visible = false;
+			return;
+		}
+
+		var img = charaObj.img;	// 画像のプレフィックス
+		var cover = charaObj.coveringBust();	// 胸を隠すかどうか
+		var gl = parent.getEquipedMarker("arm");	// 籠手
+		var wp = parent.getEquipedMarker("main");	// 武器
+		var sh = parent.getEquipedMarker("sub");	// 盾
+
+		// 任意に胸を隠すかどうかの指定をしている場合
+		if(pose == "showBust") cover = false;
+		if(pose == "coverBust") cover = true;
+
+		// 両手武器装備時は何も持たない手も上げる
+		var double = (wp !== void && wp.itemData.part == "double");
+
+		// 胸パーツ
+		if(cover)
+		{
+			if((wp !== void && sh !== void) || double) chestLayer.loadImages(img + "_chest_hidegw", charaObj);
+			else if(wp !== void) chestLayer.loadImages(img + "_chest_hideg", charaObj);
+			else chestLayer.loadImages(img + "_chest_hide", charaObj);
+			bustLayer.visible = false;
+		}
+		else if(chestLayer.visible)
+		{
+			chestLayer.loadImages(img + "_chest", charaObj);
+			if(parent.getEquipedMarker("bust") === void)
+			{
+				// 隠されず、胸に何も付けていない
+				bustLayer.loadImages(img + "_bust", charaObj);
+			}
+		}
+
+		// 腕パーツ
+		hideGripLayer.visible = false;
+		gripLayer.visible = false;
+		if(gl !== void)
+		{
+			if(cover)
+			{
+				if((wp !== void && sh !== void) || double)
+				{
+					gl.loadEquipImages(img + "_" + gl.itemData.img + "_hidegw", charaObj);
+					hideGripLayer.loadImages(img + "_" + gl.itemData.img + "_griphw", charaObj);
+				}
+				else if(wp !== void)
+				{
+					gl.loadEquipImages(img + "_" + gl.itemData.img + "_hideg", charaObj);
+					hideGripLayer.loadImages(img + "_" + gl.itemData.img + "_griph", charaObj);
+				}
+				else
+				{
+					gl.loadEquipImages(img + "_" + gl.itemData.img + "_hide", charaObj);
+				}
+				gl.setPos(hideGripLayer.left, hideGripLayer.top);
+				gl.hitType = htMask;
+				armLayer.visible = false;
+				if(gl.itemData.equipIndex === void) gl.absolute = hideGripLayer.absolute - 200;
+			}
+			else
+			{
+				if(wp !== void || pose == "armUp") armLayer.loadImages(img + "_" + gl.itemData.img + "_up");
+				else armLayer.loadImages(img + "_" + gl.itemData.img + "_down");
+				if(sh !== void || double || pose == "armUp") subArmLayer.loadImages(img + "_" + gl.itemData.img + "_subup");
+				else subArmLayer.loadImages(img + "_" + gl.itemData.img + "_sub");
+				if((wp !== void && sh !== void) || double) gl.loadEquipImages(img + "_" + gl.itemData.img + "_gripw", charaObj);
+				else if(wp !== void) gl.loadEquipImages(img + "_" + gl.itemData.img + "_grip", charaObj);
+				else gl.loadEquipImages(img + "_arm_blank", charaObj);
+				gl.setPos(armLayer.left, armLayer.top);
+				gl.loadProvinceImage(img + "_arm_pv");
+				gl.hitType = htProvince;
+				if(gl.itemData.equipIndex === void) gl.absolute = gripLayer.absolute;
+			}
+		}
+		else
+		{
+			if(cover)
+			{
+				if((wp !== void && sh !== void) || double) hideGripLayer.loadImages(img + "_arm_griphw");
+				else if(wp !== void) hideGripLayer.loadImages(img + "_arm_griph");
+				armLayer.visible = false;
+			}
+			else
+			{
+				if(wp !== void || pose == "armUp") armLayer.loadImages(img + "_arm_up");
+				else armLayer.loadImages(img + "_arm_down");
+				if(sh !== void || double || pose == "armUp") subArmLayer.loadImages(img + "_arm_subup");
+				else subArmLayer.loadImages(img + "_arm_sub");
+				if((wp !== void && sh !== void) || double) gripLayer.loadImages(img + "_arm_gripw");
+				else if(wp !== void) gripLayer.loadImages(img + "_arm_grip");
+			}
+		}
+
+		// 武器
+		if(wp !== void)
+		{
+			if(wp.itemData.equipIndex === void) wp.absolute = gripLayer.absolute - 100;
+			if(cover) wp.setPos(hideMainGrip[0] - wp.itemData.grip[0], hideMainGrip[1] - wp.itemData.grip[1]);
+			else wp.setPos(mainGrip[0] - wp.itemData.grip[0], mainGrip[1] - wp.itemData.grip[1]);
+		}
+
+		// 盾・補助武器
+		if(sh !== void)
+		{
+			if(sh.itemData.equipIndex === void)
+			{
+				if(sh.itemData.part == "both") sh.absolute = gripLayer.absolute - 100;
+				else sh.absolute = 950;
+			}
+			if(cover) sh.setPos(hideSubGrip[0] - sh.itemData.grip[0], hideSubGrip[1] - sh.itemData.grip[1]);
+			else sh.setPos(subGrip[0] - sh.itemData.grip[0], subGrip[1] - sh.itemData.grip[1]);
+		}
+		else
+		{
+			if(cover) subArmLayer.visible = false;
+			else subArmLayer.visible = true;
+		}
+	}
+}
+
+
+class ShopLayer extends BoardLayer
+{
+	// ショップ画面のコマンド等が表示されるエリアのレイヤー
+
+	var numButtons = 8;
+	var shopKeeper;
+	var buttons = [];
+	var modeMarker;
+	var wallet;
+	var lastFocusedButton;
+	var portraitMode = false;
+
+	function ShopLayer(par, master)
+	{
+		super.BoardLayer(...);
+		loadImages("back_shop");
+		setSizeToImageSize();
+		name = "店レイヤー";
+		targetLayers = buttons;
+		hitThreshold = 256;
+
+		// 店番表示
+		shopKeeper = new DecoLayer(this);
+		shopKeeper.visible = true;
+
+		for(var i = 0; i < numButtons; i++)
+		{
+			buttons[i] = new FixedButtonWithCharaSelector(par);
+			buttons[i].name = "ショップボタン " + i;
+			buttons[i].onSelectActionParam = buttons[i];
+			parent.markers.add(buttons[i]);
+		}
+
+		// ボタン０
+		buttons[0].onSelectAction = buyItem;
+		buttons[0].loadImages("btn_menu_buy");
+
+		// ボタン１
+		buttons[1].onSelectAction = buySpecialItem;
+		buttons[1].loadImages("btn_menu_special");
+
+		// ボタン２
+		buttons[2].onSelectAction = sellItem;
+		buttons[2].loadImages("btn_menu_sell");
+
+		// ボタン３
+		buttons[3].onSelectAction = maintenanceItem;
+		buttons[3].loadImages("btn_menu_maintenance");
+
+		// ボタン４
+		buttons[4].onSelectAction = removeCurse;
+		buttons[4].loadImages("btn_menu_removecurse");
+
+		// ボタン５
+		buttons[5].onSelectAction = arrangeItem;
+		buttons[5].loadImages("btn_menu_arrange");
+
+		// ボタン６
+		buttons[6].onSelectAction = parent.closeShop;
+		buttons[6].loadImages("btn_menu_exitshop");
+
+		// ボタン７（これだけ形が違う）
+		buttons[7].onSelectAction = repairWearedItem;
+		buttons[7].loadImages("btn_switch_repair");
+
+		// モード表示
+		modeMarker = new DecoLayer(par);
+		modeMarker.loadImages("image_shopmarker");
+
+		// 財布
+		wallet = new WalletLayer(this, master);
+	}
+
+	function finalize()
+	{
+		invalidate shopKeeper;
+		invalidate modeMarker;
+		for(var i = 0; i < numButtons; i++) invalidate buttons[i];
+		invalidate wallet;
+		super.finalize();
+	}
+
+	function open(mode, buyOnly = false)
+	{
+		// 肖像と店コマンドを配置
+		portraitMode = mode;
+		if(portraitMode)
+		{
+			loadImages("back_shop_wide");
+			setPos(parent.width - width, 0);
+			shopKeeper.setPos(282, 12);
+			for(var i = 0; i < numButtons; i++)
+			{
+				buttons[i].setPos(left + 40, i * 50 + 160);
+				buttons[i].visible = true;
+			}
+			buttons[7].setPos(left + 243, buttons[3].top + 9);
+			wallet.setPos(width - 210, height - 60);
+		}
+		else
+		{
+			loadImages("back_shop");
+			setPos(-parent.left, 0);
+			shopKeeper.setPos(18, 12);
+			for(var i = 0; i < numButtons; i++)
+			{
+				if(buyOnly && i != 0 && i != 1 && i != 6) continue;
+				buttons[i].setPos(left + 81, i * 50 + 340);
+				buttons[i].visible = true;
+			}
+			buttons[7].setPos(left + 283, buttons[3].top + 9);
+			wallet.setPos(30, height - 60);
+		}
+
+		// 店番と画面を表示
+		shopKeeper.visible = true;
+		visible = true;
+	}
+
+	function close()
+	{
+		visible = false;
+		shopKeeper.visible = false;
+		modeMarker.visible = false;
+		for(var i = 0; i < numButtons; i++)
+		{
+			buttons[i].visible = false;
+		}
+	}
+
+	function setSelectingMark(btn)
+	{
+		// マーカーを配置する
+		modeMarker.setPos(left + 50 - portraitMode * 40, (btn.top \ 10) * 10 + 7);
+		modeMarker.absolute = absolute + 1;
+		modeMarker.visible = true;
+		lastFocusedButton = btn;
+	}
+
+	function loadSeller(storage)
+	{
+		// 店番作成
+		shopKeeper.loadImages(storage);
+	}
+
+	function buyItem(btnObj)
+	{
+		// 買うコマンド
+		parent.openBuyMode();
+		setSelectingMark(btnObj);
+		parent.focusToFirstItem();
+	}
+
+	function buySpecialItem(btnObj)
+	{
+		// 掘り出し物コマンド
+		parent.openSpecialBuyMode();
+		setSelectingMark(btnObj);
+		parent.focusToFirstItem();
+	}
+
+	function sellItem(btnObj)
+	{
+		// 売るコマンド
+		parent.openLeftShopMode(, "sell");
+		setSelectingMark(btnObj);
+		parent.focusToFirstItem();
+	}
+
+	function maintenanceItem(btnObj)
+	{
+		// 修理鑑定コマンド
+		parent.openLeftShopMode(, "maintenance");
+		setSelectingMark(btnObj);
+		parent.focusToFirstItem();
+	}
+
+	function repairWearedItem(btnObj)
+	{
+		// 装備中アイテム修理コマンド
+		parent.openRightShopMode(, "maintenance");
+		setSelectingMark(btnObj);
+		parent.focusToFirstItem();
+	}
+
+	function removeCurse(btnObj)
+	{
+		// 解呪コマンド
+		parent.openRightShopMode(, "removeCurse");
+		setSelectingMark(btnObj);
+		parent.focusToFirstItem();
+	}
+
+	function arrangeItem(btnObj)
+	{
+		// 整理コマンド
+		parent.openLeftShopMode(, "arrange");
+		setSelectingMark(btnObj);
+		parent.focusToFirstItem();
+	}
+}
+
+
+class FixedButtonWithCharaSelector extends FixedButtonWithMarkers
+{
+	// ギルドのステータス画面で使われるボタン。キャラ切替のキーだけ追加する
+
+	function FixedButtonWithCharaSelector(par)
+	{
+		super.FixedButtonWithMarkers(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if(key == BT_LSTEP || key == BT_RSTEP || key == BT_LSTEP2 || key == BT_RSTEP2)
+		{
+			parent.openNextCharaInventory(key == BT_RSTEP || key == BT_RSTEP2);
+		}
+		super.onKeyDown(...);
+	}
+}
+
+
+class ChestMenuLayer extends BoardLayer
+{
+	// アイテム収納箱画面のコマンド等が表示されるエリアのレイヤー
+
+	var closeBtn;
+	var shareBtn;
+	var sendBtn;
+	var storeBtn;
+	var getUnknownBtn;
+	var getCoinBtn;
+	var stockCounter;
+	var disposalCounter;
+	var leftSwitch;
+	var rightSwitch;
+	var wallet;
+
+	function ChestMenuLayer(par, master)
+	{
+		super.BoardLayer(...);
+		loadImages("back_treasure");
+		setPos(-parent.left, 0);
+		setSizeToImageSize();
+		name = "アイテム収納箱コマンド枠";
+
+		storeBtn = new FixedButtonWithCharaSelector(par);
+		with(storeBtn)
+		{
+			.name = "収納ボタン";
+			.setPos(86 + left, 355);
+			.loadImages("btn_menu_store");
+			.absolute = 7;
+			.onSelectAction = storeItemsToStock;
+		}
+		parent.markers.add(storeBtn);
+
+		shareBtn = new FixedButtonWithCharaSelector(par);
+		with(shareBtn)
+		{
+			.name = "自動配布ボタン";
+			.setPos(86 + left, 235);
+			.loadImages("btn_menu_getall");
+			.absolute = 8;
+			.onSelectAction = autoShareAllItems;
+		}
+		parent.markers.add(shareBtn);
+
+		sendBtn = new FixedButtonWithCharaSelector(par);
+		with(sendBtn)
+		{
+			.name = "倉庫送付ボタン";
+			.setPos(86 + left, 355);
+			.loadImages("btn_menu_sendto");
+			.absolute = 8;
+			.onSelectAction = sendAllItemsToTrunkRoom;
+		}
+		parent.markers.add(sendBtn);
+
+		getUnknownBtn = new FixedButtonWithCharaSelector(par);
+		with(getUnknownBtn)
+		{
+			.name = "未鑑定品回収ボタン";
+			.setPos(86 + left, 295);
+			.loadImages("btn_menu_getUnknown");
+			.absolute = 8;
+			.onSelectAction = getUnknownItems;
+		}
+		parent.markers.add(getUnknownBtn);
+
+		getCoinBtn = new FixedButtonWithCharaSelector(par);
+		with(getCoinBtn)
+		{
+			.name = "お金回収ボタン";
+			.setPos(86 + left, 355);
+			.loadImages("btn_menu_getcoin");
+			.absolute = 8;
+			.onSelectAction = getCoinsAndClose;
+		}
+		parent.markers.add(getCoinBtn);
+
+		closeBtn = new FixedButtonWithCharaSelector(par);
+		with(closeBtn)
+		{
+			.name = "宝箱閉じるボタン";
+			.setPos(86 + left, 415);
+			.loadImages("btn_menu_close");
+			.absolute = 8;
+			.onSelectAction = master.processPrev;
+		}
+		parent.markers.add(closeBtn);
+
+		stockCounter = new DecoLayer(this);
+		with(stockCounter)
+		{
+			.loadImages("frame_stock");
+			.setSizeToImageSize();
+			.setPos(77, 80);
+			//.font.face = "ＭＳ 明朝";
+			.font.height = 48;
+			.font.bold = true;
+			.visible = false;
+		}
+
+		disposalCounter = new DecoLayer(this);
+		with(disposalCounter)
+		{
+			.loadImages("frame_disposal");
+			.setSizeToImageSize();
+			.setPos(57, 235);
+			//.font.face = "ＭＳ 明朝";
+			.font.height = 36;
+			.font.bold = true;
+			.visible = false;
+		}
+
+		leftSwitch = new FixedButtonWithCharaSelector(par);
+		with(leftSwitch)
+		{
+			.loadImages("btn_arrow_left");
+			.setPos(-parent.left + 148, 187);
+			.selectable = true;
+			.onSelectAction = changeStockPage;
+			.onSelectActionParam = false;
+		}
+		parent.markers.add(leftSwitch);
+
+		rightSwitch = new FixedButtonWithCharaSelector(par);
+		with(rightSwitch)
+		{
+			.loadImages("btn_arrow_right");
+			.setPos(leftSwitch.left + leftSwitch.width + 5, leftSwitch.top);
+			.selectable = true;
+			.onSelectAction = changeStockPage;
+			.onSelectActionParam = true;
+		}
+		parent.markers.add(rightSwitch);
+
+		wallet = new WalletLayer(this, master);
+		wallet.setPos(left - 36, height - 40);
+	}
+
+	function finalize()
+	{
+		invalidate closeBtn;
+		invalidate shareBtn;
+		invalidate sendBtn;
+		invalidate storeBtn;
+		invalidate getUnknownBtn;
+		invalidate getCoinBtn;
+		invalidate stockCounter;
+		invalidate disposalCounter;
+		invalidate leftSwitch;
+		invalidate rightSwitch;
+		invalidate wallet;
+		super.finalize();
+	}
+
+	function open()
+	{
+		closeBtn.visible = true;
+		shareBtn.visible = true;
+		visible = true;
+	}
+
+	function close()
+	{
+		closeBtn.visible = false;
+		shareBtn.visible = false;
+		sendBtn.visible = false;
+		storeBtn.visible = false;
+		getUnknownBtn.visible = false;
+		getCoinBtn.visible = false;
+		stockCounter.visible = false;
+		disposalCounter.visible = false;
+		leftSwitch.visible = false;
+		rightSwitch.visible = false;
+		visible = false;
+	}
+
+	function setArrow()
+	{
+		leftSwitch.visible = rightSwitch.visible = true;
+	}
+
+	function autoShareAllItems()
+	{
+		master.itemBoxObj.autoShareAllItems();
+		parent.setInventory();	// 更新
+		shareBtn.focus();
+	}
+
+	function sendAllItemsToTrunkRoom()
+	{
+		master.itemBoxObj.sendItemsToAnotherStock(master.trunkRoom);
+		parent.setInventory();	// 更新
+		storeBtn.focus();
+	}
+
+	function getUnknownItems()
+	{
+		master.itemBoxObj.autoShareAllItems(false, true);
+		parent.setInventory();	// 更新
+		shareBtn.focus();
+	}
+
+	function getCoinsAndClose()
+	{
+		master.itemBoxObj.autoShareAllItems(true);
+		parent.setInventory();	// 更新
+		master.processPrev();
+	}
+
+	function storeItemsToStock()
+	{
+		if(parent.curChara == master.itemBoxObj) return;
+		parent.curChara.storeItemsToStock();
+		parent.setInventory();	// 更新
+		storeBtn.focus();
+	}
+
+	function changeStockPage(forward)
+	{
+		master.itemBoxObj.collectItemsToStock();
+		master.itemBoxObj.setNextPageNum(forward);	// ページ番号切替
+		master.itemBoxObj.reloadItemsFromStock();
+		updateStockPageNumber();
+		if(parent.curChara == master.itemBoxObj) parent.openChestMode();	// 更新
+	}
+
+	function updateStockPageNumber()
+	{
+		stockCounter.clear();
+		stockCounter.drawText( 32, 35, "%2d".sprintf(master.itemBoxObj.curPage + 1), 0xD6D8D8);
+		stockCounter.drawText(137, 35, master.itemBoxObj.maxPageCount, 0xD6D8D8);
+		stockCounter.visible = true;
+	}
+
+	function updateDaysLeftToDisposal()
+	{
+		disposalCounter.clear();
+		disposalCounter.drawText( 170, 4, master.itemBoxObj.remaining, 0xE0E0B0);
+		disposalCounter.visible = true;
+	}
+}
+//----------------------------------------------------------------------------------------
+/*
+
+＜各パーツの呼び名＞
+body    全身
+head    頭部（未使用）
+chest   胸・上半身鎧・シャツ
+waist   腰・下半身鎧・スカート
+bust    乳房・ブラ
+hip     股間・パンツ
+arm     腕・小手・手袋
+leg     足・ブーツ
+finger  指・指輪
+pocket  ポケット・その他のアクセサリ
+
+*/

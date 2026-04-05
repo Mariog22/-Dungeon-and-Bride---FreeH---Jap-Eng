@@ -1,0 +1,711 @@
+﻿// treasure.tjs
+// 宝箱・罠関連
+
+
+//----------------------------------------------------------------------------------------
+class TreasureCommandWindow extends CommandBoard
+{
+	// 宝箱を操作するメニュー
+
+	var curPicker;	// 鍵を外す人（一時保存）
+
+	function TreasureCommandWindow(par, master)
+	{
+		super.CommandBoard(...);
+		name = "宝箱コマンドウインドウ";
+		loadImages("frame_trap");
+		font.height = 24;
+		notification = false;
+		adjustX = 100000;
+		adjustY = 1;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function open()
+	{
+		curPicker = master.party.getCurPicker();
+		if(curPicker === void) return false;	// 解除する人がいないので宝箱はなし
+		super.open();
+		setPos(30, 40);
+		master.setPrev(leaveTreasure);
+		putTreasureCommands();
+		master.party.putOpinionsOfTrap(master.treasureBox);
+		return true;
+	}
+
+	function close()
+	{
+		super.close();
+		master.wordsBase.close();
+	}
+
+	function hideWindows()
+	{
+		// 一時的にウインドウ等を隠す
+		visible = false;
+		cover.visible = false;
+		master.wordsBase.visible = false;	// 一時的に隠す
+	}
+
+	function showWindows()
+	{
+		// 一時的に隠したウインドウ等を表示する
+		visible = true;
+		cover.visible = true;
+		master.wordsBase.visible = true;	// 一時的に隠したのを再表示
+	}
+
+	function putTreasureCommands()
+	{
+		// 宝箱を操作する一覧
+		master.instruction.close();
+		master.setPrev(putTreasureCommands);
+		master.exitSelectTargetMode();
+		showWindows();
+		clear();
+		write("<g>Found a chest! What should we do?<w>");
+		var dic = [];
+		dic.add(%[text: "Disarm trap", func: selectTrap]);
+		dic.add(%[text: "Open", func: removeTrap, param: o.罠はない]);
+		dic.add(%[text: "Use " + o.ディテクト.displayName, func: enterSelectCalfoMode
+			, cond: master.party.isUsableMagic(o.ディテクト)]);
+		dic.add(%[text: "Use " + o.アンロック.displayName, func: enterSelectCalnovaMode
+			, cond: master.party.isUsableMagic(o.アンロック)]);
+		dic.add(%[text: o.アンロック.displayName + " Scroll", func: useScrollForUnlock
+			, cond: master.party.hasItem(o.アンロックの巻物)]);
+		dic.add(%[text: "Ignore", func: leaveTreasure]);
+		cmdLength = 12;
+		cmdAlign = "left";
+		putCommands(dic);	// コマンド表示
+		putPicker();	// 解錠する人を選択するボタンを置く
+	}
+
+	function putCommands(dic)
+	{
+		// コマンド表示
+		var row = master.traps.count \ 2;	// 罠一覧だけ２列にしたいので
+		for(var i = 0; i < dic.count; i++)
+		{
+			dic[i].left = (i \ row) * 200 + 442;
+			dic[i].top = (i % row) * 35 + 92;
+			putCommand(dic[i]);
+			commands[i].type = ltDodge;	// ボタンは ltAddAlpha 形式で作ること
+		}
+		focusToFirstCommandByKey();
+	}
+
+	function putPicker()
+	{
+		// 解除する人を選択するボタンを置く
+		write("<y>Opener:", 82, 87);
+		write(curPicker.displayName + "<w>", 262 - font.getTextWidth(curPicker.name), 117);
+		piledCopy(285, 90, curPicker, 25, 5, 100, 100);
+		cmdLength = "b7";
+		cmdAlign = "center";
+		putCommand(%[text: "Change", func: changeMainPicker, left: 152, top: 162]);
+		commands[-1].type = ltDodge;	// ボタンは ltAddAlpha 形式で作ること
+	}
+
+	function changeMainPicker()
+	{
+		// 罠を解除するキャラを変える
+		master.setPrev();
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			var one = master.party.members[i];
+			one.selectable = one.active;
+		}
+		hideWindows();
+		master.instruct("Who should disarm the trap?");
+		master.enterSelectTargetMode(setMainPicker, false);
+		curPicker.focus();
+	}
+
+	function setMainPicker(chr)
+	{
+		// 解錠する人を設定
+		master.party.mainPicker = curPicker = chr;
+		master.instruction.close();
+		master.processPrev();
+	}
+
+	function selectTrap()
+	{
+		// 外す罠を選ぶ
+		master.setPrev(selectTrap);
+		master.exitSelectTargetMode();
+		showWindows();
+		clear();
+		write("<g>Select treasure chest trap<w>");
+		var dic = [];
+		for(var i = 0; i < master.traps.count - 1; i++)
+		{
+			// 表示順の縦横を変えるため挿入順を変えている
+			// 罠の総数はなるべく偶数にすること
+			// なお traps の末尾は「o.罠はない」なので最後の１つは追加しない
+			var num = i \ 2 + (i % 2) * master.traps.count \ 2;
+			dic[num] = %[text: master.traps[i].displayName, func: removeTrap, param: master.traps[i]];
+		}
+		dic.insert(master.traps.count - 1, %[text: "Back", func: master.processPrev]);
+		cmdLength = 6;
+		cmdAlign = "left";
+		putCommands(dic);
+		putPicker();	// 解除担当表示
+	}
+
+	function removeTrap(selectedTrap)
+	{
+		// 罠を解除する
+		if(selectedTrap != o.罠はない && master.treasureBox.trap == selectedTrap
+			 && curPicker.tryRemoveTrap(master.treasureBox))
+		{
+			master.treasureBox.trap = o.解除済み;	// 罠の解除に成功
+		}
+		close();
+		master.noReturnMenu = false;
+		master.resetPrev();
+		master.setPrev(master.openTreasureBox);
+		master.setPrev();
+		master.curFighter = master.virtualChara;
+		master.curFighter.act = master.treasureBox.trap;
+		master.curFighter.target = master.curFighter.getRandomTarget(master.curFighter.act);
+		master.curFighter.processCommand();
+		// if(master.inEvent) master.curFighter.processCommand();	// 不要？
+		// else master.curFighter.endCommandSetting();	// 不要？
+	}
+
+	function enterSelectCalfoMode()
+	{
+		// 罠識別魔法を唱えるキャラを選択
+		master.setPrev();
+		hideWindows();
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			var one = master.party.members[i];
+			one.selectable = one.isUsableMagic(o.ディテクト);
+		}
+		master.instruct("Who should cast " + o.ディテクト.displayName + "?");
+		master.enterSelectTargetMode(spellCalfo, false);
+	}
+
+	function spellCalfo(charaObj)
+	{
+		// 罠識別魔法を唱える
+		var trapName = charaObj.getOpinionOfTrap(master.treasureBox, true);
+		master.wordsBase.popUpMessage(charaObj.slot, trapName, "frame_word_ex");	// 裏で書き換えておく
+		master.curFighter = charaObj;
+		charaObj.target = charaObj;
+		charaObj.act = o.ディテクト;
+		master.instruction.close();
+		master.exitSelectTargetMode();
+		kag.process("battle.ks", "*field_start");
+	}
+
+	function enterSelectCalnovaMode()
+	{
+		// 罠解除魔法を唱えるキャラを選択
+		master.setPrev();
+		hideWindows();
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			var one = master.party.members[i];
+			one.selectable = one.isUsableMagic(o.アンロック);
+		}
+		master.instruct("Who should cast " + o.アンロック.displayName + "?");
+		master.enterSelectTargetMode(spellCalnova, false);
+	}
+
+	function spellCalnova(charaObj)
+	{
+		// 罠解除魔法を唱える
+		o.アンロック.unlockTarget = "trapWin";
+		master.setPrev(master.openTreasureBox);
+		master.setPrev();
+		master.curFighter = charaObj;
+		charaObj.act = o.アンロック;
+		charaObj.target = void;
+		master.instruction.close();
+		master.exitSelectTargetMode();
+		kag.process("battle.ks", "*field_start");
+	}
+
+	function useScrollForUnlock()
+	{
+		// 巻物を１つ消費して罠解除を行う
+		hideWindows();
+		master.setPrev(master.openTreasureBox);
+		master.setPrev();
+		var dic = master.party.findItem(o.アンロックの巻物);
+		master.curFighter = dic.chara;
+		master.curFighter.act = o.アンロックの巻物;
+		master.curFighter.reserveUsingItem(o.アンロックの巻物, dic.key);
+		o.アンロックの巻物.unlockTarget = "trapWin";
+		kag.process("battle.ks", "*field_start");
+	}
+
+	function leaveTreasure()
+	{
+		// 宝箱を置いて去る
+		close();
+		if(master.inEvent) kag.process("script.ks", "*leave_treasure_in_event");
+		else master.enterTravelMode();
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class ItemBox extends Layer
+{
+	// 疑似アイテム収納オブジェクト。キャラクラスの持つ bag の機能を使わせる
+	// いくつかのキャラクラスのメソッドを持たせて同じように振る舞えるようにしておく
+
+	var master;
+	var slot;
+	var bag = [];
+	var bagMap = [];
+	var bagStat = [];
+
+	function ItemBox(par, master)
+	{
+		super.Layer(par.window, par);
+		this.master = master;
+		loadImages("btn_treasure_box");
+		setSizeToImageSize();
+		slot = master.party.maxMembers;	// 擬似パーティーキャラなのでパーティー末尾の番号を割り振る
+	}
+
+	function insertItem(itemData, stat, gridID)
+	{
+		return CharaObject.insertItem(itemData, stat, gridID, false);
+	}
+
+	function ejectItem(item, gridID, unknown)
+	{
+		return CharaObject.ejectItem(...);
+	}
+
+	function findItem(itemData, unknown = false)
+	{
+		var key = bag.find(itemData);
+		if(key != -1 && (unknown || bagStat[key] > BROKEN)) return key;
+	}
+
+	function getItemExist()
+	{
+		// アイテムの残りがあるかどうか返す。貴重品なら important を返す
+		var exist = false;
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] === void) continue;
+			exist = true;
+			if(bag[i].event) return "important";
+		}
+		return exist ? "exist" : "none";
+	}
+
+	function autoShareAllItems(coinOnly = false, unknownOnly = false)
+	{
+		// 宝箱のすべてのアイテムをパーティーが自動的に取得する
+		var gotItems = false;
+		var arr = [];
+		arr.assign(master.party.members);
+
+		if(unknownOnly)
+		{
+			// 未鑑定のみ取得の場合は鑑定力が高いメンバーを優先する
+			arr.sort( function(a, b){ return a.getItemKnowledge() > b.getItemKnowledge(); } );
+		}
+		else if(master.itemWin.curChara != master.itemBoxObj)
+		{
+			// メンバー指定中の場合はそのキャラを優先
+			while(arr.find(master.itemWin.curChara) != 0) arr.add(arr.shift());
+		}
+
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] === void) continue;
+			if(unknownOnly && bagStat[i] > 0) continue;
+			if(! unknownOnly && (bag[i].type == "money" || bag[i].type == "fixedMoney"))
+			{
+				master.party.gold += bag[i].getMoneyFromCoins();
+				ejectItem(bag[i], i, true);
+				gotItems = true;
+				continue;
+			}
+			if(coinOnly) continue;
+			for(var j = 0; j < arr.count; j++)
+			{
+				if(! arr[j].insertItem(bag[i], bagStat[i])) continue;
+				ejectItem(bag[i], i, true);
+				gotItems = true;
+				break;
+			}
+		}
+		if(gotItems) playSound("coin");
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class TreasureBox extends ItemBox
+{
+	// 疑似宝箱オブジェクト
+
+	var level = 1;	// 箱のレベル
+	var trap;	// 仕掛けられている罠
+	var drops = [];	// 敵がドロップしたアイテムの保管場所
+	var dropRateOfEncounter = 1;	// 遭遇戦でアイテムを得られる確率
+
+	function TreasureBox(par, master)
+	{
+		super.ItemBox(par, master);
+		name = "宝箱";
+	}
+
+	function getItemsRank(items)
+	{
+		// 指定したアイテムの平均ランクを得る
+		if(items.count == 0) return 1;
+		var sum = 0;
+		for(var i = 0; i < items.count; i++)
+		{
+			sum += items[i].itemData.rank;
+		}
+		dm("アイテムの平均ランク : " + (sum \ items.count));
+		return sum \ items.count;
+	}
+
+	function createDropsTreasureBox(trap)
+	{
+		// 敵の落としたアイテムの入った宝箱を設定する
+		if(drops.count == 0) return false;	// アイテムがなかった
+		createTreasureBox(drops, trap, getItemsRank(drops));
+		return true;
+	}
+
+	function getOneTreasure()
+	{
+		// 敵の落としたアイテムから１つだけ獲得する。得られないこともある
+		if(drops.count == 0) return;	// アイテムがなかった
+		if(random > dropRateOfEncounter) return;	// ランダムで得られない
+		var item = drops.draw();
+		if(item.itemData.type == "money") return;	// お金はドロップアイテムにならない
+		return item;
+	}
+
+	function createTreasureBox(items, trap, level, closely = false)
+	{
+		// 今回の宝箱を作成・罠や中身を設定する
+		// closely が true だと詰めて入れる  false だとランダム
+		var itemNum = 0, func, gridID;
+		bag = [];	// いったん空にする
+		bagMap = [];	// いったん白紙にする
+		bagStat = [];	// いったん白紙にする
+		this.trap = trap;	// 罠を設定
+		for(var i = 0; i < items.count; i++)
+		{
+			// アイテムを宝箱に入れる。位置はランダム
+			if(closely) gridID = master.itemWin.getAnyBagSpace(bagMap, items[i].itemData);
+			else gridID = master.itemWin.getAnyBagSpaceRandom(bagMap, items[i].itemData);
+			if(gridID === void) break;
+			insertItem(items[i].itemData, items[i].state, gridID);
+			itemNum ++;
+		}
+		// 箱の難易度を設定
+		if(level !== void) this.level = level;
+		else this.level = getItemsRank(items);
+		return itemNum;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class StcokBox extends ItemBox
+{
+	// 疑似倉庫オブジェクト
+
+	var trunk = [];	// トランク
+	var curPage = 0;	// 現在のページ
+	var maxPageCount = 50;	// 最大ページ数
+
+	function StcokBox(par, master)
+	{
+		super.ItemBox(par, master);
+		name = "倉庫";
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.curPage = curPage;
+		dic.trunkNames = [];
+		dic.trunkStates = [];
+		for(var i = 0; i < trunk.count; i++)
+		{
+			if(trunk[i] === void) continue;
+			dic.trunkNames[i] = trunk[i].itemData.name;
+			dic.trunkStates[i] = trunk[i].state;
+		}
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		curPage = dic.curPage;
+		trunk = [];
+		for(var i = 0; i < dic.trunkNames.count; i++)
+		{
+			if(dic.trunkNames[i] === void || o[dic.trunkNames[i]] === void) continue;
+			trunk[i] = %[itemData: o[dic.trunkNames[i]], state: dic.trunkStates[i]];
+		}
+	}
+
+	function setNextPageNum(forward)
+	{
+		// ページ番号を現在のページの前後の番号に設定する
+		curPage = (curPage + (forward ? 1 : -1) + maxPageCount) % maxPageCount;
+	}
+
+	function collectItemsToStock()
+	{
+		// 宝箱内に残ったアイテムを倉庫へ回収する
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] === void) continue;
+			var num = i + curPage * master.itemWin.maxItemGrids;
+			trunk[num] = %[itemData: bag[i], state: bagStat[i]];
+		}
+		bag = [];
+		bagStat = [];
+		bagMap = [];
+	}
+
+	function sendItemsToAnotherStock(room)
+	{
+		// 宝箱内に残ったアイテムを別の倉庫へ送る
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] === void) continue;
+			if(room.insertItemToAnyPages(bag[i], bagStat[i])) bag[i] = bagStat[i] = void;
+		}
+	}
+
+	function reloadItemsFromStock(pageNum)
+	{
+		// 倉庫からアイテムを取り出して宝箱に入れる
+		if(pageNum !== void) curPage = pageNum;
+		bag = [];
+		bagStat = [];
+		bagMap = [];
+		for(var i = 0; i < master.itemWin.maxItemGrids; i++)
+		{
+			var num = i + curPage * master.itemWin.maxItemGrids;
+			if(trunk[num] === void) continue;
+			super.insertItem(trunk[num].itemData, trunk[num].state, i);
+			trunk[num] = void;
+		}
+	}
+
+	function insertItem(itemData, stat, gridID)
+	{
+		// アイテムを追加する。追加できなければ他のページへの追加も試す
+
+		// 現在バッグに開いているページに追加
+		if(super.insertItem(itemData, stat, gridID)) return true;
+
+		// 他のページへの追加を試す
+		collectItemsToStock();
+		var lastCurPage = curPage;	// 現在のページ
+		var res = insertItemToAnyPages(itemData, stat);
+		reloadItemsFromStock(lastCurPage);	// 元のページに戻す
+		return res;
+	}
+
+	function findItem(itemData, unknown, fromTrunk = false)
+	{
+		// アイテムを探す
+		if(! fromTrunk) return super.findItem(itemData, unknown);
+		for(var i = 0; i < trunk.count; i++)
+		{
+			if(trunk[i] === void) continue;
+			if(trunk[i].itemData != itemData) continue;
+			if(unknown || trunk[i].state > BROKEN) return i;
+		}
+	}
+
+	function ejectItem(itemData, key, unknown)
+	{
+		// アイテム収納情報から指定したアイテム情報を削除する。倉庫の中も探す
+		if(super.ejectItem(itemData, key, unknown)) return true;	// 先にバッグの中から探す
+		var key = findItem(itemData, unknown, true);
+		if(key === void) return false;
+		trunk[key] = void;
+		return true;
+	}
+
+	function countItemInTrunk(itemData, includeBad = false)
+	{
+		// トランクの中の指定のアイテムの数を返す
+		// includeBad を true にすると未鑑定品や破損品もカウントする
+		var num = 0;
+		for(var i = 0; i < trunk.count; i++)
+		{
+			if(trunk[i] === void) continue;
+			if(trunk[i].itemData != itemData) continue;
+			if(includeBad || trunk[i].state > 0) num ++;
+		}
+	}
+
+	function arrangeItems()
+	{
+		CharaObject.arrangeItems();
+	}
+
+	function insertItemToAnyPages(itemData, stat)
+	{
+		// アイテムを各ページへ追加する
+		for(var i = 0; i < maxPageCount; i++)
+		{
+			// 各ページへの追加を試す
+			reloadItemsFromStock(i);
+			var res = super.insertItem(itemData, stat);
+			collectItemsToStock();
+			if(res) return true;
+		}
+		return false;
+	}
+
+	function storeItemToTrunk(itemData, stat = WHOLE)
+	{
+		// アイテムを倉庫に直接追加する
+		// トランクを開くときにすべて整理するので、ここでは情報を追加するだけで良い
+		// 次に一時預かり所を表示したとき詰めたばかりのアイテムをなるべく表示したいので
+		// ストックには前から詰める
+		trunk.unshift(%[itemData: itemData, state: stat]);
+	}
+
+	function ejectItemsForRepeatPlay(storyMode = false)
+	{
+		// 周回プレイ時に所持できないすべてのアイテムを削除する
+		for(var i = 0; i < trunk.count; i++)
+		{
+			if(trunk[i] === void) continue;
+			if(! master.isItemToDeleteForRepeatPlay(trunk[i].itemData, storyMode)) continue;
+			trunk[i] = void;
+		}
+	}
+
+	function hideItemsForDemoVersion()
+	{
+		// デモ版でドロップしないすべてのアイテムを未鑑定にする
+		for(var i = 0; i < trunk.count; i++)
+		{
+			if(trunk[i] === void) continue;
+			if(master.isItemToDropInDemoVersion(trunk[i].itemData)) continue;
+			trunk[i].state = -trunk[i].state;
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class TemporaryBox extends StcokBox
+{
+	// 疑似一時保管庫オブジェクト
+
+	var daysToDisposal = 7;	// アイテム処分までの日数
+	var remaining = 0;	// 現在の残り日数
+
+	function TemporaryBox(par, master)
+	{
+		super.StcokBox(par, master);
+		name = "一時保管庫";
+	}
+
+	function store()
+	{
+		var dic = super.store();
+		dic.remaining = remaining;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		super.restore(dic);
+		remaining = dic.remaining;
+	}
+
+	function arrangeItemsInTrunk()
+	{
+		// トランクを整理する
+
+		// 残ったアイテムをプールに回収する
+		var pool = [];
+		for(var i = 0; i < trunk.count; i++)
+		{
+			if(trunk[i] === void) continue;
+			pool.add(%[itemData: trunk[i].itemData, state: trunk[i].state]);
+		}
+
+		// 再配置
+		trunk = [];
+		curPage = 0;
+		var testMap = [];
+		for(var i = 0; i < pool.count; i++)
+		{
+			var gridID = master.itemWin.getAnyBagSpace(testMap, pool[i].itemData);
+			if(gridID === void)
+			{
+				curPage ++;
+				testMap = [];
+				i --;
+				continue;
+			}
+			master.itemWin.allocateGrids(testMap, true, pool[i].itemData, gridID);
+			var num = gridID + curPage * master.itemWin.maxItemGrids;
+			trunk[num] = %[itemData: pool[i].itemData, state: pool[i].state];
+			dm("trunk " + num + " に " + pool[i].itemData.name + " を配置");
+		}
+		maxPageCount = curPage + 1;	// 最大ページ数を更新
+		curPage = 0;	// １ページ目に戻す
+	}
+
+	function storeItemToTrunk(itemData, stat = WHOLE)
+	{
+		// アイテムを倉庫に追加する ※この時点では処分はしない
+		super.storeItemToTrunk(itemData, stat);
+
+		// 何かが追加された時点で期限は３日になる
+		remaining = daysToDisposal;
+	}
+
+	function disposeTemporaryItems()
+	{
+		// 一時預かり所のアイテムをすべて削除する
+		if(! master.lapse) return;	// 時間が自動進行していないなら何もしない
+		if(remaining == 0) return;
+		remaining --;
+		if(remaining > 0) return;
+		for(var i = trunk.count - 1; i >= 0; i--)
+		{
+			if(trunk[i] === void) continue;
+			if(trunk[i].itemData.event) continue;	// 貴重品は処分しない
+			dm("期限切れの一時預かりアイテムを処分しました   " + trunk[i].itemData.name);
+			trunk.erase(i);
+		}
+	}
+}
+//----------------------------------------------------------------------------------------
+/*＜メモ＞
+
+◆罠について
+・テレポーターはフラグが狂う可能性があるので出来れば入れない → 結局入れた
+・「げんこつ」みたいな罠は気分がそがれる上に大して面白くないので名前を変更
+・全員麻痺や全員死亡みたいな罠はさすがに理不尽すぎるので入れない。どうせロードされるし
+
+◆イベント中に作動する罠について
+・イベント中に罠が作動すると、ものによってはシナリオ進行に支障を来す場合があるので
+  設置する罠については慎重に検討すること
+  特にテレポートや死亡する罠は極力使わない・発生しないようにする
+
+*/

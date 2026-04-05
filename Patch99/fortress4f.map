@@ -1,0 +1,132 @@
+﻿; 森の城塞
+
+name = 森の城塞４Ｆ
+insideName = ４Ｆ
+lower = 森の城塞３Ｆ
+level = 35
+bgm = eerie
+margin = 3
+roof = stone
+shadow = dark
+sky = forest
+
+; 各パーツ
+━ = stoner
+　 = marble
+◇ = soilr
+／ = door
+⧻ = fence
+︻ = panel
+㊦ = ladderd
+Ⓐ = warp
+
+; 敵情報
+maxGroups = 2
+monsters = クレリック,アコライト,ハイプリースト,ディサイプル,アルケミスト
+
+; 移動ポイント
+(A) = map:森の城塞１Ｆ, x:5, y:1, way:s
+
+; 宝箱
+box[1] = 死神の鎌,金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（超特大）
+box[2] = 死神の鎌,金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（超特大）,金貨（超特大）
+box[3] = 経験のコイン（小）,経験のコイン（小）,経験のコイン（小）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  		┏━━━━━━━━━━━━━━━━━┓
+ 9		┃　　　　　　　　㊦　　　　　　　　┃
+  		┃　┏━━━┳━━━━━┳━━━┓　┃
+ 8		┃　┃　　　┃❶　Ⓐ　❷┃　　　┃　┃
+  		┃　┃　　　┃　　　　　┃　　　┃　┃
+ 7		┃　┃①　　┃　　　　　┃　　②┃　┃
+  		┃　┗／┳━┻━━／━━┻━┳／┛　┃
+ 6		┃　　　┃　　◇◇◇◇◇　　┃　　　┃
+  		┃　　　┃　　　　　　　　　┃　　　┃
+ 5		┃　　　┃　　　　　　　　　┃　　　┃
+  		┃　　　┃　　　　　　　　　┃　　　┃
+ 4		┃　　　┃　　　　⑦　　　　┃　　　┃
+  		┃　┏／┻━┳━━／━︻┳━┻／┓　┃
+ 3		┃　┃③　　┃　　　　⑥┃　　④┃　┃
+  		┃　┃　　　┃　　　　　┃　　　┃　┃
+ 2		┃　┃　　❸┃　　　　　┃　　　┃　┃
+  		┃　┗━━━┻━━⧻━━┻━━━┛　┃
+ 1		┃　　　　　　　　⑤　　　　　　　　┃
+  		┗━━━━━━━━━━━━━━━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(1, 2, 3, 4);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+*event_2
+;[exp] true
+*event_3
+;[exp] true
+*event_4
+;[exp] true
+
+@callbattle gameover=true
+@delevent
+@jump storage=&'o.森の城塞１Ｆ.mapFile' target=*_dropMembersItem
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] WAY == "n"
+
+@jump target=*_card_check cond='! game.party.hasItem(o.信徒の称号・月)'
+@jump target=*_card_check cond='! game.party.hasItem(o.信徒の称号・星)'
+@jump target=*_card_check cond='! game.party.hasItem(o.信徒の称号・雲)'
+@jump target=*_card_check cond='! game.party.hasItem(o.信徒の称号・海)'
+@jump target=*_card_check cond='! game.party.hasItem(o.信徒の称号・太陽)'
+@notice text="You have successfully completed your arduous training. I will grant you the privilege of meeting the guru."
+@eval exp='game.party.ejectItem(o.信徒の称号・月)'
+@eval exp='game.party.ejectItem(o.信徒の称号・星)'
+@eval exp='game.party.ejectItem(o.信徒の称号・雲)'
+@eval exp='game.party.ejectItem(o.信徒の称号・海)'
+@eval exp='game.party.ejectItem(o.信徒の称号・太陽)'
+@wait time=800
+@se f=fence
+@switchfence x=5 y=1 way=n mode=open
+@delevent
+[eventoff]
+
+*_card_check
+@notice text="The door will not open for those who have not completed the five training exercises."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@notice text="Audience Chamber"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+@delevent
+@jump storage="main11.scn" target=*fortress
+
+[eventoff]
+;-------------------------------------------------------------------------------

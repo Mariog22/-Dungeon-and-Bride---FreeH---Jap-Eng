@@ -1,0 +1,244 @@
+﻿; 死の荒野
+
+name = 死の荒野
+insideName = Wasteland
+pool = 死の荒野・水中
+level = 39
+bgm = desert
+isOutdoor = true
+shadow = dark
+sky = cloudywild
+roof = stone
+blank = rock
+outfield = soil
+
+; 画像パーツ
+━ = rock
+－ = soil
+　 = sand
+☐ = soil
+❖ = sand
+и = pool
+△ = rock
+❑ = cube
+／ = door
+☖ = gate
+⒉ = br_maxhp
+
+; 敵情報
+monsters = バジリスク,デザートバイパー,ブラックウィドウ,マンイーター,スケルトンキング,ストーンゴーレム
+
+; 移動ポイント
+(A) = map:ダストウェルの町, enter:ダストウェルの町・南門, ask:Enter town?
+
+; 宝箱
+box[1] = アマゾネスの鎧・上_u,奴隷の鎧・下_u,知恵の秘薬,知恵の秘薬,オリハルコンの砂,５連泊券_u
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+  	▲						┏━━━━━┓
+29┃Ⓐ┃					┃　　　　　┃
+  ┃　┃			┏━┛　　　　　┗━┓					┏━━━━━┓
+28┃　┃			┃　　　　　　　　　┃					┃　　　　　┃
+  ┃　┃			┃　　　┏━┓　　　┃					┃　　　　　┃
+27┃　┃			┃　　　┃	┃　　　┃					┃　　敵　　┃
+  ┃　┃			┃　┏━┛	┗━┓　┃					┗━┓　┏━┛
+26┃　┃			┃　┃					┃　┃							┃　┃
+  ┃　┗━┓	┗／┛					┃　┗━━━━━━━┛　┃
+25┃　　　┃		①						┃　　　　　　　　　　　┃
+  ┗━┓　┃							┏━┛　　　┏━━━━━━━┛
+24		┃　┃							┃　　　　　┃
+  		┃　┃					┏━┛　　　┏━┛	┏━━━┓
+23		┃　┃					┃　　　　　┃			┃　　　┃
+  		┃　┗━━━━━┛　　　┏━┛			┃　　　┃
+22		┃　　　　　　　　　　　┃					┃敵　　┃
+  		┗━┓　　　　　　　┏━┛					┃　┏━┛
+21				┃　　　　　　　┃							┃　┃
+  				┃　　　　　　　┗━━━━━━━┛　┗━━━━━┓
+20				┃　　　　　　　　　　　　　　　　　　　　　　　┃
+  				┗━━━┓　　　　　　　　　　　　　　　　　　　┗━┓
+19								┃　　　　　　　　　　　　　　　　　　　　△┃
+  								┗━━━━━━━━━┳☖┳━━━━━┓　　　┃
+18																		ⅼ☐ⅼ					┃△　　┃
+  																		ⅼ☐ⅼ					┗━┓　┃
+17																		ⅼ☐ⅼ							┃❶┃
+  		┏－┓													ⅼ☐┗－－－┓			┃　┃
+16		ⅼиⅼ													ⅼ☐☐☐☐☐ⅼ			┃　┃
+  		ⅼиⅼ													ⅼ☐┏－┓☐┗－┓	┃　┃
+15		ⅼиⅼ													ⅼ☐ⅼ	ⅼＥ☐☐ⅼ	┃　┃
+  		ⅼиⅼ													ⅼ☐ⅼ	ⅼ☐☐☐ⅼ	┃　┃
+14		ⅼиⅼ													ⅼ☐ⅼ	ⅼ☐☐⒉ⅼ	┃　┃
+  		ⅼи┗－┓											ⅼ☐ⅼ	┗－－－┛	┃　┃
+13		ⅼ☐☐☐ⅼ											ⅼ☐ⅼ							┃　┃
+  		┗－┓☐┗－－－－－－－－－－－┛☐┗－┓					┃　┃
+12				ⅼ☐☐☐ииииии☐☐☐☐☐❑☐☐ⅼ					┃　┃
+  				ⅼ☐☐☐ииииии☐☐┏－－－－－┛			┏━┛　┃
+11				ⅼ☐☐☐☐☐☐☐☐☐☐☐ⅼ									┃　　　┃
+  				┗－┓☐☐☐☐☐☐☐☐☐┗－－－－－－－－－┫　　　┃
+10						ⅼ☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☖　　　┃
+  						┗－┓☐☐☐☐☐┏－－－－－－－－－－－┫　　　┃
+ 9								ⅼ☐☐☐☐☐ⅼ											┃　　　┃
+  								ⅼ☐☐☐☐☐ⅼ									┏━┛　　　┃
+ 8								ⅼ☐☐☐☐☐ⅼ									┃Ｖ　Ｖ　Ｖ┃
+  						┏－┛☐ииииⅼ			┏━━━━━┛　　　　　┃
+ 7						ⅼ☐☐☐ииииⅼ			┃Ｖ　Ｖ　Ｖ　Ｖ　Ｖ　Ｖ┃
+  						ⅼ☐☐☐ии┏－┛	┏━┛　　　　　　　　　　　┃
+ 6						ⅼ☐☐☐ииⅼ			┃Ｖ　Ｖ　Ｖ　Ｖ　Ｖ　Ｖ　Ｖ┃
+  						ⅼ☐┏－－－┛	┏━┛　　　　　　　　　　　　　┃
+ 5						ⅼ☐ⅼ					┃＞　＞　③　③　③　③　＜　＜┃
+  						ⅼ☐ⅼ					┃　　　　　　　　　　　　　　　┃
+ 4┃☷┃			ⅼ☐ⅼ					┃＞　＞　③　③　③　③　＜　＜┃
+  ┃	┃			ⅼ☐ⅼ					┃　　　　　　　　　　　　　　　┃
+ 3┃☷┃			ⅼ☐ⅼ					┃＞　＞　③　③　③　③　＜　＜┃
+  ┃	┃	┏－┛☐┗－┓			┃　　　　　　　　　　　　　　　┃
+ 2┃☷┃	ⅼ☐☐☐☐☐ⅼ			┃＞　＞　③　③　③　③　＜　＜┃
+  ┃	┃	ⅼиииииⅼ			┃　　　　　　　　　　　　　　　┃
+ 1┃☷┃	ⅼиииииⅼ			┃＞　＞　Λ　Λ　Λ　Λ　＜　＜┃
+  ┃	┃	ⅼиииииⅼ			┗━┓　　　　　　　　　　　┏━┛
+ 0┃☷┃	ⅼиииииⅼ					┃Λ　Λ　Λ　Λ　Λ　Λ┃
+  				┗－－－－－┛					┗━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[9][18].n.img = pos[12][10].e.img = "soil";
+pos[9][18].n.himg = pos[12][10].e.himg = "exit";
+pos[9][12].f.indoor = true;
+pos[9][12].f.img = "soil";
+setHouse(3, 25);
+allBlocks -= 1;
+for(var x = 9; x <= 12; x++) for(var y = 1; y <= 5; y++) pos[x][y].f.antiWarp = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) f.walkingCountInLairOfWorm = 0;
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@enterhouse img=interior_02
+[if exp='game.isFreeMode']
+	[texton]
+	No one is here. It looks like an empty house.[k]
+	Looking closely, I saw a ring lying on the floor.[k]
+	[textoff]
+	@getitem item=堕天使の指輪_u
+	@exithouse
+	[eventoff]
+[endif]
+
+[texton]
+[ブラザー]「If you want to change your wedding ring, I will change it for you.」[k]
+[textoff]
+@question title="Would you like to change your wedding ring?"
+@jump storage="script.ks" target=*change_rings cond='tf.result'
+@exithouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 20)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 20!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove && f.walkingCountInLairOfWorm ++ >= 20
+
+@wait time=1000
+@playse storage=earthquake
+@quake time=1000
+@wq
+@fg c=kraken_red left=450 top=-174
+[texton]
+Suddenly, a giant monster with numerous tentacles sprouting from the sand burst forth![k]
+[リーダー f=12]「Could it be... the Lord of the Desert...?」[k]
+The monster's tentacles writhe wildly and attack us![k]
+[if exp='game.party.members.count >= 3']
+	@call target=*_worm_capture cond='game.party.members.count >= 2'
+	@call target=*_worm_capture cond='game.party.members.count >= 2'
+	[リーダー f=12]「[emb exp='game.waitingMembers[0].displayName']![if exp='game.waitingMembers[1] !== void'] [emb exp='game.waitingMembers[1].displayName']![endif]」[k]
+	The monster caught [emb exp='game.waitingMembers[0].displayName'][if exp='game.waitingMembers[1] !== void'] and [emb exp='game.waitingMembers[1].displayName'], stripping them[else], stripping her[endif] naked in a matter of seconds with its wiggling tentacles![k]
+	Then, what looks like a mouth in the main body of the monster opens wide and reveals sharp fangs inside.[k]
+	[if exp='game.isFreeMode']
+		It intends to eat [emb exp='game.waitingMembers[0].displayName'][if exp='game.waitingMembers[1] !== void'] and [emb exp='game.waitingMembers[1].displayName'][endif]?![k]
+		We have to help as soon as possible![k]
+	[else]
+		It's planning to eat them both...![k]
+		We have to help them quickly! But can we beat him with two people out...?[k]
+		No, we have to do it. If we don't, two of us will be eaten![k]
+	[endif]
+[endif]
+[textoff]
+@clf
+
+@monster pos=3 name=砂漠の主
+@callbattle bgm=boss gameover=true escape=false
+[iscript]
+//--------------------------------------------------------------------
+game.restoreMembers();
+o.砂漠の主を退治してほしい.flag = 1;
+tf.temp = %[type: "floor", trap: void, antiWarp: false];
+game.map.changeFloorsOfWideArea(tf.temp, 12, 1, 14, 8);	// 右端
+game.map.changeFloorsOfWideArea(tf.temp, 8, 1, 11, 6);	// 中央
+game.map.changeFloorsOfWideArea(tf.temp, 7, 1, 7, 5);	// 左端
+game.map.changeFloorsOfWideArea(tf.temp, 8, 0, 13, 0);	// 下端
+game.map.changeFloorsOfWideArea(tf.temp, 9,  7, 11, 7);	// 上端
+//--------------------------------------------------------------------
+[endscript]
+@delevent
+@getitem item=ワームの毒液
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_worm_capture
+
+[iscript]
+//--------------------------------------------------------------------
+tf.arr = [];
+tf.arr.assign(game.party.members);
+if(! game.isFreeMode)
+{
+	tf.arr.remove(game.playerChara);
+	tf.arr.remove(o.マックス);
+}
+game.curChara = tf.arr.draw();
+game.curChara.removeEquipmentsByForce(["main", "sub", "chest", "waist", "arm", "leg", "bust", "hip"]);
+game.removeMemberTemporary(game.curChara);
+//--------------------------------------------------------------------
+[endscript]
+
+[if exp="isHUM"]
+	[リム f=17]「Help me!」[k]
+[elsif exp="isELF"]
+	[クレア f=17]「No! Let go of me!」[k]
+[elsif exp="isDWA"]
+	[フレデリカ f=17]「Help me!」[k]
+[elsif exp="isGNO"]
+	[ミューズ f=17]「Ugh... someone help me...!」[k]
+[elsif exp="isSYL"]
+	[マルエット f=17]「No! Let go of me!」[k]
+[elsif exp="isLIS"]
+	[リーゼル f=17]「Ahh... help...!」[k]
+[elsif exp="isTEO"]
+	[テオ f=09]「Argh... let go, you...!」[k]
+[elsif exp="isMAX"]
+	[マックス f=11]「Aaahhh! Help meee!」[k]
+[endif]
+@return
+;-------------------------------------------------------------------------------

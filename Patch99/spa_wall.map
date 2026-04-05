@@ -1,0 +1,140 @@
+﻿; 温泉
+
+name = 温泉・岩場
+insideName = Rocky Area
+upper = 温泉・浴場
+lower = 温泉・洞窟Ｂ１
+level = 28
+bgm = outdoor
+isOutdoor = true
+shadow = dark
+sky = cloudy
+margin = 3
+antiWarp = true
+
+; 画像パーツ
+━ = rock
+ᆖ = rock
+　 = soil
+❖ = soil
+△ = rock
+☗ = gate
+﹃ = ladder
+② = star
+
+; 移動ポイント
+(A) = map:温泉・洞窟Ｂ１, x:11, y:3, way:n, symbol:cave, ask:Go to the dungeon?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏ᆖᆖᆖᆖ﹃ᆖᆖᆖᆖ━━┓
+ 7┃　　　　　　　　　△△┃
+  ┃△△　　　△△△△△△┗━━ᆖᆖᆖᆖᆖ┓
+ 6┃△△　　　△△△△△	▲△△③　③　③‖
+  ┃△△　　　△△△△△	△△△　△△△　‖
+ 5┃△△　　　　①△△▲	▲△△②△△△③‖
+  ┃△△△△△△△△△△	△△△　△△△　‖
+ 4┃△△△△△△△△			▲△△③　③　③‖
+  ┛△△▲△▲△▲△					△△△△△　‖
+ 3														△△△△△③‖		❖
+  														△▲△△△　┗ᆖᆖ☗┓
+ 2																△△△③　　　Ⓐ‖
+  																△△△△△△△△┃
+ 1																△△△△△△△△┃
+  																△△△▲△▲△▲┗
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[2][7].n.antiScope = "block";
+pos[11][2].event = 4;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] WAY == "e"
+
+@delevent
+@wait time=500
+[texton]
+[リーダー f=05]「That's...!」[k]
+On the cliff opposite, something small can be seen emitting a magical light.[k]
+The unique glow of a magic stone. No doubt about it, that's the Opal Magic Stone.[k]
+[if exp='game.isFreeMode']
+	The previous owner dropped the magic stone in an inconvenient place. It will be extremely difficult to retrieve it.[k]
+	It seems impossible to get there from this cliff. I'll have to ask a girl to get it from the women's bath.[k]
+[else]
+	The previous owner dropped the magic stone in an inconvenient place... It will be extremely difficult to retrieve it...[k]
+	It seems impossible to get there from this cliff. I'll have to ask a girl to get it from the women's bath.[k]
+[endif]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@delevent
+@delevent num=1
+@delevent num=4
+@delevent name=山小屋パブ num=1
+@delevent name=山小屋パブ num=2
+@changefloor pimg=void
+@getitem item=オパールの魔石
+@wait time=500
+[texton]
+[if exp='ELF || SYL'][キャラ f=09]「Good, I got the magic stone. But how am I supposed to get back...?」[k]
+[elsif exp='HUM || DWA || GNO'][キャラ f=09]「It's great that I got the magic stone, but now how do I get back...?」[k]
+[endif]
+The path back to the bathhouse was a steeper cliff than I had expected, and it seemed impossible to climb up.[k]
+[if exp='ELF || SYL'][キャラ f=06]「Well then, we'll just have to find a way back...」[k]
+[elsif exp='HUM || DWA || GNO'][キャラ f=06]「I guess we'll have to find a way back, somehow...」[k]
+[endif]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+; バスタオルを持ち込む方法はあるのでその対策
+@delevent
+@eval exp='tf.temp = game.party.findItem(o.バスタオル)'
+[eventoff cond='tf.temp === void']
+@eval exp='game.curChara = tf.temp.chara'
+@eval exp='while(game.party.ejectItem(o.バスタオル))'
+[texton]
+[キャラ f=25]「Oh, the bath towels...!」[k]
+We suddenly noticed all the bath towels were gone.[k]
+Apparently, when climbing down here, they got caught on a tree branch on the cliff.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] game.findItem(o.オパールの魔石) === void
+
+; バスタオルを持ち込む方法はあるのでその対策
+[texton]
+[if exp='HUM || DWA || GNO'][キャラ f=05]「Um, shouldn't we search this place a little more thoroughly?」[k]
+[elsif exp='ELF || SYL'][キャラ f=05]「Hey, shouldn't we search this place properly?」[k]
+[endif]
+[textoff]
+@walk move=w
+
+[eventoff]
+;-------------------------------------------------------------------------------

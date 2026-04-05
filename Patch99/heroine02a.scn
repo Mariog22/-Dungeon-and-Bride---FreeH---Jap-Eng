@@ -1,0 +1,1646 @@
+﻿; シナリオ・エルフ編・Ａパート
+
+
+
+;■主人公編・前半
+
+;◇主人公イベント01
+*theo_01
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ e=通常 f=02]「[クレア], good to see you today.」[k]
+@fg c=クレア e=通常 f=02
+[クレア v=ve165 f=02]「Yes, good to see you.」[k]
+I'm rooming with [クレア] today. I greet her lightly. She smiles back at me with a perfect smile.[k]
+Neat face and beautiful hair... She is so beautiful that you can't help but admire her. I can only say that she is indeed an elf.[k]
+...Come to think of it, even though he's an elf too, why does [マックス] seem so different?[k]
+@fg c=クレア f=06
+[クレア v=ve166 f=06]「What? You're staring at me.」[k]
+[テオ f=13]「What...? I'm sorry! I didn't mean to...」[k]
+@fg c=クレア f=16
+[クレア v=ve167 f=16]「Do you want to see my beautiful face so badly?」[k]
+[テオ f=13]「U-um... Ahaha...」[k]
+I couldn't help but be taken aback by [クレア]'s confidence in her appearance, so I had no choice but to laugh and cover it up.[k]
+[クレア v=ve168 f=16]「So be it. I'll let you look as much as you like, since you're special.」[k]
+[テオ f=05]「What...? What does that mean...」[k]
+@fg c=クレア f=31
+[クレア f=31]「...! (Ah!)」[k]
+@fg c=クレア f=51
+[クレア v=ve169 f=51]「Ah, that's to say, you are special because you are our leader! Don't take it the wrong way.」[k]
+[テオ f=13]「A-ah, I see, ahaha...」[k]
+Yes, I guess a woman like [クレア] wouldn't have any special feelings for me... She seems to be very popular.[k]
+But I have to admit, I was a little nervous... it's hard not to be surprised when a woman like [クレア] talks to you like that.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント02
+*theo_02
+
+; 宿屋の一室
+@saveon
+@fg c=クレア e=通常 f=02 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+Today I stay with [クレア] again, and the two of us share a cup of tea and light conversation.[k]
+[テオ e=通常 f=02]「You've been a great help, [クレア]. You're indispensable to the party.」[k]
+[クレア v=ve170 f=16]「Really? That's good.」[k]
+[クレア] seemed a little proud. Her confidence is one of her good points.[k]
+@fg c=クレア f=05
+[クレア f=06]「...」[k]
+[クレア v=ve171 f=05]「So, do you want to marry me?」[k]
+[テオ f=10]「∗cough!∗」[k]
+The question was so sudden, I accidentally spat out the tea I was drinking.[k]
+[テオ f=12]「You certainly don't beat around the bush...」[k]
+[クレア v=ve172 f=06]「Perhaps because of our good looks, there are many men who want to marry a female elf.」[k]
+[クレア v=ve173 f=06]「My home village is often visited by men with marriage proposals.」[k]
+[テオ f=05]「I see...」[k]
+@fg c=クレア e=通常・大 f=05
+[クレア v=ve174 f=05]「So, is it the same for you? Are you... looking for an elf like me to marry?」[k]
+[クレア] looked straight into my eyes as she said that.[k]
+A very serious and pure look, that doesn't look like the usual [クレア].[k]
+[テオ f=05]「[クレア]...」[k]
+Her eyes are clear and blue. You're almost drawn in by their beauty.[k]
+I can't take my eyes off [クレア]... Her eyes caught mine and wouldn't let go.[k]
+Maybe [クレア] is considering me... I'm not sure.[k]
+@fg c=クレア e=通常・大 f=03
+[クレア v=ve175 f=03]「...Pfft.」[k]
+[テオ f=05]「[クレア]?」[k]
+[クレア] suddenly bursts out laughing, and I'm taken aback.[k]
+@fg c=クレア e=通常・大 f=01
+[クレア v=ve176 f=01]「Oh my, Captain! You seem pretty worked up!」[k]
+[テオ f=12]「Ehhhh...!」[k]
+Was she... making fun of me?[k]
+@fg c=クレア e=通常・大 f=16
+[クレア v=ve177 f=16]「From that reaction, maybe you are on the hunt for an elf bride.[r] I should be careful.」[k]
+[テオ f=12]「No, no, no! You suddenly got so serious that I couldn't help but...」[k]
+[クレア v=ve178 f=16]「Oh, it's hard to be a popular woman.」[k]
+[テオ f=12]「That's not it!」[k]
+I desperately try to make excuses, but [クレア] brushes them off.[k]
+Once again, I was reminded that she is a woman who is hard to read...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント03
+*theo_03
+
+; 宿屋の一室
+@saveon
+@fg c=クレア e=通常 f=06 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[クレア v=ve179 f=06]「Captain, I have a favor to ask of you today.」[k]
+[テオ e=通常 f=05]「You do...?」[k]
+[クレア v=ve180 f=05]「Will you go on a date with me sometime?」[k]
+; ↑ 淡々と言う
+[テオ f=25]「Ehhhh...!」[k]
+[クレア] asked me out on a date![k]
+I was puzzled by the suddenness of the situation. Why does [クレア] want to go on a date with me...?[k]
+[クレア v=ve181 f=06]「Hey, don't be so surprised. It's fine to go on a date.」[k]
+[テオ f=25]「Yes, but why would you suddenly want to go on a date with...」[k]
+@fg c=クレア e=通常 f=07 b
+[クレア v=ve182 f=07]「What does it matter? Anyway, I want you to go on a date with me. Somewhere in Sapphire City. Got it?」[k]
+[テオ f=26]「Y-yeah...」[k]
+@fg c=クレア e=通常 f=16 b
+[クレア v=ve183 f=16]「Well then, I'm tired today, so I'm going to bed. Good night.」[k]
+@cl
+[テオ f=26]「...」[k]
+I was then stunned to see [クレア] quickly get into her own bed.[k]
+But still, a date all of a sudden... I wonder what happened to [クレア]. Does she really like me?[k]
+But the way she spoke earlier didn't give me that vibe... Did something happen to her?[k]
+[テオ f=10]「...」[k]
+Then I continued to agonize for a while... I was in agony for a while...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント04
+*theo_04
+
+; サファイアシティ
+@saveon
+@bg f=0019
+@mu f=city
+[texton w=1]
+I promised to go on a date with [クレア] today.[k]
+After finishing my chores, I hurried to the meeting place.[k]
+[テオ e=通常 f=13]「Sorry to keep you waiting, [クレア].」[k]
+@fg c=クレア e=通常 f=08
+[クレア v=ve184 f=07]「You're late! How dare you keep me waiting!」[k]
+[テオ f=13]「I'm sorry... I had to report to the guild and do some paperwork and stuff, so...」[k]
+@fg c=クレア f=19
+[クレア v=ve185 f=19]「Honestly... well, never mind. Let's get going.」[k]
+I took [クレア] on a date in Sapphire City.[k]
+[textoff]
+@out
+@w05
+
+@fg c=クレア f=16 b
+@bg f=0018
+[texton w=1]
+[クレア v=ve186 f=16]「The breeze feels so nice...」[k]
+We arrived at the park.[k]
+[クレア]'s silky hair fluttered in the wind, shimmering.[k]
+[クレア] is beautiful...[k]
+She doesn't seem like an adventurer who spends her days fighting monsters. Why would such a woman become an adventurer?[k]
+@fg c=クレア f=01
+[クレア v=ve187 f=01]「What? Are you looking at me again, Captain? You're hopeless!」[k]
+[テオ f=09]「No, no... It's not that...」[k]
+[テオ f=13]「Speaking of which, [クレア], why did you decide to become an adventurer?」[k]
+[クレア v=ve188 f=05]「Eh?」[k]
+[クレア v=ve189 f=16]「I want to be famous and admired as a strong and beautiful adventurer.」[k]
+Saying that, [クレア] laughed and elegantly brushed her long hair away with her hand.[k]
+[テオ f=13]「Ah... Hahaha...」[k]
+[クレア v=ve190 f=02]「So far, my plan is going well. Our party's getting more and more publicity.」[k]
+[クレア v=ve191 f=01]「I owe it all to you. To be honest, at first I thought you seemed unreliable, but now I'm glad I followed you.」[k]
+[テオ f=13]「Ha ha ha... I'm glad you're satisfied...」[k]
+That hurt a little, but if she now recognizes me as a captain, that makes me very happy.[k]
+[クレア v=ve192 f=08]「Why are you looking so confused, Captain? Aren't you enjoying your date with me?」[k]
+[テオ f=13]「Of course I'm having fun.」[k]
+[クレア v=ve193 f=03]「Hmmm... Captain...」[k]
+@clf
+@se f=dosa
+@quake time=200 hmax=3 vmax=1
+∗thud!∗[k]
+[テオ f=12]「Oh... [クレア]...!」[k]
+To my surprise, [クレア] hugged my arm![k]
+[テオ f=12]「Huh, what's going on all of a sudden, [クレア]?」[k]
+[クレア v=ve194 f=05]「What do you mean? It's a date. You don't like it?」[k]
+[テオ f=10]「No, not that I don't like it, but...」[k]
+It was rather gratifying. However, it was so abrupt that I was a bit taken aback.[k]
+[クレア v=ve195 f=02]「Don't we look like a perfect couple?」[k]
+[テオ f=13]「Well, maybe... Hahaha...」[k]
+She's so aggressive today... I can't help but be a little put off by it.[k]
+@st
+[？？？]「Well, hello, [クレア].」[k]
+[テオ f=05]「...!」[k]
+[クレア f=06]「...」[k]
+@mu f=evil
+@fg c=foster_default1
+Suddenly, a man spoke to me.[k]
+The man is gaping at [クレア] with an unpleasant grin on his face.[k]
+[テオ f=05]「Do you know [クレア]?」[k]
+[クレア f=06]「...」[k]
+[クレア] was still clinging to my arm, and her expression became serious again.[k]
+[クレア v=ve196 f=19]「Can I help you?」[k]
+; ↑ 素っ気ない感じ
+[男 f=foster_02]「Don't talk to me like that, aren't we close?」[k]
+[クレア v=ve197 f=06]「I don't remember being close to you.」[k]
+@fg c=foster_default2
+[男 f=foster_07]「Hey, [クレア]...!」[k]
+[クレア v=ve198 f=02]「I'm on a date. Would you mind not disturbing me?」[k]
+Saying this, [クレア] clings to me even more to give a stronger impression of closeness.[k]
+@fg c=foster_default3
+[男 f=foster_06]「...」[k]
+This time, the man's gaze turned to me.[k]
+[男 f=foster_06]「...」[k]
+The man stares at me with a repulsive look in his eyes.[k]
+[テオ f=12]「What the...」[k]
+[男 f=foster_05]「You... You're the captain of [emb exp='game.party.displayName'].」[k]
+[テオ f=10]「Uh, oh. What is it?」[k]
+[男 f=foster_06]「...」[k]
+[男 f=foster_08]「...Tch.」[k]
+@fa
+@cl
+The man clicks his tongue and silently turns on his heel.[k]
+And then he left, just like that.[k]
+What on earth was that exchange...?[k]
+@mu f=city
+@fg c=クレア f=06
+[クレア v=ve199 f=06]「I'm sorry, Captain. That must have been unpleasant.」[k]
+[テオ f=05]「[クレア], who is that guy...?」[k]
+[クレア v=ve200 f=06]「He has nothing to do with me, he's just a stranger. But...」[k]
+[クレア v=ve201 f=10]「He's been stalking me for a long time. Even before I left the elven village.」[k]
+[テオ f=12]「Stalking?! And for that long...」[k]
+[テオ f=05]「...! (Ah!)」[k]
+Could it be that today's date was to get that guy to give up?![k]
+Well, I wondered why I was lucky enough to be invited on a date, but that was her intent...[k]
+[クレア v=ve202 f=02]「I'm glad he backed down today. Thank you for that.」[k]
+[テオ f=10]「Y-yeah...」[k]
+I'm glad I was helpful, but it's kind of complicated... I'm not sure what to make of it...[k]
+[クレア v=ve203 f=03]「Well, Captain, let's continue our date... ♪」[k]
+; ↑ 楽しげな感じに戻る
+@clf
+@se f=dosa
+@quake hmax=3 vmax=1 time=200
+[クレア] then hugs my arm again.[k]
+[テオ f=12]「[クレア]...?」[k]
+I thought the whole reason she pretended to be my girlfriend was to deter the stalker...[k]
+[クレア v=ve204 f=05]「What are you looking at me like that for? I told you, you have a date with me for the rest of the day.」[k]
+[テオ f=14]「Ah... Uh-huh. Yeah.」[k]
+I don't know what [クレア] is thinking... Is it her way of being considerate?[k]
+...Well, as you wish.[k]
+I had no particular reason to refuse her, so I decided to enjoy this impromptu date to the fullest.[k]
+[textoff]
+@out
+@w05
+@eval exp='f.datingElfID = void'
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@call storage="hevent.ks" target=*trial_version_return cond='isDemoVersion'
+;-----------------------------------------------------------------------
+[townoff]
+
+
+
+
+;■マックス編
+
+;◇マックスイベント01
+*max_01
+
+; 宿屋の廊下
+@saveon
+@bg f=0003
+@mu f=tiptoe
+@fg c=マックス e=通常 f=10
+[texton w=1]
+[テオ e=通常 f=05]「[マックス], what are you doing here?」[k]
+[マックス f=10]「Well... [クレア] is...」[k]
+[テオ f=05]「Did [クレア] say anything?」[k]
+[if exp='! o.マックス.moved']
+	; 最初からマックスと同室だった場合
+	[マックス f=09]「[クレア] kicked me out of the room! "I don't want to be with you!" You don't have to be that harsh...」[k]
+
+[else]
+	; マックスと同室じゃなかった場合
+	[マックス f=09]「I visited [クレア]'s room for a chat.」[k]
+	[マックス f=09]「Then, she kicked me out! "I don't want to be with you!" You don't have to be that harsh...」[k]
+
+[endif]
+[テオ f=01]「Ahaha...」[k]
+[クレア] has that kind of personality... I feel sorry for [マックス], but we'll need to be patient...[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇マックスイベント02
+*max_02
+@jump target=*_max_02_freemode cond='game.isFreeMode'
+; 宿屋の廊下
+@saveon
+@bgf f=0002
+[texton w=1]
+[テオ e=通常 f=05]「Is [クレア] awake ...?」[k]
+I came to talk to [クレア].[k]
+[クレア v=ve440 e=通常 f=17]「Aah...!」[k]
+[テオ f=05]「...!」[k]
+Then, a high-pitched scream came from inside the room![k]
+[テオ f=11]「[クレア]! What happened?!」[k]
+I put my hand on the doorknob to jump into [クレア]'s room, when...[k]
+[textoff]
+
+@se f=door1
+@mu f=trick
+@fgf c=マックス e=裸・腕上げ f=31
+@quake time=500
+[texton w=1]
+∗bang!∗[k]
+[マックス f=31]「Waaah!」[k]
+[テオ f=05]「...!」[k]
+[マックス], who isn't wearing a single thread, dashed out of [クレア]'s room![k]
+[クレア v=ve441 f=53]「Fool! Pervert! Unbelievable! Get out!」[k]
+From inside the room, a barrage of small items are hurled at the naked [マックス]![k]
+[マックス f=31]「N-no, it wasn't! Stop! Ow!」[k]
+[クレア v=ve442 f=55]「You idiot ...!」[k]
+@se f=door1
+@quake time=500
+∗bang!∗[k]
+The door is slammed shut, leaving [マックス] naked in the hallway.[k]
+@fg c=マックス e=裸 f=13
+[マックス f=13]「Ah... [テオ]...」[k]
+[テオ f=06]「Hey, [マックス], what did you do to [クレア]?!」[k]
+[マックス f=13]「Don't put it like that! This is a misunderstanding...」[k]
+[テオ f=06]「Tell me what happened.」[k]
+[textoff]
+@out
+@bgf f=0002
+@fgf c=マックス e=バスタオル f=13
+[texton w=1]
+[テオ f=05]「So you invited a call girl here?」[k]
+[マックス f=13]「[クレア] said she was going out, so I thought I'd invite a girl over to have some fun in the meantime...」[k]
+[テオ f=06]「Why would that be a reason for you to be naked in the room?」[k]
+[マックス f=03]「Of course, when you call a girl, you are planning to make love to her...」[k]
+[マックス f=13]「I was standing by naked, waiting for the girl to arrive. I thought she had, and greeted her naked, only to find it was [クレア] there.」[k]
+[テオ f=06]「...I see. So it was an accident.」[k]
+[マックス f=13]「Yes, yes!」[k]
+[テオ f=05]「But if you hadn't unnecessarily stripped naked, this accident wouldn't have happened. You never know who might visit your room, not just [クレア].」[k]
+[テオ f=05]「In the first place, don't invite girls to the inn. Everyone else is there too. Do that kind of thing elsewhere!」[k]
+[マックス f=13]「Okay, okay, I'm sorry. I'll be careful from now on.」[k]
+[テオ f=06]「Please do.」[k]
+I was so disgusted with [マックス] that I went into the room to explain to [クレア] what happened.[k]
+[textoff]
+@out
+[texton w=0]
+[マックス f=06]（Phew... I guess the plan to show [クレア] sex with a girl failed...）[k]
+[マックス f=06]（I wanted her to see some hot sex when she came back. If only she'd returned a little later...）[k]
+[マックス f=15]（Because I have a hunch that [クレア] is secretly a dirty girl. She acts innocent, but in reality, she's very interested in sex. In fact, even though she was angry just now, she was still staring at my cock!）[k]
+[マックス f=22]（She would definitely get a kick out of seeing sex in front of her. Then you could even ask her to join in...）[k]
+[マックス f=39]（It's not every day you get a chance to fuck a beautiful woman like that. I'll definitely fuck [クレア] at least once while we're both in the same party! Hee hee hee...）[k]
+[textoff]
+[hoteloff]
+
+
+;◇マックスイベント03
+*max_03
+
+; 宿屋の一室・クレアは先に寝ている
+@saveon
+@mu f=trick
+@bg f=0045
+[texton w=0]
+Midnight[k]
+[クレア e=マタニティドレス f=19]「... (Sleepy)」[k]
+[name n="Man's voice"]「Hey, take it off quickly...」[k]
+[name n="Woman's voice"]「But that girl is sleeping there...」[k]
+[name n="Man's voice"]「It's okay. Come on, let's get to fucking.」[k]
+[クレア f=58]「...?」[k]
+I can hear talking... [マックス] and... a girl?[k]
+[マックス], what the hell are you doing bringing a woman here in the middle of the night...? I'm sleeping...[k]
+[name n="Woman's voice"]「Ah... Uh... [マックス]... Ah...」[k]
+[マックス e=裸 f=01]「You're getting wet fast. Well, I guess I'd better put it in. Can you lie on this side of me for a minute?」[k]
+[name n="Woman's voice" f=bladesman_black_02]「L-like this...?」[k]
+[クレア f=59]「...!」[k]
+What? What on earth are you are you doing?![k]
+[マックス f=03]「Okay, I'll put it in... There you go!」[k]
+@se f=kucha
+∗sluurp!∗[k]
+[name n="Woman's voice" f=bladesman_black_03]「Haaaaaan... [マックス]... Aaaah...!」[k]
+@en f=kuchaslow
+∗sluurp sluurp sluurp sluurp∗[k]
+[name n="Woman's voice" f=bladesman_black_03]「Ah... Ah... Ah... Ah...」[k]
+[クレア f=74]「... ∗badump badump∗」[k]
+That panting and those noises... No way![k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[マックス e=汗だく f=03]「There, there, doesn't that feel good?」[k]
+[name n="Woman's voice" f=bladesman_black_03]「Ah... Ah... Ah... Nice... That feels good... Oh!」[k]
+[クレア f=52]「...!」[k]
+@enst
+I dared to open my eyes. Then...[k]
+[textoff]
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+@out
+@w05
+
+@bgf f=event94
+@mu f=adult
+[texton w=2]
+∗sluurp sluurp sluurp sluurp∗[k]
+[name n="Woman's voice"]「Ah... Ah... Ah... Ah...」[k]
+[クレア f=32]「...!」[k]
+This is... The crotch of a man and a woman![k]
+To my surprise, a man's penis was buried in a girl right in front of me![k]
+The hard penis of the man on top is repeatedly thrusting into the pussy of the girl lying below.[k]
+This means... You're having sex![k]
+I had a full view of it all. The union of a naked man and woman.[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[クレア f=32]「...!」[k]
+[マックス]'s male organ conspicuously moves in and out of the girl while making a disgusting sound.[k]
+Big...! And so powerful...![k]
+How disgusting... I can't take my eyes off it...![k]
+[クレア v=ve443 f=39]「Haha...」[k]
+Oh no... I'm getting excited too...![k]
+No... Don't watch something like this...![k]
+[textoff]
+@st
+
+@mu f=action
+@fg l=マックス e=汗だく・勃起 f=03 b
+@fg r=bladesman_black_sweat top=100 b
+@bgf f=0045
+[texton w=1]
+[マックス f=03]「Oho, are you getting excited too, [クレア]?」[k]
+[クレア f=32]「...!」[k]
+Suddenly, [マックス] started talking to me![k]
+[マックス f=01]「Hey! Hold [クレア] down!」[k]
+[name n="Call Girl" f=bladesman_black_03]「What...? Are you sure?」[k]
+[マックス f=07]「Just do it! Come on!」[k]
+[name n="Call Girl" f=bladesman_black_03]「Y-yes...」[k]
+@clf r
+@quake time=500 hmax=10 vmax=10
+[クレア v=ve444 f=31]「Kya! What are you doing!」[k]
+To my surprise, the girl who had just been having sex with [マックス] held my arms down![k]
+[クレア v=ve445 f=31]「Hey, you! Stop it!」[k]
+[name n="Call Girl" f=bladesman_black_03]「I'm sorry [クレア]. If you don't do what I say, [マックス] won't nominate me anymore...」[k]
+[マックス f=15]「She's my favorite call girl. I've played with her many times. I'm totally hooked on her pussy now!」[k]
+[マックス f=15]「[クレア], you should join in on the sex. It'll feel good, right?」[k]
+@cl
+With that, [マックス] pulled up my clothes and exposed my panties![k]
+[クレア v=ve446 e=裸,手ブラ f=65]「N-no! Stop it!」[k]
+[マックス f=03]「Ohhhh, she's wet. Looks like you were totally excited, [クレア].」[k]
+[クレア v=ve447 f=66]「Wait... what are you planning to do?」[k]
+[マックス f=15]「Of course I'm going to do something you'll like.」[k]
+[マックス] then slid my panties down![k]
+[クレア v=ve448 f=55]「Hey, stop it! Really stop, [マックス]!」[k]
+[マックス f=03]「You're so wet, man, juice is dribbling out.」[k]
+[クレア f=30]「... (Kyaa)」[k]
+@fg c=マックス f=04
+[マックス f=04]「Come on, [クレア], don't you want my dick too? You saw it, in her, right? Don't you want to be fucked like that too?」[k]
+[マックス] then shows me his swollen penis.[k]
+[クレア f=30]「...」[k]
+That penis... was inside that girl just now...[k]
+How could something this amazing even fit? If it were to go inside me...[k]
+[クレア f=38]「... ∗badump badump∗」[k]
+Oh no... I'm getting excited... I can't stop my heart from pounding...![k]
+@fg c=マックス f=15
+[マックス f=15]「What do you think? You want it?」[k]
+[クレア f=30]「... ∗badump badump∗」[k]
+[クレア v=ve449 f=73]「I don't want it! Put that filthy thing away and let me go!」[k]
+@fg c=マックス f=05
+[マックス f=05]「Eh～?! Seriously, you don't want it?」[k]
+@fg c=マックス f=62
+[マックス f=62]「Well, I don't wanna force you, so if you don't want me to do it, I won't.」[k]
+[クレア v=ve450 f=63]「What...?」[k]
+@fg c=マックス f=01
+[マックス f=01]「I can't help it. Hey, let's pick up where we left off.」[k]
+[name n="Call Girl" f=bladesman_black_03]「Y-yes...」[k]
+@fg c=マックス f=15
+[マックス f=15]「I'll enjoy putting it in her instead of you. [クレア], you stay there and watch!」[k]
+@cl
+With that said, [マックス] pushes the girl down and straddles her again.[k]
+∗sluurp!∗[k]
+[name n="Call Girl" f=bladesman_black_03]「Haaaan...!」[k]
+She started moaning again with a pleasantly sweet voice.[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[name n="Call Girl" f=bladesman_black_03]「Ahhh... ahh... ah... ah...」[k]
+[クレア f=32]「...!」[k]
+Once again, sex begins between [マックス] and the girl he brought with him. She swallows [マックス]'s big dick with ease and moans shamelessly.[k]
+[name n="Call Girl" f=bladesman_black_03]「Ahhh... ahh... ah... ah...」[k]
+[クレア f=32]「... ∗badump badump∗」[k]
+Looks like she's enjoying it... Is it really that good?[k]
+[name n="Call Girl" f=bladesman_black_03]「Ah... I'm cumming...!」[k]
+[クレア f=52]「... ∗badump badump∗」[k]
+@fg c=マックス f=15
+[マックス f=15]「What's the matter? You look jealous.」[k]
+[クレア f=52]「... ∗badump badump∗」[k]
+[マックス f=15]「[クレア], you really want it in you too, don't you?」[k]
+[マックス] said as he pulled his dick out of her and showed it to me.[k]
+[クレア f=32]「... ∗gulp∗」[k]
+It's really amazing...! If something like that was to go in...![k]
+[マックス f=02]「Come on, spread your legs. I'll put it in.」[k]
+@cl
+[クレア f=52]「... ∗badump badump∗」[k]
+[マックス] opens my legs.[k]
+[マックス f=03]「No resistance? That means it's fine then!」[k]
+[クレア f=52]「... ∗badump badump∗」[k]
+[マックス f=02]「Okay, I'm gonna put it in.」[k]
+[マックス] got between my legs and pressed the tip of his dick against my entrance.[k]
+[マックス f=15]「If you're this wet, it's gonna go in easily... There you go!」[k]
+[textoff]
+@w05
+
+@se f=kucha
+@bgf chara=クレア f=event15 p0=hair p3=01
+@quake time=500 hmax=10 vmax=10
+[texton w=2]
+∗sliip!∗[k]
+[クレア v=ve451]「Oh... [マックス]...!」[k]
+[マックス] thrust his hips forward and his big dick slid into me![k]
+[マックス]「Oh～ I'm in, I'm in. This feels good.」[k]
+[クレア]「...」[k]
+I... I called out his name...[k]
+I never thought I would allow my body to be used in this way...[k]
+[マックス]「All right, let's move.」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[クレア v=ve452]「Ah... Ah... Ah... Ah...」[k]
+[マックス]'s huge cock rhythmically pounded my soaking wet pussy.[k]
+[マックス]「Your tits are huge. They bounce around so much!」[k]
+[クレア v=ve453]「Ah... Ah... Ahhh...! Ahh...!」[k]
+[マックス]「You really do have such a dirty body!」[k]
+It's not the sex I hoped for, but... I'm so excited...![k]
+[マックス]'s cock... It's getting better and better...![k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[クレア v=ve454]「Ahhh... Ohhh... [マックス]... [マックス]...!」[k]
+[マックス]「Hehe, you seem to be totally into sex. How's that? My dick is good, right?」[k]
+[マックス]'s big cock moves tightly inside me, stimulating my inner parts to the fullest.[k]
+Oh... Feels good...[k]
+More...! Thrust into me more...![k]
+[クレア v=ve455]「An... I... I... I'm... Oh!」[k]
+[マックス]「Are you about to cum? I'm about to cum too! Let's cum together!」[k]
+∗squish squish squish squish squish squish!∗[k]
+[クレア v=ve456]「Ahhh... Ohhh... I'm cumming... I'm cumming...!」[k]
+Oh... I can't think straight...[k]
+[マックス]「I'm gonna cum! [クレア]! Ugh!」[k]
+∗spuurt! spuurt!∗[k]
+[マックス]「Kuuuhhh...! I'm cumming!」[k]
+[クレア v=ve457]「Ahhhh...!」[k]
+[textoff]
+@bg f=9999
+@w05
+[texton w=2]
+I reached climax with [マックス]... I was so happy...[k]
+[textoff]
+@fa
+@out
+@w1
+
+@bg f=0045
+@mu f=adult
+[texton w=0]
+[クレア v=ve458 e=汗だく f=39]「Ahh ahh ahh ahh ahh...」[k]
+[マックス f=03]「Whew, your pussy was good, [クレア]!」[k]
+[name n="Call Girl" f=bladesman_black_03]「You two were so hot... I was so excited...」[k]
+[クレア f=52]「...」[k]
+It was good... Sex with [マックス]...[k]
+I don't like him, and I didn't want to at all, but when we had sex, it was kind of awesome...[k]
+I am ashamed of myself for thinking this way... What's wrong with me...?[k]
+[マックス f=03]「Alright! Now the three of us can have some fun! You guys, I won't let you sleep tonight～!」[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント04
+*max_04
+
+; 宿屋の廊下
+@saveon
+@out
+@bg f=0002
+[texton w=0]
+I was making my rounds at night and passed by [クレア]'s room.[k]
+[テオ e=通常 f=06]「...」[k]
+It's so quiet. It's late at night, so I wonder if she's already fallen asleep?[k]
+[テオ f=06]「...Hmm?」[k]
+Then, I heard a faint voice from [クレア]'s room.[k]
+[クレア v=ve459 e=裸 f=17]「Yeah... Ah...」[k]
+[テオ f=05]「...!」[k]
+A moaning voice that seems to be in pain. No way, is [クレア] sick?![k]
+[テオ f=06]「...」[k]
+I looked through the keyhole. Then...[k]
+[textoff]
+@w05
+
+@bgf chara=クレア f=event15 p1=hair p3=02
+@mu f=adult
+[texton w=2]
+[クレア v=ve460]「Ah... Uh... Aah... Aah...!」[k]
+[テオ]「...!」[k]
+This ridiculous sight takes my breath away.[k]
+[クレア]'s abundant chest is exposed, and she's writhing around.[k]
+What the hell is [クレア]...[k]
+@bgf chara=クレア f=event15 p2=hair p3=03
+[？？？]「Hmm!」[k]
+[クレア v=ve461]「Ahhh...!」[k]
+[テオ]「...What?!」[k]
+There's a guy on top of [クレア] ...![k]
+[textoff]
+@out
+@w05
+
+@bgf chara=クレア f=event15 p0=hair p3=01
+[texton w=2]
+[クレア v=ve462]「Aaah... [マックス]... [マックス]...!」[k]
+[マックス]「Hehe, I knew you couldn't forget having sex with me, [クレア]!」[k]
+[クレア v=ve463]「Because... Because it felt so good... Having sex with you... Ahh!」[k]
+[マックス]「You're always welcome! I'll make you feel as good as I can, [クレア]!」[k]
+∗slurp slurp slurp slurp slurp slurp!∗[k]
+[クレア v=ve464]「Haaaaan... More... More please...!」[k]
+[textoff]
+@fa
+@out
+@w05
+
+@bgf f=0002
+[texton w=0]
+[テオ f=10]「...」[k]
+I can't believe [クレア] and [マックス] had a relationship like that before I knew it... [クレア] and [マックス] were having that kind of relationship before I knew it...[k]
+[テオ f=06]「...」[k]
+I couldn't interfere with them. I silently walked away.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ライナス編
+
+;◇ライナスイベント01
+*linus_01
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=guild
+@fg r=ライナス e=通常 f=03 b
+@fg l=クレア e=通常 f=06
+[texton w=1]
+[if exp='! o.ライナス.moved']
+	; ライナスが同室だった場合
+	[ライナス f=03]「Hey, [クレア].」[k]
+	[クレア v=ve465 f=06]「What? Don't talk to me like that.」[k]
+	@fg r=ライナス f=13
+	[ライナス f=13]「Hey, that's a little harsh. I just wanted to tell you something.」[k]
+	[ライナス f=13]「I have to go out tonight. And I won't be back until the morning.」[k]
+	[クレア v=ve466 f=06]「Is that so.」[k]
+	[ライナス f=14]「So, it will be just you here tonight...」[k]
+	[クレア v=ve467 f=16]「That's excellent news. All right. Have a good evening, Linus.」[k]
+	[ライナス f=13]「Mm-hmm. Okay, I'm gonna go. Good night, [クレア].」[k]
+	@se f=door1
+[else]
+	; ライナスが別室だった場合
+	[ライナス f=03]「Hi, [クレア].」[k]
+	[クレア v=ve468 f=06]「What? What are you doing here?」[k]
+	@fg r=ライナス f=13
+	[ライナス f=13]「Hey, that's a little harsh out of the blue. I just came by to say hello.」[k]
+	[クレア v=ve469 f=06]「Is that so?」[k]
+	[ライナス f=02]「I see you're all alone today, [クレア].」[k]
+	[クレア v=ve470 f=16]「Yeah. So what?」[k]
+	[ライナス f=13]「Nah, it's nothing! Good night then!」[k]
+	@se f=door1
+	@cl r
+	[クレア f=06]「...」[k]
+	What the hell is that guy doing...?[k]
+[endif]
+@cl b
+@fa
+@fg c=クレア f=06
+[クレア f=06]「...」[k]
+So... it's just me today...[k]
+It's getting late and no one else will be here...[k]
+@fg c=クレア f=26
+[クレア f=26]「...」[k]
+Sometimes it's good to...?[k]
+@cl
+@mu f=adult
+[クレア v=ve471 f=37]「...Nhaha...」[k]
+I put my hand inside my clothes and rub my breast lightly.[k]
+Feels good... I haven't felt this way in a long time...![k]
+Now try kneading the nipples and rubbing them some more. It still feels good...[k]
+[クレア v=ve472 f=40]「I'm feeling kind of... dirty...」[k]
+I reach between my legs. When stroking that sensitive area through my clothes with a finger, pleasure runs through my lower body like an electric shock.[k]
+[クレア v=ve473 f=37]「Oh... Oh...」[k]
+No...! I can't take it anymore...![k]
+No one's here tonight. It's been building up for a long time... Let's do it until I'm satisfied...![k]
+@fg c=クレア e=白いパンツ f=26
+[クレア f=26]「...!」[k]
+I quickly strip off everything except my panties.[k]
+@cl
+And begin to play with my breasts and crotch.[k]
+[textoff]
+@out
+
+; ライナスが陰に隠れて
+[texton w=0]
+[ライナス f=02]「Kukukuku...」[k]
+[ライナス f=02]「What a tease... without even knowing I was watching...」[k]
+[ライナス f=01]「I knew that elf was dirty at heart. Yeahhh, I'm going to enjoy this.」[k]
+[textoff]
+
+; 再びクレアの部屋
+@bg chara=クレア f=event42 p0=hair p1=02 p2=03
+[texton w=2]
+∗slurp slurp slurp∗[k]
+[クレア v=ve474 f=37]「Ah... Ah... it feels good...」[k]
+I rub my breasts and fidget with the protuberance between my legs.[k]
+It begins to overflow with love juice, and disgusting wet sounds echo around the room.[k]
+@bg chara=クレア f=event42 p0=hair p1=03 p2=01
+[クレア v=ve475 f=37]「Mmm...!」[k]
+I was so excited that I even took off my panties.[k]
+I regard my embarrassing crack in the mirror and imagine a man's hot penis entering it.[k]
+[クレア f=37]「...」[k]
+My wet pussy... How disgusting...[k]
+Here... When a hardened cock enters...[k]
+@bg chara=クレア f=event42 p0=hair p1=01 p2=04
+@jump target=*_linus_01_freemode cond='game.isFreeMode'
+[クレア v=ve476 f=37]「Ah... Ah... captain... fuck... me... captain!」[k]
+I stirred the entrance of the hole, imagining myself being violated by the captain.[k]
+[textoff]
+@out
+; ライナスが陰に隠れて
+[texton w=0]
+[ライナス f=01]「Ohhhhh... She likes [テオ], does she?」[k]
+[ライナス f=01]「I can't believe she masturbated while thinking about [テオ]... What kind of lewd fantasy were you indulging in?」[k]
+[ライナス f=01]「I bet in that fantasy, she was being ravished by his dick. What a dirty little bitch.」[k]
+[ライナス f=21]「Someday I'm going to fuck you so good. Hehe...」[k]
+[textoff]
+@fa
+[hoteloff]
+
+
+;◇ライナスイベント02
+*linus_02
+@jump target=*_linus_02_freemode cond='game.isFreeMode'
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=tiptoe
+@fg r=ライナス e=通常 f=02 b
+@fg l=クレア e=通常 f=06
+[texton w=1]
+[ライナス f=02]「Hey, [クレア].」[k]
+[クレア v=ve477 f=06]「...What?」[k]
+I wish you wouldn't talk to me so casually...[k]
+[ライナス f=02]「So [クレア]... you like [テオ], don't you?」[k]
+@fg l=クレア f=31
+[クレア v=ve478 f=31]「Hey...!」[k]
+Hey, why ask something like that?![k]
+[ライナス f=02]「Hey, aren't I right?」[k]
+@fg l=クレア f=54
+[クレア f=54]「...」[k]
+I can't argue... because it's true.[k]
+[クレア v=ve479 f=54]「W-what's your point?」[k]
+[ライナス f=02]「I can help you.」[k]
+@fg l=クレア f=25
+[クレア v=ve480 f=25]「Help...?」[k]
+[ライナス f=02]「I'm going to help you win [テオ]'s heart. Tada!」[k]
+Linus hands me a small piece of cloth.[k]
+@fg l=クレア f=32
+[クレア f=32]「...!」[k]
+This is women's underwear...! And it's designed to be extremely racy...![k]
+@fg r=ライナス f=03
+[ライナス f=03]「These are the lucky panties that I developed! Seduce [テオ] wearing this, and he'll easily be smitten.」[k]
+@fg l=クレア f=53
+[クレア v=ve481 f=53]「Are you joking? Don't be ridiculous!」[k]
+How repulsive! How dare you suggest I do such a thing![k]
+@fg r=ライナス f=12 left=800
+[ライナス f=12]「D-don't be so angry... [se f=glassbreak][flash t=200] Whoa! Don't throw things!」[k]
+[クレア v=ve482 f=53]「Get out of here! You pervert!」[k]
+[ライナス f=12]「Ahhh! I'm sorry! I'm sorry!」[k]
+@fg l=クレア f=55
+[クレア v=ve483 f=55]「I don't even want to look at you! Get the hell out of here!」[k]
+[ライナス f=12]「Okay, I'm out for the day! I'm so sorry! See you tomorrow!」[k]
+[textoff]
+@out t=0
+@w05
+@bg f=0001 b
+@fgf c=クレア f=54
+@se f=door1
+@quake hmax=5 time=500
+[texton w=1]
+∗bang!∗[k]
+[クレア v=ve484 f=54]「Phew...」[k]
+I can't believe it...! I can't believe he gave that thing to a woman as a present...![k]
+[クレア v=ve485 f=54]「Honestly... who would wear such disgusting underwear...」[k]
+...[k]
+She'd have to be an incredibly naughty woman...[k]
+@mu f=adult
+@fg c=クレア f=26
+[クレア f=26]「...」[k]
+I bet you would feel so embarrassed if you wore this...[k]
+And I'm sure... guys would be excited if I did. The captain might even want to push me down...[k]
+[textoff]
+@out
+@bg chara=クレア f=event42 p0=hair p1=04 p2=01
+@mu f=adult
+[texton w=2]
+[クレア]「...」[k]
+I put on the underwear Linus had given me.[k]
+I look at my reflection in the mirror. No one can see me, but... I'm embarrassed...[k]
+[クレア]「...」[k]
+Why did I end up putting such a disgusting thing on...?[k]
+@bg chara=クレア f=event42 p0=hair p1=04 p2=04
+[クレア v=ve486]「Ahhhh...」[k]
+Oh... what a disgusting feeling...![k]
+@bg chara=クレア f=event42 p0=hair p1=05 p2=04
+∗slurp slurp slurp slurp slurp∗[k]
+[クレア v=ve487 f=37]「Oh... I like it... I can't hold back... Ahhh...!」[k]
+I was so excited that I began to play with myself again today.[k]
+[クレア v=ve488]「Ahh... Ahh...」[k]
+My nipples, which are not hidden by the bra, become more and more bloodshot and hard.[k]
+When I pull on the panties, the cloth hits my sensitive spot and feels so good.[k]
+[クレア v=ve489]「Ahh... Ahh... Captain... Captain...」[k]
+Like this, my shameful hole can be seen peeking out from both sides of the narrow fabric.[k]
+It's so exciting, I stimulate my sensitive parts even more intensely.[k]
+[クレア v=ve490]「Ahh... don't look, Captain... don't look at my naughty pussy...! Ahhh...!」[k]
+I indulged myself with the fantasy of the captain seeing my embarrassing state...[k]
+[textoff]
+@out
+@w05
+
+; ライナスが陰に隠れて
+[texton w=0]
+[ライナス f=01]（What the hell, you like it a lot, don't you?）[k]
+[ライナス f=01]（She's pretty dirty, this woman, getting excited at the sight of herself and starting to masturbate as soon as possible.）[k]
+[ライナス f=01]（...Almost there... Just a little until she opens herself up for me. Kukuku...）[k]
+[textoff]
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+@fa
+[hoteloff]
+
+
+;◇ライナスイベント03
+*linus_03
+@jump target=*_linus_03_freemode cond='game.isFreeMode'
+; 宿屋の一室
+@saveon
+@bg chara=クレア f=event42 p0=hair p1=06 p2=04
+@mu f=adult
+[texton w=2]
+[クレア v=ve491]「Ah... Ah... Ah... Ah...」[k]
+Feels good... Exciting...![k]
+I was masturbating alone in my room again.[k]
+Tonight, Linus is out again. I take off my clothes and indulge in the embarrassing act while watching myself in the mirror.[k]
+I'm wearing the panties that Linus gave me.[k]
+It was good that I was so terribly aroused by the nastiness of my own appearance, and it had become a habit of mine.[k]
+I can't believe I'm getting excited wearing panties given to me by someone like that...![k]
+[クレア v=ve492]「Ah... Captain... Give me that hard cock...!」[k]
+I comforted myself by imagining myself being fucked by the captain again.[k]
+Now... I wish the captain was actually there to hold me...[k]
+[textoff]
+
+@fg c=ライナス e=勃起 f=02 b
+@bgf f=0001
+@st
+[texton w=1]
+[ライナス f=02]「[クレア].」[k]
+[クレア e=裸 f=31]「...!」[k]
+I heard Linus' voice and turned around in a hurry.[k]
+[ライナス f=01]「Whoo-hoo... That was kind of awesome, [クレア], just now.」[k]
+[クレア v=ve493 e=裸,手ブラ f=66]「Linus... How long have you been there...?!」[k]
+[ライナス f=02]「I've been watching for a while now, but you've been so busy masturbating that you didn't notice at all.」[k]
+[クレア f=66]「...! (Aaaaahhh!)」[k]
+[クレア v=ve494 f=53]「Hey, why are you here?! I thought you went out!」[k]
+@fg c=ライナス f=04
+[ライナス f=04]「I just came to pick up something I forgot. I can't believe you were doing such naughty things while I was gone... Hee hee hee.」[k]
+[クレア f=66]「... (Ahhhhh)」[k]
+Embarrassing...! I just want to disappear...![k]
+@fg c=ライナス f=01
+@mu f=adult
+[ライナス f=01]「You want more than that, don't you? Here, I got it right here.」[k]
+@fg c=ライナス e=下半身裸・勃起 f=01
+Then Linus took out his own male organ.[k]
+He stands in front of me and shows off his erect penis.[k]
+[クレア f=32]「...!」[k]
+My heart skips a beat.[k]
+If that thing gets inside me...[k]
+[ライナス f=01]「I'll put it in for you instead of [テオ]. Here.」[k]
+@clf
+@quake time=500 hmax=20 vmax=10
+[クレア f=31]「...!」[k]
+While I was momentarily distracted by his cock, Linus came around behind me![k]
+He then held my grabbed my legs from behind and spread them wide![k]
+I noticed that the tip of Linus' cock was very close to my pussy...[k]
+[クレア v=ve495 e=裸 f=31]「Wait, wait...! Wait a minute...!」[k]
+[ライナス e=裸 f=21]「I'll put it in then. Here goes!」[k]
+[textoff]
+
+@bgf chara=クレア f=event37 p0=hair p1=01 p2=01 p3=04
+@quake time=500 hmax=10 vmax=10
+[texton w=2]
+∗sluurp!∗[k]
+[クレア v=ve496]「Ahhhhhhh...!」[k]
+[ライナス]「There you go, I'm in!」[k]
+Before I had time to resist, Linus' cock was inside me![k]
+[ライナス]「Ooh, it was so wet it went in easily.」[k]
+@bgf chara=クレア f=event37 p0=hair p1=01 p2=01 p3=01
+[クレア v=ve497]「That's terrible... I told you to wait...」[k]
+[ライナス]「Why? You wanted a cock, didn't you?」[k]
+[クレア v=ve498]「I-I don't want your cock... Why would I do that with you? Ahh..!」[k]
+∗squish squish squish∗[k]
+[ライナス]「You're so selfish. Well, you'll get to love my dick pretty quickly.」[k]
+Linus thrusts his thick cock up into me from below.[k]
+∗squish squish squish∗[k]
+[クレア v=ve499]「Ah... ah... no... stop... please...」[k]
+[ライナス]「Wow... it's so wet and feels good. It's the best!」[k]
+∗squish squish squish squish squish!∗[k]
+@bg chara=クレア f=event37 p0=hair p1=01 p2=01 p3=02
+[クレア v=ve500]「Ah... ahhhh...! No... no...!」[k]
+Linus stirred my vagina with his hard cock![k]
+I feel...![k]
+I don't want to enjoy the penis of someone like him...![k]
+But I can feel it...! I can't stop feeling good...![k]
+[ライナス]「Fuuuh... I can't resist...」[k]
+@bg chara=クレア f=event37 p0=hair p1=01 p2=01 p3=03
+[クレア v=ve501]「Ahh... ahh... please... if you do more than that... I...!」[k]
+The pleasure echoes through my body as I'm penetrated from below.[k]
+It feels so good...[k]
+My head is melting... I'm going to lose my mind... I can't take it anymore...![k]
+∗squish squish squish squish squish!∗[k]
+@bg chara=クレア f=event37 p0=hair p1=01 p2=02 p3=02
+[クレア v=ve502]「Ahh... Linus... I'm... going to cum...!」[k]
+[ライナス]「Damn...! Damn...! I'm almost at my limit... Ugh!」[k]
+∗spuurt! spuurt!∗[k]
+[クレア v=ve503]「Aaaah... I'm cumming...!」[k]
+[textoff]
+@bg f=9999
+@bg chara=クレア f=event37 p0=hair p1=02 p2=01 p3=03
+[texton w=2]
+Linus shot all his semen![k]
+And then I came too. It was the first time I had sex with him...[k]
+[textoff]
+@bg f=9999
+@w05
+@fa
+@out
+@w1
+
+@bgf f=0001
+@mu f=bad
+[texton w=0]
+[ライナス e=汗だく f=03]「Fuuuuu, that felt good. I got to have the sex with [クレア] I always wanted!」[k]
+[クレア v=ve504 e=汗だく f=67]「That's awful... I told you I didn't want to...」[k]
+[ライナス f=02]「What are you talking about? You were having fun too!」[k]
+[クレア v=ve505 f=65]「Only you were...!」[k]
+[ライナス f=02]「But you felt it, right? It felt good, didn't it? You came at the end, didn't you?」[k]
+[クレア v=ve506 f=66]「That's...」[k]
+[ライナス f=03]「So, that's fine. It's natural for young men and women to do something that feels good together! It's not something to worry about!」[k]
+[クレア v=ve507 f=93]「What the hell... You're just being selfish.」[k]
+@fg c=ライナス e=通常 f=03
+[ライナス f=03]「If you get a chance, have sex with me again! Okay, I'm gonna go take care of something.」[k]
+@cl
+@se f=door1
+[クレア f=93]「...」[k]
+Linus left the room with a smug look on his face.[k]
+To have had sex with someone like that... it's so frustrating...[k]
+But...[k]
+[クレア f=52]「...」[k]
+It was good... Sex with Linus...[k]
+I didn't want to be held by that man... There is no way that I would have sex with someone like that... I thought.[k]
+But the more I thought about it, the more aroused I became... A dark lust flared up in my heart.[k]
+[クレア v=ve508 f=39]「Ahhh... Linus...!」[k]
+I can't believe it... I thought I liked the captain...?![k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスイベント04
+*linus_04
+
+; 宿屋の一室
+@saveon
+@out
+@bg f=0001
+@mu f=adult
+[texton w=0]
+[クレア v=ve509 e=汗だく f=37]「Haa... Linus... Ahh...!」[k]
+[ライナス e=汗だく f=98]「Kuuu～! Your pussy feels so good, [クレア]～!」[k]
+[クレア] yelps and shakes her body as she fucks Linus' hard penis.[k]
+[クレア v=ve510 f=38]「Haa, haa... I can't hold it in anymore... I'm going to cum...!」[k]
+[ライナス f=94]「Oops, did I make you cum first?」[k]
+[クレア v=ve511 f=39]「Phew...」[k]
+[ライナス f=03]「Now, you're going to have to keep me company. I won't let you sleep until I'm satisfied!」[k]
+[textoff]
+@fa
+@out
+@w05
+@bgf f=0002
+[texton w=0]
+[テオ e=通常 f=12]「[クレア]...!」[k]
+[クレア] is having sex with Linus...! When did they start that kind of relationship...?[k]
+I left without saying a word.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ワイルド・ブル編
+
+;◇ワイルド・ブルイベント01
+*wildbull_01
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*elf_wildbull_01 cond='game.isFreeMode'
+@saveon
+@bgf f=0022 cond='f.replayMode'
+[texton w=1]
+I made up my mind and entered the room. Then...[k]
+[アレックス f=05]「What?! Is it a visitor?!」[k]
+Alex's voice came from the back of the room.[k]
+[アレックス f=05]「Hey, [クレア]! Go see!」[k]
+[クレア v=ve512 e=奴隷の鎧・上,奴隷の鎧・下 f=09]「Y-yes...」[k]
+[テオ f=05]「...!」[k]
+I also heard [クレア]'s voice. Then she was in the room too...[k]
+@fgf c=クレア f=09
+[クレア v=ve513 f=09]「I'm sorry, who are you...?」[k]
+@fgf c=クレア f=31
+[クレア f=31]「...!」[k]
+[テオ f=12]「[クレア]!」[k]
+When the door opened, and saw each other for the first time in a while, we were both shocked.[k]
+@fgf c=クレア f=30
+[クレア v=ve514 f=30]「C-captain...」[k]
+[テオ f=12]「...Ah, [クレア], that appearance...」[k]
+[クレア] looked totally indecent.[k]
+Her voluptuous breasts were exposed, and her crotch was barely covered.[k]
+While her breasts are slightly supported by a metal bra, her nipples were on full display.[k]
+@fg r=アレックス x=480 y=-50
+[アレックス f=00]「Ah, you like it?」[k]
+Alex wandered over. He put an arm round [クレア] and laughed cheerfully.[k]
+@fgf c=クレア f=37
+[クレア v=ve515 f=37]「Ah...!」[k]
+Alex poked [クレア]'s fully visible nipples with his fingers![k]
+At Alex's touch, [クレア] squealed a little.[k]
+[アレックス f=00]「Kuku, I get to squeeze this one's big tits as much as I want.」[k]
+@fgf c=クレア f=38
+[クレア v=ve516 f=38]「No, no...!」[k]
+[テオ f=12]「No, stop!」[k]
+Alex rubbed [クレア]'s breasts roughly in response. She endured Alex's actions, her face bright red.[k]
+@fgf c=クレア f=40
+[アレックス f=00]「This outfit is Wild Bull's women's uniform. Every woman with us has to dress like this.」[k]
+[クレア f=40]「...」[k]
+[テオ f=10]「W-what is that rule...」[k]
+[アレックス f=00]「By the way, another rule says you can't hide your ass or boobs. If you do, that means punishment.」[k]
+[テオ f=11]「Don't make such horrible rules for [クレア]!」[k]
+@fg r=アレックス f=05 x=480 y=-50
+[アレックス f=05]「Shut up! I can do what I want with members of my party. If you have a problem with that, you shouldn't have lost the duel.」[k]
+[クレア f=40]「...」[k]
+[テオ f=09]「Damn...!」[k]
+I hate it, but I can't argue... because that's the law of adventuring parties.[k]
+@fg r=アレックス x=480 y=-50
+[アレックス f=02]「Was that all? If you get it, then beat it.」[k]
+[アレックス f=02]「Or do you want to fight us? That's fine. What are you going to do?」[k]
+[textoff]
+@return cond='f.replayMode'
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [クレア], fight hard.」[k]
+[textoff]
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*wildbull_02
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*elf_wildbull_02 cond='game.isFreeMode'
+@saveon
+@bgf f=0022 cond='f.replayMode'
+[texton w=0]
+@se f=door1
+∗slam!∗[k]
+[男 f=thief_black_02]「What the hell?!」[k]
+[テオ f=07]「I need to talk to Alex! Go and get him!」[k]
+I was so worried about [クレア] who was captured by them.[k]
+Now [クレア] is a member of Wild Bull I know I can't tell them what to do. But when I think about her, I can't help but want to do something.[k]
+Is [クレア]... safe?[k]
+[テオ f=11]「Alex! I know you're in there! I need to talk to you! Come on out!」[k]
+I call out to the back of the room.[k]
+@se f=door1
+∗slam∗[k]
+[テオ f=12]「...!」[k]
+A door at the back of the room opened to reveal Alex's large body.[k]
+[textoff]
+
+@fg c=0022 index=900 b
+@bg chara=クレア f=event36 p0=hair p1=01 p2=01 p3=01 left=100 top=-65
+[texton w=3 left=532 top=468]
+[アレックス]「Oh, what can I do for you?」[k]
+[テオ]「...!」[k]
+When I saw Alex, I was astonished.[k]
+[クレア v=ve517]「Ah... Captain.」[k]
+[テオ]「Ah... [クレア]!」[k]
+[クレア] showed up with Alex. Her shocking appearance left me speechless.[k]
+To my surprise, she came out with her hands on the floor while Alex held her legs![k]
+She's isn't wearing a stitch of clothing. Her breasts and butt are all exposed.[k]
+Her thighs were open, and Alex, also naked, was between her legs. They approached, despite being joined at the crotch.[k]
+How dare you humiliate [クレア] like this...![k]
+[テオ]「Hey... What are you making [クレア] do?」[k]
+[アレックス]「Isn't it obvious?」[k]
+[テオ]「What...?」[k]
+[アレックス]「I'm fucking this girl's pussy with my dick right now. How does it look?」[k]
+@bgf chara=クレア f=event36 p0=hair p1=01 p2=03 p3=04 left=100 top=-65
+@shake layer=0 loop=3 time=20 length=2
+@w05
+@shake layer=0 loop=3 time=20 length=2
+With that said, Alex held both of [クレア]'s legs and thrust her hips forward![k]
+@se f=kucha
+∗sluurp∗[k]
+[クレア v=ve518]「Ahhhh...!」[k]
+[テオ]「[クレア]!」[k]
+As well as obscene wet sounds, [クレア] let out a seductive cry.[k]
+[アレックス]「It looks like you're feeling my dick. Well, let me make you feel even better!」[k]
+@bgf chara=クレア f=event36 p0=hair p1=01 p2=03 p3=04 left=100 top=-65
+@se f=kucha
+@shake layer=0 loop=3 time=20 length=2
+@w05
+@se f=kucha
+@shake layer=0 loop=3 time=20 length=2
+∗sluurp sluurp∗[k]
+[クレア v=ve519]「Ahh... Stop... Alex... Ahh... ahhh...!」[k]
+[テオ]「Ah... [クレア]!」[k]
+She is clearly feeling it as Alex penetrates her.[k]
+@bg chara=クレア f=event36 p0=hair p1=01 p2=01 p3=03 left=100 top=-65
+[アレックス]「We were in the middle of hot sex. You asked me to come out, so I did.」[k]
+Looking down, [クレア]'s body was flushed and her skin was sweaty. Alex is also sweating all over.[k]
+[アレックス]「Let's go ahead and have some fun fucking in front of your friends, [クレア]!」[k]
+[テオ]「Don't do it, Alex! Don't do this to [クレア]! Please, Alex!」[k]
+[アレックス]「Is it bad? Pleasing her pussy?」[k]
+[アレックス]「...No, it's great. This guy fills you up nicely, huh, [クレア]?」[k]
+[クレア]「...」[k]
+[テオ]「N-no, [クレア] can't be pleased to be embraced by a savage man like you...」[k]
+[アレックス]「You can't believe it?」[k]
+[アレックス]「...Then I'll show you. [クレア] happily accepting my cock...」[k]
+Alex began thrusting his hips.[k]
+@bgf chara=クレア f=event36 p0=hair p1=02 p2=03 p3=04 left=100 top=-65
+@se f=kucha
+@shake layer=0 loop=3 time=20 length=2
+@w05
+Holding both her legs, he grinds his hips, thrusting his stiff penis into [クレア]'s vagina.[k]
+[クレア v=ve520]「Aaah... Aaah... That feels good... Alex... Aaah...!」[k]
+[アレックス]「Feeling good? Come on, let's give it our all in front of your old friends!」[k]
+[テオ]「Damn...!」[k]
+A nightmarish sight. But there's nothing we can do... I can't save [クレア]...![k]
+∗squish squish squish∗[k]
+[クレア v=ve521]「Oh, no, no, don't do that... Not in front of everyone... Ahhh, no... No!」[k]
+[アレックス]「You sound pretty excited when you say that, huh?!」[k]
+@se f=kucha
+@shake layer=0 loop=3 time=20 length=2
+@w05
+∗sliip!∗[k]
+[クレア v=ve522]「Aaahhh... No... No!」[k]
+∗squish squish squish∗[k]
+Alex thrusts his hips and forcefully fucks [クレア].[k]
+Smack, smack, smack, as their bodies collide with each other, while disgusting wet noises echo through the air.[k]
+It is the sound of Alex's hot meaty rod stirring in [クレア]'s honey pot filled with lewd juices.[k]
+[アレックス]「See, see, you love getting pounded from the back, don't you?」[k]
+@se f=kucha
+∗sluuurp!∗[k]
+[クレア v=ve523]「Haaaaan...! Ahh...! There... There... Ahhh...!」[k]
+[クレア] is panting a lot. Even in front of everyone, she can't hold back any longer.[k]
+[アレックス]「Here, here. How about this?!」[k]
+∗squish squish squish squish squish!∗[k]
+[クレア v=ve524]「Aaah... I can't take it anymore... I'm cumming...!」[k]
+@flash on=1000
+@bgf chara=クレア f=event36 p0=hair p1=01 p2=01 p3=03 left=100 top=-65
+@flash off=1000
+[テオ]「...!」[k]
+Suddenly, [クレア]'s whole body shook![k]
+[アレックス]「...What? Did you cum? That didn't take long.」[k]
+[クレア v=ve525]「Ahh ahh ahh ahh ahh...」[k]
+[アレックス]「You have no shame at all. Climaxing in front of your friends.」[k]
+[クレア]「...」[k]
+[アレックス]「Then I'll cum, too!」[k]
+@bgf chara=クレア f=event36 p0=hair p1=02 p2=02 p3=04 left=100 top=-65
+∗slurp slurp slurp slurp slurp!∗[k]
+[クレア v=ve526]「Ahhhh...!」[k]
+[アレックス]「I'll fire my thick sperm! Take this!」[k]
+[テオ]「Stop it!」[k]
+@flash
+@w05
+@flash
+@bgf chara=クレア f=event36 p0=hair p1=03 p2=02 p3=04 left=100 top=-65
+∗spurt! spurt! spurt!∗[k]
+[クレア v=ve527]「Aaaaaaahhh...!」[k]
+[テオ]「Oh... [クレア]...!」[k]
+Alex thrust deep into [クレア] and came at the very back...[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+@gameon
+@layopt layer=0 page=back visible=false left=0 top=0
+@cl b
+@fg l=アレックス e=汗だく f=06 b
+@fg r=クレア e=汗だく f=52
+[texton w=1]
+[アレックス f=03]「Phew, that felt good. I'm happy. Gahahaha!」[k]
+[テオ f=08]「Damn...! Alex...!」[k]
+[クレア f=52]「...」[k]
+[アレックス f=00]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton w=1]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [クレア], fight hard!」[k]
+[クレア v=ve528 f=29]「Really? Like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+Alex and [クレア] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント03
+*wildbull_03
+; ワイルド・ブルイベント・３回目以降
+
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*elf_wildbull_03 cond='game.isFreeMode'
+@saveon
+@bgf chara=クレア f=event36a p0=hair p1=01
+[texton w=3 left=532 top=468]
+∗sluurp sluurp sluurp sluurp∗[k]
+[盗賊]「Phew... That was a good fuck.」[k]
+[クレア v=ve529]「Aahhh... I'm... going to cum again...!」[k]
+[盗賊]「Hurry! Hurry and let me have her!」[k]
+[テオ]「[クレア]...!」[k]
+Today too, [クレア] is being treated like a sex toy by the Wild Bull guys.[k]
+I can't let her stay like this...! I have to hurry and rescue her soon...![k]
+[textoff]
+@eval exp='game.party.escape(true)'
+[eventoff]
+
+
+;◇ワイルド・ブル救出イベント・懐妊直後
+*wildbull_pregnant
+
+; 救出した直後
+@saveon
+@fg c=クレア e=穴あき鎧・妊娠 f=09
+[texton w=1]
+[クレア v=ve530 f=09]「Captain...」[k]
+[テオ f=05]「[クレア], I'm sorry it took me so long to come help you. Come on, let's go home together.」[k]
+[クレア v=ve531 f=09]「H-hey, captain.」[k]
+[テオ f=05]「Hmm? What's wrong, [クレア]?」[k]
+@fg c=クレア f=10
+[クレア v=ve532 f=10]「Let's see... well...」[k]
+[クレア v=ve533 f=10]「I think I'm... having a baby...」[k]
+[テオ f=12]「What?! Whose?!」[k]
+@fg c=クレア f=17
+[クレア v=ve534 f=17]「How should I know?!」[k]
+[テオ f=10]「[クレア]...!」[k]
+@fg c=クレア f=38
+[クレア v=ve535 f=38]「I've slept with all the men here, not just Alex... How am I supposed to know whose baby it is...?!」[k]
+[テオ f=10]「...」[k]
+Damn, Wild Bull doesn't even use birth control...! What do they think they're doing with [クレア]'s body...?![k]
+@fg c=クレア e=穴あき鎧・妊娠 f=38
+[クレア v=ve536 f=38]「I... don't know what to do...!」[k]
+[テオ f=05]「Let's go back to Sapphire City for now. If we talk to the guild, we might be able to work something out.」[k]
+[textoff]
+@out
+@w05
+[texton]
+I took [クレア] back to Sapphire City.[k]
+After consulting with the guild, [クレア] was able to rest for a while on the second floor of the waiting area.[k]
+@call storage="stay.ks" target=*describe_support
+[textoff]
+@w05
+
+; 待合所のベッド
+@bg f=0007
+[texton]
+[テオ f=02]「You can stay here until the baby is safely delivered.」[k]
+[クレア v=ve537 e=マタニティドレス f=10]「I'm seething... I can't wait to get back to being an adventurer...」[k]
+[テオ f=02]「Don't be in a hurry, [クレア]. Think about your child and your body. We're waiting for you.」[k]
+[textoff]
+@out
+@return
+
+
+;◇ワイルド・ブル救出イベント・臨月間近
+*wildbull_bigbelly
+
+; 救出した直後
+@saveon
+@fg c=クレア e=穴あき鎧・ボテ腹 f=09
+[texton w=1]
+[クレア v=ve530 f=09]「Captain...」[k]
+[テオ f=02]「[クレア], I'm sorry I'm late helping you. Come on, let's go home together.」[k]
+[クレア v=ve531 f=09]「H-hey, captain.」[k]
+[テオ f=02]「What?」[k]
+[クレア v=ve538 f=09]「Aren't you going to ask? ...About the baby?」[k]
+[テオ f=05]「...You can tell me when you're ready. Right now, I'm more concerned about your body.」[k]
+[クレア v=ve539 f=09]「Captain...!」[k]
+[テオ f=02]「Let's just go back to Sapphire City. There's a facility there where you can rest and recuperate...」[k]
+[textoff]
+@out
+@w05
+[texton]
+I took [クレア] back to Sapphire City.[k]
+After consulting with the guild, [クレア] was able to rest for a while on the second floor of the waiting area.[k]
+@call storage="stay.ks" target=*describe_support
+[textoff]
+@w05
+
+; 待合所のベッド
+@bg f=0007
+[texton]
+[テオ f=02]「You can stay here until the baby is safely delivered.」[k]
+[クレア v=ve537 e=マタニティドレス　 f=10]「I'm seething... I can't wait to get back to being an adventurer...」[k]
+[テオ f=02]「Don't be in a hurry, [クレア]. Think about your child and your body. We're waiting for you.」[k]
+[textoff]
+@out
+@return
+
+
+
+
+;■背徳の鎧イベント
+
+;◇背徳の鎧イベント
+*sexy_armor
+
+@fg c=クレア f=37
+@saveon
+[texton w=1]
+[クレア v=ve540 f=37]「Ahhh...!」[k]
+The armor forced on [クレア] by the power of a curse contained a shocking surprise![k]
+An object resembling a male penis extended from within the pants and penetrated all the way into [クレア]'s vagina.[k]
+@fg c=クレア f=38
+[クレア v=ve541 f=38]「What the... What's this... Ahhh..!」[k]
+[クレア] makes a obscene noise. It is inserted deep inside her and she is already starting to feel pleasure...[k]
+@fg c=クレア f=39
+[クレア v=ve542 f=39]「Ha ha ha... I can't resist... If it goes in me like that... Aaahhh...! Ohhh...!」[k]
+[クレア] must be feeling really good, since love juice is overflowing from between her legs.[k]
+If this continues, she won't be able to fight properly, let alone lead a normal life. I have to remove it quickly...![k]
+[textoff]
+@cl
+@w05
+[eventoff]
+
+
+
+
+;■フリーモード
+
+*_linus_01_freemode
+I stirred the entrance of the hole, imagining myself being violated.[k]
+[textoff]
+@out
+; ライナスが陰に隠れて
+[texton w=0]
+[ライナス f=01]「Heeheehee... that girl is quite the pervert.」[k]
+[ライナス f=01]「Masturbating like that... What kind of lewd fantasy are you indulging in?」[k]
+[ライナス f=01]「I bet in that fantasy, she was being ravished by his dick. What a dirty little bitch.」[k]
+[ライナス f=21]「Someday I'm going to fuck you so good. Hehe...」[k]
+[textoff]
+@fa
+[hoteloff]
+
+
+
+*_linus_02_freemode
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=tiptoe
+@fg r=ライナス e=通常 f=02 b
+@fg l=クレア e=通常 f=06
+[texton w=1]
+[ライナス f=02]「Hey, [クレア].」[k]
+[クレア v=ve477 f=06]「...What?」[k]
+I wish you wouldn't talk to me so casually...[k]
+[ライナス f=02]「Actually, I have a present for you, [クレア].」[k]
+Linus hands me a small piece of cloth.[k]
+@fg l=クレア f=32
+[クレア f=32]「...!」[k]
+This is women's underwear...! And it's designed to be extremely racy...![k]
+@fg r=ライナス f=03
+[ライナス f=03]「These are the lucky panties that I developed! Seduce a man wearing this, and he'll easily be smitten.」[k]
+@fg l=クレア f=53
+[クレア v=ve481 f=53]「Are you joking? Don't be ridiculous!」[k]
+How repulsive! How dare you suggest I do such a thing![k]
+@fg r=ライナス f=12 left=800
+[ライナス f=12]「D-don't be so angry... [se f=glassbreak][flash t=200] Whoa! Don't throw things!」[k]
+[クレア v=ve482 f=53]「Get out of here! You pervert!」[k]
+[ライナス f=12]「Ahhh! I'm sorry! I'm sorry!」[k]
+@fg l=クレア f=55
+[クレア v=ve483 f=55]「I don't even want to look at you! Get the hell out of here!」[k]
+[ライナス f=12]「Okay, I'm out for the day! I'm so sorry! See you tomorrow!」[k]
+[textoff]
+@out t=0
+@w05
+@bg f=0001 b
+@fgf c=クレア f=54
+@se f=door1
+@quake hmax=5 time=500
+[texton w=1]
+∗bang!∗[k]
+[クレア v=ve484 f=54]「Phew...」[k]
+I can't believe it...! I can't believe he gave that thing to a woman as a present...![k]
+[クレア v=ve485 f=54]「Honestly... who would wear such disgusting underwear...」[k]
+...[k]
+She'd have to be an incredibly naughty woman...[k]
+@mu f=adult
+@fg c=クレア f=26
+[クレア f=26]「...」[k]
+I bet you would feel so embarrassed if you wore this...[k]
+And I'm sure... guys would be excited if I did. The captain might even want to push me down...[k]
+[textoff]
+@out
+@bg chara=クレア f=event42 p0=hair p1=04 p2=01
+@mu f=adult
+[texton w=2]
+[クレア]「...」[k]
+I put on the underwear Linus had given me.[k]
+I look at my reflection in the mirror. No one can see me, but... I'm embarrassed...[k]
+[クレア]「...」[k]
+Why did I end up putting such a disgusting thing on...?[k]
+@bg chara=クレア f=event42 p0=hair p1=04 p2=04
+[クレア v=ve486]「Ahhhh...」[k]
+Oh... what a disgusting feeling...![k]
+@bg chara=クレア f=event42 p0=hair p1=05 p2=04
+∗slurp slurp slurp slurp slurp∗[k]
+[クレア v=ve487 f=37]「Oh... I like it... I can't hold back... Ahhh...!」[k]
+I was so excited that I began to play with myself again today.[k]
+[クレア v=ve488]「Ahh... Ahh...」[k]
+My nipples, which are not hidden by the bra, become more and more bloodshot and hard.[k]
+When I pull on the panties, the cloth hits my sensitive spot and feels so good.[k]
+Like this, my shameful hole can be seen peeking out from both sides of the narrow fabric.[k]
+It's so exciting, I stimulate my sensitive parts even more intensely.[k]
+I indulged myself with the fantasy of someone seeing my embarrassing state...[k]
+[textoff]
+@out
+@w05
+
+; ライナスが陰に隠れて
+[texton w=0]
+[ライナス f=01]（What the hell, you like it a lot, don't you?）[k]
+[ライナス f=01]（She's pretty dirty, this woman, getting excited at the sight of herself and starting to masturbate as soon as possible.）[k]
+[ライナス f=01]（...Almost there... Just a little until she opens herself up for me. Kukuku...）[k]
+[textoff]
+@fa
+[hoteloff]
+
+
+
+
+*_linus_03_freemode
+
+; 宿屋の一室
+@saveon
+@bg chara=クレア f=event42 p0=hair p1=06 p2=04
+@mu f=adult
+[texton w=2]
+[クレア v=ve491]「Ah... Ah... Ah... Ah...」[k]
+Feels good... Exciting...![k]
+I was masturbating alone in my room again.[k]
+Tonight, Linus is out again. I take off my clothes and indulge in the embarrassing act while watching myself in the mirror.[k]
+I'm wearing the panties that Linus gave me.[k]
+It was good that I was so terribly aroused by the nastiness of my own appearance, and it had become a habit of mine.[k]
+I can't believe I'm getting excited wearing panties given to me by someone like that...![k]
+[textoff]
+
+@fg c=ライナス e=勃起 f=02 b
+@bgf f=0001
+@st
+[texton w=1]
+[ライナス f=02]「[クレア].」[k]
+[クレア e=裸 f=31]「...!」[k]
+I heard Linus' voice and turned around in a hurry.[k]
+[ライナス f=01]「Whoo-hoo... That was kind of awesome, [クレア], just now.」[k]
+[クレア v=ve493 e=裸,手ブラ f=66]「Linus... How long have you been there...?!」[k]
+[ライナス f=02]「I've been watching for a while now, but you've been so busy masturbating that you didn't notice at all.」[k]
+[クレア f=66]「...! (Aaaaahhh!)」[k]
+[クレア v=ve494 f=53]「Hey, why are you here?! I thought you went out!」[k]
+@fg c=ライナス f=04
+[ライナス f=04]「I just came to pick up something I forgot. I can't believe you were doing such naughty things while I was gone... Hee hee hee.」[k]
+[クレア f=66]「... (Ahhhhh)」[k]
+Embarrassing...! I just want to disappear...![k]
+@fg c=ライナス f=01
+@mu f=adult
+[ライナス f=01]「You want more than that, don't you? Here, I got it right here.」[k]
+@fg c=ライナス e=下半身裸・勃起 f=01
+Then Linus took out his own male organ.[k]
+He stands in front of me and shows off his erect penis.[k]
+[クレア f=32]「...!」[k]
+My heart skips a beat.[k]
+If that thing gets inside me...[k]
+[ライナス f=01]「I'll put it in for you.」[k]
+@clf
+@quake time=500 hmax=20 vmax=10
+[クレア f=31]「...!」[k]
+While I was momentarily distracted by his cock, Linus came around behind me![k]
+He then held my grabbed my legs from behind and spread them wide![k]
+I noticed that the tip of Linus' cock was very close to my pussy...[k]
+[クレア v=ve495 e=裸 f=31]「Wait, wait...! Wait a minute...!」[k]
+[ライナス e=裸 f=21]「I'll put it in then. Here goes!」[k]
+[textoff]
+
+@bgf chara=クレア f=event37 p0=hair p1=01 p2=01 p3=04
+@quake time=500 hmax=10 vmax=10
+[texton w=2]
+∗sluurp!∗[k]
+[クレア v=ve496]「Ahhhhhhh...!」[k]
+[ライナス]「There you go, I'm in!」[k]
+Before I had time to resist, Linus' cock was inside me![k]
+[ライナス]「Ooh, it was so wet it went in easily.」[k]
+@bgf chara=クレア f=event37 p0=hair p1=01 p2=01 p3=01
+[クレア v=ve497]「That's terrible... I told you to wait...」[k]
+[ライナス]「Why? You wanted a cock, didn't you?」[k]
+[クレア v=ve498]「I-I don't want your cock... Why would I do that with you? Ahh..!」[k]
+∗squish squish squish∗[k]
+[ライナス]「You're so selfish. Well, you'll get to love my dick pretty quickly.」[k]
+Linus thrusts his thick cock up into me from below.[k]
+∗squish squish squish∗[k]
+[クレア v=ve499]「Ah... ah... no... stop... please...」[k]
+[ライナス]「Wow... it's so wet and feels good. It's the best!」[k]
+∗squish squish squish squish squish!∗[k]
+@bg chara=クレア f=event37 p0=hair p1=01 p2=01 p3=02
+[クレア v=ve500]「Ah... ahhhh...! No... no...!」[k]
+Linus stirred my vagina with his hard cock![k]
+I feel...![k]
+I don't want to enjoy the penis of someone like him...![k]
+But I can feel it...! I can't stop feeling good...![k]
+[ライナス]「Fuuuh... I can't resist...」[k]
+@bg chara=クレア f=event37 p0=hair p1=01 p2=01 p3=03
+[クレア v=ve501]「Ahh... ahh... please... if you do more than that... I...!」[k]
+The pleasure echoes through my body as I'm penetrated from below.[k]
+It feels so good...[k]
+My head is melting... I'm going to lose my mind... I can't take it anymore...![k]
+∗squish squish squish squish squish!∗[k]
+@bg chara=クレア f=event37 p0=hair p1=01 p2=02 p3=02
+[クレア v=ve502]「Ahh... Linus... I'm... going to cum...!」[k]
+[ライナス]「Damn...! Damn...! I'm almost at my limit... Ugh!」[k]
+∗spuurt! spuurt!∗[k]
+[クレア v=ve503]「Aaaah... I'm cumming...!」[k]
+[textoff]
+@bg f=9999
+@bg chara=クレア f=event37 p0=hair p1=02 p2=01 p3=03
+[texton w=2]
+Linus shot all his semen![k]
+And then I came too. It was the first time I had sex with him...[k]
+[textoff]
+@bg f=9999
+@w05
+@fa
+@out
+@w1
+
+@bgf f=0001
+@mu f=bad
+[texton w=0]
+[ライナス e=汗だく f=03]「Fuuuuu, that felt good. I got to have the sex with [クレア] I always wanted!」[k]
+[クレア v=ve504 e=汗だく f=67]「That's awful... I told you I didn't want to...」[k]
+[ライナス f=02]「What are you talking about? You were having fun too!」[k]
+[クレア v=ve505 f=65]「Only you were...!」[k]
+[ライナス f=02]「But you felt it, right? It felt good, didn't it? You came at the end, didn't you?」[k]
+[クレア v=ve506 f=66]「That's...」[k]
+[ライナス f=03]「So, that's fine. It's natural for young men and women to do something that feels good together! It's not something to worry about!」[k]
+[クレア v=ve507 f=93]「What the hell... You're just being selfish.」[k]
+@fg c=ライナス e=通常 f=03
+[ライナス f=03]「If you get a chance, have sex with me again! Okay, I'm gonna go take care of something.」[k]
+@cl
+@se f=door1
+[クレア f=93]「...」[k]
+Linus left the room with a smug look on his face.[k]
+To have had sex with someone like that... it's so frustrating...[k]
+But...[k]
+[クレア f=52]「...」[k]
+It was good... Sex with Linus...[k]
+I didn't want to be held by that man... There is no way that I would have sex with someone like that... I thought.[k]
+But the more I thought about it, the more aroused I became... A dark lust flared up in my heart.[k]
+[クレア v=ve508 f=39]「Ahhh... Linus...!」[k]
+I can't believe it... Me, of all people, with someone like that...![k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+*_max_02_freemode
+
+; 宿屋の廊下
+@saveon
+@bg f=0002
+@w1
+@se f=door1
+@mu f=trick
+@fgf c=マックス e=裸・腕上げ f=31
+@quake time=500
+[texton w=1]
+∗bang!∗[k]
+[マックス f=31]「Waaah!」[k]
+A sudden, piercing sound echoed through the inn's hallway![k]
+[マックス], who isn't wearing a single thread, dashed out of [クレア]'s room![k]
+[クレア v=ve441 e=通常 f=53]「Fool! Pervert! Unbelievable! Get out!」[k]
+From inside the room, a barrage of small items are hurled at the naked [マックス]![k]
+[マックス f=31]「N-no, it wasn't! Stop! Ow!」[k]
+[クレア v=ve442 f=55]「You idiot ...!」[k]
+@se f=door1
+@quake time=500
+∗bang!∗[k]
+The door is slammed shut, leaving [マックス] naked in the hallway.[k]
+@fg c=マックス e=裸 f=13
+The reason [クレア] flew into a rage was because [マックス] flaunted his naked body in front of her.[k]
+[マックス] took advantage of the fact that his roommate, [クレア], was out to call a prostitute to his room for some fun.[k]
+While he was waiting naked for the girl to arrive, [クレア] came back and saw him like that.[k]
+...But [マックス] had other plans.[k]
+@fg c=マックス e=裸 f=06
+[マックス f=06]（Phew... I guess the plan to show [クレア] sex with a girl failed...）[k]
+[マックス f=06]（I wanted her to see some hot sex when she came back. If only she'd returned a little later...）[k]
+[マックス f=15]（Because I have a hunch that [クレア] is secretly a dirty girl. She acts innocent, but in reality, she's very interested in sex. In fact, even though she was angry just now, she was still staring at my cock!）[k]
+[マックス f=22]（She would definitely get a kick out of seeing sex in front of her. Then you could even ask her to join in...）[k]
+[マックス f=39]（It's not every day you get a chance to fuck a beautiful woman like that. I'll definitely fuck [クレア] at least once while we're both in the same party! Hee hee hee...）[k]
+[textoff]
+@out
+[hoteloff]
+
+

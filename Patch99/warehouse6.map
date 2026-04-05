@@ -1,0 +1,136 @@
+﻿; 愚者の倉庫
+
+name = 愚者の倉庫６
+insideName = Floor 6
+level = 23
+bgm = trick
+external = s:1
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+antiWarp = true
+
+; 各パーツ
+━ = stone
+　 = marble
+❖ = marble
+☆ = soilr
+❑ = cube
+⧻ = fence
+☖ = arch
+☗ = gate
+︻ = panel
+
+; 移動ポイント
+(A) = map:愚者の倉庫５, x:10, y:10, way:w, symbol:exit, ask:Go to the previous floor?
+(B) = map:愚者の倉庫７, x:5, y:13, way:s, symbol:exit, ask:Go to the next floor?
+
+; 宝箱
+box[1] = 罠はない,鏡の盾_u,オリハルコンの砂,経験のコイン（中）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━━━━━━━━━┳━━━┓					┏━━━┓
+11【②　　　　　　　　☖　　　┃					┃　　　┃
+  ┣━┳━┳━━━━━┛　　　┗━━━━━┛　　　┃
+10☗Ⓐ┃	┃　　　　　　　　❑　　　　　　　❑　　┃
+  ┃　┗━┛　　　┏━┓　　　　　　　┏━━━┓　┃
+ 9┃　　　　　　　┃	┃　　　　❑　　┃　　❶┃　┃
+  ┃　　　　　　　┃	┃　　　　　　　┃　　　┃　┃
+ 8┃　　　　　　　┃	┃❑　❑　❑　　┃　　　┃　┃
+  ┃　┏━━━┳━┻━┛　　　　　　　┃　　　┃　┃
+ 7┃　【③　　┃　　　　　　　　　　　┃　　　┃①┃
+  ┃　┃　　　┃　┏━━━┳⧻━━━━┛　┏━┛　┃
+ 6┃　┃　　　┃❑┃			┃　　　　　　　┃☆　☆┃
+  ┃　┗━┓　┃　┗━━━┻━━━━━━━┛　　　┃
+ 5┃　　　┃　┃　　　　❑　　　❑　　　①　☆　☆┃
+  ┃　　　┃　┃　　　　　　　┏━┓　　　　　　　┃
+ 4┃　　　┃　┃　　　　　　　┃	┃　　①　☆　☆┃
+  ┃　　　┃　┃　　　┏━━━┛	┣⧻┳━┓　　　┃
+ 3┃　　❑┃　┃❑　　┃					┃　┃	┃☆　☆┃
+  ┃　　　┃　┃　　　┣━━━━━┛　┃	┃　　　┃
+ 2┃　　　┃　┃　　　┃　　　　　　　┃	┃☆　☆┃
+  ┃　　　┗☖┛　　　┃　　　　　　　┃	┃　　　┃
+ 1┃　　❑　　　❑　❑┃　　　　　　　┃	┃☆　☆┃
+  ┃　　　　　　　　　┃　　　　　　　┃	┃　　　┃
+ 0┃　　　　　　　　　┃Ⓑ　　　　　　┃	┃☆　☆┃
+  ┗━━━━━━━━━┻☗━━━━━━┛	┗━━━┛
+-1											❖
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(6, 7, "s", events.has(1) ? "close" : "open");
+switchFence(8, 4, "s", events.has(1) ? "close" : "open");
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsPush
+
+@eventoff cond='game.map.getFloorInfo(10, 6).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(10, 5).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(10, 4).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(10, 3).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(10, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(10, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(10, 0).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(11, 6).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(11, 5).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(11, 4).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(11, 3).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(11, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(11, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(11, 0).type != "movable"'
+@delevent
+@wait time=1000
+@se f=fence
+@switchfence x=6 y=7 way=s mode=open
+@switchfence x=8 y=4 way=s mode=open
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Don't touch the upper half until you find a way to open the middle passage."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="There is limited space in the upper half.<r>Count the number of stones in advance and secure a place to store them."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+[if exp='! game.map.events.has(1)']
+	@call storage="anime.ks" target=*failed_to_reset
+	[eventoff]
+[endif]
+
+@se f=dragstone
+@eval exp='game.map.reset()'
+@wait time=800
+@warp x=0 y=10 way=e
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

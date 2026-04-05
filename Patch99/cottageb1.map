@@ -1,0 +1,73 @@
+﻿; 廃屋
+
+name = 森の中の廃屋Ｂ１
+insideName = Ｂ１
+upper = 森の中の廃屋１Ｆ
+level = 6
+bgm = hideout
+shadow = dark
+roof = wood
+sky = forest
+outfield = woodh
+blank = rock
+
+; 各種パーツ
+━ = stone
+　 = soil
+／ = door
+︻ = panel
+㊤ = ladderu
+⑴ = br_str
+⑵ = barrel
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  								┏━━━━━━━━━━━┓
+ 5								┃　　　　　　　　　　　┃
+  								┃　┏━━━┓　┏━━━┫
+ 4								┃　┃　　㊤┃　┃　　⑴┃
+  								┃　┃　　　┃　┃　　　┃
+ 3								┃　／　　　┃　／　　⑵┃
+  								┗━┻━━━┻━┻━━━┛
+ 2
+  
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("power", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Strength permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.setStatus(o.毒, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> is poisoned!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

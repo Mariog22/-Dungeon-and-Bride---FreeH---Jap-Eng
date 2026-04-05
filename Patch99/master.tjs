@@ -1,0 +1,5823 @@
+﻿// master.tjs
+// ダンジョン画面生成＆移動
+
+
+//========================================================================================
+class GameMaster extends KAGPlugin
+{
+	// ゲーム全体の管理とユーティリティのクラス
+
+	var party;	// プレイヤーのパーティー
+	var enemy;	// 敵のパーティー
+	var guest;	// ゲストグループ（ＮＰＣ、召喚）
+	var view;		// ビュー画面の参照
+	var dungeonView;	// ダンジョンビュー
+	var townView;			// 町ビュー
+	var hotelView;		// ホテルビュー
+	var chara = [];		// 登録キャラ
+	var refer = [];		// キャラクターへの参照
+	var helper = [];	// ヘルパーキャラ
+	var hiring = [];	// 雇える人型モンスター（雇用キャラ）
+	var lovers = [];	// ヒロインの恋愛対象の男たち
+	var btcmd = [];		// 戦闘コマンド
+	var monster = [];	// モンスターデータ
+	var mapData = [];	// マップデータ
+	var mapGroup = [];	// マップグループ
+	var towns = [];		// 町データ
+	var mmagic = [];	// 精霊魔法
+	var pmagic = [];	// 神聖魔法
+	var amagic = [];	// 錬金魔法
+	var smagic = [];	// 召喚魔法
+	var model = [];		// キャラクター素体
+	var race = [];		// 種族
+	var job = [];			// 職業
+	var items = [];		// アイテム
+	var dropTables = [];	// 敵が落とすアイテムのテーブル
+	var goldCoins = [];	// 金貨全種
+	var hammers = [];	// ハンマー系武器（修理に使う）
+	var closeItems = [];	// シナリオの都合等でドロップを制限されたアイテム
+	var traps = [];		// 罠
+	var alignment = [];	// 属性
+	var colorNames = [];	// 髪の色
+	var quests = [];	// クエスト
+	var houses = [];	// 各施設
+	var events = [];	// 現在発動可能なイベント
+	var conditions = [];	// 各イベントの発生条件
+	var bevents = [];	// 現在発動可能な戦闘イベント
+	var bconditions = [];	// 各戦闘イベントの発生条件
+	var rivals = [];	// ライバルパーティー
+	var itemBoxObj;	// 現在のアイテム収納箱オブジェクト
+	var treasureBox;	// 宝箱オブジェクト
+	var trunkRoom;	// 倉庫オブジェクト
+	var lockerRoom;	// ロッカーオブジェクト
+	var temporaryBox;	// 一時保管庫オブジェクト
+	var virtualChara;	// 仮想キャラオブジェクト 罠を作動させたりする
+	var extraTranslations = %[]; //dictionary object for translations that can't be handled another way due to save file inclusion.
+	var defaultNameTranslations = %[]; //dictionary object for default characters with JP names
+
+	var gameBase;	// ゲーム関連レイヤーの親レイヤ
+	var gameFrame;	// ゲーム枠
+	var notice;	// 通知ウインドウ
+	var miniNotice;	// 小型通知ウインドウ
+	var popup;	// 自動消去型通知ウインドウ
+	var reportWin;	// キャラリポートウインドウ
+	var instruction;	// 説明表示レイヤー（全角23文字まで）
+	var cmdWin;	// コマンドウインドウ・汎用タイプ
+	var yesNoWin;	// コマンドウインドウ・はい・いいえの選択
+	var miniMenu;	// コマンドウインドウ・小型メニュータイプ
+	var shortMenu;	// コマンドウインドウ・横長選択肢少数タイプ
+	var longMenu;	// コマンドウインドウ・横長選択肢多数タイプ
+	var campMenu;	// コマンドウインドウ・キャンプメニュー（コマンド位置記憶のため別途作る）
+	var itemMenu;	// コマンドウインドウ・アイテムメニュー
+	var guildMenu;	// コマンドウインドウ・ギルドメニュー（コマンド位置記憶のため別途作る）
+	var battleMenu;	// コマンドウインドウ・戦闘コマンド
+	var magicWin;	// 魔法ウインドウ
+	var trapWin;	// 罠解除ウインドウ
+	var autoMap;	// オートマップ
+	var miniMap;	// ミニマップ
+	var itemWin;	// アイテム操作ウインドウ・インベントリー・買い物・宝箱で用いる
+	var partyInfo;	// パーティー情報ウインドウ
+	var levelUpInfo;	// レベルアップ情報ウインドウ
+	var textEdit;	// テキストエディット
+	var sexReport;	// 性行為報告ウインドウ
+	var guildWin;	// 冒険者ギルド画面
+	var barWin;	// 酒場画面
+	var churchWin;	// 教会画面
+	var othersWin;	// その他の施設画面
+	var charaEdit;	// キャラメイク画面
+	var noteWin;	// クエストノート画面
+	var battleInfo;	// 戦闘メッセージウインドウ
+	var battleResult;	// 戦闘結果表示ウインドウ
+	var optionWin;	// オプション画面（今回からＫＡＧは使わない）
+	var saveWin;	// セーブロード画面（今回からＫＡＧは使わない）
+	var cgModeWin;	// ＣＧ閲覧モード画面
+	var replayWin;	// リプレイモード画面
+	var trophyWin;	// トロフィーモード画面
+	var wordsBase;	// セリフを表示するレイヤー
+	var figureLayer;	// 立ち絵表示レイヤー
+	var coverScreen;	// 画面を覆うスクリーン
+	var backScreen;	// 背景スクリーン
+	var wallets = [];	// 各残高表示レイヤーへの参照
+
+	var curChara;	// 操作対象キャラ
+	var curItem;	// 操作対象アイテム
+	var curItemStat;	// 操作対象アイテムの状態
+	var playerChara;	// 主人公
+	var wife;	// 主人公の結婚相手（予定）
+	var curEventNum;	// 現在発生中のイベント番号
+	var curBattleEventNum;	// 現在発生中の戦闘イベント番号
+	var curEventObj = this;	// 現在イベントが発生している対象（キャラ、町、汎用）
+	var curEventLabel;	// イベント発生した時点の直前のラベル。戦闘イベントで使う
+	var waitingRoom;	// 待合所となっているギルド
+	var map;	// 現在のマップデータ
+	var curBar;	// 現在のバー
+	var hour = "day";	// ゲーム内時間帯
+	var date = 0;	// ゲーム内経過日数
+	var clock = 0;	// 一定数で１日時間を進めるゲーム時計（カウンター）
+	var timeOfADay = 144;	// １日あたりの時間
+	var checkoutTime = 66;	// チェックアウト時刻（正午前あたり）
+	var timeByTurn = 5;	// 戦闘１ターンあたりの経過時間
+	var lapse = true;	// 時間が進行するかどうか
+	var waitingMembers = [];	// 一時的にパーティーを抜けたメンバー
+
+	var innActionCount = 0;	// 宿における行動回数
+	var maxInnActionCount = 3;	// 宿における行動回数の最大値
+	var maxHeat = 200;	// 興奮度の最大値
+	var coolBySleep = 20;	// 一回の睡眠で減る興奮度
+	var coolBySex = 20;	// 一回の性交で減る興奮度（女性は満足しないと減らない）
+	var heatToLet = 100;	// 気を許しても良いと思う女の興奮度。段階が進む・行為に及ぶことにつながる
+	var heatToSex = 10;	// 行為に及びたいと思う男の興奮度
+	var heatToMove = 50;	// 部屋を移動してでも行為に及びたいと強く思う男の興奮度
+	var heatUpCycle = 15;	// 異性の姿態によって興奮度が上がる判定を行うサイクル
+	var loveToAdultery = 40;	// 不倫に走ってしまう愛情度。夫への愛情がこれ以下だと不倫する
+	var quarreling = [];	// 現在ケンカしているキャラたち
+	var playersRoommates = [];	// 直近数日間の主人公と同室のヒロインたち
+	var isPrivateScene = false;	// 気を許して良い状況かどうか。恥じらいに影響する
+	var protectHeroines = false;	// これが true の間はヒロインが保護される
+
+	var _gameVisible = false;	// ＲＰＧ画面が表示されているかどうか
+	var inEvent = false;	// イベント中かどうか
+	var inSearching = false;	// 現在調査中かどうか
+	var onObjectTrigger = false;	// ダンジョン内オブジェクトに触れた直後かどうか
+	var onUseEventItem = false;	// イベントアイテムを使用したかどうか
+	var onBombObject = false;	// ボムでの破壊を起こしたかどうか
+	var noReturnMenu = false;	// コマンド実行後メニューに戻らないかどうか
+	var inLoading = false;	// セーブデータをロード中かどうか
+
+	var onSelectAction;	// キャラ選択モードで選択後実行するアクション
+	var rowSelectMode = false;	// 列ごとの選択状態かどうか
+	var itemDoubleClicked = false;	// アイテムをダブルクリックすると直下の onMouseUp が反応するのを防ぐフラグ
+
+	var openedWindow = [];	// 現在開いているウインドウ
+	var previewActions = [];	// 戻り先のスタック
+	var rightClickEnabled = true;	// 右クリックが有効かどうか
+
+	var inBattle = false;	// 戦闘中かどうか
+	var inFixedBattle = false;	// 固定敵との戦闘かどうか
+	var inEventBattle = false;	// イベントバトルかどうか。戦闘後イベントシナリオに戻る
+	var inDuelBattle = false;	// 決闘かどうか
+	var isNeverEscapeBattle = false;	// 絶対に逃げられない戦闘かどうか
+	var noActionAtNextPos = false;	// 移動後の戦闘や再ワープを避けるかどうか
+	var firstStrike;	// 先制攻撃が起きたかどうか
+	var interruptTurn = false;	// バトルターン中にメニューを表示させるフラグ
+	var normalBattleBgm = "battle";	// バトルＢＧＭ
+	var specialBattleBgm;	// イベントバトルＢＧＭ
+	var curFighter;	// 現在の行動キャラ
+	var curTarget;	// 現在のターゲット
+	var curExp = 0;	// 現在の戦闘で得られた経験値
+	var curGold = 0;	// 現在の戦闘で得られた金
+	var curTeam;	// 現在の対戦チーム（決闘時）
+	var fightingOrder = [];	// キャラの行動順
+	var extraEffect;	// 発生した追加効果
+	var contractableMonster;	// 召喚モンスター候補を保管する変数
+	var figureLayerSource;	// 現在カットイン用レイヤに読み込まれているコピー元のレイヤへの参照
+	var turnCount = 0;	// 戦闘の経過ターン数
+	var turnStarted = false;	// ターン行動開始後かどうか
+	var concedeNow = false;	// 負けを認めたフラグ
+	var warpSpellEnabled = false;	// ワープ魔法が使えるかどうか
+
+	var charaKeysByKagLayer = [];	// ＫＡＧのレイヤーに読み込まれたキャラの番号を保存する変数
+	var targetKagLabel = "";	// jumpToKagLabel を使った際のＫＡＧの飛先ラベル
+	var curBoard;	// 現在ＫＡＧ中で使用しているコマンドウインドウ
+
+	var trophys = [];	// トロフィー
+	var changablePanties = [];	// イベントＣＧで変更可能な下着の一覧
+	var changableGloves = [];	// イベントＣＧで変更可能なこて・手袋の一覧
+	var changableBoots = [];	// イベントＣＧで変更可能なブーツ類の一覧
+	var pictureInfo = [];	// ＣＧ閲覧情報（おまけモード用）
+	var replayInfo = [];	// リプレイ情報（おまけモード用）
+	var collectionList = [];	// 閲覧リスト（おまけ要素）
+	var eatenDishes = [];	// 今までに食べた料理の一覧（一部クエスト用）
+	var battleCount = 0;	// 総戦闘回数（おまけ要素）
+	var winCount = 0;	// 総勝利回数（おまけ要素）
+	var totalWalk = 0;	// 総歩行距離（おまけ要素）
+	var placedBoxCount = 0;	// 総設置宝箱取得数（おまけ要素）
+	var hyperBombsCount = 0;	// ハイパーボムを使用した回数
+
+	var maxUserCharas = 32;	// ユーザーキャラの最大数
+	var gameLoadedTime = 0;	// ユーザーのセーブデータ読み出し時刻
+	var gamePlayingTime = 0;	// 総プレイ時間
+	var isFreeMode = false;	// フリーモードかどうか
+	var isHeavyMode = false;	// ヘビーモードかどうか
+	var gameCleared = false;	// いったんエンディングを見ているかどうか
+	var retryMode = false;	// データ読み込みをしようとしているかどうか。データ読み込み時に利用する
+	var nextRoundMode = false;	// 周回プレイを始めようとしているかどうか。データ読み込み時に利用する
+	var notPlayInFullVersion = false;	// 製品版で続きをそのままプレイできるかどうか
+	var levelCapOnDemo = 20;	// デモ版における上限レベル
+	var magicLevelCapOnDemo = 5;	// デモ版における上限魔法レベル
+	var hiddenDropGroups = [8, 9, 10];	// 体験版ではドロップしないアイテムのグループ番号
+
+	function GameMaster()
+	{
+		super.KAGPlugin(...);
+		kag.rightClickHook.push2(rightClickAction);	// 右クリック設定（もう @rclick は使用してないので）
+
+		// ゲーム関連レイヤーの親レイヤを作成
+		gameBase = new global.Layer(kag, kag._primaryLayer);
+		gameBase.name = "ゲームベースレイヤー";
+		gameBase.setSize(kag.scWidth, kag.scHeight);
+		gameBase.fillRect(0, 0, gameBase.width, gameBase.height, 0x00000000);
+		gameBase.visible = true;
+
+		// ゲーム枠を作成
+		gameFrame = new ViewFrameLayer(kag._primaryLayer, this);
+
+		// プレイヤー側の軍団（パーティー）を作成
+		party = new PlayersParty(kag._primaryLayer, this);
+
+		// ダンジョンビューを作成
+		dungeonView = new DungeonView(kag._primaryLayer, this);
+		dungeonView.enabled = false;
+
+		// 敵の軍団を作成
+		// enemy = new MonsterLegion(dungeonView, this);
+		enemy = new MonsterLegion(kag._primaryLayer, this);
+		enemy.enabled = false;
+
+		// ゲストグループを作成
+		guest = new GuestGroup(kag._primaryLayer, this);
+
+		// 町ビューを作成
+		townView = new TownView(kag._primaryLayer, this);
+		townView.enabled = false;
+		view = townView;	// 初期値
+		view.resetPos();
+
+		// ホテルビューを作成
+		hotelView = new HotelWindow(kag._primaryLayer, this);
+		hotelView.enabled = false;
+
+		// 通知ウインドウ作成
+		notice = new NoticeWindow(gameBase, this);
+		notice.loadImages("frame_notice");
+
+		// 小型通知ウインドウ作成
+		miniNotice = new NoticeWindow(gameBase, this);
+		miniNotice.loadImages("frame_mininotice");
+		miniNotice.marginT = 16;
+		miniNotice.marginL = 0;
+		miniNotice.marginR = 5;
+		miniNotice.align = "center";
+
+		// 自動消去型通知ウインドウ作成
+		popup = new PopupInfoWindow(gameBase, this);
+		popup.loadImages("frame_notice");
+
+		// キャラクター情報・会話型通知ウインドウ作成
+		reportWin = new CharaReportWindow(gameBase, this);
+
+		// 説明表示レイヤー作成
+		instruction = new TextWindow(gameBase, this);
+		instruction.loadImages("frame_instruction");
+		instruction.marginT = 16;
+		instruction.marginR = 30;
+		instruction.align = "center";
+
+		// コマンドウインドウを作成・汎用タイプ
+		cmdWin = new NormalCommandWindow(gameBase, this);
+		cmdWin.loadImages("frame_menu");
+
+		// コマンドウインドウを作成・小型メニュータイプ
+		miniMenu = new NormalCommandWindow(gameBase, this);
+		miniMenu.loadImages("frame_minimenu");
+		miniMenu.cmdLength = 8;
+		miniMenu.columnCount = 1;
+		miniMenu.cmdAlign = "center";
+		miniMenu.marginL = 27;
+		miniMenu.marginR = 0;
+		miniMenu.font.height = 27;
+
+		// コマンドウインドウを作成・選択肢少数タイプ
+		shortMenu = new NormalCommandWindow(gameBase, this);
+		shortMenu.loadImages("frame_notice");
+		shortMenu.columnCount = 1;
+		shortMenu.cmdLength = 17;
+		shortMenu.cmdMarginLeft = 41;
+		shortMenu.marginT = 41;
+
+		// コマンドウインドウを作成・横長選択肢多数タイプ
+		longMenu = new NormalCommandWindow(gameBase, this);
+		longMenu.loadImages("frame_longmenu");
+		longMenu.columnCount = 1;
+		longMenu.cmdLength = 20;
+
+		// コマンドウインドウを作成・はい・いいえの選択
+		yesNoWin = new NormalCommandWindow(gameBase, this);
+		yesNoWin.loadImages("frame_notice");
+		yesNoWin.valign = "middle";	// 質問文の上下配置を範囲内で中央にする
+		yesNoWin.marginT = 32;
+		yesNoWin.marginB = 120;
+		yesNoWin.cmdAlign = "center";
+		yesNoWin.cmdMarginTop = 111;
+		yesNoWin.cmdMarginLeft = 77;
+		yesNoWin.columnWidth = 220;
+		yesNoWin.cmdLength = 6;
+		yesNoWin.marginTitleAndCmd = 24;
+
+		// コマンドウインドウを作成・キャンプメニュー
+		campMenu = new NormalCommandWindow(gameBase, this);
+		campMenu.loadImages("frame_campmenu");
+
+		// コマンドウインドウを作成・ギルドメニュー
+		guildMenu = new NormalCommandWindow(gameBase, this);
+		guildMenu.loadImages("frame_menu");
+
+		// コマンドウインドウを作成・バトルメニュー
+		battleMenu = new NormalCommandWindow(kag._primaryLayer, this);
+		battleMenu.loadImages("frame_battlemenu");
+		battleMenu.cmdLength = 6;
+		battleMenu.columnWidth = 200;
+
+		// アイテム操作ウインドウ作成
+		itemWin = new ItemBoardWindow(kag._primaryLayer, this);
+
+		// 魔法ウインドウ作成
+		magicWin = new MagicCommandBoard(gameBase, this);
+
+		// 罠解除ウインドウ作成
+		trapWin = new TreasureCommandWindow(gameBase, this);
+
+		// 冒険者ギルド画面作成
+		guildWin = new GuildBoard(kag._primaryLayer, this);
+
+		// キャラメイク画面作成
+		charaEdit = new CharaEditBoard(kag._primaryLayer, this);
+
+		// 酒場画面作成
+		barWin = new BarWindow(kag._primaryLayer, this);
+
+		// 教会画面作成
+		churchWin = new ChurchWindow(kag._primaryLayer, this);
+
+		// その他の施設画面作成
+		othersWin = new OthersHouseWindow(kag._primaryLayer, this);
+
+		// クエストノート作成
+		noteWin = new QuestNoteWindow(gameBase, this);
+
+		// オプション画面作成（今回からＫＡＧは使わない）
+		optionWin = new OptionBoard(gameBase, this);
+
+		// セーブロード画面作成（今回からＫＡＧは使わない）
+		saveWin = new SaveDataBoard(gameBase, this);
+
+		// ＣＧ閲覧モード画面
+		cgModeWin = new CGModeBoard(gameBase, this);
+
+		// リプレイモード画面
+		replayWin = new ReplayBoard(gameBase, this);
+
+		// トロフィーモード画面
+		trophyWin = new TrophyWindow(gameBase, this);
+
+		// 戦闘メッセージウインドウ作成
+		battleInfo = new BattleInfoWindow(kag._primaryLayer, this);
+		battleInfo.setPos(105, 0);
+
+		// 戦闘結果表示ウインドウ作成
+		battleResult = new BattleResultWindow(gameBase, this);
+
+		// パーティー情報ウインドウ作成
+		partyInfo = new PartyInfoWindow(gameBase, this);
+
+		// レベルアップ情報ウインドウ作成
+		levelUpInfo = new LevelUpInfoWindow(gameBase, this);
+
+		// テキストエディット作成
+		textEdit = new TextEditWindow(gameBase, this);
+
+		// 性行為報告ウインドウ作成
+		sexReport = new HeroineDiary(gameBase, this);
+		sexReport.setPos(368, 300);
+
+		// オートマップ作成
+		autoMap = new AutoMap(gameBase, this);
+
+		// ミニマップ作成
+		miniMap = new MiniMap(gameFrame, this);
+
+		// セリフを表示するレイヤー作成
+		wordsBase = new PartyWordsLayer(kag._primaryLayer, party.maxMembers);
+
+		// 魔法一覧にメンバ追加
+		mmagic.name = "精霊魔法";
+		mmagic.displayName = "Spirit";
+		pmagic.name = "神聖魔法";
+		pmagic.displayName = "Holy";
+		amagic.name = "錬金魔法";
+		amagic.displayName = "Alchemy";
+		smagic.name = "召喚魔法";
+		smagic.displayName = "Summoning";
+
+		// 戦闘コマンド・トラップ作成
+		createBattleCommands();
+
+		// ステータス作成
+		createStatus();
+
+		// アイテム・アイテムドロップテーブル作成
+		createItemCommands();
+		createDropTables();
+
+		// モンスターデータ作成
+		createMonsterData();
+
+		// 種族作成
+		createRaces();
+
+		// 属性作成
+		createAlignments();
+
+		// 職業作成
+		createJobs();
+
+		// 素体作成
+		createModels();
+
+		// 色の名前情報作成
+		colorNames = %[brown: "茶色", red: "赤", yellow: "黄色", blue: "青"
+			, purple: "紫", black: "黒", green: "緑", orange: "橙色"
+			, nocomb: "茶色"];	// リーゼルの髪飾り未装着時用
+
+		// 既成キャラ作成
+		createCharas();
+		playerChara = chara[0];	// 最初のキャラが主人公
+
+		// ライバルパーティー情報作成
+		createRivals();
+
+		// クエスト作成
+		createQuests();
+
+		// 施設作成
+		createHouses();
+
+		// 町作成
+		createTowns();
+		map = towns[0];
+
+		// ダンジョンマップ作成
+		createDungeons();
+
+		// トロフィーリスト作成
+		createTrophysList();
+
+		createExtraTranslations();
+
+		// 汎用イベントを登録
+		registerEvent("event.ks");
+
+		// 戦闘イベントを登録
+		registerBattleEvent("bevent.ks");
+
+		// 町・各施設・宿屋キャライベントを登録
+		registerObjectEvent("hevent.ks", "宿屋");	// 宿屋キャライベント
+		registerObjectEvent("street.ks", "町・施設");	// 町・施設イベント
+
+		// ホテルでの予約拒否条件を登録
+		registerBookingCondition("stay.ks");
+
+		// キャラの参照作成
+		createCharaReferences();
+
+		// リプレイ情報登録
+		registerReplayInfo();
+
+		// 仮想キャラオブジェクト作成
+		virtualChara = new CharaObject(gameBase, this, -1);
+		virtualChara.name = "仮想キャラ";
+		virtualChara.team = party;
+		virtualChara.job = o.戦士;
+		virtualChara.group = party.group0;
+
+		// 宝箱オブジェクト作成
+		treasureBox = new TreasureBox(gameBase, this);
+		trunkRoom = new StcokBox(gameBase, this);
+		lockerRoom = new StcokBox(gameBase, this);
+		temporaryBox = new TemporaryBox(gameBase, this);
+		itemBoxObj = treasureBox;
+
+		// コマンドウインドウを作成・アイテムメニュー（実行順重要。この位置でなくてはダメ）
+		itemMenu = new ItemCommandWindow(gameBase, this);
+
+		// 立ち絵表示レイヤー作成
+		figureLayer = new FigureLayer(kag._primaryLayer);
+
+		// 画面を覆うスクリーン作成
+		coverScreen = new global.Layer(kag, kag._primaryLayer);
+		coverScreen.setSize(kag.scWidth, kag.scHeight);
+		coverScreen.fillRect(0, 0, kag.scWidth, kag.scHeight, 0xFF000000);
+
+		// 背景スクリーン作成
+		backScreen = new EffectLayer(kag._primaryLayer);
+		backScreen.setSize(view.width, view.height);
+		backScreen.fillRect(0, 0, view.width, view.height, 0xFF000000);
+
+		// 順番ならべかえ・parent == kag._primaryLayer
+		// kag.effects[3 ～ 5].absolute = 200 ～ 400
+		// kag.fore.base.absolute = 0 ( 前景レイヤやメッセージレイヤもここ )
+		// kag.effects[2].absolute =   -1
+		// kag.effects[1].absolute =  -50
+		// kag.effects[0].absolute = -100
+		coverScreen.absolute = 1000;
+		gameBase.absolute = 260;
+		itemWin.absolute = 250;
+		figureLayer.absolute = 240;
+		battleMenu.absolute = 230;
+		battleInfo.absolute = 220;
+		charaEdit.absolute = -20;
+		hotelView.robbyLayer.absolute = -20;
+		guildWin.absolute = -30;
+		hotelView.absolute = -30;
+		barWin.questBoard.absolute = -30;
+		party.absolute = -40;
+		party.statusLayer.absolute = -40;
+		guest.absolute = -40;
+		gameFrame.absolute = -60;
+		gameFrame.coverLayer.absolute = -61;
+		barWin.absolute = -70;
+		churchWin.absolute = -70;
+		dungeonView.boatLayer.absolute = -87;
+		dungeonView.emitLayer.absolute = -88;
+		enemy.absolute = -90;
+		backScreen.absolute = -105;
+		dungeonView.effectLayer.absolute = -106;
+		othersWin.absolute = -110;
+		townView.absolute = -110;
+		dungeonView.absolute = -110;
+		dungeonView.skyLayer.absolute = -115;
+
+		// 順番ならべかえ・parent == gameBase
+		popup.absolute = 120;
+		notice.absolute = 120;
+		miniNotice.absolute = 120;
+		partyInfo.absolute = 120;
+		instruction.absolute = 120;
+		textEdit.absolute = 100;
+		sexReport.absolute = 100;
+		yesNoWin.absolute = 100;
+		miniMenu.absolute = 100;
+		cmdWin.absolute = 100;
+		campMenu.absolute = 100;
+		itemMenu.absolute = 100;
+		guildMenu.absolute = 100;
+		optionWin.absolute = 80;
+		saveWin.absolute = 80;
+		autoMap.absolute = 60;
+		magicWin.absolute = 40;
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < chara.count; i++)
+		{
+			if(chara[i] !== void) invalidate chara[i];
+		}
+		for(var i = 0; i < helper.count; i++) invalidate helper[i];
+		for(var i = 0; i < btcmd.count; i++) invalidate btcmd[i];
+		for(var i = 0; i < monster.count; i++) invalidate monster[i];
+		for(var i = 0; i < mapData.count; i++) invalidate mapData[i];
+		for(var i = 0; i < towns.count; i++) invalidate towns[i];
+		for(var i = 0; i < model.count; i++) invalidate model[i];
+		for(var i = 0; i < job.count; i++) invalidate job[i];
+		for(var i = 0; i < items.count; i++) invalidate items[i];
+		for(var i = 0; i < houses.count; i++) invalidate houses[i];
+		for(var i = 0; i < refer.count; i++) invalidate refer[i];
+		for(var i = 0; i < rivals.count; i++) invalidate rivals[i];
+		invalidate townView;
+		invalidate party;
+		invalidate enemy;
+		invalidate guest;
+		invalidate gameBase;
+		invalidate gameFrame;
+		invalidate notice;
+		invalidate miniNotice;
+		invalidate popup;
+		invalidate reportWin;
+		invalidate instruction;
+		invalidate cmdWin;
+		invalidate yesNoWin;
+		invalidate miniMenu;
+		invalidate longMenu;
+		invalidate campMenu;
+		invalidate itemMenu;
+		invalidate guildMenu;
+		invalidate magicWin;
+		invalidate trapWin;
+		invalidate autoMap;
+		invalidate miniMap;
+		invalidate itemWin;
+		invalidate partyInfo;
+		invalidate levelUpInfo;
+		invalidate textEdit;
+		invalidate sexReport;
+		invalidate guildWin;
+		invalidate barWin;
+		invalidate churchWin;
+		invalidate othersWin;
+		invalidate charaEdit;
+		invalidate battleMenu;
+		invalidate battleInfo;
+		invalidate battleResult;
+		invalidate optionWin;
+		invalidate saveWin;
+		invalidate wordsBase;
+		invalidate figureLayer;
+		invalidate itemBoxObj;
+		invalidate coverScreen;
+		super.finalize();
+	}
+
+	//---------------------------------------------------------------------------
+	// 各種オブジェクト作成
+
+	function createModels()
+	{
+		// メイキングキャラの素体作成
+		var lines = csvToArray("model.tsv", true);
+		var num = -1;
+		for(var i = 0; i < lines.count; i++)
+		{
+			if(lines[i][0] == "name")
+			{
+				model[num] = new Model(this, ++num);
+				var key = lines[i][1];
+				if(o[key] !== void) System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+				o[key] = model[num];
+				dm("素体 : " + key + " を登録します...");
+			}
+			model[num].inputData(lines[i][0], lines[i][1]);
+		}
+	}
+
+	function createCharaReferences()
+	{
+		// メイキングキャラの参照作成
+		for(var i = 0; i < model.count; i++)
+		{
+			var ref = new CharaReference(this, model[i]);
+			refer.add(ref);
+			o[model[i].keyName] = & ref.chara;
+			o[model[i].keyName + "２"] = & ref.chara2;
+		}
+	}
+
+	function createCharas(addChara)
+	{
+		// キャラ作成
+		// 作成済みデフォルトキャラは後のイベント登録作業などにも使われるので
+		// 削除したりデフォルト名を変えたりしないこと
+		// 後から追加し直す場合は chara.tsv の追加したいキャラの名前を addChara に指定する
+		var lines = csvToArray("chara.tsv", true);	// ファイル読み込み
+		var key;
+		var num = addChara !== void ? chara.count - 1 : -1;
+		for(var i = 0; i < lines.count; i++)
+		{
+			if(lines[i][0] == "name")
+			{
+				key = lines[i][1];
+				if(addChara !== void && key != addChara) continue;
+				chara[num] = new CharaObject(gameBase, this, ++ num);
+				if(o[key] !== void) System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+				if(addChara === void) o[key] = chara[num];
+				dm("作成済みキャラ : " + key + " を登録します...");
+			}
+			if(addChara !== void && key != addChara) continue;
+			chara[num].inputData(lines[i][0], lines[i][1]);
+			if (lines[i][0] === "displayName") {
+				defaultNameTranslations[key] = lines[i][1];
+			}
+		}
+	}
+
+	function createRaces()
+	{
+		// 種族作成
+		o.ヒューマン = %[name: "ヒューマン", uniKey: "人", img: "human", displayName: "Human"];
+		o.エルフ     = %[name: "エルフ"    , uniKey: "エ", img: "elf", displayName: "Elf"];
+		o.ドワーフ   = %[name: "ドワーフ"  , uniKey: "ド", img: "dwarf", displayName: "Dwarf"];
+		o.ノーム     = %[name: "ノーム"    , uniKey: "ノ", img: "gnome", displayName: "Gnome"];
+		o.シルフ     = %[name: "シルフ"    , uniKey: "シ", img: "sylph", displayName: "Sylph"];
+		o.ヒューマン.detail = "Average ability<r>Low faith";
+		o.エルフ.detail     = "Tall and slender with<r>high intelligence";
+		o.ドワーフ.detail   = "Strong and tough";
+		o.ノーム.detail     = "Short and weak<r>Faithful";
+		o.シルフ.detail     = "Childlike appearance<r>Quick and lucky. Floats slightly.";
+		race.push(o.ヒューマン, o.エルフ, o.ドワーフ, o.ノーム, o.シルフ);
+	}
+
+	function createAlignments()
+	{
+		// 属性作成
+		o.神聖 = %[name: "神聖", uniKey: "神", img: "holy", displayName: "Holy"];
+		o.善   = %[name: "善"  , uniKey: "善", img: "good", displayName: "Good"];
+		o.中立 = %[name: "中立", uniKey: "中", img: "neutral", displayName: "Neutral"];
+		o.悪   = %[name: "悪"  , uniKey: "悪", img: "bad", displayName: "Bad"];
+		o.極悪 = %[name: "極悪", uniKey: "極", img: "evil", displayName: "Evil"];
+		o.神聖.detail = "Dedicated to acting<r>virtuously.";
+		o.善.detail   = "Tries to do the right<r>thing where possible.";
+		o.中立.detail = "Neither good nor evil.<r><p>Alignment can't be changed<r>through actions.";
+		o.悪.detail   = "Prioritises their goals<r>over morality.";
+		o.極悪.detail = "Cold blooded and<r>unscrupulous.";
+		alignment.push(o.神聖, o.善, o.中立, o.悪, o.極悪);
+	}
+
+	function createJobs()
+	{
+		// 職業作成
+		var lines = csvToArray("job.csv", true, true);
+		for(var i = 0; i < lines.count; i++)
+		{
+			job[i] = new Job(lines[i], this, i);
+			var key = job[i].name;
+			if(o[key] !== void) System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+			o[key] = job[i];
+			dm("職業 : " + key + " を登録します...");
+		}
+	}
+
+	function createMonsterData()
+	{
+		// モンスターデータ作成
+		var lines = csvToArray("monster.csv", true, true);
+		for(var i = 0; i < lines.count; i++)
+		{
+			monster[i] = new MonsterData(lines[i], this, i);
+			var key = monster[i].name;
+			if(m[key] !== void) System.inform("すでに同名のモンスターが存在します  m."+ key);
+			m[key] = monster[i];
+			dm("モンスター : " + key + " を登録します...");
+			if(monster[i].magicLV != 0)
+			{
+				if(monster[i].magicLV > 0)
+				{
+					o[key] = new SummonedObject(guest, this, helper.count);
+					btcmd.add(o[key]);
+					smagic.add(o[key]);
+					dm("召喚モンスター : " + key + " を登録します...");
+				}
+				else if(monster[i].magicLV == -1)
+				{
+					o[key] = new HiringObject(guest, this, helper.count);
+					hiring.add(o[key]);
+					dm("雇用キャラ : " + key + " を登録します...");
+				}
+				else if(monster[i].magicLV == -3)
+				{
+					o[key] = new SubActorObject(guest, this, helper.count);
+					dm("脇役キャラ : " + key + " を登録します...");
+				}
+				else
+				{
+					o[key] = new GuestObject(guest, this, helper.count);
+					dm("ゲスト : " + key + " を登録します...");
+				}
+				o[key].loadData(m[key], helper.count);
+				helper.add(o[key]);
+			}
+		}
+		helper.sort( function(a, b){ return a.data.magicLV < b.data.magicLV; }, true);
+	}
+
+	function createRivals(forRepeatPlay = false)
+	{
+		// ライバルパーティー情報作成
+		var lines = csvToArray("rival.tsv", true);
+		var num = -1;
+		for(var i = 0; i < lines.count; i++)
+		{
+			if(lines[i][0] == "name")
+			{
+				rivals[num] = new RivalParty(this, ++ num);
+				var key = lines[i][1];
+				if(! forRepeatPlay && o[key] !== void)
+				{
+					System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+				}
+				o[key] = rivals[num];
+				dm("ライバルパーティー : " + key + " を登録します...");
+			}
+			rivals[num].inputData(lines[i][0], lines[i][1]);
+		}
+	}
+
+	function createItemCommands()
+	{
+		// アイテム作成
+		var lines = csvToArray("item.tsv", true);
+		var num = -1;
+		for(var i = 0; i < lines.count; i++)
+		{
+			if(lines[i][0] == "name")
+			{
+				items[num] = new ItemObject(this, ++ num);
+				var key = lines[i][1];
+				if(o[key] !== void) System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+				o[key] = items[num];
+				dm("アイテム : " + key + " を登録します...");
+			}
+			items[num].inputData(lines[i][0], lines[i][1]);
+		}
+
+		// その他の使用時コマンドを登録・その他修正等
+		Scripts.execStorage("itemcmd.tjs");
+	}
+
+	function createDropTables()
+	{
+		// ドロップテーブル作成
+		var lines = csvToArray("drop.csv", true);
+		for(var j = 0; j < lines[0].count; j++)
+		{
+			dropTables[j] = [];
+		}
+		for(var i = 1; i < lines.count; i++)
+		{
+			for(var j = 0; j < lines[i].count; j++)
+			{
+				var key = lines[i][j];
+				if(key == 0) continue;
+				if(o[key] === void) System.inform("指定のオブジェクトが存在しません  o."+ key);
+				dropTables[j].add(o[key]);
+			}
+		}
+
+		// チェック
+		var ignores = [o.額指定金貨, o.温泉チケット, o.退魔の剣, o.闇のネックレス
+			, o.ハイパーボム, o.大きな召喚びん, o.５連泊券, o.１０連泊券
+			, o.フェロモンの粉, o.行動力増加袋, o.男の秘薬, o.女の秘薬, o.ドライアドの霊薬
+			, o.教団のバッジ, o.学びのメダル, o.加護のメダル, o.強者のメダル, o.記念カップ
+			];
+
+		for(var i = 0; i < items.count; i++)
+		{
+			if(items[i].event) continue;
+			if(["money", "key", "letter", "book", "other", "dish"].has(items[i].type)) continue;
+			if(ignores.has(items[i])) continue;
+			for(var j = dropTables.count - 1; j >= 0; j--)
+			{
+				if(dropTables[j].has(items[i])) break;
+				if(j == 0) System.inform("ドロップテーブルに登録されていません  " + items[i].name);
+			}
+		}
+	}
+
+	function createTowns(forRepeatPlay = false)
+	{
+		// 町作成
+		var lines = csvToArray("town.tsv", true);
+		var num = -1;
+		for(var i = 0; i < lines.count; i++)
+		{
+			if(lines[i][0] == "name")
+			{
+				towns[num] = new TownObject(this, ++ num);
+				var key = lines[i][1];
+				if(! forRepeatPlay && o[key] !== void)
+				{
+					System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+				}
+				o[key] = towns[num];
+				dm("町 : " + key + " を登録します...");
+			}
+			towns[num].inputData(lines[i][0], lines[i][1]);
+		}
+	}
+
+	function createDungeons()
+	{
+		// ダンジョンマップ作成
+		// getDirList コマンドはアーカイブ化すると使い物にならなくなるので使用中止
+		var lines = csvToArray("maplist.tsv", true);	// ファイル読み込み
+		var blocks = csvToArray("blockslist.csv", true,, true);	// ブロック数情報を読み込み
+		var num = -1;
+		for(var i = 0; i < lines.count; i++)
+		{
+			if(lines[i][0] == "name")
+			{
+				// グループ作成
+				mapGroup[++ num] = [];
+				var key = "G_" + lines[i][1];
+				if(o[key] !== void) System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+				o[key] = mapGroup[num];
+				o[key].name = lines[i][1];
+				o[key].displayName = lines[i][1]; // Default
+				dm("マップグループ : " + key + " を登録します...");
+			} else if(lines[i][0] == "displayName") {
+				mapGroup[num].displayName = lines[i][1];
+			} else if(lines[i][0] == "map")
+			{
+				// マップ作成
+				var obj = new MapData(this, lines[i][2] + ".map");
+				var key = obj.name;
+				if(o[key] !== void) System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+				o[key] = obj;
+				mapData.add(obj);
+				dm("マップ : " + key + " を登録します...     ブロック数：" + obj.allBlocks);
+				mapGroup[num].add(obj);	// グループにマップを加える
+				obj.group = mapGroup[num];	// グループへの参照を各マップに設定
+				obj.allBlocks = blocks[key][0];
+				obj.restoreOnReplay = +lines[i][3];
+			}
+			else
+			{
+				System.inform("マップリストの指定に誤りがあります");
+			}
+		}
+	}
+
+	function createHouses(forRepeatPlay = false)
+	{
+		// 施設作成
+		var lines = csvToArray("house.tsv", true);	// ファイル読み込み
+		var houseObj;	// 施設オブジェクトの参照
+		for(var i = 0; i < lines.count; i++)
+		{
+			// キーが name 以外
+			if(lines[i][0] != "name")
+			{
+				if(forRepeatPlay && houseObj.kind == "guild") continue;
+				houseObj.inputData(lines[i][0], lines[i][1]);
+				continue;
+			}
+
+			// キーが name だったらオブジェクトを新規作成
+			i++;	// １つ下の行へ
+			if(lines[i][0] != "kind")
+			{
+				System.inform("name の下には必ず kind を書きましょう");
+				return;
+			}
+			if(lines[i][1] == "guild"  ) houseObj = new HouseOfGuild(this);
+			if(lines[i][1] == "bar"    ) houseObj = new HouseOfBar(this);
+			if(lines[i][1] == "inn"    ) houseObj = new HouseOfInn(this);
+			if(lines[i][1] == "shop"   ) houseObj = new HouseOfShop(this);
+			if(lines[i][1] == "church" ) houseObj = new HouseOfChurch(this);
+			if(lines[i][1] == "dungeon") houseObj = new HouseOfDungeon(this);
+			if(lines[i][1] == "others" ) houseObj = new HouseOfOthers(this);
+			var key = lines[i - 1][1];
+			if(! forRepeatPlay && o[key] !== void)
+			{
+				System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+			}
+			houseObj.name = key;
+			o[key] = houseObj;
+			houses.add(houseObj);
+			dm("施設 : " + key + " を登録します...");
+		}
+	}
+
+	function createBattleCommands()
+	{
+		// 戦闘コマンド・トラップ作成
+		var lines = csvToArray("cmddata.csv", true, true);
+		for(var i = 0; i < lines.count; i++)
+		{
+			btcmd[i] = new BattleCommand(lines[i], this, i);
+			var key = btcmd[i].name;
+			if(o[key] !== void) System.inform("すでに同名のオブジェクトが存在します  o." + key);
+			o[key] = btcmd[i];
+			if(btcmd[i].category == "mmagic") mmagic.add(btcmd[i]);
+			if(btcmd[i].category == "pmagic") pmagic.add(btcmd[i]);
+			if(btcmd[i].category == "amagic") amagic.add(btcmd[i]);
+			if(btcmd[i].category == "trap"  ) traps.add(btcmd[i]);
+			dm("コマンド : " + key + " を登録します...");
+		}
+		Scripts.execStorage("cmddata.tjs");	// 詳細登録
+	}
+
+	function createStatus()
+	{
+		// ステータス異常作成
+		Scripts.execStorage("statdata.tjs");
+		global.registerCharaStatusFunctions(this);
+	}
+
+	function createQuests()
+	{
+		// クエスト作成
+		var temp = [].load("quest.ks");
+		var num =  - 1;
+		for(var i = 0; i < temp.count; i++)
+		{
+			if(temp[i].indexOf(";[title]") == 0)
+			{
+				quests[num] = new QuestObject(this, ++ num);
+				quests[num].name = (temp[i].substring(8)).trim();
+				var key = quests[num].name;
+				if(o[key] !== void) System.inform("すでに同名のオブジェクトが存在します  o."+ key);
+				o[key] = quests[num];
+				dm("クエストを登録...  No." + num + " " + key);
+				quests[num].displayName = quests[num].name; //Default
+			}
+			else if(temp[i].indexOf(";[summary]") == 0)
+			{
+				quests[num].summary = (temp[i].substring(10)).trim();
+			}
+			else if(temp[i].indexOf(";[exp]") == 0)
+			{
+				quests[num].exp = +(temp[i].substring(6)).trim();
+			}
+			else if(temp[i].indexOf(";[gold]") == 0)
+			{
+				quests[num].gold = +(temp[i].substring(7)).trim();
+			}
+			else if(temp[i].indexOf(";[prize]") == 0)
+			{
+				quests[num].prize = (temp[i].substring(8)).trim();
+			}
+			else if(temp[i].indexOf(";[detail]") == 0)
+			{
+				quests[num].detail = (temp[i].substring(9)).trim();
+			}
+			else if(temp[i].indexOf(";[displayName]") == 0)
+			{
+				quests[num].displayName = (temp[i].substring(14)).trim();
+			}
+		}
+	}
+
+	function createExtraTranslations()
+	{
+		var lines = csvToArray("extratranslations.csv", true, true);
+		for(var i = 0; i < lines.count; i++) {
+			extraTranslations[lines[i].name] = lines[i].translation;
+		}
+	}
+
+	function createTrophysList()
+	{
+		// トロフィーリスト作成
+		var lines = csvToArray("trophy.csv", true, true);
+		for(var i = 0; i < lines.count; i++)
+		{
+			trophys.add(lines[i]);
+			dm("トロフィー : " + lines[i].name + " を登録します...");
+		}
+	}
+
+	function registerReplayInfo()
+	{
+		// ＣＧ閲覧・リプレイ情報登録
+		var temp = [].load("appendix.ks");
+		var str, num;
+		for(var i = 0; i < temp.count; i++)
+		{
+			if(temp[i].indexOf("*replay_event") == 0)
+			{
+				str = temp[i].substr(13);
+				if(str == "08" || str == "09") num = +str.substr(1) - 1;
+				else num = +str - 1;
+				replayInfo[num] = %[label: temp[i]];
+				dm("リプレイ情報を登録...  No." + (num + 1));
+			}
+			else if(temp[i].indexOf(";[exp]") == 0)
+			{
+				replayInfo[num].exp = (temp[i].substring(6)).trim();
+				dm(num + ":" + replayInfo[num].exp);
+			}
+			else if(temp[i].indexOf(";[img]") == 0)
+			{
+				replayInfo[num].img = (temp[i].substring(6)).trim();
+			}
+			else if(temp[i].indexOf(";[chara]") == 0)
+			{
+				// replayInfo[num].chara = o[(temp[i].substring(8)).trim()];
+				replayInfo[num].chara = (temp[i].substring(8)).trim();
+			}
+			else if(temp[i].indexOf(";[change]") == 0)
+			{
+				if(temp[i].indexOf("hip") != -1) replayInfo[num].hip = true;
+				if(temp[i].indexOf("other") != -1) replayInfo[num].other = true;
+			}
+			else if(temp[i].indexOf(";[detail]") == 0)
+			{
+				replayInfo[num].detail = (temp[i].substring(9)).trim();
+			}
+			else if(temp[i].indexOf("*cg_") == 0)
+			{
+				pictureInfo.add(temp[i].substring(4));
+				dm("ＣＧ閲覧情報を登録...  " + (temp[i].substring(4)));
+			}
+		}
+	}
+
+	function registerEvent(file)
+	{
+		// 汎用イベント登録
+		var temp = [].load(file);
+		for(var i = 0; i < temp.count; i++)
+		{
+			if(temp[i].indexOf("*event_") != 0) continue;
+			var num = +temp[i].substr(7);
+			if(conditions[num] !== void)
+			{
+				System.inform("イベント番号が重複しています  全般 : " + num);
+				continue;
+			}
+			if(temp[i + 1].indexOf(";[exp]") != 0)
+			{
+				System.inform("条件式が正しく設定されていません  " + num);
+				continue;
+			}
+			conditions[num] = (temp[i + 1].substr(6)).trim();
+			dm("イベントを登録...  No." + num + "  条件: " + conditions[num]);
+		}
+
+		// 参照を作成
+		o.全般 = this;
+		o.全般.name = "全般";
+	}
+
+	function registerBattleEvent(file)
+	{
+		// 戦闘イベント登録
+		var temp = [].load(file);
+		for(var i = 0; i < temp.count; i++)
+		{
+			if(temp[i].indexOf("*event_") != 0) continue;
+			var num = +temp[i].substr(7);
+			if(bconditions[num] !== void)
+			{
+				System.inform("イベント番号が重複しています  戦闘 : " + num);
+				continue;
+			}
+			if(temp[i + 1].indexOf(";[exp]") != 0)
+			{
+				System.inform("条件式が正しく設定されていません  " + num);
+				continue;
+			}
+			bconditions[num] = (temp[i + 1].substr(6)).trim();
+			dm("戦闘イベントを登録...  No." + num + "  条件: " + bconditions[num]);
+		}
+	}
+
+	function registerObjectEvent(file, eventName)
+	{
+		// 町・施設のイベントと各キャラの宿屋イベントを登録
+		var temp = [];
+		temp.load(file);
+		for(var i = 0; i < temp.count; i++)
+		{
+			if(temp[i].indexOf("*event_") != 0) continue;
+			var arr = temp[i].split("_");
+			var obj = o[arr[1]];
+			if(obj instanceof "CharaObject") obj = obj.model;
+			var num = +arr[2];
+			if(obj.conditions[num] !== void)
+			{
+				System.inform("イベント番号が重複しています  " + obj.name + " : " + num);
+				continue;
+			}
+			if(temp[i + 1].indexOf(";[exp]") != 0)
+			{
+				System.inform("条件式が正しく設定されていません  " + num);
+				continue;
+			}
+			obj.conditions[num] = (temp[i + 1].substr(6)).trim();
+			dm(eventName + "イベントを登録...  " + obj.name + " No." + num + "  条件: " + obj.conditions[num]);
+			if(temp[i + 2].indexOf(";[emit]") == 0)
+			{
+				obj.emitters[num] = (temp[i + 2].substr(7)).trim();
+				dm("エミッターを登録...  " + obj.name + " No." + num + "  ファイル: " + obj.emitters[num]);
+			}
+		}
+	}
+
+	function registerBookingCondition(file)
+	{
+		// ホテルでの予約拒否条件を登録
+		var temp = [];
+		temp.load(file);
+		for(var i = 0; i < temp.count; i++)
+		{
+			if(temp[i].indexOf("*booking_") != 0) continue;
+			var arr = temp[i].split("_");
+			var obj = o[arr[1]];
+			if(obj instanceof "CharaObject") obj = obj.model;
+			var num = +arr[2];
+			if(obj.bookingExp[num] !== void)
+			{
+				System.inform("イベント番号が重複しています  " + obj.name + " : " + num);
+				continue;
+			}
+			if(temp[i + 1].indexOf(";[exp]") != 0)
+			{
+				System.inform("条件式が正しく設定されていません  " + num);
+				continue;
+			}
+			obj.bookingExp[num] = (temp[i + 1].substr(6)).trim();
+			dm("予約拒否条件を登録...  " + obj.name + " No." + num + "  条件: " + obj.bookingExp[num]);
+		}
+	}
+
+	function getObjArrayByText(listText, dic = global.o)
+	{
+		// テキストがオブジェクト名のリストだった場合、分離して参照に変換して配列に入れる
+		if(typeof listText != "String") return [];
+		var objArr = [];
+		var textArr = [];
+		textArr.split(",", listText);
+		for(var i = 0; i < textArr.count; i++)
+		{
+			var str = textArr[i].trim();
+			if(str == "") continue;
+			if(dic[str] === void) System.inform("オブジェクトが存在しません   " + str);
+			else objArr[i] = dic[str];
+		}
+		return objArr;
+	}
+
+	function getItemObjArrayByText(listText)
+	{
+		// テキストがアイテムのオブジェクト名のリストだった場合（略）
+		if(typeof listText != "String") return [];
+		var objArr = [];
+		var textArr = [];
+		textArr.split(",", listText);
+		for(var i = 0; i < textArr.count; i++)
+		{
+			var str = textArr[i].trim();
+			if(str == "") continue;
+			var arr = str.split("_");
+			if(arr.count == 2)
+			{
+				if(arr[1] == "b") arr[1] = BROKEN;
+				else if(arr[1] == "u") arr[1] = -WHOLE;
+				else if(arr[1] == "ub") arr[1] = -BROKEN;
+				else System.inform("アイテムの属性の指定が間違っています   o." + arr[0]);
+			}
+			else arr[1] = WHOLE;
+			if(o[arr[0]] === void)
+			{
+				System.inform("オブジェクトが存在しません   o." + arr[0]);
+				continue;
+			}
+			objArr[i] = %[itemData: o[arr[0]], state: arr[1]];
+		}
+		return objArr;
+	}
+
+	//---------------------------------------------------------------------------
+	// セーブロード
+
+	function onStore(f, elm)
+	{
+		// セーブ
+		f.gameVisible = gameVisible;
+		f.gameFrameInfoReduced = gameFrameInfoReduced;
+		f.gameSaveMaster = store();
+		f.gameSaveParty = party.store();
+		f.gameSaveGuest = guest.store();
+		f.gameSaveTrunkRoom = trunkRoom.store();
+		f.gameSaveLockerRoom = lockerRoom.store();
+		f.gameSaveTemporaryBox = temporaryBox.store();
+		f.gameSaveModel = [];
+		for(var i = 0; i < model.count; i++) f.gameSaveModel[i] = model[i].store();
+		f.gameSaveChara = [];
+		for(var i = 0; i < chara.count; i++) f.gameSaveChara[i] = chara[i].store();
+		f.gameSaveHelper = [];
+		for(var i = 0; i < helper.count; i++) f.gameSaveHelper[i] = helper[i].store();
+		f.gameSaveQuests = [];
+		for(var i = 0; i < quests.count; i++) f.gameSaveQuests[i] = quests[i].store();
+		f.gameSaveMapData = [];
+		for(var i = 0; i < mapData.count; i++) f.gameSaveMapData[i] = mapData[i].store();
+		f.gameSaveHouses = [];
+		for(var i = 0; i < houses.count; i++) f.gameSaveHouses[i] = houses[i].store();
+		f.gameSaveTowns = [];
+		for(var i = 0; i < towns.count; i++) f.gameSaveTowns[i] = towns[i].store();
+		f.gameSaveJob = [];
+		for(var i = 0; i < job.count; i++) f.gameSaveJob[i] = job[i].store();
+		f.gameSaveRivals = [];
+		for(var i = 0; i < rivals.count; i++) f.gameSaveRivals[i] = rivals[i].store();
+		f.gameSaveHotel = hotelView.store();
+		f.gameSaveOthers = othersWin.store();
+		writeSaveDataProperties();	// セーブデータの情報を保存
+	}
+
+	function writeSaveDataProperties()
+	{
+		// セーブデータの情報を保存  データ一覧画面に表示する
+		// 読み出しを速くするためＫＡＧのユーザー変数に保存する
+		var f = kag.pflags;	// ここで kag.pflags に値を入れないとこのタイミングで保存されない
+		f.saveDataDate = getNowTimeString();
+		f.saveDataVersion = "" + gameVersion;
+		f.saveDataDetail1 = getPlayerCharaString(isFreeMode ? party.members[0] : playerChara);
+		f.saveDataDetail2 = map !== void ? /'/.replace(map.displayName, "’") : ""; // Apostrophe gets escaped then escape displayed on file screen, so use alternate single quote
+		if(f.replayMode) {
+			f.saveDataDetail3 = " Replay";
+		} else {
+			f.saveDataDetail3 = " PlayTime  " + getPlayTimeString();
+		}
+		if(isFreeMode) f.saveDataDetail4 = "Free Mode";
+		else if(playerChara.married) f.saveDataDetail4 = getPlayerCharaString(wife);
+		else f.saveDataDetail4 = "";
+	}
+
+	function onRestore(f, clear, elm)
+	{
+		// ロード
+
+		// 現在のビューを閉じる
+		gameVisible = false;
+		view.close();
+		charaEdit.close();
+		dungeonView.enabled = townView.enabled = hotelView.enabled = false;
+		backScreen.absolute = -105;
+		guildWin.visible = false;
+		churchWin.visible = false;
+		othersWin.visible = false;
+		closeBattle();
+		inEventBattle = false;
+		map = void;
+		inLoading = true;
+
+		// 先に読み出しておくべきこのクラスのデータ
+		restoreBefore(f.gameSaveMaster);
+
+		// いったんキャラを消す
+		for(var i = chara.count - 1; i >= 0; i--) deleteChara(chara[i]);
+
+		// 一部データを初期化。新規追加データはこの方法でないと初期化できない
+		// ここで初期化しないデータはエラー修正で行う
+		for(var i = 0; i < mapData.count; i++) mapData[i].initialize();
+		for(var i = 0; i < quests.count; i++) quests[i].initialize();
+		for(var i = 0; i < houses.count; i++) houses[i].initialize();
+
+		// 各種データ読み出し
+		if(f.gameSaveModel !== void)
+		{
+			// 今回だけ
+			for(var i = 0; i < f.gameSaveModel.count; i++) restoreObject(model, f.gameSaveModel[i]);
+		}
+		for(var i = 0; i < f.gameSaveChara.count; i++) chara[i] = restoreChara(f.gameSaveChara[i], i);
+		for(var i = 0; i < f.gameSaveHelper.count; i++) restoreObject(helper, f.gameSaveHelper[i]);
+		playerChara = chara[0];
+		party.restore(f.gameSaveParty);
+		guest.restore(f.gameSaveGuest);
+		for(var i = 0; i < f.gameSaveQuests.count; i++) restoreObject(quests, f.gameSaveQuests[i]);
+		for(var i = 0; i < f.gameSaveHouses.count; i++) restoreObject(houses, f.gameSaveHouses[i]);
+		for(var i = 0; i < f.gameSaveTowns.count; i++) restoreObject(towns, f.gameSaveTowns[i]);
+		for(var i = 0; i < f.gameSaveJob.count; i++) restoreObject(job, f.gameSaveJob[i]);
+		for(var i = 0; i < f.gameSaveRivals.count; i++) restoreObject(rivals, f.gameSaveRivals[i]);
+		for(var i = 0; i < f.gameSaveMapData.count; i++) restoreObject(mapData, f.gameSaveMapData[i]);
+		trunkRoom.restore(f.gameSaveTrunkRoom);
+		lockerRoom.restore(f.gameSaveLockerRoom);
+		temporaryBox.restore(f.gameSaveTemporaryBox);
+		restore(f.gameSaveMaster);	// このクラスのデータ（一部はすでに読み出し）
+
+		// ゲーム画面の再構築とその上に乗るデータの読み出し
+		othersWin.restore(f.gameSaveOthers);
+		if(map !== void)
+		{
+			if(map.kind == "town") openTownView(map);
+			else if(map.kind == "hotel")
+			{
+				hotelView.restore(f.gameSaveHotel);
+				openHotelView(map, true);
+			}
+			else openDungeonView(%[map: map.name], true);
+			view.open();
+		}
+		gameVisible = f.gameVisible;
+		gameFrameInfoReduced = f.gameFrameInfoReduced;
+		party.restoreFaces();
+
+		// 立ち絵の再現
+		rebuildCharactors();
+
+		// エラー修正
+		correctErrors(kag.pflags.saveDataVersion);
+
+		// ロード終了
+		inLoading = false;
+		f.saveEnabled = true;	// セーブを有効に
+		gameLoadedTime = (new Date()).getTime();	// ロード時刻
+	}
+
+	function store()
+	{
+		// このクラスのセーブ
+		var dic = %[];
+		if(map !== void) dic.mapName = map.name;
+		if(townView.curTown !== void) dic.curTownName = townView.curTown.name;
+		if(hotelView.curHotel !== void) dic.curHotelName = hotelView.curHotel.name;
+		if(curBar !== void) dic.curBarName = curBar.name;
+		if(curTeam !== void) dic.curTeamName = curTeam.name;
+		if(curChara !== void)
+		{
+			if(curChara instanceof "CharaObject") dic.curCharaID = chara.find(curChara);
+			else dic.curCharaID = curChara.name;
+		}
+		if(wife !== void) dic.wifeID = chara.find(wife);
+		dic.curEventNum = curEventNum;
+		dic.curEventObjName = curEventObj == this || curEventObj === void || ! isvalid curEventObj
+			 ? void : curEventObj.name;
+		dic.inEvent = inEvent;
+		dic.hour = hour;
+		dic.date = date;
+		dic.clock = clock;
+		dic.lapse = lapse;
+		dic.innActionCount = innActionCount;
+		dic.maxInnActionCount = maxInnActionCount;
+		dic.isPrivateScene = isPrivateScene;
+		dic.protectHeroines = protectHeroines;
+		dic.warpSpellEnabled = warpSpellEnabled;
+		dic.events = events;
+		dic.bevents = bevents;
+		dic.charaKeysByKagLayer = charaKeysByKagLayer;
+		dic.gamePlayingTime = getGamePlayingTime();
+		dic.isFreeMode = isFreeMode;
+		dic.isHeavyMode = isHeavyMode;
+		dic.gameCleared = gameCleared;
+		dic.notPlayInFullVersion = notPlayInFullVersion;
+		dic.hyperBombsCount = hyperBombsCount;
+		dic.battleCount = battleCount;
+		dic.winCount = winCount;
+		dic.totalWalk = totalWalk;
+		dic.placedBoxCount = placedBoxCount;
+		dic.eatenDishes = eatenDishes;
+		dic.duelNetVisible = dungeonView.bufScreen.duelNet.visible;
+		dic.waitingMembers = [];
+		for(var i = 0; i < waitingMembers.count; i++)
+		{
+			var obj = waitingMembers[i];
+			if(obj instanceof "CharaObject") dic.waitingMembers.add(chara.find(obj));
+			else dic.waitingMembers.add(obj.name);
+		}
+		dic.loversName = [];
+		for(var i = 0; i < lovers.count; i++)
+		{
+			dic.loversName[i] = lovers[i].keyName;
+		}
+		dic.playersRoommatesID = [];
+		for(var i = 0; i < playersRoommates.count; i++)
+		{
+			dic.playersRoommatesID[i] = chara.find(playersRoommates[i]);
+		}
+		dic.closeItemNames = [];
+		for(var i = 0; i < closeItems.count; i++)
+		{
+			dic.closeItemNames[i] = closeItems[i].name;
+		}
+		return dic;
+	}
+
+	function restoreBefore(dic)
+	{
+		// 先に読み出しておくべきこのクラスのデータのロード
+		isPrivateScene = dic.isPrivateScene;
+	}
+
+	function restore(dic)
+	{
+		// このクラスのロード
+		map = dic.mapName === void ? void : o[dic.mapName];
+		townView.curTown = dic.curTownName === void ? void : o[dic.curTownName];
+		hotelView.curHotel = dic.curHotelName === void ? void : o[dic.curHotelName];
+		curBar = dic.curBarName === void ? void : o[dic.curBarName];
+		curTeam = dic.curTeamName === void ? void : o[dic.curTeamName];
+		curChara = dic.curCharaID === void ? void : 
+			(typeof dic.curCharaID == "String" ? o[dic.curCharaID] : chara[dic.curCharaID]);
+		wife = dic.wifeID === void ? void : chara[dic.wifeID];
+		curEventNum = dic.curEventNum;
+		curEventObj = dic.curEventObjName === void ? this : o[dic.curEventObjName];
+		inEvent = dic.inEvent;
+		hour = dic.hour;
+		date = dic.date;
+		clock = dic.clock;
+		lapse = dic.lapse;
+		innActionCount = dic.innActionCount;
+		maxInnActionCount = dic.maxInnActionCount;
+		isPrivateScene = dic.isPrivateScene;
+		protectHeroines = dic.protectHeroines;
+		warpSpellEnabled = dic.warpSpellEnabled;
+		events.assign(dic.events);
+		bevents.assign(dic.bevents);
+		charaKeysByKagLayer.assign(dic.charaKeysByKagLayer);
+		gamePlayingTime = dic.gamePlayingTime;
+		isFreeMode = dic.isFreeMode;
+		isHeavyMode = dic.isHeavyMode;
+		gameCleared = dic.gameCleared;
+		notPlayInFullVersion = dic.notPlayInFullVersion;
+		battleCount = dic.battleCount;
+		winCount = dic.winCount;
+		totalWalk = dic.totalWalk;
+		placedBoxCount = dic.placedBoxCount;
+		hyperBombsCount = dic.hyperBombsCount;
+		eatenDishes.assign(dic.eatenDishes);
+		dungeonView.bufScreen.duelNet.visible = dic.duelNetVisible;
+		waitingMembers = [];
+		for(var i = 0; i < dic.waitingMembers.count; i++)
+		{
+			var key = dic.waitingMembers[i];
+			if(typeof key == "String") waitingMembers.add(o[key]);
+			else waitingMembers.add(chara[key]);
+		}
+		lovers = [];
+		for(var i = 0; i < dic.loversName.count; i++)
+		{
+			lovers[i] = o[dic.loversName[i]];
+		}
+		playersRoommates = [];
+		for(var i = 0; i < dic.playersRoommatesID.count; i++)
+		{
+			if(dic.playersRoommatesID[i] == -1) playersRoommates[i] = "";
+			else playersRoommates[i] = chara[dic.playersRoommatesID[i]];
+		}
+		closeItems = [];
+		for(var i = 0; i < dic.closeItemNames.count; i++)
+		{
+			closeItems[i] = o[dic.closeItemNames[i]];
+		}
+	}
+
+	function restoreObject(arr, dic)
+	{
+		// セーブデータに基づき配列内の同じキー名のオブジェクトを再現する
+		if(dic.name === void)
+		{
+			System.inform("読み出せないオブジェクトがあります");
+			return;
+		}
+		var id = arr.find(o[dic.name]);
+		if(id == -1)
+		{
+			// System.inform("正しくオブジェクトが保存されていません  " + dic.name);
+			return;
+		}
+		arr[id].restore(dic);
+		dm(id + " : " + dic.name + "を読み出しました");
+	}
+
+	function restoreChara(dic, id)
+	{
+		// セーブデータに基づき作成キャラを再現する
+		var obj = new CharaObject(gameBase, this, id);
+		if(dic.name == 39) dic.name = "フローラ";
+		obj.restore(dic);
+		dm(id + " : " + obj.name + "を読み出しました");
+		return obj;
+	}
+
+	function restoreMapRecordOnReplay(dic)
+	{
+		// 再プレイ時に許可されたマップに限り踏破記録だけは読み出す
+		var obj = o[dic.name];
+		if(obj === void) return;	// 新規マップ
+		obj.restoreRecord(dic);
+	}
+
+	function deleteChara(obj)
+	{
+		// 指定したキャラの情報を削除する
+		obj.visible = obj.enabled = obj.selectable = false;
+		if(curChara == obj) curChara = void;
+		if(wife == obj) wife = void;
+		if(party.mainPicker == obj) party.mainPicker = void;
+		if(magicWin.curChara == obj) magicWin.curChara = void;
+		if(itemWin.curChara == obj) itemWin.curChara = void;
+		if(itemWin.curHeroine == obj) itemWin.curHeroine = void;
+		party.removeMember(obj);
+		for(var i = 0; i < houses.count; i++)
+		{
+			if(houses[i].kind == "guild") houses[i].members.remove(obj);
+		}
+		lovers.remove(obj);
+		chara.remove(obj);
+		invalidate obj;
+	}
+
+	function getNowTimeString()
+	{
+		// 現在時刻を表す文字列を取得
+		var dt = new Date();
+		dt = "%04d/%02d/%02d %02d:%02d".sprintf(
+		dt.getYear(), dt.getMonth() + 1, dt.getDate(), dt.getHours(), dt.getMinutes());
+		return dt;
+	}
+
+	function getPlayerCharaString(chr)
+	{
+		// キャラクターの名前とレベルを合わせた文字列を取得
+		if(! isvalid chr || chr === void) return "(Unformed Party)";
+		return chr.displayName + " LV" + chr.level + " " + chr.job.displayName;
+	}
+
+	function getGamePlayingTime()
+	{
+		// 現在の総プレイ時間を取得
+		return gamePlayingTime + (new Date()).getTime() - gameLoadedTime;
+	}
+
+	function getPlayTimeString(formStr = "%02d:%02d:%02d")
+	{
+		// プレイ時間を表す文字列を取得
+		var sec = getGamePlayingTime() \ 1000;
+		var min = sec \ 60;
+		return formStr.sprintf(min \ 60, min % 60, sec % 60);
+	}
+
+	function onSaveSystemVariables()
+	{
+		// システム変数セーブ
+		// sflags (sf) は既読フラグを大量に書き込んだ末に壊れるという痛い目を見たので
+		// 大事な保存のみに使うことにした。既読フラグは別の変数に保存する
+
+		if(typeof kag.scflags.game == "undefined") kag.scflags.game = %[];
+		var dic = kag.scflags.game;
+
+		// テキスト設定
+
+
+
+		// カーソル領域
+		dic.centerBorder = dungeonView.centerBorder;
+		dic.sideBorder = dungeonView.sideBorder;
+		dic.leftBorder = dungeonView.leftBorder;
+		dic.rightBorder = dungeonView.rightBorder;
+		dic.anotherDecideKey = dungeonView.anotherDecideKey;
+		dic.downKeyAction = dungeonView.downKeyAction;
+
+		// キーコンフィグ
+		dic.BT_OK         = BT_OK        ;
+		dic.BT_OK2        = BT_OK2       ;
+		dic.BT_CANCEL     = BT_CANCEL    ;
+		dic.BT_CANCEL2    = BT_CANCEL2   ;
+		dic.BT_OPTION     = BT_OPTION    ;
+		dic.BT_OPTION2    = BT_OPTION2   ;
+		dic.SET_BT_UP     = SET_BT_UP    ;
+		dic.SET_BT_UP2    = SET_BT_UP2   ;
+		dic.SET_BT_DOWN   = SET_BT_DOWN  ;
+		dic.SET_BT_DOWN2  = SET_BT_DOWN2 ;
+		dic.SET_BT_LEFT   = SET_BT_LEFT  ;
+		dic.SET_BT_LEFT2  = SET_BT_LEFT2 ;
+		dic.SET_BT_RIGHT  = SET_BT_RIGHT ;
+		dic.SET_BT_RIGHT2 = SET_BT_RIGHT2;
+		dic.BT_LSTEP      = BT_LSTEP     ;
+		dic.BT_LSTEP2     = BT_LSTEP2    ;
+		dic.BT_RSTEP      = BT_RSTEP     ;
+		dic.BT_RSTEP2     = BT_RSTEP2    ;
+		dic.BT_MAP        = BT_MAP       ;
+		dic.BT_MAP2       = BT_MAP2      ;
+		dic.BT_SEARCH     = BT_SEARCH    ;
+		dic.BT_SEARCH2    = BT_SEARCH2   ;
+		dic.BT_MAGIC      = BT_MAGIC     ;
+		dic.BT_MAGIC2     = BT_MAGIC2    ;
+		dic.BT_ITEM       = BT_ITEM      ;
+		dic.BT_ITEM2      = BT_ITEM2     ;
+		dic.BT_SAVE       = BT_SAVE      ;
+		dic.BT_SAVE2      = BT_SAVE2     ;
+
+		// その他の情報
+		dic.saveWinLastPage = saveWin.lastPage;
+		dic.cgModeWinLastPage = cgModeWin.lastPage;
+		dic.replayWinLastPage = replayWin.lastPage;
+
+	}
+
+	function setSystemStateFromSystemVariables()
+	{
+		// システム変数ロード
+		// あんまり意味ないけどＫＡＧと同じ名前にしてみた
+
+		if(typeof kag.scflags.game == "undefined") return;
+		var dic = kag.scflags.game;
+
+		// システム設定
+
+
+		// カーソル領域
+		if(dic.centerBorder !== void) dungeonView.centerBorder = dic.centerBorder;
+		if(dic.sideBorder !== void) dungeonView.sideBorder = dic.sideBorder;
+		if(dic.leftBorder !== void) dungeonView.leftBorder = dic.leftBorder;
+		if(dic.rightBorder !== void) dungeonView.rightBorder = dic.rightBorder;
+		if(dic.anotherDecideKey !== void) dungeonView.anotherDecideKey = dic.anotherDecideKey;
+		if(dic.downKeyAction !== void) dungeonView.downKeyAction = dic.downKeyAction;
+		dungeonView.controlBoard.changeDownKey(dungeonView.downKeyAction);	// 操作ボードも設定する
+
+		// キーコンフィグ
+		if(dic.BT_OK         !== void) BT_OK         = dic.BT_OK        ;
+		if(dic.BT_OK2        !== void) BT_OK2        = dic.BT_OK2       ;
+		if(dic.BT_CANCEL     !== void) BT_CANCEL     = dic.BT_CANCEL    ;
+		if(dic.BT_CANCEL2    !== void) BT_CANCEL2    = dic.BT_CANCEL2   ;
+		if(dic.BT_OPTION     !== void) BT_OPTION     = dic.BT_OPTION    ;
+		if(dic.BT_OPTION2    !== void) BT_OPTION2    = dic.BT_OPTION2   ;
+		if(dic.BT_LSTEP      !== void) BT_LSTEP      = dic.BT_LSTEP     ;
+		if(dic.BT_LSTEP2     !== void) BT_LSTEP2     = dic.BT_LSTEP2    ;
+		if(dic.BT_RSTEP      !== void) BT_RSTEP      = dic.BT_RSTEP     ;
+		if(dic.BT_RSTEP2     !== void) BT_RSTEP2     = dic.BT_RSTEP2    ;
+		if(dic.BT_MAP        !== void) BT_MAP        = dic.BT_MAP       ;
+		if(dic.BT_MAP2       !== void) BT_MAP2       = dic.BT_MAP2      ;
+		if(dic.BT_SEARCH     !== void) BT_SEARCH     = dic.BT_SEARCH    ;
+		if(dic.BT_SEARCH2    !== void) BT_SEARCH2    = dic.BT_SEARCH2   ;
+		if(dic.BT_MAGIC      !== void) BT_MAGIC      = dic.BT_MAGIC     ;
+		if(dic.BT_MAGIC2     !== void) BT_MAGIC2     = dic.BT_MAGIC2    ;
+		if(dic.BT_ITEM       !== void) BT_ITEM       = dic.BT_ITEM      ;
+		if(dic.BT_ITEM2      !== void) BT_ITEM2      = dic.BT_ITEM2     ;
+		if(dic.BT_SAVE       !== void) BT_SAVE       = dic.BT_SAVE      ;
+		if(dic.BT_SAVE2      !== void) BT_SAVE2      = dic.BT_SAVE2     ;
+		if(dic.SET_BT_UP     !== void)
+		{
+			delete kag.padKeyMap["" + SET_BT_UP];
+			kag.padKeyMap["" + dic.SET_BT_UP] = VK_UP;
+			SET_BT_UP = dic.SET_BT_UP;
+		}
+		if(dic.SET_BT_UP2    !== void)
+		{
+			delete kag.padKeyMap["" + SET_BT_UP2];
+			kag.padKeyMap["" + dic.SET_BT_UP2] = VK_UP;
+			SET_BT_UP2 = dic.SET_BT_UP2;
+		}
+		if(dic.SET_BT_DOWN   !== void)
+		{
+			delete kag.padKeyMap["" + SET_BT_DOWN];
+			kag.padKeyMap["" + dic.SET_BT_DOWN] = VK_DOWN;
+			SET_BT_DOWN = dic.SET_BT_DOWN;
+		}
+		if(dic.SET_BT_DOWN2  !== void)
+		{
+			delete kag.padKeyMap["" + SET_BT_DOWN2];
+			kag.padKeyMap["" + dic.SET_BT_DOWN2] = VK_DOWN;
+			SET_BT_DOWN2 = dic.SET_BT_DOWN2;
+		}
+		if(dic.SET_BT_LEFT   !== void)
+		{
+			delete kag.padKeyMap["" + SET_BT_LEFT];
+			kag.padKeyMap["" + dic.SET_BT_LEFT] = VK_LEFT;
+			SET_BT_LEFT = dic.SET_BT_LEFT;
+		}
+		if(dic.SET_BT_LEFT2  !== void)
+		{
+			delete kag.padKeyMap["" + SET_BT_LEFT2];
+			kag.padKeyMap["" + dic.SET_BT_LEFT2] = VK_LEFT;
+			SET_BT_LEFT2 = dic.SET_BT_LEFT2;
+		}
+		if(dic.SET_BT_RIGHT  !== void)
+		{
+			delete kag.padKeyMap["" + SET_BT_RIGHT];
+			kag.padKeyMap["" + dic.SET_BT_RIGHT] = VK_RIGHT;
+			SET_BT_RIGHT = dic.SET_BT_RIGHT;
+		}
+		if(dic.SET_BT_RIGHT2 !== void)
+		{
+			delete kag.padKeyMap["" + SET_BT_RIGHT2];
+			kag.padKeyMap["" + dic.SET_BT_RIGHT2] = VK_RIGHT;
+			SET_BT_RIGHT2 = dic.SET_BT_RIGHT2;
+		}
+
+		// その他の情報
+		saveWin.lastPage = dic.saveWinLastPage;
+		cgModeWin.lastPage = dic.cgModeWinLastPage;
+		replayWin.lastPage = dic.replayWinLastPage;
+	}
+
+	//---------------------------------------------------------------------------
+	// 表示関連
+
+	property gameVisible
+	{
+		// ゲームの表示・非表示を切り替える
+		setter(v)
+		{
+			_gameVisible = v;
+			view.visible = v;
+			party.visible = v;
+			guest.visible = v;
+			gameFrame.visible = v;
+			if(v)
+			{
+				updateWallet();	// 財布更新
+				gameFrame.updateCompass();	// コンパス書き換え
+				gameFrame.updateCoordinate();	// 座標を書き換え
+				gameFrame.updateCalender();	// 日付を書き換え
+				gameFrame.updateClock();	// 時刻を書き換え
+			}
+			else
+			{
+				clearWindows();
+				itemWin.close();
+				trapWin.close();
+				battleInfo.close();
+				coverScreen.visible = false;
+				backScreen.visible = false;
+				figureLayer.visible = false;
+			}
+		}
+		getter{ return _gameVisible; }
+	}
+
+	property gameFrameInfoReduced
+	{
+		// ビュー画面上の情報を量を減らしたり戻したりする（イベント等で使用）
+		setter(v)
+		{
+			guest.opacity = v ? 0 : 255;
+			party.opacity = v ? 128 : 255;
+			gameFrame.opacity = v ? 128 : 255;
+			townView.doorPlate.visible = (! v && view == townView);
+		}
+		getter{ return gameFrame.opacity != 255; }
+	}
+
+	function instruct(text, y)
+	{
+		// 簡単な説明を表示する
+		instruction.open();
+		instruction.clear();
+		instruction.chColor = 0xFFFF80;
+		instruction.write(text);
+		if(y === void) y = party.top - instruction.height - 20;
+		instruction.setPos(kag.scWidth - instruction.width + 5 >> 1, y);
+	}
+
+	function updateWallet()
+	{
+		// 財布の表示を更新する
+		for(var i = 0; i < wallets.count; i++) wallets[i].update();
+	}
+
+	function turnOffCharasHilight()
+	{
+		// キャラ・ゲストのハイライトを解除
+		for(var i = 0; i < party.allMembers.count; i++)
+		{
+			party.allMembers[i].lightingLayer.visible = false;
+		}
+	}
+
+	//---------------------------------------------------------------------------
+	// ウインドウとプレビューアクションの制御
+
+	function notifyWindowOpened(winObj)
+	{
+		// 各ウインドウを開いたらこれを呼んでマスターに通知
+		openedWindow.push2(winObj);
+	}
+
+	function notifyWindowClosed(winObj)
+	{
+		// 各ウインドウを閉じたらこれを呼んでマスターに通知
+		openedWindow.remove(winObj);
+	}
+
+	function clearWindows()
+	{
+		// すべてのウインドウを閉じる
+		while(openedWindow.count > 0) (openedWindow.pop()).close();
+	}
+
+	function rightClickAction()
+	{
+		// 右クリック＆エスケープを押した時の処理
+		if(kag.inStable && rightClickEnabled) processPrev();
+	}
+
+	function processPrev()
+	{
+		// プレビューアクション実行
+		if(previewActions.count >= 2) previewActions.erase(-1);	// １つ削除
+		var pa = previewActions[-1];
+		if(pa !== void) pa();	// 実行
+	}
+
+	function setPrev(method)
+	{
+		// 右クリックしたときの動作をスタックに設定する
+		// processPrev が実行されると１つスタックを消して１つ前の動作を実行する
+		// 基本的には今実行中のメソッドの中でそれ自身を登録する
+		// 戻るときに、今実行中のメソッドをスルーさせたい場合は
+		// 空のスタックを登録しておくとよい
+		if(previewActions.count == 0) previewActions.add(method);
+		else if(previewActions[-1] === void) previewActions[-1] = method;
+		else if(previewActions[-1] !== method) previewActions.add(method);
+	}
+
+	function popPrev()
+	{
+		// プレビュースタックから最後のアクションを１つ削除して返す
+		return previewActions.pop();
+	}
+
+	function removePrev(func)
+	{
+		// プレビュースタックから指定したアクションを後ろから探して１つ削除
+		for(var i = previewActions.count - 1; i >= 0; i--)
+		{
+			if(previewActions[i] !== func) continue;
+			previewActions.erase(i);
+			return;
+		}
+	}
+
+	function resetPrev()
+	{
+		// プレビュースタックをリセットする
+		previewActions = [enterTravelMode, openTravelMenu, void];
+	}
+
+	function resetPrevForKag()
+	{
+		// プレビュースタックをリセットする（ＫＡＧシナリオ時）
+		previewActions = [returnToKag, openMenuForKag, void];
+	}
+
+	function resetPrevForBattle()
+	{
+		// プレビュースタックをリセットする（バトルコマンド入力時）
+		previewActions = [returnToBattle, openMenuForBattle];
+	}
+
+	function resetPrevForReservation()
+	{
+		// プレビュースタックをリセットする（ホテル予約画面用）
+		previewActions = [enterReservationMode, hotelView.askCancel, void];
+	}
+
+	function resetPrevForProcessOnly()
+	{
+		// プレビュースタックをリセットする（クリックして前に進めることしかできない）
+		previewActions = [processAndResetPrev, void];
+	}
+
+	//---------------------------------------------------------------------------
+	// ゲーム全体の進行・制御関連
+
+	function onGameRestart(skipEventCheck)
+	{
+		// イベントを終了し探索再開
+		// 施設内イベントではこのメソッドを実行できないのでフラグはそれぞれのマクロ内で設定する
+		onObjectTrigger = false;
+		onUseEventItem = false;
+		inSearching = false;
+		inEvent = false;
+		if(! f.saveIsForbidden) f.saveEnabled = true;	// セーブオン
+		enterTravelMode(skipEventCheck);	// ここで別のイベントが発生することがあるので実行は最後に
+		if(party.walkedInEvent && view == dungeonView) walkFinished(true);
+		party.walkedInEvent = false;
+	}
+
+	function onGameBreak(clear)
+	{
+		// 探索中断しイベントへ
+		if(clear) clearWindows();
+		inEvent = true;
+		f.saveEnabled = false;	// セーブオフ
+		f.wakuType = 0;	// メッセージ枠をデフォルトに
+		resetPrevForKag();
+		exitTravelMode();
+	}
+
+	function enterTravelMode(skipEventCheck)
+	{
+		// 移動モードに変更（ダンジョン or 町）
+		if(view == hotelView || hour == "night")
+		{
+			party.enabled = false;	// 勝手にフォーカスが移動するのを防ぐ
+			guest.enabled = false;
+		}
+		else
+		{
+			party.memberClickable = true;
+			guest.memberClickable = true;
+			onSelectAction = openWindowByFaceClick;
+		}
+		clearWindows();
+		if(itemWin.visible) itemWin.close();	// アイテム画面は自動で閉じないので
+		battleInfo.close();	// 戦闘メッセージを閉じる（アイテム使用時など）
+		resetPrev();
+		rightClickEnabled = true;
+		gameFrame.enabled = (hour == "day");
+		view.enabled = true;
+		view.focus();
+		if(! skipEventCheck && hour == "day") checkEvent();	// 汎用イベントチェック
+	}
+
+	function exitTravelMode()
+	{
+		// 移動モード終了
+		party.memberClickable = false;
+		guest.memberClickable = false;
+		view.enabled = false;
+		gameFrame.enabled = false;
+		view.unfocus();
+		wordsBase.close();	// セリフを閉じる
+	}
+
+	function enterReservationMode()
+	{
+		// ホテル予約モードに入る
+		yesNoWin.close();
+		resetPrevForReservation();
+		view.visible = true;
+		view.enabled = true;
+		view.focus();
+	}
+
+	function enterSelectTargetMode(action, targetEnemy, toGuest = false)
+	{
+		// 目標をクリック等で選ぶモードに入る
+		onSelectAction = action;
+		var obj = targetEnemy ? enemy : party;
+		obj.enabled = true;
+		if(obj == party) party.magicButtonsEnabled = false;
+		guest.enabled = (obj == party && toGuest);
+		if(targetEnemy) guest.opacity = 0;
+		if(KEY_PRESSED) focusToFirst(obj.members);	// キー使用なら先頭キャラにフォーカス
+		cutOutFigure("alternate");
+	}
+
+	function exitSelectTargetMode()
+	{
+		// 目標選択モードを抜けて設定を元に戻しておく
+		for(var i = 0; i < party.members.count; i++) party.members[i].selectable = true;
+		for(var i = 0; i < enemy.members.count; i++) enemy.members[i].selectable = true;
+		for(var i = 0; i < guest.members.count; i++) guest.members[i].selectable = true;
+		if(enemy.enabled) enemy.resetGroupVisibility();
+		guest.enabled = party.enabled = enemy.enabled = false;
+		guest.opacity = 255;
+		rowSelectMode = false;
+	}
+
+	function focusToFirst(members)
+	{
+		// 先頭の対象にフォーカスを持ってくる
+		for(var i = 0; i < members.count; i++)
+		{
+			if(! members[i].visible || ! members[i].selectable) continue;
+			members[i].focus();
+			return true;
+		}
+		return false;
+	}
+
+	//---------------------------------------------------------------------------
+	// 各種マップ遷移
+
+	function updateView()
+	{
+		// ダンジョンマップが変化した場合などに画面を更新する
+		if(view != dungeonView) return;
+		if(map.effect === void) dungeonView.stopEffect();
+		if(map.sound === void) dungeonView.stopMapSound();
+		view.updateView(party.curX, party.curY, party.curFront);
+		miniMap.update(true);	// ミニマップを更新
+		party.updateStatusByChangePosition();	// 移動先の情報を元にステータスを変化
+		party.updateDungeonViewByPartyStatus();	// ステータスを画面に反映
+		view.objectLayer.visible = false;	// オブジェクトをいったん消す
+		setTouchableObject();	// 目の前にクリックオブジェクトがあったら設置
+	}
+
+	function openDungeonView(entrance, loading)
+	{
+		// ダンジョン画面を開く
+		view = dungeonView;
+		map = o[entrance.map];
+		party.setCurPos(entrance.x, entrance.y, entrance.way);
+		map.open(loading);
+		updateView();
+	}
+
+	function openTownView(townObj)
+	{
+		// 町画面を開く
+		view = townView;
+		map = townObj;
+		view.loadTownMap(townObj);
+	}
+
+	function openHotelView(hotelObj, loading)
+	{
+		// ホテル画面を開く
+		view = hotelView;
+		map = hotelObj;
+		if(! loading) view.loadHotelMap(hotelObj);
+		if(loading) view.openRoamingMap(hotelObj);
+		else view.openReservationMap(hotelObj);
+	}
+
+	function enterDungeon(entrance)
+	{
+		// ダンジョンに入る
+		view.close();
+		kag.bgm.fadeOut(%[time: 1000]);
+		popup.open(loadDungeonAtBackGround, entrance, 1);
+		popup.write("Entering " + o[entrance.map].displayName);
+		popup.focus();
+	}
+
+	function loadDungeonAtBackGround(entrance)
+	{
+		// ダンジョンを開く。マップの読み込みには時間がかかるのでこの過程をはさむ
+		// 通常このメソッドは enterDungeon 以外からは呼び出さない
+		var startTick = System.getTickCount();
+		openDungeonView(entrance);	// 読み込み＆開く
+		var wait = System.getTickCount() - startTick;
+		dm("マップの読み込みに " + wait + " ms かかりました");
+		popup.open(dungeonView.startExplore,, 500);
+		popup.write("Entered " + o[entrance.map].displayName);
+		popup.focus();
+	}
+
+	function enterTown(town, exitPoint, noMessage = false)
+	{
+		// 町に入る
+		party.clearStatusOnDungeonExit();	// 常駐魔法効果をリセット
+		gameFrame.clearCompassAndCoordinate();	// コンパスをリセット
+		exitTravelMode();
+		view.close();
+		openTownView(town);
+		kag.bgm.fadeOut(%[time: 1000]);
+		if(noMessage)
+		{
+			view.goToStreet(exitPoint);
+			return;
+		}
+		popup.open(view.goToStreet, exitPoint, 500);
+		popup.write("Entering " + town.displayName);
+	}
+
+	function enterHotel(hotelObj)
+	{
+		// 宿に入る（入店したらまずロビーを開く）
+		exitTravelMode();
+		innActionCount = maxInnActionCount;	// 宿泊時行動力の回復
+		heroinesQuarrel();	// 一定確率でヒロインキャラたちがケンカ
+		openHotelView(hotelObj);
+		hotelView.checkEarlyEvent();
+	}
+
+	//---------------------------------------------------------------------------
+	// 移動・イベント関連
+
+	function walk(type, noAction = false)
+	{
+		// パーティーを移動させる
+		noActionAtNextPos = noAction;	// 移動後に戦闘やワープを避ける場合は true
+		wordsBase.close();	// セリフを閉じる
+		battleInfo.close();	// メッセージを閉じる
+		party.walk(type);	// 座標変更を試みる
+		var dark = map.getDarkZoneName(party.curX, party.curY);	// ダークゾーンを調べる
+		view.startWalk(type, party.curX, party.curY, party.curFront, dark
+			, party.middleX, party.middleY);	// アニメ開始
+	}
+
+	function walkFinished(noAction)
+	{
+		// 移動後判定・移動が終わったら必ずこれを呼び出す
+
+		// イベント中は他の判定は行わずシナリオに従う
+		if(inEvent)
+		{
+			party.walkedInEvent = true;
+			kag.trigger("walkFinished");
+			return;
+		}
+
+		// 逃亡による移動時はまだ戦闘が完全に終わっていないので移動後判定を後回しに
+		if(party.afterEscaped) return;
+
+		// 移動後の戦闘やワープを避ける指定がしてあったら戦闘なし
+		if(noActionAtNextPos) noAction = true;
+		noActionAtNextPos = false;
+
+		// 各種判定
+		if(checkEvent()) return;	// 汎用イベントチェック
+		if(checkMapEvent()) return;	// マップイベントのチェック
+		if(! noAction && checkWarp()) return;	// フロア移動
+		if(checkTrap()) return;	// 罠のチェック
+		if(checkSecretObject()) return;	// その他の隠しオブジェクトをチェック
+		if(! noAction && checkBattle()) return;	// 戦闘のチェック
+
+		// クリックできるオブジェクトがあれば設置する（宝箱もここから拾う）
+		setTouchableObject();
+
+		// 左ボタン押しっぱなしだったら連続移動
+		if(! party.walkedInEvent && party.lastWalk != "escapeToBack" && System.getKeyState(VK_LBUTTON))
+		{
+			view.repeatLastWalkingByMouse();
+		}
+	}
+
+	function checkBattle()
+	{
+		// 戦闘に入るかチェックする
+		if(! party.lastIsMove) return false;
+		var res = map.getBattle(party.curX, party.curY);
+		if(res === void) return false;
+		if(res == "duel")
+		{
+			callDuel();
+			return true;
+		}
+		inFixedBattle = (res == "fix");
+		callBattle();	// 戦闘へ
+		return true;
+	}
+
+	function callDuel()
+	{
+		onGameBreak();
+		kag.process("duel.ks", "*" + game.curTeam.img + "_encounter");
+	}
+
+	function checkSecretObject()
+	{
+		// 汎用の隠しオブジェクトをチェックし、パーティーに気付かせる
+		if(! inSearching && ! party.lastIsTurn && ! party.lastIsMove) return false;
+		var secret = map.getSecretObject();
+		if(secret === void) return false;
+		if(secret.name == "wall") return false;	// 見えない壁は警告しない
+		if(secret.way == party.curBack) return false;	// 背後なら警告しない
+		return party.awakeToAnything(map.level);
+	}
+
+	function searchFrontSecretObject()
+	{
+		// 正面に隠しオブジェクトがあるか調べる
+		var secret = map.getSecretObject(,, party.curFront);
+		if(secret === void) return false;
+		inSearching = false;
+		if(secret.name == "illusion")
+		{
+			notice.open(onGameRestart);
+			notice.write("It looks like a normal wall, but it feels<r>strange.");
+			return true;
+		}
+		else if(secret.name == "wall")
+		{
+			notice.open(onGameRestart);
+			notice.write("Despite how it appears, a transparent<r>wall is blocking the way");
+			return true;
+		}
+		else if(secret.name == "door")
+		{
+			map.changeObject(%[type: "door", himg: map.defDoor, secret: void],,,, true);
+			updateView();
+			notice.open(onGameRestart);
+			notice.write("A secret door was found!");
+			return true;
+		}
+		return false;
+	}
+
+	function checkTrap(force)
+	{
+		// 罠をチェック
+		if(! party.lastIsMove && ! force) return false;
+
+		// 床ごとの罠
+		var info = map.getFloorInfo();	// 床に罠についての情報が書かれている
+		if(info.eraseMagic) party.clearStatus();
+		switch(info.trap)
+		{
+			case void:
+				return false;	// 何もしない
+			case "chute":
+				if(party.isFloating(true)) return false;
+				fallToLowerByChute(%[map: map.lower]);
+				return true;
+			case "collapse":
+				if(party.isFloating(true)) return false;
+				fallToLowerByCollapse(%[map: map.lower]);
+				return true;
+			case "air":
+				if(party.onBridge()) return false;
+				fallToLowerFloor(%[map: map.lower]);
+				return true;
+			case "water":
+				if(party.onBridge() || party.isWaterWalking()) return false;
+				fallInWater(%[map: map.pool]);
+				return true;
+			case "drained":
+				if(party.onBridge()) return false;
+				fallToLowerFloor(%[map: map.pool]);
+				return true;
+			case "frozenFloor":
+				party.removeStatus(o.浮遊);	// 浮いた状態ですべるのは変なので常に浮遊を消去する
+				if(party.lastWalk == "jumpForward") party.lastWalk = "goForward";
+				party.moveByForce();
+				return true;
+			case "moveByForce":
+				party.removeStatus(o.浮遊);
+				party.moveByForce(info.way);
+				return true;
+			case "turnByForce":
+				party.removeStatus(o.浮遊);
+				party.turnByForce(info.way);
+				return true;
+			case "spear":
+				return party.fallIntoTrap(o.隠し槍);
+			case "fire":
+				return party.fallIntoTrap(o.火炎放射);
+			case "acid":
+				return party.fallIntoTrap(o.酸の噴水);
+			case "sleep":
+				return party.fallIntoTrap(o.催眠ガス);
+			case "poisonSwamp":
+				party.effectedByTrap(o.毒沼);
+				return false;
+			case "lava":
+				party.effectedByTrap(o.溶岩);
+				return false;
+		}
+		return false;
+	}
+
+	function checkEventAfterBootableAction()
+	{
+		// なんらかのアクションを起こしたことによりその場でイベントが動作するかをチェックする
+		if(view != dungeonView) return;
+		if(curFighter.act === void) return;
+		if(! curFighter.act.bootEvent) return;
+		checkMapEvent();
+	}
+
+	function checkTrapAfterBootableAction()
+	{
+		// なんらかのアクションを起こしたことによりその場でトラップが動作するかをチェックする
+		if(view != dungeonView) return;
+		var res = false;
+		if(curFighter.act !== void && curFighter.act.bootTrap) res = true;
+		if(! party.isStandingOnBridge()) res = true;
+		if(res) checkTrap(true);
+	}
+
+	function checkWarp()
+	{
+		// 移動シンボルだったら別フロア or 町に移動
+
+		if(party.lastIsTurn && ! inSearching) return false;
+		var info = map.getWarpInfo(party.curX, party.curY);	// 移動先の情報を得る
+		if(info === void) return false;	// なければワープしない
+		if(info.climb) return false;	// 建てかけばしご or 崖だったらワープは後で
+		inEvent = inSearching = false;
+
+		if(info.ask !== void)
+		{
+			// 問い合わせあり
+			setPrev(enterTravelMode);
+			setPrev();
+			exitTravelMode();
+			var cmds = [];
+			var func = info.lift !== void ? moveToFloorVertically : moveByWarp;
+			cmds.add(%[text: "Yes", func: func, param: info]);
+			cmds.add(%[text: "No", func: processPrev]);
+			yesNoWin.open(cmds, info.ask);
+			if(info.click !== void) setTouchableObject();	// クリック指定もあったらクリックオブジェクトを設置
+			return true;
+		}
+
+		if(info.click !== void)
+		{
+			// クリックオブジェクトで問い合わせ指定もないならひとまず終了
+			return false;
+		}
+
+		if(info.msg !== void)
+		{
+			// 警告のみあり
+			notice.open(moveByWarp, info);
+			notice.write(info.msg);
+			return true;
+		}
+
+		if(info.fall)
+		{
+			// 落下
+			if(party.onBridge()) return false;
+			fallToLowerFloor(info);
+			return true;
+		}
+
+		if(party.lastIsMove)
+		{
+			// 表示なし
+			changePosition(info);
+			if(info.stealth) return false;	// すぐに次の移動に移るために true で動作を止めない
+			return true;
+		}
+
+		return false;
+	}
+
+	function changePosition(place, inEventProgress = false)
+	{
+		// 移動先の情報に基づきフロア・座標を変更
+		// Custom crash prevention
+		if (place.map !== void && (o[place.map] === void || typeof o[place.map]["kind"] == "undefined")) {
+			dm("Invalid map for changePosition " + place.map);
+			System.inform("Crash due to non-existent map " +  place.map + " prevented");
+			return;
+		}		
+		if(! place.stealth && ! inEventProgress) enterTravelMode();
+		if(place.map !== void)
+		{
+			var nextMap = o[place.map];	// 次のマップオブジェクト
+			if(nextMap.kind == "town")
+			{
+				backScreen.visible = false;	// ワープから町に入ることもあるので
+				enterTown(nextMap, place.enter !== void ? o[place.enter] : void);
+				return;
+			}
+			else if(nextMap.kind == "hotel")
+			{
+				enterHotelFromDungeon(nextMap);
+				return;
+			}
+			else if(nextMap != map)
+			{
+				map = nextMap;
+				party.setCurPos(place.x, place.y, place.way);
+				map.open();
+				playMusic(nextMap.bgm);
+				updateView();
+				return;
+			}
+		}
+		party.setCurPos(place.x, place.y, place.way);
+		map.recordAreaOpened(party.curX, party.curY, true);
+		updateView();
+	}
+
+	function moveByWarp(place)
+	{
+		// ワープによって移動する。移動後に次の座標での判定がある
+		changePosition(place);
+		if(map.kind == "dungeon") walkFinished(true);
+	}
+
+	function fallToLowerFloor(place)
+	{
+		// 落下によって下の階に移動する
+		var underWater = map.underWater;
+		exitTravelMode();
+		map = o[place.map];
+		party.setCurPos(place.x, place.y, place.way);
+		party.setCurPosToBlankAreaFromKeepOut();
+		if(underWater) kag.process("script.ks", "*fall_to_lower_under_water");
+		else kag.process("script.ks", "*fall_to_lower");
+	}
+
+	function fallToLowerByChute(place)
+	{
+		// 落とし穴によって下の階に移動する
+		var floor = map.getFloorInfo();
+		var temp = floor.img;
+		floor.img = void;
+		updateView();
+		floor.img = temp;
+		exitTravelMode();
+		map = o[place.map];
+		party.setCurPos(place.x, place.y, place.way);
+		party.setCurPosToBlankAreaFromKeepOut();
+		kag.process("script.ks", "*fall_by_chute");
+	}
+
+	function fallToLowerByCollapse(place)
+	{
+		// 床の崩落によって下の階に移動する
+		popup.open(1000);
+		popup.write("The ground is starting to crumble!");
+		var lay = new global.Layer(kag, kag._primaryLayer);
+		lay.loadImages("collapse_put_a0");
+		view.viewScreen.operateRect(40, -40, lay, 0, 0, 820, 680);
+		exitTravelMode();
+		map = o[place.map];
+		party.setCurPos(place.x, place.y, place.way);
+		party.setCurPosToBlankAreaFromKeepOut();
+		kag.process("script.ks", "*fall_by_collapse");
+	}
+
+	function fallInWater(place)
+	{
+		// 水に落ちて水中マップに移動する
+		exitTravelMode();
+		map = o[place.map];
+		party.setCurPos(place.x, place.y, place.way);
+		party.setCurPosToBlankAreaFromKeepOut();
+		kag.process("script.ks", "*fall_to_water");
+	}
+
+	function moveToFloorVertically(place)
+	{
+		// はしご等で垂直に上下の階に移動する
+		if(map.isCeiling(party.curX, party.curY))
+		{
+			view.setClairvoyance(false);
+			view.skyLayer.visible = false;
+		}
+		clearWindows();
+		exitTravelMode();
+		map = o[place.map];
+		party.setCurPos(place.x, place.y, place.way);
+		party.lastIsTurn = false;	// 回転はしていないことにする
+		party.lastIsMove = true;	// 移動を行ったことにする
+		if(place.lift == "up") kag.process("script.ks", "*movo_to_upper_vertically");
+		else kag.process("script.ks", "*movo_to_lower_vertically");
+	}
+
+	function climbWallLadder(place)
+	{
+		// 建てかけばしごで上の階に移動する
+		// 画像が新しい階の物に置き換わるのを防ぐため
+		// 情報だけ更新してマップを開くのはアニメの途中にする
+		if(map.isCeiling(party.curX, party.curY))
+		{
+			view.setClairvoyance(false);
+			view.skyLayer.visible = false;
+		}
+		exitTravelMode();
+		var underWaterNow = map.underWater;
+		var warp = map.getWarpInfo(party.curX, party.curY);	// 移動先がワープだったら
+		if(warp !== void) place = warp;
+		map = o[place.map];
+		party.setCurPos(place.x, place.y, place.way);
+		kag.process("script.ks", underWaterNow ? "*rise_to_surface" : "*climb_wall_ladder");
+	}
+
+	function walkStairs(info)
+	{
+		// 階段で移動する
+		exitTravelMode();
+		if(info.map !== void) map = o[info.map];
+		else if(info.stair == "up") map = o[map.upper];
+		else map = o[map.lower];
+		if(info.x !== void || info.y !== void || info.way !== void) party.setCurPos(info.x, info.y, info.way);
+		kag.process("script.ks", "*walk_stairs_to_" + info.stair);
+	}
+
+	function objectFall()
+	{
+		// 正面に置かれた物体が落下する
+		onGameBreak();
+		kag.process("script.ks", "*object_fall");
+	}
+
+	function setTouchableObject()
+	{
+		// クリックできるオブジェクトがあれば設置する
+		var info = map.getClickableObject(party.curX, party.curY, party.curFront);
+		if(info !== void) view.setTouchableObject(info);
+	}
+
+	function clickObjectByKey()
+	{
+		// キーボードでクリックオブジェクトを操作した時に呼び出す
+		if(! view.objectLayer.visible) return;	// そもそも目の前にクリックオブジェクトがない
+		view.objectLayer.touchObject();
+	}
+
+	function checkClickObject()
+	{
+		// クリックイベント
+		// 画面をクリックした時そこに宝箱・移動ポイント・ドアの鍵があればその操作へ
+		// イベントオブジェクトなら該当イベントシナリオに飛ぶ
+		// なお、サーチを用いることでもクリックオブジェクトにアクセスできる（多少待ち時間あり）
+
+		if(! view.objectLayer.visible) return;	// そもそも目の前にクリックオブジェクトがない
+		if(! view.enabled && ! inSearching) return;	// 関係ない時に反応させない（サーチ中は別）
+
+		// 移動ポイントのチェック
+		var info = map.getWarpInfo(party.curX, party.curY);
+		if(info !== void && info.click !== void)
+		{
+			setPrev(enterTravelMode);
+			setPrev();
+			exitTravelMode();
+			var cmds = [];
+			var func = info.lift !== void ? moveToFloorVertically : changePosition;
+			cmds.add(%[text: "Yes", func: func, param: info]);
+			cmds.add(%[text: "No", func: processPrev]);
+			yesNoWin.open(cmds, info.click);
+			return true;
+		}
+
+		// ドアの鍵のチェック
+		var wall = map.getWallInfo(party.curX, party.curY, party.curFront);
+		if(wall.key !== void)
+		{
+			setPrev(enterTravelMode);
+			setPrev();
+			exitTravelMode();
+			enterUnlockDoorMode();	// ドアの解錠実行
+			return true;
+		}
+
+		// 宝箱のチェック
+		var items = map.getTreasureBox(party.curX, party.curY);
+		if(items !== void)
+		{
+			var trap = items.trap;	// 罠
+			if(trap === void) trap = map.traps.draw();	// 指定がなければランダム
+			treasureBox.createTreasureBox(items, trap);
+			exitTravelMode();
+			if(trap == o.鍵付き宝箱)
+			{
+				if(party.ejectItem(o.宝箱の鍵))
+				{
+					playSound("kacha");
+					notice.open(openTreasureBox,, 300);
+					notice.write("<y>Used <p>" +  o.宝箱の鍵.displayName + "<y> to open the treasure chest!");
+				}
+				else
+				{
+					notice.open(enterTravelMode);
+					notice.write("<p>" + o.宝箱の鍵.displayName + "<y> is needed to open the treasure chest.");
+				}
+				return true;
+			}
+			if(! trapWin.open())
+			{
+				notice.open(enterTravelMode);
+				notice.write("Currently, no one can open the treasure chest!");
+			}
+			return true;
+		}
+
+		// どれもなかったらイベント番号があるかチェック
+		var num = map.getEvent(party.curX, party.curY);
+		if(num === void) return false;
+
+		// イベントを終了済みかどうかチェック
+		if(map.events.find(num) == -1) return false;
+
+		// イベントを実行
+		onObjectTrigger = true;
+		var res = (map.conditions[num] !);
+		if(! res) return false;
+		onGameBreak();
+		kag.process(map.mapFile, "*event_" + num);
+		dm("イベント発生   Map " + map.name + "  No. " + num);
+		curEventObj = map;
+		curEventNum = num;
+		return false;
+	}
+
+	function checkMapEvent(checkOnly = false)
+	{
+		// マップイベント発生チェック
+		// イベント番号があれば該当イベントシナリオに飛ぶ
+
+		// 戦闘中やダンジョン以外では起きない
+
+		if(inBattle || map.kind != "dungeon") return false;
+
+		// イベント番号を取得
+		var num = map.getEvent(party.curX, party.curY);
+		if(num === void)
+		{
+			onBombObject = false;
+			onUseEventItem = false;
+			return false;
+		}
+
+		// イベントを終了済みかどうかチェック
+		if(map.events.find(num) == -1)
+		{
+			onBombObject = false;
+			onUseEventItem = false;
+			return false;
+		}
+
+		// イベントを実行
+		if(map.conditions[num] !)
+		{
+			onBombObject = false;
+			if(checkOnly) return true;
+			onGameBreak();
+			kag.process(map.mapFile, "*event_" + num);
+			dm("イベント発生   Map " + map.name + "  No. " + num);
+			curEventObj = map;
+			curEventNum = num;
+			return true;
+		}
+		onBombObject = false;
+		onUseEventItem = false;
+		return false;
+	}
+
+	function checkEvent(checkOnly = false)
+	{
+		// イベント発生チェック
+		// event.ks の ;[exp] をチェックし真ならば該当イベントシナリオに飛ぶ
+		for(var i = 0; i < events.count; i++)
+		{
+			var num = events[i];
+			if(! (conditions[num] !)) continue;
+			if(checkOnly) return true;
+			onGameBreak(true);
+			kag.process("event.ks", "*event_" + num);
+			dm("イベント発生   No. " + num);
+			curEventObj = this;
+			curEventNum = num;
+			return true;
+		}
+		return false;
+	}
+
+	function checkBattleEvent(checkOnly = false)
+	{
+		// 戦闘イベント発生チェック
+		// bevent.ks の ;[exp] をチェックし真ならば該当イベントシナリオに飛ぶ
+		// ※戦闘イベントだけは他のイベントの最中に発生することがあるため独自の変数を使う
+		//   curEventObj への代入もしない
+		for(var i = 0; i < bevents.count; i++)
+		{
+			var num = bevents[i];
+			if(! (bconditions[num] !)) continue;
+			if(checkOnly) return true;
+			curEventLabel = kag.conductor.curLabel;	// 直前のラベルを保存。終わったらここに戻る
+			kag.process("bevent.ks", "*event_" + num);
+			dm("戦闘イベント発生   No. " + num);
+			curBattleEventNum = num;
+			return true;
+		}
+		return false;
+	}
+
+	//---------------------------------------------------------------------------
+	// 戦闘関連
+
+	function callBattle(skipOpening)
+	{
+		// 戦闘開始
+		exitTravelMode();
+		inBattle = true;
+		curGold = 0;	// 稼いだ金額リセット
+		curExp = 0;		// 稼いだ経験値リセット
+		turnCount = 0;	// 経過ターン数をリセット
+		contractableMonster = void;	// 召喚モンスター候補をリセット
+		treasureBox.drops = [];	// ドロップアイテムリセット
+		if(skipOpening) kag.process("battle.ks", "*battle_start_skip_opening");
+		else kag.process("battle.ks", "*battle_start");	// process は右クリックメニューを無効にする
+	}
+
+	function exitBattle()
+	{
+		// 戦闘終了
+		closeBattle();
+		party.restoreFaces();
+		party.clearStatusOnBattleEnd();	// 一部ステータスをクリア
+		party.clearAllMembersAction();
+		if(inEventBattle || party.afterEscaped) party.clearMembersBrokenPartsList();
+		if(! inEventBattle) onGameRestart();
+	}
+
+	function closeBattle()
+	{
+		// 戦闘画面を消去し戦闘を終了させる
+		enemy.disappear();
+		inBattle = false;
+		inDuelBattle = false;
+		isNeverEscapeBattle = false;
+		specialBattleBgm = void;
+		firstStrike = void;
+	}
+
+	function getBattleResult()
+	{
+		// 戦いの結果を返す まだ決着が付いてなければ何も返さない
+		if(concedeNow)
+		{
+			concedeNow = false;
+			return "lose";
+		}
+		if(party.getNumExist() == 0) return "lose";	// こちらを先に
+		if(enemy.getNumExist() == 0) return "win";
+	}
+
+	function afterEscapedBattle()
+	{
+		// 逃げた場合、後回しにしていた移動後判定を実行
+		onObjectTrigger = false;
+		onUseEventItem = false;
+		inSearching = false;
+		inEvent = false;
+		party.afterEscaped = false;
+		if(view == dungeonView) walkFinished(true);
+	}
+
+	function afterWonBattle()
+	{
+		// 逃げていなければ宝箱ゲット。固定敵だったらそれを消す
+		map.eraseFixedEnemy(party.curX, party.curY);
+		if(! appearCallingMonster()) getBattlePrize();
+		party.changeAllMembersTrust(1);	// パーティーメンバーの信頼度が上昇
+	}
+
+	function getBattlePrize()
+	{
+		// 戦いの報酬をゲットする
+		if(inFixedBattle) appearTreasureBox();
+		else getDroppedTreasure();
+	}
+
+	function cutInFigure(src, type, x, y, notChangeToSameChara = false)
+	{
+		// カットインを入れる
+		if(notChangeToSameChara && figureLayerSource == src) return;
+		figureLayer.cutInFigure(...);
+		figureLayerSource = src;
+	}
+
+	function cutOutFigure(type)
+	{
+		// 上記のカットインを消す（外に追い出す）
+		figureLayer.cutOutFigure(type, figureLayer.left, figureLayer.top);
+		figureLayerSource = void;
+	}
+
+	function isBattlePose(pose)
+	{
+		// 指定したポーズ名が戦闘カットイン用のポーズかどうかを返す
+		return ["strike", "etc", "shot", "cast", "play", "beat"].has(pose);
+	}
+
+	function testFigureOnBattle(num)
+	{
+		// バトル中カットインのテスト
+		if(itemWin.visible) itemWin.close();
+		var chr = num >= 6 ? guest.members[num - 6] : party.members[num];
+		if(chr === void) return;
+		var pose;
+		var x = 600;
+		if(num < 6)
+		{
+			if(chr.model.hasExtraPose)
+			{
+				if(chr.equip.main !== void)
+				{
+					if(chr.equip.main.type == "bow" || chr.equip.main.type == "longbow") pose = "shot";
+					else if(chr.equip.main.type == "harp") pose = "play";
+					else if(chr.equip.main.type == "drum") pose = "beat";
+					else pose = "strike";
+				}
+				else pose = "cast";
+				if(pose !== void) x = kag.scWidth - chr.figureLayer.width;
+			}
+			var faceNum = FACE[chr.getFaceNameByShame()].num;
+			chr.createFigure(faceNum, chr.getEquipedItems(["finger", "pocket"]), pose);
+		}
+		figureLayer.cutInFigure(chr.figureLayer, "alternate", x, 0, true);
+	}
+
+	function inputNextBattleCommand(lastChara)
+	{
+		// 戦闘時のコマンド入力。次のキャラにどんどんコマンド入力させる
+		// 初回入力は lastChara を void にしてこれを呼び出せば良い
+		for(var i = party.members.find(lastChara) + 1; i < party.members.count; i++)
+		{
+			if(! party.members[i].active) continue;
+			if(party.members[i].status.has(o.魅了))
+			{
+				party.members[i].autoSelectCommand();
+				continue;
+			}
+			party.members[i].openBattleCommand();	// 次のキャラへ
+			return true;
+		}
+		endAllBattleCommandSet();	// 全キャラの入力が完了したので入力終了へ
+		return false;
+	}
+
+	function endAllBattleCommandSet()
+	{
+		// コマンド入力がすべて終了したらこれを呼ぶ
+		clearWindows();
+		kag.trigger("setBattleCommand");
+	}
+
+	function inputInturruptTurn(key, shift)
+	{
+		// マウス・キー入力によりバトルターン中にメニュー表示の予約をする
+		// １キャラ行動後にターンを中断してメニューが表示される
+		if(key == BT_CANCEL || key === void) interruptTurn = true;
+	}
+
+	function sortFightingOrder()
+	{
+		// 攻撃順を決定する（回復の表示のため行動不能のキャラも入れておく）
+		fightingOrder = [];
+		for(var i = 0; i < party.allMembers.count; i++) fightingOrder.add(party.allMembers[i]);
+		for(var i = 0; i < enemy.members.count; i++) fightingOrder.add(enemy.members[i]);
+		for(var i = 0; i < fightingOrder.count; i++)
+		{
+			fightingOrder[i].result = int(fightingOrder[i].spd * random / 2);
+		}
+		fightingOrder.sort(function(a, b){ return a.spd + a.result > b.spd + b.result; });
+	}
+
+	function getNextFighter()
+	{
+		// 次に行動するキャラ・モンスターを選ぶ
+		var one = fightingOrder.shift();
+		if(one === void) return;
+		if(one.active && one.act !== void) return one;
+		else return getNextFighter();
+	}
+
+	function getAllLivingFighters()
+	{
+		// 現在生きている全員を得る
+		var arr = [];
+		for(var i = 0; i < party.allMembers.count; i++)
+		{
+			if(! party.allMembers[i].dead) arr.add(party.allMembers[i]);
+		}
+		for(var i = 0; i < enemy.members.count; i++)
+		{
+			if(! enemy.members[i].dead) arr.add(enemy.members[i]);
+		}
+		return arr;
+	}
+
+	function getTeam(self, getMySide, includeGuest = false)
+	{
+		// 各陣営の全員を得る
+		return (self instanceof "MonsterObject" == getMySide) ? enemy.members
+			 : (includeGuest ? party.allMembers : party.members);
+	}
+
+	function isFirstStrike()
+	{
+		// 先制攻撃が発生したかどうかを返す
+		if(inEventBattle || inDuelBattle) return;
+		if(! enemy.isUsableSkill(o.警戒))
+		{
+			var score = cap(party.getMaxParamsValue("speed") - enemy.getMaxParamsValue("speed"), 20);
+			if(party.isUsableSkill(o.警戒)) score += 20;
+			dm("先制スコア  party : " + score);
+			if(random < (score + 10) / 200) return "party";
+		}
+		if(! party.isUsableSkill(o.警戒))
+		{
+			var score = cap(enemy.getMaxParamsValue("speed") - party.getMaxParamsValue("speed"), 20);
+			if(enemy.isUsableSkill(o.警戒)) score += 20;
+			dm("先制スコア  enemy : " + score);
+			if(random < (score + 10) / 200) return "enemy";
+		}
+	}
+
+	function getCharaCovering(act, target)
+	{
+		// メンバーをかばっている仲間がいたらそれを返す（かばうコマンド）
+		if(target === void) return;
+		if(! act.toEnemy || act.range >= 2) return;
+		var arr = getAllLivingFighters();
+		for(var i = 0; i < arr.count; i++)
+		{
+			var one = arr[i];
+			if(! one.active || one == target) continue;
+			if(one.act == o.かばう && one.target == target) return one;
+			if(one.act == o.全員かばう && ((one.team == target.team) ^ one.status.has(o.魅了))) return one;
+		}
+	}
+
+	function getBestSummoningMonster()
+	{
+		// 契約済みのモンスターの中で最強のモンスターを返す
+		var best;
+		for(var i = 0; i < smagic.count; i++)
+		{
+			if(! smagic[i].contracted) continue;
+			if(best === void || best.level < smagic[i].level) best = smagic[i];
+		}
+		return best;
+	}
+
+	//---------------------------------------------------------------------------
+	// アイテム・宝箱関連
+
+	function appearTreasureBox()
+	{
+		// 宝箱出現（倒した敵に応じ treasureBox.drops の中に保管されている）
+		if(! treasureBox.createDropsTreasureBox(map.traps.draw()))
+		{
+			enterTravelMode();
+			return;	// 宝箱出現せず
+		}
+		exitTravelMode();
+		clearWindows();
+		if(! trapWin.open())
+		{
+			// ゲストのみ生き残っているときは宝箱を開くと不具合が起きるので宝箱はなし
+			enterTravelMode();
+			return;
+		}
+	}
+
+	function getDroppedTreasure()
+	{
+		// 敵が落としたアイテムを自動的に入手する（固定敵以外）
+		var item = treasureBox.getOneTreasure();
+		if(item !== void)
+		{
+			var mem = storeItemSomewhere(item,,, true);
+			if(mem !== void)
+			{
+				var text = item.state > 0 ? item.itemData.displayName : item.itemData.getUnknownName();
+				notice.open(enterTravelMode);
+				notice.write("<y>" + mem.displayName + "<w> got <p>" + text + "<w>!");
+				return true;
+			}
+		}
+		enterTravelMode();
+		return false;
+	}
+
+	function openTreasureBox()
+	{
+		// 宝箱を開ける
+		clearWindows();
+		party.restoreFaces(true);
+		itemWin.openTreasureBox();
+		if(map.kind == "town") return;
+		map.eraseTreasureBox(party.curX, party.curY);	// 取った宝箱は消去
+		updateView();
+	}
+
+	function onCloseTreasureBox()
+	{
+		// 宝箱を閉じて元のモードに戻る
+		party.clearMembersBrokenPartsList();
+		if(! inEvent) enterTravelMode();
+		kag.trigger("closeTreasureBox");
+	}
+
+	function getSecondTrapAnswer()
+	{
+		// 宝箱の罠の第２候補の答えを返す プレイヤーを惑わすため使う
+		return map.traps[(date + clock) % map.traps.count];
+	}
+
+	function getRandomTrapAnswer()
+	{
+		// 宝箱の答えが分からないとき適当な答えを返す
+		return traps.draw();
+	}
+
+	function storeItemSomewhere(item, prior, exceptedChara, notStoreInStock)
+	{
+		// 指定されたアイテム全てをどこかに収納する
+
+		// 優先場所が指定されていたらまずそこへ収納
+		if(prior !== void)
+		{
+			if(prior instanceof "CharaObject")
+			{
+				// キャラが指定されていたらそのキャラのバッグへ
+				if(prior.insertItem(item.itemData, item.state)) return prior;
+			}
+			else if(prior == trunkRoom || prior == temporaryBox || prior == lockerRoom)
+			{
+				// 倉庫類が指定されていたらそこへ
+				prior.storeItemToTrunk(item.itemData, item.state);
+				return;
+			}
+		}
+
+		// ダメならパーティーメンバーの誰かに預ける
+		for(var i = 0; i < party.members.count; i++)
+		{
+			if(prior == party.members[i]) continue;
+			if(exceptedChara == party.members[i]) continue;
+			if(party.members[i].insertItem(item.itemData, item.state)) return party.members[i];
+		}
+
+		// それでもダメなら一時預かり所へ
+		if(notStoreInStock) return;
+		temporaryBox.storeItemToTrunk(item.itemData, item.state);
+	}
+
+	//---------------------------------------------------------------------------
+	// 召喚関連
+
+	function appearCallingMonster()
+	{
+		// 召喚できそうなモンスター登場
+		if(contractableMonster === void) return false;
+		if(party.isUsableSkill(o.契約))
+		{
+			// 覚えられそうな人がいたら契約申し込み
+			exitTravelMode();
+			kag.process("battle.ks", "*contract_monster");
+			return true;
+		}
+		return false;
+	}
+
+	function contractMonster()
+	{
+		// 契約実行
+		contractableMonster.contracted = true;
+		for(var i = 0; i < party.members.count; i++)
+		{
+			var obj = party.members[i];
+			if(obj.skill.has(o.契約) && ! obj.btcmd.has(contractableMonster))
+			{
+				obj.btcmd.add(contractableMonster);
+				var idx = contractableMonster.magicLV - 1;
+				if(obj.smagicMax[idx] == 0) obj.smagic[idx] = obj.smagicMax[idx] = 1;
+			}
+		}
+	}
+
+	//---------------------------------------------------------------------------
+	// メニュー関連
+
+	function openTravelMenu()
+	{
+		// 右クリックキャンプメニュー
+		if(hour == "night") openMenuForRoaming();
+		else openCampMenu();
+	}
+
+	function openCampMenu()
+	{
+		// ダンジョン・町の移動時に開く右クリックキャンプメニュー
+		if(! view.inStable) return;
+		popPrev();	// 戻る時はこのメニューは飛ばす
+		setPrev();
+		exitTravelMode();
+		var hasMember = (party.members.count > 0);
+		var cmds = [];
+		cmds.add(%[text: "Magic", func: openMagicCommand, cond: hasMember]);
+		cmds.add(%[text: "Item", func: openItemCommand, cond: hasMember]);
+		cmds.add(%[text: "Map", func: openAutoMap, cond: map.kind == "dungeon"]);
+		cmds.add(%[text: "Status", func: openStatus, cond: hasMember]);
+		cmds.add(%[text: "Search", func: search, cond: map.kind == "dungeon"]);
+		cmds.add(%[text: "Unlock", func: enterUnlockDoorMode, cond: map.kind == "dungeon"]);
+		cmds.add(%[text: "Arrange", func: enterArrangeMode, cond: party.members.count > 1]);
+		cmds.add(%[text: "Party Info", func: openPartyInfo]);
+		cmds.add(%[text: "Heroine Info", func: openHeroineStatusFromMenu, cond: hasMember]);
+		cmds.add(%[text: "Quests", func: openQuestNotes]);
+		cmds.add(%[text: "Save/Load", func: openSaveLoad]);
+		cmds.add(%[text: "Settings", func: openOption]);
+		campMenu.focusLastCommand = sf.rememberLastCommand;
+		campMenu.open(cmds, "Camp menu");
+	}
+
+	function openMenuForRoaming()
+	{
+		// 夜探索時の右クリックメニュー
+		popPrev();
+		hotelView.curButton = kag.focusedLayer;
+		exitTravelMode();
+		clearWindows();
+		var cmds = [];
+		cmds.add(%[text: "Save/Load", func: openSaveLoad]);
+		cmds.add(%[text: "Settings", func: openOption]);
+		miniMenu.open(cmds, "Submenu");
+	}
+
+	function openMenuForKag()
+	{
+		// シナリオ進行時の右クリックメニュー
+		if(! kag.inStable) return;
+		kag.lockSnapshot();
+		clearWindows();
+		kag.hideMessageLayerByUser();
+		var cmds = [];
+		cmds.add(%[text: f.saveEnabled ? "Save/Load" : "Load", func: openSaveLoadForKag]);
+		cmds.add(%[text: "Settings", func: openOption]);
+		cmds.add(%[text: "History", func: showHistory]);
+		if(f.replayMode) cmds.add(%[text: "Back", func: openReplayMode]);
+		miniMenu.open(cmds, "Submenu");
+	}
+
+	function openMenuForBattle(interrupt = false)
+	{
+		// バトル時の右クリックメニュー
+		if(! kag.inStable && ! interrupt) return;
+		clearWindows();
+		var cmds = [];
+		cmds.add(%[text: "Load", func: openSaveLoadForBattle]);
+		cmds.add(%[text: "Settings", func: openOption]);
+		cmds.add(%[text: "Back", func: processPrev]);
+		miniMenu.open(cmds, "Submenu");
+	}
+
+	function returnToBattle()
+	{
+		// 戦闘コマンド入力に戻る
+		clearWindows();
+		if(turnStarted) kag.process("battle.ks", "*next_chara");
+		else kag.process("battle.ks", "*user_command");
+	}
+
+	function returnToKag()
+	{
+		// ＫＡＧシナリオに戻る
+		clearWindows();
+		kag.showMessageLayerByUser();
+		resetPrevForKag();
+	}
+
+	function showHistory()
+	{
+		// メッセージ履歴
+		setPrev();
+		clearWindows();
+		kag.showHistoryMenuItem.click();
+	}
+
+	function search()
+	{
+		// 調べる
+		clearWindows();
+		inSearching = true;
+		exitTravelMode();	// onGameBreak を使うと inEvent = true になるのでこれだけで良い
+		kag.process("script.ks", "*search_start");
+	}
+
+	function enterUnlockDoorMode()
+	{
+		// ドアの解錠
+		clearWindows();
+		var wall = map.getWallInfo();
+
+		if(wall.type != "door")
+		{
+			// そもそもドアじゃない
+			playSound("buzzer");
+			notice.open(processPrev);
+			notice.write("<y>No door here");
+			return false;
+		}
+		else if(wall.key == "other")
+		{
+			// 何らかのイベントで開く扉
+			playSound("buzzer");
+			notice.open(processPrev);
+			notice.write("<y>You can't open this door right now.");
+			return false;
+		}
+		else if(wall.key == "pickable")
+		{
+			// こじあけが必要な扉
+			var picker = party.getCurPicker();
+			if(picker === void)
+			{
+				playSound("buzzer");
+				notice.open(processPrev);
+				notice.write("<y>No-one can unlock");
+				return false;
+			}
+			setPrev();
+			for(var i = 0; i < party.members.count; i++)
+			{
+				var one = party.members[i];
+				one.selectable = one.active;
+			}
+			enterSelectTargetMode(picking);
+			picker.focus();
+			instruct("Which character should pick the lock?");
+		}
+		else if(wall.key !== void)
+		{
+			// 特定の鍵が必要な扉
+			var key = wall.key;	// 情報が消えてしまうので
+			if(! party.useItem(key))
+			{
+				playSound("buzzer");
+				notice.open(processPrev);
+				notice.write("<y>I need a key to open this door");
+				return false;
+			}
+			playSound("kacha");
+			map.unlockDoor();
+			notice.open(processPrev);
+			notice.write("<p>" + key.displayName + "<y> used to open door!");
+			return true;
+		}
+		else
+		{
+			// 解錠済み or そもそも鍵がかかってない
+			notice.open(processPrev);
+			notice.write("<y>Already open");
+			return false;
+		}
+	}
+
+	function picking(charaObj)
+	{
+		// こじあけ実行
+		clearWindows();
+		exitSelectTargetMode();
+		curChara = charaObj;
+		exitTravelMode();
+		kag.process("script.ks", "*pick_start");
+	}
+
+	function openMagicCommand()
+	{
+		// 魔法コマンド（移動時）
+		clearWindows();
+		var res = getMagicPermission();
+		if(res !== void)
+		{
+			playSound("buzzer");
+			notice.open(processPrev);
+			notice.write(res);
+			return;
+		}
+		setPrev(openMagicCommand);
+		magicWin.open();
+	}
+
+	function getMagicPermission()
+	{
+		// 現在の魔法の許可状態を調べ、使用不可ならメッセージを返す（全体コマンド用）
+		var res = map.getMagicPermission();
+		if(res !== void) return res;
+		if(party.getMagicUser() === void) return "<y>No-one can use magic";
+	}
+
+	function openWindowByFaceClick(obj)
+	{
+		// 顔画像クリックから開くアイテム or ステータス画面
+		if(! view.inStable) return;
+		popPrev();
+		popPrev();
+		setPrev();
+		exitTravelMode();
+		itemWin.openWindowByFaceClick(obj);
+	}
+
+	function openItemCommand()
+	{
+		// アイテム画面（移動時）
+		clearWindows();
+		itemWin.openInventory();
+	}
+
+	function openStatus()
+	{
+		// ステータス画面（移動時）
+		clearWindows();
+		itemWin.openStatus();
+	}
+
+	function openHeroineStatusFromMenu()
+	{
+		// ヒロイン用ステータスメニュー
+		clearWindows();
+		itemWin.openHeroineStatusFromMenu();
+	}
+
+	function openSlaveStatusFromMenu()
+	{
+		// 奴隷用ステータスメニュー
+		clearWindows();
+		itemWin.openSlaveStatusFromMenu();
+	}
+
+	function openQuestNotes()
+	{
+		// クエストノート
+		clearWindows();
+		noteWin.open();
+	}
+
+	function openPartyInfo()
+	{
+		// パーティー情報
+		clearWindows();
+		partyInfo.viewInfo(party,, true);
+		partyInfo.onCloseAction = processPrev;
+	}
+
+	function getFirstSlave()
+	{
+		// 捕らわれたヒロインのうち最初のキャラを返す
+		for(var i = 0; i < rivals.count; i++)
+		{
+			if(rivals[i].slaves.count > 0) return rivals[i].slaves[0];
+		}
+	}
+
+	function openAutoMap()
+	{
+		// マップ
+		exitTravelMode();
+		clearWindows();
+		autoMap.open(map);
+	}
+
+	function enterArrangeMode()
+	{
+		// 隊列変更（並べ替え）
+		setPrev(exitArrangeMode);
+		setPrev();
+		clearWindows();
+		for(var i = 0; i < party.members.count; i++)
+		{
+			if(party.members[i].knockOut) party.members[i].selectable = false;
+		}
+		enterSelectTargetMode(holdCharaObjectLayer);
+		gameFrame.formationBar.visible = true;
+		instruct("Sort members with keyboard / mouse");
+	}
+
+	function holdCharaObjectLayer(charaObj)
+	{
+		// 並べ替えるキャラをホールドする
+		charaObj.holdLayer(true);
+	}
+
+	function exitArrangeMode()
+	{
+		// 隊列変更モードから抜ける
+		gameFrame.formationBar.visible = false;
+		party.recordFormation();	// パーティー順位を記録
+		exitSelectTargetMode();
+		enterTravelMode();
+	}
+
+	function openOption()
+	{
+		// オプションメニュー
+		setPrev(openOption);
+		clearWindows();
+		optionWin.open();
+	}
+
+	function openSaveLoad()
+	{
+		// セーブ＆ロード (ﾟ∀ﾟ)人(ﾟ∀ﾟ)
+		setPrev(openSaveLoad);
+		clearWindows();
+		kag.lockSnapshot();
+		kag.process("macro.ks", "*saveInGameMode");
+	}
+
+	function openSaveLoadForKag()
+	{
+		// セーブ＆ロード (ﾟ∀ﾟ)人(ﾟ∀ﾟ) ＫＡＧシナリオ用
+		previewActions = [returnToKag, openSaveLoadForKag];
+		clearWindows();
+		saveWin.open();
+	}
+
+	function openSaveLoadForBattle()
+	{
+		// セーブ＆ロード (ﾟ∀ﾟ)人(ﾟ∀ﾟ) バトル用
+		setPrev(openSaveLoadForBattle);
+		clearWindows();
+		saveWin.open();
+	}
+
+	function openLoadForTitle()
+	{
+		// ロード (ﾟ∀ﾟ)ﾉ タイトル画面用
+		previewActions = [returnToTitle, openLoadForTitle];
+		clearWindows();
+		saveWin.open();
+	}
+
+	function openCGMode()
+	{
+		// ＣＧ観賞モード
+		previewActions = [returnToTitle, openCGMode];
+		clearWindows();
+		cgModeWin.open();
+	}
+
+	function openReplayMode()
+	{
+		// リプレイモード
+		previewActions = [returnToTitle, openReplayMode];
+		clearWindows();
+		replayWin.open();
+	}
+
+	function openTrophyMode()
+	{
+		// リプレイモード
+		previewActions = [];
+		clearWindows();
+		return trophyWin.open();
+	}
+
+	function returnToTitle()
+	{
+		// タイトル画面に戻る。変数などはリセットしない
+		kag.process("first.ks", "*title");
+	}
+
+	//---------------------------------------------------------------------------
+	// 一部ＫＡＧの制御
+
+	function processWheel(shift, delta, x, y)
+	{
+		// ホイールの機能を追加
+		if(System.getKeyState(VK_LBUTTON) || System.getKeyState(VK_RBUTTON))
+		{
+			return false;
+		}
+		if(enemy.enabled)
+		{
+			enemy.showThroughHiddenRow(delta > 0);
+			return true;
+		}
+		if(kag.focusedLayer == dungeonView && ! dungeonView.walkTimer.enabled)
+		{
+			gameFrame.openAutoMap();
+			return true;
+		}
+		if(itemWin.visible && view != hotelView)
+		{
+			processPrev();
+			return true;
+		}
+		return false;
+	}
+
+	function setLayerPosByQuake(x, y)
+	{
+		// quake タグによりゲーム画面を揺らす際に呼び出される
+		if(! game.gameVisible) return;
+		view.resetPos();
+		party.resetPos();
+		(global.Layer.setPos incontextof view)(x + view.left, y + view.top);
+		(global.Layer.setPos incontextof gameFrame)(x, y);
+		(global.Layer.setPos incontextof party)(x + party.left, y + party.top);
+		if(enemy.visible) enemy.resetPos();
+		if(kag.effects[0].visible) (global.Layer.setPos incontextof kag.effects[0])(x, view.top);
+		if(backScreen.visible) (global.Layer.setPos incontextof backScreen)(x, view.top);
+	}
+
+	function displayCharactorLayer(layerNum, charaKey)
+	{
+		// 立ち絵をＫＡＧレイヤーに貼り付けてトランジションで表示できるようにする
+		var kbl = kag.back.layers[layerNum];
+		kbl.clearAnim();	// 前回使われたアニメーションの情報をクリア
+		kbl.Anim_partialImageInfo = void;	//   〃
+		kbl.type = ltAlpha;
+		var charaObj = getCharaByTag(charaKey);
+		if(charaObj === void)
+		{
+			if(! kbl.visible) dm("立ち絵が未消去です layer:" + layerNum + " chara:" + charaKey);
+			else System.inform("削除されたキャラを表示しようとしました layer:" + layerNum + " chara:" + charaKey);
+			eraseCharactorLayer(layerNum);
+			return;
+		}
+		kbl.assignImages(charaObj.figureLayer);	// 貼り付け
+		kbl.setImageSize(charaObj.figureLayer.width, charaObj.figureLayer.height);
+		kbl.setSizeToImageSize();
+		charaKeysByKagLayer[layerNum] = charaKey;	// ロード時に再現させるために情報を保存
+	}
+
+	function getCharaByTag(charaKey)
+	{
+		// タグに指定されたキー名からキャラオブジェクトを得る
+		if(charaKey == "キャラ") return curChara;
+		if(charaKey == "ヒロイン") return wife;
+		if(charaKey == "リーダー") return leader;
+		return o[charaKey];
+	}
+
+	function eraseCharactorLayer(layerNum)
+	{
+		// 前景レイヤーのキャラクター絵を消去する
+		kag.back.layers[layerNum].freeImage();
+		charaKeysByKagLayer[layerNum] = void;	// 情報を保存
+	}
+
+	function rebuildCharactors()
+	{
+		// ＫＡＧに転写した立ち絵レイヤーをすべて再現する
+
+		for(var i = 0; i < charaKeysByKagLayer.count; i++)
+		{
+			if(charaKeysByKagLayer[i] === void) continue;
+			var chr = getCharaByTag(charaKeysByKagLayer[i]);
+			chr.createFigureByTag();
+			displayCharactorLayer(i, charaKeysByKagLayer[i]);
+			kag.fore.layers[i].assignComp();
+		}
+	}
+
+	function eraseAllFigureTags()
+	{
+		// すべてのキャラに設定されている立ち絵の着衣情報を削除する
+		// 削除後は現在のゲーム上の衣服が表示されるようになる
+		for(var i = 0; i < chara.count; i++)
+		{
+			if(chara[i] === void) continue;
+			chara[i].clothesNamesByTag = void;
+			chara[i].faceNumByTag = 0;
+		}
+		for(var i = 0; i < helper.count; i++)
+		{
+			if(helper[i] === void || helper[i].isHiring) continue;
+			helper[i].clothesNamesByTag = void;
+			helper[i].faceNumByTag = 0;
+		}
+	}
+
+	function addPartialImagesByTag(elm)
+	{
+		// タグの属性値 p* の値に基づいて画像を追加していく
+		var arr = [];
+		arr.assignMembers(elm);
+		arr.sort(function(a, b){ return +a.substr(1) < +b.substr(1); });
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(arr[i][0] != "p" || ! /[0-9]/.test(arr[i][1])) continue;
+			var part = getFileNameByKey(elm[arr[i]], elm.chara);
+			if(part === void) continue;
+			var fileName = elm.f + "_" + arr[i] + "_" + part;
+			if(! Storages.isExistentStorage(fileName + ".png"))
+			{
+				fileName = elm.f + "_" + arr[i] + "_" + elm[arr[i]];
+			}
+			kag.getLayerFromElm(elm).loadPartialImage(%[storage: fileName, dx: 0, dy: 0]);
+		}
+	}
+
+	function getFileNameByKey(key, charaName)
+	{
+		// タグで画像を表示する時、差分をキー名で指定すると適切なファイル名の一部を返す
+		if(key == "hotel") return hotelView.curHotel.innType;	// 宿泊中のホテル
+		if(key == "map") return map.viewImg;	// 現在のマップ
+		if(key == "hair") return o[charaName].color;	// 指定キャラの髪色
+		if(key == "monster") return o[charaName].capturers[0].img;	// 捕らえているモンスター
+		if(["chest", "waist", "arm", "leg", "bust", "hip", "finger"].find(key) != -1)
+		{
+			// 指定キャラの指定位置に装備されているアイテム
+			var eqp = o[charaName].equip[key];
+			if(eqp !== void) return eqp.img;
+		}
+		return key;	// キー名でなかったらパラメータの値をそのまま返す
+	}
+
+	function setTarget(obj)
+	{
+		// キャラ選択の結果を保存する。イベント時コマンド発動マクロで使う
+		curTarget = obj;
+		kag.trigger("waitChooseTarget");
+	}
+
+	function cancelChooseTarget()
+	{
+		// キャラ選択中にキャラ未選択のままトリガを引く。イベント時コマンド発動マクロで使う
+		kag.trigger("waitChooseTarget");
+	}
+
+	function jumpToKagLabel(label)
+	{
+		// ＫＡＧのラベルにジャンプする
+		if(label !== void) targetKagLabel = label;
+		kag.process(, targetKagLabel);
+	}
+
+	function processAndResetPrev()
+	{
+		// ＫＡＧシナリオを進行させプレビュースタックを元に戻す
+		// resetPrevForProcessOnly と併用して右クリックでも左と同じ効果になるようにする
+		kag.onPrimaryClick();
+		resetPrevForProcessOnly();
+	}
+
+	//---------------------------------------------------------------------------
+	// その他の関数
+
+	function elapse(day)
+	{
+		// ゲーム時間が指定した日数経過する
+
+		date += day;
+		gameFrame.updateCalender();
+
+		// ライバルパーティで行われること
+		for(var i = 0; i < rivals.count; i++)
+		{
+			rivals[i].actionsForDay(day);
+		}
+
+		// 週に一回特定の曜日に商品が補充される
+		for(var i = 0; i < houses.count; i++)
+		{
+			if(houses[i].kind == "shop" && i % 7 == date % 7) houses[i].restockItems();
+		}
+
+		// 期限切れの一時預かりアイテムを処分する
+		temporaryBox.disposeTemporaryItems();
+
+		// 待合室で待機中のヒロインの妊娠度をチェック
+		for(var i = 0; i < waitingRoom.members.count; i++)
+		{
+			var her = waitingRoom.members[i];
+			her.processPregnancy();
+			if(her.isNursing()) her.equip.chest = o.マタニティドレス;
+		}
+
+		// 寄付をリセットする
+		party.luck = 0;
+	}
+
+	function advanceClock(t)
+	{
+		// ゲーム時間が指定した時刻だけ経過する
+		// 時刻の１単位は timeOfADay の値によって決まる
+		if(! lapse) return;
+		clock += t;
+		if(clock >= timeOfADay)
+		{
+			elapse(clock \ timeOfADay);
+			clock = clock % timeOfADay;
+		}
+		gameFrame.updateClock();
+	}
+
+	function elapseByStaying()
+	{
+		// 宿で１泊したとき時間を経過させる
+		elapse(1);	// 日付が変わる
+		clock = checkoutTime;	// チェックアウト時刻
+		gameFrame.updateClock();
+	}
+
+	function getValuesOfDate(d)
+	{
+		// 指定したゲーム日数から 月 日 曜日を表す値を返す
+		if(d === void) d = date;
+		var week = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+		var cal = [-1, 30, 58, 89, 119, 150, 180, 211, 242, 272, 303, 333];
+		var dy = d % 365;
+		for(var i = 11; i >= 0; i--)
+		{
+			if(dy > cal[i]) return %[month: i + 1, date: dy - cal[i], day: week[d % 7]];
+		}
+	}
+
+	function findItem(itemData, unknown)
+	{
+		// アイテムをすべての所持スペースから探し、あった場所・所持者を返す
+		// unknown を true にすると未鑑定品もカウントする
+		for(var i = 0; i < chara.count; i++)
+		{
+			if(chara[i].findItem(itemData, unknown) !== void) return chara[i];
+		}
+		if(temporaryBox.findItem(itemData, unknown, true) !== void) return temporaryBox;
+		if(trunkRoom.findItem(itemData, unknown, true) !== void) return trunkRoom;
+		if(lockerRoom.findItem(itemData, unknown, true) !== void) return lockerRoom;
+	}
+
+	function countItem(itemData, includeBad = false)
+	{
+		// アイテムをすべての所持スペースから探し、その総所持数を返す
+		// includeBad を true にすると未鑑定品や破損品もカウントする
+		var num = 0;
+		for(var i = 0; i < chara.count; i++)
+		{
+			num += chara[i].countItem(...);
+		}
+		num += temporaryBox.countItemInTrunk(...);
+		num += trunkRoom.countItemInTrunk(...);
+		num += lockerRoom.countItemInTrunk(...);
+		return num;
+	}
+
+	function ejectItem(itemData, unknown = false, all = false)
+	{
+		// アイテムをすべての所持スペースから探して１つ削除する
+		// all == true だとすべて無くなるまで削除する
+		// 全削除は未鑑定品もすべて消さないと矛盾が生じやすいので消す
+		var obj = findItem(itemData, (unknown || all));
+		while(obj !== void)
+		{
+			obj.ejectItem(itemData,, (unknown || all));
+			if(! all) return;
+			obj = findItem(itemData, true);
+		}
+	}
+
+	function isUsableMagic(magic)
+	{
+		// 指定した魔法が使えるキャラがいるかどうかを返す
+		for(var i = 0; i < chara.count; i++)
+		{
+			if(chara[i].isUsableMagic(magic)) return true;
+		}
+		return false;
+	}
+
+	function getAllSlaves()
+	{
+		// 他のパーティーに捕らわれたヒロインたち全員を返す
+		var arr = [];
+		for(var i = 0; i < rivals.count; i++)
+		{
+			for(var j = 0; j < rivals[i].slaves.count; j++)
+			{
+				arr.add(rivals[i].slaves[j]);
+			}
+		}
+		return arr;
+	}
+
+	function distributeExpToSlaves(exp)
+	{
+		// 敵に囚われたメンバーに経験値の一部を与える
+		var arr = getAllSlaves();
+		exp = int(exp * 0.9);	// 正規の経験値の９割
+		for(var i = 0; i < arr.count; i++)
+		{
+			var one = arr[i];
+			one.exp += exp;
+			if(one.isLevelUp()) one.levelUp();	// レベルアップできるならする
+		}
+	}
+
+	function waitingRoomHasSpace()
+	{
+		// 待合所に帰還予定も含めて空きがあるかどうかを返す
+		return waitingRoom.members.count + getAllSlaves().count < waitingRoom.maxMembers;
+	}
+
+	function findChara(obj)
+	{
+		// 指定したキャラを探し、所属しているチームを返す
+		if(! isvalid obj)
+		{
+			dm("ヒロインは無効でした");
+			return;
+		}
+		if(obj === void) return;
+		if(party.allMembers.has(obj)) return party;
+		for(var i = 0; i < rivals.count; i++)
+		{
+			if(rivals[i].slaves.has(obj)) return rivals[i];
+		}
+		for(var i = 0; i < houses.count; i++)
+		{
+			if(houses[i].kind != "guild") continue;
+			if(houses[i].members.has(obj)) return houses[i];
+		}
+		return %[name: "無所属", displayName: "None"];
+	}
+
+	function removeMemberTemporary(obj)
+	{
+		// 一時的にパーティーメンバーを外す
+		if(obj.isUserChara) party.removeMember(obj);
+		else guest.removeMember(obj);
+		waitingMembers.add(obj);
+	}
+
+	function restoreMembers()
+	{
+		// 一時的に外したパーティーメンバーを戻す
+		for(var i = 0; i < waitingMembers.count; i++)
+		{
+			var obj = waitingMembers[i];
+			if(obj.isUserChara) party.entry(obj);
+			else guest.entry(obj);
+		}
+		waitingMembers = [];
+	}
+
+	function getEditableModels()
+	{
+		// メイキングキャラの一覧を得る
+		var arr = [];
+		for(var i = 0; i < model.count; i++)
+		{
+			if(model[i].edit == "always") arr.add(model[i]);
+			if(isFreeMode && model[i].edit == "freeModeOnly") arr.add(model[i]);
+		}
+		return arr;
+	}
+
+	function nowSwimming()
+	{
+		// 現在潜水中かどうかを返す
+		return map !== void && map.kind == "dungeon" && map.underWater;
+	}
+
+	function getCharaBlushing(sexyScore)
+	{
+		// sexyScore 以上の恥ずかしい格好をしているキャラがいたらそれを返す
+		for(var i = 0; i < party.members.count; i++)
+		{
+			var her = party.members[i];
+			if(her.sex == "男") continue;
+			if(her.getSexAppealOfAppearance() < sexyScore) continue;	// 恥ずかしくない格好
+			return her;
+		}
+	}
+
+	function getInfoEquipingAnyItem(femaleOnly = false, arr * )
+	{
+		// パーティーメンバーに指定した装備のどれかが装備されていたらその装備と身に着けているキャラを返す
+		// femaleOnly が true だったら女性のみ見る
+		for(var i = 0; i < arr.count; i++)
+		{
+			for(var j = 0; j < party.members.count; j++)
+			{
+				var one = party.members[j];
+				if(femaleOnly && one.sex != "女") continue;
+				if(! one.isEquipedItems(arr[i])) continue;
+				return %[chara: one, item: arr[i]];
+			}
+		}
+	}
+
+	function getMembersWearingPanties(excludedPanties, show = false)
+	{
+		// パンツを装備している女性メンバーのリストを返す（イベント用）
+		// show が true なら現在パンツが他人から見えている場合のみリストに加える
+		// excludedPanties は無視するパンツのリスト
+		var her, panties, arr = [];
+		for(var i = 0; i < party.members.count; i++)
+		{
+			her = party.members[i];
+			if(her.sex == "男") continue;
+			if(show) panties = her.getAppearedPanties();
+			else panties = her.equip.hip;
+			if(panties === void) continue;
+			if(excludedPanties.find(panties.name) != -1) continue;
+			arr.add(her);
+		}
+		return arr;
+	}
+
+	function saveDungeonImage()
+	{
+		// 開発用・ダンジョンビューをファイルへ出力する
+		// 空のレイヤーとのズレが生じるが浮遊状態に対応するためこのまま出力する
+		if(view != dungeonView) return;
+		party.visible = guest.visible = gameFrame.visible = false;
+		var lay = new global.Layer(kag, kag._primaryLayer);
+		lay.setImageSize(view.width, view.height);
+		lay.face = dfAlpha;
+		lay.copyRect(0, 0, view.skyLayer, 0, 0, view.width, view.height);
+		lay.operateRect(0, 0, view.viewScreen, 0, 0, view.width, view.height);
+		var date = new Date();
+		var name = "%02d%02d_%02d%02d_%02d".sprintf(
+			date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+		var fp = System.appDataPath.substr(0, System.appDataPath.length - 17) + "/デスクトップ/";
+		lay.saveLayerImage(fp + name + ".bmp", "bmp24");
+		party.visible = guest.visible = gameFrame.visible = true;
+	}
+
+	function getNumbersOfRecordedObjects(lists, key = "name")
+	{
+		// 配列内のオブジェクトの、指定キーの値で記録されたシステム変数の数と
+		// 配列の要素の総数を返す。多次元配列にも対応
+		var recorded = 0, total = 0;
+		for(var i = 0; i < lists.count; i++)
+		{
+			if(lists[i] instanceof "Array")
+			{
+				var arr = getNumbersOfRecordedObjects(lists[i], key);
+				recorded += arr[0];
+				total += arr[1];
+				continue;
+			}
+			if(lists[i] === void) continue;	// 要素がない場合は無視
+			if(sf[lists[i][key]] !== void) recorded ++;
+			total ++;
+		}
+		return [recorded, total];
+	}
+
+	function getNumOfJewels(includeObsidian = false, partyHas = false)
+	{
+		// 取得した魔石の総数を返す
+		var num = 0;
+		var arr = ["ガーネット","アメジスト","アクアマリン","ダイアモンド","エメラルド"
+			,"ムーンストーン","ルビー","ペリドット","サファイア","オパール","トパーズ","ラピスラズリ"];
+		if(includeObsidian) arr.add("オブシダン");
+		var obj = partyHas ? party : this;
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(obj.findItem(o[arr[i] + "の魔石"]) !== void) num ++;
+		}
+		return num;
+	}
+
+	function convertName(str)
+	{
+		// ユーザーから入力された名前を特殊な文字をエスケープした文字列で返す
+		var res = "";
+		for(var i = 0; i < str.length; i++)
+		{
+			if(/r|g|y|p|b|v|w|k/.test(str[i])) res += "`";
+			res += str[i];
+		}
+		return res;
+	}
+
+	function restoreName(str)
+	{
+		// エスケープされた名前を元の文字列で返す
+		return /`/g.replace(str, "");
+	}
+
+	function drawDocumentTitle(lay, itemData)
+	{
+		// 手紙・巻物・魔法書の名称を画像に書き込む
+		if(itemData.type == "letter")
+		{
+			// 手紙
+			lay.font.height = 10;
+			lay.font.angle = 63;
+			lay.drawText(45, 36, itemData.displayName, 0x402020);
+		}
+		else if(itemData.type == "scroll" && itemData.cmdParam !== void)
+		{
+			// 巻物
+			lay.font.height = 9;
+			lay.font.angle = 0;
+			var text = restoreName(o[itemData.cmdParam].displayName);
+			lay.drawText(11, 25, text, 0x200000);
+		}
+		else if(itemData.type == "book" && itemData.cmdParam !== void)
+		{
+			// 魔法書
+			lay.font.height = 9;
+			lay.font.angle = 0;
+			var text = restoreName(o[itemData.cmdParam].displayName);
+			lay.drawText(82 - lay.font.getTextWidth(text) \ 2, 40, text, 0xFFF0C0);
+		}
+	}
+
+	function touchObjectHook(key, shift)
+	{
+		// イベント時にオブジェクト操作のキー入力のみフックしその結果を返す
+		// kag.keyDownHook に登録して使用する
+		// ドアをノックするイベントで使用
+		if(key == BT_OPTION || key == BT_OPTION2) game.checkClickObject();
+		return true;	// ここで true を返すと他のすべてのキー入力を遮断できる
+	}
+
+	function setDefaultCharaEventsByModels()
+	{
+		// 素体に設定されたキャライベントをすべての初期キャラに設定する
+		// ゲーム開始時に使う
+		for(var i = 0; i < chara.count; i++)
+		{
+			chara[i].events.assign(chara[i].model.events);
+			chara[i].booking.assign(chara[i].model.booking);
+		}
+	}
+
+	function getSeedForRandomADay()
+	{
+		// 日付を経ないと絶対に変わらない値を返す。ランダム値の基礎値として利用する
+		// 現在は、非加入も含めた恋愛対象男キャラすべてのレベルの合計値に日付を加算したもの
+		var num = 0;
+		for(var i = 0; i < lovers.count; i++)
+		{
+			num += lovers[i].level;
+		}
+		return num + date;
+	}
+
+	function heroinesQuarrel()
+	{
+		// 一定確率でヒロインキャラたちをケンカさせる
+		quarreling.clear();
+		var arr = [];
+		for(var i = 0; i < chara.count; i++)
+		{
+			var her = chara[i];
+			if(her.isHeroine && party.members.has(her)) arr.add(her);
+		}
+		var seed = getSeedForRandomADay();
+		if(arr.count < 2 || random2(seed) < 0.3) return false;	// ３割の確率で１組はケンカ
+		arr.shuffle(seed);
+		quarreling.push(arr.pop(), arr.pop());	// １組目
+		if(arr.count < 2 || random2(seed) < 0.1) return false;	// １割の確率で２組がケンカ
+		quarreling.push(arr.pop(), arr.pop());	// ２組目
+	}
+
+	function getPlayersFavoriteHeroine()
+	{
+		// 最近主人公にひいきされているヒロインを返す
+		// 最も同室頻度が高く最低同室日数を満たしていたらひいきキャラとみなす
+
+		var minDays = 3;	// ひいきが行われているとみなす最低同室日数
+
+		if(playerChara.married) return;	// すでに結婚していたらなし
+
+		var arr = [];	// ヒロインたち
+
+		for(var i = 0; i < party.members.count; i++)
+		{
+			// ヒロインをリストアップ
+			var her = party.members[i];
+			if(! her.isHeroine) continue;
+			her.result = 0;
+			arr.add(her);
+		}
+
+		if(arr.count <= 1) return;	// ヒロインが１人しかいないなら嫉妬は起きない
+
+		for(var i = 0; i < playersRoommates.count; i++)
+		{
+			if(! arr.has(playersRoommates[i])) continue;
+			playersRoommates[i].result ++;	// 直近１週間の同室回数
+		}
+
+		arr.sort(function(a, b)
+		{
+			// 日数が同じだった場合、直近であるほど選ばれやすい
+			return playersRoommates.find(a) < playersRoommates.find(b);
+		} incontextof this, true);
+
+		arr.sort(function(a, b)
+		{
+			// 同室回数でソート
+			return a.result > b.result;
+		}, true);
+
+		if(arr[0].result >= minDays) return arr[0];
+	}
+
+	function getHeroineIsJealous()
+	{
+		// 現在、誰かから嫉妬されているヒロインを返す
+		var her = getPlayersFavoriteHeroine();
+		if(her === void) return;
+		for(var i = 0; i < party.members.count; i++)
+		{
+			var one = party.members[i];
+			if(! one.isHeroine) continue;
+			if(one == her) continue;
+			if(! one.likePlayerChara()) continue;
+			return her;
+		}
+	}
+
+	function recordPlayersRoommate(her)
+	{
+		// 本日同室となったヒロインを記録する
+		if(! her.isHeroine) return false;
+		if(! playerChara.inSameRoomOnly(her)) return false;
+		playersRoommates.unshift(her);
+		return true;
+	}
+
+	function getPlayersRoommateNamesList()
+	{
+		// 直近の主人公と同室になったヒロインの名前のリストを返す（開発用）
+		var arr = [];
+		for(var i = 0; i < playersRoommates.count; i++)
+		{
+			if(playersRoommates[i] == "") arr.add("");
+			else arr.add(playersRoommates[i].name);
+		}
+		return arr.join(",");
+	}
+
+	property leader
+	{
+		// パーティーの先頭キャラを返す
+		getter{ return isFreeMode ? party.members[0] : playerChara; }
+	}
+
+	function getNumClearedQuests()
+	{
+		// 全クエストの達成数を返す
+		var num = 0;
+		for(var i = 0; i < quests.count; i++)
+		{
+			if(quests[i].completed && ! quests[i].failure) num ++;
+		}
+		return num;
+	}
+
+	function getNumFoundItems()
+	{
+		// アイテムの発見数を返す
+		var num = 0, max = 0;
+		for(var i = 0; i < items.count; i++)
+		{
+			if(items[i].type == "money") continue;
+			if(items[i].type == "fixedMoney") continue;
+			if(items[i].type == "dish") continue;
+			if(items[i].name.indexOf("経験のコイン") != -1) continue;
+			if(items[i].name.indexOf("試作品の鎧") != -1) continue;
+			if(items[i].name == "リーゼルの私服") continue;
+			if(items[i].name == "主人公の私服") continue;
+			if(items[i].name == "主人公の内ズボン") continue;
+			if(items[i].name == "マタニティドレス　") continue;
+			if(items[i].name == "貝のお守り（ジャンの所持品）") continue;
+			if(items[i].name == "鋼鉄の貞操帯（ブルーの所持品）") continue;
+			max ++;
+			if(sf[items[i].name]) num ++;
+		}
+		dm("アイテム数  " + num + "/" + max);
+		return num;
+	}
+
+	function getNumhuntedMonsters()
+	{
+		// モンスターの達成数を返す
+		var num = 0, max = 0;
+		for(var i = 0; i < monster.count; i++)
+		{
+			if(monster[i].img == "dummy") continue;
+			if(monster[i] == m.悪魔) continue;
+			if(monster[i] == m.壁) continue;
+			max ++;
+			if(sf[monster[i].name] !== void) num ++;
+		}
+		dm("モンスター数  " + num + "/" + max);
+		return num;
+	}
+
+	function getRateOfCoveringAllMaps(strictly = false, listArr)
+	{
+		// 全マップの踏破率を返す
+		var m, num = 0, total = 0;
+		for(var i = 0; i < mapData.count; i++)
+		{
+			m = mapData[i];
+			dm(m.name + "を調べる");
+			var displayName = m.displayName;
+
+			// 詳細に調べる 時間がかかる
+			if(strictly && m.visited)
+			{
+				if(! m.loaded) m.loadMap();
+				m.openedBlocks = autoMap.drawMap(m);
+				displayName += " " + m.insideName;
+			}
+
+			// Simple check will give area EN names rather than floor names too, so prevent duplicates
+			if(listArr !== void && m.visited && m.openedBlocks < m.allBlocks) listArr.push2(displayName);
+			num += m.openedBlocks;
+			total += m.allBlocks;
+			if(m.openedBlocks > m.allBlocks) m.openedBlocks = m.allBlocks;	// ★補正
+			dm(m.name + ": " + m.openedBlocks + " / " + m.allBlocks);
+		}
+		if(num > total) num = total;
+		dm("合計: " + num + " / " + total);
+		return num * 100 / total;
+	}
+
+	function getNumContractedHelpers(isMonster)
+	{
+		// 契約した雇用キャラ・召喚モンスターの数を返す
+		var num = 0;
+		var arr = isMonster ? smagic : hiring;
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(arr[i].contracted) num ++;
+		}
+		return num;
+	}
+
+	function getNumLearnedMagics()
+	{
+		// 習得したすべての魔法の数を返す
+		var num = 0;
+		var magic;
+		var cate = [mmagic, pmagic, amagic, smagic];
+		for(var i = 0; i < cate.count; i++)
+		{
+			for(var j = 0; j < cate[i].count; j++)
+			{
+				for(var k = 0; k < chara.count; k++)
+				{
+					if(! chara[k].btcmd.has(cate[i][j])) continue;
+					num ++;
+					break;
+				}
+			}
+		}
+		dm("習得魔法数  " + num);
+		return num;
+	}
+
+	function getMostLevelInCharas()
+	{
+		// ユーザーキャラの中で最も高いレベルを返す
+		var res = 0;
+		for(var i = 0; i < chara.count; i++)
+		{
+			if(chara[i].level > res) res = chara[i].level;
+		}
+		return res;
+	}
+
+	function getGameScore()
+	{
+		// ゲームのプレイヤーのスコアを返す
+		var res = %[];
+		res.time = game.getPlayTimeString("%3d:%02d:%02d");	// プレイ時間
+		res.battle = game.battleCount;	// 戦闘回数
+		res.win = game.winCount;	// 勝利回数
+		res.monster = game.getNumhuntedMonsters();	// モンスター打倒数
+		res.hyper = game.hyperBombsCount;	// ハイパーボム使用数
+		return res;
+	}
+
+	function saveListOfAllMapBlocksCount()
+	{
+		// 全マップの全踏破可能ブロック数のリストを保存する（開発用）
+		var m, arr = [];
+		for(var i = 0; i < mapData.count; i++)
+		{
+			m = mapData[i];
+			if(! m.loaded) m.loadMap();
+			arr.add(m.name + "\t" + m.allBlocks);
+		}
+		arr.save(System.exePath + "/data/map/blockslist.csv");
+	}
+
+	function getBoxesList()
+	{
+		// 残っている宝箱のリストを作成する（開発用）
+		var m, num = 0, arr = [];
+		for(var i = 0; i < mapData.count; i++)
+		{
+			m = mapData[i];
+			if(! m.loaded) m.loadMap();
+		}
+		dm("＜残っている宝箱のリスト＞");
+		for(var i = 0; i < mapData.count; i++)
+		{
+			num += mapData[i].informBoxPos();
+		}
+		dm("宝箱数   " + num);
+	}
+
+	function saveNeedExpList(total = false, guest = false)
+	{
+		// 必要経験値のリストを出力する（開発用）
+		var arr = [];
+		var str;
+		var charaObj;
+		if(guest) charaObj = new HelperObject(gameBase, this, helper.count);
+		else charaObj = new CharaObject(gameBase, this, chara.count);
+		for(var i = 0; i <= 50; i++)
+		{
+			for(var j = 0; j < job.count; j++)
+			{
+				if(i == 0)
+				{
+					if(j == 0) str = "name";
+					str += "\t" + job[j].name;
+					continue;
+				}
+				if(i == 1)
+				{
+					if(j == 0) str = "rate";
+					str += "\t" + "%.2f".sprintf(job[j].expRate);
+					continue;
+				}
+				charaObj.job = job[j];
+				if(j == 0) str = i + "";
+				str += "\t" + (charaObj.getNeedExp(i) - charaObj.getNeedExp(i - 1) * ! total);
+			}
+			arr.add(str);
+		}
+		arr.save(desktopPath + "/leveltable.csv");
+	}
+
+	function saveListOfCountItemsInBox()
+	{
+		// マップ上に配置された宝箱内のアイテムを数えたリストを出力する（開発用）
+
+		var res = [], num = [];
+		for(var i = 0; i < items.count; i++)
+		{
+			res[i] = items[i].name;
+			num[i] = 0;
+		}
+		for(var i = 0; i < mapData.count; i++)
+		{
+			var map = mapData[i];
+			map.loadMap();
+			for(var j = 1; j < map.box.count; j++)
+			{
+				var box = map.box[j];
+				for(var k = 0; k < box.count; k++)
+				{
+					var idx = res.find(box[k].itemData.name);
+					if(idx == -1)
+					{
+						dm("エラー   " + box[k].itemData.name + " : " + map.name);
+						continue;
+					}
+					num[idx] ++;
+				}
+			}
+		}
+		for(var i = 0; i < items.count; i++)
+		{
+			res[i] = items[i].name + "\t" + num[i];
+		}
+		res.save(System.exePath + "/countitem.csv");
+	}
+
+	function saveItemsListOfSomeParams()
+	{
+		// アイテムの一部パラメータの一覧を出力する（開発用）
+
+		var heads = ["name", "rank", "price", "weight", "job", "defense", "attack", "times", "sexy"];
+		var str, res = [];
+		res.add("id" + "\t" + heads.join("\t"));
+		for(var i = 0; i < items.count; i++)
+		{
+			str = "" + (i + 2);
+			for(var j = 0; j < heads.count; j++)
+			{
+				str += "\t";
+				if(heads[j] == "attack")
+				{
+					if(items[i]["attack"][1] == 0) continue;
+					str += items[i]["attack"][0] + "～" + items[i]["attack"][1];
+				}
+				else
+				{
+					if(items[i][heads[j]] === 0) continue;
+					str += items[i][heads[j]];
+				}
+			}
+			res.add(str);
+		}
+		res.save(desktopPath + "/itemtable.csv");
+	}
+
+	function updateItemDataFromFile()
+	{
+		// 別のＣＳＶファイルを元にアイテムデータを更新する（開発用）
+
+		var params = %[
+			filter : [ "テキストファイル(*.txt)|*.txt", "CSVファイル(*.csv)|*.csv;" ],
+			filterIndex : 1,
+			name : "",
+			initialDir : System.exePath,
+			title : "データファイルの選択",
+		];
+		if(! Storages.selectFile(params)) return;
+
+		// 更新
+		var lines = csvToArray(params.name, true, true);
+		var obj, result = false;
+		for(var i = 0; i < lines.count; i++)
+		{
+			obj = o[lines[i].name];
+			if(obj === void)
+			{
+				System.inform(lines[i].name + " は存在しないアイテムです");
+				continue;
+			}
+			obj.rank = lines[i].rank;
+			obj.price = lines[i].price;
+			if(lines[i].weight > 0) obj.inputData("weight", lines[i].weight);
+			if(lines[i].job != "") obj.inputData("job", lines[i].job);
+			if(lines[i].defense != 0) obj.inputData("defense", lines[i].defense);
+			if(lines[i].attack !== 0) obj.inputData("attack", lines[i].attack);
+			if(lines[i].times > 1) obj.inputData("times", lines[i].times);
+			if(lines[i].sexy > 0) obj.inputData("sexy", lines[i].sexy);
+			result = true;
+		}
+
+		// 書き出し
+		lines = [];
+		lines.load("item.tsv");
+		var obj, key, data;
+		for(var i = 0; i < lines.count; i++)
+		{
+			if(lines[i] == "" || lines[i][0] == ";") continue;
+			key = lines[i].split("\t")[0];
+			data = lines[i].split("\t")[1];
+			if(key == "name") obj = o[data];
+			if(key == "rank") data = obj.rank;
+			if(key == "price") data = obj.price;
+			if(key == "weight") data = obj.weight;
+			if(key == "job") data = obj.job;
+			if(key == "defense") data = obj.defense;
+			if(key == "attack") data = obj.attack[0] + "～" + obj.attack[1];
+			if(key == "times") data = obj.times;
+			if(key == "sexy") data = obj.sexy;
+			lines[i] = key + "\t" + data;
+		}
+		lines.save(System.exePath + "/data/script/item.tsv");
+		if(result) System.inform("アイテムデータを更新しました");
+	}
+
+	function saveScreenShotOfDungeonView(outside = false)
+	{
+		// ダンジョン画面のスクリーンショットを撮る（開発用）
+		// outside == true だとビューの外側も撮る
+		//（その場合、空の画像は保存されない。後で空の画像を別途合成すること）
+		var lay = new global.Layer(kag, kag.primaryLayer);
+		var scr = outside ? dungeonView.bufScreen : dungeonView;
+		var idx = dungeonView.skyLayer.absolute;
+		if(! outside)
+		{
+			dungeonView.skyLayer.parent = dungeonView;
+			dungeonView.skyLayer.absolute = 50;
+		}
+		lay.setImageSize(scr.width, scr.height);
+		lay.face = dfAlpha;
+		lay.piledCopy(0, 0, scr, 0, 0, scr.width, scr.height);
+		var date = new Date();
+		var name = "%02d%02d_%02d%02d_%02d".sprintf(
+			date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+		lay.saveLayerImage(desktopPath + "/" + name + ".bmp", "bmp32");
+		if(! outside)
+		{
+			dungeonView.skyLayer.parent = dungeonView.parent;
+			dungeonView.skyLayer.absolute = idx;
+		}
+	}
+
+	function loadGameDataForReplay(dataNum)
+	{
+		// セーブファイルから再プレイに必要なデータだけ読み出す
+
+		// ファイルを読み出し
+		var f;
+		try
+		{
+			var modestr;
+			if(kag.saveThumbnail) modestr += "o" + kag.calcThumbnailSize().size;
+			var data = Scripts.evalStorage(System.dataPath + "/data" + dataNum + ".bmp", modestr);
+			f = data.core;
+		}
+		catch(e)
+		{
+			System.inform("栞を読み込めないか、栞が壊れているか、あるいは他の形式の栞データです("
+				 + e.message + ")", "エラー");
+			return false;
+		}
+
+		// 必要なデータだけ書き戻す
+		for(var i = chara.count - 1; i >= 0; i--) deleteChara(chara[i]);
+		for(var i = 0; i < f.gameSaveChara.count; i++) chara[i] = restoreChara(f.gameSaveChara[i], i);
+		for(var i = 0; i < f.gameSaveHelper.count; i++) restoreObject(helper, f.gameSaveHelper[i]);
+		for(var i = 0; i < f.gameSaveJob.count; i++) restoreObject(job, f.gameSaveJob[i]);
+		for(var i = 0; i < f.gameSaveHouses.count; i++)
+		{
+			if(o[f.gameSaveHouses[i].name] === void) continue;
+			if(o[f.gameSaveHouses[i].name].kind != "guild") continue;
+			dm(f.gameSaveHouses[i].name + "を復帰");
+			restoreObject(houses, f.gameSaveHouses[i]);
+			houses[i].initialize();
+		}
+		party.restore(f.gameSaveParty);
+		for(var i = 0; i < f.gameSaveRivals.count; i++) restoreObject(rivals, f.gameSaveRivals[i]);
+		for(var i = 0; i < f.gameSaveMapData.count; i++) restoreMapRecordOnReplay(f.gameSaveMapData[i]);
+		trunkRoom.restore(f.gameSaveTrunkRoom);
+		lockerRoom.restore(f.gameSaveLockerRoom);
+		temporaryBox.restore(f.gameSaveTemporaryBox);
+		isFreeMode = f.gameSaveMaster.isFreeMode;
+		gameCleared = f.gameSaveMaster.gameCleared;
+
+		return true;
+	}
+
+	function initializeGameForRepeatPlay(storyMode = false)
+	{
+		// ゲームクリア後引き継がないデータを初期化する
+
+		// 倉庫のイベントアイテム等を処理
+		trunkRoom.ejectItemsForRepeatPlay(storyMode);
+		lockerRoom.ejectItemsForRepeatPlay(storyMode);
+		temporaryBox.ejectItemsForRepeatPlay(storyMode);
+		if(isDemoVersion)
+		{
+			trunkRoom.hideItemsForDemoVersion();
+			lockerRoom.hideItemsForDemoVersion();
+			temporaryBox.hideItemsForDemoVersion();
+		}
+
+		// ユーザーキャラの初期化
+		for(var i = chara.count - 1; i >= 0; i--)
+		{
+			var one = chara[i];
+			one.eraseMagicsForRepeatPlay(storyMode);
+			one.ejectItemsForRepeatPlay(storyMode);
+			if(isDemoVersion) one.hideItemsForDemoVersion();
+			if(one.isBustNaked()) one.dressEquipment(o.冒険者のブラ);
+			if(one.isHipNaked()) one.dressEquipment(o.冒険者のパンツ);
+		}
+
+		// 今回のプレイがストーリーモードの場合、メインキャラの再選定と修正を行う
+		// パーティーの先頭よりにいるメインキャラ型キャラが選ばれる
+		// パーティーにいなければ id の小さいキャラが選ばれる
+		// chara の中の 0, 1, 2 は regular となり常に動かせないし消せない
+		if(storyMode)
+		{
+			curChara = party.members[0];
+			var arr = [o.テオ, o.マックス, o.リーゼル];
+			for(var i = arr.count - 1; i >= 0; i--)
+			{
+				var id = chara.find(arr[i]);
+				chara[id].removeEquipmentsByForce();
+				chara[id].regular = true;
+				var team = findChara(chara[id]);
+				if(team.name != "無所属") team.removeMember(chara[id]);
+				if(id == i) continue;	// 初期作成のキャラが使われていた
+				chara[i].regular = false;
+				chara[i] <-> chara[id];
+				chara[i].id <-> chara[id].id;
+			}
+			// 名前と髪色と職業と装備を修正
+			o.マックス.name = "マックス";
+			o.リーゼル.name = "リーゼル";
+			o.リーゼル.color = "brown";
+			o.マックス.setJob(o.盗賊);
+			o.リーゼル.setJob(o.魔法使い);
+			o.テオ.setInitialItems();
+			o.マックス.setInitialItems();
+			o.リーゼル.setInitialItems();
+			o.マックス.dressEquipment(o.硬い革鎧);
+			o.マックス.dressEquipment(o.布のズボン);
+			o.リーゼル.dressEquipment(o.ローブ);
+
+			// ブルーの退魔の力をここで削除しておく
+			o.ブルー.skill.remove(o.退魔の力);
+		}
+
+		// パーティーメンバーは王立ギルド、入りきらなければ待合所へ
+		for(var i = party.members.count - 1; i >= 0; i--)
+		{
+			var one = party.members[i];
+			party.removeMember(one);
+			if(storyMode && one.regular) continue;
+			if(o.王立ギルド.members.count < o.王立ギルド.maxMembers) o.王立ギルド.entry(one);
+			else waitingRoom.entry(one);
+		}
+
+		// ライバルパーティーの奴隷は復帰させて待合所へ
+		for(var i = 0; i < rivals.count; i++)
+		{
+			for(var j = rivals[i].slaves.count - 1; j >= 0; j--)
+			{
+				var one = rivals[i].slaves[j];
+				one.setInitialItems();
+				rivals[i].restoreSlave(one, waitingRoom);
+			}
+		}
+
+		// スキルの変更が大きい傭兵を修正
+		o.ミスティック.skill = [o.契約];
+		o.ミスティック.btcmd = [];
+
+		// 再契約が必要な召喚獣を初期化
+		o.ブラックドラゴン.contracted = false;
+	}
+
+	function isItemToDeleteForRepeatPlay(item, storyMode = false)
+	{
+		// 周回プレイ時に削除すべきアイテムかどうかを返す
+
+		// イベントアイテムではないけどストーリーモードでは削除した方が良いもの
+		var itemsToDelete = [
+			  o.温泉チケット, o.宝箱の鍵, o.大きな召喚びん, o.ボム, o.ハイパーボム, o.パールリング
+			, o.ワープの巻物, o.イレースマジックの巻物, o.リターンの巻物, o.ジャンプの巻物, o.マジカルボートの巻物
+			, o.ブリザードの魔法書, o.ワープの魔法書, o.リターンの魔法書, o.ジャンプの魔法書
+			, o.イレースマジックの魔法書, o.マジカルボートの魔法書, o.記念カップ, o.ドライアドの霊薬
+		];
+
+		var itemsToDeleteForDemoVersion = [
+			
+		];
+
+		if(item.event) return true;
+		if(! storyMode && ! isDemoVersion) return false;
+		if(item.skill.has(o.浮遊)) return true;
+		if(item.skill.has(o.潜水)) return true;
+		if(itemsToDelete.has(item)) return true;
+		return false;
+	}
+
+	function isItemToDropInDemoVersion(item)
+	{
+		// 体験版でドロップするアイテムかどうかを返す
+		for(var i = 0; i < hiddenDropGroups.count; i++)
+		{
+			if(dropTables[hiddenDropGroups[i]].has(item)) return false;
+		}
+		return true;
+	}
+
+	function deleteItemFlagsInDemoVersion()
+	{
+		// 体験版ではドロップしないアイテムの閲覧履歴を削除
+		for(var i = 0; i < hiddenDropGroups.count; i++)
+		{
+			var grp = dropTables[hiddenDropGroups[i]];
+			for(var j = 0; j < grp.count; j++)
+			{
+				sf[grp[j].name] = void;
+			}
+		}
+	}
+
+	function getNumGotStarCards()
+	{
+		// スターカードの総所持数を返す
+		var num = 0;
+		var arr = ["剣", "盾", "杖", "十字架", "帽子", "蝶", "魔法陣", "杯", "林檎", "髑髏"];
+		for(var i = 0; i < arr.count; i++)
+		{
+			var name = "スターカード・" + arr[i];
+			if(countItem(o[name], true) > 0) num ++;
+		}
+		return num;
+	}
+
+	function getTranslation(text) {
+		if (text.length > 0 && extraTranslations[text] !== void) {
+			return extraTranslations[text];
+		} else {
+			return text;
+		}
+	}
+
+	function sexSymbol(sex) {
+		if (sex == "女") {
+			return "♀";
+		} else if (sex == "男") {
+			return "♂";
+		} else {
+			return "-";
+		}
+	}
+
+	//---------------------------------------------------------------------------
+	// エラー修正
+
+	function rewriteDroppedLabelRecordsByErrors()
+	{
+		// 回想に関わる既読記録を再保存する
+		//（エラーで落ちた際に保存されないままになる可能性があるため）
+
+		if(! isFreeMode)
+		{
+			if(wife !== void)
+			{
+				if(wife.model == o.人間Ａ)
+				{
+					st.trail_heroine01b_theo_15_3rd ++;
+					st.trail_heroine01b_theo_20 ++;
+					if(f.lastBlueSexDay > 0) st.trail_heroine01b_married_01 ++;
+					if(wife.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）) st.trail_heroine01b_married_02 ++;
+					if(wife.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）) st.trail_heroine01b_married_03 ++;
+				}
+				if(wife.model == o.エルフＡ)
+				{
+					st.trail_heroine02b__theo_08_a ++;
+					st.trail_heroine02b__theo_08_b ++;
+					st.trail_heroine02b_theo_wedding ++;
+					st.trail_heroine02b_theo_20 ++;
+					if(f.lastBlueSexDay > 0) st.trail_heroine02b_married_01 ++;
+					if(wife.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）) st.trail_heroine02b_married_02 ++;
+				}
+				if(wife.model == o.ドワーフＡ)
+				{
+					st.trail_heroine03b_theo_wedding ++;
+					st.trail_heroine03b_theo_20 ++;
+					if(f.lastBlueSexDay > 0) st.trail_heroine03b_married_01 ++;
+					if(wife.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）) st.trail_heroine03b_married_02 ++;
+					if(wife.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）) st.trail_heroine03b_married_03 ++;
+				}
+				if(wife.model == o.ノームＡ)
+				{
+					st.trail_heroine04b_theo_20 ++;
+					if(f.lastBlueSexDay > 0) st.trail_heroine04b_married_01 ++;
+					if(wife.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）) st.trail_heroine04b_married_02 ++;
+					if(wife.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）) st.trail_heroine04b_married_03 ++;
+				}
+				if(wife.model == o.シルフＡ)
+				{
+					st.trail_heroine05b_theo_07 ++;
+					st.trail_heroine05b_theo_20 ++;
+					if(f.lastBlueSexDay > 0) st.trail_heroine05b_married_01 ++;
+				}
+			}
+
+			if(lovers.has(o.ブルー))
+			{
+				st.trail_main07_liesel_2 ++;
+				st.trail_main07_liesel_5 ++;
+			}
+			if(f.dayOfLieselPregnant !== void)
+			{
+				st.trail_main08_revenge_2 ++;
+				st.trail_main08_revenge_3 ++;
+			}
+		}
+
+		if(! o.古代の迷宮Ｂ２.events.has(2)) st.trail_main04_labyrinth_4 ++;
+		if(! o.大洞窟Ｂ３.events.has(5)) st.trail_main09_return_1 ++;
+		if(o.オークの拠点を制圧せよ.flag == 2) st.trail_main10_orc_1 ++;
+		if(o.妻の浮気調査.flag == 1) st.trail_main11_barn_2 ++;
+		if(f.fionaHasSeduced) st.trail_other01_fiona_trophy ++;
+
+		for(var i = 0; i < chara.count; i++)
+		{
+			var one = chara[i];
+			if(one.model == o.人間Ａ)
+			{
+				if(one.guard.max <= 1) st.trail_heroine01a_max_04 ++;
+				if(one.guard.max <= 0) st.trail_heroine01a_max_05 ++;
+				if(one.guard.max <= 0 && one.strip.max == "汗だく") st.trail_heroine01a_max_06 ++;
+				if(one.guard.linus <= 3) st.trail_heroine01a_linus_01 ++;
+				if(one.guard.linus <= 0) st.trail_heroine01a_linus_02 ++;
+				if(one.guard.linus <= 0 && one.strip.linus == "汗だく") st.trail_heroine01a_linus_03 ++;
+				if(! one.married && one.guard.blue <= 0) st.trail_heroine01b_blue_01 ++;
+				if(! one.married && one.strip.blue == "汗だく") st.trail_heroine01b_blue_02 ++;
+				if(one.guard.alex <= 1) st.trail_heroine01a_wildbull_01 ++;
+				if(one.develop.alex >= 10) st.trail_heroine01a_wildbull_02 ++;
+				if(one.develop.alex >= 30) st.trail_heroine01a_wildbull_03 ++;
+			}
+			if(one.model == o.エルフＡ)
+			{
+				if(one.guard.max <= 1) st.trail_heroine02a_max_03 ++;
+				if(one.guard.max <= 0 && one.strip.max == "汗だく") st.trail_heroine02a_max_04 ++;
+				if(one.guard.linus <= 3) st.trail_heroine02a_linus_01 ++;
+				if(one.guard.linus <= 2) st.trail_heroine02a_linus_02 ++;
+				if(one.guard.linus <= 0) st.trail_heroine02a_linus_03 ++;
+				if(! one.married && one.guard.blue <= 0) st.trail_heroine02b_blue_01 ++;
+				if(! one.married && one.strip.blue == "汗だく") st.trail_heroine02b_blue_02 ++;
+				if(one.guard.alex <= 0) st.trail_heroine02a_wildbull_01 ++;
+				if(one.guard.alex <= 0) st.trail_heroine02a_wildbull_02 ++;
+			}
+			if(one.model == o.ドワーフＡ)
+			{
+				if(one.guard.max <= 1) st.trail_heroine03a_max_04 ++;
+				if(one.guard.max <= 0 && one.strip.max == "汗だく") st.trail_heroine03a_max_05 ++;
+				if(one.guard.max <= 0 && one.strip.max == "汗だく") st.trail_heroine03a_max_06 ++;
+				if(one.guard.linus <= 3) st.trail_heroine03a_linus_01 ++;
+				if(one.guard.linus <= 2) st.trail_heroine03a_linus_02 ++;
+				if(one.guard.linus <= 1) st.trail_heroine03a_linus_03 ++;
+				if(! one.married && one.strip.linus == "汗だく") st.trail_heroine03a_linus_04 ++;
+				if(! one.married && one.guard.blue <= 0) st.trail_heroine03b_blue_01 ++;
+				if(one.guard.alex <= 2) st.trail_heroine03a_wildbull_01 ++;
+				if(one.guard.alex <= 2) st.trail_heroine03a_wildbull_02 ++;
+				if(one.develop.alex >= 10) st.trail_heroine03a_wildbull_03 ++;
+			}
+			if(one.model == o.ノームＡ)
+			{
+				if(one.guard.max <= 0) st.trail_heroine04a_max_04 ++;
+				if(! one.married && one.strip.max == "汗だく") st.trail_heroine04a_max_05 ++;
+				if(! one.married && one.strip.max == "汗だく") st.trail_heroine04a_max_06 ++;
+				if(! one.married && one.strip.max == "汗だく") st.trail_heroine04a_max_07 ++;
+				if(one.guard.linus <= 2) st.trail_heroine04a_linus_02 ++;
+				if(one.guard.linus <= 1) st.trail_heroine04a_linus_03 ++;
+				if(one.guard.linus <= 0) st.trail_heroine04a_linus_04 ++;
+				if(! one.married && one.guard.blue <= 0) st.trail_heroine04b_blue_01 ++;
+				if(one.guard.alex <= 2) st.trail_heroine04a_wildbull_01 ++;
+				if(one.guard.alex <= 2) st.trail_heroine04a_wildbull_02 ++;
+				if(one.guard.alex <= 0) st.trail_heroine04a_wildbull_03 ++;
+			}
+			if(one.model == o.シルフＡ)
+			{
+				if(one.guard.max <= 3) st.trail_heroine05a_max_02 ++;
+				if(one.guard.max <= 2) st.trail_heroine05a_max_03 ++;
+				if(one.guard.max <= 1) st.trail_heroine05a_max_04 ++;
+				if(! one.married && one.strip.max == "汗だく") st.trail_heroine05a_max_06 ++;
+				if(one.guard.linus <= 1) st.trail_heroine05a_linus_03 ++;
+				if(one.guard.linus <= 0) st.trail_heroine05a_linus_04 ++;
+				if(! one.married && one.guard.blue <= 0) st.trail_heroine05b_blue_01 ++;
+				if(! one.married && one.strip.blue == "汗だく") st.trail_heroine05b_blue_02 ++;
+				if(! one.married && one.strip.blue == "汗だく") st.trail_heroine05b_blue_03 ++;
+				if(one.guard.alex <= 2) st.trail_heroine05a_wildbull_01 ++;
+				if(one.guard.alex <= 1) st.trail_heroine05a_wildbull_02 ++;
+			}
+		}
+	}
+
+	function rewriteDroppedTrophyRecordsByErrors()
+	{
+		// トロフィー記録を再保存する
+		//（エラーで落ちた際に保存されないままになる可能性があるため）
+
+		// 全召喚モンスター契約
+		sf.numContractedMonsters = max(sf.numContractedMonsters, getNumContractedHelpers(true));
+
+		// 全雇用キャラ契約
+		sf.numContractedHirings = max(sf.numContractedHirings, getNumContractedHelpers(false));
+
+		// 全魔法
+		sf.numLearnedMagics = max(sf.numLearnedMagics, getNumLearnedMagics());
+
+		// ３大魔公討伐
+		var ev = o.大洞窟Ｂ46.events;
+		if(hyperBombsCount == 0 && ! ev.has(3) && ! ev.has(4) && ! ev.has(5))
+		{
+			sf.huntedThreeLordsWithoutHyperBombs = true;
+		}
+
+		// アースドラゴン討伐
+		if(hyperBombsCount == 0 && ! o.大洞窟Ｂ50.events.has(1))
+		{
+			sf.huntedEarthDragonWithoutHyperBombs = true;
+		}
+
+		// クエスト達成
+		sf.numClearedQuests = max(sf.numClearedQuests, getNumClearedQuests());
+
+		// 全スターカード取得
+		if(getNumGotStarCards() >= 10 || ! closeItems.has(o.スターバーストの巻物)
+			 || sf["スターバーストの魔法書"] || isUsableMagic(o.スターバースト)) sf.completedStarCards = true;
+
+		// 作成済み職業
+		for(var i = 0; i < chara.count; i++)
+		{
+			var jobName = chara[i].job.name;
+			if(sf.usedJobsByCreating.find(jobName) == -1) sf.usedJobsByCreating.add(jobName);
+		}
+	}
+
+	function rewriteDroppedMonsterRecordsByErrors()
+	{
+		// 再取得が難しいモンスター討伐記録を再保存する
+		//（エラーで落ちた際に保存されないままになる可能性があるため）
+
+		if(o.精霊の力を宿す石.completed || game.findItem(o.精霊の石) !== void) sf["グレートスライム"] ++;
+		if(o.クイーンスパイダー.contracted) sf["クイーンスパイダー"] ++;
+		if(o.ブラックドラゴン.contracted) sf["ブラックドラゴン"] ++;
+		if(! o.霧の島の洞窟Ｂ２.events.has(1)) sf["シーサーペント"] ++;
+		if(! o.海岸.events.has(3)) sf["クラーケン"] ++;
+		if(! o.死の荒野.events.has(3)) sf["砂漠の主"] ++;
+		if(! o.大洞窟Ｂ６.events.has(5)) sf["マイルフィック"] ++;
+		if(! o.ラドミラの塔11Ｆ.events.has(8)) sf["アークデビル"] ++;
+		if(! o.大洞窟Ｂ46.events.has(3)) sf["アスモデウス"] ++;
+		if(! o.大洞窟Ｂ46.events.has(4)) sf["ディアブロ"] ++;
+		if(! o.大洞窟Ｂ46.events.has(5)) sf["ビフロンス"] ++;
+		if(! o.ジョセフの森.events.has(2)) sf["メタルゴーレム"] ++;
+		if(! o.町外れの遺跡Ｂ１.events.has(5)) sf["ブラックドラゴン"] ++;
+		if(! o.フーラ雪原・山奥.events.has(1)) sf["フロストドラゴン"] ++;
+		if(! o.水竜の神殿Ｂ５.events.has(2)) sf["アクアドラゴン"] ++;
+		if(! o.火山島Ｂ９.events.has(2)) sf["ファイアドラゴン"] ++;
+		if(! o.ラドミラの塔17Ｆ.events.has(4)) sf["サンダードラゴン"] ++;
+		if(! o.大洞窟Ｂ50.events.has(1)) sf["アースドラゴン"] ++;
+		if(! o.モイーズ湿地帯・死者の沼.events.has(4)) sf["リッチキング"] ++;
+		if(! o.水の宮殿Ｂ１.events.has(1)) sf["水のエレメンタル"] ++;
+		if(! o.森の城塞４Ｆ.events.has(7)) sf["教祖"] ++;
+		if(! o.ラドミラの塔21Ｆ.events.has(3) || ! o.試練の迷宮Ｂ６.events.has(5)) sf["ミスリルゴーレム"] ++;
+		if(! o.古代の迷宮１Ｆ.events.has(6) || ! o.牢獄Ｂ１.events.has(4)) sf["レッサーデビル"] ++;
+		if(! o.ラドミラの塔25Ｆ.events.has(1)) sf["魔公ムールムール"] ++;
+
+		if(! isFreeMode && o.コボルド退治.completed)
+		{
+			if(! o.ジョセフの森.events.has(4)) sf["ムールムール"] ++;
+			if(! o.ジョセフの森.events.has(5)) sf["メタルゴーレム"] ++;
+		}
+
+		if(! isFreeMode && lovers.has(o.ブルー))
+		{
+			sf["ライナス"] ++;
+			sf["マリア"] ++;
+			sf["ミレディ"] ++;
+			sf["エリック"] ++;
+		}
+
+		if(! isFreeMode && o.ワイルド・ブル.members.has(o.エリック))
+		{
+			sf["ブルー"] ++;
+			sf["サンドラ"] ++;
+		}
+	}
+
+	function rewriteDroppedItemRecordsByErrors()
+	{
+		// 再取得が難しいアイテム取得記録を再保存する
+		//（エラーで落ちた際に保存されないままになる可能性があるため）
+
+		if(o.赤いネックレスを探してほしい.completed) sf["赤いネックレス"] = true;
+		if(o.コボルド退治.completed) sf["金のヘッドバンド"] = true;
+		if(o.精霊の力を宿す石.completed) sf["精霊の石"] = true;
+		if(o.若さを維持したい.completed) sf["ロイヤルゼリー"] = true;
+		if(o.黄金のリンゴを届けてくれ.completed) sf["黄金のリンゴ"] = true;
+		if(o.夫の捜索.completed) sf["ジャンの手紙"] = true;
+		if(o.王の短剣.completed) sf["黄金の短剣"] = true;
+		if(o.黄金の人魚像を探してほしい.completed) sf["黄金の人魚像"] = true;
+		if(o.兄に手紙を届けてくれ.completed) sf["カルロスの手紙"] = true;
+		if(o.兄に手紙を届けてくれ.completed) sf["ムニョスの手紙"] = true;
+		if(o.全てを見通せる鏡.completed) sf["千里の鏡"] = true;
+		if(o.奇跡の聖杯.completed) sf["命の聖杯"] = true;
+		if(o.金のフェアリーを探して！.completed) sf["金のフェアリー"] = true;
+		if(o.貞操帯の鍵を探して下さい.completed) sf["貞操帯の鍵"] = true;
+
+		if(game.warpSpellEnabled)
+		{
+			sf["エレメントプレート・土"] = true;
+			sf["エレメントプレート・水"] = true;
+			sf["エレメントプレート・火"] = true;
+			sf["エレメントプレート・風"] = true;
+		}
+
+		if(! o.森の城塞４Ｆ.events.has(5))
+		{
+			sf["信徒の称号・月"] = true;
+			sf["信徒の称号・星"] = true;
+			sf["信徒の称号・雲"] = true;
+			sf["信徒の称号・海"] = true;
+			sf["信徒の称号・太陽"] = true;
+		}
+
+		if(o.魔法店ベイワロ・スターズ.events.count == 0 || sf.completedStarCards)
+		{
+			sf["スターカード・剣"] = true;
+			sf["スターカード・盾"] = true;
+			sf["スターカード・杖"] = true;
+			sf["スターカード・十字架"] = true;
+			sf["スターカード・帽子"] = true;
+			sf["スターカード・蝶"] = true;
+			sf["スターカード・魔法陣"] = true;
+			sf["スターカード・杯"] = true;
+			sf["スターカード・林檎"] = true;
+			sf["スターカード・髑髏"] = true;
+			sf.completedStarCards = true;
+		}
+
+		if(! o.ラドミラの塔23Ｆ.events.has(2)) sf["悪魔の彫像"] = true;
+		if(! o.ラドミラの塔23Ｆ.events.has(3)) sf["スライムの彫像"] = true;
+		if(! o.ラドミラの塔23Ｆ.events.has(4)) sf["ネズミの彫像"] = true;
+		if(! o.ラドミラの塔23Ｆ.events.has(5)) sf["トカゲの彫像"] = true;
+		if(! o.ラドミラの塔23Ｆ.events.has(6)) sf["蛇の彫像"] = true;
+
+		if(f.floor16opened) sf["小さなボタン"] = true;
+		if(! o.大人の魔法店.events.has(0)) sf["ワームの毒液"] = true;
+		if(! o.火山島Ｂ７.events.has(0)) sf["氷竜の心臓"] = true;
+		if(f.daysOfTournament !== void) sf["リーゼルの髪飾り"] = true;
+		if(maxInnActionCount > 3) sf["行動力増加袋"] = true;
+
+		// ショップ関連
+		if(! o.世界一の道具店.specialItem.has(o.初級の書)) sf["初級の書"] = true;
+		if(! o.世界一の道具店.specialItem.has(o.召喚士の書)) sf["召喚士の書"] = true;
+		if(! o.世界一の道具店.specialItem.has(o.吟遊詩人の書)) sf["吟遊詩人の書"] = true;
+		if(! o.ヘルガの薬屋.specialItem.has(o.中級の書)) sf["中級の書"] = true;
+		if(! o.ヘルガの薬屋.specialItem.has(o.ドルイドの書)) sf["ドルイドの書"] = true;
+		if(! o.ヘルガの薬屋.specialItem.has(o.ソーサラーの書)) sf["ソーサラーの書"] = true;
+		if(! o.アイテムの店パメラ.specialItem.has(o.ロードの書)) sf["ロードの書"] = true;
+	}
+
+	function correctErrors(ver)
+	{
+		// ロード時のデータのエラーを修正
+		dm("データバージョン ver " + ver + " に最新バージョンを適用");
+
+		//-----------------------------------------------------------------------------------
+		if(! isDemoVersion && ver !== void && +ver < 11)
+		{
+			// 体験版のデータを製品版で読み出す際の修正
+
+			// 製品版への移行時に必ず削除しておくアイテム
+			var itemsToDelete = [
+				  o.パワーブレスレット, o.ロイヤルゼリー, o.ドライアドの霊薬, o.温泉チケット
+				 ,o.マジカルボートの巻物
+			];
+
+			for(var j = 0; j < itemsToDelete.count; j++)
+			{
+				for(var i = 0; i < chara.count; i++) chara[i].ejectItem(itemsToDelete[j],, true);
+				trunkRoom.ejectItem(itemsToDelete[j],, true);
+				temporaryBox.ejectItem(itemsToDelete[j],, true);
+			}
+
+			// クエストを未達成に
+			o.遺跡の財宝.initialize();
+			o.若さを維持したい.initialize();
+
+			// リーゼルが残ってしまうことがあったので削除
+			if(! isFreeMode && o.待合所.members.has(o.リーゼル))
+			{
+				o.待合所.members.remove(o.リーゼル);
+				o.リーゼル.visible = false;
+			}
+
+			// 体験版で残るキャラクター関連の不具合を修正
+			for(var i = 0; i < chara.count; i++)
+			{
+				if(chara[i].skill.has(o.反撃)) chara[i].btcmd.remove(o.カウンター);
+			}
+
+			if(isFreeMode) o.サファイアシティ.events.remove(4);
+
+			o.サファイアシティ・南東門.events.remove(6);
+			o.シーガルの村・東門.events.remove(2);
+			o.コリンズの森.events.remove(19);
+			o.ランドン渓谷・谷底.events.remove(4);
+			o.フーラ雪原・南の森.events.remove(10);
+
+			if(isFreeMode)
+			{
+				o.ダストウェルの町.events.remove(0);
+				o.ダストウェルの町.events.remove(1);
+				o.簡易宿泊所.events.remove(0);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+
+		// ここから製品版の修正
+
+		// バージョン関係なくこれだけはやっておく
+		for(var i = 0; i < party.members.count; i++)
+		{
+			if(party.members[i].parent == guildWin) party.members[i].transformToPartyType();
+		}
+
+		if(o.倉庫整理のお仕事.completed) sf.clearedQuestOfWarehouse = true;
+
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.02)
+		{
+			if(game.guest.members.has(o.エリック)) o.町外れの遺跡入口.requireMembers = false;
+			o.サファイアシティ・南東門.events.remove(6);
+			o.シーガルの村・東門.events.remove(2);
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.03)
+		{
+			if(isFreeMode)
+			{
+				o.コリンズの森.events.remove(19);
+				// o.ランドン渓谷・谷底.events.push2(4);
+				// o.フーラ雪原・南の森.events.push2(10);
+				// o.ヤネクの森・霧の谷.events.push2(5);
+			}
+
+			if((! o.コボルド退治.accepted && ! o.コボルド退治.completed)
+				 || (o.コボルド退治.accepted && o.コボルド退治.flag == 0 && findItem(o.金のヘッドバンド) !== void))
+			{
+				o.コボルドの砦１Ｆ.events.push2(2);
+				o.コボルドの砦２Ｆ.events.push2(2, 3);
+				o.ランドン渓谷・崖上.events.remove(12);
+				o.サファイアシティ.events.remove(4);
+				o.コボルド退治.flag = 0;
+				ejectItem(o.金のヘッドバンド);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.04)
+		{
+			if(isFreeMode)
+			{
+				o.コリンズの森.events.remove(19);
+				o.ランドン渓谷・谷底.events.remove(4);
+				o.フーラ雪原・南の森.events.remove(10);
+				o.ヤネクの森・霧の谷.events.remove(5);
+			}
+
+			if(f.stolenWeapons !== void)
+			{
+				for(var i = 0; i < f.stolenWeapons.count; i++)
+				{
+					temporaryBox.storeItemToTrunk(o[f.stolenWeapons[i]], WHOLE);
+				}
+				delete f.stolenWeapons;
+				o.牢獄Ｂ１.events.remove(6);
+				o.牢獄Ｂ１.events.remove(7);
+				o.牢獄Ｂ１.events.remove(8);
+				o.牢獄Ｂ１.events.remove(9);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.05)
+		{
+			if(view == townView && guest.getSummonedMonster() !== void) guest.eraseMonster();
+
+			o.エミール平原.events.remove(4);
+
+			o.コリンズの森.events.remove(19);
+			o.ランドン渓谷・谷底.events.remove(4);
+			o.フーラ雪原・南の森.events.remove(10);
+			// o.ヤネクの森・霧の谷.events.remove(5);
+
+			if(isFreeMode && ! o.ブルーのアジト１Ｆ.events.has(10))
+			{
+				o.町外れの遺跡Ｂ１.events.push2(5);
+				o.ブルーのアジト１Ｆ.events.push2(7, 10);
+				o.ブルーのアジト１Ｆ.changeObject(%[pimg: "human"], 12, 3, "f");
+				o.ブルーのアジト１Ｆ.changeObject(%[pimg: "human"], 8, 1, "f");
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.10)
+		{
+			if(wife === void)
+			{
+				for(var i = 0; i < chara.count; i++)
+				{
+					var one = chara[i];
+					if(one.model != o.エルフＡ) continue;
+					for(var j = 0; j < one.diary.count; j++)
+					{
+						if(one.diary[j].guyKey == "フォスター" && one.diary[j].sexCount == 0)
+						{
+							one.events.push2(6);
+							break;
+						}
+					}
+				}
+			}
+
+			if(! isFreeMode && o.ブルーのアジト.appeared)
+			{
+				o.森の中の廃屋入口.events = [];
+				o.町外れの遺跡入口.events = [];
+			}
+
+			if(f.kidnappedElfID === void) o.ホテル・クイーン.events.remove(3);
+			if(o.売春組織の実体を暴け.completed) o.ホテル・クイーン.events.push2(6);
+
+			if(! isFreeMode && wife === void && ! o.ダストウェルの町.events.has(0))
+			{
+				o.タルハ砂漠・南.events.push2(11);
+
+				if(findItem(o.トパーズの魔石) !== void)
+				{
+					ejectItem(o.トパーズの魔石);
+					o.砂漠の民のほこら.events.push2(3, 4);
+					o.砂漠の民のほこら.eraseChangedInfo(2, 11);
+					o.砂漠の民のほこら.eraseChangedInfo(2, 6, "n");
+					o.砂漠の民のほこら.record = [];
+					o.砂漠の民のほこら.loaded = false;
+					if(view == dungeonView && map == o.砂漠の民のほこら) map.open();
+				}
+
+				if(findItem(o.砂の水晶) !== void)
+				{
+					ejectItem(o.砂の水晶);
+					o.町外れの遺跡Ｂ２.events.push2(2);
+					o.町外れの遺跡Ｂ１.eraseChangedInfo(5, 4, "e");
+					o.町外れの遺跡Ｂ２.eraseChangedInfo(0, 11, "n");
+					o.町外れの遺跡Ｂ２.eraseChangedInfo(0, 19);
+					o.町外れの遺跡Ｂ２.record = [];
+					o.町外れの遺跡Ｂ１.loaded = false;
+					o.町外れの遺跡Ｂ２.loaded = false;
+					if(view == dungeonView && map.group.name == "町外れの遺跡") map.open();
+				}
+
+				if(! inEvent && map == o.ダストウェルの町)
+				{
+					hour = "day";
+					enterDungeon(%[map: "タルハ砂漠・南", x: 2, y: 3, way: "n"]);
+					onGameRestart();
+				}
+
+				if(! inEvent && map == o.砂漠の民のほこら)
+				{
+					changePosition(%[map: "砂漠の民のほこら", x: 2, y: 2, way: "n"]);
+				}
+
+				if(! inEvent && map == o.町外れの遺跡Ｂ２)
+				{
+					changePosition(%[map: "町外れの遺跡Ｂ１", x: 7, y: 0, way: "e"]);
+				}
+
+				if(findItem(o.金の鍵) !== void)
+				{
+					ejectItem(o.金の鍵);
+					o.よろず屋マンゴー.specialItem[0] = o.金の鍵;
+				}
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.11)
+		{
+			if(! isFreeMode && wife === void)
+			{
+				o.ブレイブタウン.events.remove(5);
+			}
+
+			if(! isFreeMode && wife !== void)
+			{
+				for(var i = 0; i < chara.count; i++)
+				{
+					var one = chara[i];
+					if(one == wife) continue;
+					if(one.model != o.エルフＡ) continue;
+					one.clearRelativeEvents();
+					for(var j = 0; j < 20; j++) one.events.remove(j);
+				}
+			}
+
+			if(! isFreeMode)
+			{
+				for(var i = o.町外れの遺跡Ｂ１.changed.count - 1; i >= 0; i--)
+				{
+					var rec = o.町外れの遺跡Ｂ１.changed[i];
+					if(rec[1] == 5 && rec[2] == 4 && rec[3] == "e" && rec[0].key === null)
+					{
+						o.町外れの遺跡Ｂ２.events.push2(2);
+						o.町外れの遺跡Ｂ１.eraseChangedInfo(5, 4, "e");
+						o.町外れの遺跡Ｂ２.eraseChangedInfo(0, 11, "n");
+						o.町外れの遺跡Ｂ２.eraseChangedInfo(0, 19);
+						o.町外れの遺跡Ｂ１.loaded = false;
+						o.町外れの遺跡Ｂ２.loaded = false;
+						if(view == dungeonView && map.group.name == "町外れの遺跡") map.open();
+					}
+				}
+
+				if(findItem(o.金の鍵) === void && findItem(o.砂の水晶) !== void)
+				{
+					ejectItem(o.トパーズの魔石);
+					ejectItem(o.砂の水晶);
+					o.砂漠の民のほこら.events.push2(3, 4);
+					o.砂漠の民のほこら.eraseChangedInfo(2, 11);
+					o.砂漠の民のほこら.eraseChangedInfo(2, 6, "n");
+					o.砂漠の民のほこら.record = [];
+					o.砂漠の民のほこら.loaded = false;
+					if(map == o.砂漠の民のほこら)
+					{
+						map.open();
+						changePosition(%[map: "砂漠の民のほこら", x: 2, y: 2, way: "n"]);
+					}
+					if(map == o.町外れの遺跡Ｂ２)
+					{
+						map.open();
+						changePosition(%[map: "町外れの遺跡Ｂ１", x: 2, y: 2, way: "n"]);
+					}
+				}
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.14)
+		{
+			if(o.さらわれた少女たちの救出.completed)
+			{
+				o.古代の迷宮Ｂ２.changeObject(%[pimg: void], 0, 3, "f");
+			}
+
+			if(closeItems.has(o.ジャンプの巻物) && findItem(o.ジャンプの巻物) !== void)
+			{
+				ejectItem(o.ジャンプの巻物, true, true);
+			}
+
+			if(! o.ホテルの地下Ｂ２.events.has(2) && o.売春組織の実体を暴け.accepted && ! o.売春組織の実体を暴け.completed)
+			{
+				o.売春組織の実体を暴け.complete();
+				o.ライナス.events.remove(0);
+			}
+
+			for(var i = 0; i < chara.count; i++)
+			{
+				var one = chara[i];
+				if(one.job == o.召喚士 && ! one.skill.has(o.契約)) one.skill.push2(o.契約);
+			}
+
+			if(! isFreeMode && wife === void)
+			{
+				o.ブレイブタウン.events.remove(5);
+			}
+
+			if(! isFreeMode && wife !== void)
+			{
+				for(var i = 0; i < chara.count; i++)
+				{
+					var one = chara[i];
+					if(one == wife) continue;
+					if(one.model != o.エルフＡ) continue;
+					one.clearRelativeEvents();
+					for(var j = 0; j < 20; j++) one.events.remove(j);
+				}
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.15)
+		{
+			// 
+			if(o.ホテルの地下Ｂ２.events.has(2) && o.売春組織の実体を暴け.completed)
+			{
+				o.売春組織の実体を暴け.completed = false;
+				o.売春組織の実体を暴け.end = -1;
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.16)
+		{
+			if(! o.ヤネクの森・西.events.has(9) && ! o.ヤネクの森・霧の谷.events.has(2))
+			{
+				o.ヤネクの森・霧の谷.events.add(2);
+			}
+
+			if(o.精霊の力を宿す石.completed && date > o.精霊の力を宿す石.end + 1 && ! o.倉庫整理のお仕事.accepted && ! o.かもめ亭.quests.has(o.倉庫整理のお仕事))
+			{
+				o.かもめ亭.quests.push2(o.倉庫整理のお仕事);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.18)
+		{
+			if(! isFreeMode && ! o.ダストウェルの町.events.has(0) && ! o.簡易宿泊所.events.has(0) && ! o.ブレイブタウン.events.has(5) && ! guest.members.has(o.ブルー) && ! guest.members.has(o.ポラリス))
+			{
+				dm("★簡易宿泊所イベントの修正  これでシュバルツが出てくる");
+				o.簡易宿泊所.events.push2(0);
+			}
+
+			if(o.ベトリヌスの酒場.quests.has(o.教団を壊滅させろ))
+			{
+				o.ベトリヌスの酒場.quests.unique(o.教団を壊滅させろ);
+				o.ベトリヌスの酒場.events.remove(17);
+			}
+
+			if(! isFreeMode && wife === void && guest.members.has(o.ブルー) && ! guest.members.has(o.ライナス))
+			{
+				guest.entry(o.ライナス);
+			}
+
+			if(guest.members.has(o.マリア) && findItem(o.看守の鍵) !== void && waitingMembers.count > 0)
+			{
+				dm("★牢獄Ｂ１ イベント 5 を復帰");
+				o.牢獄Ｂ１.events.push2(5);
+			}
+
+			if(findItem(o.オパールの魔石) === void)
+			{
+				dm("★温泉・岩場 イベント 4 を追加");
+				o.温泉・岩場.events.push2(4);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.19)
+		{
+			// 今度こそホテルイベント直後の宿泊エラーの原因を特定できたので
+			// ここで修正して終わりにする
+			// シナリオ途中の enterTown で goToStreet を実行するので
+			// ここで他のイベントが起きてしまっていた
+			if(o.売春組織の実体を暴け.completed) o.ライナス.events.remove(0);
+
+			if(o.ホテルの地下Ｂ２.visited && ! o.ホテルの地下Ｂ２.events.has(2) && ! o.売春組織の実体を暴け.completed)
+			{
+				o.売春組織の実体を暴け.complete();
+			}
+
+			o.温泉・脱衣所.events.push2(12);
+
+			if(! isFreeMode && wife !== void)
+			{
+				o.ベトリヌスの酒場.events.push2(18);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.20)
+		{
+			if(o.兄に手紙を届けてくれ.flag == 1 && findItem(o.カルロスの手紙) !== void)
+			{
+				var obj = findItem(o.カルロスの手紙);
+				obj.ejectItem(o.カルロスの手紙);
+				obj.insertItem(o.ムニョスの手紙);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.21)
+		{
+			if(! isFreeMode && guest.members.has(o.ポラリス))
+			{
+				if(guest.members.has(o.ブルー))
+				{
+					guest.removeMember(o.ブルー);
+					guest.removeMember(o.サンドラ);
+				}
+				o.ブレイブタウン.events.remove(5);
+				o.簡易宿泊所.events.remove(0);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.22)
+		{
+			if(o.ホテルの地下Ｂ２.visited && ! o.ホテルの地下Ｂ２.events.has(2))
+			{
+				if(! o.売春組織の実体を暴け.completed) o.売春組織の実体を暴け.complete();
+				o.ライナス.events.remove(0);
+			}
+
+			o.アイテム博物館.links.push2("アイテム探し");
+
+			for(var i = 0; i < chara.count; i++)
+			{
+				var one = chara[i];
+				if(one.model == o.エルフＢ && one.desire < 80) one.desire = 80;
+			}
+
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.23)
+		{
+			if(! isFreeMode && wife !== void && ! protectHeroines)
+			{
+				playerChara.married = wife.married = true;
+			}
+
+			if(! o.公園.events.has(8)) o.闘技場.events.remove(9);
+
+			if(! isFreeMode && o.ライナス.btcmd.has(o.マルチエイド))
+			{
+				o.ライナス.btcmd[0] = o.イレースマジック;
+			}
+
+			o.アイテム博物館.links.push2("アイテム探し");
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.24)
+		{
+			if(o.売春組織の実体を暴け.accepted && ! o.売春組織の実体を暴け.completed && ! o.ホテル・クイーン.events.has(0))
+			{
+				o.ホテル・クイーン.events.push2(0);
+			}
+
+			if(! isFreeMode && o.売春組織の実体を暴け.completed)
+			{
+				o.ホテル・クイーン.deleteEventButton(%[label: "隠し通路_1"]);
+			}
+
+			if(! isFreeMode && ! o.地下の町ライムストーン.events.has(0))
+			{
+				o.ライナス.rip --;
+			}
+
+			if(wife === void)
+			{
+				for(var i = 0; i < chara.count; i++)
+				{
+					var one = chara[i];
+					if(one.model != o.エルフＡ) continue;
+					for(var j = 0; j < one.diary.count; j++)
+					{
+						if(one.diary[j].guyKey == "フォスター" && one.diary[j].sexCount == 0)
+						{
+							one.events.push2(6);
+							break;
+						}
+					}
+				}
+			}
+
+			if(o.ミスティック.contracted && ! o.ミスティック.skill.has(o.契約))
+			{
+				o.ミスティック.skill.push2(o.契約);
+			}
+
+			if(isFreeMode)
+			{
+				if(! o.ホークワロスの魔法店.events.has(0)) o.大洞窟バル.quests.push2(o.全てを見通せる鏡);
+				o.ベトリヌスの酒場.events.push2(24);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver == 11.26)
+		{
+			// 問題修正（大きな召喚びんはおそらく使わずに捨ててはいないだろうという前提で）
+			var num = 0;
+			if(! o.ラドミラの塔11Ｆ.events.has(9)) num ++;
+			if(! o.ラドミラの塔３Ｆ.isTreasureBoxExist(5, 5)) num ++;
+			if(! o.町外れの遺跡Ｂ１.events.has(5) && ! o.町外れの遺跡Ｂ１.events.has(6))
+			{
+				num --;
+				o.ブラックドラゴン.contracted = true;
+			}
+			if(num > countItem(o.大きな召喚びん, true)) o.グレーターデーモン.contracted = true;
+
+			for(var i = 0; i < chara.count; i++)
+			{
+				if(chara[i].btcmd.has(o.グレーターデーモン)) o.グレーターデーモン.contracted = true;
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.27)
+		{
+			o.愚者の倉庫１.events.push2(5);
+			o.愚者の倉庫７.events.push2(4, 5);
+
+			if(! o.森の城塞３Ｆ.events.has(3) && findItem(o.信徒の称号・海) === void)
+			{
+				o.森の城塞３Ｆ.events.push2(3);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.28)
+		{
+			if(isFreeMode)
+			{
+				o.ダストウェルの町.events.remove(0);
+				o.ダストウェルの町.events.remove(1);
+				o.簡易宿泊所.events.remove(0);
+
+				events.push2(15);
+				events.remove(17);
+
+				if(! o.かもめ亭.quests.has(o.精霊の力を宿す石) && ! o.精霊の力を宿す石.completed)
+				{
+					o.かもめ亭.quests.unshift(o.精霊の力を宿す石);
+				}
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.29)
+		{
+			if(! isFreeMode && wife !== void && protectHeroines)
+			{
+				playerChara.married = wife.married = false;
+			}
+
+			if(isFreeMode && o.オークの拠点を制圧せよ.completed)
+			{
+				f.policeChiefIsOut = false;
+			}
+
+			if(isFreeMode && o.教団を壊滅させろ.flag == 2 && ! game.guest.members.has(o.マリア))
+			{
+				o.ブルーのアジト１Ｆ.events.push2(9);
+				o.ブルーのアジト１Ｆ.changed.unshift([%["type"=> "floor", "img"=> "wood", "pimg"=> "human"], 5, 1, "f"]);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.30)
+		{
+			if(isFreeMode && ! o.ブルーのアジト１Ｆ.events.has(7) && ! game.guest.members.has(o.ミレディ))
+			{
+				o.ブルーのアジト１Ｆ.events.push2(7);
+				o.ブルーのアジト１Ｆ.changed.unshift([%["type"=> "floor", "img"=> "wood", "pimg"=> "human"], 8, 1, "f"]);
+			}
+
+			if(map != o.常闇の城２Ｆ && map != o.試練の迷宮Ｂ３) f.saveIsForbidden = false;
+
+			for(var i = 0; i < chara.count; i++)
+			{
+				chara[i].deleteDuplicateSkills();
+			}
+
+			for(var i = 0; i < helper.count; i++)
+			{
+				helper[i].deleteDuplicateSkills();
+			}
+
+			var num = getNumContractedHelpers(false);
+			if(num > sf.numContractedHirings) sf.numContractedHirings = num;
+
+			if(o.かもめ亭.quests.count >= 6) o.かもめ亭.hasSpaceOfQuests();
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.31)
+		{
+			if(! isFreeMode && guest.members.has(o.マリア) && o.牢獄への潜入作戦.completed)
+			{
+				guest.removeMember(o.マリア);
+				restoreMembers();
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.32)
+		{
+			if(! isFreeMode && party.status.has(o.禁止))
+			{
+				bevents.remove(8);
+				bevents.remove(9);
+				party.status.remove(o.禁止);
+				inDuelBattle = false;
+				enemy.reservedMonsters = [];
+				party.updateStatus();
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.33)
+		{
+			if(! isFreeMode && map == o.ブレイブタウン && o.エミール平原.events.has(9)) party.recovery();
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.34)
+		{
+			if(! isFreeMode && game.wife !== void)
+			{
+				o.リーゼル.noChangeOfJob = false;
+				o.リーゼル.pregnant = NO_PREGNANCY;
+				o.リーゼル.semiRegular = true;
+			}
+
+			o.ラドミラの塔８Ｆ.events.push2(4);
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.37)
+		{
+			if(isFreeMode)
+			{
+				o.ダストウェルの町.events.remove(0);
+				o.ダストウェルの町.events.remove(1);
+				o.簡易宿泊所.events.remove(0);
+			}
+
+			if(isFreeMode && o.牢獄への潜入作戦.completed)
+			{
+				o.ブルーのアジト１Ｆ.events.push2(9);
+				if(map == o.ブルーのアジト１Ｆ) map.changeObject(%[pimg: "human"], 5, 1, "f");
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.38)
+		{
+			if(o.ベトリヌスの酒場.quests.count > 5) o.ベトリヌスの酒場.hasSpaceOfQuests();
+			if(o.かもめ亭.quests.count > 5) o.かもめ亭.hasSpaceOfQuests();
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.39)
+		{
+			o.サファイア城.links.push2("記録の再取得");
+
+			if(! isFreeMode && o.売春組織の実体を暴け.completed && guest.members.has(o.ブルー)
+				 && ! guest.members.has(o.サンドラ) && ! waitingMembers.has(o.サンドラ))
+			{
+				guest.entry(o.サンドラ);
+			}
+
+			for(var i = 0; i < chara.count; i++)
+			{
+				var one = chara[i];
+				if(one.model != o.シルフＡ) continue;
+				if(one.events.has(62))
+				{
+					one.events.remove(62);
+					one.events.push2(61);
+				}
+			}
+
+			if(isFreeMode) o.ヤネクの森・霧の谷.events.remove(5);
+
+			if(! isFreeMode && playerChara.married)
+			{
+				// 魔術師の指輪以外ではこの状況にならないので
+				if(playerChara.equip.finger === void)
+				{
+					party.ejectItem(o.魔術師の指輪);
+					playerChara.equip.finger = o.魔術師の指輪;
+				}
+				if(wife !== void && wife.equip.finger === void)
+				{
+					party.ejectItem(o.魔術師の指輪);
+					wife.equip.finger = o.魔術師の指輪;
+				}
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.42)
+		{
+			if(! isFreeMode && wife !== void && wife.events.has(17))
+			{
+				wife.events.push2(14, 15, 16);
+			}
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.43)
+		{
+			if(! isFreeMode && guest.members.has(o.ポラリス) && guest.members.has(o.マリア))
+			{
+				guest.removeMembers(o.マリア);
+			}
+
+		}
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.50)
+		{
+			if(isFreeMode || (guest.members.has(o.ライナス) || wife !== void))
+			{
+				o.エミール平原.events.push2(4);
+			}
+		}
+
+		//-----------------------------------------------------------------------------------
+		if(+ver < 11.52)
+		{
+			if(isFreeMode)
+			{
+				o.大洞窟Ｂ46.events.push2(20);
+				if(o.盗賊メンバー派遣の依頼　.completed) o.ブルーのアジト１Ｆ.events.push2(11);
+
+				for(var i = 0; i < chara.count; i++)
+				{
+					var one = chara[i];
+					if(one.model == o.人間Ａ) one.events.push2(20, 40, 60);
+					if(one.model == o.エルフＡ) one.events.push2(21, 40, 60);
+					if(one.model == o.ドワーフＡ) one.events.push2(20, 40, 60);
+					if(one.model == o.ノームＡ) one.events.push2(23, 40, 60);
+					if(one.model == o.シルフＡ) one.events.push2(20, 40, 60);
+				}
+
+				if(o.マックス isvalid && o.マックス !== void)
+				{
+					o.マックス.desire = 90;
+					o.マックス.technic = 25;
+					o.マックス.penis = 20;
+					o.マックス.sexActs = [
+						  "ディープキス", "乳揉み", "正常位", "乳首吸い", "手マン", "バック", "クリ責め", "フェラチオ"
+						, "背面座位", "対面座位", "手こき", "騎乗位", "６９", "立ちバック", "パイズリ", "足こき"
+					];
+					lovers.push2(o.マックス);
+				}
+
+				o.ミレディ.events.push2(3, 6);
+				o.サンドラ.events.push2(2, 4, 5);
+			}
+		}
+
+		//-----------------------------------------------------------------------------------
+		// 修正終わり
+	}
+}
+//========================================================================================

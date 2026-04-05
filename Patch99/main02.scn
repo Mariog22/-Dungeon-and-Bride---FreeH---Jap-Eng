@@ -1,0 +1,1999 @@
+﻿; テオの回想～町からの脱出
+
+
+
+;■プロローグ２・ブルーとの出会い
+
+;◇イベント01・テオの回想
+*past_1
+
+; 町中
+
+; 回想を見たという記録を付ける
+@eval exp='f.readPastEpisode = true'
+
+@wait time=1000
+@mu f=worry
+[texton w=0]
+[？？？]「Yes, good job.」[k]
+@se f=coin
+@eval exp='game.party.gold -= 20000'
+[テオ f=05]「Ah...」[k]
+The moment I and Max left the bar, someone snatched the bag of gold coins from my hand.[k]
+[textoff]
+@fg c=ブルー e=帯刀 f=02
+[texton w=1]
+[ブルー f=02]「Yo.」[k]
+[マックス f=12]「Oh, Blue...」[k]
+[テオ f=06]「Blue...」[k]
+[ブルー f=02]「You're late. I was tired of waiting.」[k]
+The person who took the bag of gold coins was an adventurer named Blue.[k]
+Blue took our reward as if he was the one who'd earned it, opened the bag, and stuck his hand inside.[k]
+[ブルー f=02]「Here, your share.」[k]
+@se f=coinsingle
+@eval exp='game.party.gold += 30'
+He took a few gold coins from his gold coin bag and handed them to me and Max.[k]
+[テオ f=06]「...」[k]
+Max and I accepted it without saying a word.[k]
+[ブルー f=02]「See you.」[k]
+[textoff]
+@cl
+[texton]
+After saying this, Blue disappeared to the back of the bar with the bag of gold coins.[k]
+[テオ f=06]「...」[k]
+[マックス f=19]「...Damn, that's all we got. Screw him. We're the ones who worked for it.」[k]
+Max whispered.[k]
+Yes, it was definitely me and Max who accomplished this quest.[k]
+But... Blue reaped the rewards, as normal.[k]
+But we can't complain about him.[k]
+That was simply the relationship we had with Blue.[k]
+[textoff]
+@fa
+@out
+@w1
+
+; ここから１年前の回想
+[texton]
+1 year ago [―――][k]
+As a new adventurer, I was full of hope for the life of adventure that was about to begin.[k]
+[textoff]
+@w1
+
+*_past_1_from_demo
+@saveon
+@mu f=town
+@bg f=0007
+[texton w=1]
+[テオ e=布の服 f=02]「There we go.」[k]
+After moving my belongings into my new home and some light cleaning, I took a break and was excited about the adventurous life I was about to embark on.[k]
+This is a room in an apartment. This is my base of operations in Bravetown, a town where adventurers gather.[k]
+From now on, I will be staying here and working as an adventurer.[k]
+This apartment is actually a bit nicer than many others here. It has larger rooms and is close to the guild and the tavern.[k]
+One of my father's acquaintances arranged this when I made my debut as an adventurer.[k]
+It was all thanks to the prestige of my late father.[k]
+Dad was a very famous adventurer, and his special abilities as a demon hunter made him famous throughout the world.[k]
+Unfortunately, he passed away at a young age. Still, I wanted to become an adventurer like him, and came to this town as the first step. My mother in my hometown is also supporting me.[k]
+So, let's do it! For my dad in heaven, I'll definitely become an adventurer like him![k]
+[テオ f=06]「...」[k]
+Well, where should we go first?[k]
+...After all, being an adventurer is all about forming a party and doing quests to make a name for yourself, right?[k]
+Okay, let's visit the guild and the tavern first![k]
+[textoff]
+@out
+
+; ブルーとの出会い
+@bg f=0012
+@mu f=bar
+[texton]
+I went to the bar.[k]
+[テオ f=01]「Wow... There are so many people here...」[k]
+The tavern also served as a hub for quests, and was crowded with many adventurers during the day.[k]
+For now, let's go to the guild and register as an adventurer. If you don't register, you won't be able to form a party, and you won't be introduced to jobs.[k]
+[テオ f=02]「Okay, I'll get to this later, but first I need to get to the guild...」[k]
+@se f=beat
+@quake time=500
+@flash
+∗thump!∗[k]
+[テオ f=11]「Ah!」[k]
+That's when I bumped into someone.[k]
+[textoff]
+@fg c=ブルー e=帯刀 f=06
+@wait time=500
+[texton]
+[ブルー f=06]「...」[k]
+Behind me stood a large adventurer.[k]
+[テオ f=12]「Sorry! I was a bit distracted...」[k]
+[ブルー f=06]「...」[k]
+@fg c=ブルー f=02
+[ブルー f=02]「...Don't worry. You don't look familiar. You new here?」[k]
+[テオ f=12]「Ah, yes.」[k]
+[ブルー f=02]「Well... Where do you live?」[k]
+[テオ f=12]「I live in an apartment right next to this bar.」[k]
+@fg r=エリック e=通常 f=02
+[エリック f=01]「Wow, so it's right around the corner.」[k]
+Another adventurer behind him muttered.[k]
+[テオ f=12]「Y-yes...」[k]
+[ブルー f=02]「I'm Blue. This is Eric.」[k]
+[ブルー f=02]「There's probably many things you don't understand since you just got here. If you have any problems, you can count on us.」[k]
+[テオ f=01]「Y-yes! Thank you very much!」[k]
+[ブルー f=02]「See you next time.」[k]
+[エリック f=02]「... ∗grin∗」[k]
+@cl
+[テオ f=02]「...」[k]
+Phew, it's nice to meet a kind senior.[k]
+At first I thought he looked a little scary, but he seems dependable. This is a good start.[k]
+Okay, keep it up and look for a job with a party first![k]
+[textoff]
+@out
+@w05
+
+; マックスとの出会い
+@bg f=0013
+@mu f=guild
+[texton]
+Next I went to the guild.[k]
+In the room, several young adventurers were going through the formalities.[k]
+@fg c=マックス e=革鎧,布のズボン f=01
+[マックス f=01]「Hey, you, are you new here?」[k]
+This time I was approached by a man who appeared to be an elf.[k]
+[テオ f=02]「Uh-uh.」[k]
+[マックス f=03]「Actually, I'm in the same boat! I was wondering if you'd like to join my party? I just got here and I'm a little nervous!」[k]
+What a surprise, an offer to form a party out of the blue. I'm very grateful.[k]
+[テオ f=01]「Yes! Thank you very much! My name is [テオ], I look forward to working with you.」[k]
+[マックス f=03]「I'm Max! Nice to meet you, [テオ]!」[k]
+[textoff]
+@out
+@w05
+
+@bg f=0016
+[texton]
+[マックス f=09]「It's hard finding work for us newbies...」[k]
+[テオ f=02]「It can't be helped. I'll come back tomorrow to look for another job.」[k]
+After hitting it off and forming a party, Max and I went to the bar to look for work.[k]
+However, we could not find a suitable job today, so Max and I decided to return to our lodgings.[k]
+[マックス f=01]「By the way, you have a nice looking sword～!」[k]
+[テオ f=02]「It's a memento of my father, who was an adventurer.」[k]
+[マックス f=01]「I see. Your father must have been a great adventurer to have such a fine sword.」[k]
+Max looks at my sword with envy.[k]
+[テオ f=02]「Well, this is where I live.」[k]
+[マックス f=12]「What?! That's a great place! I'm at the inn at the end of the street, three doors down.」[k]
+[テオ f=02]「Come visit me if you want. You're welcome to.」[k]
+[マックス f=03]「I'll definitely stop by. See you tomorrow!」[k]
+[textoff]
+@out
+@w05
+
+; テオの家
+; ブルーたちによる歓迎会
+@bg f=0008
+@mu f=inn
+[texton]
+[テオ f=02]「Okay, that's good for the first day.」[k]
+I'm glad I found a teammate on day one. Max seems friendly and personable and we seem to get along well.[k]
+I got to know some seniors who seemed dependable, so I have nothing to complain about.[k]
+@se f=knock
+∗knock knock∗[k]
+[テオ f=06]「Hmm?」[k]
+I heard a knock on my door.[k]
+I've only been living here one day, and I don't know anyone in town yet. So I wonder if it's Max.[k]
+[テオ f=05]「Yes, who is it?」[k]
+@se f=door2
+@fg l=ブルー b
+@fg r=エリック f=02
+[ブルー f=02]「Yo, rookie!」[k]
+[エリック f=02]「...」[k]
+[テオ f=05]「Aaa...」[k]
+To my surprise, it was the senior adventurers I had just met at the bar.[k]
+Why are they here? I didn't tell them about this house...[k]
+[ブルー f=02]「I just happened to see you enter this house, so I decided to pay you a visit.」[k]
+[テオ f=05]「Ah... I see...」[k]
+Well, this house is just around the corner from the bar, I suppose.[k]
+[ブルー f=05]「What is it? Am I bothering you?」[k]
+[テオ f=12]「Oh, no, not at all...」[k]
+I smile and desperately deny it.[k]
+...This man is a seasoned adventurer. I mustn't do anything to offend him...[k]
+[テオ f=12]「Oh, um... You were Mr. Blue and Mr. Eric?」[k]
+[ブルー f=02]「Blue's fine.」[k]
+[テオ f=05]「Eh?」[k]
+[ブルー f=01]「We're friends now, right? Let's not be strangers.」[k]
+[テオ f=13]「Uh... Uh, yeah. Thank you, Blue... Nice to meet you.」[k]
+[ブルー f=02]「Yeah. Nice to meet you.」[k]
+[エリック f=05]「...By the way, rookie.」[k]
+[テオ f=01]「Ah, yes, what is it?」[k]
+[エリック f=05]「How long are you going to keep us standing on your doorstep?」[k]
+[テオ f=12]「I'm so sorry! Please, come in.」[k]
+@cl
+I hastily let them in.[k]
+[テオ f=12]「I'm sorry, I didn't realize...」[k]
+[ブルー f=02]「What, don't worry about it... Hmm.」[k]
+Blue and Eric went up to the room and began to wander around the room, looking around.[k]
+[テオ f=12]「What is it?」[k]
+@fg l=ブルー b
+@fg r=エリック
+[ブルー f=02]「...Wow, you live in a nice place, you know that?」[k]
+[エリック f=01]「I'm jealous of your spacious room. When I was a rookie, I could only live in a small, shabby room.」[k]
+[テオ f=10]「...」[k]
+Apparently, in their eyes, my temporary housing is pretty good.[k]
+This place was introduced to me by an adventurer who was an acquaintance of my father.[k]
+My father, Siegwart, who was famous as a demon hunter, made many acquaintances during his lifetime.[k]
+In this town where adventurers gather, there is a real estate agency manager whom my father had gotten to know very well, and he found me this room.[k]
+Being the son of adventurer Siegwart, I might have been given a slightly better place.[k]
+[ブルー f=02]「Well, let's get started.」[k]
+[テオ f=10]「Oh, what?」[k]
+[ブルー f=01]「It's obvious. Your welcome party.」[k]
+Blue then shows a large bottle of sake that he brought with him.[k]
+[テオ f=10]「Oh, really? Now?」[k]
+[ブルー f=05]「Huh? What's wrong with you?」[k]
+[テオ f=10]「H-huh...?」[k]
+Oh no. I was going to clean up my room now...[k]
+[エリック f=05]「Hey, you. You're not going to turn down Blue's offer, are you?」[k]
+[テオ f=12]「No, no! I never meant to...」[k]
+[ブルー f=01]「Then it's settled. All right, let's have a toast to the start of [テオ]'s life as an adventurer!」[k]
+[テオ f=13]「Y-yes, thank you.」[k]
+...Oh well. I'll clean up after they leave.[k]
+My seniors are going to celebrate with me. It wouldn't feel right to refuse.[k]
+I accepted it and decided to join them for a drink.[k]
+[textoff]
+@out
+@wait time=1000
+@bg f=0008
+@mu f=trick
+[texton]
+[―――]A few hours later.[k]
+[ブルー f=01]「Here, [テオ]. You drink more, too.」[k]
+[テオ f=12]「Sorry, I'm not much of a drinker...」[k]
+[エリック f=05]「What's the matter with you? Blue is offering, and you're going to turn him down?」[k]
+[テオ f=13]「No, I would never... I'm sorry! I'll take it after all!」[k]
+[ブルー f=01]「Oh, that's all right. Here, drink more.」[k]
+[エリック f=05]「You're a bit flippant. Don't say things that offend people when they're having fun!」[k]
+[テオ f=13]「Sorry, I'll take care...」[k]
+[ブルー f=01]「Okay, I'll have a drink too!」[k]
+∗glug!∗ ∗glug!∗[k]
+[エリック f=01]「Yo! That's Blue! Great drinking!」[k]
+[テオ f=10]「...」[k]
+In the end, the party continued until dawn...[k]
+[textoff]
+@out
+@wait time=1000
+
+; 翌朝・テオの家
+@bg f=0015
+@mu f=town
+[texton]
+The next day -[k]
+@fg c=マックス
+[マックス f=03]「Yo! [テオ]!」[k]
+[テオ f=05]「Ah... Max...」[k]
+When I got ready and went outside, I ran into Max just in front of the door.[k]
+[マックス f=01]「I came to get you. Let's find a good job today!」[k]
+[マックス f=06]「...Hmm? What's the matter, [テオ], you look kind of pale?」[k]
+[テオ f=10]「No, actually I was drinking till morning yesterday...」[k]
+I told Max what had happened last night.[k]
+[マックス f=03]「Ha～ That was tough. But you're lucky to have an influential senior like you.」[k]
+[テオ f=10]「That's true, but...」[k]
+[マックス f=01]「Anyway [テオ], let's go to the bar right now and look for a job.」[k]
+[テオ f=02]「Yeah, okay.」[k]
+If you don't accept jobs and do the work, you are not an adventurer.[k]
+Take a request at the bar at any cost and take your first step as an adventurer![k]
+[textoff]
+@out
+@w1
+
+; 酒場の受付
+@bg f=0012
+[texton]
+[テオ f=05]「...」[k]
+[マックス f=09]「...I can't believe they're out of jobs.」[k]
+We visited the quest desk at the bar. To our surprise, today's work was already gone.[k]
+The receptionist said that if you don't come early in the morning, you may lose out. I guess I was taking it too easy.[k]
+[マックス f=05]「This isn't a good start～!」[k]
+[テオ f=02]「It can't be helped. I'll come back earlier tomorrow.」[k]
+[マックス f=01]「I guess so. Well, I'm free today, but what am I going to do now～?」[k]
+@fg r=エリック b
+@fg c=ブルー e=帯刀
+[ブルー f=02]「Hey, good to see you again.」[k]
+[テオ f=05]「Aaa...」[k]
+Suddenly, Blue showed up with Eric in tow.[k]
+[エリック f=01]「What are you guys doing here?」[k]
+[テオ f=05]「Oh, actually...」[k]
+I told them that I couldn't get a job.[k]
+[ブルー f=01]「Hahahaha, that's a mistake I make a lot at first.」[k]
+[ブルー f=02]「But rejoice. I'll let you guys help me out.」[k]
+[テオ f=05]「Eh?」[k]
+[マックス f=05]「Work? Yours?」[k]
+[ブルー f=02]「Yes, I'll let you come with us. You can experience what adventure is like as a member of my party.」[k]
+[マックス f=11]「Are you serious?」[k]
+[テオ f=05]「Are you sure? We just met you...」[k]
+[ブルー f=02]「It would be a shame to come all this way to take on your first job and not be allowed to do anything. So as a special treat, I'll take you along.」[k]
+[テオ f=13]「Oh, thank you very much, Blue!」[k]
+[マックス f=03]「We are very happy to have met you! Thank you so much!」[k]
+[ブルー f=02]「That's all right. Well, now that we've decided that, let's get going.」[k]
+[textoff]
+@fa
+@out
+@w1
+
+; ブルーの冒険に同行
+; ダンジョン内
+@bg f=0061 b
+@mu f=evil
+@blood
+@fgf c=ブルー e=帯刀
+[texton]
+∗shaaaaaah!∗[k]
+[name n=Monster]「Gwaaaah!」[k]
+[マックス f=11]「Amazing...! 」[k]
+In the first dungeon the four of us visited together, Blue struck down the first monster that appeared with a single blow.[k]
+With inhuman power and quick movements that did not match his large physique, he slew middle-ranking monsters one after another.[k]
+He easily defeated monsters that would be impossible for me... This is the difference in level, isn't it?[k]
+[ブルー f=02]「Phew, that took care of it.」[k]
+[マックス f=03]「Blue, that's great! You took them down in no time at all!」[k]
+[エリック f=01]「This is nothing for Blue, ya know?」[k]
+[ブルー f=02]「Yeah, well...」[k]
+[テオ f=12]「...」[k]
+This is truly amazing. This is the skill of a veteran adventurer.[k]
+...I wonder if the day will ever come when I reach this level.[k]
+[エリック f=01]「Well, we've killed most of the monsters we've been asked to take down, so let's head back, Blue.」[k]
+[textoff]
+@out
+@w1
+
+; ダンジョンから帰還中
+@bg f=0015
+@mu f=guild
+[texton]
+[マックス f=03]「Wow～! That fight earlier was really awesome! As expected of Blue!」[k]
+[ブルー f=02]「Hmph, it's not that big of a deal.」[k]
+[マックス f=03]「Hey, [テオ]! I'm really glad to have met Blue!」[k]
+[テオ f=14]「Y-yeah...」[k]
+[マックス f=03]「By the way, Blue! The reward for today's quest was 10,000G, right? How much will you share with us?」[k]
+[ブルー f=08]「Huh?!」[k]
+Suddenly, Blue's eyes instantly turned angry![k]
+[マックス f=13]「Ah, well, my share of today's reward...」[k]
+[ブルー f=06]「There's no such thing.」[k]
+[マックス f=12]「What?」[k]
+[エリック f=08]「You newbies don't get a share of the profits, do you? Don't get carried away.」[k]
+[マックス f=12]「Huh... but...」[k]
+[エリック f=08]「Besides, most of today's quests were accomplished thanks to Blue. Why should we share with you guys?」[k]
+[マックス f=12]「Ah...」[k]
+[マックス f=13]「...Yes, that's right! I was just asking! I'm sorry!」[k]
+[マックス f=10]（What the heck? We were the ones killing the other weaklings, and carrying their stuff too...）[k]
+[テオ f=02]（Oh well. It was a good experience.）[k]
+Max is disgruntled. Well, he says his wallet is strained already, so he must be desperate when it comes to money.[k]
+But I have to admit what Eric said earlier. Certainly today's quest could not have been accomplished without Blue.[k]
+[テオ f=10]「...」[k]
+I was more shocked by the overwhelming difference in power as an adventurer than by the fact that I was forced to work for free.[k]
+[textoff]
+@out
+@wait time=1000
+
+; 自宅・翌朝
+@bg f=0007
+@mu f=town
+@fg c=マックス f=03
+[texton]
+The next morning. Max came to my house before dawn.[k]
+Max is in high spirits. We were late yesterday and couldn't get a quest, so he decided to go to the bar early today.[k]
+[マックス f=03]「Come on, let's get to the bar! [テオ]!」[k]
+[テオ f=05]「I know. Don't be in such a hurry.」[k]
+[textoff]
+@out
+@wait time=1000
+
+; 酒場の受付
+@bg f=0012
+[texton]
+[受付]「Good morning, you are the first to arrive!」[k]
+When I visited the reception desk at the bar, to my surprise, no one had arrived yet.[k]
+[マックス f=13]「Ahahaha... Was it too early?」[k]
+[受付]「It's wonderful that you're so motivated. I'll find a special job for you.」[k]
+[テオ f=01]「Really?! Thank you very much!」[k]
+[textoff]
+@out t=0
+@w05
+[texton]
+Just as the receptionist said, it was a nice job. The pay wasn't bad, and the difficulty level was just right.[k]
+Despite all the difficulties, Max and I managed to complete the request.[k]
+[textoff]
+@out t=0
+@w1
+
+; 自宅での酒盛り
+@bg f=0007
+[texton]
+Evening. We had successfully completed our first quest and received a reward from the client. I invited Max to my house and we were celebrating.[k]
+[マックス f=03]「Wow, you're good at magic and swords, you know? Thanks to you, we were able to finish the quest easily!」[k]
+[テオ f=02]「The quest went well, thanks to your thief skills.」[k]
+[マックス f=03]「I think we make a great team! Let's do it again! Well, tonight, for the first time in ages, I'm going to indulge myself with the rewards of today's quest...」[k]
+@se f=knock
+∗knock knock∗[k]
+[マックス f=01]「Hmm? Someone's here?」[k]
+[テオ f=06]「I'll be out in a minute.」[k]
+@se f=door2
+I open the door to my room...[k]
+@mu f=trick
+@fg c=9017 left=200 top=200 b
+@fg r=エリック b
+@fg l=9018 top=100 b
+@fg a=ブルー
+[ブルー f=02]「Hey there, rookie.」[k]
+[テオ f=05]「Aaa...」[k]
+Blue was standing in front of my house with Eric and a few guys.[k]
+[ブルー f=02]「I heard you guys completed a quest.」[k]
+[テオ f=12]「Y-yes...」[k]
+How did he hear that so quickly...?[k]
+[ブルー f=02]「That's quite an accomplishment for someone who's just starting out. I'm impressed with your motivation.」[k]
+[テオ f=10]「Y-yes, thank you.」[k]
+[ブルー f=02]「Are you guys celebrating?」[k]
+[マックス f=01]「Well, something like that.」[k]
+[ブルー f=01]「If you want, why don't you let us celebrate with you? Your first quest!」[k]
+[テオ f=05]「What? You and your friends?」[k]
+[ブルー f=02]「Sure, let's go.」[k]
+@cl
+[テオ f=12]「Oh...」[k]
+[エリック f=01]「Come on, everyone, don't hesitate to come up!」[k]
+Without my consent, Blue and Eric came into the room. Following them, the rest of the guys came in.[k]
+[name n="Blue's Friend" f=thief_black_01]「Excuse me.」[k]
+[name n="Blue's Friend" f=thief_red_01]「Wow, you live in a pretty nice room for a rookie!」[k]
+[name n="Blue's Friend" f=bandit_blue_01]「Nice to meet you, [テオ].」[k]
+[テオ f=12]「Oh, wait a minute...!」[k]
+[textoff]
+@out t=0
+@w05
+[texton]
+Without giving me time to object, Blue's friends kept coming in one after another.[k]
+They suddenly took over my room and started drinking without my permission.[k]
+[textoff]
+@out t=0
+@w1
+@bgf f=0008
+[texton]
+[name n="Blue's Friend" f=bandit_blue_01]「Okay, I'll have a drink too!」[k]
+[name n="Blue's Friend" f=thief_red_01]「Ah, the drinks are so good.」[k]
+[ブルー f=01]「Come on, guys, drink up. It's on me today.」[k]
+[テオ f=12]「Oh, um... Blue...」[k]
+[ブルー f=05]「Hey, you, go get something to eat.」[k]
+[テオ f=12]「Eh?」[k]
+[エリック f=05]「Didn't you hear Blue? Off you go.」[k]
+[テオ f=12]「Ah, yes... So, the money...?」[k]
+[ブルー f=01]「You guys made a lot of money today, didn't you?」[k]
+[テオ f=12]「Y-yes...」[k]
+Sensing an atmosphere where I couldn't refuse, I decided to go and run the errand.[k]
+[name n="Blue's Friend" f=thief_black_01]「Gahahahaha!」[k]
+[name n="Blue's Friend" f=bandit_blue_01]「Hey! You haven't got the snacks yet?」[k]
+Blue's friends are completely drunk and start laughing loudly.[k]
+I headed out to do some shopping under the pressure of the crowd.[k]
+[textoff]
+@fa
+@out
+@w1
+
+; 初めてのピンハネ
+; 朝・自宅前
+@bg f=0015
+@mu f=town
+[texton]
+Next morning.[k]
+[テオ f=05]「Good morning, Max.」[k]
+[マックス f=13]「Hey, [テオ]. Yesterday was a disaster.」[k]
+After that, Blue and his friends made themselves at home for a night of drinking that lasted well past midnight.[k]
+The meal money that I paid for yesterday has not yet been returned to me.[k]
+[マックス f=05]「Next time Blue and his friends come over, let's say no. If we accept them, there'll be no end to it.」[k]
+[テオ f=02]「Yeah, I will.」[k]
+@fg r=エリック b
+@fg c=ブルー e=帯刀
+[ブルー f=01]「Yo! Hey, it's [テオ] and Max, isn't it?」[k]
+Just then, Blue and Eric arrived.[k]
+[テオ f=05]「Oh, Blue and Eric...」[k]
+[マックス f=13]「Oh, good morning!」[k]
+[ブルー f=01]「Had a good time yesterday! Let's drink together again!」[k]
+[テオ f=13]「Ah, yes, I'll see you soon...」[k]
+Frankly, I don't want them to come back.[k]
+[エリック f=01]「By the way, newbies, why don't you take this job?」[k]
+Eric then showed me a request form.[k]
+[テオ f=05]「A quest... Is it?」[k]
+[ブルー f=01]「We took it, but I can't make it due to some personal reasons, so why don't you guys take my place?」[k]
+[テオ f=05]「Us instead?」[k]
+[マックス f=11]「Are you sure you want to do this?」[k]
+[ブルー f=02]「Oh, and come back and report to me when you're done. I'm the one who took the job, after all. I want to report back to the client.」[k]
+[テオ f=01]「Ah, yes, I understand.」[k]
+[マックス f=03]「Thanks, Blue!」[k]
+[textoff]
+@out
+@w1
+
+; 夕方・仕事終わり・酒場の前
+@bg f=0016
+[texton]
+That evening [―――][k]
+[マックス f=03]「I'm glad you found what the client was looking for so easily.」[k]
+[テオ f=02]「Oh. Now all I need to do is take this to the receptionist at the bar and the job is done.」[k]
+I'm glad I got work today too.[k]
+I was disgusted by last night's booze-fest, but there are some benefits to knowing Blue.[k]
+@fg r=エリック b
+@fg c=ブルー e=帯刀
+[ブルー f=05]「Hey, you've done the job!」[k]
+[マックス f=01]「Oh, Blue.」[k]
+[テオ f=01]「Yes, I found the requested item.」[k]
+I show Blue the item I've been looking for.[k]
+[ブルー f=06]「...I'm pretty sure that's it. Okay, give me that.」[k]
+@clf
+[テオ f=05]「Oh...」[k]
+Blue took it from me and quickly went to the reception desk.[k]
+@se f=footstep2
+Max and I hurried after them.[k]
+[textoff]
+@out t=0
+@w1
+
+; 酒場の受付
+@bgf f=0012
+[texton]
+[受付]「Here is the reward.」[k]
+[ブルー f=02]「Okay.」[k]
+Blue received a bag of gold coins. And when he put his hand inside the bag...[k]
+[ブルー f=02]「Here.」[k]
+@se f=coinsingle
+[テオ f=05]「Ah...」[k]
+He tossed one gold coin at each of us. We caught it in a hurry.[k]
+@fg c=ブルー e=帯刀
+[ブルー f=02]「That's today's paycheck.」[k]
+[テオ f=12]「What... This is...?」[k]
+[マックス f=13]「Um... That bag over there...?」[k]
+[ブルー f=05]「Huh? This is my share.」[k]
+[マックス f=13]「But we did the work...」[k]
+[エリック f=05]「Huh? What are you talking about?」[k]
+[ブルー f=05]「I took the job, so the reward is mine. You guys took the job from me for a single gold coin. That's all there is to it.」[k]
+[テオ f=12]「Oh, no...」[k]
+[マックス f=13]「But, you didn't do anything this time, right...? So taking most of the reward is...」[k]
+@mu f=worry
+@fg c=ブルー e=帯刀 f=08
+[ブルー f=08]「...! ∗glare∗」[k]
+[テオ f=12]「...!」[k]
+Suddenly, Blue's eyes flashed sharply![k]
+[ブルー f=07]「You! Who the hell do you think you're talking to?」[k]
+[マックス f=13]「No, no! I never meant to...」[k]
+[ブルー f=07]「I paid you your wages! And you talk to me like I'm a thief... Are you kidding me?」[k]
+[マックス f=12]「Well, that's... 」[k]
+[マックス f=13]「Hey, sorry for being rude! Of course I am very grateful! Thank you so much!」[k]
+[textoff]
+@out t=0
+@w1
+[texton]
+Blue expressed his anger with spine-chilling ferocity. Max apologized profusely to Blue.[k]
+We had worked a full day and were deprived of more than 90% of our earnings. It was obvious that we were treated unreasonably, but in the face of Blue's anger, we couldn't say anything.[k]
+He is a prominent veteran adventurer who is well known in the area. He is also a man of overwhelming ability. There was no way we, as newcomers, were going to go against Blue.[k]
+[textoff]
+@fa
+@w1
+
+; 翌朝・酒場の受付
+; ブルーに強引に仕事を押しつけられる
+@bg f=0015
+@mu f=town
+[texton]
+And the next day.[k]
+[マックス f=03]「All right! I got a perfect job today!」[k]
+[テオ f=02]「It was worth it to get in line early in the morning. If we do this every day, we're sure to make a lot of money.」[k]
+Max and I packed the bar early in the morning, determined to get a job ourselves, no matter what it took.[k]
+If we did the work that Blue was contracted to do, that didn't earn us nearly as much as we could earn ourselves.[k]
+We realized that we had to take action ourselves if we wanted to make money.[k]
+[マックス f=01]「Well, the deadline is this evening, so we can't afford to take things too easy. Let's go out as soon as possible!」[k]
+@st
+@fg c=ブルー e=帯刀
+[ブルー f=02]「Hey.」[k]
+[テオ f=12]「Aaa...」[k]
+Just as we were about to leave, Blue appeared in front of us.[k]
+[マックス f=13]「Oh, Blue... Hi...」[k]
+[ブルー f=02]「I was just looking for you guys.」[k]
+@se f=paper
+Then he takes out a sheet of paper from his pocket.[k]
+To my surprise, Blue showed me a job sheet. The deadline was this evening.[k]
+[ブルー f=02]「Rejoice! I have a job for you. Of course you'll take it, right?」[k]
+[テオ f=12]「Ehh...」[k]
+[マックス f=13]「Thank you for going out of your way to help us... But we have other business to take care of today...」[k]
+@fg c=ブルー e=帯刀 f=08
+[ブルー f=08]「...! ∗glare∗」[k]
+[テオ f=12]「...!」[k]
+Suddenly, Blue's eyes flashed sharply![k]
+[textoff]
+@se f=bun
+@image layer=9 storage=BE_bun visible=true
+@wait time=300
+@layopt layer=9 visible=false
+@fgf c=ブルー e=戦闘 f=08
+@se f=collapse
+@quake time=1000 hmax=60 vmax=60
+@flash t=200 on off=500
+@wq
+@mu f=anxiety
+[texton]
+∗crash!∗[k]
+[テオ f=11]「Wow!」[k]
+[マックス f=11]「Waaaaah!」[k]
+To our surprise, Blue smashed a nearby barrel with a single blow from his large sword![k]
+[ブルー f=07]「I told you to do it without rattling on and on! I've just brought you a job, what's with that tone of voice?」[k]
+[マックス f=12]「Eeeeek!」[k]
+[テオ f=12]「S-sorry! We'll do that job right now!」[k]
+[textoff]
+@out t=0
+@w05
+[texton w=1]
+It was not an atmosphere that we could refuse. To appease Blue, who was in a rage, we accepted his request without hesitation and went to work.[k]
+I turned down the job gently, but he got so angry... I was struck with an unfathomable fear as I witnessed Blue's violent nature.[k]
+And since it was very unlikely that I could handle two requests in one day, I had to decline the quest I had accepted myself...[k]
+[textoff]
+@wait time=1000
+
+; 夕方・自宅
+@bg f=0008
+@mu f=anxiety
+[texton]
+@se f=door2
+[テオ f=05]「I'm home...」[k]
+After completing the work imposed on me by Blue, I dragged my tired body home.[k]
+[name n="Blue's Friend" f=bandit_blue_01]「Gahahahahahaha!」[k]
+[name n="Blue's Friend" f=thief_red_01]「Hahahaha, that's a masterpiece!」[k]
+[エリック f=01]「What? Looks like you're back.」[k]
+[マックス f=12]「Oh... What? Why are Blue's friends at your house...?」[k]
+[name n="Blue's Friend" f=thief_black_01]「Oh! Thanks for your hard work! We got started first.」[k]
+While I was fulfilling Blue's request, Blue had gone into my house without permission and started drinking with his friends.[k]
+I thought I locked the door, so why...?[k]
+[ブルー e=帯刀 f=05]「Hey, I hope you got that job right.」[k]
+[テオ f=12]「Y-yes...」[k]
+@se f=coin
+I gave Blue all the rewards. Unlike last time, this time it was up to me to report to the client and even receive the reward.[k]
+[ブルー f=02]「...Okay, there's definitely enough for the reward. It's not like they're sneaking it out.」[k]
+[ブルー f=01]「Here, here's your share.」[k]
+@se f=coinsingle
+Blue took two gold coins out of the bag and tossed them carelessly on the floor. Apparently, each of these coins was a reward for me and Max.[k]
+[マックス f=12]「Is that all...?」[k]
+[ブルー f=08]「What is it? You got a problem with me?」[k]
+[マックス f=13]「No, no, this is enough for me! Thank you very much!」[k]
+Today was the day we were going to do the job ourselves and receive full compensation, but things turned out the same as last time...[k]
+[ブルー f=06]「And I'll tell you one more thing.」[k]
+[ブルー f=05]「From tomorrow, I'll be giving you jobs. So, you two, don't take a job on your own. Understood?」[k]
+[テオ f=10]「...」[k]
+[textoff]
+@out
+[texton]
+The next day, and the day after that, Max and I had to do the jobs Blue had taken on for a meager reward.[k]
+With the strong desire not to displease Blue, we continued to do the unprofitable work without complaint.[k]
+[textoff]
+@wait time=1000
+
+; 翌日の夕方・自宅
+; 勇気を出して抗議
+@bg f=0008
+[texton]
+@se f=door2
+[テオ f=05]「I'm home...」[k]
+When I returned home, once again I found Blue and his friends drinking in the house without permission.[k]
+[エリック f=05]「You're finally home, oops!」[k]
+[テオ f=10]「...」[k]
+I'm pretty sure I locked the door this morning. Why is the door open?[k]
+[エリック f=05]「You, why do you lock the door?」[k]
+[テオ f=05]「Eh...」[k]
+[エリック f=05]「With my lock-picking skills, it's easy to open the door, but it's a hassle to pry it open every time. So don't lock it again, it's too much trouble.」[k]
+[テオ f=10]「...」[k]
+It was as if it was a matter of course to pry open the lock and get in.[k]
+[ブルー f=05]「You're finally home. Here, hand over today's reward quickly.」[k]
+@se f=coin
+He took the reward bag from my hand as if it were a matter of course. Then, as usual, he took out a gold coin and put it in my hand.[k]
+[ブルー f=05]「I'll need you to go shopping as soon as possible. We're about to run out of booze, so get to it.」[k]
+[テオ f=10]「...」[k]
+This situation is clearly not right.[k]
+I finally decided to say what I wanted to say.[k]
+[テオ f=12]「Um! Gentlemen! Listen to me!」[k]
+[ブルー f=05]「Huh?」[k]
+The room is quiet for a moment as my voice echoes through the room.[k]
+[name n="Blue's Friend" f=bandit_blue_01]「What the hell?」[k]
+[エリック f=05]「What's up, [テオ]?」[k]
+[テオ f=12]「Um... Can you please stop drinking here from today?」[k]
+[エリック f=07]「Huh?!」[k]
+[テオ f=12]「This is my room. To be honest, I am annoyed. I want to have a good night's rest and be ready for work the next day.」[k]
+[ブルー f=06]「...」[k]
+[name n="Blue's Friend" f=thief_red_02]「...Tch.」[k]
+[エリック f=05]「...Hey, what are you talking about, [テオ]?」[k]
+Everyone's expressions become stiff.[k]
+But I have to be brave enough to say it...! If I back down here, these drinking parties will continue forever.[k]
+[テオ f=12]「Also, Blue.」[k]
+[ブルー f=06]「...What.」[k]
+[テオ f=12]「I'd like to refrain from accepting jobs you pick for us in the future.」[k]
+[ブルー f=05]「...Huh?」[k]
+[テオ f=12]「We'd rather accept our own jobs and be paid in full... So...」[k]
+@mu f=worry
+@fgf c=ブルー e=通常・大 f=08
+@se f=beat
+@quake time=500 hmax=50 vmax=50
+@wq
+∗bang!∗[k]
+[ブルー f=08]「...!」[k]
+@se f=grasp
+[テオ f=18]「...!」[k]
+Blue suddenly grabbed me![k]
+@se f=grasp
+He grabbed me by the chest and lifted me up with one hand.[k]
+[テオ f=18]「Ugh...! Blue...」[k]
+@se f=grasp
+[ブルー f=07]「You son of a bitch... Who do you think you're talking to like that?」[k]
+[テオ f=18]「I'm sorry... but things can't go on like this...」[k]
+[ブルー f=08]「You...!」[k]
+[エリック f=05]「That's a terrible thing to say. Blue took an interest in you, and even found you jobs.」[k]
+[name n="Blue's Friend" f=thief_red_01]「Oh no, he made Blue angry.」[k]
+@se f=grasp
+[テオ f=18]「Ugh...!」[k]
+Blue stared at me with a demonic expression while keeping a grip on me.[k]
+But I can't back down here...! We can't continue this relationship...![k]
+@fgf c=ブルー f=06
+[ブルー f=06]「...」[k]
+@se f=dosa
+@quake time=200 hmax=10 vmax=10
+@wq
+@fg c=ブルー e=通常 f=06
+Suddenly, Blue became calm and let go of my grip on his chest.[k]
+[ブルー f=06]「...」[k]
+[テオ f=12]「...?」[k]
+The anger that had just appeared on Blue's face disappeared, and he is now looking at us with a completely calm expression.[k]
+[テオ f=12]「Blue...?」[k]
+I wonder what's going on...? Maybe he's considering my plea...?[k]
+[ブルー f=06]「...」[k]
+[ブルー f=05]「...I understand. If you're going to go that far, you can do whatever you want.」[k]
+[テオ f=12]「What...?」[k]
+[ブルー f=05]「Starting tomorrow, go on whatever quest you want to go on.」[k]
+[テオ f=13]「Oh, really?」[k]
+[ブルー f=05]「Yeah, it's true. Just...」[k]
+@fgf c=ブルー f=15
+[ブルー f=15]「...I don't know if you'll make it back here in one piece.」[k]
+[テオ f=12]「...!」[k]
+Then Blue grinned.[k]
+When I saw the sharp light behind those eyes, I instinctively knew that I could not go against Blue.[k]
+His eyes were filled with deadly intent. He was staring at us with a sharp and ruthless gaze, as if he were a predator stalking its prey.[k]
+If I really offend this person, I don't know what he will do to me. My life may even be in danger.[k]
+[テオ f=10]「...」[k]
+@fgf c=ブルー f=00
+[ブルー f=02]「Hey, what's wrong?」[k]
+[テオ f=10]「...」[k]
+[ブルー f=02]「I said do what you want. Why aren't you happier?」[k]
+[テオ f=10]「...I'm sorry.」[k]
+[ブルー f=05]「Huh?」[k]
+[テオ f=10]「I take back what I said earlier. I am truly sorry...」[k]
+[ブルー f=06]「...」[k]
+[ブルー f=02]「...Hmm, you get the idea.」[k]
+[エリック f=05]「Don't ever say anything unnecessary again!」[k]
+[テオ f=10]「...」[k]
+I stopped defying them. Yes, I had no choice from the beginning.[k]
+Blue is by far the strongest and most fearsome man. Never make him your enemy. If you confront him, ruin awaits you.[k]
+[テオ f=10]「...」[k]
+I got involved with the wrong person.[k]
+[textoff]
+@out
+@wait time=1000
+
+; 数ヶ月後・こき使われる日々
+@bg f=0012
+[texton]
+For the next several months, Blue and his team worked me and Max hard day after day.[k]
+Blue accepts work and pushes it on to me and Max.[k]
+All the rewards were taken by Blue in exchange for a handful of gold coins. This was to continue for many months.[k]
+[テオ f=06]「...」[k]
+Looking around the bar, I see that many groups of adventurers are talking about their adventures.[k]
+They are all full of life, and seem to be having a lot of fun.[k]
+[テオ f=06]「...」[k]
+Suddenly, I think of myself.[k]
+...Why are only myself and Max suffering this way?[k]
+So far, we are the only ones who have been bullied by Blue. I haven't seen Blue get involved with any other adventurers.[k]
+While many adventurers are free to do their own thing, for some reason we are the only ones being preyed upon by Blue's gang.[k]
+...It just so happened that I caught their eye. That's all.[k]
+But why us? Why of all people...![k]
+There's a reason why Blue won't touch anyone but us. If there are too many prey, they will collude and rebel.[k]
+And no matter how powerful an adventurer Blue is, if he too blatantly displays poor behavior, he will make enemies with many other adventurers. If that were to happen, he would not be able to make it in this town.[k]
+So they stick to me and Max as prey and do not reach out any further.[k]
+All the adventurers in this town know about our situation. But they all turn a blind eye.[k]
+They don't want the attention that getting involved with the two of us would bring them.[k]
+And of course, that's all been carefully arranged by Blue.[k]
+Honestly... it's impressive cunning.[k]
+[テオ f=06]「...」[k]
+I realized that I was stuck in a hellhole of isolation.[k]
+To say it was bad luck would be an understatement, but my heart is filled with an unfulfilled feeling.[k]
+Will this go on forever?! Is there no way out?![k]
+...No, there is a way out.[k]
+To fight and win against Blue.[k]
+But of course I can't do that. With my current abilities, I can never beat Blue.[k]
+As we have seen before, Blue's ability is the real thing.[k]
+The weak cannot resist the strong. That is the world of adventurers. I thought I understood that in my head, but in truth I did not understand it at all.[k]
+Yes, I was naive.[k]
+[textoff]
+@fa
+@out
+@wait time=1000
+
+; マックスの提案
+@bg f=0015
+@mu f=trick
+@fg c=マックス f=06
+[texton]
+Then one day, Max made a suggestion.[k]
+[マックス f=06]「You know, I've been thinking.」[k]
+[テオ f=05]「What is it?」[k]
+[マックス f=06]「We can't resist Blue because we're not strong enough.」[k]
+[テオ f=06]「I know that.」[k]
+[マックス f=05]「Blue is super strong, of course, but on top of that there are his cronies. There are more than ten of them and only two of us. There is no way we can compete.」[k]
+[テオ f=06]「...So?」[k]
+[マックス f=05]「In other words, we should get more party members!」[k]
+[マックス f=05]「We need more members, maybe five or six. That way, even if we can't compete with Blue and the others, they won't hound us as much as they do now.」[k]
+[テオ f=06]「...」[k]
+[textoff]
+@out
+@wait time=1000
+
+; 酒場で勧誘
+@bg f=0012
+@mu f=anxiety
+[texton]
+So we started recruiting members at the bar the next day.[k]
+I approached every adventurer who came in and out of the tavern. It must have been close to a hundred.[k]
+But... Not a single person joined.[k]
+It was only natural, come to think of it. Everyone knew that Blue and his group had their eyes on me and Max. No one wanted anything to do with them.[k]
+And we are still an inexperienced and weak party. No one would take the risk to work with us.[k]
+Once again, I and Max were reminded that we were on our own.[k]
+[textoff]
+@out
+@wait time=1000
+
+; ギルドの受付
+@bg f=0013
+[texton]
+[受付]「We will not get involved in any issues between parties. Sorry, but the parties concerned must resolve the issue among themselves.」[k]
+[テオ f=06]「Okay...」[k]
+I even asked the guild to intervene. However, they never took any steps to do so.[k]
+Surprisingly, Blue's gang were not a problem for the guild.[k]
+Despite all they do, they have never been involved in a single problem involving the guild. So the guild had no reason to intervene.[k]
+I remember that one adventurer once spilled the beans about Blue.[k]
+He heard they didn't want any trouble with civilians or guild officials in this town. He is very thorough about that.[k]
+The reason for this, of course, is that they wouldn't want to be declined work.[k]
+They can't make a living if they don't get paid. And for adventurers, the biggest sponsor is the client. Therefore, they would never do anything to offend the guild that acts as an intermediary to clients.[k]
+Blue was not only strong, but also never sloppy when it mattered.[k]
+[textoff]
+@out
+@wait time=1000
+
+; マックス逃亡
+@bg f=0007
+[texton]
+[エリック f=05]「Hey, [テオ]. I heard you guys have been trying to recruit adventurers from the guild lately.」[k]
+[テオ f=12]「Y-yes...」[k]
+The story of the solicitation was quickly heard by Blue. There seemed to be nothing we could do in this town to escape his scrutiny.[k]
+[ブルー f=05]「I won't allow you to do something like that without my permission. Don't ever do it again.」[k]
+[テオ f=10]「...」[k]
+[ブルー f=05]「So you guys, join my party.」[k]
+[テオ f=12]「What...?」[k]
+[エリック f=05]「It's kind of a hassle to go through the process when the parties are separate. Some clients complain that the executing party and the requesting party are different. You guys are like Blue's henchmen now anyway, right?」[k]
+[テオ f=10]「...」[k]
+[ブルー f=06]「What the hell? What's wrong?」[k]
+If we join Blue's party, we will completely lose our freedom. I want to completely refuse.[k]
+But [―――][k]
+[ブルー f=08]「Hey, you're not going to turn me down, are you?」[k]
+[エリック f=07]「You son of a bitch! Blue offered to let you into his party, so I won't forgive you if you refuse!」[k]
+[テオ f=12]「I'm home...」[k]
+[テオ f=10]「I-I'll do it. I'll join Blue's party...」[k]
+[ブルー f=06]「...Hmph. You should have said so sooner.」[k]
+[エリック f=05]「OK. Then submit your application to join our party to the guild by the end of the day.」[k]
+[テオ f=10]「...」[k]
+I can't refuse Blue's orders. I have no choice.[k]
+[ブルー f=05]「By the way, where did Max go?」[k]
+[テオ f=05]「Eh?」[k]
+[エリック f=05]「I haven't seen him since yesterday. Even when I go to his lodgings, he's not there.」[k]
+[テオ f=12]「What the...!」[k]
+No way... Did Max run away?[k]
+[ブルー f=05]「Hey, you're not hiding him, are you?」[k]
+[テオ f=12]「No, no, I just found out too...」[k]
+[エリック f=08]「Hey... Where the fuck did he go?」[k]
+[ブルー f=05]「Let's go find him, Eric. Hey, [テオ], you've got until the end of the evening to do this job!」[k]
+Blue handed me the instructions for the new job and went away with Eric.[k]
+[textoff]
+@out
+@wait time=1000
+[texton]
+To my surprise, Max was found less than half a day later.[k]
+Blue's gang have been terrorizing many adventurers who operate in this town. They seemingly got information on Max's location in no time.[k]
+[textoff]
+@bgf f=0014
+[texton]
+[マックス f=13]「I'm sorry, I'm sorry! It was just a little impulse...」[k]
+[エリック f=01]「Hey, what should we do about this guy?」[k]
+[ブルー f=15]「...Punishment. If you do something selfish, you have to be punished.」[k]
+[マックス f=12]「Aaaah! I'm sorry, I'm sorry, please forgive me!」[k]
+[エリック f=07]「Hey, come here!」[k]
+[マックス f=11]「Aaahhh! Help meee!」[k]
+[textoff]
+@fa
+@out t=0
+@wait time=500
+@beat
+@beat time=60
+@beat
+@beat
+@beat time=80
+@beat
+@beat
+@beat time=80
+@beat
+@beat
+@wait time=500
+[texton]
+Max was assaulted by Blue and his friends.[k]
+When Max returned, his face was swollen and his body was covered with fresh wounds.[k]
+After that incident, Max and I stopped any rebellion or plotting secession against Blue.[k]
+We could no longer escape from Blue's party. It was engraved in the marrow of our bones.[k]
+[textoff]
+
+@wait time=1000
+[texton]
+[if exp='f.readPastEpisode']
+	Six months passed in that state, and it has now been a year since my current life began.[k]
+	Max and I continued to endure our lives without any hope, and now we reach the present.[k]
+[else]
+	Then, advancing to the point just after I met Maria and Riselle at the abandoned house in the forest.[k]
+	Max and I continued to endure our lives without finding any hope.[k]
+	After that, most of the reward we received for recovering the pendant was taken by Blue.[k]
+[endif]
+
+[textoff]
+@wait time=1000
+
+; 現在に戻る
+@bg f=0008
+@mu f=shadow
+[texton]
+@se f=door2
+[name n="Blue's Friend" f=bandit_blue_01]「Gahahahahahaha!」[k]
+[ブルー f=02]「Oh, [テオ], you're back.」[k]
+[テオ f=06]「...」[k]
+As normal, Blue and his friends party in my house without permission.[k]
+Every night, a party was held. I had no choice but to watch in silence.[k]
+[エリック f=05]「Hey, [テオ], go buy some booze.」[k]
+He handed me some gold coins which Max and I had originally earned. They were part of the reward we received for fighting the bandits and recovering the pendant.[k]
+[エリック f=05]「I'm sure you understand, but make sure that's all you spend it on.」[k]
+[テオ f=06]「...I'm off.」[k]
+[textoff]
+@out
+@wait time=1000
+
+@bg f=0016
+[texton]
+[テオ f=05]「Please, give me some alcohol.」[k]
+[name n=Shopkeeper]「...Okay...」[k]
+The townspeople, who were friendly in the beginning, have recently become unfriendly.[k]
+I'm now a member of Blue's party, after all.[k]
+I never thought I would be avoided by people... I really want to get away from them, too.[k]
+[テオ f=06]「...」[k]
+Can we continue to live like this?[k]
+But how do you get away from Blue? If I try to escape, I'd end up like Max did.[k]
+[テオ f=06]「...」[k]
+My heart is deep in despair.[k]
+Yes, there is absolutely no escape. It is extremely difficult to escape from Blue's eyes in this town.[k]
+Besides, even if we were to escape from Blue and escape this town, what would we do after that?[k]
+As long as Blue is here, once I leave this town, there is no going back.[k]
+Bravetown is a town for adventurers. Leaving here means giving up the path of an adventurer.[k]
+But didn't I come to this town with a dream?! Can I let my dream of becoming a great adventurer be crushed so easily?![k]
+[テオ f=08]「...Damn!」[k]
+I want to escape from Blue and the others. But I don't want to give up my dream of becoming an adventurer.[k]
+I could only suffer through the pain, with no bright future in sight.[k]
+[textoff]
+@fa
+@out
+@w05
+
+@bg f=0062
+@mu f=sad
+[texton]
+[テオ f=06]「...It's been a year since then.」[k]
+My life as an adventurer wasn't supposed to be like this.[k]
+There was an ideal life that I had envisioned. But that's now a pipe dream. In reality, I just continue to follow Blue's orders day after day.[k]
+But [―――][k]
+Lately, I've come to think that's fine.[k]
+Blue is a truly frightening person. If you go against him, you don't know what he will do to you. So it's better to obey quietly.[k]
+As long as we remain obedient, we are safe. To do well as adventurers, we should make as few enemies as possible.[k]
+Yes, this is the most rational choice.[k]
+[textoff]
+
+@se f=door2
+@bgf f=0008
+[texton]
+∗slam∗[k]
+@fg c=ブルー e=帯刀 f=52
+[ブルー f=52]「Whew, that was delicious.」[k]
+Blue's gang, who had been drinking and eating at the bar, came back to my house, smelling of alcohol.[k]
+@cl
+They open the door to the apartment, and without hesitation, they come in and start relaxing as if it was their own.[k]
+...It happens all the time. I don't care. It's wise to be quiet here.[k]
+[ブルー f=52]「Phew～. I drank a little too much today.」[k]
+[テオ f=06]「...」[k]
+Blue went straight to sleep, snoring loudly.[k]
+[textoff]
+@fa
+@out
+@wait time=1000
+
+; 翌朝
+@bg f=0007
+[texton]
+[テオ f=05]「...Huh?」[k]
+Next morning when I woke up, Blue was gone.[k]
+He went out this early this morning? That's unusual...[k]
+@se f=door2
+∗slam∗[k]
+@fg c=ブルー e=帯刀 f=05
+[ブルー f=05]「[テオ], you there?」[k]
+Blue returned along with Eric.[k]
+[テオ f=05]「What's wrong, Blue?」[k]
+[ブルー f=05]「Me and Eric are going exploring today. You follow us. And tell Max to come, too.」[k]
+[テオ f=12]「Y-yes, I understand!」[k]
+[textoff]
+@out
+@wait time=1000
+
+; 町中
+@bg f=0015
+@mu f=town
+[texton]
+[マックス e=現在の装備 f=10]「It's rare that Blue and the others do any heavy lifting. Usually they just make us do it.」[k]
+Max spoke to me in a whisper so that Blue and the others couldn't hear.[k]
+[テオ e=現在の装備 f=06]「Today we're going into the ruins on the northern outskirts of town. Maybe they thought it was too much for us to accomplish on our own.」[k]
+[マックス f=12]「The ruins... Oh, no... Rumor has it that there are some really strong monsters out there～!」[k]
+Max looked frightened.[k]
+[テオ f=06]「We'll be fine with Blue and the others. I know they're like that, but they are strong.」[k]
+[マックス f=09]「I hope so...」[k]
+Today's quest is to uncover treasure said to lie in ruins on the outskirts of town.[k]
+The client requested some old materials from that treasure, but any other gold and silver found is fine to keep.[k]
+In other words, there was potential to make a lot of money by completing this quest. So Blue would want to make sure of success.[k]
+However, Max is right, the monsters that appear could be strong. It may be better to be cautious.[k]
+[textoff]
+@out
+@wait time=500
+
+;-----------------------------------------------------------------------------------------
+; 設定
+[iscript]
+o.マルティナの酒場.quests.add(o.遺跡の財宝);
+o.遺跡の財宝.accepted = true;
+o.町外れの遺跡入口.visible = o.町外れの遺跡入口.appeared = true;
+o.森の中の廃屋入口.events = [1];
+o.自宅.events = [];
+o.町外れの遺跡Ｂ１.events.push2(1, 3, 4);
+o.町外れの遺跡Ｂ３.events.push2(1, 2, 3, 4);
+o.町外れの遺跡入口.requireMembers = false;
+game.guest.entry(o.エリック);
+game.guest.entry(o.ブルー);
+o.テオ.levelUpToTheLast();
+o.マックス.levelUpToTheLast();
+game.party.recovery();
+game.date ++;	// 廃屋のイベントの翌日
+game.clock = game.timeOfADay \ 4;	// 朝方
+[endscript]
+;-----------------------------------------------------------------------------------------
+
+@gameon
+@wait time=500
+[texton]
+[ブルー f=05]「Let's get the hell out of here and head to the [b]ruins[/b] on the outskirts of town. Don't be slow.」[k]
+[textoff]
+[eventoff]
+
+
+
+
+;■プロローグ３・遺跡の地下のモンスター
+
+;◇イベント01・ダンジョン入口
+*ruin_1
+
+; ダンジョン入口
+@wait time=500
+[texton]
+The moment I stepped inside, I felt a somewhat eerie atmosphere.[k]
+[マックス f=12]「What a bad vibe...」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント02・通路に散らばる白骨
+*ruin_2
+
+; ダンジョン通路
+@wait time=500
+[texton]
+[マックス f=11]「Wow!」[k]
+As I walked out into the room, Max suddenly sounded surprised.[k]
+[エリック f=05]「What the hell, shut up!」[k]
+[マックス f=11]「B-bones! ...Human bones!」[k]
+[textoff]
+@wait time=500
+@walk turn=n
+@wait time=500
+[texton]
+Looking down the passage, I saw what appeared to be human bones scattered everywhere.[k]
+[エリック f=05]「There are bones everywhere. You'll never be an adventurer if that scares you.」[k]
+[テオ f=06]「...」[k]
+Eric isn't wrong. Occasional bones on the roadside may be an everyday sight for an adventurer.[k]
+But this is different. Many people have clearly been killed here.[k]
+...Maybe there's something ahead. We should probably be careful.[k]
+[マックス f=13]「Oh, um... Blue?」[k]
+[ブルー f=06]「What is it?」[k]
+[マックス f=13]「I don't think we should go any further. I have a bad feeling about this.」[k]
+[ブルー f=05]「Huh? What, you scared? Let's get moving!」[k]
+Max is understandably hesitant.[k]
+However, we have no choice. If Blue says he will go, we have no choice but to follow him.[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント03・ドラゴン強襲
+*ruin_3
+
+; ダンジョン通路
+@fg c=エリック f=05
+[texton]
+[エリック f=05]「Hey, look at that!」[k]
+@clf
+@walk turn=n
+Suddenly Eric pointed toward the end of the path.[k]
+@fg l=エリック f=05 b
+@fg r=ブルー f=06
+[ブルー f=06]「What's up, Eric?」[k]
+@fg l=エリック f=01
+[エリック f=01]「Hey, maybe that's the treasure?」[k]
+@fg r=ブルー f=05
+[ブルー f=05]「What?!」[k]
+@clf
+@se f=footstep2
+Eric and Blue greedily rush ahead.[k]
+[テオ f=12]「Wait...」[k]
+I have a bad feeling about this...[k]
+[ブルー f=07]「Hey, you guys! What are you doing? Come on!」[k]
+[マックス f=11]「Ah, yes!」[k]
+[textoff]
+
+; 大部屋へ移動
+@wait time=200 cond='game.party.curY < 14'
+@walk move=n cond='game.party.curY < 14'
+@wait time=200
+@walk move=n
+@wait time=200
+@walk move=n
+@wait time=200
+@walk move=n
+@wait time=500
+@walk turn=w
+@wait time=1000
+@walk turn=e
+@wait time=500
+
+; ダンジョン大部屋
+[texton]
+[テオ f=12]「This is...!」[k]
+In the hall where we emerged, there were a lot of treasure chests lined up. This is unmistakably the rumored treasure.[k]
+[エリック f=01]「Wow! It's treasure!」[k]
+[ブルー f=01]「That was pretty quick. Hey, [テオ], Max, let's get this stuff out of here!」[k]
+[マックス f=11]「I-I understand!」[k]
+[テオ f=10]「...」[k]
+Blue urges us to approach the treasure chest. Suddenly [―――][k]
+@fa
+[name n=Monster]「Grrrrr...」[k]
+[テオ f=10]「...!」[k]
+[マックス f=12]「What's that noise?」[k]
+[textoff]
+@wait time=300
+
+; ドラゴンを出す
+@eval exp='game.map.pos[4][18].f.eximg = "dragon2"'
+@eval exp='game.updateView()'
+
+@walk turn=n
+@mu f=dragon
+@wait time=300
+[texton]
+[マックス f=11]「Geez!」[k]
+[テオ f=12]「A... a monster...!」[k]
+A huge monster stood in front of the four of us![k]
+[エリック f=09]「What the hell... I ain't never heard of a monster like this.」[k]
+[ブルー f=08]「Tsk... Could be trouble.」[k]
+What appeared was a black dragon.[k]
+It is one of the most dangerous monsters, combining strength and speed with powerful fire breath.[k]
+[name n=Dragon]「Gaaaahhhh!」[k]
+
+; ブレスの演出
+@image layer=4 storage=screen_red top=0 left=0
+@anime_fadein layer=4
+@playse storage=fire1
+@image layer=5 storage=PE_base_view top=0 left=0 visible=true
+@layopt layer=5 left=0
+@startemit layer=5 storage="PE_breath_red" time=3000
+
+[エリック f=17]「Wow!」[k]
+[マックス f=17]「Waaaaah!」[k]
+Suddenly, the dragon blasted the area with scorching flames![k]
+Swirling flames engulf the party. The four of us desperately try to protect ourselves![k]
+@anime_fadeout layer=4
+@clearemit layer=5
+[テオ f=10]「Damn... What tremendous fire...!」[k]
+[ブルー f=10]「Damn you, dragon...!」[k]
+
+; ブレスの演出
+@image layer=4 storage=screen_red top=0 left=0
+@anime_fadein layer=4
+@playse storage=fire1
+@image layer=5 storage=PE_base_view top=0 left=0 visible=true
+@layopt layer=5 left=0
+@startemit layer=5 storage="PE_breath_red" time=3000
+
+Before he had time to retake his stance, the dragon's fire attack began again![k]
+[エリック f=17]「Woohoo!」[k]
+[マックス f=17]「Wahhh! Hot! Hotttt!」[k]
+[textoff]
+
+; ブレスの演出とダメージ
+; ＨＰが１割になる
+@anime_fadeout layer=4
+@clearemit layer=5
+@eval exp='tf.arr = [game.party.members[0], game.party.members[1], o.エリック, o.ブルー]'
+@eval exp='tf.i = 0'
+*_damage_loop
+@eval exp='game.curTarget = tf.arr[tf.i]'
+@eval exp='tf.damage = int(game.curTarget.life * 0.9) - 1'
+@eval exp='game.curTarget.life -= tf.damage'
+@damage v=&'tf.damage'
+@wait time=100
+@eval exp='tf.i ++'
+@jump target=*_damage_loop cond='tf.i < tf.arr.count'
+@wait time=1500
+
+[texton]
+[テオ f=10]「...So... strong...!」[k]
+[ブルー f=10]「Damn... The bastard...!」[k]
+We barely remained standing after its barrage of fiery breath.[k]
+What a huge difference in power...![k]
+Even Blue could do nothing but try to protect himself. We could only stand frozen in the face of the overwhelming power of the most fearsome monster.[k]
+If we don't do something, we'll be wiped out...![k]
+It was clear from its initial attack that this wasn't an opponent we stood a chance against.[k]
+But running would result in being seared by hellfire from behind.[k]
+We are stuck in a state of limbo. Is there any way out?![k]
+[name n=Dragon]「Grrrrr...」[k]
+The monster licks its tongue and stares at the four of us.[k]
+It is following our movements with shining eyes, intent on not letting its prey escape.[k]
+It's desperate for food, so won't let go easily.[k]
+[ブルー f=08]「Shit... In that case...」[k]
+@st
+@se f=beat
+@flash on t=100 f=0000
+@quake time=300 hmax=100 vmax=50
+∗thump!∗[k]
+[テオ f=11]「...!」[k]
+
+; ドラゴン
+@eval exp='game.party.setCurPos(4, 18)'
+@eval exp='game.map.pos[4][18].f.eximg = void'
+@eval exp='game.map.pos[4][19].f.eximg = "dragon1"'
+@eval exp='game.updateView()'
+
+@flash off
+@se f=dosa
+@quake time=200
+Suddenly, I was shoved from behind![k]
+I fell in front of the dragon.[k]
+[textoff]
+@wait time=500
+@walk turn=s
+@wait time=500
+@fgf c=blue left=374 top=50
+
+; ドラゴンを消す
+@eval exp='game.map.pos[4][19].f.eximg = void'
+
+@mu f=darkside
+[texton]
+[ブルー f=06]「...」[k]
+[テオ f=12]「B-Blue...?」[k]
+I looked back, and saw him.[k]
+My supposed ally had pushed me in front of the dragon.[k]
+Blue looked down from a safe distance with cold eyes.[k]
+[エリック f=01]「Here! You too!」[k]
+@se f=beat
+@quake time=200
+[マックス f=11]「Huh!」[k]
+Max, like me, was pushed in front of the dragon by Eric![k]
+The dragon's attention was completely drawn to me and Max.[k]
+@fg r=eric left=628 top=50
+[エリック f=02]「I'll leave the rest to you. Later!」[k]
+[ブルー f=02]「Well, try to survive.」[k]
+@clf
+@se f=footstep2
+
+; ブルーとエリック離脱
+@eval exp='game.guest.removeMember(o.ブルー)'
+@eval exp='game.guest.removeMember(o.エリック)'
+
+Having said that, he and Eric ran away, leaving us lying on the floor.[k]
+[マックス f=11]「Well, wait a minute! Blue! What are you doing?!」[k]
+[テオ f=09]「Damn...!」[k]
+...It appears that Max and I have been sacrificed as bait. 
+They abandoned us...![k]
+[マックス f=28]「[テオ]! We've got to get out of here!」[k]
+
+; 再びドラゴン
+@eval exp='game.map.pos[4][17].f.eximg = "dragon2"'
+@eval exp='game.updateView()'
+
+[texton]
+[name n=Dragon]「Grrrrr...」[k]
+[テオ f=09]「Damn...!」[k]
+As we were heading for the passage, the dragon quickly cut off our retreat.[k]
+We had completely missed our chance to escape.[k]
+[マックス f=28]「Damn... What should we do?」[k]
+With just the two of us, there is no way we can beat this monster.[k]
+[name n=Dragon]「Grrrrr...」[k]
+We're pinned against a wall, and the dragon is slowly closing in on us. There is no escape...![k]
+Are we going to die like this?[k]
+[マックス f=27]「Hey! [テオ]! Over there!」[k]
+[textoff]
+@wait time=500
+@walk turn=w
+@wait time=300
+[texton]
+Suddenly, Max pointed to a small hole in the corner of the hall.[k]
+...Is he suggesting we try and escape through that?[k]
+[テオ f=12]「But what's below that hole...?」[k]
+[マックス f=27]「It's better than being eaten alive! Let's take a chance!」[k]
+[テオ f=10]「...」[k]
+@wait time=300
+@walk turn=s
+@wait time=300
+[name n=Dragon]「Grrrrr...」[k]
+The dragon is drooling and ready to pounce on us at any moment.[k]
+...I guess now isn't the time to be picky.[k]
+[テオ f=12]「All right. Let's get out of here!」[k]
+[textoff]
+@wait time=300
+@walk move=n
+@walk move=w
+@walk move=w
+@wait time=300
+
+; ドラゴン消す
+@eval exp='game.map.pos[4][17].f.eximg = void'
+
+[texton]
+We run frantically toward the corner of the room.[k]
+Max hooked a rope to the edge of the hole and rapidly climbed down.[k]
+[マックス f=27]「Come on! [テオ]!」[k]
+[テオ f=11]「I-I know... [w05][quake time=500 hmax=100 vmax=50]Wow!」[k]
+Suddenly, the ground shook at the stomping of the dragon's feet![k]
+@wq
+
+; 鉤が外れる
+@se f=ironbreak
+@flash t=100 out
+@quake time=300 hmax=10 vmax=10
+
+Crack![k]
+[テオ f=12]「Damn!」[k]
+The shaking caused the rope to come loose![k]
+[テオ f=09]「Damn!」[k]
+[マックス f=31]「Waaaaah!」[k]
+[textoff]
+
+; 落下する演出
+*_fall_to_lower
+@wait time=20
+@eval exp='game.view.top -= (275 - game.view.opacity) \ 2, game.view.opacity -= 20'
+@eval exp='game.view.skyLayer.opacity = game.view.opacity'
+@jump target=*_fall_to_lower cond='game.view.top > -600'
+@wait time=300
+@eval exp='game.changePosition(%[map: "町外れの遺跡Ｂ２", stealth: true])'
+@eval exp='game.updateView()'
+@eval exp='game.view.top = 100, game.view.opacity = 255'
+*_fall_to_lower_2
+@wait time=20
+@eval exp='game.view.top -= (275 - game.view.opacity) \ 2, game.view.opacity -= 20'
+@eval exp='game.view.skyLayer.opacity = game.view.opacity'
+@jump target=*_fall_to_lower_2 cond='game.view.top > -600'
+@fa
+@wait time=1000
+
+[texton]
+Max and I fell straight down...[k]
+[textoff]
+@wait time=2000
+
+; 遺跡の奥へ落下
+@eval exp='game.clock = game.timeOfADay * 3 \ 8'
+@eval exp='game.gameFrame.updateClock()'
+[texton]
+...[k]
+...[k]
+...Hmm? Is this...?[k]
+@eval exp='game.party.minimumRecovery()'
+@eval exp='game.view.top = -40, game.view.opacity = 255'
+@eval exp='game.view.skyLayer.top = 0, game.view.skyLayer.opacity = 255'
+@eval exp='game.changePosition(%[map: "町外れの遺跡Ｂ３", stealth: true])'
+@fg c=マックス f=01
+[texton w=1]
+[マックス f=01]「You're awake, [テオ].」[k]
+[テオ f=05]「Max...」[k]
+...It looks like we are safe. Luckily, the hole wasn't too deep.[k]
+[テオ f=05]「Are you okay? Can you walk?」[k]
+@fg c=マックス f=13
+[マックス f=13]「Yeah, no problem. My back's a little sore, though.」[k]
+Now, how do we get back up...[k]
+@fg c=マックス f=01
+[マックス f=01]「Let's just explore and try to find a ladder to the upper floors.」[k]
+[テオ f=06]「Understood.」[k]
+[textoff]
+@cl
+[eventoff]
+
+
+;◇イベント04・遺跡Ｂ３を探索中魔法が使えないことを知る
+*ruin_4
+
+; 遺跡の地下通路
+[texton]
+[テオ f=05]「Huh...?」[k]
+[マックス f=06]「Hmm? What's up, [テオ]?」[k]
+[テオ f=05]「I can't cast magic...」[k]
+[マックス f=11]「What?!」[k]
+[テオ f=06]「This floor is under an effect prohibiting the use of magic. That means I can't use magic, no matter how much MP I have left...」[k]
+[マックス f=09]「Seriously...? This sucks...」[k]
+[テオ f=06]「I know a little magic, but I can't use it while I'm on this floor. Keep that in mind.」[k]
+[マックス f=06]「Understood.」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント05・悪魔との出会い
+*ruin_5
+
+; 町外れの遺跡Ｂ３
+; しばらくフロアを歩き回るとイベント発生
+
+; 遺跡の地下通路
+[マックス f=12]「Hey, what if there's no way out of here?! There's no way up anywhere!」[k]
+[テオ f=05]「Don't give up! I'm sure if we look hard enough we'll find one...!」[k]
+But I was also on the verge of a breakdown.[k]
+It's completely enclosed. There is no exit anywhere. If there is a way out, it would be through the hole we fell down earlier.[k]
+Do I have to climb up there? But the ceiling is too high for me to reach. Even if I could climb up, there is that monster beyond...[k]
+Is everything going to be all right? Are we really going to die here?[k]
+[マックス f=10]「Oh～ if only we had a [emb exp='o.リターン.displayName'] scroll!」[k]
+[テオ f=06]「That's too expensive for us to afford.」[k]
+[emb exp='o.リターン.displayName'] is a spell that allows you to return outside in an instant, from the depths of any labyrinth.[k]
+There is a [emb exp='o.リターン.displayName'] scroll with the same effect. In other words, with it, we could get out of this basement right now.[k]
+I would like to carry one of these items for such occasions, but they're too expensive, so out of reach for us new adventurers.[k]
+...There's no point in asking for something we don't have. Now we have to focus on finding a way out.[k]
+[マックス f=17]「Oh～! I can't take it anymore! We're done for!」[k]
+Max's voice is pitiful and he is teary-eyed.[k]
+[テオ f=12]「Don't give up! There's got to be a way out...!」[k]
+[textoff]
+@fg c=シュバルツ e=暗闇 f=99
+[texton w=1]
+[？？？]「There's no such thing! Too bad!」[k]
+[テオ f=05]「...?!」[k]
+Suddenly, someone spoke to us.[k]
+[マックス f=12]「Who's there?!」[k]
+@fg c=シュバルツ e=通常 f=00
+A middle-aged adventurer emerged from the darkness.[k]
+[テオ f=05]「You are...?!」[k]
+[シュバルツ f=00]「My name is Schwarz. I've been wandering around here for days now.」[k]
+[テオ f=05]「How many days...?」[k]
+Apparently, someone got here before us. How did he end up here?[k]
+[シュバルツ f=00]「I've explored thoroughly. The only exit is the hole leading up...」[k]
+So, the hole where the dragon was. He also fell down it.[k]
+[マックス f=09]「Oh, no.」[k]
+When Mr. Schwarz told us the cruel truth, Max and I were filled with disappointment.[k]
+Have we run out of options...?![k]
+[シュバルツ f=00]「...」[k]
+[シュバルツ f=20]「...Actually, it's not like there's no chance of returning home from here.」[k]
+[テオ f=05]「What?!」[k]
+[マックス f=12]「Can you help us?」[k]
+[シュバルツ f=00]「There is a possibility. But in order to do that...」[k]
+@st
+@clf
+[？？？ v=vm001 buf=13]「Hehe! Looks like there are more poor lost children now ♪」[k]
+[テオ f=05]「...!」[k]
+A voice suddenly echoed through the room.[k]
+[マックス f=11]「Who's that?」[k]
+[シュバルツ f=08]「Damn you... devil...!」[k]
+[テオ f=05]「Devil?」[k]
+@mu f=murmur
+@fg c=悪魔 e=暗闇 f=99
+[悪魔 v=vm002 f=99]「Heheheh...」[k]
+@fg c=悪魔 e=通常
+Then a figure about the height of a child gradually emerged from the darkness.[k]
+[テオ f=11]「...!」[k]
+[マックス f=12]「This... This is a devil...?」[k]
+She had bat-like wings on her back and large horns on her head.[k]
+She possesses the typical demonic appearance traits that were described by my father.[k]
+But at first glance, she looks like a young girl. Rather than a devil, it might be more appropriate to call her a little devil.[k]
+But a demon is still a demon, even if it looks like a child. Their power cannot be compared to that of ordinary monsters.[k]
+In general, demons are fearsome beings that are distinct from other monsters. When I was a child, my father often told me about how terrifying they were.[k]
+...But this girl-like demon even seems rather cute. Is she really a terrifying demon?[k]
+[シュバルツ f=12]「Be on your guard! Despite appearances, this is an incredibly fearsome opponent!」[k]
+[テオ f=05]「Huh...?」[k]
+[マックス f=12]「She doesn't look that way at all...」[k]
+[シュバルツ f=20]「...In fact, I fought this devil a few days ago.」[k]
+[シュバルツ f=08]「But I was no match for her! It was as if she was playing with me!」[k]
+[テオ f=05]「What the...?」[k]
+Mr. Schwarz looks like an experienced adventurer. And yet he's saying he couldn't stand up to her at all?![k]
+[悪魔 v=vm003 f=03]「Yes, yes, I played a lot ♪」[k]
+[悪魔 v=vm004 f=05]「That guy was really, really weak. Barely worth talking about. Like, try again in 100 years?」[k]
+[悪魔 v=vm005 f=04]「Honestly, I could have just killed him straight away. But that wouldn't have been any fun, so I decided to play with him some more ♪」[k]
+[シュバルツ f=17]「Damn you...! What a fool...」[k]
+[悪魔 v=vm006 f=03]「So today I came here to play with him again and found I have two more toys! That's so fun ♪ Gahahahahaha!」[k]
+[テオ f=06]「...」[k]
+The devil speaks with carefree amusement. Mr. Schwarz's story is probably not a lie.[k]
+There is no way we can fight such a powerful opponent. Will our adventure end here after all?![k]
+[テオ f=06]「...」[k]
+One question arises here.[k]
+Why would such a high-ranking demon be lurking in the depths of these abandoned ruins?[k]
+It's hard to imagine it would just be to make fun of people who'd fallen here...[k]
+[悪魔 v=vm007 f=04]「Oh yeah, before I kill you guys, I'll tell you something good.」[k]
+[悪魔 v=vm008 f=01]「You guys came to this dungeon because you saw a request in a nearby town, right?」[k]
+[テオ f=05]「What...?」[k]
+She means the quest we received in Bravetown! How could this devil know about that?[k]
+[悪魔 v=vm009 f=04]「Actually... I'm the one who made that request ♪」[k]
+[テオ f=12]「...!」[k]
+[マックス f=12]「W-what did you say?! 」[k]
+It was this demon who made the request...?![k]
+Putting aside the question of how the guild could have accepted a demon's request, why on earth would she go all the way to a human town to do so?[k]
+[シュバルツ f=07]「You! What exactly are you planning?!」[k]
+[悪魔 v=vm010 f=01]「I don't really have a plan. I just thought it would be fun to have a black dragon attack a human town ♪」[k]
+[テオ f=05]「Black dragon...?」[k]
+Presumably that dragon that attacked us upstairs?[k]
+[悪魔 v=vm011 f=01]「The black dragon had been sleeping in these ruins for a long time, so I woke him up!」[k]
+[悪魔 v=vm012 f=05]「But Mr. Dragon was so hungry that he couldn't move at all, let alone get out of here.」[k]
+[悪魔 v=vm013 f=04]「But then how could he attack a human town? So, I thought I'd give Mr. Dragon a nice meal! ♪」[k]
+[テオ f=12]「No way!」[k]
+[悪魔 v=vm014 f=04]「Yes! If I put out a request like that one, a lot of money grubbing adventurers would gather at these ruins, right?」[k]
+[悪魔 v=vm015 f=03]「They came here one after another, not knowing it was a dragon's lair. And they all ended up in Mr. Dragon's belly! ♪」[k]
+[マックス f=12]「Ahh! Then that pile of bones...!」[k]
+[シュバルツ f=12]「Damn you... devil...!」[k]
+[悪魔 v=vm016 f=02]「So, he's much healthier now. But still not strong enough to break through the walls of these ruins, so he needs a little extra food.」[k]
+The devil then held up her hand.[k]
+[悪魔 v=vm017 f=15]「I'm tired of teasing you guys, so I'll feed you to Mr Dragon.」[k]
+@se f=magic2
+@fg a=BE_magic_large left=400 top=200
+@w05
+@se f=magic6loop
+The devil's right hand began to glow with a bewitching light![k]
+[シュバルツ f=07]「Be careful! If that light hits you, you will lose control of your body!」[k]
+[テオ f=12]「Eh?」[k]
+[マックス f=11]「Huuuuuh! What the hell?!」[k]
+[悪魔 v=vm018 f=15]「Too late! Now, all three of you, be my puppets!」[k]
+@se f=shuwa2
+@image layer=9 storage=9999 visible=true opacity=0
+@move layer=9 time=1000 path=,,192
+The devil swung her hand down and shot her bewitching light at us![k]
+It's too swift to dodge![k]
+I've been hit...![k]
+[textoff]
+
+; 光のバリア演出
+@st
+@se f=shakin4
+@move layer=9 time=1000 path=,,255
+@layopt layer=4 visible=false
+@layopt layer=4 page=back visible=false
+@wait time=1000
+@layopt layer=9 visible=false opacity=255
+@eval exp='tf.weaponImage = "cyan"'
+@image layer=e3 storage=BE_barrier
+@layopt layer=e3 left=0 top=408 visible=true
+@wait time=200
+@anime layer=e3
+@playse storage=kira2 buf=2
+@wait time=500
+@blink layer=e3 time=20 loop=3
+
+[texton]
+∗shing!∗[k]
+[テオ f=05]「...!」[k]
+[マックス f=12]「...W-what?」[k]
+[シュバルツ f=00]「Hey... What happened?」[k]
+The demon's bewitching light flared and vanished just before it hit us![k]
+@fg c=悪魔 f=11
+[悪魔 v=vm019 f=11]「Huh? Huh? What the?!」[k]
+[シュバルツ f=00]「Could this be... the light that repels evil...?」[k]
+[テオ f=05]「What...?」[k]
+[textoff]
+@mu f=brave
+@se f=kira1
+@image layer=5 storage=BE_shushine flipud=true visible=false left=0 top=0
+@anime_fadein layer=5
+@w1
+[texton]
+I found myself surrounded by a white divine light. It seemed that this power had repelled the demon's attack.[k]
+Could it be that this is the power to exorcise evil that has been passed down in my family for generations?![k]
+...My father said something like that. When confronted with a demon, his hidden power as a demon hunter would be activated.[k]
+@fg c=悪魔 f=07
+[悪魔 v=vm020 f=07]「Why? Why is there a demon hunter in a place like this?!」[k]
+The devil seems completely bewildered at the failure of her earlier attack.[k]
+[シュバルツ f=07]「Alright! Now's our chance!」[k]
+[シュバルツ f=07]「You guys! Fight with me! Together we will defeat this demon!」[k]
+[テオ f=05]「I understand!」[k]
+[textoff]
+@anime_fadeout layer=5
+@eval exp='game.guest.entry(o.シュバルツ)'
+@se f=period
+@notice text="<y>Schwarz joined the party!"
+[texton]
+[悪魔 v=vm021 f=07]「Defeat me?! Who do you think I am? There's no way humans could defeat a high-ranking demon like me!」[k]
+[シュバルツ f=00]「You never know unless you try!」[k]
+[マックス f=27]「Then, we'll fight to the end! Let's go, you damn devil!」[k]
+[textoff]
+@clf
+
+; 悪魔と戦闘
+; In the first fight, the party doesn't know her name
+@eval exp='m.悪魔.displayName = "Devil"'
+@monster pos=3 name=悪魔
+@callbattle bgm=murmur escape=false gameover=true
+@eval exp='game.party.minimumRecovery()'
+; 戦闘に勝利
+@saveon
+@eval exp='m.悪魔.displayName = "Murmur"'
+
+[texton w=1]
+[悪魔 v=vm022 f=17]「Gyaaa!」[k]
+[マックス f=15]「Yes! We did it!」[k]
+@se f=dosa
+We succeeded in defeating the demon![k]
+After our full force attack, she hit the ground with a mighty thud.[k]
+[悪魔 v=vm023 f=28]「Damn it... beaten by a human...?!」[k]
+The demon seems to still be breathing. However, she is unable to move, perhaps because of her wounds.[k]
+[シュバルツ f=00]「Alright! Let's finish it while we still can...!」[k]
+[悪魔 v=vm024 f=27]「That's not gonna happen!」[k]
+[textoff]
+@playse storage=acid
+@image layer=e1 storage=9999 top=0 left=0 opacity=0 visible=true
+@image layer=e2 storage=PE_base_full left=0 top=0 visible=true
+@startemit layer=e2 storage=PE_smoke_large time=2500
+@move layer=e1 time=2000 path=,,255
+@wait time=2000
+@anime_fadeout layer=e2
+@clearemit layer=e2
+[texton w=1]
+[マックス f=11]「Whoa, what the hell?!」[k]
+Suddenly, my vision was obscured by a huge cloud of white smoke![k]
+Damn... Where is that demon...?![k]
+[悪魔 v=vm025 f=07]「How dare you!
+You'll regret this! I'll kill you, tear you to shreds, and make mincemeat of you! Count on it!」[k]
+The devil's hair-raising curses echoed out of nowhere.[k]
+[textoff]
+@move layer=e1 time=2000 path=,,0
+@wait time=2000
+@layopt layer=e1 visible=false opacity=255
+[texton w=1]
+After a while, when the smoke cleared, the demon had completely vanished.[k]
+[シュバルツ f=00]「Damn... She got away...!」[k]
+Mr. Schwarz bit his lip. But I was relieved that we were able to get out of the crisis for now.[k]
+...Though, the big question of how to get out of here is not solved at all.[k]
+[マックス f=05]「Hey, what was your power just now?」[k]
+[テオ f=06]「I don't know for sure... But...」[k]
+[テオ f=06]「I think I mentioned this, but my family has been born with the power of demon hunters for generations.」[k]
+[テオ f=06]「It seems those who inherit the blood of demon hunters can invoke the power of exorcism when confronted with a demon. This is probably that power.」[k]
+[textoff]
+@fg c=シュバルツ f=00
+[texton w=1]
+[シュバルツ f=00]「I see...! So that's the rumored power of demon hunters... Amazing...!」[k]
+[テオ f=10]「I'm not sure, but my father said so, so the force earlier probably... Ugh!」[k]
+Suddenly, I felt a sharp pain in my right arm. Was I hit by the demon in the fight earlier?[k]
+[シュバルツ f=00]「Mm, you're injured, aren't you? [emb exp='o.ヒール.displayName']!」[k]
+@se f=magic2
+@fg a=BE_magic left=400 top=200
+∗Buuuuu∗[k]
+@image layer=e2 storage=screen_blue
+@image layer=e3 storage=PE_base_small visible=true mode=psdodge5
+@startemit layer=e3 storage=PE_potion2 time=1500 skip=1000
+@playse storage=healing
+@layopt layer=e3 left=0 top=408
+@anime_fadein layer=e2,e3
+@wait time=2000
+@anime_fadeout layer=e2,e3
+@clearemit layer=e3
+@eval exp='o.テオ.life += 100'
+@eval exp='o.マックス.life += 100'
+@cl a
+When Mr. Schwarz held out his hand, a soft light emanated from it, and our wounds healed quickly.[k]
+[テオ f=05]「Oh, Mr. Schwarz, your magic...! 」[k]
+[シュバルツ f=02]「Yeah, thanks to you defeating the demon, it seems the seal on this floor has been lifted. Magic can now be used.」[k]
+[テオ f=02]「Thank you.」[k]
+[シュバルツ f=02]「Well, now that the demon is gone, let's leave at once.」[k]
+[テオ f=05]「B-but how...?」[k]
+[シュバルツ f=01]「Now the seal is gone, I can use the [emb exp='o.リターン.displayName'] spell!」[k]
+
+; リターンの魔法演出
+@se f=magic1
+@image layer=7 storage=9999 left=0 top=0 visible=true opacity=32
+@wait time=50
+@layopt layer=7 opacity=64
+@wait time=50
+@layopt layer=7 opacity=96
+@wait time=50
+@layopt layer=7 opacity=128
+
+[テオ f=05]「...!」[k]
+[マックス f=11]「Whoa whoa whoa!」[k]
+[textoff]
+
+; ワープ演出
+@wait time=500
+@playse storage=byun2
+@image layer=7 storage=9999 left=0 top=0 page=back visible=true opacity=255
+@stopbgm
+@trans method=universal time=300 rule=rule_48
+@wt
+@image layer=7 page=back storage=0000
+@trans method=universal time=300 rule=rule_48
+@wt
+@wait time=2000
+@layopt layer=7 visible=false
+@layopt layer=7 page=back visible=false
+@layopt layer=3 visible=false
+@layopt layer=3 page=back visible=false
+@eval exp='game.view.close()'
+@eval exp='game.openTownView(o.ブレイブタウン)'
+@gameon
+
+; ブレイブタウンへ帰還
+@mu f=town
+@wait time=1000
+[texton w=0]
+[テオ f=05]「This place is...」[k]
+The scenery around me had changed drastically.[k]
+A familiar view of the town. Not the dungeon from earlier.[k]
+[マックス f=03]「Wow, seriously?! We're back outside!」[k]
+[テオ f=12]「We're saved...」[k]
+Thanks to Mr. Schwarz's magic, we were able to return safely.[k]
+...I thought for a while that I was going to die, but an unexpected turn of events saved my life.[k]
+[テオ f=01]「Thank you very much. You saved us.」[k]
+[textoff]
+@fg c=シュバルツ f=00
+[texton w=1]
+[シュバルツ f=02]「It is I who should thank you. Without your demon-hunting powers, I would have had no choice but to rot in that underground prison. Thank you so much.」[k]
+[テオ f=02]「I'm glad to be of service.」[k]
+[シュバルツ f=02]「It is an amazing power. Normally, when one has the misfortune to encounter such a high-ranking demon, one would have to give up. But even in a desperate crisis like that, you can go on.」[k]
+[シュバルツ f=02]「In other words, you have truly great potential. If you continue adventuring, I'm sure you will eventually achieve remarkable results.」[k]
+[テオ f=06]「...」[k]
+[シュバルツ f=02]「Well, I'll be off now. I'll be in town for a while, so you can rely on me if you need anything.」[k]
+[テオ f=01]「Yes, thank you.」[k]
+[textoff]
+@wait time=500
+@se f=period
+@eval exp='game.guest.removeMember(o.シュバルツ)'
+@notice text="<y>Schwarz left the party."
+[texton]
+[シュバルツ f=02]「See you next time.」[k]
+[textoff]
+@cl
+[texton w=0]
+Mr. Schwartz left the scene with a refreshing smile on his face.[k]
+[マックス f=01]「So, what should we do?」[k]
+[テオ f=02]「Let's go back home for now.」[k]
+[textoff]
+@out
+@w05
+
+; 自宅に戻る
+@bg f=0007
+[texton w=1]
+When I got home, Blue and the others weren't there.[k]
+[マックス f=05]「Huh? Blue and the others haven't come back yet? Or are they drinking in the middle of the day again?」[k]
+[テオ f=06]「...First, let's find Blue and the others. I want to know what happened with the quest afterwards.」[k]
+[マックス f=09]「I guess. Well, I don't really want to see them though.」[k]
+[textoff]
+@out
+
+; 設定
+@delevent name=森の中の廃屋入口 num=1
+@addevent name=森の中の廃屋入口 num=2
+@addevent name=町外れの遺跡入口 num=0
+@addevent name=マルティナの酒場 num=1
+@addevent name=自宅 num=1
+@eval exp='o.町外れの遺跡Ｂ３.noBattle = false'
+@eval exp='o.町外れの遺跡Ｂ３.antiSpell = false'
+@eval exp='game.view.goToStreet(o.自宅)'
+@eval exp='game.clock = game.timeOfADay \ 2'
+@eval exp='game.gameFrame.updateClock()'
+[eventoff]
+
+
+
+;■プロローグ４・逃亡
+
+;◇イベント01・町の探索後、酒場へ
+*escape_1
+
+; 酒場の受付
+@saveon
+@mu f=bar
+@bgf f=0012
+@w05
+[texton w=1]
+When we arrived at the bar, we found out that Max and I had been evicted from Blue's party.[k]
+[マックス f=10]「Apparently, they think we're dead. They really are heartless, aren't they?」[k]
+[テオ f=06]「...」[k]
+According to the receptionist at the tavern, Blue and his friends had recently accepted a new quest and left for their next adventure.[k]
+Maybe they got impatient because they lost the reward they were counting on due to the failure of this quest.[k]
+[マックス f=06]「What do you say? Do we join Blue and the others? Or do we wait until they come back?」[k]
+[テオ f=06]「...」[k]
+[テオ f=05]「...I think I'm going to stop being an adventurer.」[k]
+[マックス f=11]「What?!」[k]
+[テオ f=06]「I came to this town with a dream of becoming a great adventurer... 」[k]
+[テオ f=06]「But in the end, I was just used by a senior adventurer like Blue. I don't know what I became an adventurer for!」[k]
+[マックス f=05]「Well, maybe, but... 」[k]
+[テオ f=06]「...I was never cut out for it. My mother expected me to be a full-fledged demon hunter, but I'll never be like Dad.」[k]
+[マックス f=05]「[テオ]...」[k]
+[テオ f=06]「When I get back, I'm going to pack my bags and leave this town today. What about you?」[k]
+[マックス f=06]「I... I still want to continue to adventure with you!」[k]
+[テオ f=05]「Max...」[k]
+[マックス f=05]「Hey, [テオ], why don't you reconsider? It may be tough now, but I'm sure we'll be great adventurers someday!」[k]
+[テオ f=05]「Well, that's... 」[k]
+[textoff]
+@fg c=シュバルツ e=通常 f=00
+[texton w=1]
+[シュバルツ f=01]「Hey, [テオ], is that you?」[k]
+[テオ f=05]「Oh, Mr. Schwarz... 」[k]
+Mr. Schwarz, who we'd just parted company with, came to the bar.[k]
+[マックス f=03]「Yo, old man, we meet again! Did you come here for a drink too?」[k]
+[シュバルツ f=02]「Well, yes. But it's good you're here, as I had something to tell you.」[k]
+[テオ f=05]「You wanted to talk to us?」[k]
+[textoff]
+@out
+@w05
+
+@bg f=0012
+[texton w=1]
+[テオ f=05]「What is it?」[k]
+[シュバルツ f=00]「Mmm, actually... 」[k]
+[シュバルツ f=00]「I am retiring as an adventurer.」[k]
+[テオ f=12]「Eh?」[k]
+[シュバルツ f=00]「I'm getting old, after all... So I was planning to do so after that last adventure.」[k]
+[シュバルツ f=02]「But that one almost turned out to be the end of me. It is all thanks to you, [テオ], that I was able to return safely and live the rest of my life.」[k]
+[テオ f=05]「Oh, no, that's giving me too much credit...」[k]
+[シュバルツ f=02]「I'm really grateful. So I give you this.」[k]
+Schwarz placed a medal on the table.[k]
+[テオ f=05]「Is this...?」[k]
+[シュバルツ f=00]「This is a Leadership Medal.」[k]
+[テオ f=12]「...!」[k]
+A Leadership Medal denotes someone with special party leadership qualifications.[k]
+Usually, we ordinary adventurers cannot recruit or discover party members through the guild.[k]
+You can only recruit people by talking to them directly.[k]
+But it is different when you have a Leadership Medal. You can look at the roster in any of the the guild's affiliated facilities and choose any member you want.[k]
+In addition, bearers can take on quests that ordinary adventurers cannot. Indeed, many privileges are granted.[k]
+However, the only way to obtain the medal is to have someone give it to you specially, or to be recognized by the king of this country for remarkable performance.[k]
+The medal is also a sign of trust in its owner. They are not attainable by just anyone.[k]
+[テオ f=05]「Why would you give me something so valuable...?」[k]
+[シュバルツ f=02]「It's like I said. I'm really grateful to you.」[k]
+[シュバルツ f=02]「Besides, I'm retiring as an adventurer now, so what good would it do me? I was looking for someone to inherit it.」[k]
+[シュバルツ f=01]「With your powers, you are a valuable asset in the fight against those troublesome beings called demons. It is someone like you who should have this. Take it.」[k]
+[textoff]
+@getitem item=統率者のメダル
+[texton w=1]
+[シュバルツ f=02]「Now you are free to recruit members and organize parties!」[k]
+[シュバルツ f=01]「...It is true that you are still a novice adventurer. However, I believe that you will become a full-fledged adventurer as you dive into dungeons and gain more experience. Good luck!」[k]
+[テオ f=12]「Wait a minute!」[k]
+[シュバルツ f=02]「Hmm? What's wrong?」[k]
+[テオ f=10]「I appreciate the sentiment, but I still can't accept this... 」[k]
+[シュバルツ f=07]「Why? This medal will definitely come in handy. You should not be shy here.」[k]
+[テオ f=06]「No, it's not that... Actually, I'm thinking of quitting the adventuring business.」[k]
+[シュバルツ f=07]「What?! Why would you...」[k]
+[テオ f=06]「Actually...」[k]
+I told Mr. Schwarz about Blue's gang.[k]
+[シュバルツ f=00]「...I see what's going on.」[k]
+[シュバルツ f=00]「You guys have caught the attention of a rotten bunch. Yes, there are people like that who give the profession a bad name.」[k]
+[マックス f=09]「They're a horrible bunch!」[k]
+[シュバルツ f=00]「If you stay in this town, it may occur again.」[k]
+[テオ f=06]「...」[k]
+[シュバルツ f=00]「...」[k]
+[シュバルツ f=02]「...So then, why don't you both come with me to Sapphire City?」[k]
+[テオ f=05]「Eh?」[k]
+@mu f=city
+[シュバルツ f=02]「It is my hometown and the place I intend to spend the rest of my life. I'll introduce you to the guild in Sapphire City.」[k]
+[テオ f=05]「What...?! Does that mean... 」[k]
+[シュバルツ f=02]「I'll write you a letter of introduction. I'm a well-known adventurer there, if I say so myself, so it's no problem.」[k]
+[テオ f=05]「A letter of introduction to the Sapphire City Guild... 」[k]
+I hear that the guild in Sapphire City won't let you in without an introduction from someone.[k]
+It's the reason I remained in Bravetown, despite Blue's treatment.[k]
+However, if I'm allowed into the Sapphire City guild, that will no longer be necessary. In other words...![k]
+[マックス f=03]「No way! Then we can escape from Blue and his gang and continue as adventurers! Hey, [テオ], we can't pass up this opportunity!」[k]
+[テオ f=12]「A-are you sure you want to do this, Mr. Schwarz?」[k]
+[シュバルツ f=02]「Of course. You saved my life, so this is nothing. Besides, it would be a shame for an adventurer of your caliber to quit. What do you think?」[k]
+[テオ f=06]「...」[k]
+[シュバルツ f=02]「You still want to be an adventurer, don't you?」[k]
+[マックス f=01]「Yes, we can still do it! Let's try once more!」[k]
+[テオ f=06]「...」[k]
+This is a once in a lifetime opportunity. If all goes well, the path to achieving my dream will open up once again.[k]
+It's not too late to try again, despite how things went here.[k]
+[テオ f=05]「...Let's go to Sapphire City! We are very grateful for your kindness, Mr. Schwarz.」[k]
+[シュバルツ f=01]「I see! That's good!」[k]
+[テオ f=05]「Thank you so much. I can't thank you enough... 」[k]
+[シュバルツ f=02]「Well, it's no big deal. All right, if that's the case, let's leave before dark. It would be bad if they found out, right?」[k]
+[マックス f=03]「Yeah, we gotta go before Blue comes back. Come on, [テオ]! Get ready to go right away!」[k]
+[textoff]
+@out
+
+;-----------------------------------------------------------------------------------------
+; 設定
+[iscript]
+
+o.ブレイブタウン・北門.visible = o.ブレイブタウン・北門.appeared = true;
+o.マルティナの酒場.events = [2];
+o.森の中の廃屋入口.events = [3];
+o.町外れの遺跡入口.events = [1];
+o.自宅.events = [2];
+o.テオ.levelUpToTheLast();
+o.マックス.levelUpToTheLast();
+o.テオ.recovery();
+o.マックス.recovery();
+o.シュバルツ.recovery();
+o.遺跡の財宝.complete();
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+
+; 体験版から継続ならここで現在に戻る
+@jump storage="main04.scn" target=*return_from_past_episode cond='! f.readPastEpisode'
+
+@wait time=500
+@eval exp='o.ブレイブタウン.bgm = "city"'
+@eval exp='game.gameVisible = true'
+@layopt layer=0 visible=false
+[texton w=0]
+[シュバルツ f=00]「We leave this town this evening. You must come to the [b]north gate of Bravetown[/b] by the hour.」[k]
+[シュバルツ f=00]「While they are gone, prepare for your journey.」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント02・出発
+*escape_2
+
+; 夕方・町の出口
+@saveon
+@fa
+@out
+@w05
+@mu f=ending
+@bg f=0017
+[texton w=1]
+That evening...[k]
+After preparing for the trip in a great hurry, Max, Mr. Schwartz, and I prepared to stealthily leave.[k]
+Fortunately, Blue's gang never found us.[k]
+[シュバルツ f=02]「You're both ready. Let's go!」[k]
+[テオ f=01]「Yes!」[k]
+[マックス f=01]「Yeah!」[k]
+We left for Sapphire City, far north of here.[k]
+It was finally time to say goodbye to Bravetown, where I had worried and struggled for about a year as I aspired to become an adventurer.[k]
+[テオ f=06]「...」[k]
+I had despaired of my relationship with Blue and given up on my life as an adventurer after getting involved with him. However today, that ends. This time, I will walk the path of my ideal adventurer.[k]
+[textoff]
+@out
+
+;-----------------------------------------------------------------------------------------
+; 設定
+[iscript]
+
+o.ブレイブタウン.bgm = "town";
+game.guest.entry(o.シュバルツ);
+f.fountainForOpeningEvent = true;
+game.clock = game.timeOfADay * 5 \ 8;
+game.gameFrame.updateClock();
+game.view.close();
+game.openDungeonView(%[map:"コリンズの森", x: 37, y: 1, way: "w"]);
+o.コリンズの森.sky = "dawnforest";
+game.view.skyLayer.loadImages("sky_" + o.コリンズの森.sky);
+game.view.startExplore();
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+[eventoff]

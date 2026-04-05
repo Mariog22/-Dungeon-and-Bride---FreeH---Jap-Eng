@@ -1,0 +1,176 @@
+﻿; 試練の迷宮
+
+name = 試練の迷宮Ｂ６
+insideName = Ｂ６
+upper = 試練の迷宮Ｂ５
+level = 50
+bgm = labyrinth
+isOutdoor = true
+roof = stone
+shadow = dark
+sky = black
+antiWarp = true
+
+; 各パーツ
+━ = stoner_h
+　 = marble
+☐ = marble
+☆ = soilr
+❑ = cube
+／ = door
+∫ = pick
+☖ = arch
+⧻ = fence
+﹃ = ladder
+︻ = panel
+㊤ = ladderu
+上 = ladderu
+ⓐ = warp
+⒉ = br_int
+⒍ = monument
+
+; 敵情報
+maxGroups = 2
+monsters = ダークサモナー,サンダーウィスプ,コールドウィスプ
+
+; 移動ポイント
+(A) = map:試練の迷宮Ｂ１, x:0, y:2, way:s
+
+; 宝箱
+box[1] = いやしの竪琴_u,スレイブバックラー_u,アマゾネスの鎧・下_u,コールポラリスの魔法書_u,ポラリスの宝珠,強力眠気ざまし
+box[2] = 罠はない,とある冒険者のメモ,ジャンプの巻物,ジャンプの巻物
+box[3] = 罠はない,加護のメダル,魔導士ラニガンの手紙
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━━━━━┳━━━━━━━┳━━━━━━━━━┓
+11┃ⓐ☐☐☐☐┃☐☐☐☐☐☐☐┃☐☐☐☐☐☐☐☐☐┃
+  ┃☐☐☐☐☐┃☐☐☐☐☐☐☐┃☐┏━━━━━┓☐┃
+10┃☐☐➌☐☐⧻⒍☐☐☐☐☐☐┃☐┃③　☆　③┃☐┃
+  ┃☐☐☐☐☐┃☐☐☐☐☐☐☐┃☐┃　　　　　┃☐┃
+ 9┃☐☐☐☐☐┃☐☐☐☐⓹☐☐┃☐┃　　③　　⧻☐┃
+  ┣━━━━━┻━━━┳／┳━┛☐┃　　　　　┣━┫
+ 8┃　　　　❑　　　　【⓸☖☐☐☐┃　　③　　→☐┃
+  ┃　　　　　　　　　┗﹃╋━━━┫　　　　　┃☐┃
+ 7┃　　　　❑　　　　　　┃☐☐☐┃　　　　　┃☐┃
+  ┃　　　　　　　　　┏━┻∬┓☐┃　　　　　┃☐┃
+ 6┃　　❑　　　❑　　┃☐☐☐┃☐┃　　　　　┃☐┃
+  ┃　　　　　　　　　┃☐☐☐┃☐┃　　　　　┃☐┃
+ 5┃　　　　❑　　　　┃➊☐☐┃☐┃❑　❑　❑┃☐┃
+  ┃　　　　　　　　　┣━━━┫☐┃　　　　　┃☐┃
+ 4┃　　❑　　　❑　　／Ｅ☐☐┃☐┃　　　　　┃☐┃
+  ┃　　　　　　　　　┃☐☐☐┃☐┃　　　　　┃☐┃
+ 3┃　　　　　　　　　┃☐☐☐┃☐┃　　　　　┃☐┃
+  ┃　　　　　　　　　┃☐☐☐┃☐┃　　　　　┃☐┃
+ 2┃　　　　　　　　　┃☐☐➋┃☐┃　　　　　┃☐┃
+  ┃　　　　　　　　　┣━━━┛☐┗━━↓━━┛☐┃
+ 1┃　　　　　　　　　┃上☐☐☐☐☐☐☐☐☐☐☐☐┃
+  ┣━━━━━━━━━┛☐☐☐┏━━━━━━━━━┫
+ 0┃上☐☐☐☐☐☐☐☐☐☐☐☐／☐☐☐☐☐☐☐☐⒉┃
+  ┗━━━━━━━━━━━━━┻━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+for(var i = 8; i <= 10; i++) pos[i][5].f.pimg = "cube2_h";
+pos[5][8].s.img = pos[5][8].w.img = pos[5][7].n.img = "stone";
+pos[9][10].event = 1;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+f.saveIsForbidden = false;
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsMove && ! party.isFloating() && map.getWallInfo(10, 9, "e").type == "wall"
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=10 y=9 way=e mode=open
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@barrel
+@eval exp='game.curTarget.addParam("intellect", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Intelligence permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove
+
+@eval exp='tf.temp = game.map.getWallInfo(10, 9, "e")'
+[if exp='game.map.getFloorInfo(9, 10).type == "movable"']
+	[if exp='tf.temp.type == "wall"']
+		@wait time=800
+		@se f=fence
+		@switchfence x=10 y=9 way=e mode=open
+		@eval exp='for(var x = 8; x <= 10; x++) for(var y = 2; y <= 10; y++) o.試練の迷宮Ｂ４.recordAreaOpened(x, y)'
+		@eval exp='for(var x = 8; x <= 10; x++) for(var y = 2; y <= 10; y++) o.試練の迷宮Ｂ５.recordAreaOpened(x, y)'
+	[endif]
+[elsif exp='tf.temp.type == "space"']
+	@wait time=800
+	@se f=fence
+	@switchfence x=10 y=9 way=e mode=close
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="Final Trial: Prepare yourself to face a formidable foe."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@wait time=500
+@notice text="Something attacked the party!"
+@monster pos=1 name=ストーンゴーレム
+@monster pos=5 name=ストーンゴーレム
+@monster pos=10 name=ミスリルゴーレム
+@callbattle bgm=boss gameover=true
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@notice text="Next is the final trial. If you answer correctly, the door will open."
+@call storage="fortress1f.map" target=*input_number
+[if exp='tf.num == 2142']
+	@se f=kacha
+	@wait time=800
+	@se f=fence
+	@switchfence x=3 y=10 way=w mode=open
+	@notice text="The door was unlocked!"
+	@delevent
+[else]
+	@playse storage=buzzer
+	@notice text="Nothing happened."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+@jump storage=&'o.試練の迷宮Ｂ４.mapFile' target=*reset_floor
+;-------------------------------------------------------------------------------

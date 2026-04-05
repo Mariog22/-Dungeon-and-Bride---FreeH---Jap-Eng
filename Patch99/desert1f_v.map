@@ -1,0 +1,155 @@
+﻿;  砂漠
+
+name = タルハ砂漠・峡谷
+insideName = Gorge
+lower = タルハ砂漠地下
+level = 22
+bgm = desert
+isOutdoor = true
+shadow = dark
+sky = cloudywild
+blank = rock
+outfield = sand
+
+; 画像パーツ
+━ = rock
+ᆖ = stoney
+　 = sand
+❖ = sand
+〓 = wood
+☒ = wood
+／ = door
+⑊ = door
+☗ = gate
+⑷ = br_mp
+
+; 敵情報
+maxGroups = 2
+monsters = 猛毒ぐも,毒トカゲ,猛毒ヘビ,アサシン,グラディエイター,ナーガ
+
+; 移動ポイント
+(A) = map:タルハ砂漠・北, x:8, y:0, way:n, symbol:movev, ask:Go to the next map?
+(B) = map:タルハ砂漠・北, x:9, y:0, way:n, symbol:movev, ask:Go to the next map?
+(C) = map:タルハ砂漠・南, x:14, y:59, way:s, symbol:movev, ask:Go to the next map?
+(D) = map:タルハ砂漠地下, x:0, y:6, way:s, symbol:cave, ask:Go to the dungeon?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  
+  																	▲	▲
+19																┃Ⓐ　Ⓑ┃							┃❖┃
+  																┃　　　┃							┃	┃
+18																┃　　　┃							┃❖┃
+  																┃　　　┃							┃	┃
+17																┃　　　┃							┃❖┃
+  																┃　　　┃			┏━┓	┃	┃
+16																┃　　　┃			┃⑷┃	┃❖┃
+  														┏━┛　　　┃			┃　┃	┛	┃
+15														┃　　　　　┃			┃　┃		❖┃
+  ┏━━━━━━━━━━━━━┛　　　　　┃			┃　┃
+14┃＞　＞　＞　＞　⑤　　　　　　　　　　┃			┃　┃
+  ┃　┏━━━━━━━┓　　　　　　　┏━┛			┃　┗━━━┓
+13┃Λ┃							┃　　　　　　　┃					┃　　　　　⑊③
+  ┃　┃					┏━┛　　　　　┏━┛					┗━┓　　　‖
+12┃Λ┃					┃　　　　　　　┃									┃　　　‖
+  ┃　┃					┃■■■■〓■■┗━┓							┃　　　‖
+11┃Λ┃					┃■■■■〓■■■■┃							┃　　　⑊②
+  ┃　┃					┃■■■■〓■■■■┃							┃　　　‖
+10┃Λ┃					┃■■■■☒■■■■┃							┃　　　‖
+  ┃　┃					┃■■■■☒■■■■┃							┃　　　‖
+ 9┃Λ┃					┃■■■■☒■■■■┃							┃　　　⑊①
+  ┃　┃					┗━┓■■☒■■■■┃							┃　　　‖
+ 8┃　┃							┃■■☒■■■■┃							┃　　　‖
+  ┃　┃							┃■■☒■■■■┃					┏━┛　　　┗ᆖ┓
+ 7┃Ⓓ┃							┃　　　　　　　┃					┃　　　　　　　┃
+  ┗☗┛							┗━┓　　　　　┗━━━━━┛　　　　　　　┃
+ 6												┃　　　　　　　　　　　　　　　　　　　┃
+  												┗━━━━━━━━━━━━━┓　　　┏━┛
+ 5																										┃　　　┃
+  																										┗━┓　┃
+ 4																	❖	❖┃							┃　┃
+  																┓			┃							┃　┃
+ 3																┃❖	❖┃							┃　┃
+  																┃			┃							┃　┃
+ 2																┃❖	❖┃							┃　┃
+  																┃			┃							┃　┃
+ 1																┃❖	❖┃							┃　┃
+  																┃			┃							┃　┃
+ 0																┃❖	❖┃							┃Ⓒ┃
+  																													▲
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setHouse(15, 13);
+setHouse(15, 11);
+setHouse(15, 9);
+pos[6][10].f.icon = pos[6][9].f.icon = pos[6][8].f.icon = 7;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@addevent name=イーラ教団 num=0
+@shop name=イーラ教団
+@walk turn=w move=w
+[texton]
+[ブラザー]「Come back again, heh heh heh.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@enterhouse img=interior_02
+[texton]
+[name n="Desert Person"]「Far to the south, beyond the vast desert, there is said to be a forgotten town.」[k]
+[name n="Desert Person"]「...But don't go any further from here. No one who has gone there has ever come back.」[k]
+[name n="Desert Person"]「Those who set foot in the desert ahead will wander aimlessly and perish.」[k]
+[name n="Desert Person"]「With shifting sands everywhere and violent sandstorms, it's easy to lose your sense of direction. I'm not trying to be negative, but if you don't want to die, you'd better turn back.」[k]
+[textoff]
+@exithouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@enterhouse img=interior_02
+[texton]
+[name n="Desert Person" f=archer_purple_01]「Let me tell you something useful. In places with strong winds, it's a good idea to use movable rocks as windbreaks!」[k]
+[textoff]
+@exithouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel noguest
+@damage v=&'game.curTarget.addParam("magic", 9)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had MP restored!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] inSearching
+
+@delevent
+@getitem item=師範の腕輪
+
+[eventoff]
+;-------------------------------------------------------------------------------

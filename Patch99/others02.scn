@@ -1,0 +1,1095 @@
+﻿; シナリオ・その他のＨイベント２
+
+
+
+;■ルーファス敗北イベント
+
+; 新生ホーク・ウイングに決闘で敗北すると発生
+
+*rufus_duel
+
+; 共通パート
+@fg l=thief_black_fight1 left=200 top=60 b
+@fg c=ルーファス f=02 left=450 top=60 b
+@fg r=bandit_black_fight left=750 top=100
+[texton w=1]
+[ルーファス f=02]「Well, we won.」[k]
+[if exp='! game.isFreeMode']
+	[テオ f=09]「Damn it!」[k]
+[endif]
+Hawk Wing had a strength that was completely different to before after Rufus took it over.[k]
+Rufus, of course, and the other members of the team were overwhelmingly strong, and we were completely outmatched.[k]
+[ルーファス f=02]「Kukukuku...」[k]
+With a grin on his face, Rufus looked appraisingly at our lying party members.[k]
+Are you considering taking away our members...? Am I going to lose my precious friends...?![k]
+[name n="Hawk Wing Member" f=thief_black_02]「What will you do, Rufus? Take one of 'em?」[k]
+[ルーファス f=02]「I don't care about losers. We don't need weak adventurers in Hawk Wing.」[k]
+[ルーファス f=02]「Strip them all of their clothes. Take any equipment you can find.」[k]
+[name n="Hawk Wing Member" f=bandit_black_01]「Right, boss!」[k]
+@cl
+[if exp='! game.isFreeMode']
+	[テオ f=12]「S-stop it...!」[k]
+[endif]
+The Hawk Wing members followed Rufus' instructions to remove all of our equipment and strip us all naked.[k]
+[textoff]
+@w1
+
+;-------------------------------------------------------------------------------
+; このパーティーに敗戦したときに限り着衣のみをすべて奪われる
+[iscript]
+
+// 着衣を順番に奪っていく
+// こう書けば、10個を超えたら装備を外すだけになる
+tf.result = 0;
+for(var i = 0; i < game.party.members.count; i++)
+{
+	tf.result += game.party.members[i].removeEquipmentsByForce(["chest"], tf.result < 10);
+	tf.result += game.party.members[i].removeEquipmentsByForce(["waist"], tf.result < 10);
+}
+for(var i = 0; i < game.party.members.count; i++)
+{
+	tf.result += game.party.members[i].removeEquipmentsByForce(["bust"], tf.result < 10);
+	tf.result += game.party.members[i].removeEquipmentsByForce(["hip"], tf.result < 10);
+}
+for(var i = 0; i < game.party.members.count; i++)
+{
+	tf.result += game.party.members[i].removeEquipmentsByForce(["main"], tf.result < 10);
+	tf.result += game.party.members[i].removeEquipmentsByForce(["sub"], tf.result < 10);
+	tf.result += game.party.members[i].removeEquipmentsByForce(["arm"], tf.result < 10);
+	tf.result += game.party.members[i].removeEquipmentsByForce(["leg"], tf.result < 10);
+}
+if(tf.result > 10) tf.result = 10;	// 実際に奪うのは10個までなので
+
+// ゲストも全裸になる
+for(var i = 0; i < game.guest.members.count; i++)
+{
+	var one = game.guest.members[i];
+	if(one instanceof "SummonedObject") continue;
+	one.equipLife = 0;
+	one.updateByChangeEquipment();
+}
+
+// セックス記録
+for(var i = 0; i < game.party.allMembers.count; i++)
+{
+	var rec, her = game.party.allMembers[i];
+	if(her.sex != "女") continue;
+	if(her == o.サンドラ) rec = her.getSexRecord(o.ルーファス, 1, 1, "ディープキス,乳揉み,正常位");
+	else if(her == o.マリア) rec = her.getSexRecord(o.ルーファス, 1, 1, "乳揉み,手マン,バック");
+	else rec = her.getSexRecord(o.どこかの男, 1, 1);
+	her.addSexRecordAndChangeHeart(rec);
+}
+[endscript]
+;-------------------------------------------------------------------------------
+
+@w05
+@fg c=ルーファス f=02 left=450 top=60
+[texton w=1]
+[ルーファス f=02]「Okay, let's get some equipment.」[k]
+[if exp='! game.isFreeMode']
+	[テオ f=09]「D-damn it...!」[k]
+[endif]
+@se f=coin
+[nw][b]The party had [emb exp='tf.result'] items taken![/nw][k]
+[if exp='game.party.getFirstHeroine() === void']
+	[ルーファス f=02]「See you next time.」[k]
+	@jump target=*_skip_in_no_girl
+[endif]
+
+; 女性メンバーがいる時は陵辱シーンへ
+@fg l=thief_black_fight1 left=200 top=60 b
+@fg r=bandit_black_fight left=750 top=100
+[name n="Hawk Wing Member" f=thief_black_01]「Boss, these guys are helpless for another 20 minutes. What do we do?」[k]
+[ルーファス f=06]「...」[k]
+@fg c=ルーファス f=01 left=450 top=60
+[ルーファス f=01]「...Do what you like.」[k]
+[name n="Hawk Wing Member" f=bandit_black_01]「That's my man! You get me!」[k]
+@fg l=thief_black_erect1 left=200 top=60 b
+@fg r=bandit_black_erect left=750 top=100
+With that said, one by one, the members of Hawk Wing removed their clothing and exposed their lower bodies![k]
+From inside, the warriors' strong penises, fully erect, popped out forcefully![k]
+They are eager to rape the members who are lying naked and unprotected.[k]
+[name n="Hawk Wing Member" f=thief_black_03]「Well, I'll have some.」[k]
+@cl l b
+@cl r
+[name n=Members]「No... no...!」[k]
+[if exp='! game.isFreeMode']
+	[テオ f=12]「Well, wait...! Don't do anything bad to them...!」[k]
+	I appeal to them, my voice straining, but of course they don't listen to me.[k]
+[endif]
+[name n="Hawk Wing Member" f=thief_black_03]「Heh heh, there are some top-notch girls here! They're worth fucking!」[k]
+[ルーファス f=05]「You've got 20 minutes. Then we leave.」[k]
+[name n="Hawk Wing Member" f=bandit_black_02]「Got it!」[k]
+@fg c=ルーファス e=下半身裸・勃起 left=450 top=60 f=01
+[ルーファス f=01]「Well, I'll have one of these too.」[k]
+With that said, Rufus also revealed his lower half of his body. Rufus' crotch was also hard and long.[k]
+[name n=Members]「N-no, don't...!」[k]
+[textoff]
+@out
+
+; ヒューマン
+[if exp='HUM']
+	@bg chara=リム f=event22 p0=hair p1=01 p2=04
+	[texton w=2]
+	[リム v=vh099]「Ah... Ah... Ah...」[k]
+	[男]「It fits nicely.[k]
+	[リム v=vh100]「Aah... I can't take it anymore...!」[k]
+	[textoff]
+	@out
+[endif]
+
+; ドワーフ
+[if exp='DWA']
+	@bg chara=フレデリカ f=event78 p0=hair p1=02 p2=03
+	[texton w=2]
+	[フレデリカ v=vd097]「No... That's no good...!」[k]
+	[男]「Dwarf boobs are great. They're so huge, I get really excited.」[k]
+	[フレデリカ v=vd098]「Ahh... Please forgive me...!」[k]
+	[textoff]
+	@out
+[endif]
+
+; シルフ
+[if exp='SYL']
+	@bg chara=マルエット f=event80 p3=hair p4=01 p5=06
+	[texton w=2]
+	[マルエット v=vs101]「Ah... Stop... It hurts... Ugh...!」[k]
+	[男]「It's so tight! I'm going to get addicted to this!」[k]
+	[マルエット v=vs102]「Ugh... I can't take it anymore...!」[k]
+	[textoff]
+	@out
+[endif]
+
+; エルフ
+[if exp='ELF']
+	@bg chara=クレア f=event34 p0=hair p1=02 p2=02
+	[texton w=2]
+	[クレア v=ve100]「Ah... Ah... Ah... Ah...」[k]
+	[男]「Hehe, you don't seem to mind at all. Even though you're being raped.」[k]
+	[クレア v=ve101]「No... That's not it... Ahhh!」[k]
+	[textoff]
+	@out
+[endif]
+
+; ノーム
+[if exp='GNO']
+	@bg chara=ミューズ f=event79 p0=hair p1=02 p2=02
+	[texton w=2]
+	[ミューズ v=vg087]「Oh... Oh... Oh...」[k]
+	[男]「Hmm? What's the matter little girl, does it feel good? Are you about to cum?」[k]
+	[ミューズ v=vg088]「Mmmmmm...! Ahh!」[k]
+	[textoff]
+	@out
+[endif]
+
+; リーゼル
+[if exp='LIS']
+	@bg chara=リーゼル f=event81 p0=hair p1=03 p2=01
+	[texton w=2]
+	[リーゼル v=vl412]「Oh... No...!」[k]
+	[男]「Damn... what a great pussy...! I'm about to cum...!」[k]
+	[リーゼル v=vl413]「Aaah...! I'm cumming...!」[k]
+	[textoff]
+	@out
+[endif]
+
+@jump target=*maria_rufus cond='game.guest.members.has(o.マリア)'
+@jump target=*sandra_rufus cond='game.guest.members.has(o.サンドラ)'
+@jump target=*_rufus_end
+
+; マリアがパーティーにいる場合
+*maria_rufus
+@bg f=event95 p0=01 p1=02
+[texton w=2]
+[マリア v=va231]「Ah... ah... stop... ahh!」[k]
+[if exp='! game.isFreeMode']
+	; ストーリーモード
+	[ルーファス]「You were in this party before, weren't you? I always wanted to fuck you.」[k]
+[else]
+	; フリーモード
+	[ルーファス]「You've got a great body. I've always wanted to fuck a woman like you.」[k]
+[endif]
+Rufus was having sex with Maria. He happily fucks Maria's voluptuous body from behind.[k]
+He grips Maria's big ass with both hands, pries open her vaginal hole with his tough rod, and roughly thrusts it deep into her.[k]
+Maria was struggling to endure Rufus' powerful thrusting.[k]
+∗thrust thrust thrust thrust thrust!∗[k]
+The sound of Rufus' skin slapping against Maria's butt echoes around them.[k]
+Whenever Rufus thrust into Maria, her big tits would swing back and forth violently![k]
+@bg f=event95 p0=01 p1=01
+[マリア v=va232]「Ah... No... Don't do it so hard... Ugh...!」[k]
+[ルーファス]「These big tits and ass are amazing. It's a shame to waste such a sexy body, I'll enjoy it as much as I can.」[k]
+[if exp='! game.isFreeMode']
+	; マックスがいた場合
+	[マックス]「Ahh, Maria...!」[k]
+	Lying on the ground near the pair, [マックス] stares at Maria with a pained expression on his face.[k]
+	[マックス]「Stop it, please, Rufus! Don't do horrible things to Maria any more...!」[k]
+	[マックス] pleads desperately. But there is nothing he can do, as he is unable to move.[k]
+[endif]
+∗thrust thrust thrust thrust thrust!∗[k]
+[マリア v=va233]「Anh, anh, anh, anh.」[k]
+The sex between the two gradually became more and more heated. Maria was beginning to feel excited by the penis that was inserted into her against her will.[k]
+Her nipples are erect, her whole body is drenched in sweat, wriggles her hips and moans every time the cock pistons in and out.[k]
+[マリア v=va234]「Ah... Ah... No... If you keep doing that... Ah!」[k]
+[if exp='! game.isFreeMode']
+	; マックスがいた場合
+	[マックス]「M-Maria...!」[k]
+	Maria writhes obscenely. [マックス]'s face is distorted with frustration and helplessness.[k]
+	Meanwhile, Rufus continued to fuck Maria with great pleasure.[k]
+[endif]
+[ルーファス]「You seem to be feeling much better now. Now I'll make you cum with my dick!」[k]
+[マリア v=va235]「Aaaahhh... no...!」[k]
+Rufus began thrusting Maria with vigor! The smacking of skin colliding with skin rang out violently.[k]
+@bg f=event95 p0=01 p1=02
+[マリア v=va236]「Ahhh... I'm... going to... cum...!」[k]
+@flash on=1000 t=500 off=500
+∗shudder!∗[k]
+Maria's whole body shuddered violently! She lets out a desperate cry as she reaches orgasm.[k]
+[ルーファス]「Okay, I'll join in too. Ugh!」[k]
+@flash
+@w05
+@flash
+@bg f=event95 p0=02 p1=02
+Rufus then ejaculated plenty inside Maria.[k]
+[マリア v=va237]「Ahh... ahh... ahh... ahh...」[k]
+[if exp='! game.isFreeMode']
+	; マックスがいた場合
+	[マックス]「Ah... Maria...」[k]
+	[マックス] sadly calls out the name of his beloved. The woman he desires most was taken by another man and brought to orgasm through sexual intercourse.[k]
+	[ルーファス]「Kuku, you liked this woman? Too bad. I had sex with her and came inside. Hahaha!」[k]
+	[マックス]「Damn it...!」[k]
+	[マックス]'s frustrated gnashing of teeth, and Rufus' loud laughter rang around the area.[k]
+[else]
+	; マックスがいない場合
+	Maria was forcibly deprived of her chastity and made to cum at the end of the sexual act.[k]
+	[ルーファス]「Kuku, how does it feel to be creampied by the enemy who defeated you? Hahahaha!」[k]
+	As Maria stood there, deeply humiliated, Rufus's loud laughter rang out.[k]
+[endif]
+[textoff]
+@out
+@return cond='f.replayMode'
+@jump target=*_rufus_end
+
+; サンドラがパーティーにいる場合
+*sandra_rufus
+@bg f=event96 p0=01 p1=02
+[texton w=2]
+[サンドラ v=vn124]「Ugh... You beast...!」[k]
+[ルーファス]「Whatever. I like to beat and humiliate any female adventurer who tries to fight me.」[k]
+Rufus had attacked Sandra.[k]
+Rufus' caresses soon had Sandra's crotch moist. He then thrust his towering raging dick deep into her vagina, devouring it with impunity.[k]
+[ルーファス]「You're good. You're my kind of girl. I've always wanted to fuck a woman like you.」[k]
+[ルーファス]「I love how strong-willed you seem to be. I love fucking a proud woman to humiliate her.」[k]
+[サンドラ v=vn125]「You're the worst...」[k]
+[ルーファス]「I love that look. It's funny, you're talking so hatefully with your mouth, but your lower mouth is fucking my dick with legs spread wide open! Hahaha!」[k]
+[サンドラ v=vn126]「Ugh...!」[k]
+; ↑ 悔しそうに
+∗sluurp!∗[k]
+@bg f=event96 p0=01 p1=04
+[サンドラ v=vn127]「Aaaaanhhhh!」[k]
+Rufus immediately thrust his vicious penis deep into Sandra's vagina! Sandra couldn't resist and let out a ragged gasp.[k]
+[ルーファス]「Come on, let's hear some more!」[k]
+∗suck suuck!∗[k]
+[サンドラ v=vn128]「Ugh... Ugh... ahhh...! Ahhh..!」[k]
+A sweet sensation runs through Sandra's lower body. She can't help but gasp at the dizzying pleasures of sex.[k]
+[ルーファス]「Kukuku, no matter how hard you try, your body is honest. It's tightening around my dick!」[k]
+∗suck suuck!∗[k]
+[サンドラ v=vn129]「Ahaaaanggg! Anh! Anh! I can't stand it!」[k]
+Before long, Sandra was panting with a sweet voice.[k]
+∗suck suuck!∗[k]
+[サンドラ v=vn130]「Ah! More... Give me more! ahhh... Aaahhh..!」[k]
+@flash
+@w05
+@flash
+∗shudder∗[k]
+Finally Sandra came. Her entire body ripples and shivers with female pleasure.[k]
+[ルーファス]「What? Did you cum?」[k]
+@bg f=event96 p0=01 p1=05
+[サンドラ v=vn131]「Ahh ahh ahh...」[k]
+[ルーファス]「Sounds like you felt pretty good. How does it feel to cum on the dick of a man you hate?」[k]
+@bg f=event96 p0=01 p1=03
+[サンドラ]「...」[k]
+Sandra, overcome with pleasure, could only clench her lips and remain silent.[k]
+[ルーファス]「Kuku, you're so cute. I'll play with you again when I get a chance!」[k]
+[サンドラ]「...」[k]
+[textoff]
+@out
+@return cond='f.replayMode'
+@jump target=*_rufus_end
+
+*_rufus_end
+; 共通パート
+[texton w=1]
+A storm of humiliation raged for 20 minutes.[k]
+The men inserted their filthy penises into the party women as long as time allowed, devouring their flesh.[k]
+Of course, they did not use contraception, and all of them ejaculated inside the girls freely...[k]
+[textoff]
+@w1
+@gameon
+@fg l=thief_black_fight1 left=200 top=60 b
+@fg c=ルーファス f=05 left=450 top=60 b
+@fg r=bandit_black_fight left=750 top=100
+[texton w=1]
+[name n="Hawk Wing Member" f=thief_black_01]「Ahhh, that felt good!」[k]
+[name n="Hawk Wing Member" f=bandit_black_01]「I love fucking women in passing! There's no strings attached, you can cum in them all you want!」[k]
+[ルーファス f=05]「Satisfied? Let's get going, boys.」[k]
+*_skip_in_no_girl
+@cl
+Rufus and his friends walked away merrily with a large amount of loot, leaving us naked and lying limp...[k]
+[textoff]
+@w05
+@mu f=&'game.map.bgm'
+[eventoff]
+
+
+
+
+;■温泉陵辱イベント
+
+;◇イベント01・男湯に出る
+*spa_1
+
+; 共通パート・男湯
+; 冒険の最中に、裸のまま間違って男湯に出てしまう
+
+[texton]
+@eval exp='game.curChara = game.party.members[0]'
+[   if exp='isHUM'][リム v=vh101 f=05]「Where are we...?」[k]
+[elsif exp='isELF'][クレア v=ve102 f=05]「Where are we...?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd099 f=05]「Where are we...?」[k]
+[elsif exp='isGNO'][ミューズ v=vg089 f=05]「Where are we...?」[k]
+[elsif exp='isSYL'][マルエット v=vs103 f=05]「Where are we...?」[k]
+[elsif exp='isLIS'][リーゼル v=vl414 f=05]「Where are we...?」[k]
+[endif]
+Once on the surface, we waded through the grass and came to what appeared to be a bathing area with the steam of a hot spring.[k]
+[textoff]
+@fg c=キャラ f=01
+@eval exp='game.curChara = game.party.members[1]'
+@fg l=キャラ f=01
+@eval exp='game.curChara = game.party.members[2]' cond='game.party.members.count > 2'
+@fg r=キャラ f=01 cond='game.party.members.count > 2'
+[texton w=1]
+[   if exp='isHUM'][リム v=vh102 f=01]「Thank goodness, we got back up here...」[k]
+[elsif exp='isELF'][クレア v=ve103 f=01]「Thank goodness, we managed to get back to where we were...」[k]
+[elsif exp='isDWA'][フレデリカ v=vd100 f=03]「Pheeew～. We managed to get back up here...」[k]
+[elsif exp='isGNO'][ミューズ v=vg090 f=02]「Thank goodness, we got back up here...」[k]
+[elsif exp='isSYL'][マルエット v=vs104 f=01]「What a relief, we got back up here...」[k]
+[elsif exp='isLIS'][リーゼル v=vl415 f=01]「Thank goodness, we got back up here...」[k]
+[endif]
+[name n="Male Bather" f=guy3_04]「Huh? Who's there?」[k]
+[name n="Male Bather" f=guy4_02]「Whoa, hey, a woman...!」[k]
+[name n="Male Bather" f=guy1_04]「Why are women in the men's bath?」[k]
+[if exp='game.party.members.count >= 2']
+	@eval exp='game.curChara = game.party.members[1]'
+	@fg l=キャラ e=汗だく f=11 b
+[endif]
+[if exp='game.party.members.count >= 3']
+	@eval exp='game.curChara = game.party.members[2]'
+	@fg r=キャラ e=汗だく f=11 b
+[endif]
+@eval exp='game.curChara = game.party.members[0]'
+@fg c=キャラ e=汗だく f=11 b
+@trans method=crossfade time=500
+@wt
+[if exp='game.party.members.count >= 2']
+	@eval exp='game.curChara = game.party.members[1]'
+	[キャラ f=31]「...!」[k]
+[endif]
+@eval exp='game.curChara = game.party.members[0]'
+[   if exp='isHUM'][リム v=vh103 f=31]「Could this be...?!」[k]
+[elsif exp='isELF'][クレア v=ve104 f=31]「Could this be...?!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd101 f=31]「Could this be...?!」[k]
+[elsif exp='isGNO'][ミューズ v=vg091 f=31]「Could this be...?!」[k]
+[elsif exp='isSYL'][マルエット v=vs105 f=31]「Could this be...?!」[k]
+[elsif exp='isLIS'][リーゼル v=vl416 f=31]「Could this be...?!」[k]
+[endif]
+
+The unimaginable situation brings [キャラ][if exp='game.party.members.count >= 2'] and the others[endif] out in chills! Shockingly, this is the men's bath!
+ [k]
+
+[iscript]
+game.isPrivateScene = false;
+for(var i = game.party.members.count - 1; i >= 0; i--)
+{
+	game.party.members[i].makeBustups();
+}
+[endscript]
+[if exp='game.party.members.count >= 2']
+	@eval exp='game.curChara = game.party.members[1]'
+	@fg l=キャラ e=汗だく f=37 b
+[endif]
+[if exp='game.party.members.count >= 3']
+	@eval exp='game.curChara = game.party.members[2]'
+	@fg r=キャラ e=汗だく f=37 b
+[endif]
+@eval exp='game.curChara = game.party.members[0]'
+@fg c=キャラ e=汗だく f=37 b
+@trans method=crossfade time=500
+@wt
+[   if exp='isHUM'][リム v=vh104 f=37]「Kyaaaah!」[k]
+[elsif exp='isELF'][クレア v=ve105 f=37]「Kyaaaah!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd102 f=37]「Kyaaaah!」[k]
+[elsif exp='isGNO'][ミューズ v=vg092 f=37]「Kyaaaah!」[k]
+[elsif exp='isSYL'][マルエット v=vs106 f=37]「Kyaaaah!」[k]
+[elsif exp='isLIS'][リーゼル v=vl417 f=37]「Kyaaaah!」[k]
+[endif]
+[キャラ] [if exp='game.party.members.count >= 2']and the others cry out[else]cries out[endif]. Men are all around. And there's not so much as a towel to cover up with.[k]
+[name n="Male Bather" f=guy3_03]「Whoa, a naked woman! Did you go in the wrong bath?」[k]
+[name n="Male Bather" f=guy4_02]「Not even hiding your tits and ass[if exp='game.party.members.count >= 2']es[endif]! Hey, did you come to show them off?」[k]
+[name n="Male Bather" f=guy1_03]「Well, since you're here, let's take a good look.」[k]
+[if exp='game.party.members.count >= 2']
+	@eval exp='game.curChara = game.party.members[1]'
+[endif]
+[   if exp='isHUM'][リム v=vh105 f=29]「P-please don't look...!」[k]
+[elsif exp='isELF'][クレア v=ve106 f=29]「D-don't look...!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd103 f=29]「P-please don't look...!」[k]
+[elsif exp='isGNO'][ミューズ v=vg093 f=29]「D-don't look...!」[k]
+[elsif exp='isSYL'][マルエット v=vs107 f=29]「D-don't look...!」[k]
+[elsif exp='isLIS'][リーゼル v=vl418 f=29]「D-don't look...!」[k]
+[endif]
+[name n="Male Bather" f=guy3_03]「Hey, hey, you're saying that even though you came into the men's bath naked?!」[k]
+[name n="Male Bather" f=guy4_02]「Yeah, it's like you're asking people to look! Hahahaha!」[k]
+[キャラ f=29]「... (Kyaaaaaaaa!)」[k]
+@eval exp='game.curChara = game.party.members[0]'
+It's extremely unpleasant for [キャラ][if exp='game.party.members.count >= 2'] and the others[endif], but the men have a point.[k]
+[   if exp='isHUM'][リム v=vh106 f=27]「Anyway, let's get out of here as soon as possible!」[k]
+[elsif exp='isELF'][クレア v=ve107 f=27]「Anyway, let's get out of here as soon as possible!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd104 f=27]「Why don't we get out of here as soon as possible?」[k]
+[elsif exp='isGNO'][ミューズ v=vg094 f=29]「We need to get out of here as soon as possible...!」[k]
+[elsif exp='isSYL'][マルエット v=vs108 f=27]「Lets get out of here, right now!」[k]
+[elsif exp='isLIS'][リーゼル v=vl419 f=29]「We need to get out of here as soon as possible...!」[k]
+[endif]
+
+[キャラ] [if exp='game.party.members.count >= 2']and the others don't[else]doesn't[endif] know what to do. Dash to the changing rooms in shame? Or turn back into the woods and form a plan?[k]
+[textoff]
+@cl
+[eventoff]
+
+
+;◇イベント02・林の中へ引き返すと後から追ってきた男たちに襲われる
+*spa_2
+
+; 男湯から林の中へ引き返す
+
+;-------------------------------------------------------------------------------
+; セックス記録
+[iscript]
+for(var i = 0; i < game.party.members.count; i++)
+{
+	var her = game.party.members[i];
+	her.addSexRecordAndChangeHeart(her.getSexRecord(o.どこかの男, intrandom(2, 3)));
+}
+if(game.guest.members[0] !== void)
+{
+	var her = game.guest.members[0];
+	if(her instanceof "HiringObject")
+	{
+		her.addSexRecordAndChangeHeart(her.getSexRecord(o.どこかの男, intrandom(2, 3)));
+	}
+}
+[endscript]
+;-------------------------------------------------------------------------------
+
+@saveon
+[texton]
+@eval exp='game.curChara = game.party.members[0]'
+We retreated from the men's bath back to the path through the trees we came from.[k]
+[キャラ f=09]「...」[k]
+Although, we still don't know how to get out of the hot spring.[k]
+There is no way back from here. However, if we proceeded, we would be exposed to the gaze of the men in the men's baths.[k]
+[キャラたち]「...」[k]
+We were all at a loss. We remained silent and thoughtful.[k]
+
+@eval exp='game.curChara = game.party.members[-1]'
+[   if exp='isHUM'][リム v=vh107 f=05]「For now, why don't we find something to cover up with?」[k]
+[elsif exp='isELF'][クレア v=ve108 f=06]「In the meantime, why don't we find something to hide our bodies?」[k]
+[elsif exp='isDWA'][フレデリカ v=vd105 f=25]「For now, why don't we find something to cover up with?」[k]
+[elsif exp='isGNO'][ミューズ v=vg095 f=05]「For now, why don't we find something to cover up with?」[k]
+[elsif exp='isSYL'][マルエット v=vs109 f=06]「In the meantime, why don't we find something to hide our bodies?」[k]
+[elsif exp='isLIS'][リーゼル v=vl420 f=05]「In the meantime, why don't we find something to hide our bodies?」[k]
+[endif]
+
+If we hide our bodies, we might be able to break through the men's bath. After coming to this conclusion, we were about to go back the way we came.[k]
+[textoff]
+
+@fg l=guy1_erect1 left=200 b
+@fg c=guy2_erect1 left=450 b
+@fg r=guy4_erect left=750 top=50
+[texton w=1]
+[男 f=guy1_03]「Hey there, naked ladies.」[k]
+[男 f=guy2_03]「What are you doing buck naked in a place like this?」[k]
+[男 f=guy4_02]「Come play with us!」[k]
+@eval exp='game.curChara = game.party.members[0]'
+[キャラたち]「...!」[k]
+To our surprise, several of the men who had just been in the men's baths followed us![k]
+After getting out of the hot water, they approach [キャラ] and the others, who are also wearing nothing![k]
+
+[   if exp='isHUM'][リム v=vh108 f=65]「S-stay back!」[k]
+[elsif exp='isELF'][クレア v=ve109 f=53]「Hey, leave, right now!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd106 f=54]「Hey, stay over there...!」[k]
+[elsif exp='isGNO'][ミューズ v=vg096 f=64]「Hey, stay over there...!」[k]
+[elsif exp='isSYL'][マルエット v=vs110 f=59]「Oh, no! Stay away!」[k]
+[elsif exp='isLIS'][リーゼル v=vl421 f=29]「D-don't come any closer!」[k]
+[endif]
+
+[キャラ]'s group, desperately hiding their bodies, appeal to the men to return.[k]
+But the men do not leave. They grin and smirk and advance to surround the girls as they stare at their naked bodies.[k]
+The things between their legs were all stiff and erect.[k]
+
+@eval exp='game.curChara = game.party.members[-1]'
+[   if exp='isHUM'][リム v=vh109 f=65]「Um... Please don't...」[k]
+[elsif exp='isELF'][クレア v=ve110 f=66]「Hey... wait a minute... please don't come any closer...」[k]
+[elsif exp='isDWA'][フレデリカ v=vd107 f=67]「Um... Please don't...」[k]
+[elsif exp='isGNO'][ミューズ v=vg097 f=64]「Um... Please don't...」[k]
+[elsif exp='isSYL'][マルエット v=vs111 f=29]「Hey... wait a minute... please don't come any closer...」[k]
+[elsif exp='isLIS'][リーゼル v=vl422 f=29]「Um... Please don't...」[k]
+[endif]
+
+@eval exp='game.curChara = game.party.members[0]'
+[キャラ] and the others were all frightened.[k]
+[男 f=guy1_03]「Your girls are really bold to come into the men's baths stark naked!」[k]
+[男 f=guy2_03]「That's a bit too perverted. You want a man so bad?」[k]
+[男 f=guy4_02]「You're inviting us, right? Yeah, I'll take you up on that.」[k]
+
+[   if exp='isHUM'][リム v=vh110 f=37]「No! I didn't mean that at all... Kya!」[k]
+[elsif exp='isELF'][クレア v=ve111 f=65]「No, no, no! We didn't mean to... Kya!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd108 f=54]「No, that's not it! That's not what I meant... Eek!」[k]
+[elsif exp='isGNO'][ミューズ v=vg098 f=17]「No, I didn't... I didn't mean... Kya!」[k]
+[elsif exp='isSYL'][マルエット v=vs112 f=61]「No, I didn't! I didn't mean... Kya!」[k]
+[elsif exp='isLIS'][リーゼル v=vl423 f=11]「I didn't... I didn't mean... Kya!」[k]
+[endif]
+
+@clf
+Regardless, the men all attacked [キャラ] and the others![k]
+
+@eval exp='game.curChara = game.party.members[-1]'
+[   if exp='isHUM'][リム v=vh111 f=37]「Ah, no! Please stop!」[k]
+[elsif exp='isELF'][クレア v=ve112 f=37]「Aaaah, nooo! Stop it!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd109 f=54]「Ah, no! Please stop!」[k]
+[elsif exp='isGNO'][ミューズ v=vg099 f=37]「No...! Please stop...!」[k]
+[elsif exp='isSYL'][マルエット v=vs113 f=37]「Nooooo! Stop it!」[k]
+[elsif exp='isLIS'][リーゼル v=vl424 f=17]「No... Stop...!」[k]
+[endif]
+
+[男 f=guy1_03]「Hey, don't be shy!」[k]
+[男 f=guy2_03]「I'm going to make you feel good!」[k]
+[男 f=guy4_02]「Come on, let's have some fun!」[k]
+[textoff]
+@out
+
+; 分岐
+@call target=*spa_human cond='HUM'
+@call target=*spa_elf cond='ELF'
+@call target=*spa_dwarf cond='DWA'
+@call target=*spa_gnome cond='GNO'
+@call target=*spa_sylph cond='SYL'
+@call target=*spa_liesel cond='LIS'
+@jump target=*_spa_second
+
+; ヒューマン・前半
+*spa_human
+@bg chara=リム f=event22 p3=hair p4=01 p5=01
+[texton w=2]
+[男]「Sis, come play with me!」[k]
+[リム v=vh112]「No! Let go!」[k]
+∗sluurp!∗[k]
+@bg chara=リム f=event22 p3=hair p4=01 p5=02
+[リム v=vh113]「Aaahhhh...! That's...!」[k]
+[男]「Hehehe, does your clit feel good? I'm going to attack it more!」[k]
+∗slurp slurp slurp slurp∗[k]
+[リム v=vh114]「Ah... Ah... Ah...」[k]
+[男]「Oops, you're getting wet all at of a sudden. I'll have some then.」[k]
+[textoff]
+@out
+@return
+
+; エルフ・前半
+*spa_elf
+@bg chara=クレア f=event17 p4=hair p5=02 p6=01
+[texton w=2]
+[クレア v=ve113]「If you do anything to me, I won't forgive you!」[k]
+[男]「Would you say that in this situation?! Your nipples are all perky.」[k]
+[男]「You really want this dick, don't you? Huh?」[k]
+[クレア v=ve114]「I-I don't really want it...」[k]
+[男]「Come on, don't you want this hot cock to fuck you and stir up your pussy?」[k]
+@bg chara=クレア f=event17 p4=hair p5=02 p6=02
+[クレア]「...! ∗gulp∗」[k]
+[男]「Hehe, let's get started then! Let's have some fun sex!」[k]
+@bg chara=クレア f=event17 p4=hair p5=02 p6=03
+[クレア v=ve115]「Ah... no...!」[k]
+[textoff]
+@out
+@return
+
+; ドワーフ・前半
+*spa_dwarf
+@bg chara=フレデリカ f=event78 p3=hair p4=01 p5=01
+[texton w=2]
+[フレデリカ v=vd110]「Ack! Please don't touch me!」[k]
+[男]「Hey, hey, hey, these are great boobs! I can't get enough of them!」[k]
+∗rub rub rub rub∗[k]
+@bg chara=フレデリカ f=event78 p3=hair p4=01 p5=03
+[フレデリカ v=vd111]「Ah... no... don't rub it... aahhh!」[k]
+[男]「This rubbing feels great! Oh, your nipples are starting to stand up. Here, let me tweak them.」[k]
+∗rub rub rub rub∗[k]
+@bg chara=フレデリカ f=event78 p3=hair p4=01 p5=04
+[フレデリカ v=vd112]「Ah... It's no good... Ahhhh...」[k]
+[男]「You feel that? Then you can have my dick too!」[k]
+[textoff]
+@out
+@return
+
+; ノーム・前半
+*spa_gnome
+@bg chara=ミューズ f=event79 p3=hair p4=01 p5=02
+[texton w=2]
+[ミューズ v=vg100]「Ah... ah... ah...!」[k]
+[男]「Oops, your nipples are already starting to get a little tingly, huh? Does that feel good?」[k]
+@bg chara=ミューズ f=event79 p3=hair p4=01 p5=01
+[ミューズ v=vg101]「It's... it's not like that... aahh!」[k]
+[男]「Heh heh, you're feeling good. I'm gonna make you feel even better.」[k]
+∗lick lick∗[k]
+@bg chara=ミューズ f=event79 p3=hair p4=01 p5=02
+[ミューズ v=vg102]「Ahh... Not there... Ahh... Ahh...!」[k]
+[男]「Oh, you're getting wet. You're pretty dirty, despite your shy looking face.」[k]
+∗sluurp∗[k]
+[ミューズ v=vg103]「Ahhh...!」[k]
+[textoff]
+@out
+@return
+
+; シルフ・前半
+*spa_sylph
+@bg chara=マルエット f=event80 p0=hair p1=01 p2=02
+[texton w=2]
+[男]「Hehehe... Hey, sweetie. Come play with me!」[k]
+[マルエット v=vs114]「D-don't come any closer...!」[k]
+[男]「Your pussy is so smooth. I wonder if it's really okay to fuck a girl like this.」[k]
+@bg chara=マルエット f=event80 p0=hair p1=02 p2=02
+∗touch∗[k]
+@bg chara=マルエット f=event80 p0=hair p1=02 p2=04
+[マルエット v=vs115]「Ahh! Not there... aaahhh!」[k]
+[男]「Oops, did I make you wet? Are you feeling naughty? You're a bad girl, you know that?」[k]
+∗sluurp sluurp∗[k]
+[マルエット v=vs116]「Mmm...!」[k]
+[男]「You're already so slippery. This is going to make my dick go in so easily.」[k]
+[textoff]
+@out
+@return
+
+; リーゼル・前半
+*spa_liesel
+@bg chara=リーゼル f=event81 p0=hair p1=01 p2=01
+[texton w=2]
+[リーゼル v=vl425]「Ahh... no...!」[k]
+[男]「This is a beautiful girl! I'm lucky to get to fuck such a beautiful young girl!」[k]
+[リーゼル v=vl426]「Please... let me go...!」[k]
+[男]「Her pussy is a beautiful pink, too! Okay, I'm gonna lick it.」[k]
+@bg chara=リーゼル f=event81 p0=hair p1=02 p2=01
+∗lick lick lick lick∗[k]
+@bg chara=リーゼル f=event81 p0=hair p1=02 p2=04
+[リーゼル v=vl427]「Ahh... Not there... No... No...!」[k]
+[男]「Hehehe, you're already wet. Well, let's get on with it!」[k]
+[textoff]
+@out
+@return
+
+; ここでこの操作をしないと２番目のキャラが取得できなくなる
+*_spa_second
+@eval exp='game.curChara = void'
+@call target=*spa_human2 cond='HUM2'
+@call target=*spa_elf2 cond='ELF2'
+@call target=*spa_dwarf2 cond='DWA2'
+@call target=*spa_gnome2 cond='GNO2'
+@call target=*spa_sylph2 cond='SYL2'
+@call target=*spa_liesel2 cond='LIS2'
+@jump target=*_spa_finish
+
+; ヒューマン・後半
+*spa_human2
+@bg chara=リム２ f=event22 p0=hair p1=01 p2=03
+[texton w=2]
+∗sluurp sluurp sluurp sluurp∗[k]
+[男]「Heh heh heh... Nice and tight... There you go!」[k]
+∗sluuurp!∗[k]
+[リム２ v=vh115]「Ahhh... Stop it...」[k]
+[男]「I can't get enough of this white ass. I just want to keep poking it.」[k]
+∗slurp slurp slurp slurp slurp!∗[k]
+[リム２ v=vh116]「Anh, anh, anh, anh.」[k]
+[男]「Ugh... I'm cumming...!」[k]
+[リム２ v=vh117]「Wait... please... outside...!」[k]
+[男]「I don't know who you are, but since this is the last time I'm going to see you, I'm going to let it out!」[k]
+@flash
+@w05
+@flash
+∗spurt!∗ ∗spurt!∗ ∗spurt spurt!∗[k]
+[リム２ v=vh118]「Nooooooooo!」[k]
+[textoff]
+@out
+@return
+
+; エルフ・後半
+*spa_elf2
+@bg chara=クレア２ f=event34 p0=hair p1=01 p2=02
+[texton w=2]
+[クレア２ v=ve116]「Ah... Ah... Ah... Ah...」[k]
+[男]「See? That felt good, didn't it? It felt good to get it in there, didn't it?」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+@bg chara=クレア２ f=event34 p0=hair p1=01 p2=03
+[クレア２ v=ve117]「Ah... Aaaahhh... I can't stand it... Ahh...!」[k]
+[男]「You're pretty passionate, aren't you? It seems you're not entirely against it.」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[クレア２ v=ve118]「Ahh, ahh, I'm cumming...!」[k]
+@flash
+∗shudder∗[k]
+[男]「Oops, looks like you came. Well, I'll cum too!」[k]
+@flash
+@w05
+@flash
+∗spuurt! spuurt!∗[k]
+[クレア２ v=ve119]「Ahh... so much... inside...!」[k]
+[textoff]
+@out
+@return
+
+; ドワーフ・後半
+*spa_dwarf2
+@bg chara=フレデリカ２ f=event78 p0=hair p1=01 p2=01
+[texton w=2]
+[フレデリカ２ v=vd113]「Ugh... Stop... Ah...」[k]
+[男]「Her boobs are shaking like crazy! It's so sexy!」[k]
+@bg chara=フレデリカ２ f=event78 p0=hair p1=01 p2=04
+[フレデリカ２ v=vd114]「Ahh... don't be so cruel... aaaahhh...!」[k]
+[男]「I'm just having fun. Here, let me make you cum!」[k]
+∗slurp slurp slurp slurp slurp!∗[k]
+@bg chara=フレデリカ２ f=event78 p0=hair p1=01 p2=03
+[フレデリカ２ v=vd115]「Ah... ah... please don't thrust any further... ahhh!」[k]
+[男]「Damn...! I'm cumming...!」[k]
+@flash
+@w05
+@flash
+∗spuurt! spuurt!∗[k]
+[フレデリカ２ v=vd116]「Aaaahhh!」[k]
+[男]「Phew... I ejaculated so much... I got really excited...」[k]
+[textoff]
+@out
+@return
+
+; ノーム・後半
+*spa_gnome2
+@bg chara=ミューズ２ f=event79 p0=hair p1=01 p2=02
+[texton w=2]
+[ミューズ２ v=vg104]「Haah... haah... haah...」[k]
+[男]「Hehe, she's in good shape. She may be thin, but she's pretty comfortable to hold.」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ２ v=vg105]「Ahh... ahhh... I can't stand it... aahhh.」[k]
+[男]「Oh? Does it feel good? Are you feeling horny?」[k]
+@bg chara=ミューズ２ f=event79 p0=hair p1=01 p2=01
+[ミューズ２ v=vg105]「... ∗nod∗」[k]
+[男]「Hehe, you're quite the pervert!」[k]
+∗slurp slurp slurp slurp slurp!∗[k]
+@bg chara=ミューズ２ f=event79 p0=hair p1=01 p2=02
+[ミューズ２ v=vg106]「Ahh...! Ahh, ahh, ahh!」[k]
+[男]「Oh, it's feeling good ♪ Oh, yeah, since we're having sex, we should enjoy it!」[k]
+[ミューズ２ v=vg107]「Haah... haah... I... already...!」[k]
+[男]「Are you gonna cum? I'm at my limit! I'm gonna cum! Cum with my dick!」[k]
+@flash
+@w05
+@flash
+∗spurt!∗ ∗spurt!∗ ∗spurt spurt!∗[k]
+[ミューズ２ v=vg108]「Ahhhhhhhhhhhhhh...!」[k]
+[textoff]
+@out
+@return
+
+; シルフ・後半
+*spa_sylph2
+@bg chara=マルエット２ f=event80 p3=hair p4=01 p5=04
+[texton w=2]
+[マルエット２ v=vs117]「Ahh ahh ahh ahh ahh...」[k]
+[男]「Oops, you came again. You're so dirty for a little girl!」[k]
+@bg chara=マルエット２ f=event80 p3=hair p4=01 p5=01
+[マルエット２ v=vs118]「N-no... I'm not a little girl, and I'm not dirty...!」[k]
+[男]「Hey, How dare you say that with such a soaked pussy?!」[k]
+∗squelch!∗[k]
+@bg chara=マルエット２ f=event80 p3=hair p4=01 p5=04
+[マルエット２ v=vs119]「Aaahhh... nooooo...!」[k]
+@flash
+∗shudder∗[k]
+[マルエット２ v=vs120]「Aaahhh...」[k]
+[男]「Oi oi you're cumming again! What a slut! Cumming like crazy with a stranger, you're clearly a slut!」[k]
+@bg chara=マルエット２ f=event80 p3=hair p4=01 p5=03
+[マルエット２ v=vs121]「No... that's not it... ∗sniff∗」[k]
+[textoff]
+@out
+@return
+
+; リーゼル・後半
+*spa_liesel2
+@bg chara=リーゼル２ f=event81 p0=hair p1=03 p2=05
+[texton w=2]
+[リーゼル２ v=vl428]「Ah... ah... ah... ahh...」[k]
+[男]「That's a great pussy! I've never had such a good pussy before!」[k]
+[リーゼル２ v=vl429]「Ahhh...」[k]
+[男]「Damn...! I'm about to cum...! I can't hold back!」[k]
+@flash
+@w05
+@flash
+∗spurt!∗ ∗spurt!∗ ∗spurt spurt!∗[k]
+[男]「Ahhh... unbearable...!」[k]
+@bg chara=リーゼル２ f=event81 p0=hair p1=03 p2=04
+[リーゼル２ v=vl430]「Ahhhhh... nooooo...」[k]
+[textoff]
+@out
+@return
+
+; 共通パート
+*_spa_finish
+@out
+@w1
+@gameon
+@fg l=guy1_nude1 left=200 b
+@fg c=guy2_nude1 left=450 b
+@fg r=guy4_nude left=750 top=50
+[texton w=1]
+[男 f=guy1_03]「Ahh～! It felt good～!」[k]
+[男 f=guy2_03]「I never thought there'd be naked women in a place like this!」[k]
+[男 f=guy4_02]「I had an unexpectedly good time! I'm lucky today! Hahahahaha!」[k]
+@cl
+@eval exp='game.curChara = game.party.members[0]'
+[キャラたち e=汗だく f=98]「...」[k]
+The men walk away laughing. [キャラ] and the others are left lying in the clearing, covered in fluids.[k]
+[キャラたち f=98]「...」[k]
+Although stunned for a while, we couldn't stay there forever. We regrouped and resumed our search for a way to get out of the hot spring.[k]
+[キャラたち f=25]「...!」[k]
+We found several bath towels on the ground. Perhaps the men from earlier had left them behind in their excitement.[k]
+There were just enough for us, so we put them on and decided to try leaving through the men's bath once again.[k]
+[textoff]
+@w05
+
+;-------------------------------------------------------------------------------
+; バスタオルを身に着ける・セックス記録
+[iscript]
+for(var i = 0; i < game.party.members.count; i++)
+{
+	var her = game.party.members[i];
+	her.dressEquipment(o.バスタオル);
+	her.updateByChangeEquipment();
+	her.setStatus(o.衰弱, true);
+}
+[endscript]
+;-------------------------------------------------------------------------------
+
+[eventoff]
+
+
+
+
+
+
+;■寝取られ的ゲームオーバー
+
+; 特定の男への開発度が上がり、パーティー全員がその男の虜となると
+; ゲームオーバーになる
+
+;◇マックス編
+*over_max
+
+@bg f=0003
+[texton w=1]
+One morning, I was called by Max. He said he had something important to tell me.[k]
+When I went to the place, Max and the whole party were there.[k]
+[テオ e=通常 f=05]「What is it?」[k]
+@fg c=マックス e=通常 f=06
+[マックス f=06]「[テオ], I hate to tell you this.」[k]
+[マックス f=06]「But everyone in the party agreed that I was the more appropriate leader for this party.」[k]
+[テオ f=12]「What?!」[k]
+[マックス f=01]「Right, guys?」[k]
+When Max asked this, everyone in the party nodded in unison.[k]
+[マックス f=01]「That's why there's a change in leadership! From today on, the leader of the party will be this Captain Max. Isn't that great, [テオ]?」[k]
+[テオ f=12]「Even if you say something like that...」[k]
+[マックス f=05]「That's the decision of the party. Even if you want to continue as leader, no one will accept it.」[k]
+[テオ f=10]「...」[k]
+[マックス f=01]「You've done a good job. But you'll be replaced as leader today.」[k]
+[テオ f=12]「I-I understand.」[k]
+If that's everyone's will, I have no choice but to comply...[k]
+[マックス f=16]「All right! Okay, as the new leader, let me set the rules for this party.」[k]
+[マックス f=15]「Rule #1! The orders of the leader, Captain Max, are absolute!」[k]
+[テオ f=12]「What...?」[k]
+[マックス f=15]「Rule #2! Women in this party must accept any invitation for sex from Captain Max!」[k]
+[テオ f=12]「Hey, wait a minute!」[k]
+[マックス f=15]「And that covers it! If you can't follow these rules, you'll be asked to leave this party! Understood, everyone?!」[k]
+[name n="Female Member"]「...」[k]
+[name n="Female Member"]「Y-yes... Captain Max...」[k]
+Some blushed, some were not surprised, and some looked blatantly displeased, but none of them wanted to dispute Max's decision.[k]
+[マックス f=03]「Alright! Now that's out of the way, let's have fun and have sex at the inn as soon as possible! It's an orgy for all of us tonight! I won't let you sleep tonight, everyone!」[k]
+[テオ f=10]「...」[k]
+[マックス f=01]「[テオ], you can join in too! Just don't get in the way of my sex, of course!」[k]
+[テオ f=10]「...I'll pass.」[k]
+I was getting lightheaded listening to Max talk...[k]
+[textoff]
+@out
+@w1
+
+[texton w=1]
+One month later. Max, now the leader of the group, still wasn't taking adventuring seriously, but instead indulging in debauchery, squandering all the money we earned so far.[k]
+Soon after, our party naturally disbanded. My adventure had come to an end...[k]
+[textoff]
+@fa
+@w1
+@jump storage="script.ks" target=*_event_game_over
+
+
+;◇ライナス編
+*over_linus
+
+@bg f=0003
+@fg c=ライナス e=通常 f=02
+[texton w=1]
+[ライナス f=02]「Yo, [テオ].」[k]
+[テオ e=通常 f=05]「Ah... Linus, good morning.」[k]
+In the morning, I woke up and walked to the lobby of the inn, where I ran into Linus.[k]
+[ライナス f=02]「I'm leaving your party today.」[k]
+[テオ f=05]「What the...! That's sudden. Is something wrong?」[k]
+[ライナス f=02]「No, I've decided to form a new party where I'm the leader again.」[k]
+[テオ f=05]「A new party...?」[k]
+Linus was forced to join my party because he couldn't find any party members.[k]
+Does the fact that you decided to form a party again mean that you have a good idea of the members who will join?[k]
+[テオ f=01]「I see. Congratulations. I'm sorry to hear you're leaving our party, but I'm rooting for you.」[k]
+[ライナス f=02]「Hehe... Thanks. Let's go, guys!」[k]
+[テオ f=05]「Eh?」[k]
+Linus called out to our female members in the the lobby.[k]
+
+[if exp='HUM'][リム v=vh119 f=05]「Yes, Captain Linus.」[k][endif]
+[if exp='ELF'][クレア v=ve120 f=05]「Yes, Captain Linus.」[k][endif]
+[if exp='DWA'][フレデリカ v=vd117 f=05]「Yes, Captain Linus.」[k][endif]
+[if exp='GNO'][ミューズ v=vg109 f=05]「...Yes, Captain Linus.」[k][endif]
+[if exp='SYL'][マルエット v=vs122 f=19]「Yes, Captain Linus.」[k][endif]
+
+All our female members follow Linus in a gaggle.[k]
+[テオ f=12]「Wait a minute! Guys, where are you going?!」[k]
+
+[   if exp='HUM'][リム v=vh120 f=05]「Well... I'm going with our new leader, Linus.」[k]
+[elsif exp='ELF'][クレア v=ve121 f=06]「We follow our new leader, Linus.」[k]
+[elsif exp='DWA'][フレデリカ v=vd118 f=09]「Well... I'm going with our new leader, Linus.」[k]
+[elsif exp='GNO'][ミューズ v=vg110 f=05]「Well... I was trying to follow the new leader, Linus...」[k]
+[elsif exp='SYL'][マルエット v=vs123 f=06]「We follow our new leader, Linus.」[k]
+[endif]
+
+A new leader? Linus?[k]
+What do you mean? They're all members of my party![k]
+[ライナス f=02]「Sorry, [テオ].」[k]
+[テオ f=05]「What's up?」[k]
+[ライナス f=01]「They're all joining the new party I'm creating. So I'll be taking them.」[k]
+[テオ f=12]「E-eeeeeeh?!」[k]
+[テオ f=12]「I won't allow you to do it! They're all members of my party!」[k]
+[ライナス f=02]「Hehehehe...」[k]
+[テオ f=10]「What's so funny?」[k]
+[ライナス f=02]「They decided to leave your party and join mine. Of their own volition.」[k]
+[テオ f=12]「What did you say...?! That's ridiculous...!」[k]
+[ライナス f=02]「You don't believe me?」[k]
+[ライナス f=03]「Guys! You guys volunteered to join my new party, right?」[k]
+[name n="Female Member"]「... ∗nod∗」[k]
+Everyone nodded in unison at Linus' question.[k]
+[テオ f=12]「Oh, no...」[k]
+I can't believe it... what on earth happened...?[k]
+[ライナス f=02]「I'll tell you why. Well then...」[k]
+Linus pulls out something that looks like a small wand from his pocket.[k]
+Then he shook it lightly in his hand.[k]
+
+[if exp='HUM'][リム v=vh121 f=37]「Ah!」[k][endif]
+[if exp='ELF'][クレア v=ve122 f=37]「Mmm...!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd119 f=37]「Ahh, that's bad, Linus...!」[k][endif]
+[if exp='GNO'][ミューズ v=vg111 f=37]「Aahhh...!」[k][endif]
+[if exp='SYL'][マルエット v=vs124 f=37]「Hey, not now... ahh!」[k][endif]
+
+To my surprise, all the girls blushed and started writhing, holding their crotches![k]
+[ライナス f=02]「They have magic vibrators that I made in their pussies. When I activate the magic, they vibrate.」[k]
+[テオ f=12]「W-what the...!」[k]
+[ライナス f=03]「Everyone is a prisoner of my sex toys! Their bodies can't live without me anymore.」[k]
+[ライナス f=04]「When I told them I was going to start a new party, they all said they wanted to follow me! They must really like it, kukuku!」[k]
+[テオ f=10]「...」[k]
+[ライナス f=02]「So, I'll take the female members. Good luck. Bye.」[k]
+[textoff]
+@out
+@w1
+
+[texton w=1]
+After that, our party was down to just two of us; me and Max.[k]
+Word spread quickly among adventurers that all the female members had left at once, and no one applied to join my party. I found myself in the same position as Linus had been in before.[k]
+A party cannot be sustained without its members. I had to quit as an adventurer...[k]
+[textoff]
+@fa
+@out
+@w05
+@jump storage="script.ks" target=*_event_game_over
+
+
+;◇ブルー編
+*over_blue
+@bg f=0003
+[texton w=1]
+[テオ e=通常 f=05]「Huh...? I don't see anyone here... Where did they go?」[k]
+I'd been looking all over the inn and haven't seen any of the party members. This is unusual.[k]
+@fg c=サンドラ e=通常 f=27
+[サンドラ v=vn132 f=27]「Captain! There's a big problem!」[k]
+[テオ f=05]「What's wrong, Sandra?」[k]
+[サンドラ v=vn133 f=27]「Blue said that he would no longer accompany your party!」[k]
+[テオ f=12]「What did you say...?!」[k]
+That's selfish. If Blue were to leave now, we would be in trouble.[k]
+[テオ f=12]「I'll go and talk to Blue for a minute!」[k]
+[サンドラ v=vn134 f=11]「Oh, wait!」[k]
+[textoff]
+@out
+
+@bgf f=0001
+[texton w=1]
+[テオ f=11]「Blue! What's going on?!」[k]
+I opened the door to Blue's room as I said that. But![k]
+[テオ f=12]「T-this is...!」[k]
+[textoff]
+@out
+@w05
+
+[texton w=2]
+[ブルー]「Hmm... What is it, [テオ]?」[k]
+[テオ]「What... is this...?!」[k]
+When I entered Blue's room, I was greeted by a surprising sight.[k]
+Blue sits naked in the middle of the bed.[k]
+And around Blue, all the female members, also nude, were performing sexual services for him![k]
+The girls ignore my arrival and continue their service to Blue, leaving their bodies exposed.[k]
+
+[if exp='HUM'][リム v=vh122]「Oh, Blue... I love you...」[k][endif]
+[if exp='ELF'][クレア v=ve123]「Blue... give me some too...!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd120]「Blue... do you feel good...?」[k][endif]
+[if exp='GNO'][ミューズ v=vg112]「Blue... I will do my best to serve you...!」[k][endif]
+[if exp='SYL'][マルエット v=vs125]「Blue... You know you can do whatever you want, right...?」[k][endif]
+
+[テオ]「E-everyone...」[k]
+All the members were pressing against Blue, eager to get their hands on his body.[k]
+I am speechless at the situation. What in the world has happened to everyone...?![k]
+[ブルー]「They've all fallen for my dick.」[k]
+[テオ]「What the...!」[k]
+[ブルー]「These girls have become so starved for my dick that they can't stand to be without it!」[k]
+[女性メンバーたち]「... ∗nod∗」[k]
+[テオ]「No way...!」[k]
+The members nodded in unison. I can't believe it...![k]
+[ブルー]「By the way, I'm leaving you as of today.」[k]
+[テオ]「I can't protect everyone in the party without you! I'll increase the reward! So...」[k]
+[ブルー]「These women will follow me. They'll work for me to earn money.」[k]
+[テオ]「What did you say...?」[k]
+[ブルー]「So I don't have to worry about making money any more. And so, I don't need to stay here. I'll protect the women with my demon hunting powers. What you do is up to you.」[k]
+[テオ]「Wait... Please reconsider, Blue...!」[k]
+[textoff]
+@out
+@w1
+
+[texton w=1]
+The next morning, Blue and the others left. Only [マックス], Linus and I were left behind.[k]
+Unable to continue adventuring, we retired as adventurers. Murmur is still at large.[k]
+What will happen to this world from now on - only that devil knows.[k]
+[textoff]
+@out
+@w05
+[eventoff]
+
+; 終わり 994行目

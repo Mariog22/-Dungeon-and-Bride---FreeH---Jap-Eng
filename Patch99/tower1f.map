@@ -1,0 +1,223 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔１Ｆ
+insideName = １Ｆ
+upper = ラドミラの塔２Ｆ
+lower = ラドミラの塔Ｂ１
+level = 42
+bgm = tower
+margin = 4
+shadow = dark
+sky = forest
+roof = stone
+external = e:4
+
+; パーツ画像
+━ = stone_h
+✜ = stone_h
+－ = stone
+　 = marble
+☐ = soil
+／ = door
+〆 = key
+〰 = water
+☖ = arch
+☗ = arch
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+Ⓑ = warp
+⑺ = br_maxhp
+⑻ = br_maxhp
+⒐ = monument
+⑽ = box
+⑾ = box
+
+; 敵情報
+monsters = マスターランサー,デュエリスト,アークプリースト,メイガス,ネクロマンサー,マスターアーチャー,バーグラー,マスターシャドウ,オークキング,コボルドリーダー
+
+; 移動ポイント
+(A) = map:大峡谷・崖上, x:1, y:4, symbol:exit, ask:Leave the dungeon?
+(B) = map:ラドミラの塔17Ｆ, x:3, y:4
+(C) = map:ジョセフの森, x:1, y:13
+
+; 宝箱
+box[1] = ハルバード_u,生命力の秘薬_u,復活の粉,オリハルコンの砂,経験のコイン（大）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  +1  +2  +3  +4  
+  ┏━━━┳━━━┳━┳━━━┳━━━┳━━━━━┳－－－┓
+ 9┃⑽　Ⓑ┃　　敵／　／敵　　┃　　❶┃⑺　　　　┃☐☐☐ⅼ△△△△△△
+  ┃　　　┃　　　┃　┃　　　┃　　　┃　　　┏／┫☐☐☐ⅼ△△△△△△
+ 8┃∴　⑾┃　　　┃　┃　　　┃　　　┃　　　┃③┃⓹☐☐ⅼ△△△△△△
+  ┣✜━━┻━━━┛　┗━━━┻／━━┛　　　┗︼┫☐☐☐ⅼ△△△△△△
+ 7┃　　　　　　　　　　　　　　　　　　　　　　④┃☐☐☐ⅼ☐☐☐△△△△
+  ┃　┏━┳━━／━━┓　　　┏━━━━━━━━━┫☐☐☐ⅼ☐☐☐△△△△
+ 6┃　┃㊤┃⑻　敵　　┃　　　┃〰〰〰〰〰〰〰〰〰┃☐☐☐ⅼ☐☐☐☐☐△△
+  ┃　┃　┗━┓　　　┃　　　┃〰〰〰〰〰〰〰〰〰┃☐☐☐ⅼ☐☐☐☐☐△△
+ 5┃　┃　　　┃　　　┃　　　／　　　　　　　　　／☐☐ⓐ☗☐☐☐☐☐☐☐
+  ┃　┗━┳〆╋━━━┫　　　┃〰〰〰〰〰〰〰〰〰┃☐☐☐ⅼ☐☐☐☐☐△△
+ 4【⑥　　┃　┃　　　┃　　　┃〰〰〰〰〰〰〰〰〰┃☐☐☐ⅼ☐☐☐☐☐△△
+  ┣⧻┓　┃　┃　　　┃　　　┗━━━━━━━━━┫☐☐☐ⅼ☐☐☐△△△△
+ 3┃　┃　┃　┃　　敵／　　　　　　　　　　　　　┃☐☐☐ⅼ☐☐☐△△△△
+  ┃　┃　┃　┃　　　┣━━／┓　┏／━━┓　　　┃☐☐☐ⅼ△△△△△△
+ 2┃　┃　┃㊦┃　　　┃　　敵┃　┃敵　　┃　　　┃☐☐☐ⅼ△△△△△△
+  ┣⧻┫　┗━┻━━━┫　　　┃　┃　　　┃　　　┃☐☐☐ⅼ△△△△△△
+ 1┃　┃　　　　　　　┃　　　┃　┃　　　┃㊤　①┃☐☐☐ⅼ△△△△△△
+  ┃　┗━┳━━━┓　┗━━━┛　┗━━━┻━┳︼┫☐☐☐ⅼ△△△△△△
+ 0┃　　㊤┃㊦　　☖　　　　　　　　　　　　　／☁┨☐☐⒐ⅼ△△△△△△
+  ┗━━━┻━━━┻━━━━━━━━━━━━━┻━┻－－－┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  +1  +2  +3  +4  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[11][0].event = 2;
+pos[13][5].e.img = "stone";
+pos[13][5].e.antiScope = void;
+pos[2][5].s.key = o.クリスタルの鍵;
+pos[2][4].n.key = o.クリスタルの鍵;
+writeOpenedAreaRecord(0, 9);
+writeOpenedAreaRecord(0, 8);
+writeOpenedAreaRecord(1, 9);
+writeOpenedAreaRecord(1, 8);
+pos[0][9].f.antiWarp = true;
+pos[1][9].f.antiWarp = true;
+pos[1][8].f.antiWarp = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="There is a secret in the smoke-filled room."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] (inSearching || onObjectTrigger) && WAY == "e"
+
+@question title="<y>There was a button on the wall! Should I press it?" cancel=true
+[if exp='tf.result']
+	@se f=kacha
+	@wait time=800
+	@se f=fence
+	@switchfence x=0 y=4 way=s mode=open
+	@notice text="I heard a door open somewhere!"
+	@delevent
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Check the outer wall of this room."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] inSearching && WAY == "n"
+
+@se f=coin
+@eval exp='game.party.gold += 500'
+@notice text="There was 500G hidden inside the wall!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] (inSearching && WAY == "w") || onObjectTrigger
+
+[if exp='game.inSearching']
+	[if exp='game.map.getWallInfo().button']
+		@notice text="There is a button on the wall."
+	[else]
+		@changewall way=w himg=button button=true
+		@notice text="I found a hidden button!"
+	[endif]
+[else]
+	@se f=kacha
+	@wait time=800
+	@se f=fence
+	@switchfence x=0 y=2 way=s mode=open
+	@notice text="I heard a door open somewhere!"
+	@delevent
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@notice text="There are two doors that must be opened."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 10)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 10!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 20)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 20!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] onObjectTrigger
+
+@question title="There is a stone monument. Would you like to touch it?"
+[eventoff cond='! tf.result']
+@se f=period
+@eval exp='o.ラドミラの塔１Ｆ.setWarp(12, 0, "C", "warp")'
+@eval exp='o.ジョセフの森.setWarp(1, 13, "D", "warp")'
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] onObjectTrigger
+
+; ハイパーボム専用宝箱
+@treasure trap=罠はない item=スライムの彫像,ネズミの彫像,トカゲの彫像,蛇の彫像,悪魔の彫像
+[if exp='! tf.leaveTreasureBox']
+	@delevent
+	@changefloor pimg=void click=false
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] onObjectTrigger
+
+; ハイパーボム専用宝箱
+@treasure trap=罠はない item=強者のメダル,加護のメダル,経験のコイン（大）,経験のコイン（大）,経験のコイン（大）,経験のコイン（大）
+[if exp='! tf.leaveTreasureBox']
+	@delevent
+	@changefloor pimg=void click=false
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

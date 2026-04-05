@@ -1,0 +1,85 @@
+﻿name	ワイルド・ブル
+displayName	Wild Bull
+img	wildbull
+boss	アレックス
+gold	145000
+interval	20
+maxSlaves	3
+slaveTerm	10
+members	アレックス,ハイウェイマン,パイレーツ,アルケミスト
+guysList	取った客,取った客,どこかの男,アレックス,アレックス
+itemsList	ボム,ボム,ボム,ボム,ボム,ハイパーボム,魔法の錠前,魔法の錠前,こじあけの鍵,特効薬
+
+name	ホーク・ウイング
+displayName	Hawk Wing
+img	hawkwing
+boss	ルーファス
+gold	366000
+interval	30
+favorite	bra,panties,braarmor,pantsarmor
+members	ルーファス,ブッシュワッカー,バーグラー,パイレーツ,キャプテン,アサシン,マスターシャドウ,ネクロマンサー
+itemsList	ロングソード,カトラス,復活の粉,ファルシオン,トマホーク,バトルアックス,腐った革鎧,中立の胸当て,プレートメイル・上,精霊の縫い糸
+
+name	スライム軍団
+displayName	Slime Squad
+img	slimes
+boss	スライム
+gold	1800
+interval	5
+favorite	food,drink
+members	スライム,ポイズンスライム,ブルースライム,レッドスライム,ゴーストスライム,ブラックスライム,マジカルスライム,ジャンボスライム
+itemsList	ふっくらパン,チーズ,カマンベール,りんご,青りんご,はちみつパン,ふっくらパン,チーズ,カマンベール,りんご
+
+name	チーム・アマゾネス
+displayName	Team Amazoness
+img	amazon
+boss	ブレイズマン
+gold	28000
+interval	10
+favorite	ssword,sword,gsword,poleax,spear,bow,longbow,book,scroll
+members	マスターランサー,ブレイズマン,マスターアーチャー,ハイプリースト,ミスティック
+itemsList	レイズデッドの魔法書,スターカード・林檎,シャムシール,鉄の槍,炎のロッド,縞のブラ,ピンクのパンツ,赤いパンツ,白いパンツ,宝箱の鍵
+
+name	ブルー・ファミリア
+displayName	Blue Familia
+img	blue
+boss	ブルー
+gold	69000
+slaveTerm	30
+members	ブルー,エリック,キャプテン,ミレディ,サンドラ
+guysList	ブルー,ブルー,ブルー,ブルー,ブルー,ブルー,ブルー,エリック,エリック,どこかの男
+
+name	ファントムリザード
+displayName	Phantom Lizard
+img	lizard
+boss	ダークサモナー
+gold	16000
+members	ダークサモナー,バジリスク,バジリスク,サラマンダー,サラマンダー,サラマンダー,サラマンダー,サラマンダー
+
+name	デッドリー・ロア
+displayName	Deadly Loa
+img	roar
+boss	コボルドリーダー
+gold	5200
+members	コボルド,オークソルジャー,シニアコボルド,コボルドリーダー,オークシャーマン
+
+name	地獄の処刑人
+displayName	Hell's Executioners
+img	executioner
+boss	マスターシャドウ
+gold	91500
+members	マスターシャドウ,パイレーツ,トログロダイト,アサシン,キャプテン
+
+name	アビスバイパー
+displayName	Abyss Viper
+img	abyss
+boss	サイクロプス
+gold	163000
+members	サイクロプス,ラミア,マッドウイング,ゴールドマン,ストーンゴーレム,ゴーレム
+
+name	死霊大隊
+displayName	Dead Soul Battalion
+img	ghost
+boss	ヴァンパイアロード
+gold	347000
+members	ヴァンパイアロード,パワーリッチ,ネクロマンサー,ゴースト,ゴースト,スケルトンキング,スケルトンキング,スケルトンキング,レブナント,レブナント,レブナント,レブナント

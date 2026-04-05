@@ -1,0 +1,515 @@
+﻿; 温泉
+
+name = 温泉・脱衣所
+insideName = Changing Room
+level = 10
+bgm = beach
+margin = 1
+shadow = dark
+sky = black
+roof = wood
+blank = rock
+antiWarp = true
+
+; 画像パーツ
+━ = wood
+ᆖ = wood
+　 = wood
+◇ = soil
+⏃ = woods
+△ = rock
+〰 = pond
+／ = door
+⑊ = door
+☗ = gate
+︻ = panel
+┯ = button
+① = human
+⑫ = human
+
+; 移動ポイント
+(A) = map:ヤネクの森・東, x:6, y:29, way:n, symbol:exit, ask:Go to the next map?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+  				┏━━⑊━━┳━━━━━━━━━━━┓
+ 5				┃◇◇Ⓐ◇　┃　　　　　　　　　　　┃
+  				┃◇◇◇◇　┃　　　　　　　　　　　┃
+ 4				┃◇◇◇◇　　　　　　　　　　　　　┃
+  				┃◇◇◇◇　┃　　　　　　　　　　　┃
+ 3				┃◇◇◇◇①┃　　②　④　⑤　③　　┃
+  		┏━┻━━━━━┻━━／━︼┳︼━／━━┻━━━━━━━┓
+ 2		┃　　⑪　⑪　⑫　　　⑧　　┃　　⑧　　　　　　　　　　┃
+  		┃　　　　　　　　　　　　　┃　　　　　　　　　　　　　┃
+ 1		【⑨　⑪　⑪　　　　　　　　┃　　　　　　　　　　　　⑩】
+  		┃　　　　　　　　　　　　　┃　　　　　　　　　　　　　┃
+ 0		┃⑦　　　　┃⑥┃⑥┃⑥┃⑥┃⑥┃⑥┃⑥┃⑥┃　　　　⑦┃
+  		┗━━━━━┻┷┻┷┻┷┻┷┻┷┻┷┻┷┻┷┻━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[1][0].s.himg = pos[14][0].s.himg = "door";
+pos[3][5].f.img = "soil";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsMove
+
+[texton]
+[name n=Receptionist f=maid_00]「Welcome to the hot springs! Would you like an explanation on how to use them?」[k]
+[textoff]
+@question title="View tutorial?"
+[eventoff cond='! tf.result']
+
+[texton]
+[name n=Receptionist f=maid_00]「The hot springs are separated by gender. You can only enter the area designated for your gender. Those who are not allowed to enter must wait in this area and will be reunited when leaving.」[k]
+[name n=Receptionist f=maid_00]「Before entering the bath, please place all your belongings in a locker. Please note that you are not allowed to bring anything other than bath towels, rings, and accessories into the bath.」[k]
+[name n=Receptionist f=maid_00]「Lockers are lined up at the back of the changing room ahead. Any of them can be used. Press the button to open it and store your belongings.」[k]
+[name n=Receptionist f=maid_00]「After leaving the bathhouse, please retrieve your belongings from the lockers. When you press the button, it will automatically supply the belongings of the person who used it, so there's no need to remember which one it was.」[k]
+[name n=Receptionist f=maid_00]「Oh, and please don't forget about any belongings you left in the lockers! If you leave without retrieving them, they'll be sent to the [b]town storage facility[/b]. Please note that items there will be disposed of after the deadline!」[k]
+[name n=Receptionist f=maid_00]「Please make yourself comfortable! We have placed bath towels in the lockers for your use.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] WAY == "s" || game.waitingMembers.count > 0
+
+@eval exp='tf.temp = "男"'
+
+[if exp='game.waitingMembers.count > 0']
+	@se f=period
+	@call target=*_join_members
+	@call target=*_remove_girls
+	[texton]
+	[if exp='game.isFreeMode']
+		We met up with the members who were waiting.[k]
+	[elsif exp='game.party.members[0].sex == "女"']
+		[if exp='ELF || SYL'][キャラ f=19]「Sorry to keep you waiting. Let's go.」[k]
+		[elsif exp='HUM || DWA || GNO'][キャラ f=25]「Thank you for waiting. Let's go.」[k]
+		[endif]
+		[テオ]「Huh...? Didn't you just come out of the men's bath?」[k]
+		[if exp='HUM || DWA'][キャラ f=33]「I-isn't that just your imagination? Let's hurry up and go!」[k]
+		[elsif exp='GNO'][キャラ f=51]「W-well... Let's hurry up and go.」[k]
+		[elsif exp='ELF || SYL'][キャラ f=27]「Y-you're just imagining things! Come on, let's hurry up and go!」[k]
+		[endif]
+		@changewall map=温泉・浴場 x=10 y=6 way=w type=wall img=wood
+		@changewall map=温泉・浴場 x=10 y=4 way=w type=wall img=wood
+	[else]
+		[テオ]「Sorry to keep you waiting. Let's go.」[k]
+	[endif]
+	[textoff]
+	[eventoff]
+[endif]
+
+; どちらかしかいない場合
+[if exp='game.party.getFirstHeroine() === void && game.guest.getHiring() === void']
+	@question title="This is the men's bath. Would you like to go in?"
+	[if exp='! tf.result']
+		@walk move=n
+		[eventoff]
+	[endif]
+	@walk move=s
+	@call target=*_place_girls
+	@call target=*_into_locker_room
+	[eventoff]
+[elsif exp='game.party.getFirstGuy() === void']
+	@se f=buzzer
+	@notice text="<y>Female members are not allowed in the men's bath."
+	@walk move=n
+	[eventoff]
+[endif]
+
+@question title="This is the men's bath. Would you like to go in while the female members wait?"
+[if exp='! tf.result']
+	@walk move=n
+	[eventoff]
+[endif]
+@call target=*_place_girls
+@call target=*_separate_members
+
+[texton]
+[if exp='game.isFreeMode']
+	The female members remain where they are, while the male members enter the changing room.[k]
+[else]
+	[テオ]「I'll be off then. Everyone, please wait here.」[k]
+[endif]
+[textoff]
+@walk move=s
+@call target=*_into_locker_room
+
+[if exp='game.waitingMembers.has(o.ブルー)']
+	@wait time=500
+	@fg c=ブルー e=裸
+	[texton]
+	[ブルー f=19]「Hey.」[k]
+	[ブルー f=16]「Just do whatever you want. Got it?」[k]
+	Saying that, Blue went into the bathhouse by himself.[k]
+	@cl
+	@se f=period
+	[nw][b]Blue left the party.[/b][k]
+	[textoff]
+[endif]
+
+[if exp='game.waitingMembers.has(o.ライナス)']
+	@wait time=500
+	@fg c=ライナス e=バスタオル
+	[texton]
+	[ライナス f=19]「Hey, you guys explore this place on your own. I've got something to do.」[k]
+	Linus said that, then went into the bathhouse by himself.[k]
+	@cl
+	@se f=period
+	[nw][b]Linus left the party.[/b][k]
+	[textoff]
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] WAY == "s" || game.waitingMembers.count > 0
+
+@eval exp='tf.temp = "女"'
+
+[if exp='game.waitingMembers.count > 0']
+	@eval exp='game.curChara = game.party.members[0]'
+	@call target=*_join_members
+	[texton]
+	[if exp='ELF || SYL'][キャラ]「Sorry to keep you waiting. Let's go.」[k]
+	[elsif exp='HUM || DWA || GNO'][キャラ]「Thank you for waiting. Let's go.」[k]
+	[endif]
+	[textoff]
+	[eventoff]
+[endif]
+
+; どちらかしかいない場合
+[if exp='game.party.getFirstHeroine() === void']
+	@se f=buzzer
+	@notice text="<y>Male members are not allowed in the women's bath."
+	@walk move=n
+	[eventoff]
+[elsif exp='game.party.getFirstGuy() === void']
+	@question title="This is the women's bath. Would you like to go in?"
+	[if exp='! tf.result']
+		@walk move=n
+		[eventoff]
+	[endif]
+	@call target=*_separate_members
+	@walk move=s
+	@call target=*_into_locker_room
+[else]
+	@question title="This is the women's bath. Would you like to go in while the male members wait?"
+	[if exp='! tf.result']
+		@walk move=n
+		[eventoff]
+	[endif]
+	@call target=*_separate_members
+
+	[texton]
+	[if exp='game.isFreeMode']
+		The male members remain where they are, while the female members enter the changing room.[k]
+	[else]
+		[テオ]「Well then, I'll wait here.」[k]
+	[endif]
+	[textoff]
+	@walk move=s
+	@call target=*_into_locker_room
+[endif]
+
+[if exp='game.waitingMembers.has(o.ミレディ)']
+	@wait time=500
+	@fg c=ミレディ e=下着
+	@wakuset w=1
+	[texton]
+	[ミレディ f=19]「Ugh, what a pain. It's such a waste to go to a hot spring and not enjoy it.」[k]
+	[ミレディ f=16]「Hey, you guys take care of the rest. I'm going to take a bath.」[k]
+	@cl
+	@se f=period
+	[nw][b]Miredy left the party.[/b][k]
+	[textoff]
+[endif]
+
+[if exp='game.waitingMembers.has(o.サンドラ)']
+	@wait time=500
+	@fg c=サンドラ e=バスタオル
+	@wakuset w=1
+	[texton]
+	[サンドラ]「Hey, you guys will be okay exploring here on your own, right?」[k]
+	[サンドラ]「I want to relax in the hot springs here.」[k]
+	@cl
+	@se f=period
+	[nw][b]Sandra left the party.[/b][k]
+	[textoff]
+[endif]
+
+[if exp='game.waitingMembers.has(o.マリア)']
+	@wait time=500
+	@fg c=マリア e=バスタオル f=03
+	@wakuset w=1
+	[texton]
+	[マリア f=03]「Ha ha ha! Come on, hot springs, hot springs!」[k]
+	Maria must have been really looking forward to the hot spring, because as soon as she took off her clothes, she ran straight to the bath.[k]
+	@cl
+	@se f=period
+	[nw][b]Maria left the party.[/b][k]
+	[textoff]
+[endif]
+
+[if exp='game.waitingMembers.has(o.ポラリス)']
+	@wait time=500
+	@fg c=ポラリス e=バスタオル f=03
+	@wakuset w=1
+	[texton]
+	[ポラリス f=03]「I was looking forward to this hot spring more than anything else on earth ♪ Excuse me, I'll be going ahead.」[k]
+	Polaris must have been really looking forward to the hot spring, because she quickly took off her clothes and rushed to the bath.[k]
+	@cl
+	@se f=period
+	[nw][b]Polaris left the party.[/b][k]
+	[textoff]
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="Men's Bath"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Women's Bath"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@question title="Would you like to use a locker?"
+[eventoff cond='! tf.result']
+@eval exp='game.itemWin.openStockBox("lockerRoom")'
+@waitinput name="closeTreasureBox"
+@eval exp='game.itemBoxObj.collectItemsToStock()'
+
+[if exp='f.noTowelsInLocker']
+	@wait time=500
+	@eval exp='game.curChara = game.party.members[0]'
+	[texton]
+	[if exp='isELF || isSYL'][キャラ f=07]「Hey! It looks like there aren't any bath towels!」[k]
+	[elsif exp='isHUM || isDWA'][キャラ f=05]「Excuse me. There are no bath towels.」[k]
+	[else][キャラ f=05]「Um, receptionist... It seems like there aren't any bath towels...」[k]
+	[endif]
+	[name n=Receptionist f=maid_00]「Oh, I'm sorry! We're out of bath towels right now. I'll restock them later!」[k]
+	[textoff]
+	@eval exp='f.noTowelsInLocker = false'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] WAY == "s"
+
+[if exp='game.party.hasNothing(o.バスタオル, o.鋼鉄の貞操帯（ブルーの所持品）, "finger", "pocket")']
+	@question title="Would you like to go into the bathing area?"
+	@warp map=温泉・浴場 x=&'game.party.curX' y=18 way=s sound=door1 cond='tf.result'
+[else]
+	@notice text="<y>Bath towels, rings and accessories<w> are the only items allowed in the bathing area.<r>Please store all other items in a locker."
+	@walk move=n
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] WAY == "n" && party.getMemberHipNaked() !== void
+
+@eval exp='game.curChara = game.party.getMemberHipNaked()'
+[if exp='game.curChara.isHiring']
+	@eval exp='game.curChara.equipLife = G_WHOLE'
+	@eval exp='game.curChara.makeBustups()'
+	@eval exp='game.curChara = game.party.getMemberHipNaked()'
+	[eventoff cond='game.curChara === void']
+[endif]
+
+[texton]
+[if exp='game.isFreeMode'][キャラ] obviously couldn't go outside dressed like this, and turned back to get some clothes.[k]
+[elsif exp='game.curChara == o.マックス'][マックス]「Hey, it's not cool to go outside with your dick hanging out.」[k]
+[elsif exp='game.curChara == o.テオ'][テオ]「It would be bad to go outside dressed like this...」[k]
+[elsif exp='isELF || isSYL'][キャラ]「I can't go outside dressed like this!」[k]
+[elsif exp='isDWA'][キャラ]「I can't go outside dressed like this!」[k]
+[elsif exp='isLIS'][キャラ]「I can't go outside dressed like this...」[k]
+[else][キャラ]「I can't go outside dressed like this...」[k]
+[endif]
+[textoff]
+@walk move=s
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] onObjectTrigger
+
+@notice text=←Bathhouse
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] onObjectTrigger
+
+@notice text=Bathhouse→
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] true
+
+@delevent
+@wait time=500
+@walk turn=e
+[texton]
+@eval exp='game.curChara = game.party.members[0]'
+There were several men in the changing room. [キャラ][if exp='game.party.members.count >= 2']'s group[endif] attracted the men's attention.[k]
+[男 f=guy2_04]「What the...?! Why are there naked women here?!」[k]
+[男 f=guy4_02]「Hey, hey! Your changing room is over there! Hahaha!」[k]
+[男 f=guy1_03]「What were you doing naked in the men's bath? Were you doing something dirty?」[k]
+[texton w=1]
+@eval exp='tf.i = 0'
+*_blush_loop
+@eval exp='game.curChara = game.party.members[tf.i]'
+@fg c=キャラ e=汗だく f=38
+[キャラ]「...」[k]
+@eval exp='tf.i ++'
+@jump target=*_blush_loop cond='tf.i < game.party.members.count'
+@cl
+[キャラ][if exp='game.party.members.count >= 2']'s group were so embarrassed that their faces[else] was so embarrassed that her face[endif] felt on the verge of explosion. The men stared intently, their crotches bulging.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] party.lastIsMove
+
+@wait time=500
+[texton w=0]
+[name n=Salesperson f=priest_pink_00]「One piece of basic clothing is [b]1600G[/b][r]Would you like to buy it?」[k]
+[textoff]
+
+@question title="Would you like to buy the clothes?"
+
+[if exp='tf.result']
+	[if exp='game.party.gold < 1600']
+		@se f=buzzer
+		@notice text="<y>Not enough money"
+	[else]
+		@eval exp='game.party.gold -= 1600'
+		@se f=coin
+		@getitem item=布の服 message="<y>Paid 1600G for the clothing!"
+	[endif]
+[endif]
+@clf
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_separate_members
+
+; 待機するメンバーの記録を取って離脱
+[iscript]
+game.guest.eraseSummonedMonster();
+for(var i = game.party.allMembers.count - 1; i >= 0; i--)
+{
+	var one = game.party.allMembers[i];
+	if(one.sex == tf.temp && (one.isUserChara || one.isHiring)) continue;
+	game.removeMemberTemporary(one);
+}
+[endscript]
+
+@return
+;-------------------------------------------------------------------------------
+*_join_members
+
+; 待機していたメンバーが合流
+@eval exp='game.restoreMembers()'
+@eval exp='game.isPrivateScene = false'
+
+@return
+;-------------------------------------------------------------------------------
+*_into_locker_room
+
+; その他設定
+[iscript]
+game.isPrivateScene = true;
+game.itemBoxObj.locker = [];
+f.noTowelsInLocker = (tf.temp == "女" && o.温泉・洞窟Ｂ１.events.has(2));
+if(! f.noTowelsInLocker)
+{
+	for(var i = game.party.members.count - 1; i >= 0; i--)
+	{
+		game.lockerRoom.trunk.add(%[itemData: o.バスタオル]);
+	}
+}
+if(game.guest.getHiring() !== void)
+{
+	game.guest.getHiring().equipLife = f.noTowelsInLocker ? G_NUDE : G_TOWEL;
+	game.guest.getHiring().makeBustups();
+}
+[endscript]
+
+@return
+;-------------------------------------------------------------------------------
+*_place_girls
+
+; 先に温泉に入っている女子たちを配置
+[iscript]
+game.map.changeObject(%[pimg: "mob01"], 8, 2, "f");
+game.map.changeObject(%[pimg: "mob02"], 8, 1, "f");
+o.温泉・浴場.changeObject(%[pimg: "mob04"], 7, 18, "f");
+if(game.guest.members.has(o.サンドラ)) o.温泉・浴場.changeObject(%[pimg: "mob06"], 7, 17, "f");
+o.温泉・浴場.changeObject(%[pimg: "mob05"], 7, 16, "f");
+o.温泉・浴場.changeObject(%[pimg: "mob03"], 7, 12, "f");
+if(HUM) o.温泉・浴場.changeObject(%[pimg: "human01_" + game.curChara.color], 7, 13, "f");
+if(DWA) o.温泉・浴場.changeObject(%[pimg: "dwarf01_" + game.curChara.color], 8, 13, "f");
+if(GNO) o.温泉・浴場.changeObject(%[pimg: "gnome01_" + game.curChara.color], 7, 15, "f");
+if(SYL) o.温泉・浴場.changeObject(%[pimg: "sylph01_" + game.curChara.color], 7, 14, "f");
+if(ELF) o.温泉・浴場.changeObject(%[eximg: "elf01_" + game.curChara.color], 7, 14, "f");
+o.温泉・浴場.events.push2(1, 2);
+if(game.guest.members.has(o.サンドラ)) o.温泉・浴場.events.push2(3);
+if(GNO) o.温泉・浴場.events.push2(4);
+if(ELF || SYL) o.温泉・浴場.events.push2(5);
+if(HUM || DWA) o.温泉・浴場.events.push2(6);
+[endscript]
+
+@return
+;-------------------------------------------------------------------------------
+*_remove_girls
+
+; 配置したに女子たちを撤去
+[iscript]
+game.map.changeObject(%[pimg: void], 8, 2, "f");
+game.map.changeObject(%[pimg: void], 8, 1, "f");
+o.温泉・浴場.changeObject(%[pimg: void], 7, 18, "f");
+o.温泉・浴場.changeObject(%[pimg: void], 7, 17, "f");
+o.温泉・浴場.changeObject(%[pimg: void], 7, 16, "f");
+o.温泉・浴場.changeObject(%[pimg: void], 7, 12, "f");
+o.温泉・浴場.changeObject(%[pimg: void], 7, 13, "f");
+o.温泉・浴場.changeObject(%[pimg: void], 8, 13, "f");
+o.温泉・浴場.changeObject(%[pimg: void], 7, 15, "f");
+o.温泉・浴場.changeObject(%[pimg: void], 7, 14, "f");
+o.温泉・浴場.changeObject(%[eximg: void], 7, 14, "f");
+[endscript]
+
+@return
+;-------------------------------------------------------------------------------

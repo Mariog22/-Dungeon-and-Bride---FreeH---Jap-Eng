@@ -1,0 +1,2476 @@
+﻿// option.tjs
+// オプション画面・セーブロード画面
+
+
+//----------------------------------------------------------------------------------------
+class OptionBoard extends BoardLayer
+{
+	// オプション画面を作るクラス
+
+	var pageBtn;
+	var quitBtn;
+	var meterBtn = [];
+	var toggleBtn = [];
+	var triggerBtn = [];
+	var numSpinBtn = [];
+	var keyConfigBtn = [];
+	var muteBtn = [];
+	var meterCount = 12;
+	var toggleCount = 6;
+	var triggerCount = 6;
+	var spinCount = 2;
+	var keyConfigCount = 14;
+	var muteCount = 12;
+	var cursorAreaAdjuster;	// ダンジョンビューカーソル調整
+	var keyReciever;	// ユーザーの入力を待つレイヤー
+	var currentChangingButton;	// 変更しようとするボタンオブジェクト
+
+	function OptionBoard(par, master)
+	{
+		super.BoardLayer(...);
+		name = "オプション画面";
+		adjustX = 1;
+		adjustY = 100000;	// 縦横の差を十分に付けることでカーソルが斜めに移動しなくなる
+		//font.face = "メイリオ";
+		font.height = 26;
+		edge = false;
+		loadImages("back_config");
+
+		pageBtn = new ToggleButton(this, 7);
+		pageBtn.setSize(pageBtn.maxButtonCount * 120, 44);
+		pageBtn.setPos(240, 15);
+		pageBtn.visible = pageBtn.selectable = true;
+		pageBtn.onReturnAction = pageBtn.focusNext;
+		targetLayers.add(pageBtn);
+		var pages = ["game", "text", "sound", "display", "key", "cursor", "other"];
+		for(var i = 0; i < pageBtn.maxButtonCount; i++)
+		{
+			pageBtn.buttons[i].setPos(i * 100, 0);
+			pageBtn.buttons[i].onSelectActionParam = i;
+			pageBtn.buttons[i].loadImages("btn_config_" + pages[i]);
+		}
+		pageBtn.buttons[0].onSelectAction = openGameConfig;
+		pageBtn.buttons[1].onSelectAction = openTextConfig;
+		pageBtn.buttons[2].onSelectAction = openSoundConfig;
+		pageBtn.buttons[3].onSelectAction = openDisplayConfig;
+		pageBtn.buttons[4].onSelectAction = openKeyConfig;
+		pageBtn.buttons[5].onSelectAction = openCursorConfig;
+		pageBtn.buttons[6].onSelectAction = openOtherConfig;
+
+		for(var i = 0; i < keyConfigCount * 2; i++)
+		{
+			keyConfigBtn[i] = new TriggerButton(this);
+			keyConfigBtn[i].loadImages("btn_keyassign");
+			keyConfigBtn[i].onEscapeAction = pageBtn.focus;
+			targetLayers.add(keyConfigBtn[i]);
+		}
+
+		for(var i = 0; i < meterCount; i++)
+		{
+			meterBtn[i] = new MeterButton(this);
+			meterBtn[i].loadImages("btn_meter");
+			meterBtn[i].unitLength = 32;
+			meterBtn[i].onEscapeAction = pageBtn.focus;
+			targetLayers.add(meterBtn[i]);
+		}
+
+		for(var i = 0; i < toggleCount; i++)
+		{
+			toggleBtn[i] = new ToggleButton(this, 3);	// 最大数
+			toggleBtn[i].loadImages("btn_radio");
+			toggleBtn[i].onEscapeAction = pageBtn.focus;
+			targetLayers.add(toggleBtn[i]);
+			toggleBtn[i].buttonCount = 2;
+		}
+
+		for(var i = 0; i < triggerCount; i++)
+		{
+			triggerBtn[i] = new TriggerButton(this);
+			triggerBtn[i].loadImages("btn_trigger");
+			triggerBtn[i].onEscapeAction = pageBtn.focus;
+			targetLayers.add(triggerBtn[i]);
+		}
+
+		for(var i = 0; i < spinCount; i++)
+		{
+			numSpinBtn[i] = new NumberSpinButton(this);
+			numSpinBtn[i].loadImages("spinbtn");
+			numSpinBtn[i].onEscapeAction = pageBtn.focus;
+			targetLayers.add(numSpinBtn[i]);
+		}
+
+		for(var i = 0; i < muteCount; i++)
+		{
+			muteBtn[i] = new LightCommandButton(this);
+			muteBtn[i].loadImages("btn_mute");
+			muteBtn[i].onSelectActionParam = 0;	// 音量を０に
+		}
+
+		quitBtn = new TriggerButton(this);
+		quitBtn.loadImages("btn_quit");
+		quitBtn.onEscapeAction = pageBtn.focus;
+		quitBtn.onSelectAction = kag.close;
+		quitBtn.setPos(5, kag.scHeight - quitBtn.height - 5);
+		targetLayers.add(quitBtn);
+
+		keyReciever = new KeyRecieverLayer(par, master);
+		keyReciever.absolute = 100000;
+
+		cursorAreaAdjuster = new AdjustCursorAreaWindow(this, master);
+		cursorAreaAdjuster.setPos(62, 125);
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < meterBtn.count; i++) invalidate meterBtn[i];
+		for(var i = 0; i < toggleBtn.count; i++) invalidate toggleBtn[i];
+		for(var i = 0; i < triggerBtn.count; i++) invalidate triggerBtn[i];
+		for(var i = 0; i < keyConfigBtn.count; i++) invalidate keyConfigBtn[i];
+		for(var i = 0; i < muteBtn.count; i++) invalidate muteBtn[i];
+		invalidate pageBtn;
+		invalidate quitBtn;
+		invalidate keyReciever;
+		invalidate cursorAreaAdjuster;
+		super.finalize();
+	}
+
+	function open()
+	{
+		super.open();
+		clear();
+		pageBtn.pressButton(pageBtn.value);
+		pageBtn.focus();
+	}
+
+	function clear(backImage = "back_config")
+	{
+		frameGraphic = backImage;
+		super.clear();
+		for(var i = 0; i < targetLayers.count; i++)
+		{
+			if(targetLayers[i] == pageBtn) continue;
+			targetLayers[i].visible = targetLayers[i].selectable = false;
+		}
+		for(var i = 0; i < muteBtn.count; i++) muteBtn[i].visible = false;
+		cursorAreaAdjuster.visible = false;
+	}
+
+	//----------------------------------------------------------------------------
+	// ゲームの設定
+
+	function openGameConfig()
+	{
+		clear();
+		font.height = 26;
+		quitBtn.setButton();
+
+		var x = 140, y = 110, dx = 440;
+		write("Remember command position", x, y);
+		write("Yes", x + dx + 50, y);
+		write("No", x + dx + 210, y);
+		toggleBtn[0].setPos(x + dx, y - 9);
+		toggleBtn[0].setFunc(switchRememberingCommand);
+		toggleBtn[0].setButton(! sf.rememberLastCommand);
+
+		y += 70;
+		write("Confirm shop transactions?", x, y);
+		write("Yes", x + dx + 50, y);
+		write("No", x + dx + 210, y);
+		toggleBtn[1].setPos(x + dx, y - 9);
+		toggleBtn[1].setFunc(switchConfirmTrade);
+		toggleBtn[1].setButton(! sf.askExecTrade);
+
+		y += 70;
+		write("Confirm item deletion", x, y);
+		write("Yes", x + dx + 50, y);
+		write("No", x + dx + 210, y);
+		toggleBtn[2].setPos(x + dx, y - 9);
+		toggleBtn[2].setFunc(switchConfirmDiscard);
+		toggleBtn[2].setButton(! sf.askDiscardItem);
+
+		y += 70;
+		write("Mark damaged items", x, y);
+		write("Yes", x + dx + 50, y);
+		write("No", x + dx + 210, y);
+		toggleBtn[3].setPos(x + dx, y - 9);
+		toggleBtn[3].setFunc(switchBrokenIndicator);
+		toggleBtn[3].setButton(! sf.brokenIndicator);
+
+		y += 70;
+		write("Warn when trying to cancel", x, y);
+		write("bonus points over", x, y + 30);
+		numSpinBtn[0].setPos(x + dx, y + 12);
+		numSpinBtn[0].max = 60;
+		numSpinBtn[0].min = 7;
+		numSpinBtn[0].onChangeAction = setThresholdOfBonusNotified;
+		numSpinBtn[0].setControl(sf.thresholdOfBonusNotified);
+		numSpinBtn[0].selectable = true;
+
+		y += 100;
+		write("Map coordinate North・East order", x, y);
+		write("N・E", x + dx + 50, y);
+		write("E・N", x + dx + 210, y);
+		toggleBtn[4].setPos(x + dx, y - 9);
+		toggleBtn[4].setFunc(switchOrderOfNorthAndEast);
+		toggleBtn[4].setButton(sf.putEastBeforeNorth);
+
+		y += 70;
+		write("Skip viewed monster capture events", x, y);
+		write(" ", x, y + 30);
+		write("Yes", x + dx + 50, y + 12);
+		write("No", x + dx + 210, y + 12);
+		toggleBtn[5].setPos(x + dx, y + 3);
+		toggleBtn[5].setFunc(switchCaptureEventSkip);
+		toggleBtn[5].setButton(! sf.skipCaptureEvent);
+	}
+
+	function switchRememberingCommand(num)
+	{
+		sf.rememberLastCommand = ! num;
+	}
+
+	function switchConfirmTrade(num)
+	{
+		sf.askExecTrade = ! num;
+	}
+
+	function switchConfirmDiscard(num)
+	{
+		sf.askDiscardItem = ! num;
+	}
+
+	function switchBrokenIndicator(num)
+	{
+		sf.brokenIndicator = ! num;
+	}
+
+	function switchOrderOfNorthAndEast(num)
+	{
+		sf.putEastBeforeNorth = num;
+		master.gameFrame.updateCoordinate();
+	}
+
+	function setThresholdOfBonusNotified(num)
+	{
+		sf.thresholdOfBonusNotified = num;
+		return true;
+	}
+
+	function switchCaptureEventSkip(num)
+	{
+		sf.skipCaptureEvent = ! num;
+	}
+
+	//----------------------------------------------------------------------------
+	// テキスト設定
+
+	function openTextConfig()
+	{
+		clear();
+		font.height = 26;
+		quitBtn.setButton();
+
+		var x = 140, y = 110, dx = 420;
+		write("Text speed", x, y);
+		meterBtn[0].setPos(x + dx, y - 10);
+		meterBtn[0].setButton(10 - kag.userChSpeed \ 6, 10, 1);
+		meterBtn[0].onSelectAction = changeChSpeed;
+
+		y += 70;
+		write("Character display speed when read", x, y);
+		meterBtn[1].setPos(x + dx, y - 10);
+		meterBtn[1].setButton(10 - kag.userCh2ndSpeed \ 6, 10, 1);
+		meterBtn[1].onSelectAction = changeCh2ndSpeed;
+
+		y += 70;
+		write("Automatic reading speed (fixed)", x, y);
+		meterBtn[2].setPos(x + dx, y - 10);
+		meterBtn[2].setButton(10 - kag.autoModePageWait \ 200, 10, 1);
+		meterBtn[2].onSelectAction = changeAutoModeWait;
+
+		y += 70;
+		write("Automatic reading speed (character)", x, y);
+		meterBtn[3].setPos(x + dx, y - 10);
+		meterBtn[3].setButton(5 - sf.mojisuuWait, 5, 1);
+		meterBtn[3].onSelectAction = changeAutoModeWaitByUnit;
+
+		y += 70, dx = 440;
+		write("Bold", x, y);
+		write("Yes", x + dx + 50, y);
+		write("No", x + dx + 210, y);
+		toggleBtn[1].setPos(x + dx, y - 9);
+		toggleBtn[1].setFunc(changeFontBold);
+		toggleBtn[1].setButton(! sf.defaultBold);
+
+		y += 70;
+		write("Continue to auto-advance", x, y - 15);
+		write("text after a question?", x, y + 15);
+		write("Yes", x + dx + 50, y);
+		write("No", x + dx + 210, y);
+		toggleBtn[2].setPos(x + dx, y - 9);
+		toggleBtn[2].setFunc(changeKeepingAutoClickMode);
+		toggleBtn[2].setButton(! sf.keepAutoClickMode);
+
+		y += 70;
+		write("Font selection", x, y);
+		write("Select", x + dx + 50, y);
+		triggerBtn[0].setPos(x + dx, y - 9);
+		triggerBtn[0].setButton();
+		triggerBtn[0].onSelectAction = selectFont;
+	}
+
+	function selectFont()
+	{
+		// フォント選択ダイアログを表示して新しいフォントを設定する
+		// 吉里吉里Ｚに対応
+		if(useKrkrZ)
+		{
+			var res = openSelectFontWindow();
+			kag.chDefaultFace = kag.fore.messages[0].userFace = res;
+		}
+		else
+		{
+			kag.selectFont();
+		}
+	}
+
+	function openSelectFontWindow()
+	{
+		// 吉里吉里Ｚ用フォント選択ダイアログを表示する
+		var dialog = new FontSelectDialog(kag.fore.messages[0], kag.fore.messages[0].font.face
+			, fsfSameCharSet | fsfNoVertical | fsfUseFontFace
+			, "Font selection", "フォントを選択してください", "ABCDEFGHIあいうえお亜胃宇絵御");
+		var result = dialog.open(kag);
+		invalidate dialog;
+		return result;
+	}
+
+	function changeChSpeed(num)
+	{
+		kag.onChSpeedMenuItemClick(%[speed: (10 - num) * 6]);
+		return true;
+	}
+
+	function changeCh2ndSpeed(num)
+	{
+		kag.onCh2ndSpeedMenuItemClick(%[speed: (10 - num) * 6]);
+		return true;
+	}
+
+	function changeAutoModeWait(num)
+	{
+		kag.autoModePageWait = (10 - num) * 200;
+		return true;
+	}
+
+	function changeAutoModeWaitByUnit(num)
+	{
+		sf.mojisuuWait = 5 - num;
+		return true;
+	}
+
+	function changeFontBold(num)
+	{
+		sf.defaultBold = ! num;
+		kag.setBold(sf.defaultBold);
+	}
+
+	function changeKeepingAutoClickMode(num)
+	{
+		sf.keepAutoClickMode = ! num;
+	}
+
+	function changeBunshouSusumu(num)
+	{
+		sf.bunshouSusumu = ! num;
+	}
+
+	function changeOnseiNagasu(num)
+	{
+		sf.onseiNagasu = ! num;
+	}
+
+	//----------------------------------------------------------------------------
+	// サウンド設定
+
+	function openSoundConfig()
+	{
+		clear();
+		font.height = 26;
+		quitBtn.setButton();
+
+		var menus = gvolumeObj.volumeMenu.children;
+		var x = 220, y = 70, dx = 190, dy = 45;
+
+		for(var i = 0; i < menus.count; i++)
+		{
+			write(menus[i].caption.split("\(")[0], x, i * dy + y + 10);
+			if(i == 0) meterBtn[i].setButton(kag.bgm.buf1.volume2 \ 10000);
+			else meterBtn[i].setButton(kag.se[+menus[i].control[0]].volume2 \ 10000);
+			meterBtn[i].onSelectAction = changeSoundVolume;
+			meterBtn[i].id = i;
+			meterBtn[i].setPos(x + dx + 60, i * dy + y);
+			muteBtn[i].visible = true;
+			muteBtn[i].onSelectAction = meterBtn[i].changeBar;
+			muteBtn[i].setPos(x + dx, i * dy + y - 2);
+		}
+
+		y = 625, x = 160, dx = 450;
+		write("Don't advance until voice ends", x, y);
+		write("Yes", x + dx + 50, y);
+		write("No", x + dx + 210, y);
+		toggleBtn[3].setPos(x + dx, y - 9);
+		toggleBtn[3].setFunc(changeBunshouSusumu);
+		toggleBtn[3].setButton(! sf.bunshouSusumu);
+
+		y += 48;
+		write("Continue voice after advance", x, y);
+		write("Yes", x + dx + 50, y);
+		write("No", x + dx + 210, y);
+		toggleBtn[4].setPos(x + dx, y - 9);
+		toggleBtn[4].setFunc(changeOnseiNagasu);
+		toggleBtn[4].setButton(! sf.onseiNagasu);
+
+		y += 48;
+		write("Audio playback button mode", x, y);
+		write("Once", x + dx + 50, y);
+		write("Loop", x + dx + 210, y);
+		toggleBtn[2].setPos(dx + x, y - 9);
+		toggleBtn[2].setFunc(changePlayRepeatLoop);
+		toggleBtn[2].setButton(sf.playRepeatLoop);
+	}
+
+	function changeSoundVolume(num, control)
+	{
+		gvolumeObj.onMenuClick(gvolumeObj.volumeMenu.children[control.id].children[10 - num]);
+		if(control.id == 1) master.dungeonView.backSound.volume2 = num * 10000;
+		return true;
+	}
+
+	function changePlayRepeatLoop(num)
+	{
+		sf.playRepeatLoop = num;
+	}
+
+	//----------------------------------------------------------------------------
+	// 画面設定
+
+	function openDisplayConfig()
+	{
+		clear();
+		font.height = 26;
+		quitBtn.setButton();
+
+		var x = 230, y = 90, dx = 120, dy = 50;
+		write("Screen mode", x, y);
+		write("Window", x + dx + 50, y + dy);
+		write("Fullscreen", x + dx + 270, y + dy);
+		toggleBtn[0].setPos(x + dx, y - 14 + dy);
+		toggleBtn[0].setButton(kag.fullScreened, 2, 220);
+		toggleBtn[0].setFunc(changeScreenMode);
+
+		y += 110;
+		write("Switch to window mode immediately after starting the game", x, y);
+		write("Yes", x + dx + 50, y + dy);
+		write("No", x + dx + 270, y + dy);
+		toggleBtn[1].setPos(x + dx, y - 14 + dy);
+		toggleBtn[1].setButton(! sf.startByWindowMode, 2, 220);
+		toggleBtn[1].setFunc(changeStartByWindowMode);
+
+		y += 110;
+		write("Message frame opacity (darkness)", x, y);
+		meterBtn[0].setPos(x + dx, y - 10 + dy);
+		meterBtn[0].setButton((sf.backFrameOpacity - 5) \ 25, 10, 1);
+		meterBtn[0].onSelectAction = changeBackFrameOpacity;
+
+		y += 110;
+		write("Battle message frame opacity", x, y);
+		meterBtn[1].setPos(x + dx, y - 10 + dy);
+		meterBtn[1].setButton((sf.battleFrameOpacity - 5) \ 25, 10, 1);
+		meterBtn[1].onSelectAction = changeBattleFrameOpacity;
+
+		y += 110;
+		write("Display movement dividers in dungeon", x, y);
+		write("Yes", x + dx + 50, y + dy);
+		write("No", x + dx + 270, y + dy);
+		toggleBtn[2].setPos(x + dx, y - 14 + dy);
+		toggleBtn[2].setButton(! sf.cursorsBorderVisible, 2, 220);
+		toggleBtn[2].setFunc(changeCursorsBorderVisible);
+
+		y += 110;
+		write("Display movement buttons in dungeon", x, y);
+		write("Yes", x + dx + 50, y + dy);
+		write("No", x + dx + 270, y + dy);
+		toggleBtn[3].setPos(x + dx, y - 14 + dy);
+		toggleBtn[3].setButton(! sf.controlBoardVisible, 2, 220);
+		toggleBtn[3].setFunc(changeControlBoardVisible);
+	}
+
+	function changeScreenMode(num)
+	{
+		if(! num && kag.fullScreened) kag.onWindowedMenuItemClick();
+		else if(num && ! kag.fullScreened) kag.onFullScreenMenuItemClick();
+	}
+
+	function changeStartByWindowMode(num)
+	{
+		sf.startByWindowMode = ! num;
+	}
+
+	function changeBackFrameOpacity(num)
+	{
+		sf.backFrameOpacity = num * 25 + 5;
+		kag.current.setOptions(%[bopacity: sf.backFrameOpacity]);
+		if(kag.current.comp !== void) kag.current.comp.setOptions(%[bopacity: sf.backFrameOpacity]);
+		return true;
+	}
+
+	function changeBattleFrameOpacity(num)
+	{
+		sf.battleFrameOpacity = num * 25 + 5;
+		master.battleInfo.backImage.opacity = sf.battleFrameOpacity;
+		return true;
+	}
+
+	function changeCursorsBorderVisible(num)
+	{
+		sf.cursorsBorderVisible = (num == 0);
+		if(num == 0) toggleBtn[3].pressButton(1);
+		toggleBtn[2].focus();	// フォーカスを戻す
+	}
+
+	function changeControlBoardVisible(num)
+	{
+		sf.controlBoardVisible = (num == 0);
+		if(num == 0)
+		{
+			toggleBtn[2].pressButton(1);
+			cursor = crArrow;
+		}
+		toggleBtn[3].focus();	// フォーカスを戻す
+	}
+
+	//----------------------------------------------------------------------------
+	// キー割り当て
+
+	function openKeyConfig()
+	{
+		clear("back_keyconfig");	// ここは違う背景
+		font.height = 25;
+		quitBtn.setButton();
+
+		var table = [
+			  %[key: "OK"    , code: BT_OK       , code2: BT_OK2       , name: "OK / Next"]
+			, %[key: "CANCEL", code: BT_CANCEL   , code2: BT_CANCEL2   , name: "Cancel / Menu"]
+			, %[key: "OPTION", code: BT_OPTION   , code2: BT_OPTION2   , name: "Operation / Item Info"]
+			, %[key: "UP"    , code: SET_BT_UP   , code2: SET_BT_UP2   , name: "Forward / Up"]
+			, %[key: "DOWN"  , code: SET_BT_DOWN , code2: SET_BT_DOWN2 , name: "Back / Down"]
+			, %[key: "LEFT"  , code: SET_BT_LEFT , code2: SET_BT_LEFT2 , name: "Turn Left / Left"]
+			, %[key: "RIGHT" , code: SET_BT_RIGHT, code2: SET_BT_RIGHT2, name: "Turn Right / Right"]
+			, %[key: "LSTEP" , code: BT_LSTEP    , code2: BT_LSTEP2    , name: "Move Left / Floor ▲ / History"]
+			, %[key: "RSTEP" , code: BT_RSTEP    , code2: BT_RSTEP2    , name: "Move Right / Floor ▼ / Auto"]
+			, %[key: "MAP"   , code: BT_MAP      , code2: BT_MAP2      , name: "Clear / Map"]
+			, %[key: "SEARCH", code: BT_SEARCH   , code2: BT_SEARCH2   , name: "Search / Skip"]
+			, %[key: "MAGIC" , code: BT_MAGIC    , code2: BT_MAGIC2    , name: "Magic / Repeat Voice"]
+			, %[key: "ITEM"  , code: BT_ITEM     , code2: BT_ITEM2     , name: "Item"]
+			, %[key: "SAVE"  , code: BT_SAVE     , code2: BT_SAVE2     , name: "Save or Load"]
+		];
+
+		var cnt = table.count;
+		var tableTop = 88;
+		for(var i = 0; i < cnt; i++)
+		{
+			keyConfigBtn[i].setButton();
+			keyConfigBtn[i].setPos(568, i * 39 + tableTop);
+			keyConfigBtn[i].onSelectAction = inputKeyAssign;
+			keyConfigBtn[i].onSelectActionParam = keyConfigBtn[i];
+			keyConfigBtn[i].keyName = table[i].key;
+			write(table[i].name, 235, i * 39 + tableTop + 7);
+			keyConfigBtn[i].clear();
+			if(table[i].code !== void)
+			{
+				var str = keyNameByCode[table[i].code];
+				keyConfigBtn[i].drawText((211 - font.getTextWidth(str)) \ 2, 7, str, 0xC9D2E7);
+			}
+
+			keyConfigBtn[i + cnt].setButton();
+			keyConfigBtn[i + cnt].setPos(780, i * 39 + tableTop);
+			keyConfigBtn[i + cnt].onSelectAction = inputKeyAssign;
+			keyConfigBtn[i + cnt].onSelectActionParam = keyConfigBtn[i + cnt];
+			keyConfigBtn[i + cnt].keyName = table[i].key + "2";
+			keyConfigBtn[i + cnt].clear();
+			if(table[i].code2 !== void)
+			{
+				var str = keyNameByCode[table[i].code2];
+				keyConfigBtn[i + cnt].drawText((211 - font.getTextWidth(str)) \ 2, 7, str, 0xC9D2E7);
+			}
+		}
+
+		var x = 230, y = 657, dx = 400;
+		write("Down Cursor Operation", x, y);
+		write("Back", x + dx + 50, y);
+		write("Invert", x + dx + 210, y);
+		toggleBtn[0].setPos(x + dx, y - 9);
+		toggleBtn[0].setFunc(changeDownKeyAction);
+		toggleBtn[0].setButton(master.dungeonView.downKeyAction == "turnAround");
+
+		var x = 230, y = 707, dx = 400;
+		write("Enter advances dialogue options?", x, y);
+		write("No", x + dx + 50, y);
+		write("Yes", x + dx + 210, y);
+		toggleBtn[1].setPos(x + dx, y - 9);
+		toggleBtn[1].setFunc(changeDecideKeyAction);
+		toggleBtn[1].setButton(master.dungeonView.anotherDecideKey == BT_OPTION);
+	}
+
+	function inputKeyAssign(buttonObj)
+	{
+		// 割り当てるキーのユーザー入力を待つ
+		currentChangingButton = buttonObj;
+		keyReciever.startWaiting(setKeyAssign, cancelSetKeyAssign);
+	}
+
+	function cancelSetKeyAssign()
+	{
+		// キー割り当てをキャンセルする
+		keyReciever.visible = false;
+		currentChangingButton.focus();
+	}
+
+	function changeDownKeyAction(num)
+	{
+		// 後退・反転キーの動作を切り替える
+		cursorAreaAdjuster.downActionLayer.imageLeft = -32 * num;
+		master.dungeonView.downKeyAction = (num ? "turnAround" : "goBackward");
+		master.dungeonView.controlBoard.changeDownKey(master.dungeonView.downKeyAction);
+	}
+
+	function changeDecideKeyAction(num)
+	{
+		// 決定キーの動作を切り替える
+		master.dungeonView.anotherDecideKey = (num ? BT_OPTION : BT_UP);
+	}
+
+	function setKeyAssign(keyCode)
+	{
+		// 各機能にキーを割り当てる
+
+		if(keyNameByCode[keyCode] === void) return;	// 使用できないキーを除外
+		keyReciever.visible = false;	// 入力受付を消す
+
+		// すでに割り当ててあるキーがあったら消す
+		if(BT_OK == keyCode) BT_OK = void;
+		if(BT_OK2 == keyCode) BT_OK2 = void;
+		if(BT_CANCEL == keyCode) BT_CANCEL = void;
+		if(BT_CANCEL2 == keyCode) BT_CANCEL2 = void;
+		if(BT_OPTION == keyCode) BT_OPTION = void;
+		if(BT_OPTION2 == keyCode) BT_OPTION2 = void;
+		if(BT_LSTEP == keyCode) BT_LSTEP = void;
+		if(BT_LSTEP2 == keyCode) BT_LSTEP2 = void;
+		if(BT_RSTEP == keyCode) BT_RSTEP = void;
+		if(BT_RSTEP2 == keyCode) BT_RSTEP2 = void;
+		if(BT_MAP == keyCode) BT_MAP = void;
+		if(BT_MAP2 == keyCode) BT_MAP2 = void;
+		if(BT_SEARCH == keyCode) BT_SEARCH = void;
+		if(BT_SEARCH2 == keyCode) BT_SEARCH2 = void;
+		if(BT_MAGIC == keyCode) BT_MAGIC = void;
+		if(BT_MAGIC2 == keyCode) BT_MAGIC2 = void;
+		if(BT_ITEM == keyCode) BT_ITEM = void;
+		if(BT_ITEM2 == keyCode) BT_ITEM2 = void;
+		if(BT_SAVE == keyCode) BT_SAVE = void;
+		if(BT_SAVE2 == keyCode) BT_SAVE2 = void;
+		if(SET_BT_UP == keyCode) delete kag.padKeyMap["" + SET_BT_UP], SET_BT_UP = void;
+		if(SET_BT_UP2 == keyCode) delete kag.padKeyMap["" + SET_BT_UP2], SET_BT_UP2 = void;
+		if(SET_BT_DOWN == keyCode) delete kag.padKeyMap["" + SET_BT_DOWN], SET_BT_DOWN = void;
+		if(SET_BT_DOWN2 == keyCode) delete kag.padKeyMap["" + SET_BT_DOWN2], SET_BT_DOWN2 = void;
+		if(SET_BT_LEFT == keyCode) delete kag.padKeyMap["" + SET_BT_LEFT], SET_BT_LEFT = void;
+		if(SET_BT_LEFT2 == keyCode) delete kag.padKeyMap["" + SET_BT_LEFT2], SET_BT_LEFT2 = void;
+		if(SET_BT_RIGHT == keyCode) delete kag.padKeyMap["" + SET_BT_RIGHT], SET_BT_RIGHT = void;
+		if(SET_BT_RIGHT2 == keyCode) delete kag.padKeyMap["" + SET_BT_RIGHT2], SET_BT_RIGHT2 = void;
+
+		// 割り当て
+		switch(currentChangingButton.keyName)
+		{
+			case "OK":
+				BT_OK = keyCode;
+				break;
+			case "CANCEL":
+				BT_CANCEL = keyCode;
+				break;
+			case "OPTION":
+				BT_OPTION = keyCode;
+				break;
+			case "UP":
+				delete kag.padKeyMap["" + SET_BT_UP];
+				if(keyCode < VK_LEFT || keyCode > VK_DOWN) kag.padKeyMap["" + keyCode] = VK_UP;
+				SET_BT_UP = keyCode;
+				break;
+			case "DOWN":
+				delete kag.padKeyMap["" + SET_BT_DOWN];
+				if(keyCode < VK_LEFT || keyCode > VK_DOWN) kag.padKeyMap["" + keyCode] = VK_DOWN;
+				SET_BT_DOWN = keyCode;
+				break;
+			case "LEFT":
+				delete kag.padKeyMap["" + SET_BT_LEFT];
+				if(keyCode < VK_LEFT || keyCode > VK_DOWN) kag.padKeyMap["" + keyCode] = VK_LEFT;
+				SET_BT_LEFT = keyCode;
+				break;
+			case "RIGHT":
+				delete kag.padKeyMap["" + SET_BT_RIGHT];
+				if(keyCode < VK_LEFT || keyCode > VK_DOWN) kag.padKeyMap["" + keyCode] = VK_RIGHT;
+				SET_BT_RIGHT = keyCode;
+				break;
+			case "LSTEP":
+				BT_LSTEP = keyCode;
+				break;
+			case "RSTEP":
+				BT_RSTEP = keyCode;
+				break;
+			case "MAP":
+				BT_MAP = keyCode;
+				break;
+			case "SEARCH":
+				BT_SEARCH = keyCode;
+				break;
+			case "MAGIC":
+				BT_MAGIC = keyCode;
+				break;
+			case "ITEM":
+				BT_ITEM = keyCode;
+				break;
+			case "SAVE":
+				BT_SAVE = keyCode;
+				break;
+
+			case "OK2":
+				BT_OK2 = keyCode;
+				break;
+			case "CANCEL2":
+				BT_CANCEL2 = keyCode;
+				break;
+			case "OPTION2":
+				BT_OPTION2 = keyCode;
+				break;
+			case "UP2":
+				delete kag.padKeyMap["" + SET_BT_UP2];
+				if(keyCode < VK_LEFT || keyCode > VK_DOWN) kag.padKeyMap["" + keyCode] = VK_UP;
+				SET_BT_UP2 = keyCode;
+				break;
+			case "DOWN2":
+				delete kag.padKeyMap["" + SET_BT_DOWN2];
+				if(keyCode < VK_LEFT || keyCode > VK_DOWN) kag.padKeyMap["" + keyCode] = VK_DOWN;
+				SET_BT_DOWN2 = keyCode;
+				break;
+			case "LEFT2":
+				delete kag.padKeyMap["" + SET_BT_LEFT2];
+				if(keyCode < VK_LEFT || keyCode > VK_DOWN) kag.padKeyMap["" + keyCode] = VK_LEFT;
+				SET_BT_LEFT2 = keyCode;
+				break;
+			case "RIGHT2":
+				delete kag.padKeyMap["" + SET_BT_RIGHT2];
+				if(keyCode < VK_LEFT || keyCode > VK_DOWN) kag.padKeyMap["" + keyCode] = VK_RIGHT;
+				SET_BT_RIGHT2 = keyCode;
+				break;
+			case "LSTEP2":
+				BT_LSTEP2 = keyCode;
+				break;
+			case "RSTEP2":
+				BT_RSTEP2 = keyCode;
+				break;
+			case "MAP2":
+				BT_MAP2 = keyCode;
+				break;
+			case "SEARCH2":
+				BT_SEARCH2 = keyCode;
+				break;
+			case "MAGIC2":
+				BT_MAGIC2 = keyCode;
+				break;
+			case "ITEM2":
+				BT_ITEM2 = keyCode;
+				break;
+			case "SAVE2":
+				BT_SAVE2 = keyCode;
+				break;
+		}
+
+		// 画面更新
+		openKeyConfig();
+		currentChangingButton.focus();
+	}
+
+	//----------------------------------------------------------------------------
+	// カーソル領域設定
+
+	function openCursorConfig()
+	{
+		clear();
+		font.height = 26;
+		quitBtn.setButton();
+		write("<y>■Cursor area", 45, 87);
+		font.height = 22;
+		write("<p>※Drag red lines", 390, 92);
+		cursorAreaAdjuster.open();
+	}
+
+	//----------------------------------------------------------------------------
+	// その他の設定
+
+	function openOtherConfig()
+	{
+		clear();
+		font.height = 26;
+		quitBtn.setButton();
+
+		var x = 200, y = 110, dx = 50, dy = 42;
+		write("Right-click operation (during events)", x, y);
+		write("Options", x + dx + 50, y + dy);
+		write("Hide window", x + dx + 270, y + dy);
+		toggleBtn[0].setPos(x + dx, y - 9 + dy);
+		toggleBtn[0].setButton(! sf.rclickIsOption, 2, 220);
+		toggleBtn[0].setFunc(changeRclickIsOption);
+
+		y += 110;
+		write("Confirm save / load", x, y);
+		write("Yes", x + dx + 50, y + dy);
+		write("No", x + dx + 270, y + dy);
+		toggleBtn[1].setPos(x + dx, y - 9 + dy);
+		toggleBtn[1].setButton(! sf.askUserLoadData, 2, 220);
+		toggleBtn[1].setFunc(changeAskUserLoadData);
+
+		y += 110;
+		write("Confirm Save", x, y);
+		write("Yes", x + dx + 50, y + dy + 0);
+		write("On overwrite", x + dx + 270, y + dy + 0);
+		write("No", x + dx + 490, y + dy + 0);
+		toggleBtn[2].setPos(x + dx - 0, y - 9 + dy + 0);
+		toggleBtn[2].setButton(2 - sf.askUserSaveData, 3, 220);
+		toggleBtn[2].setFunc(changeAskUserSaveData);
+
+		y += 110;
+		write("Confirm Delete", x, y);
+		write("Yes", x + dx + 50, y + dy);
+		write("No", x + dx + 270, y + dy);
+		toggleBtn[3].setPos(x + dx, y - 9 + dy);
+		toggleBtn[3].setButton(! sf.askUserEraseData, 2, 220);
+		toggleBtn[3].setFunc(changeAskUserEraseData);
+
+		y += 110;
+		write("Reset the color of clicked choices", x, y);
+		write("(Effective from next displayed option choice)", x + 5, y + 32);
+		write("Reset execution", x + dx + 50, y + dy + 32);
+		triggerBtn[0].setPos(x + dx, y - 9 + dy + 32);
+		triggerBtn[0].setButton();
+		triggerBtn[0].onSelectAction = clearLinkRecords;
+	}
+
+	function changeRclickIsOption(num)
+	{
+		sf.rclickIsOption = ! num;
+	}
+
+	function changeAskUserLoadData(num)
+	{
+		sf.askUserLoadData = ! num;
+	}
+
+	function changeAskUserSaveData(num)
+	{
+		sf.askUserSaveData = 2 - num;
+	}
+
+	function changeAskUserEraseData(num)
+	{
+		sf.askUserEraseData = ! num;
+	}
+
+	function clearLinkRecords(num)
+	{
+		sf.linkRecords = %[];
+	}
+
+	//----------------------------------------------------------------------------
+}
+
+
+class KeyRecieverLayer extends Layer
+{
+	// ユーザーのキー入力を受け付けるためのレイヤー
+
+	var onSelectAction;	// 次に呼び出すメソッド
+	var onCancelAction;	// キャンセル時に呼び出すメソッド
+	var lineSpacing = 10;
+
+	function KeyRecieverLayer(par, master)
+	{
+		super.Layer(par.window, par);
+		focusable = true;
+		setSize(window.scWidth, window.scHeight);
+		font.height = 32;
+		name = "キーレシーバー";
+	}
+
+	function startWaiting(func, closeFunc)
+	{
+		fillRect(0, 0, width, height, 0xC0000000);
+		drawText(216, 342, "Press the button to assign", 0xFFFFFF);
+		drawText(216, 380, "Right click to cancel", 0xFFFFFF);
+		onSelectAction = func;
+		onCancelAction = closeFunc;
+		visible = true;
+		focus();
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		onSelectAction(key);
+	}
+
+	function onMouseUp(x, y, button)
+	{
+		if(button == mbRight) onCancelAction();
+	}
+}
+
+
+class AdjustCursorAreaWindow extends Layer
+{
+	// ダンジョンビューの移動カーソル領域のコンフィグ
+
+	var master;	// 管理オブジェクト
+	var verticalLeft;	// 左と中央を仕切るバー
+	var verticalRight;	// 右と中央を仕切るバー
+	var horizonCenter;	// 前進と後退（転回）を仕切るバー
+	var horizonLeft;	// 横回転と横移動の範囲を仕切るバー・左側
+	var horizonRight;	// 横回転と横移動の範囲を仕切るバー・右側
+	var downActionLayer;	// 下領域をクリックしたときの動作を表すレイヤー
+
+	function AdjustCursorAreaWindow(par, master)
+	{
+		super.Layer(par.window, par);
+		this.master = master;
+		loadImages("back_adjust");
+		setSizeToImageSize();
+		hitThreshold = 256;
+
+		downActionLayer = new global.Layer(window, this);
+		downActionLayer.loadImages("image_down_action");
+		downActionLayer.setSize(32, 32);
+		downActionLayer.setPos(434, 484);
+		downActionLayer.visible = true;
+		downActionLayer.hitThreshold = 256;
+
+		verticalLeft = new AdjustBarLayer(this);
+		verticalLeft.setSize(12, height);
+		verticalLeft.fillRect(4, 5, 4, height - 10, 0xFFFF0000);
+		verticalLeft.direction = "horizontal";
+		verticalLeft.min = 120;
+		verticalLeft.max = width \ 2 - 32;
+
+		verticalRight = new AdjustBarLayer(this);
+		verticalRight.setSize(12, height);
+		verticalRight.fillRect(4, 5, 4, height - 10, 0xFFFF0000);
+		verticalRight.direction = "horizontal";
+		verticalRight.min = width \ 2 + 20;
+		verticalRight.max = width - 132;
+
+		horizonCenter = new AdjustBarLayer(this);
+		horizonCenter.setSize(width, 12);
+		horizonCenter.fillRect(0, 4, width, 4, 0xFFFF0000);
+		horizonCenter.direction = "vertical";
+		horizonCenter.min = 120;
+		horizonCenter.max = height - 132;
+
+		horizonLeft = new AdjustBarLayer(this);
+		horizonLeft.setSize(width, 12);
+		horizonLeft.fillRect(5, 4, width, 4, 0xFFFF0000);
+		horizonLeft.direction = "vertical";
+		horizonLeft.min = 120;
+		horizonLeft.max = height - 132;
+
+		horizonRight = new AdjustBarLayer(this);
+		horizonRight.setSize(width, 12);
+		horizonRight.fillRect(0, 4, width, 4, 0xFFFF0000);
+		horizonRight.direction = "vertical";
+		horizonRight.min = 120;
+		horizonRight.max = height - 132;
+
+		verticalLeft.pair = verticalRight;
+		verticalRight.pair = verticalLeft;
+		horizonLeft.pair = horizonRight;
+		horizonRight.pair = horizonLeft;
+	}
+
+	function finalize()
+	{
+		invalidate downActionLayer;
+		invalidate verticalLeft;
+		invalidate verticalRight;
+		invalidate horizonCenter;
+		invalidate horizonLeft;
+		invalidate horizonRight;
+		super.finalize();
+	}
+
+	function open()
+	{
+		// 画面を開いてバーを初期位置に設定
+		visible = true;
+		downActionLayer.imageLeft = -32 * (master.dungeonView.downKeyAction == "turnAround");
+		verticalLeft.setPos(master.dungeonView.leftBorder - 6, 0);
+		verticalRight.setPos(master.dungeonView.rightBorder - 6, 0);
+		horizonCenter.setPos(0, master.dungeonView.centerBorder - 6);
+		horizonLeft.setPos(0, master.dungeonView.sideBorder - 6);
+		horizonRight.setPos(0, master.dungeonView.sideBorder - 6);
+		updateHorizontalBars();
+	}
+
+	function submitBorder()
+	{
+		// ダンジョンビューに値を反映させる
+		master.dungeonView.centerBorder = horizonCenter.top + 6;
+		master.dungeonView.sideBorder = horizonLeft.top + 6;
+		master.dungeonView.leftBorder = verticalLeft.left + 6;
+		master.dungeonView.rightBorder = verticalRight.left + 6;
+	}
+
+	function updateHorizontalBars()
+	{
+		// 縦のバーが動いたら横のバーの長さを伸縮させる
+		horizonLeft.width = verticalLeft.left + 4;
+		horizonRight.left = verticalRight.left + 8;
+		horizonRight.width = width - verticalRight.left - 13;
+		horizonCenter.left = verticalLeft.left + 8;
+		horizonCenter.width = verticalRight.left - verticalLeft.left - 4;
+	}
+}
+
+
+class AdjustBarLayer extends Layer
+{
+	// ダンジョンビューカーソル調整で利用するバー
+
+	var direction = "horizontal";	// 動かせる方向
+	var dragging = false;	// マウスドラッグ中か
+	var min = 0;	// 動かせる範囲
+	var max = 1024;	// 〃
+	var pair;	// 同時に動くバー
+
+	function AdjustBarLayer(par)
+	{
+		super.Layer(par.window, par);
+		visible = true;
+		hitThreshold = 0;
+		cursor = crHandPoint;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(button == mbLeft) dragging = true;
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbLeft && dragging) dragging = false;
+		super.onMouseUp(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		if(! dragging) return;
+		if(x < -200 || x > width + 200 || y < -200 || y > height + 200) return;
+		if(direction == "horizontal")
+		{
+			if(parent.cursorX >= min && parent.cursorX < max)
+			{
+				left = parent.cursorX;
+				pair.left = parent.width - left - 12;
+				parent.updateHorizontalBars();
+				parent.submitBorder();
+			}
+		}
+		else if(parent.cursorY >= min && parent.cursorY < max)
+		{
+			top = parent.cursorY;
+			if(pair !== void) pair.top = top;
+			parent.submitBorder();
+		}
+		super.onMouseMove(...);
+	}
+}
+
+
+class MeterButton extends LightCommandButton
+{
+	// メーター型のボタン
+	// 左右キー or マウスクリック or ドラッグで値を変更できる
+
+	var id = 0;
+	var barLayer;
+	var cursorLayer;
+	var value = 1;
+	var min = 0;
+	var max = 10;
+	var unitLength = 32;
+	var dragging = false;
+	var frameGraphic;
+	var frameMargin = 2;
+	var onEscapeAction;
+
+	function MeterButton(par)
+	{
+		super.LightCommandButton(par);
+		visible = true;
+		barLayer = new global.LightCommandButton(this);
+		barLayer.visible = true;
+		barLayer.hitThreshold = 256;
+		cursorLayer = new global.Layer(window, this);
+		cursorLayer.hitThreshold = 256;
+		cursorLayer.opacity = 192;
+	}
+
+	function finalize()
+	{
+		invalidate barLayer;
+		invalidate cursorLayer;
+		super.finalize();
+	}
+
+	function loadImages(storage)
+	{
+		frameGraphic = storage;
+		barLayer.loadImages(storage + "_bar");
+		barLayer.setPos(frameMargin, frameMargin);
+		cursorLayer.loadImages(storage + "_cursor");
+		cursorLayer.setSizeToImageSize();
+	}
+
+	function setButton(v, max = 10, min = 0)
+	{
+		super.loadImages(frameGraphic + "_back_" + max);
+		barLayer.width = unitLength * v;
+		cursorLayer.top = frameMargin;
+		value = v;
+		this.max = max;
+		this.min = min;
+		visible = selectable = true;
+	}
+
+	function changeBar(num)
+	{
+		if(! onSelectAction(num, this)) return;
+		barLayer.width = unitLength * num;
+		value = num;
+	}
+
+	function drawState(n)
+	{
+		super.drawState(n);
+		barLayer.drawState(n);
+	}
+
+	function onMouseEnter()
+	{
+		cursorLayer.visible = true;
+		super.onMouseEnter();
+	}
+
+	function onMouseLeave()
+	{
+		cursorLayer.visible = false;
+		dragging = false;
+		super.onMouseLeave();
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		dragging = true;
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		cursorLayer.left = x - (x % unitLength) + frameMargin;
+		cursorLayer.visible = true;
+		if(! dragging) return;
+		var num = cap((x + unitLength) \ unitLength, max, min);
+			// 整数に丸めるとき、-1.0 ～ 1.0 までが０の値を吐く範囲になってしまうので
+			// 次のような式ではダメ。バーの左端で正確な値にならない
+			//   num = int(x \ unitLength) + 1
+		if(value == num) return;
+		changeBar(num);
+		super.onMouseMove(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbRight)
+		{
+			playSound("cancel");
+			window.onPrimaryRightClick();
+		}
+		else if(button == mbLeft)
+		{
+			dragging = false;
+			var num = cap((x + unitLength) \ unitLength, max, min);
+			if(value != num) changeBar(num);
+		}
+		else
+		{
+			super.onMouseUp(...);
+		}
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();
+		cursorLayer.visible = false;
+		if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			if(onEscapeAction !== void)
+			{
+				onEscapeAction();
+				return;
+			}
+			playSound("cancel");
+			window.onPrimaryRightClick();
+		}
+		else if(key == BT_OK || key == BT_OK2)
+		{
+			parent.onKeyDown(...);
+		}
+		else if(key == BT_LEFT || key == BT_RIGHT || key == BT_LEFT2 || key == BT_RIGHT2)
+		{
+			var num;
+			if(key == BT_LEFT || key == BT_LEFT2) num = cap(value - 1, , min);
+			else num = cap(value + 1, max);
+			changeBar(num);
+		}
+		else
+		{
+			super.onKeyDown(...);
+		}
+	}
+
+	function pointToObject(obj)
+	{
+		parent.pointToObject(obj);
+	}
+
+	function disappearPointer()
+	{
+		parent.disappearPointer();
+	}
+}
+
+
+class TriggerButton extends LightCommandButton
+{
+	// トリガーボタン。ちょっと文字も書けるようにした
+
+	var onEscapeAction;
+	var buttonImage;
+
+	function TriggerButton(par)
+	{
+		super.LightCommandButton(par);
+		font.height = 25;
+		name = "トリガーボタン";
+	}
+
+	function loadImages(storage)
+	{
+		super.loadImages(...);
+		buttonImage = storage;
+	}
+
+	function setButton()
+	{
+		visible = selectable = true;
+	}
+
+	function clear()
+	{
+		global.Layer.loadImages(buttonImage);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if((key == BT_CANCEL || key == BT_CANCEL2) && onEscapeAction !== void) onEscapeAction();
+		else super.onKeyDown(...);
+	}
+}
+
+
+class ToggleButton extends PieceLayer
+{
+	// トグル型のボタン。左右キー or マウスクリックで値を変更できる
+
+	var buttons = [];
+	var value = 0;
+	var maxButtonCount = 3;
+	var buttonCount = 2;
+	var buttonMargin = 160;
+	var onReturnAction;
+	var onEscapeAction;
+
+	function ToggleButton(par, btnNum)
+	{
+		super.PieceLayer(par);
+		hitThreshold = 256;	// このレイヤー自体はマウスイベントを受け取らない
+		selectable = true;
+		focusable = true;	// フォーカスはこのレイヤーに与え、上に乗るボタンを管理する
+		buttonCount = maxButtonCount = btnNum;
+		for(var i = 0; i < maxButtonCount; i++)
+		{
+			buttons[i] = new TogglesChildButton(this);
+		}
+		name = "トグル親ボタン";
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < buttons.count; i++) invalidate buttons[i];
+		super.finalize();
+	}
+
+	function loadImages(storage)
+	{
+		for(var i = 0; i < maxButtonCount; i++)
+		{
+			buttons[i].loadImages(storage);
+			buttons[i].setPos(i * buttonMargin, 0);
+		}
+		setSize(maxButtonCount * buttonMargin + 10, buttons[0].height);
+	}
+
+	function arrageButtons(count, margin)
+	{
+		buttonMargin = margin;
+		buttonCount = count;
+		for(var i = 0; i < maxButtonCount; i++)
+		{
+			buttons[i].visible = (i < buttonCount);
+			buttons[i].setPos(i * buttonMargin, 0);
+		}
+	}
+
+	function setButton(v = 0, count = 2, margin = 160)
+	{
+		arrageButtons(count, margin);
+		value = v;
+		updateButton();
+		buttons[v].drawState(0);
+		visible = selectable = true;
+	}
+
+	function setFunc(func)
+	{
+		for(var i = 0; i < buttonCount; i++)
+		{
+			buttons[i].onSelectAction = func;
+			buttons[i].onSelectActionParam = i;
+		}
+	}
+
+	function pressButton(val = 0)
+	{
+		value = val;
+		buttons[val].onSelectAction(val);
+		updateButton();
+	}
+
+	function updateButton()
+	{
+		for(var i = 0; i < buttonCount; i++)
+		{
+			buttons[i].imageLeft = -buttons[+value].imageWidth \ 2 * (i == value);
+			buttons[i].drawState(i == value ? 2 : 0);
+		}
+	}
+
+	function onFocus(focused, direction)
+	{
+		super.onFocus(...);
+		if(MOUSE_HIDDEN) buttons[+value].drawState(2);
+	}
+
+	function onBlur(focused)
+	{
+		super.onBlur(...);
+		for(var i = 0; i < buttonCount; i++)
+		{
+			buttons[i].drawState(0);
+		}
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();	// 誤解を招かないため、カーソルを一時的に隠す
+		if(key == BT_OK || key == BT_OK2)
+		{
+			if(onReturnAction !== void) onReturnAction();
+			return;	// 基本的には何もしない
+		}
+		else if(key == BT_LEFT || key == BT_LEFT2)
+		{
+			var val = value - 1;
+			if(val < 0) val = buttonCount - 1;
+			pressButton(val);
+		}
+		else if(key == BT_RIGHT || key == BT_RIGHT2)
+		{
+			var val = value + 1;
+			if(val == buttonCount) val = 0;
+			pressButton(val);
+		}
+		else if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			if(onEscapeAction !== void)
+			{
+				onEscapeAction();
+				return;
+			}
+			window.onPrimaryRightClick();
+		}
+		else
+		{
+			super.onKeyDown(...);
+		}
+	}
+}
+
+
+class TogglesChildButton extends LightCommandButton
+{
+	// ToggleButton クラスで使う子ボタン
+
+	function TogglesChildButton(par)
+	{
+		super.LightCommandButton(...);
+		focusable = false;
+		visible = true;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function drawState(n)
+	{
+		super.drawState(n);
+		if(n == 2)
+		{
+			parent.parent.pointerMark.setPos(parent.left + left - 20, parent.top + top + height \ 2 - 16);
+			parent.parent.pointerMark.absolute = parent.absolute + 1;
+		}
+	}
+
+	function loadImages(storage)
+	{
+		super.loadImages(storage);
+		width \= 2;
+	}
+
+	function onMouseEnter()
+	{
+		if(MOUSE_HIDDEN) return;
+		parent.focus();
+		drawState(2);
+	}
+
+	function onMouseLeave()
+	{
+		if(MOUSE_HIDDEN) return;
+		parent.unfocus();
+		drawState(0);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		parent.pressButton(onSelectActionParam);
+		super.onMouseUp(...);
+	}
+}
+
+
+class ThumnailBoard extends BoardLayer
+{
+	// サムネイル一覧画面
+
+	var pageBtn;
+	var box = [];
+	var pageCount = 4;
+	var boxCount = 4;
+	var lastPage = 0;
+
+	function ThumnailBoard(par, master)
+	{
+		super.BoardLayer(...);
+		name = "サムネイル一覧画面";
+		adjustX = 1;
+		adjustY = 100000;
+		setSize(window.scWidth, window.scHeight);
+
+		pageBtn = new ToggleButton(this, pageCount);
+		pageBtn.setSize(pageBtn.buttonCount * 50, 50);
+		pageBtn.setPos(380, 30);
+		pageBtn.visible = pageBtn.selectable = true;
+		pageBtn.onReturnAction = pageButtonPressAction;
+		targetLayers.add(pageBtn);
+		for(var i = 0; i < pageBtn.buttonCount; i++)
+		{
+			pageBtn.buttons[i].loadImages("btn_page_" + (i + 1));
+			pageBtn.buttons[i].setPos(i * 50, 0);
+			pageBtn.buttons[i].onSelectAction = switchPage;
+			pageBtn.buttons[i].onSelectActionParam = i;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate pageBtn;
+		for(var i = 0; i < box.count; i++) invalidate box[i];
+		super.finalize();
+	}
+
+	function open()
+	{
+		super.open();
+		pageBtn.pressButton(lastPage);	// ここで switchPage が呼ばれる
+		pageBtn.onBlur(false);
+		if(MOUSE_HIDDEN) pageButtonPressAction();
+	}
+
+	function switchPage(pageNum)
+	{
+		lastPage = pageNum;
+		updatePage();
+		pageBtn.buttons[pageNum].focus();
+	}
+
+	function updatePage()
+	{
+		for(var i = 0; i < boxCount; i++)
+		{
+			box[i].createBox(lastPage * boxCount + i);
+		}
+	}
+
+	function pageButtonPressAction()
+	{
+		// ページボタンを押した際のアクションを記述
+		if(box[0].visible) box[0].focus();
+	}
+}
+
+
+class ThumnailBox extends CommandButton
+{
+	// サムネイルが表示されるボタンボックス
+
+	var master;
+	var thumbnail;	// サムネイル
+	var value;	// 値を保存する変数
+
+	function ThumnailBox(par, master)
+	{
+		super.CommandButton(...);
+		this.master = master;
+		loadImages("thumbox_button");
+		par.targetLayers.add(this);
+
+		thumbnail = new global.Layer(window, this);
+		with(thumbnail)
+		{
+			.loadImages("thumbox_blank");
+			.setSizeToImageSize();
+			.setPos(4, 4);
+			.absolute = 1;
+			.hitThreshold = 256;
+			.visible = true;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate thumbnail;
+		super.finalize();
+	}
+
+	function createBox(num)
+	{
+		// ここでボックスを描画する
+	}
+}
+
+
+class SaveDataBoard extends ThumnailBoard
+{
+	// セーブロード画面
+
+	var pageCount = 19;
+	var boxCount = 8;
+	var clippedDataNumber;	// コピーするデータの番号
+	var updateTimer;	// 内容を更新するタイマー
+	var updatedBoxNum = 0;	// 更新中のボックス番号
+
+	function SaveDataBoard(par, master)
+	{
+		super.ThumnailBoard(...);
+		name = "セーブロード画面";
+		loadImages("back_saveload");
+		pageBtn.setPos(16, 60);
+
+		for(var i = 0; i < boxCount; i++)
+		{
+			box[i] = new SaveDataBox(this, master);
+			box[i].setPos(i % 4 * 255 + 5, i \ 4 * 330 + 140);
+		}
+
+		updateTimer = new Timer(updateDetail, "");
+		updateTimer.interval = 50;
+	}
+
+	function open()
+	{
+		super.open();
+		clippedDataNumber = void;
+	}
+
+	function updatePage()
+	{
+		super.updatePage();
+		updatedBoxNum = 0;
+		updateTimer.enabled = true;	// 内容を描画するタイマー始動
+	}
+
+	function updateDetail()
+	{
+		// 内容を描画する タイマーを使って順次表示していく
+		box[updatedBoxNum].drawDetail(lastPage * boxCount + updatedBoxNum);
+		updatedBoxNum ++;
+		if(updatedBoxNum == boxCount) updateTimer.enabled = false;
+	}
+}
+
+
+class SaveDataBox extends ThumnailBox
+{
+	// セーブデータボックス１個
+
+	var numberLayer;
+	var detailLayer;
+	var dataProps = %[];
+	var dataPropKeys = ["thisDataDeleted", "saveDataDate", "saveDataVersion"
+			, "saveDataDetail1", "saveDataDetail2", "saveDataDetail3", "saveDataDetail4"
+			, "heroineEventProgress", "gameClearedFlag"];
+
+	function SaveDataBox(par, master)
+	{
+		super.ThumnailBox(...);
+		font.height = 20;
+		onSelectAction = openMenu;
+		value = 0;	// セーブ番号初期値
+
+		numberLayer = new global.Layer(window, par);
+		with(numberLayer)
+		{
+			.loadImages("thumbox_number");
+			.setSizeToImageSize();
+			.absolute = absolute + 1;
+			.hitThreshold = 256;
+			.visible = true;
+			.font.height = 27;
+			.font.face = "MS PGothic";
+			.font.italic = true;
+			.font.bold = true;
+		}
+
+		detailLayer = new global.Layer(window, par);
+		with(detailLayer)
+		{
+			.setSize(width + 6, 100);
+			.absolute = absolute + 1;
+			.hitThreshold = 256;
+			.visible = true;
+			.font.face = "MS PGothic";
+			.font.bold = true;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate numberLayer;
+		invalidate detailLayer;
+		super.finalize();
+	}
+
+	function setPos(l, t)
+	{
+		super.setPos(...);
+		numberLayer.setPos(l, t - 30);
+		detailLayer.setPos(l, t + height);
+	}
+
+	function createBox(num)
+	{
+		// ボックス作成 空の領域を先に描画する
+		value = num + 1;	// １番から始まるので１つ足す
+		thumbnail.loadImages("thumbox_blank");
+		detailLayer.font.height = 18;
+		detailLayer.font.italic = false;
+		detailLayer.fillRect(0, 0, width, height, 0x20000000);
+		detailLayer.drawText(34, 40, "No data available", 0xC0C0C0);
+		numberLayer.loadImages("thumbox_number");	// クリア
+		numberLayer.drawText(50, 1, "%2d".sprintf(value), 0xFFFFFF,,, 2048, 0x002244, 2);
+		onBlur(false);
+	}
+
+	function drawDetail()
+	{
+		// セーブデータの内容を描画する
+		loadDataProperties();	// データの内容を読み込む
+		if(! isValidData()) return;	// データが無効なら中止
+		thumbnail.loadImages("data" + value + ".bmp");	// サムネイル表示
+
+		var str = dataProps.saveDataDetail4;
+
+		with(detailLayer)
+		{
+			.font.height = 18;
+			.font.italic = false;
+			.fillRect(0, 0, width, height, 0x20000000);
+
+			// 体験版のデータだったら再プレイ時以外は読み込まない
+			if(! isLoadableData() && ! master.retryMode)
+			{
+				.drawText(1, 21, "Past version data", 0xFFA0A0);
+				.drawText(1, 40, "Can't load", 0xFFA0A0);
+				return;
+			}
+
+			if((! isTrialData() && ! dataProps.gameClearedFlag) && master.retryMode)
+			{
+				.drawText(10, 21, "Current version data", 0xFFA0A0);
+				.drawText(10, 40, "Can't import", 0xFFA0A0);
+				return;
+			}
+
+			// 各種ゲームの情報
+			.drawText(5,  2, .chopTooLongString(dataProps.saveDataDetail1, 235), 0xFFFFFF);
+			.drawText(5, 21, dataProps.saveDataDetail2, 0xFFFFFF);
+			.drawText(5, 60, dataProps.saveDataDetail3, 0xC0FFFF);
+			if(isFreeModeData())
+			{
+				.drawText(60, 40, "≪" + str + "≫", 0xC0FFC0);
+			}
+			else if(str != "")
+			{
+				.pasteImage(5, 41, "thumbox_heart");
+				.drawText(22, 40, .chopTooLongString(str, 218), 0xFFC0C0);
+			}
+
+			// セーブ日時
+			var str = dataProps.saveDataDate;
+			.drawText(5, 80, str.substr(0, 10), 0xFFFF80);
+			.drawText(112, 80, str.substr(11), 0xFFFF80);
+
+			// データバージョン
+			.font.height = 16;
+			.font.italic = true;
+			var str;
+			if(isTrialData()) str = "demo" + dataProps.saveDataVersion;
+			else str = "ver" + "%.2f".sprintf(+dataProps.saveDataVersion - 10);
+			.drawText(240 - .font.getTextWidth(str), 82, str, 0xFFFF80);
+		}
+	}
+
+	function loadDataProperties()
+	{
+		// このセーブデータの補助情報を読み出す
+		// 不具合対策＆高速化をさんざんやった上でのコードなので変更しないこと
+		if(! Storages.isExistentStorage("data" + value + ".bmp")) return;
+		System.doCompact();	// ★コンパクト化を試してみる
+		var arr = [];
+		var keys = [];
+		keys.assign(dataPropKeys);
+		var reg = new RegExp('\,|\"', 'g');	// 余分なカンマとダブルクォーテーションを削除
+		arr.load("data" + value +".bmp", "o" + kag.calcThumbnailSize().size);
+		dataProps = %[];
+		for(var i = arr.count - 1; i >= 0; i--)
+		{
+			for(var j = 0; j < keys.count; j++)
+			{
+				if(arr[i].indexOf(keys[j]) == -1) continue;
+				dataProps[keys[j]] = (arr[i].split("=>")[2].trim()).replace(reg, "");
+				if(keys[j] == "thisDataDeleted" && dataProps[keys[j]]) return;
+				keys.erase(j);
+				if(keys.count == 0) return;
+				break;
+			}
+		}
+	}
+
+	function isValidData()
+	{
+		// このデータが有効かどうかを返す
+		// 削除済みフラグが付いている・ファイルが存在しない場合は false を返す
+		if(! Storages.isExistentStorage("data" + value + ".bmp")) return false;
+		if(dataProps.thisDataDeleted == 1) return false;
+		return true;
+	}
+
+	function isOldTrialData()
+	{
+		// このデータが体験版のものかどうかを返す
+		// 過去の体験版のバージョンは数値に変換できない文字列で保存してあるので変換すると０になる
+		return +dataProps.saveDataVersion == 0;
+	}
+
+	function isTrialData()
+	{
+		// このデータが体験版のものかどうかを返す
+		// 過去の体験版のバージョンは数値に変換できない文字列で保存してあるので変換すると０になる
+		return +dataProps.saveDataVersion < 10;
+	}
+
+	function isFreeModeData()
+	{
+		return dataProps.saveDataDetail4 == "Free Mode";
+	}
+
+	function isLoadableData()
+	{
+		if(! isValidData()) return false;
+		if(isOldTrialData()) return false;
+		if(! isTrialData()) return true;
+		if(isFreeModeData()) return true;
+		if(+dataProps.heroineEventProgress) return false;
+		return true;
+	}
+
+	function openMenu()
+	{
+		playSound("cancel");
+		parent.enabled = false;
+		master.setPrev(closePopups);
+		master.setPrev();
+		var cmds = [];
+		if(master.retryMode)
+		{
+			cmds.add(%[text: "Import", func: askLoadForReadData
+				, cond: isValidData() && (isTrialData() || dataProps.gameClearedFlag)]);
+			master.miniMenu.open(cmds, "Data Import");
+		}
+		else if(master.nextRoundMode)
+		{
+			cmds.add(%[text: "Start Playing", func: askLoadForReplay
+				, cond: isValidData()]);
+			master.miniMenu.open(cmds, "Data Selection");
+		}
+		else
+		{
+			cmds.add(%[text: "Save", func: askSave, cond: +f.saveEnabled && ! master.inBattle]);
+			cmds.add(%[text: "Load", func: askLoad, cond: isLoadableData()]);
+			cmds.add(%[text: "Copy", func: copy, cond: isValidData()]);
+			cmds.add(%[text: "Paste", func: askPaste, cond: parent.clippedDataNumber !== void]);
+			cmds.add(%[text: "Delete", func: askErase, cond: isValidData()]);
+			master.miniMenu.open(cmds, "Save menu");
+		}
+		drawState(2);	// 分かりやすくするためマーカーを消さない
+	}
+
+	function closePopups()
+	{
+		drawState(0);	// 出しっ放しにしたマーカーをいったん消す
+		master.popPrev();
+		master.miniMenu.close();
+		master.yesNoWin.close();
+		parent.enabled = true;
+		if(MOUSE_HIDDEN) focus();
+	}
+
+	function askYesNo(func, text)
+	{
+		playSound("cancel");
+		master.miniMenu.close();
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: func]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "<p>No." + value + " <y> - " + text);
+	}
+
+	function askSave()
+	{
+		if(sf.askUserSaveData == 2) askYesNo(save, "Would you like to save?");
+		else if(sf.askUserSaveData == 1 && isValidData()) askYesNo(save, "Override saved data?");
+		else save();
+	}
+
+	function askLoad()
+	{
+		if(sf.askUserLoadData) askYesNo(load, "Load data?");
+		else load();
+	}
+
+	function askLoadForReadData()
+	{
+		askYesNo(loadForReadData, "Load data?");
+	}
+
+	function askLoadForReplay()
+	{
+		askYesNo(loadForReplay, "Load data?");
+	}
+
+	function askPaste()
+	{
+		if(sf.askUserSaveData) askYesNo(paste, "Copy data?");
+		else paste();
+	}
+
+	function askErase()
+	{
+		if(sf.askUserEraseData) askYesNo(erase, "Delete data?");
+		else erase();
+	}
+
+	function save()
+	{
+		// セーブ
+		kag.pflags.thisDataDeleted = false;	// 消去フラグを保存（不具合対策も兼ねているの変更不可）
+		playSound("click", 1);
+		if(master.gameCleared)
+		{
+			var lay = new global.Layer(kag, kag.primaryLayer);
+			lay.loadImages("image_clear_data");
+			kag.snapshotLayer.operateRect(0, 0, lay, 0, 0, lay.imageWidth, lay.imageHeight);
+		}
+		kag.saveBookMark(value);
+		master.processPrev();
+		drawDetail();
+		sf.lastSaveNum = value;
+	}
+
+	function load()
+	{
+		// ロード
+		playSound("click", 2);
+		parent.enabled = true;
+		master.coverScreen.visible = true;
+		master.clearWindows();
+		dm("No." + value + " のデータをロードします...");
+		kag.bgm.stop();
+		master.dungeonView.stopMapSound();
+		tf.num = value;
+		kag.process("macro.ks", "*load");
+	}
+
+	function loadForReadData()
+	{
+		// キャラ読み込みに必要なデータだけロードする
+		playSound("click", 2);
+		parent.enabled = true;
+		master.coverScreen.visible = true;
+		master.clearWindows();
+		dm("No." + value + " のデータの一部をロードします...");
+		tf.num = value;
+		kag.process("newgame.ks", "*load_data_from_beginning");
+	}
+
+	function loadForReplay()
+	{
+		// 周回プレイに必要なデータだけロードする
+		playSound("click", 2);
+		parent.enabled = true;
+		master.coverScreen.visible = true;
+		master.clearWindows();
+		dm("No." + value + " のデータの一部をロードします...");
+		tf.num = value;
+		kag.process("newgame.ks", "*retry_game_from_beginning");
+	}
+
+	function copy()
+	{
+		// コピー
+		playSound("cancel", 1);
+		parent.clippedDataNumber = value;
+		master.processPrev();
+	}
+
+	function paste()
+	{
+		// 貼り付け
+		playSound("click", 1);
+		kag.copyBookMark(parent.clippedDataNumber, value);
+		master.processPrev();
+		drawDetail();
+	}
+
+	function erase()
+	{
+		// 削除
+		// 実際にはファイル自体は削除せず、削除されたというフラグをセーブファイル内に付けておく
+		// データ一覧を表示する時、このフラグを読み取って、データが削除済みかどうかを判断する
+		var snap = new global.Layer(kag, kag.primaryLayer);
+		snap.assignImages(kag.snapshotLayer);	// 現在のスナップショットを保管
+		var lay = new global.Layer(kag, kag.primaryLayer);
+		lay.loadImages("image_deleted_data");
+		kag.snapshotLayer.operateRect(0, 0, lay, 0, 0, lay.imageWidth, lay.imageHeight);
+		playSound("click", 1);
+		kag.pflags.thisDataDeleted = true;	// 削除マークを有効に（変更不可）
+		kag.saveBookMark(value);
+		kag.pflags.thisDataDeleted = false;	// 元に戻す（変更不可）
+		kag.snapshotLayer.assignImages(snap);	// スナップショットも元に戻す
+		master.processPrev();
+		createBox(value - 1);
+	}
+}
+
+
+class CGModeBoard extends ThumnailBoard
+{
+	// ＣＧ閲覧モード一覧画面
+
+	var pageCount = 9;
+	var boxCount = 12;
+	var macroParams = %[];	// 現在表示しているイベントＣＧのマクロの情報
+
+	function CGModeBoard(par, master)
+	{
+		super.ThumnailBoard(...);
+		name = "イベントＣＧ一覧";
+		loadImages("back_picture");
+
+		for(var i = 0; i < boxCount; i++)
+		{
+			box[i] = new CGModeBox(this, master);
+			box[i].setPos(i % 4 * 255 + 5, i \ 4 * 205 + 140);
+		}
+	}
+
+	function open()
+	{
+		super.open();
+
+		// 初期の服装を設定
+		for(var i = 0; i < master.model.count; i++)
+		{
+			var chr = o[master.model[i].keyName];
+			if(chr === void || chr.sex == "男") continue;
+			chr.equip.hip = master.changablePanties[0];
+			chr.equip.arm = master.changableGloves[0];
+			chr.equip.leg = master.changableBoots[0];
+		}
+	}
+
+	function viewCG(label)
+	{
+		close();
+		master.setPrev(openMenu);
+		master.setPrev();
+		kag.fore.layers[0].loadImages(%[storage: "0000"]);
+		kag.process("appendix.ks", "*cg_" + label);
+	}
+
+	function openMenu()
+	{
+		playSound("cancel");
+		master.setPrev(master.miniMenu.close);
+		master.setPrev(openMenu);
+		master.clearWindows();
+		var cmds = [];
+		cmds.add(%[text: "Change Hair", func: selectHair, cond: isChangablePart("hair")]);
+		cmds.add(%[text: "Change Panties", func: selectPanties, cond: isChangablePart("hip")]);
+		cmds.add(%[text: "Change Other", func: selectOthers
+			, cond: isChangablePart("arm") || isChangablePart("leg")]);
+		cmds.add(%[text: "Back", func: master.openCGMode]);
+		master.miniMenu.open(cmds, "Menu");
+	}
+
+	function isChangablePart(part)
+	{
+		// 指定した箇所が装備情報に基づいて変更可能かどうかを返す
+		return (Dictionary.find incontextof macroParams)(part) !== void;
+	}
+
+	function updateImages()
+	{
+		// 現在表示中の画像をタグ情報にもとづき更新する
+		var file = Storages.isExistentStorage(macroParams.f + ".png") ? macroParams.f : "0000";
+		kag.getLayerFromElm(macroParams).loadImages(%[storage: file]);
+		master.addPartialImagesByTag(macroParams);
+	}
+
+	function selectHair()
+	{
+		// 髪色を選択
+		master.setPrev();
+		master.miniMenu.close();
+		var colors = master.curChara.model.color;
+		var cmds = [];
+		for(var i = 0; i < colors.count; i++)
+		{
+			cmds.add(%[text: colors[i], func: changeHair, param: colors[i]]);
+		}
+		master.miniMenu.open(cmds, "Hair Color");
+	}
+
+	function selectPanties()
+	{
+		// 下着を選択
+		master.setPrev();
+		master.miniMenu.close();
+		var panties = master.changablePanties;
+		var cmds = [];
+		for(var i = 0; i < panties.count; i++)
+		{
+			cmds.add(%[text: panties[i].displayName, func: changePanties, param: panties[i]]);
+		}
+		cmds.add(%[text: "None", func: changePanties, param: void]);
+		master.cmdWin.open(cmds, "Underwear");
+	}
+
+	function selectOthers()
+	{
+		// その他の装備を選択
+		master.setPrev();
+		master.miniMenu.close();
+		var choice = ["Clothes A", "Clothes B", "Clothes C", "Clothes D", "Clothes E"
+			, "Clothes F", "Clothes G", "Clothes H", "None"];
+		var cmds = [];
+		for(var i = 0; i < choice.count; i++)
+		{
+			cmds.add(%[text: choice[i], func: changeOthers, param: i]);
+		}
+		master.cmdWin.open(cmds, "Other");
+	}
+
+	function changeHair(colour)
+	{
+		// 髪色変更
+		master.curChara.color = colour;
+		updateImages();
+		master.miniMenu.close();
+		master.popPrev();
+		master.popPrev();
+	}
+
+	function changePanties(panties)
+	{
+		// 下着変更
+		master.curChara.equip.hip = panties;
+		updateImages();
+		master.cmdWin.close();
+		master.popPrev();
+		master.popPrev();
+	}
+
+	function changeOthers(num)
+	{
+		// その他の服を変更
+		if(isChangablePart("arm")) master.curChara.equip.arm = master.changableGloves[num];
+		if(isChangablePart("leg")) master.curChara.equip.leg = master.changableBoots[num];
+		updateImages();
+		master.cmdWin.close();
+		master.popPrev();
+		master.popPrev();
+	}
+}
+
+
+class CGModeBox extends ThumnailBox
+{
+	// サムネイルが表示されるボタンボックス
+
+	function CGModeBox(par, master)
+	{
+		super.ThumnailBox(...);
+		onSelectAction = viewCG;
+	}
+
+	function createBox(num)
+	{
+		visible = false;
+		value = master.pictureInfo[num];
+		if(value === void) return;
+		visible = true;
+		if(sf["pic" + value]) thumbnail.loadImages("thum_" + value + ".png");
+		else thumbnail.loadImages("thumbox_blank");
+		onBlur(false);
+	}
+
+	function viewCG()
+	{
+		if(sf["pic" + value]) parent.viewCG(value);
+		else playSound("buzzer");
+	}
+}
+
+
+class ReplayBoard extends ThumnailBoard
+{
+	// リプレイモード一覧画面
+
+	var pageCount = 17;
+	var boxCount = 12;
+
+	function ReplayBoard(par, master)
+	{
+		super.ThumnailBoard(...);
+		name = "リプレイ一覧";
+		loadImages("back_replay");
+		pageBtn.setPos(80, 80);
+
+		for(var i = 0; i < boxCount; i++)
+		{
+			box[i] = new ReplayBox(this, master);
+			box[i].setPos(i % 4 * 255 + 5, i \ 4 * 205 + 140);
+		}
+	}
+
+	function open()
+	{
+		kagAllReset();
+		super.open();
+	}
+
+	function close()
+	{
+		f.replayMode = false;
+		o.リム.capturers[0] = void;
+		o.クレア.capturers[0] = void;
+		o.フレデリカ.capturers[0] = void;
+		o.ミューズ.capturers[0] = void;
+		o.マルエット.capturers[0] = void;
+		o.リーゼル.capturers[0] = void;
+		o.マックス.capturers[0] = void;
+		o.ライナス.capturers[0] = void;
+		o.ブルー.capturers[0] = void;
+		super.close();
+	}
+}
+
+
+class ReplayBox extends ThumnailBox
+{
+	// サムネイルが表示されるボタンボックス
+
+	function ReplayBox(par, master)
+	{
+		super.ThumnailBox(...);
+		onSelectAction = selectAppearance;
+		thumbnail.font.face = "MS PGothic";
+		thumbnail.font.height = 18;
+		thumbnail.font.bold = true;
+	}
+
+	function createBox(num)
+	{
+		visible = false;
+		value = master.replayInfo[num];
+		if(value === void) return;
+		visible = true;
+		if(value.exp !)
+		{
+			thumbnail.loadImages("thum_" + value.img + ".png");
+			thumbnail.colorRect(0, thumbnail.height - 50, thumbnail.width, 50, 0x000020, 160);
+			var arr = getSplitTextsByWidth(value.detail, thumbnail.font, thumbnail.width - 10);
+			thumbnail.drawText(5, 135, arr[0], 0xFFFFFF);
+			thumbnail.drawText(5, 155, arr[1], 0xFFFFFF);
+		}
+		else
+		{
+			thumbnail.loadImages("thumbox_blank");
+		}
+		onBlur(false);
+	}
+
+	function getSplitTextsByWidth(str, font, width)
+	{
+		var res = [];
+		var words = str.split(' ');
+		var currentLine = "";
+		var currentWidth = 0;
+
+		for(var i = 0; i < words.length; i++) {
+			var word = words[i];
+			if (i < words.length - 1) word += " ";
+			var wordWidth = font.getTextWidth(word);
+			if (currentWidth + wordWidth > width) {
+				res.push(currentLine);
+				currentWidth = 0;
+				currentLine = "";
+			}
+			currentLine += word;
+			currentWidth += wordWidth;
+		}
+		res.push(currentLine);
+		return res;
+	}
+
+	function selectAppearance()
+	{
+		if(! (value.exp !))
+		{
+			playSound("buzzer");
+			return;
+		}
+		parent.close();
+		kag.fore.layers[0].loadImages(%[storage: "0000"]);
+		if(value.chara === void)
+		{
+			startReplay();
+			return;
+		}
+		master.curChara = o[value.chara];
+		openMenu();
+	}
+
+	function openMenu()
+	{
+		playSound("cancel");
+		master.setPrev(openMenu);
+		master.clearWindows();
+		var cmds = [];
+		cmds.add(%[text: "Change Hair", func: selectHair, cond: value.chara !== void]);
+		cmds.add(%[text: "Change Panties", func: selectPanties, cond: +value.hip]);
+		cmds.add(%[text: "Change Other", func: selectOthers, cond: +value.other]);
+		cmds.add(%[text: "Replay", func: startReplay]);
+		master.miniMenu.open(cmds, "Menu");
+	}
+
+	function startReplay()
+	{
+		master.miniMenu.close();
+		f.saveEnabled = false;
+		f.replayMode = true;
+		master.resetPrevForKag();
+		kag.process("appendix.ks", value.label);
+	}
+
+	function selectHair()
+	{
+		(CGModeBoard.selectHair incontextof this)();
+	}
+
+	function selectPanties()
+	{
+		(CGModeBoard.selectPanties incontextof this)();
+	}
+
+	function selectOthers()
+	{
+		(CGModeBoard.selectOthers incontextof this)();
+	}
+
+	function changeHair(colour)
+	{
+		// 髪色変更
+		master.curChara.color = colour;
+		master.processPrev();
+	}
+
+	function changePanties(panties)
+	{
+		// 下着変更
+		master.curChara.equip.hip = panties;
+		master.processPrev();
+	}
+
+	function changeOthers(num)
+	{
+		// その他の服を変更
+		master.curChara.equip.arm = master.changableGloves[num];
+		master.curChara.equip.leg = master.changableBoots[num];
+		master.processPrev();
+	}
+}
+
+class TrophyWindow extends TextWindow
+{
+	// トロフィー画面
+
+	function TrophyWindow(par, master)
+	{
+		super.TextWindow(...);
+		name = "トロフィー一覧";
+		loadImages("back_trophy");
+		//font.face = "ＭＳ Ｐ明朝";
+		font.bold = true;
+		edge = false;
+		marginL = 0;
+		marginR = 0;
+		marginT = 0;
+		marginB = 0;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function open()
+	{
+		super.open();
+		master.setPrev(close);
+		master.setPrev();
+		clear();
+		return drawInfo();
+	}
+
+	function close()
+	{
+		super.close();
+		master.othersWin.openCommand();
+	}
+
+	function drawInfo()
+	{
+		var l, t, str, opa;
+		var num = 0;
+		var temp = new global.Layer(window, window._primaryLayer);
+
+		// 称号一覧
+		font.height = 22;
+		for(var i = 0; i < master.trophys.count; i++)
+		{
+			var trp = master.trophys[i];
+			l = i \ 15 * 400 + 240;
+			t = i % 15 * 50 + 10;
+			temp.loadImages("image_trophy_" + trp.cup);
+			if(trp.exp !)
+			{
+				chColor=0x4B4545;
+				str = trp.displayName;
+				opa = 255;
+				num ++;
+			}
+			else
+			{
+				chColor=0xB0B0B0;
+				if(trp.hyper) str = " (Hyper Bomb can't be used)";
+				else str = "   -----------------";
+				opa = 64;
+			}
+			operateRect(l, t, temp, 0, 0, temp.imageWidth, temp.imageHeight,, opa);
+			write(str, l + 55, t + 9);
+		}
+
+		// 獲得数
+		font.height = 32;
+		chColor = num == master.trophys.count ? 0x40A040 : 0x4B4545;
+		write("%2d".sprintf(num), 62, 524);
+		write(master.trophys.count, 122, 524);
+
+		return num;
+	}
+}
+//----------------------------------------------------------------------------------------

@@ -1,0 +1,300 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔15Ｆ
+insideName = 15Ｆ
+upper = ラドミラの塔16Ｆ
+lower = ラドミラの塔14Ｆ
+level = 99
+bgm = tower
+margin = 3
+shadow = dark
+sky = dawnforest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+… = half
+　 = marble
+☐ = marble
+☁ = smoke
+／ = door
+∫ = pick
+⧻ = fence
+☖ = arch
+︻ = panel
+┯ = button
+⒁ = br_maxhp
+⒂ = br_str
+
+; 敵情報
+monsters = マンイーター,怒りの霊魂,サイクロプス,ゴールドマン,ケイブジャイアント
+
+; 移動ポイント
+
+; 宝箱
+box[1] = 大地の槌
+box[2] = ジャンプの巻物,解呪の巻物・改,オリハルコンの砂,オリハルコンの砂,修理の巻物,修理の巻物
+box[3] = 青りんご,青りんご,青りんご,青りんご,青りんご,青りんご,青りんご
+box[4] = 解呪の巻物・改,解呪の巻物・改,ブラックパール
+box[5] = 吸血のムチ,召喚の札,召喚の札,経験のコイン（大）
+box[6] = 調教師のムチ,召喚びん,経験のコイン（中）
+box[7] = 盗賊の短刀,盗賊の手袋,こじあけの鍵,こじあけの鍵,金貨（超特大）
+box[8] = 死神の鎌,鉄のブーメラン,アナライズの魔法書,アンロックの魔法書,敏捷性の秘薬,運の秘薬
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  		┏━━━━━┳━┳━┳━┳━┳┯┓
+ 8		┃❶　　　❷┃　┃❹☖　☖⒂┃①┃
+  		┣━━⧻━︻┛　┗︻┻━┻━╋／┫
+ 7		┃　　　　③　　　⑤　⑥　　┃　┃
+  		┣━┓　┏━━━┓　　　　　┃　┃
+ 6		┃⑬┃　┃⑩　⑨／　　　　　┃　┃
+  		┃　┃　┃　……┫　　　┏☖┫　┃
+ 5		┃　⧻　┃❸　⒁【⑧　　┃　┃　┃
+  		┃　┃　┗━━━┛　　　┃☁┃　┃
+ 4		┃⑫【⑪　　　　　　　　┃☁┃　┃
+  		┣━┛　　　　　　　　　┃☁┃　┃
+ 3		┃　　　　④　　　　　⑦】☁┃　┃
+  		┣━━⧻━︼┓　┏━━∬┻━┫　┃
+ 2		┃❺　　　❻┃　┃❼　　　❽┃　┃
+  		┣━━━━━┻／┻︻━━━━┻／┫
+ 1		￤☐☐☐☐☐☐☐☐⓶☐☐☐☐☐☐￤
+  		┗………………………………………┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[7][4].f.breakable = pos[7][3].f.breakable = true;
+pos[7][4].f.noCount = pos[7][3].f.noCount = true;
+pos[7][4].f.pimg = pos[7][3].f.pimg = "crack";
+setElevator(8, 8);
+
+// 宝物庫関連
+pos[6][7].n.himg = "crack";	// ⑥破壊ドア
+pos[6][7].n.click = true;	// ⑥破壊ドア
+pos[6][3].f.antiSpell = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(2, 7, "n", "close");	// ③の鉄格子
+switchFence(2, 3, "s", "close");	// ④の鉄格子
+switchFence(2, 5, "w", "close");	// ⑪の鉄格子
+
+// サモンマスターの部屋・召喚魔法をすべて契約していたら
+if(game.getNumContractedHelpers(true) >= 18) switchFence(2, 3, "s", "open");
+
+// 錬金術マスターの部屋・錬金魔法をすべて習得しているメンバーがいたら
+for(var i = 0; i < game.party.members.count; i++)
+{
+	if(! game.party.members[i].isCategoryMaster(game.amagic)) continue;
+	switchFence(2, 7, "n", "open");
+	break;
+}
+
+// アサシンの部屋・メンバーにアサシンがいたら
+for(var i = 0; i < game.party.members.count; i++)
+{
+	if(game.party.members[i].job != o.アサシン) continue;
+	switchFence(2, 5, "w", "open");
+	break;
+}
+
+// ver1.45 エラー修正
+if(pos[6][7].n.type == "space")
+{
+	events.remove(6);
+	pos[6][7].n.click = void;
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger || (onUseEventItem && curItem == o.小さなボタン)
+
+@jump storage="tower16f.map" target=*_set_16button cond='game.onUseEventItem'
+@command title="Which button will you press?" cancel=true
+@select text="17Ｆ" exp='tf.result = ["ラドミラの塔17Ｆ", "up"]'
+@select text="16Ｆ" exp='tf.result = ["ラドミラの塔16Ｆ", "up"]' cond='f.floor16opened'
+@select text="14Ｆ" exp='tf.result = ["ラドミラの塔14Ｆ", "down"]'
+@select text="11Ｆ" exp='tf.result = ["ラドミラの塔11Ｆ", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Treasure Trove"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Master Alchemist's Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="Master Summoner's Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="The Wall of Warriors cannot be destroyed by explosions or magic. Deal over 200 damage to the wall with a single blow."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@question title="Would you like to try attacking the wall?" cancel=true
+[eventoff cond='! tf.result']
+
+@eval exp='tf.damage = 0'
+@eval exp='game.enemy.visible = true'
+@eval exp='game.curTarget = game.enemy.members[3]'
+@eval exp='game.curTarget.loadData(m.壁, 0, 1)'
+@eval exp='game.curTarget.flashLayer.type = ltAlpha'
+@eval exp='game.curTarget.setPos(450, 600)'
+@eval exp='game.enemy.group0.depth = 0'
+@eval exp='game.curTarget.group = game.enemy.group0'
+@eval exp='tf.i = 0, tf.arr = game.party.members'
+*_event_6_loop
+@eval exp='game.curFighter = tf.arr[tf.i]'
+@eval exp='game.curFighter.act = o.攻撃'
+@eval exp='game.curFighter.cutInFigureOnBattle()'
+@btmes
+[emb exp='o.攻撃.actionMessage(game.curFighter, game.curTarget)']
+@wait time=400
+@call storage="anime.ks" target=&'o.攻撃.anime'
+@eval exp='tf.damage = o.攻撃.doDamage(game.curFighter, game.curTarget)'
+@damage v=&'tf.damage'
+[r][emb exp='o.攻撃.resultMessage(game.curTarget, tf.damage)']
+@wait time=600
+@jump target=*_event_6_success cond='tf.damage >= 200'
+@eval exp='game.cutOutFigure("alternate")'
+@wait time=200
+@eval exp='tf.i ++'
+@jump target=*_event_6_loop cond='tf.i < tf.arr.count'
+@btmes off
+@wait time=500
+@eval exp='game.popup.open(1000)'
+@eval exp='game.popup.write("The target damage was not dealt.")'
+@wait time=1000
+@eval exp='game.enemy.members[3].flashLayer.type = ltDodge'
+@eval exp='game.enemy.disappear()'
+[eventoff]
+
+*_event_6_success
+@wait time=500
+@btmes off
+@se f=collapse
+@image layer=e5 storage=9999 visible=true
+@quake hmax=30 vmax=20 time=1000
+@changewall x=6 y=7 way=n type=space img=void behind=true click=void
+@wait time=100
+@move layer=e5 path=,,0 time=1000
+@wm
+@eval exp='game.cutOutFigure("alternate")'
+@layopt layer=e5 visible=false opacity=255
+@wait time=500
+@eval exp='game.popup.open(1000)'
+@eval exp='game.popup.write("We successfully destroyed the wall!")'
+@wait time=1000
+@eval exp='game.enemy.members[3].flashLayer.type = ltDodge'
+@eval exp='game.enemy.disappear()'
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@notice text="Master Thief's Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@notice text="No entry for those lacking physical strength"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] party.lastIsMove
+
+@btcmd name=メイルシュトローム message="Suddenly, water flooded in!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] true
+
+@delevent
+@delevent num=9
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] onObjectTrigger
+
+@notice text="Assassin's Secret Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] inSearching
+
+@treasure item=隠密のブーツ,修理の巻物,アサシンダガー,経験のコイン（中） trap=ラミアの瞳 level=40 hide=true
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_13
+;[exp] inSearching
+
+@treasure item=怪盗のレオタード,鋼のチャクラム,ボム,悪のサーベル trap=死神の鎌 level=60 hide=true
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_14
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 30)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had maximum HP permanently increased by 30!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_15
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("power", 2)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Strength permanently increased by 2!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

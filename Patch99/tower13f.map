@@ -1,0 +1,126 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔13Ｆ
+insideName = 13Ｆ
+upper = ラドミラの塔14Ｆ
+lower = ラドミラの塔12Ｆ
+level = 66
+bgm = tower
+shadow = dark
+sky = dawnforest
+roof = stone
+margin = 3
+
+; パーツ画像
+━ = stone_h
+✜ = stone_h
+　 = marble
+❑ = cube
+／ = door
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+⑷ = barrel
+
+; 敵情報
+monsters = マンイーター,怒りの霊魂,サイクロプス,ゴールドマン,ケイブジャイアント
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  		┏━━━┳━━━┳━━━┳━┳━┓
+ 8		┃　　㊦┠③　　┃　　敵／　┃	┃
+  		┃　┏━┛　　　┃　　　┃　┗━┫
+ 7		┃　⧻㊤　　　敵／　　　┃　　　┃
+  		┃　┣━━━━✜┻━━━┻━┓　┃
+ 6		┃①⧻　　　　❑　　　❑　　┃　┃
+  		┃　┃　　　　　　　　　　　┃　┃
+ 5		┃　┃❑　❑　　　❑　　　❑┃　┃
+  		┃　┃　　　　　　　　　　　┃　┃
+ 4		┃②┃　　❑　❑　　　❑　　┃　┃
+  		┣︼┫　　　　　　　　　　　┃　┃
+ 3		┃　／❑　　　　　❑　　　❑⧻①┃
+  		┃　┃　　　　　　　　　　　┣━┫
+ 2		┃　┃　　　　　　❑　　　　┃⑷┃
+  		┃　┗━━━━━━━━━━━┛　┃
+ 1		┃　　　　　　　　　　　　　　　┃
+  		┗━━━━━━━━━━━━━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(1, 6, "e", "close");
+switchFence(7, 3, "e", "close");
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] map.isPartition(1, 6, "e")
+
+[if exp='! game.party.hasItem(o.時のスイッチ)']
+	@notice text="I hear a voice from somewhere:<y><r>This door will not be opened to those without a <p>Time Switch<y>."
+	[eventoff]
+[endif]
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=1 y=6 way=e mode=open
+@switchfence x=7 y=3 way=e mode=open
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="The exit of the room is on the east wall."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=1 y=7 way=e mode=open
+@notice text="I heard a door open somewhere!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel noguest
+@damage v=&'game.curTarget.addParam("magic", 9)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had MP restored!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+@se f=dragstone
+@eval exp='game.map.reset()'
+@wait time=800
+@warp x=1 y=7 way=s
+@switchfence x=1 y=7 way=e mode=open cond='! game.map.events.has(3)'
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;===============================================================================

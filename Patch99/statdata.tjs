@@ -1,0 +1,1479 @@
+﻿// ステータス詳細登録
+
+function registerCharaStatusFunctions(master)
+{
+	var Name;
+
+// 状態変化系
+//--------------------------------------------------------------------
+Name = "毒";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.eraseAtDungeonExit = true;
+	.displayName = "Poison";
+	.icon = "icon_poison";
+	.face = "weak";
+	.anime = "*poisonous_liquid";
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.getPrice = function(owner)
+	{
+		return 150;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0x60C060,POISONED";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " was poisoned!";
+	};
+
+	.effectInMoving = function(owner)
+	{
+		owner.life --;
+	};
+
+	.effectInBattle = function(owner)
+	{
+		var v = intrandom(3, 6);
+		owner.life -= v;
+		return v;
+	};
+
+	.effectMessage = function(owner, value)
+	{
+		return owner.displayName + " took " + value + " damage from poison!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + " recovered from poison!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "沈黙";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 5;
+	.eraseAtEndOfBattle = true;
+	.displayName = "Mute";
+	.icon = "icon_silence";
+	.anime = "*be_silent";
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.麻痺)) return false;
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0FFFF,SILENCED";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " was silenced!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "酩酊";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 10;
+	.eraseAtDungeonExit = true;
+	.displayName = "Drunk";
+	.icon = "icon_drunk";
+	.face = "drunk";
+	.anime = "*be_drunk";
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.魅了)) return false;
+		if(owner.status.has(o.眠り)) return false;
+		if(owner.status.has(o.気絶)) return false;
+		if(owner.status.has(o.麻痺)) return false;
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0FFFF,DRUNK";
+	};
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "accuracy") return value \ 5;
+		if(key == "speed") return value \ 2;
+		return value;
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " is drunk!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + " sobered up!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "混乱";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 3;
+	.eraseAtEndOfBattle = true;
+	.displayName = "Confuse";
+	.icon = "icon_confusion";
+	.face = "confuse";
+	.anime = "*be_confused";
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.魅了)) return false;
+		if(owner.status.has(o.眠り)) return false;
+		if(owner.status.has(o.気絶)) return false;
+		if(owner.status.has(o.麻痺)) return false;
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0FFFF,CONFUSED";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.removeStatus(o.酩酊);
+		owner.removeStatus(o.捕縛中);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		owner.cancelAction();
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " was confused!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + "'s confusion subsided!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "恐怖";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 5;
+	.icon = "icon_afraid";
+	.displayName = "Fear";
+	.face = "afraid";
+	.anime = "*be_afraid";
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.魅了)) return false;
+		if(owner.status.has(o.眠り)) return false;
+		if(owner.status.has(o.気絶)) return false;
+		if(owner.status.has(o.麻痺)) return false;
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0FFFF,AFRAID";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.removeStatus(o.酩酊);
+		owner.removeStatus(o.混乱);
+		owner.removeStatus(o.捕縛中);
+	};
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "defense") return value \ 2;
+		return value;
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " is terrified!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + "'s fear has subsided!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "魅了";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 6;
+	.control = false;
+	.displayName = "Charm";
+	.eraseAtEndOfBattle = true;
+	.icon = "icon_charmed";
+	.face = "charmed";
+	.anime = "*charm";
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.気絶)) return false;
+		if(owner.status.has(o.麻痺)) return false;
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFFC0C0,CHARMED";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.cancelAction();
+		owner.removeStatus(o.酩酊);
+		owner.removeStatus(o.恐怖);
+		owner.removeStatus(o.混乱);
+		owner.removeStatus(o.捕縛中);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		owner.cancelAction();
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " was charmed!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + " is free from infatuation!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		if(self.sex == target.sex || self.sex == "無" || target.sex == "無") return false;
+		return random * 100 < self.getSexAppealOfAppearance();
+	};
+}
+//--------------------------------------------------------------------
+Name = "眠り";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 3;
+	.control = false;
+	.displayName = "Sleep";
+	.eraseAtEndOfBattle = true;
+	.eraseAtDungeonExit = true;
+	.icon = "icon_sleep";
+	.face = "asleep";
+	.anime = "*be_asleep";
+	.detail = "May put the opponent to sleep";
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.気絶)) return false;
+		if(owner.status.has(o.麻痺)) return false;
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0x80F0F0,SLEEP";
+	};
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "defense") return value \ 2;
+		return value;
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.cancelAction();
+		owner.removeStatus(o.酩酊);
+		owner.removeStatus(o.捕縛中);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		if(owner instanceof "CharaObject") owner.sleep -= 1;
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " has fallen asleep!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + " is awake!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		if(target.isUserChara) return random * 100 < target.sleep;
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "衰弱";
+// 全員この状態になっても全滅にならず移動もできるが
+// ステータスが最低まで落ちる上、魔法が唱えられない
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.displayName = "Weak";
+	.sickTime = 20;
+	.icon = "icon_weaken";
+	.face = "weak";
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.気絶)) return false;
+		if(owner.status.has(o.麻痺)) return false;
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0FFFF,WEAK";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.removeStatus(o.酩酊);
+		owner.removeStatus(o.恐怖);
+		owner.removeStatus(o.混乱);
+		owner.removeStatus(o.魅了);
+		owner.removeStatus(o.捕縛中);
+	};
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "attack") return 1;
+		if(key == "accuracy") return 1;
+		return value;
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " has been debilitated!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + " recovered!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "凍結";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 2;
+	.control = false;
+	.displayName = "Freeze";
+	.eraseAtEndOfBattle = true;
+	.icon = "icon_freeze";
+	.face = "frozen";
+	.detail = "May freeze opponent";
+
+	.cond = function(owner)
+	{
+		if(owner.life == 0) return false;
+		if(owner.status.has(o.気絶)) return false;
+		if(owner.status.has(o.麻痺)) return false;
+		if(owner.status.has(o.石化)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return;	// ダメージ値を表示したいのでなにもなし
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.cancelAction();
+		owner.beFrozenImage();
+		owner.removeStatus(o.捕縛中);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		owner.beSoftenImage();
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " is frozen!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + " thawed out!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 100 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "気絶";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.displayName = "Stun";
+	.sickTime = 2;
+	.control = false;
+	.eraseAtEndOfBattle = true;
+	.icon = "icon_unconscious";
+	.face = "asleep";
+	.anime = "*knock_out";
+	.detail = "May stun opponent";
+
+	.cond = function(owner)
+	{
+		if(owner.life < 10) return false;
+		if(owner.status.has(o.麻痺)) return false;
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFFC080,KNOCK OUT";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.cancelAction();
+		owner.removeStatus(o.眠り);
+		owner.removeStatus(o.酩酊);
+		owner.removeStatus(o.捕縛中);
+	};
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "defense") return value \ 2;
+		return value;
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " is stunned!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + " regained consciousness!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "麻痺";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	// このステータスに限り、種族等によって sickTime の値が変動する
+	.control = false;
+	.displayName = "Paralyze";
+	.icon = "icon_paralysis";
+	.face = "stunned";
+	.anime = "*paralysis_shock";
+
+	.getPrice = function(owner)
+	{
+		// 麻痺・石化の治療費は固定
+		// そもそも常に同じ値段で効能も同じ薬アイテムが店で売られているのに
+		// 寺院で治療する時だけレベルで変動するのは単に理不尽なだけ
+		// 意味がないので固定費にする
+		return 200;
+	};
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.拘束)) return false;
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFFFF80,PARALYZED";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		// 一部のモンスターは自力で回復する
+		var permanent = ["ヒューマン", "エルフ", "ドワーフ", "ノーム", "シルフ"];
+		if(permanent.has(owner.race.name)) sickTime = -1;
+		else sickTime = 5;
+		owner.clearStatus();
+	};
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "defense") return value \ 2;
+		return value;
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " is paralyzed!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "石化";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.control = false;
+	.displayName = "Petrify";
+	.icon = "icon_stone";
+	.face = "stoned";
+	.anime = "*be_stoned";
+
+	.getPrice = function(owner)
+	{
+		return 1980;
+	};
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0C0C0,PETRIFIED";
+	};
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "defense") return value * 2;
+		return value;
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.clearStatus();
+		owner.beStonedImage();
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		owner.beSoftenImage();
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " turned to stone!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 50 < self.luck;
+	};
+}
+//--------------------------------------------------------------------
+Name = "死亡";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.displayName = "Death";
+	.sickTime = -1;
+	.control = false;
+	.icon = "icon_dead";
+	.face = "dead";
+	.anime = "*killing";
+	.detail = "May instantly kill opponent";
+
+	.getPrice = function(owner)
+	{
+		return owner.level * 120 + 350;
+	};
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFF8080,DEAD";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.clearStatus();
+		owner.life = 0;
+		if(! master.inDuelBattle) owner.rip ++;
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " was executed!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 100 < cap(self.level - target.level, 25, 5);
+	};
+}
+//--------------------------------------------------------------------
+Name = "灰";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.control = false;
+	.displayName = "Ash";
+	.face = "ashes";
+	.detail = "May ash opponent";
+
+	.cond = function(owner)
+	{
+		if(! owner instanceof "CharaObject") return false;
+		if(owner.status.has(o.灰)) return false;
+		if(master.map.kind == "dungeon" && master.map.underWater) return false;
+			// 水中で灰になると潜水装備が外れ状況と矛盾するので水中では灰にならない
+		for(var i = 0; i < owner.partNames.count; i++)
+		{
+			var item = owner.equip[owner.partNames[i]];
+			if(item !== void && item.neverRemove !== void) return false;
+		}
+		return true;
+	};
+
+	.getPrice = function(owner)
+	{
+		return owner.level * 330 + 560;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0C0C0,ASHED";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		if(! owner.status.has(o.死亡) && ! master.inDuelBattle) owner.rip ++;
+		owner.clearStatus();
+		owner.life = 0;
+		owner.retire(o.灰);
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " turned to ashes!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 100 < cap(self.level - target.level, 40, 0);
+	};
+}
+//--------------------------------------------------------------------
+Name = "ドレイン";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.eraseAtEndOfBattle = true;
+	.displayName = "Drain";
+	.anime = "*energy_drain";
+	.detail = "May drain EXP from opponent";
+
+	.cond = function(owner)
+	{
+		if(! owner instanceof "CharaObject") return false;
+		if(owner.level < 4) return false;
+		return true;
+	};
+
+	.doDamage = function(self, target)
+	{
+		result = intrandom(1, cap(self.level \ 10, 3));
+		target.exp -= (target.getNeedExp(target.level) - target.getNeedExp(target.level - result));
+		for(var i = 0; i < result; i++) target.levelDown();
+		if(target.exp < 0) target.exp = 0;
+		if(target.level < 1) target.level = 1;
+		return "0,0xFF4040,-" + result;
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " had level drained by " + result + "!";
+	};
+
+	.isExtraEffectOccuring = function(self, target)
+	{
+		return random * 100 < cap(self.level - target.level, 40, 0);
+	};
+}
+//--------------------------------------------------------------------
+Name = "拘束";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.control = false;
+	.displayName = "Restraint";
+	.eraseAtEndOfBattle = true;
+	.icon = "icon_captured";
+	.face = "stunned";
+
+	.cond = function(owner)
+	{
+		if(owner.status.has(o.石化)) return false;
+		if(owner.status.has(o.死亡)) return false;
+		if(owner.status.has(o.灰)) return false;
+		return true;
+	};
+
+	.effectInBattle = function(owner)
+	{
+		owner.heat += 1;
+		return "0,0xFFA0A0,ECSTASY";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.removeStatus(o.眠り);
+		owner.removeStatus(o.気絶);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		owner.rapeStep = 0;
+		for(var i = owner.capturers.count - 1; i >= 0; i--)
+		{
+			owner.capturers[i].removeStatus(o.捕縛中);
+		}
+		owner.capturers.clear();	// 強制的に拘束を解かれた時のために記述
+		master.battleInfo.reline();
+		master.battleInfo.write(releaseMessage(owner));
+	};
+
+	.effectMessage = function(owner, value)
+	{
+		return owner.displayName + " is being held captive and molested!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + " is free from the enemy!";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " was captured by the enemy!";
+	};
+}
+//--------------------------------------------------------------------
+Name = "捕縛中";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	// 敵専用ステータス  捕縛した側のモンスターがこの状態になる
+	.sickTime = -1;
+	.displayName = "Captive";
+	.control = false;
+	.eraseAtEndOfBattle = true;
+	.icon = "icon_capturing";
+
+	.onRemoveStatus = function(owner)
+	{
+		owner.prey.beReleased(owner);
+	};
+}
+//--------------------------------------------------------------------
+Name = "静観";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	// 敵専用ステータス  何もせずに戦況を見ている状態  イベント時などに使う
+	.sickTime = -1;
+	.control = false;
+}
+//--------------------------------------------------------------------
+
+// パラメータ変動系
+//--------------------------------------------------------------------
+Name = '祝福';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.icon = "icon_bless";
+	.displayName = "Blessing";
+	.eraseAtEndOfBattle = true;
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "accuracy") return value + 2;
+		return value;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFFC0C0,BLESS";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + "'s hit rate is up!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '硬化';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.icon = "icon_defense";
+	.displayName = "Tough";
+	.eraseAtEndOfBattle = true;
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "defense") return value + 20;
+		return value;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFFC0C0,GUARD";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + "'s defenses are up!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '抵抗';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.icon = "icon_resist";
+	.displayName = "Resistance";
+	.eraseAtEndOfBattle = true;
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "piety") return value + 3;
+		return value;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFFC0FF,BARRIER";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + "'s magic resistance is up!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '付与';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.icon = "icon_enchant";
+	.displayName = "Enchant";
+	.eraseAtEndOfBattle = true;
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFFFFC0,ENCHANT";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + "'s weapon now has magical effects!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '疾風';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.icon = "icon_speed";
+	.displayName = "Gale";
+	.eraseAtEndOfBattle = true;
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "speed") return value + 100;
+		return value;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0FFFF,SPEED UP";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.removeStatus(o.鈍重);
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + "'s speed is up!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '鈍重';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 5;
+	.icon = "icon_slow";
+	.displayName = "Dull";
+	.eraseAtEndOfBattle = true;
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "defense") return value - 2;
+		if(key == "speed") return value \ 2;
+		return value;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0FFFF,SPEED DOWN";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		owner.removeStatus(o.疾風);
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + "'s speed is down!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '倍加';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.icon = "icon_multiple";
+	.displayName = "Double";
+	.eraseAtEndOfBattle = true;
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "times") return max(value \ 2, 1);
+		return value;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0FFFF,HITx2";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + "'s attack count doubled!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '回復';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 10;
+	.icon = "icon_regenerate";
+	.displayName = "Recovery";
+	.eraseAtEndOfBattle = true;
+
+	.doDamage = function(self, target)
+	{
+		return "0,0x80FF80,REGENERATE";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " now heals automatically!";
+	};
+
+	.effectInBattle = function(owner)
+	{
+		var heal = intrandom(owner.maxLife \ 4, owner.maxLife \ 3);
+		owner.life += heal;
+		return "0,0x80F080," + heal;
+	};
+
+	.effectMessage = function(owner, value)
+	{
+		return owner.displayName + "'s HP restored by " + value.substr(11) + "!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + "'s automatic recovery has ended!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '反射';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 5;
+	.icon = "icon_reflect";
+	.displayName = "Reflect";
+	.eraseAtEndOfBattle = true;
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xC0FFFF,REFLECT";
+	};
+
+	.catchMessage = function(target)
+	{
+		return target.displayName + " is protected by a magic mirror!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + "'s mirror barrier faded!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '蓄積';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.icon = "icon_charge";
+	.displayName = "Accumulation";
+	.eraseAtEndOfBattle = true;
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "attack") return value * 3;
+		return value;
+	};
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFFC000,CHARGE";
+	};
+}
+//--------------------------------------------------------------------
+Name = '潜伏';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 10;
+	.face = "hiding";
+	.displayName = "Hiding";
+	.eraseAtEndOfBattle = true;
+
+	.doDamage = function(self, target)
+	{
+		return "0,0xFFFFFF,HIDING";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return target.displayName + " was spotted by the enemy!";
+	};
+}
+//--------------------------------------------------------------------
+
+// パーティー用
+//--------------------------------------------------------------------
+Name = "照明";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 150;
+	.eraseAtDungeonExit = true;
+	.displayName = "Illumination";
+	.icon = "icon_light";
+
+	.cond = function(owner)
+	{
+		if(master.map.kind == "dungeon" && master.map.getFloorInfo().eraseMagic) return false;
+		return true;
+	};
+
+	.catchMessage = function(target)
+	{
+		return "The dungeon got brighter!";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		master.dungeonView.setBlindScreen(false);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		if(master.dungeonView.visible) playSound("erase.wav");
+		master.dungeonView.setBlindScreen(true);
+		master.miniMap.update(true);
+	};
+}
+//--------------------------------------------------------------------
+Name = "透視";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 30;
+	.eraseAtDungeonExit = true;
+	.displayName = "Clairvoyant";
+	.icon = "icon_eye";
+
+	.cond = function(owner)
+	{
+		if(master.map.kind == "dungeon" && master.map.getFloorInfo().eraseMagic) return false;
+		return true;
+	};
+
+	.catchMessage = function(target)
+	{
+		return "I saw through the wall in front of me!";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		master.dungeonView.setClairvoyance(true);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		if(master.dungeonView.visible) playSound("erase.wav");
+		if(master.map.kind == "dungeon") master.dungeonView.setClairvoyance(false);
+	};
+}
+//--------------------------------------------------------------------
+Name = "浮遊";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.eraseAtDungeonExit = true;
+	.displayName = "Floating";
+	.icon = "icon_feather";
+	.detail = "Floats slightly.<r>Avoids terrain damage.";
+
+	.cond = function(owner)
+	{
+		if(! owner instanceof "PlayersParty") return true;
+		if(master.map.kind == "dungeon" && master.map.getFloorInfo().eraseMagic) return false;
+//		if(master.party.status.has(o.ボート)) return false;
+		return true;
+	};
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "speed") return value + 2;	// 少し速くなる
+		return value;
+	};
+
+	.catchMessage = function(target)
+	{
+		return "The party was suspended in mid-air!";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		var pt = master.party;
+		master.view.updateView(pt.curX, pt.curY, pt.curFront);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		if(master.dungeonView.visible) playSound("erase.wav");
+		master.dungeonView.resetPos();	// 浮遊時の位置をリセット
+	};
+}
+//--------------------------------------------------------------------
+Name = "地図";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.eraseAtDungeonExit = true;
+	.displayName = "Map";
+
+	.cond = function(owner)
+	{
+		if(master.map.kind == "dungeon" && master.map.getFloorInfo().eraseMagic) return false;
+		return true;
+	};
+
+	.catchMessage = function(target)
+	{
+		return "I can see a map of my surroundings now!";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		master.miniMap.open(master.map);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		if(master.dungeonView.visible) playSound("erase.wav");
+		master.miniMap.close();
+	};
+}
+//--------------------------------------------------------------------
+Name = 'ボート';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.eraseAtDungeonExit = true;
+	.displayName = "Boat";
+
+	.catchMessage = function(target)
+	{
+		return "The party can now move over water!";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		master.dungeonView.boatLayer.visible = true;
+//		master.party.removeStatus(o.浮遊);
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		if(master.dungeonView.visible) playSound("erase.wav");
+		master.dungeonView.boatLayer.visible = false;
+	};
+}
+//--------------------------------------------------------------------
+Name = "加護";
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.eraseAtDungeonExit = true;
+	.displayName = "Divine Blessing";
+	.icon = "icon_protect";
+
+	.cond = function(owner)
+	{
+		if(master.map.kind == "dungeon" && master.map.getFloorInfo().eraseMagic) return false;
+		return true;
+	};
+
+	.affectedParam = function(key, value)
+	{
+		if(key == "defense") return value + 2;
+		return value;
+	};
+
+	.catchMessage = function(target)
+	{
+		return "The party's defenses are up!";
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		if(master.dungeonView.visible) playSound("erase.wav");
+	};
+}
+//--------------------------------------------------------------------
+Name = '障壁';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 5;
+	.eraseAtEndOfBattle = true;
+	.displayName = "Barrier";
+	.icon = "icon_shield";
+
+	.catchMessage = function(target)
+	{
+		return "A barrier protects against long-range attacks!";
+	};
+
+	.releaseMessage = function(target)
+	{
+		return "The barrier preventing long-range attacks has disappeared!";
+	};
+}
+//--------------------------------------------------------------------
+Name = '煙';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 20;
+	.eraseAtDungeonExit = true;
+	.displayName = "Smoke";
+	.icon = "icon_smoke";
+
+	.catchMessage = function(target)
+	{
+		return "A cloud of white smoke billowed around the party!";
+	};
+
+	.onSetStatus = function(owner)
+	{
+		master.dungeonView.nextDarkZone = "smoke";
+		var pt = master.party;
+		master.dungeonView.bufScreen.updateView(pt.curX, pt.curY, pt.curFront, "smoke");
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		master.dungeonView.nextDarkZone = void;
+		var pt = master.party;
+		master.dungeonView.updateView(pt.curX, pt.curY, pt.curFront);
+		master.miniMap.update(true);
+	};
+}
+//--------------------------------------------------------------------
+Name = '重力';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = 30;
+	.eraseAtDungeonExit = true;
+	.displayName = "Gravity";
+	.icon = "icon_gravity";
+
+	.catchMessage = function(target)
+	{
+		onRemoveStatus();
+		return "Gravity intensified around the party!";
+	};
+
+	.onRemoveStatus = function(owner)
+	{
+		for(var i = 0; i < master.party.members.count; i++)
+		{
+			master.party.members[i].switchFaceState();
+			master.party.members[i].updateWeightIcon();
+		}
+	};
+}
+//--------------------------------------------------------------------
+Name = '禁止';
+o[Name] = new CharaStatus(Name, master);
+with(o[Name])
+{
+	.sickTime = -1;
+	.eraseAtEndOfBattle = true;
+	.icon = "icon_forbidden";
+
+	.catchMessage = function(target)
+	{
+		return "The use of magic in this battle is forbidden!";
+	};
+}
+//--------------------------------------------------------------------
+}	// オワリ。この行を消さないように

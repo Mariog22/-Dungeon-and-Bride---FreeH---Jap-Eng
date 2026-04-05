@@ -1,0 +1,516 @@
+﻿; ブルーのアジト
+
+name = ブルーのアジト１Ｆ
+insideName = １Ｆ
+upper = ブルーのアジト２Ｆ
+showAllArea = true
+level = 3
+bgm = anxiety
+margin = 1
+shadow = dark
+sky = black
+roof = wood
+blank = rock
+antiWarp = true
+
+; 各パーツ
+━ = wood
+　 = wood
+／ = door
+☗ = door
+︻ = panel
+㊤ = ladderu
+⑸ = barrel
+⑹ = br_maxhp
+
+; 移動ポイント
+(A) = map:ブレイブタウン, enter:ブルーのアジト, ask:Leave the dungeon?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+  ┏━━━━━━━━━━━━━━━┳━━━━━┳━━━━━━━┓
+ 3┃　　　　　　　　　　　　　　　／　　　　　┃　　⑩　⑸　⑹┃
+  ┣／━━┳／━━┳／━━┳／━━┫　　　　　┃　　　　　　　┃
+ 2┃④　　┃　　　┃　　　┃　　　┃　　　　②／　　　　　　　┃
+  ┃　　　┃　　　┃　　　┃　　　┃　　　　　┃　　　　　　　┃
+ 1┃　　　┃⑪　　┃　　⑨┃　　　┃⑦　　　　【①　　　　　Ⓐ☗
+  ┃　　　┃　　　┃　　　┃　　　┣━━━━━┛　　　　　　　┃
+ 0┃⑫　　┃　　　┃　　　┃⑧　　┃㊤　　　　　　　　　　　　┃
+  ┗━━━┻━━━┻━━━┻━━━┻━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[14][1].event = 3;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(game.isFreeMode && game.waitingMembers.count > 0)
+{
+	if(game.waitingMembers.has(o.ミレディ))
+	{
+		events.push2(7);
+		game.waitingMembers.remove(o.ミレディ);
+	}
+
+	if(game.waitingMembers.has(o.サンドラ))
+	{
+		events.push2(8);
+		game.waitingMembers.remove(o.サンドラ);
+	}
+
+	if(game.waitingMembers.has(o.マリア))
+	{
+		events.push2(9);
+		game.waitingMembers.remove(o.マリア);
+	}
+
+	if(game.waitingMembers.has(o.ライナス))
+	{
+		events.push2(11);
+		game.waitingMembers.remove(o.ライナス);
+	}
+
+	if(game.waitingMembers.has(o.ブルー))
+	{
+		events.push2(12);
+		game.waitingMembers.remove(o.ブルー);
+	}
+
+	if(game.waitingMembers.has(o.ポラリス))
+	{
+		game.restoreMembers();
+	}
+}
+
+if(game.isFreeMode)
+{
+	if(events.has(7)) changeObject(%[pimg: "human"], 8, 1, "f");
+	if(events.has(8)) changeObject(%[pimg: "human"], 6, 0, "f");
+	if(events.has(9)) changeObject(%[pimg: "human"], 5, 1, "f");
+	if(events.has(11)) changeObject(%[pimg: "human"], 2, 1, "f");
+	if(events.has(12)) changeObject(%[pimg: "human"], 0, 0, "f");
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Blue's Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@wait time=500
+[if exp='! f.enabledToChallengingBlue && o.ブルーのアジト２Ｆ.events.has(1)']
+	@fg c=ミレディ e=通常 f=02
+	[texton]
+	[ミレディ f=02]「What is it? Need something?[r]Blue's on the second floor.」[k]
+	[textoff]
+	@cl
+	@eval exp='game.party.escape(true)'
+	[eventoff]
+[elsif exp='! f.enabledToChallengingBlue || f.dayOfLieselPregnant === void']
+	@fg c=ミレディ e=通常 f=02
+	[texton]
+	[ミレディ f=02]「What is it? Need something?」[k]
+	[ミレディ f=01]「Blue isn't here right now.[r]He's out with your ex-girlfriend.」[k]
+	[textoff]
+	@cl
+	@eval exp='game.party.escape(true)'
+	[eventoff]
+[elsif exp='! game.guest.members.has(o.ライナス)']
+	[texton]
+	[ブルー e=通常 f=02]「Hey, [テオ].」[k]
+	[ミレディ e=通常 f=02]「What is it? Need something?」[k]
+	[テオ f=06]「...」[k]
+	It's no good. I haven't gotten the [emb exp='o.イレースマジック.displayName'] spell yet. I'll never be able to beat Blue and the others like this.[k]
+	[テオ f=06]「No, nothing...」[k]
+	I decided to turn back.[k]
+	[textoff]
+	@cl
+	@eval exp='game.party.escape(true)'
+	[eventoff]
+[elsif exp='! f.challengedBlueAlready']
+	@eval exp='f.challengedBlueAlready = true'
+	@jump storage="main08.scn" target=*revenge_5
+[else]
+	@jump storage="main08.scn" target=*revenge_5_again
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+[texton]
+No, I can't go home yet. I have to find Riselle.[r]
+He must be somewhere in this mansion.[k]
+[textoff]
+@walk move=w
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@delevent
+@delevent num=3
+@jump storage="main08.scn" target=*revenge_6
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 20)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 20!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] party.lastIsMove
+
+@wait time=500
+@fg c=ミレディ e=通常 f=01
+[texton w=1]
+[if exp='! f.metMiredy']
+	[ミレディ f=01]「This place used to be the mansion of a man named Blue, but he fought a terrifying demon and lost, and was wiped out from this world.」[k]
+	@fgf c=ミレディ f=03
+	[ミレディ f=03]「So, now that its master is gone, I'm using this house! It's fine, since no one is here.」[k]
+	@fgf c=ミレディ f=02
+	[ミレディ f=02]「By the way, you guys are an adventurer party, right? Actually, I'm an adventurer too!」[k]
+	@fgf c=ミレディ f=01
+	[ミレディ f=01]「Hey, would you hire me? I'm short on cash lately. I need to make some money.」[k]
+	@eval exp='f.metMiredy = true'
+	@eval exp='sf["ブルー"] = 0'
+[else]
+	[ミレディ f=01]「Hey, why don't you hire me?」[k]
+[endif]
+[textoff]
+@clf
+
+@question title="Will you hire Miredy?"
+
+[if exp='! tf.result']
+	@fgf c=ミレディ f=07
+	[texton]
+	[ミレディ f=07]「What?! Are you serious? Don't mess with me!」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+[if exp='game.guest.getNumGuests() == 3']
+	@fgf c=ミレディ f=07
+	[texton]
+	[ミレディ f=07]「The party's already full. I can't join!」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+@fgf c=ミレディ f=03
+[texton]
+[ミレディ f=03]「Great! See you later!」[k]
+[textoff]
+@cl
+
+@delevent
+@eval exp='tf.temp = "<y>Miredy joined the party!"'
+@eval exp='o.ミレディ.recovery()'
+@eval exp='game.guest.entry(o.ミレディ)'
+@changefloor x=8 y=1 pimg=void
+@se f=period
+@notice text=&'tf.temp'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] party.lastIsMove
+
+@wait time=500
+@fg c=サンドラ e=通常 f=01
+[texton w=1]
+[サンドラ f=01]「Oh, we meet again.」[k]
+@fgf c=サンドラ f=02
+[サンドラ f=02]「How about it? Are you interested in hiring me?」[k]
+[textoff]
+@clf
+
+@question title="Will you hire Sandra?"
+
+[if exp='! tf.result']
+	@fgf c=サンドラ f=19
+	[texton]
+	[サンドラ f=19]「Oh, I see. That's too bad.」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+[if exp='game.guest.getNumGuests() == 3']
+	@fgf c=サンドラ f=19
+	[texton]
+	[サンドラ f=19]「You don't have the capacity. Please come again after reducing the number of people.」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+@fgf c=サンドラ f=03
+[texton]
+[サンドラ f=03]「Hehe, I look forward to it.」[k]
+[textoff]
+@cl
+
+@delevent
+@eval exp='tf.temp = "<y>Sandra joined the party!"'
+@eval exp='o.サンドラ.recovery()'
+@eval exp='game.guest.entry(o.サンドラ)'
+@changefloor x=6 y=0 pimg=void
+@se f=period
+@notice text=&'tf.temp'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] party.lastIsMove
+
+@wait time=500
+@fg c=マリア e=通常 f=01
+[texton w=1]
+[マリア f=01]「Hey! Long time no see, guys!」[k]
+@fgf c=マリア f=02
+[マリア f=02]「If you guys want to hire me, I'll come with you!」[k]
+[textoff]
+@clf
+
+@question title="Will you hire Maria?"
+
+[if exp='! tf.result']
+	@fgf c=マリア f=02
+	[texton]
+	[マリア f=02]「Oh, okay. See you later.」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+[if exp='game.guest.getNumGuests() == 3']
+	@fgf c=マリア f=02
+	[texton]
+	[マリア f=02]「There are too many people. Please come back when there's space available.」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+@fgf c=マリア f=03
+[texton]
+[マリア f=03]「Good to work with you!」[k]
+[textoff]
+@cl
+
+@delevent
+@eval exp='tf.temp = "<y>Maria joined the party!"'
+@eval exp='o.マリア.recovery()'
+@eval exp='game.guest.entry(o.マリア)'
+@changefloor x=5 y=1 pimg=void
+@se f=period
+@notice text=&'tf.temp'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] party.lastIsMove
+
+@wait time=500
+@fg c=rat_hamster left=450 top=380
+[texton w=1]
+[name n="Talking Hamster" f=rat_hamster]「If you want to dismiss a guest you hired here, please talk to me.」[k]
+[textoff]
+@clf
+
+@command title="Who will you dismiss?" cancel=true
+[if exp='game.guest.members.has(o.ミレディ)']
+	@select text=Miredy exp='tf.result = "ミレディ"'
+[endif]
+[if exp='game.guest.members.has(o.サンドラ)']
+	@select text=Sandra exp='tf.result = "サンドラ"'
+[endif]
+[if exp='game.guest.members.has(o.マリア)']
+	@select text=Maria exp='tf.result = "マリア"'
+[endif]
+[if exp='game.guest.members.has(o.ライナス)']
+	@select text=Linus exp='tf.result = "ライナス"'
+[endif]
+[if exp='game.guest.members.has(o.ブルー)']
+	@select text=Blue exp='tf.result = "ブルー"'
+[endif]
+@select text="No" exp='tf.result = void'
+[ask]
+
+[if exp='tf.result !== void']
+	@call target=*_remove_member
+	@se f=period
+	@notice text=&'"<y>" + o[tf.result].displayName + " has been dismissed!<r>To rehire, speak to them again."'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] party.lastIsMove
+
+@wait time=500
+@fg c=ライナス e=通常 f=01
+[texton w=1]
+[ライナス f=01]「Hey, good to see you again.」[k]
+@fgf c=ライナス f=03
+[ライナス f=03]「Guys, why don't you hire me? I'll definitely be useful!」[k]
+[textoff]
+@clf
+
+@question title="Hire Linus?"
+
+[if exp='! tf.result']
+	@fgf c=ライナス f=09
+	[texton]
+	[ライナス f=09]「Huh...?! Oh no... At this rate I'll run out of money...」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+[if exp='game.guest.getNumGuests() == 3']
+	@fgf c=ライナス f=09
+	[texton]
+	[ライナス f=09]「What... you're over capacity...?! I can't join like this.」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+@fgf c=ライナス f=01
+[texton]
+[ライナス f=01]「Alright, good to be here.」[k]
+[textoff]
+@cl
+
+@delevent
+@eval exp='tf.temp = "<y>Linus joined the party!"'
+@eval exp='o.ライナス.recovery()'
+@eval exp='game.guest.entry(o.ライナス)'
+@changefloor x=2 y=1 pimg=void
+@se f=period
+@notice text=&'tf.temp'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] party.lastIsMove
+
+@wait time=500
+@fg c=ブルー e=通常 f=02
+[texton w=1]
+[ブルー f=02]「I'm Blue. The strongest man in the world, risen from hell.」[k]
+[ブルー f=02]「You guys did me a favor, so I could be your bodyguard if you want.」[k]
+[ブルー f=39]「But there's a condition. Your female members have to surrender their bodies to me whenever I want.」[k]
+[textoff]
+@clf
+
+@question title="Hire Blue?"
+
+[if exp='! tf.result']
+	@fgf c=ブルー f=08
+	[texton]
+	[ブルー f=08]「Tch...! If you don't want to, don't talk to me.」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+[if exp='game.guest.getNumGuests() == 3']
+	@fgf c=ブルー f=08
+	[texton]
+	[ブルー f=08]「Tch...! There are too many people.」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+@fgf c=ブルー f=01
+[texton]
+[ブルー f=02]「Okay, it's a deal.」[k]
+[ブルー f=05]「If I want to play with one of your women, you must comply. Got it?」[k]
+[textoff]
+@cl
+
+@delevent
+@eval exp='tf.temp = "<y>Blue joined the party!"'
+@eval exp='o.ブルー.recovery()'
+@eval exp='game.guest.entry(o.ブルー)'
+@changefloor x=0 y=0 pimg=void
+@se f=period
+@notice text=&'tf.temp'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_remove_member
+
+[if exp='tf.result == "ミレディ"']
+	@eval exp='game.guest.removeMember(o.ミレディ)'
+	@addevent num=7
+	@changefloor x=8 y=1 pimg=human
+[endif]
+
+[if exp='tf.result == "サンドラ"']
+	@eval exp='game.guest.removeMember(o.サンドラ)'
+	@addevent num=8
+	@changefloor x=6 y=0 pimg=human
+[endif]
+
+[if exp='tf.result == "マリア"']
+	@eval exp='game.guest.removeMember(o.マリア)'
+	@addevent num=9
+	@changefloor x=5 y=1 pimg=human
+[endif]
+
+[if exp='tf.result == "ライナス"']
+	@eval exp='game.guest.removeMember(o.ライナス)'
+	@addevent num=11
+	@changefloor x=2 y=1 pimg=human
+[endif]
+
+[if exp='tf.result == "ブルー"']
+	@eval exp='game.guest.removeMember(o.ブルー)'
+	@addevent num=12
+	@changefloor x=0 y=0 pimg=human
+[endif]
+
+@return
+;===============================================================================

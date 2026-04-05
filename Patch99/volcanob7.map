@@ -1,0 +1,131 @@
+﻿; 火山島
+
+name = 火山島Ｂ７
+insideName = Ｂ７
+upper = 火山島Ｂ６
+lower = 火山島Ｂ８
+level = 44
+bgm = volcano
+margin = 1
+shadow = dark
+sky = black
+roof = hot
+blank = rock
+outfield = soilr
+effect = PE_steam2
+
+; 各パーツ
+━ = soilr
+　 = soilr
+♨ = lava
+♜ = upstair
+☗ = downstair
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+
+; 移動ポイント
+(A) = map:火山島Ｂ６, x:5, y:0, symbol:upstair, ask:There are stairs leading up. Would you like to climb the stairs?
+(B) = map:火山島Ｂ８, x:0, y:17, symbol:downstair, ask:There are stairs leading down. Would you like to go down the stairs?
+
+; 敵情報
+monsters = 怒りの霊魂,サラマンダー,イフリート
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4  
+  ┏☗━━━━━━━━┓
+16┃Ⓑ♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+15┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+14┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+13┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+12┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+11┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+10┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+ 9┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+ 8┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+ 7┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+ 6┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+ 5┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+ 4┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+ 3┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+ 2┃♨♨♨♨♨♨♨♨♨┃
+  ┃♨♨♨♨♨♨♨♨♨┃
+ 1┃③　③　③　③　③┃
+  ┃　　　　　　　　　┃
+ 0┃　　　　　　　　Ⓐ♜
+  ┗━━━━━━━━━┛
+;    0   1   2   3   4  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[4][0].event = 1;
+for(var i = 0; i <= 4; i++) pos[i][2].event = 2;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+roof = events.has(3) ? "hot" : "stone"
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@delevent
+@wait time=500
+@notice text="When I stepped onto the new floor, I was immediately struck by a wave of intense heat that was clearly different from before!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@notice text="The scorching heat from the boiling lava assails us! We can't move forward like this."
+@walk move=s
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] WAY == "n" && onUseEventItem && curItem == o.氷竜の心臓
+
+@delevent
+@delevent num=2
+@notice text="We threw the Ice Dragon's heart into the lava in front of us!"
+@btmes off
+@wait time=1000
+@flash on=1000
+@eval exp='game.map.changeFloorsOfWideArea(%[type: "floor", img: "soild", trap: void], 0, 2, 4, 16)'
+@eval exp='game.map.roof = "stone"'
+@eval exp='game.map.effect = void'
+@eval exp='game.view.setEnvironmentInfo(game.map)'
+@eval exp='game.updateView()'
+@wait time=1000
+@flash off=1000
+@wait time=1000
+@notice text="The lava cooled and formed black lumps!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

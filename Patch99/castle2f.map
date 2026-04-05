@@ -1,0 +1,147 @@
+﻿; 城
+
+name = 常闇の城２Ｆ
+insideName = ２Ｆ
+upper = 常闇の城３Ｆ
+lower = 常闇の城１Ｆ
+level = 36
+bgm = shadow
+margin = 3
+shadow = dark
+sky = stormyforest
+roof = stone
+
+; パーツ画像
+━ = stone
+… = half
+　 = marble
+／ = door
+☖ = arch
+⧻ = fence
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+⑹ = br_int
+
+; 敵情報
+monsters = バンパイアラット,バンパイアバット,ナイトメア,ナイトスケルトン,ガスト,ヴァンパイア,ノスフェラトゥ
+
+; 移動ポイント
+(A) = x:9, y:7, way:s
+
+; 宝箱
+box[1] = 罠はない,吸血鬼の鍵
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  ┏━━━━━┓									┏━┳━━━┓
+10┃　　　　㊤┃									┃　／　　㊦┃
+  ┃　┏━━━┻━━━━━━━━━┫　┃　　　┃
+ 9┃　┃②∴∴∴∴∴∴∴∴∴∴∴④】　┃　　　┃
+  ┃　┗／┳／━／━／━／━／━／┫　┃　　　┃
+ 8┃　　①】■■■■■■■■■■■┃　┃　　㊤┃
+  ┗━┓　┃■■■■■■■■■■■┃　┗━┳━┛
+ 7		┃　┃∴∴∴∴∴∴∴∴∴∴∴┃　　　┃
+  		┃　┣／━／━／━／━／━／╋━━／┫
+ 6		┃㊦┃■■■■■■■■■■■┃Ⓐ　敵┃
+  		┣━┫■■■■■■■■■■■┃　　　┃
+ 5		┃⑹┃∴∴∴∴∴∴∴∴∴∴∴┃　　Ⓐ┃
+  		┃　┣／━／━／━／━／━／┫　　…┫
+ 4		┃　┃■■■■■■■■■■■┃❶　　┃
+  		┃　┃■■■■■■■■■■■┃　　　┃
+ 3		┃　┃∴∴∴∴∴∴∴∴∴∴∴┃③　　┃
+  ┏━┛　┣／━／━／━／━／━／┻／┳━┻━┓
+ 2┃　　　┃■■■■■■■■■■■■∴┃　　㊤┃
+  ┃　　　┃■■■■■■■■■■■■∴┃　　　┃
+ 1┃　　　┃∴∴∴∴∴∴∴∴∴∴∴∴∴┃　　　┃
+  ┃　　　┗━┳━━━━━━━━━┳━┛　　　┃
+ 0┃㊦　　　㊤┃									【⑤　　　㊦┃
+  ┗━━━━━┛									┗━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[1][9].f.antiWarp = pos[7][9].f.antiWarp = true;
+for(var i = 2; i <= 7; i++)
+{
+	pos[i][8].f.hide = pos[i][6].f.hide = pos[i][4].f.hide = pos[i][2].f.hide = true;
+	pos[i][8].f.antiWarp = pos[i][6].f.antiWarp = pos[i][4].f.antiWarp = pos[i][2].f.antiWarp = true;
+}
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger || f.saveIsForbidden
+
+@eval exp='f.saveIsForbidden = false'
+@notice text="Moving Floor Hall" cond='game.onObjectTrigger'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove
+
+@eval exp='f.saveIsForbidden = true'
+@wait time=200
+@walk turn=e
+@wait time=200
+@se f=dragstone
+[iscript]
+for(var y = 2; y <= 8; y += 2)
+{
+	for(var x = 2; x <= 7; x++)
+	{
+		game.map.changeObject(%[type: "air", trap: "air", img: void], x, y, "f");
+	}
+	game.map.changeObject(%[type: "floor", trap: void, img: "soilr"], intrandom(2, 7), y, "f");
+}
+[endscript]
+@wait time=1000
+@playse storage=rockdrop
+@wait time=500
+@notice text="I heard something heavy moving across the floor!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] f.saveIsForbidden
+
+@eval exp='f.saveIsForbidden = false'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="Which door is the correct one?"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="The path to the audience chamber will not be opened to those who do not have the ability to see ahead."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel
+@eval exp='game.curTarget.addParam("intellect", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Intelligence permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

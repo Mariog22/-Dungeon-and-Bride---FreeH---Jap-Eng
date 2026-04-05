@@ -1,0 +1,103 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔24Ｆ
+insideName = 24Ｆ
+upper = ラドミラの塔25Ｆ
+lower = ラドミラの塔23Ｆ
+level = 84
+bgm = tower
+margin = 3
+shadow = dark
+sky = nightforest
+roof = stone
+
+; パーツ画像
+━ = stone
+　 = marble
+☖ = arch
+毒 = poison
+△ = rock
+︻ = panel
+⑷ = fountain
+㊤ = ladderu
+Ⓐ = warp
+
+; 敵情報
+monsters = ナイトインプ,インキュバス,マウンテンデビル,アビスデーモン,エリートトロール,エルダーサキュバス
+
+; 移動ポイント
+(A) = map:ラドミラの塔23Ｆ ,x:4, y:8
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6  
+  				┏━━━┳━━━┳︻┓
+ 8				【③　槍┃酸　　☖①┃
+  				┃　┏☖┛　┏━┛　┃
+ 7				┃　┃　　②┃槍　槍┃
+  				┃　┗━━︼┫　┏━┫
+ 6				┃毒　毒　毒┃　┃⑷┃
+  				┃　△△△△┣☖┛　┃
+ 5				┃毒△△△△┃　　　┃
+  				┃　△△△△┃　　　┃
+ 4				┃毒△△△㊤┃Ⓐ　　┃
+  				┗━━━━━┻━━━┛
+ 3
+  
+ 2
+  
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="If you want to turn back, now is the time!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="If you go any further, you'll see hell!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="You really should go home now! You never know what's going to happen, it's scary!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@question title="<y>Will you drink water from the gushing spring?" cancel=true
+[if exp='tf.result']
+	@eval exp='o.噴水.doDamage = o.グランドヒール.doDamage'
+	@eval exp='o.噴水.resultMessage = o.グランドヒール.resultMessage'
+	@btcmd name=噴水
+	@notice text="Party's HP restored!"
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,1591 @@
+﻿; フリーモード用シナリオ・後半
+
+
+
+
+;■ムーンストーンの魔石
+*kobold_6
+
+; サファイアシティ
+@saveon
+@wait time=500
+[texton w=1]
+@fg c=シュバルツ f=00
+[シュバルツ f=01]「Hey there.」[k]
+As we left the inn, we ran into Schwarz, who we'd last met at the Temple of Polaris.[k]
+[シュバルツ f=02]「How's the adventure going? Actually, I have something for you.」[k]
+[name f=other_06]Saying this, Schwarz handed us a shiny jewel.[k]
+[リーダー f=05]「This is...!」[k]
+[シュバルツ f=02]「It is a Moonstone, one of the 12 magical stones. I talked to a friend of mine who gave it to me for free.」[k]
+[name f=other_06]It was a magic stone that emitted a white light. It radiated a different kind of brilliance and magic power than the Emerald Magic Stone.[k]
+[シュバルツ f=02]「You intend to summon the god Polaris and defeat the devil, right? So of course you should have this stone.」[k]
+[textoff]
+@getitem item=ムーンストーンの魔石
+[texton w=1]
+[シュバルツ f=01]「You guys will have to collect the remaining magic stones yourself. Good luck. See you then.」[k]
+[textoff]
+@cl
+[eventoff]
+
+
+
+
+;■地下の町ライムストーンに到達
+*return_4
+
+; 地下の町ライムストーン
+@saveon
+@wait time=1000
+[texton w=0]
+Passing through the narrow passageway that was the town gate, I found a huge cavern beyond, and to my surprise, a town where people lived had been built there.[k]
+It's unbelievable that people live in places so deep underground...[k]
+[少女 f=priest_green_00]「Ah, brave adventurer. Welcome to our town!」[k]
+[少女 f=priest_green_00]「Thank you very much for your help in helping me. As promised, I am pleased to present you all with a gift of thanks.」[k]
+[textoff]
+@getitem item=特効薬
+[texton w=0]
+[少女 f=priest_green_00]「There are many unusual things in this underground town that aren't found above ground. Please take your time to look around.」[k]
+The girl left, bowing repeatedly.[k]
+[textoff]
+[townoff]
+
+
+
+
+;■宝物庫内で悪魔と戦闘
+*treasury_3
+
+; 宝物庫内
+@saveon
+[texton]
+We went inside the treasure chamber, but it was empty and there was nothing inside. There were no treasures to be found.[k]
+According to the quest, this place was supposed to be overflowing with treasure. However, no matter how much I look around the vault, I can't see any at all.[k]
+[？？？]「Hahahaha! You foolish adventurers!」[k]
+Suddenly, someone behind me laughed mockingly![k]
+[textoff]
+@wait time=500
+@walk turn=n
+@wait time=500
+[texton]
+We immediately turn around and prepare our weapons. Then...[k]
+[textoff]
+@fg c=demon_white left=450 top=-232
+@wait time=500
+[texton w=1]
+[？？？ f=demon_00]「Kukukuku...」[k]
+It certainly looked like a demon. However, compared to a typical one, its body was clearly one or two sizes larger.[k]
+Could it be a high-ranking demon...?[k]
+[？？？ f=demon_00]「I am Malphas.」[k]
+Malphas. A high-ranking demon on par with Murmur. Why are such high-ranking demons coming to the human realm one after another...?![k]
+[name n=Malphas f=demon_00]「Hah... You foolish human adventurers.」[k]
+[name n=Malphas f=demon_00]「That request was made by me to lure you all here! To consume the physical strength and magical power of you adventurers and fully restore my own power!」[k]
+[name n=Malphas f=demon_00]「...Hmm, everyone has decent magical powers. This should be interesting. Hehhehheh.」[k]
+Malphas licks his lips as he looks at us. It seems that there is no choice but to fight.[k]
+[textoff]
+@clf
+
+; マイルフィックと戦闘
+@wait time=500
+@eval exp='m.マイルフィック.btcmd.remove(o.死のブレス)'
+@monster pos=3 name=マイルフィック
+@callbattle bgm=boss escape=false gameover=true
+@eval exp='o.古代の宝物庫.flag = 1'
+
+[eventoff]
+
+
+
+;■牢獄クエスト
+
+*jail_01
+
+; 牢獄入口
+@se f=kacha
+@wait time=1000
+[texton]
+[リーダー f=05]「...?!」[k]
+[textoff]
+@playse storage=acid
+@image layer=e1 storage=9999 opacity=0 visible=true
+@image layer=e2 storage=PE_base_full left=0 top=0 visible=true
+@startemit layer=e2 storage=PE_smoke_gray time=2500
+@move layer=e1 time=2000 path=,,255
+@wait time=2000
+[texton]
+The moment we stepped on the floor of the passageway in front of the door, pure white smoke billowed out from the surrounding walls![k]
+The narrow aisle quickly filled with smoke. As everyone inhaled it, they collapsed![k]
+[textoff]
+@black time=1000
+@layopt layer=e1 visible=false
+@clearemit layer=e2
+@w2
+
+[iscript]
+//------------------------------------------------------------------------------
+o.マリア.exp = o.マリア.getNeedExp(20);	// マリアのレベルを上げておく
+o.マリア.levelUpToTheLast();
+
+f.allPrisoners = [
+	"看守","看守"
+	,"囚人","囚人","囚人","囚人"
+	,"シスター","シスター","シスター","シスター","シスター"
+];
+f.atrociousPrisoners = ["バジリスク", "デザートバイパー", "マンイーター"];
+f.atrociousPrisoners.shuffle();
+
+f.partyPrisonerNums = [];
+for(var i = game.party.members.count - 1; i >= 0; i--)
+{
+	var one = game.party.members[i];
+	if(i == 0) break;
+	f.partyPrisonerNums.add(game.chara.find(one));
+	game.party.removeMember(one);
+	f.allPrisoners.add("仲間");
+}
+
+f.allPrisoners.remove("仲間", false);	// １つだけ抜いておく
+while(f.allPrisoners.count < 18) f.allPrisoners.add("なし");
+f.allPrisoners.shuffle();
+f.partyPrisonerNums.shuffle();
+
+game.guest.eraseHiring();	// 召喚・雇用キャラを外す
+for(var i = game.guest.members.count - 1; i >= 0; i--)
+{
+	game.removeMemberTemporary(game.guest.members[i]);
+}
+//------------------------------------------------------------------------------
+[endscript]
+
+; ゲストを外しておく（元いた場所にいる）
+@call storage="den1f.map" target=*_remove_member
+
+; 牢屋に移動
+@warp map=牢獄Ｂ２ x=7 y=5 way=s sound=false
+
+; 先頭キャラが収監された牢屋
+@black off=0
+[texton]
+[リーダー f=12][nw]「...! (Ah!)」[/nw][k]
+When I woke up, I was in a small stone room.[k]
+This is a prison. It appears that we've been captured by the enemy.[k]
+This must be how the perpetrators captured all the adventurers who came to investigate. That was the reason why no one ever returned.[k]
+However, remaining a prisoner forever wasn't an option. [リーダー] began to think of a way to escape.[k]
+[textoff]
+[eventoff]
+
+
+*jail_02
+
+; 先頭キャラが収監された牢屋
+@wait time=500
+[texton]
+I touch the door of the prison.[k]
+The door is very sturdy, made of steel, and it is unlikely that it could be broken.[k]
+The walls are made of stone and look solid, so it would take decades to even drill a hole in them.[k]
+...The prison is unexpectedly strong. It may be almost impossible to escape by force.[k]
+Was I destined to rot away as a prisoner...?[k]
+@se f=kacha
+∗slam∗[k]
+Suddenly, with the sound of a key being turned, the door to the room opened slightly![k]
+[textoff]
+@se f=door4
+@wait time=500
+@fg c=マリア e=通常 f=05
+[texton w=1]
+[マリア v=va192 f=05]「Hey! Are you okay?」[k]
+Surprisingly, a female adventurer opened the cell door.[k]
+[マリア v=va193 f=02]「My name is Maria.」[k]
+[マリア v=va194 f=02]「I'm here to help you. So get out while there are no guards nearby!」[k]
+[textoff]
+@black on=500
+@wait time=500
+@warp x=6 y=3 way=w sound=false
+@fgf c=マリア f=02
+@black off=500
+[texton]
+[マリア v=va195 f=02]「Hey, that was a disaster.」[k]
+[リーダー] asked her why she had come to help them.[k]
+[マリア v=va196 f=14]「Well... Actually, the client for your quest is me.」[k]
+[マリア v=va197 f=02]「...As I'm sure you've heard, this quest was attempted by several parties of adventurers. They all disappeared without being able to solve it.」[k]
+[マリア v=va198 f=02]「The client was at a loss as to why.」[k]
+[マリア v=va199 f=02]「So, I decided to find out why adventurers keep disappearing in this prison and then launch a full-scale rescue operation.」[k]
+[マリア v=va200 f=02]「I was consulted by the client about this matter before you guys.」[k]
+[マリア v=va201 f=02]「After much deliberation, we decided to have someone else take on this request and observe how the enemy catches adventurers who try to infiltrate.」[k]
+[マリア v=va202 f=02]「Then you guys took up the offer and I followed you to the prison.」[k]
+[マリア v=va203 f=02]「I watched from a distance as you infiltrated this prison.」[k]
+[マリア v=va204 f=02]「After finding out about that immobilization trap at the entrance, I was able to sneak in without being caught by the enemy.」[k]
+...Apparently, the party was used as bait.[k]
+[マリア v=va205 f=53]「Sorry! But I was going to get you guys out of there right away and have you do the rescue mission with me! I'm pretty good at picking locks.」[k]
+[マリア f=06]「...」[k]
+Maria suddenly falls silent, as if she has something on her mind.[k]
+[マリア v=va207 f=09]「The cell doors here are much sturdier than I thought they would be. It would take a long time to pry them open. Your cell happened to have a simple lock, so I was able to open it...」[k]
+[マリア v=va208 f=09]「Given time I could pick the other ones, but if it's too slow, the guards would find out. I'd like to get the [b]prison key[/b] if possible. The guards should have it...」[k]
+[textoff]
+@cl
+@eval exp='game.guest.entry(o.マリア)'
+@st
+@se f=up3
+@notice text="<y>Maria joined the party!"
+@mu f=&'game.map.bgm'
+[eventoff]
+
+
+; *jail_05
+
+; 監獄の外
+@wait time=500
+@eval exp='game.party.minimumRecovery()'
+@fg c=マリア f=00
+[texton w=1]
+[マリア v=va218 f=02]「Well, that's it for me. Thanks for your help, everyone.」[k]
+[textoff]
+@cl
+@eval exp='game.guest.removeMember(o.マリア)'
+@eval exp='game.restoreMembers()'
+@addevent map=ブルーのアジト１Ｆ num=9
+@se f=period
+@notice text="<y>Maria left the party.<r>Guests who left have returned."
+[eventoff]
+
+
+
+;■ラブホ売春組織壊滅クエスト
+
+; ラブホで売春組織が暗躍している
+; 主人公たちはラブホに一般のカップルのふりをして潜入し事件を解決する
+
+*hotel_1
+
+; ホテルの前
+@saveon
+@bg f=0037
+@w05
+[texton w=1]
+[リーダー f=06]「This is the love hotel the quest mentioned...」[k]
+We arrived in front of Hotel Queen. Is prostitution taking place here?[k]
+@fg c=サンドラ f=01
+[サンドラ v=vn042 f=01]「The security team asked me to help everyone. I'm Sandra. Nice to meet you.」[k]
+[サンドラ v=vn044 f=01]「Actually, I used to work at this hotel.」[k]
+[サンドラ v=vn061 f=08]「That hotel has a secret passageway underground for members only, and they arrange prostitution there. If we catch them in the act, we can expose the reality of prostitution.」[k]
+[サンドラ v=vn063 f=08]「The secret passage can only be accessed from inside the hotel, so tonight, pretend to be a normal couple when you check in, and then wait in your room.」[k]
+[サンドラ v=vn064 f=08]「Meet at the designated place at midnight. Got it?」[k]
+[textoff]
+@se f=coin
+@getitem gold=10000
+
+; 予約画面へ
+@out
+@gameon
+@addevent name=ホテル・クイーン num=1
+[iscript]
+game.exitTravelMode();
+game.innActionCount = 0;
+game.openHotelView(o.ホテル・クイーン);
+game.hotelView.exitButton.visible = false;
+game.hotelView.sleepNowButton.visible = false;
+game.hotelView.reserveRoom(, game.hotelView.getRoomFromRoomName("従業員通路"));
+game.hotelView.checkEarlyEvent();
+[endscript]
+[s]
+
+
+*hotel_5
+
+; ホテル内・夜
+[iscript]
+game.hour = "night";
+game.hotelView.openRoamingMap(o.ホテル・クイーン);
+game.hotelView.sleepButton.visible = false;
+game.innActionCount = 1;
+for(var i = 0; i < game.hotelView.visMarkers.count; i++)
+{
+	if(! game.hotelView.visMarkers[i].visible) continue;
+	game.hotelView.visMarkers[i].selectable = false;
+}
+game.hotelView.getRoomFromRoomName("従業員通路").clear();
+[endscript]
+@addeventbtn map=ホテル・クイーン label=隠し通路_1 name=隠し通路 img=sandra x=900 y=200
+[hoteloff]
+
+
+*hotel_6
+
+; 夜のホテルの隠し通路
+@saveon
+@bg f=0040
+@fg c=サンドラ e=戦闘 f=02
+[texton w=1]
+[サンドラ v=vn065 f=02]「Here you are.」[k]
+[サンドラ v=vn135 f=05]「Well then, let's go inside.」[k]
+[textoff]
+@out
+
+[iscript]
+game.hour = "day";
+f.checkinList = game.hotelView.store();
+for(var i = 0; i < game.party.members.count; i++)
+{
+	game.party.members[i].storeAllItemsInOthers(game.temporaryBox);
+	game.party.members[i].dressEquipment(o.バスタオル,,, true);
+	game.party.members[i].makeBustups();
+}
+if(game.guest.getHiring() !== void)
+{
+	var hire = game.guest.getHiring();
+	hire.equipLife = G_TOWELF;
+	hire.makeBustups();
+}
+game.guest.entry(o.サンドラ);
+game.inEvent = false;
+game.townView.close();
+game.loadDungeonAtBackGround(%[map:"ホテルの地下Ｂ１", x:11, y:3, way:"s"]);
+[endscript]
+[eventoff]
+
+
+*hotel_7
+
+; ホテル内・敵事務所
+@wait time=500
+@fg l=thief_red left=340 top=80 b
+@fgf r=thief_red left=560 top=80
+[texton w=1]
+[name n="Organization Executive"]「W-who the hell are you?」[k]
+When I entered the room, there were a large number of girls and several men who appeared to be senior members of the organization hanging around.[k]
+[サンドラ v=vn068 f=07]「I know you're making money by forcing lots of girls into prostitution! I'll turn you over to the security guards, so just give up and let them arrest you!」[k]
+[name n="Organization Executive"]「What the hell?」[k]
+[name n="Organization Executive"]「You idiots! Who would get caught by you guys? Hey, you bastards! Take them down!」[k]
+[textoff]
+@clf
+
+; 組織幹部と戦闘
+@monster pos=1 name=ハイウェイマン
+@monster pos=2 name=ハイウェイマン
+@monster pos=3 name=ハイウェイマン
+@monster pos=4 name=ハイウェイマン
+@monster pos=5 name=ハイウェイマン
+@monster pos=9 name=ブッシュワッカー
+@monster pos=10 name=バーグラー
+@monster pos=11 name=ブッシュワッカー
+@callbattle bgm=boss escape=false gameover=true
+; 勝利
+
+@wait time=500
+[texton w=0]
+After defeating the members of the organization, we managed to capture them all. We handed them over to the security guards who arrived later.[k]
+[サンドラ v=vn069 f=01]「Leave the rest to the security guards, and let's go outside.」[k]
+[textoff]
+@out t=1000
+@wait time=500
+
+
+
+; ホテルの外
+@bg f=0039
+[texton w=0]
+We handed over the captured members of the organization to the town guards and left the hotel.[k]
+The girls who had been forced into prostitution were all freed, and the case was provisionally settled.[k]
+[警備隊長]「Thanks to you guys, I was able to destroy the organization. Thank you so much.」[k]
+[警備隊長]「Please accept your reward. If anything else comes up, I'll count on you again.」[k]
+[textoff]
+
+@eval exp='o.売春組織の実体を暴け.exp += f.rescuedGirls * 10000'
+@eval exp='o.売春組織の実体を暴け.gold += f.rescuedGirls * 5000'
+@complete name=売春組織の実体を暴け
+@addevent name=ホテル・クイーン num=6
+
+@fg c=サンドラ f=01
+[texton w=1]
+[サンドラ v=vn070 f=01]「Thank you for your help this time. Let's go on another adventure together when we have the chance.」[k]
+[textoff]
+@clf
+@eval exp='game.guest.removeMember(o.サンドラ)'
+@se f=period
+@notice text="<y>Sandra left the party."
+; ブルーのアジトに待機させる
+@addevent map=ブルーのアジト１Ｆ num=8
+@changefloor map=ブルーのアジト１Ｆ x=6 y=0 pimg=human
+
+@eval exp='game.enterTown(o.サファイアシティ, o.ホテル・クイーン, true)'
+[eventoff]
+
+
+
+
+;■全てを見通せる鏡
+
+*mirror_1
+
+; アイテム画面から千里の鏡を使用直後
+@out
+@bg f=9008
+@w05
+[texton w=1]
+When I touched the crystal on the top frame of the Mirror of 1000 Miles, the mirror surface suddenly brightened, and something else was reflected in it.[k]
+Something resembling text is reflected in the mirror. It appears to be instructions on how to use the mirror.[k]
+The description stated that this mirror could reflect any distant location, and that the only places that could be viewed were those that the mirror had been taken to and "registered".[k]
+Looking further at the mirror, there was already some information about places that have been registered by someone. The mechanism is such that when you touch them, the places you want to see are displayed.[k]
+I decided to try touching one of them.[k]
+[textoff]
+@out
+@bg f=event91
+@w1
+[texton w=1]
+Surprisingly, a location that appears to be a bathroom was reflected in the mirror![k]
+What's more... there was a naked woman there. Could this be the bar mistress from the tavern in Limestone Town?[k]
+On the screen, the naked mistress is seen washing her body, unaware that she is being watched.[k]
+It was a view from quite close up, and I could clearly see her body.[k]
+What kind of places did the  previous owner register?! This isn't fit to be shown to anyone.[k]
+Fortunately, it seems that the location registration information can be "deleted". Once deleted, it will no longer be possible to view this bathroom.[k]
+[textoff]
+
+@gameon
+[texton w=0]
+The previous owner's registration information was then deleted from the Mirror of 1000 Miles. Now it can be handed over to the client with peace of mind.[k]
+[textoff]
+@se f=period
+@eval exp='o.全てを見通せる鏡.flag = 1'
+@return
+
+
+
+
+;■教団壊滅クエスト
+
+*fortress
+; 森の要塞４Ｆ・謁見の間
+@saveon
+@w05
+[if exp='! game.guest.members.has(o.マリア)']
+	@bg f=event100 p0=02
+	@w05
+	[texton w=2]
+	[マリア v=va221 e=裸 f=37]「Ah... Ah... Ah... Ah...」[k]
+	[name n=Guru]「Hmm, what a wonderful vagina. This feels very good.」[k]
+	This was the audience chamber. It was a place where the founder of this religious cult would receive visitors, and also a room where he indulged in pleasure.[k]
+	In the center was his throne. Surrounding it were a dozen or so women who appeared to be his attendants. They were all naked.[k]
+	And on the floor in the center of the room, Maria lay naked on her back.[k]
+	She was being raped by the half-naked cult leader.[k]
+	Maria does not resist. Perhaps her consciousness is clouded, as she stares blankly into space with glazed eyes.[k]
+	She spread her legs languidly and silently accepted the man's actions.[k]
+	[マリア v=va222 f=37]「Ah... Ah... Ah... Ah...」[k]
+	[name n=Guru]「Daughter, you will become my follower. And you will continue to serve me sexually. Do you understand?」[k]
+	[マリア v=va228 f=39]「...Yes.」[k]
+	With a vacant look in her eyes, Maria nodded quietly.[k]
+	[textoff]
+	@out
+	@w05
+[endif]
+@gameon
+[texton w=1]
+We threw open the door and stormed into the audience chamber![k]
+It was a large hall, and there were a dozen or so naked women standing around the edges of the room.[k]
+In the center was a man dressed in a magnificent robe.[if exp='! game.guest.members.has(o.マリア)'] Surprisingly, Maria was there too.[k]
+What's more, Maria was naked and being raped by the man in the robe.[endif][k]
+[name n=Guru f=rich_00]「What's going on? Has someone arrived?」[k]
+The man noticed us and hurriedly stood up.[k]
+[name n=Guru f=rich_00]「W-who are all of you?」[k]
+[if exp='! game.guest.members.has(o.マリア)'][マリア e=裸 f=98]「...」[k][endif]
+The arrest warrant issued by the Sapphire City Guard we received from the guild is presented to the panicked cult leader.[k]
+[name n=Guru f=rich_00]「Adventurers...! You bastards from Sapphire City are interfering with my plans! Everyone! Gather around!」[k]
+When the guru gave the order, all the naked female followers around us grabbed their weapons and stood before us![k]
+[name n=Guru f=rich_00]「I will not let mere adventurers destroy my sect! Expel this infidel, my devout followers!」[k]
+The cult leader and his followers attacked us![k]
+[textoff]
+@clf
+
+; 教祖たち一派と戦闘
+@monster pos=1 naked=2 name=デュエリスト
+@monster pos=2 naked=2 name=デュエリスト
+@monster pos=3 naked=2 name=デュエリスト
+@monster pos=4 naked=2 name=デュエリスト
+@monster pos=5 naked=2 name=デュエリスト
+@monster pos=8 naked=2 name=マスターランサー
+@monster pos=10 naked=2 name=マスターランサー
+@monster pos=12 naked=2 name=マスターランサー
+@monster pos=16 naked=2 name=メイガス
+@monster pos=17 name=教祖
+@monster pos=18 naked=2 name=メイガス
+@callbattle bgm=boss gameover=true
+; 勝利
+
+[texton w=0]
+[name n=Guru f=rich_00]「Damn you...!」[k]
+We defeated the cult leader and took him into custody.[k]
+[textoff]
+@out
+@w05
+@gameon
+@fg c=マリア e=通常 f=14 cond='! game.guest.members.has(o.マリア)'
+[texton w=1]
+[if exp='! game.guest.members.has(o.マリア)']
+	[マリア v=va229 f=14]「I made a big mistake... If you all hadn't come, I wonder what would have happened...」[k]
+	Maria, having regained her sanity, spoke of her failure with self-deprecating humor.[k]
+	It turned out that Maria had also accepted that request and infiltrated the cult's facility ahead of us.[k]
+	However, she was captured by the enemy and hypnotized by the cult leader. That is why she was unable to resist.[k]
+[endif]
+@fgf c=マリア f=01
+[マリア v=va230 f=01]「That cult leader seems to have lured young people with sweet talk and brainwashed them with hypnosis to become his followers. But now we can bring everyone back to their senses.」[k]
+We then handed the guru over to the guards from Sapphire City who followed behind us, and left the cult facility.[k]
+[textoff]
+@clf
+@se f=period
+@notice text="<y>We destroyed the cult!"
+@eval exp='o.教団を壊滅させろ.flag = 2'
+[if exp='! game.guest.members.has(o.マリア)']
+	@recordsex her=マリア guy=教祖 sex=2 orgasm=2 acts=乳揉み,パイズリ,正常位
+	; マリアをブルーのアジトに待機させる
+	@addevent map=ブルーのアジト１Ｆ num=9
+	@eval exp='o.ブルーのアジト１Ｆ.changed.add([%["type" => "floor", "img" => "wood", "pimg" => "human"], 5, 1, "f"])'
+	@eval exp='o.ブルーのアジト１Ｆ.loaded = false'
+[endif]
+[eventoff]
+
+
+;■死者の沼  545
+
+*pond_2
+; 死者の沼・隠し通路の先
+@saveon
+[texton]
+I can hear monsters talking nearby![k]
+Looking around, I discovered a large number of monsters gathered in an open area![k]
+[textoff]
+@bg f=event104 p0=01
+[texton w=2]
+[少女]「Haah... haah... ugh...」[k]
+[悪魔]「Gufufu, human pussy feels so good.」[k]
+[少女]「Ahh... ahh... ahhhh!」[k]
+[リーダー f=12]「This is...!」[k]
+We beheld a very frightening scene![k]
+Two naked girls were surrounded by a crowd of demons, and a gruesome rape was taking place.[k]
+[悪魔]「Uhehehe, I can't stand it!」[k]
+[少女]「Ahh... ahh... ahhh...!」[k]
+The devil grabs the girl's white, soft butt and thrusts his hips forward with force![k]
+The devil's erect penis is not only large, but also grotesquely gnarled.[k]
+That hideous penis is violently thrust into the girl's soft wet hole.[k]
+@flash t=200
+@bgf f=event104 p0=02
+[悪魔]「Muhooooo! Here it comes!」[k]
+∗spurt!∗[k]
+[少女]「Ahhh!」[k]
+The devil released his evil fluid into the girl![k]
+It was already his tenth ejaculation of the day, but his momentum hasn't slowed down at all and he pours it into her vagina. His stamina is incomparable to that of human men.[k]
+[悪魔]「Grrrr! I'm going to cum too!」[k]
+@flash t=200
+@bgf f=event104 p0=03
+∗spurt! spurt! spurt!∗[k]
+[少女]「Ah, nooooo... stop it already...」[k]
+The other devil also ejaculated inside her. It was a merciless vaginal ejaculation. The fear of pregnancy crossed the girl's mind.[k]
+Male demons are eager to mate with human women.[k]
+One reason is that sex with human women feels good, but the biggest reason is that mating is possible.[k]
+Male demons can make human women give birth to their children. As living creatures, it is only natural that they want to increase their offspring.[k]
+Most of the children born grow up to be demons. And, like their fathers, they come to prey on human women.[k]
+[textoff]
+@gameon
+[texton w=1]
+The gruesome scene makes you want to look away. In this isolated world, women who wander in are subjected to such treatment.[k]
+[悪魔 f=devil_01]「Huh? More humans?」[k]
+[悪魔 f=devil_01]「Hehehe, new prey has arrived!」[k]
+The demons have noticed us![k]
+@fg l=devil_blue top=-20 b
+@fg r=devil_blue top=-20
+They lick their lips as they approach us.[k]
+We are surrounded and have no way out. It seems we have no choice but to fight.[k]
+[textoff]
+@clf
+
+; 悪魔たちと戦闘
+@monster pos=1  name=マウンテンデビル
+@monster pos=3  name=マウンテンデビル
+@monster pos=5  name=マウンテンデビル
+@monster pos=9  name=マウンテンデビル
+@monster pos=11  name=マウンテンデビル
+@callbattle escape=false bgm=boss gameover=true
+; 勝利   605
+@wait time=500
+@fg l=valkyrie_yellow_default b
+@fg r=archer_purple_default
+[texton w=1]
+[少女 f=valkyrie_yellow_06]「Thank you for helping us.」[k]
+The girls who were freed from the demons approach us. They don't appear to have any serious injuries.[k]
+[少女 f=archer_purple_07]「We are adventurers. While exploring the Dead Forest with a party of five, we ended up lost here.」[k]
+[少女 f=valkyrie_yellow_06]「The other members were killed, and the two of us were being used as entertainment for the demons. If you hadn't helped us, we would have been tortured and killed by the demons eventually.」[k]
+What unfortunate girls. It seems we must help them.[k]
+We suggested to them that they escape from this hell with us.[k]
+[少女 f=archer_purple_07]「...I don't think that's possible.」[k]
+[少女 f=valkyrie_yellow_01]「We searched high and low for the exit with our party. But no matter how hard we looked, we couldn't find it. Eventually, we ran out of strength and were captured by the demons.」[k]
+[少女 f=valkyrie_yellow_06]「...I'm sorry to let you down after you helped us, but now that you've come to the Swamp of the Dead, it's over for you too.」[k]
+[少女 f=archer_purple_07]「There's no hope for us. We're destined to rot away here, toyed with by devils...」[k]
+These girls have completely lost hope.[k]
+We persuaded them that they must never give up and that we'd return to our original world together.[k]
+[少女 f=valkyrie_yellow_01]「Everyone...」[k]
+[少女 f=valkyrie_yellow_06]「I understand. I will follow you.」[k]
+[textoff]
+@clf
+@se f=period
+@notice text="The girls decided to follow the party!"
+[eventoff]
+
+
+*pond_3
+
+; 死霊の森・死者の沼から帰還した直後
+@wait time=1000
+[texton w=0]
+[リーダー f=05]「This is... where we came from.」[k]
+We finally escaped from the demon realm. We're back in the human world![k]
+[textoff]
+@wait time=500
+@fg l=valkyrie_yellow_default b
+@fg r=archer_purple_default
+[texton w=1]
+[少女 f=valkyrie_yellow_06]「Thank you very much. Thanks to you, we were able to return home.」[k]
+[少女 f=valkyrie_yellow_06]「We can manage from here. Thank you so much for helping us.」[k]
+[少女 f=archer_purple_01]「Umm, this is a thank you gift.」[k]
+[textoff]
+@getitem item=ルビーの魔石
+[texton]
+It was the Ruby Magic Stone. It turns out they had it.[k]
+[少女 f=archer_purple_01]「Please make use of this magic stone. I will never forget your kindness. Well then, we'll be going now...」[k]
+[textoff]
+@cl
+@se f=period
+@notice text="We parted with the girls."
+[eventoff]
+
+
+
+
+;■ポラリスの降臨
+
+*advent_1
+
+; ポラリスの神殿・祭壇
+@saveon
+@eval exp='game.party.minimumRecovery()
+[texton w=1]
+At last we have collected 12 magic stones and brought them to this altar. All the crystals on the altar reacted and began to glow with a divine light.[k]
+[ポラリス v=vp057 f=polaris_99]「Everyone, you did a great job!」[k]
+Out of nowhere, I hear the voice of Lady Polaris.[k]
+[ポラリス v=vp058 f=polaris_99]「You have collected 12 magic stones. Now I can descend to earth.」[k]
+At last, Lady Polaris is coming down to earth. Finally, that demon will be defeated![k]
+[ポラリス v=vp059 f=polaris_99]「Now, let us begin the ritual of the descent. Bring the 12 magic stones over here.」[k]
+[ムールムール v=vm217 f=07]「That's not gonna happen!」[k]
+[textoff]
+@image layer=e0 storage=PE_base_view visible=true mode=psdodge
+@image layer=e1 storage=9999 visible=false
+@playse storage=bomber
+@startemit layer=e0 storage=PE_bombfire time=500
+@wait time=300
+@anime_fadein layer=e1
+@wait time=500
+@clearemit layer=e0
+@quake time=500 hmax=20 vmax=10
+@walk turn=n cond='WAY != "n"'
+@walk move=s
+[texton]
+∗boom!∗[k]
+@anime_fadeout layer=e1
+The moment we heard that voice, a fireball from behind burst into the altar and exploded![k]
+What on earth happened?[k]
+[textoff]
+@wait time=500
+@walk turn=s
+@wait time=500
+@fg c=ムールムール f=07
+[texton]
+[ムールムール v=vm218 f=07]「Idiot! I'll never let that god descend!」[k]
+When I turned around, there was Murmur![k]
+It seems that we were being followed.[k]
+[ムールムール v=vm219 f=07]「I wondered what was going on since you were busy collecting gems, but I didn't realize it was to summon that damn god! If I'd found out a bit later, I'd have been in real trouble!」[k]
+[ムールムール v=vm220 f=07]「There's no way I'm gonna let a god come down here! I'll kill you all right here!」[k]
+[ムールムール v=vm287 f=07]「Breath of Death!」[k]
+[textoff]
+
+@image layer=5 storage=screen_deepblackfull
+@anime_fadein layer=5
+@playse storage=howling
+@image layer=6 storage=PE_base_full visible=true
+@layopt layer=6 top=0 left=0
+@startemit layer=6 storage=PE_smoke_red3 time=-1
+@wait time=1000
+
+[texton]
+∗buoooooooo!∗[k]
+Murmur exhales a massive amount of fatal breath, to cover the entire party![k]
+
+[if exp='TEO'][テオ f=09]「Damn...!」[k][endif]
+[if exp='MAX'][マックス f=12]「Waaaaahhh!」[k][endif]
+[if exp='HUM'][リム v=vh089 f=17]「Kyaaa!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd087 f=17]「Aaaaaa...!」[k][endif]
+[if exp='SYL'][マルエット v=vs091 f=17]「Kyaa!」[k][endif]
+[if exp='ELF'][クレア v=ve090 f=17]「Ah!」[k][endif]
+[if exp='GNO'][ミューズ v=vg077 f=17]「Eek...!」[k][endif]
+[if exp='LIS'][リーゼル v=vg077 f=17]「Ugh...!」[k][endif]
+
+@layopt layer=6 opacity=192
+@anime_fadeout layer=5
+@layopt layer=6 opacity=128
+@wait time=500
+...[k]
+[リーダー f=12]「...?」[k]
+The breath... isn't reaching us...?[k]
+Shockingly, just as it seemed we were finished, Murmur's fatal breath failed to touch us.[k]
+@layopt layer=6 opacity=64
+@wait time=50
+@clearemit layer=6
+@fg c=ムールムール f=27
+[ムールムール v=vm229 f=27]「What's going on?! What happened?!」[k]
+Murmur is confused. She hastily looks around. Then [―――][k]
+[textoff]
+
+@image layer=7 page=back storage=screen_yellowlight visible=true
+@trans method=crossfade time=500
+@wt
+@se f=kira1
+@image layer=e2 storage=PE_base_full visible=true left=0 top=0
+@startemit layer=e2 storage=PE_powder8 time=-1
+@wait time=1000
+
+[texton]
+[リーダー f=05]「This is...!」[k]
+Suddenly, our party was enveloped in a holy white light.[k]
+[name n=Polaris v=vp060 key=ポラリス buf=12]「Phew, I made it just in time.」[k]
+[リーダー f=05]「...!」[k]
+I heard the voice of Lady Polaris.[k]
+But it wasn't a voice that echoed throughout the temple like before. It sounds like a person speaking right here.[k]
+Where on earth is Lady Polaris?[k]
+[textoff]
+
+@anime_fadeout layer=7,e2
+@layopt layer=7 page=back visible=false
+@clearemit layer=e2
+@clf
+@w05
+@walk turn=n
+@w05
+@fg c=polaris_lighten top=-20
+@w05
+[texton]
+Then I saw a shining figure floating there, glowing with a soft light.[k]
+A silhouette wrapped in light. Its radiance gradually subsides, and gradually a shape becomes visible.[k]
+[textoff]
+
+@fg c=ポラリス f=04 t=1000
+@w05
+[texton]
+[？？？]「...」[k]
+[リーダー f=05]「A child...?」[k]
+It was a young girl. She had white wings on her back and floated in front of me, glowing faintly.[k]
+Could it be that this girl is...?![k]
+[textoff]
+
+@fg c=ポラリス f=02 t=1000
+@w05
+[texton]
+[ポラリス v=vp061 f=02]「I am Polaris, God of Harmony. I have descended to earth by the power of the magic stones.」[k]
+[リーダー f=11]「What?!」[k]
+Could such a young girl really be a goddess? It was hard to believe at first.[k]
+[ポラリス v=vp062 f=01]「Are you surprised that I look like a child? But this is how I appear in the human world.」[k]
+[リーダー f=12]「...」[k]
+What a surprise. Such a lovely girl was the god I had always worshiped.[k]
+So, it was you who protected us from the fatal breath just now, Lady Polaris?[k]
+[ポラリス v=vp063 f=02]「It was really a close call. I used my holy power to stop the breath of death!」[k]
+It seems that it was indeed the power of Lady Polaris.[k]
+No matter how powerful the devil's breath may be, it's no surprise that it can be blocked by the power of a god.[k]
+@fg c=ポラリス f=07
+[ポラリス v=vp064 f=07]「...Well, now we have to defeat Murmur!」[k]
+; ↑ 厳しい口調で
+Lady Polaris' expression changes and she glares at Murmur.[k]
+[textoff]
+@clf
+@w05
+@walk turn=s
+@w05
+@fgf c=ムールムール f=27
+[texton]
+[ムールムール v=vm230 f=27]「What is this?! What the hell are you all doing?!」[k]
+; ↑ かんしゃくを起こす
+@fgf c=ムールムール f=53
+[ムールムール v=vm231 f=53]「You're always getting in my way! How much are you gonna interfere before you're satisfied?! Ooooooh, you really piss me off!」[k]
+[ポラリス v=vp065 f=07]「Now that I am here, I will no longer allow you to do as you please! Now, be quiet and be sealed!」[k]
+@fgf c=ムールムール f=08
+[ムールムール v=vm232 f=08]「...Tch!」[k]
+@se f=wing2
+@fg c=8002 left=440 top=-60
+Murmur flapped her wings vigorously and quickly flew to the exit.[k]
+[ポラリス v=vp066 f=07]「Wait! You intend to flee?!」[k]
+[ムールムール v=vm233 f=07]「Huh?! Why would I stick around for a fight I can't win right now?!」[k]
+[ムールムール v=vm234 f=07]「But don't get cocky! You're all gonna die once my tower is completed anyway!」[k]
+What exactly is this tower? In any case, we must find it quickly and stop her.[k]
+[ムールムール v=vm235 f=07]「So enjoy yourselves while you can! Die, idiots!」[k]
+[textoff]
+@se f=wing2
+@cl
+@w05
+[texton]
+Murmur flew away again, cursing as she went.[k]
+@fg c=ポラリス f=01
+[ポラリス v=vp067 f=01]「Are you all right, everyone?」[k]
+Lady Polaris calls out to us with concern, and we reassure her that we're fine.[k]
+[ポラリス v=vp068 f=01]「I was surprised by Murmur's sudden attack. I almost couldn't descend.」[k]
+Come to think of it, how did Lady Polaris descend without the ritual? We ask her.[k]
+[ポラリス v=vp069 f=02]「Well... The ritual isn't strictly necessary.」[k]
+[ポラリス v=vp070 f=02]「All that is needed for my manifestation is the altar and the 12 magic stones. Since the magic stones were all here, all I had to do was wait for my body to materialize.」[k]
+[ポラリス v=vp071 f=02]「If the altar had been destroyed or the magic stones scattered before my descent was complete, it would have been the end. I am glad that we managed to avoid the worst!」[k]
+It was a close call... We can only be thankful for our good fortune.[k]
+Anyway, we have finally accomplished the great task of Lady Polaris' descent. Now it's our turn to go on the offensive.[k]
+[textoff]
+@out
+@w1
+
+; ポラリス神殿の外
+@eval exp='game.changePosition(%[map: "デールコインの森", x:21, y:1, way:"n"], true)'
+@gameon
+@fg c=ポラリス f=01
+[texton w=1]
+[ポラリス v=vp075 f=01]「Now, I shall accompany you all. Let's defeat Murmur together!」[k]
+@fgf c=ポラリス f=08
+[ポラリス v=vp076 f=08]「Head for the tower that Murmur was building. I am sure she will be there.」[k]
+[textoff]
+@clf
+@se f=period
+[if exp='game.guest.getNumGuests() == 3']
+	@eval exp='tf.result = game.guest.members[2].name'
+	@call storage="den1f.map" target=*_remove_member
+[endif]
+@eval exp='game.guest.entry(o.ポラリス)'
+@notice text="<y>Polaris has joined the party!"
+@delevent name=ポラリスの神殿 num=6
+@eval exp='o.大峡谷・崖上.events = [2, 3]'
+@changefloor map=大峡谷・崖上 x=1 y=5 pimg=void
+@changefloor map=大峡谷・崖上 x=1 y=2 pimg=void
+[eventoff]
+
+;■ラドミラの塔   866
+
+*radmila_1
+
+; 大峡谷入口
+@wait time=500 cond='WAY != "w"'
+@walk turn=w cond='WAY != "w"'
+@wait time=500
+[texton]
+[リーダー f=05]「That's...!」[k]
+In the distance, a tower of tremendous height dominates the skyline.[k]
+Could that be the tower Murmur was talking about?[k]
+[ポラリス v=vp083 f=08]「That is the Radmira Tower that Murmur was trying to build. She must be in there.」[k]
+But what on earth does that devil intend to do by building such a huge tower?[k]
+[ポラリス v=vp084 f=08]「I don't know what her purpose is, but being her, I am sure she is going to do something!」[k]
+[ポラリス v=vp085 f=07]「You are our only hope! Please stop Murmur's schemes!」[k]
+[textoff]
+[eventoff]
+
+
+*radmila_2
+
+; 塔の入口前
+@wait time=500
+[texton]
+We reach a tower, but its entrance is closed by a solid stone door.[k]
+Its stone door is very sturdy and doesn't so much as budge when pushed hard.[k]
+[textoff]
+[eventoff cond='! game.guest.members.has(o.ポラリス)']
+@fg c=ポラリス f=01
+[texton]
+[ポラリス v=vp086 f=01]「With my power, a door of this size is nothing to worry about.」[k]
+[ポラリス v=vp087 f=02]「Please step back a little.」[k]
+[textoff]
+@cl
+@wait time=500
+@walk move=e
+@wait time=500
+@fg c=7001 left=600 top=100
+@wait time=500
+@playse storage=tremble
+@quake time=3000 hmax=5 vmax=0
+*rrrrumble*[auto time=1000]
+@stopquake
+@playse storage=rockdrop
+@changewall x=1 y=4 way=w himg=arch type=space behind=true
+@changefloor x=1 y=4 warp=b
+@wait time=500
+[texton]
+When Lady Polaris held out her hand, that heavy looking door was easily opened.[k]
+[textoff]
+@cl
+@fg c=ポラリス f=07
+[texton]
+[ポラリス v=vp088 f=07]「Now, let's climb this tower! Together, we will stop that devil's scheme!」[k]
+@cl
+From the looks of it, there are 20 or more floors. Climbing a tower of this magnitude will probably require some very careful preparation.[k]
+We could continue into the tower, but it might be better to go back to town and prepare first.[k]
+[textoff]
+@delevent
+[eventoff]
+
+
+*radmila_3
+
+; ３階から温泉へ
+@warp map=温泉・浴場 x=9 y=17 way=w
+@eval exp='game.map.changeObject(%[pimg: "mob07"], 9, 16, "f")'
+@eval exp='game.updateView()'
+@wait time=2000
+[texton]
+[リーダー f=05]「Where are we...?」[k]
+I've been somewhere like this before. Yes, it's a hot spring.[k]
+While exploring the tower, [リーダー] and the others were warped to a hot spring without realizing it![k]
+[textoff]
+@walk turn=s
+@cl t=1000
+[texton]
+[if exp='game.party.getFirstGuy() !== void']
+	[name n="Female Bather" f=priest_white_03]「Kyaaa!」[k]
+	[name n="Female Bather" f=archer_purple_03]「Hey! Why is there a man here?!」[k]
+	[if exp='game.leader == o.マックス']
+		[リーダー f=11]「I'm sorry!」[k]
+	[else]
+		[リーダー f=11]「I-I'm so sorry!」[k]
+	[endif]
+[else]
+	[name n="Female Bather" f=priest_white_03]「...」[k]
+	The female customers were confused by the sudden appearance of [リーダー] and the others in the bathhouse.[k]
+	[リーダー f=09]「Sorry for scaring you...」[k]
+[endif]
+[textoff]
+@walk move=n
+@walk move=e
+@walk move=e
+@walk move=e
+@walk move=e
+@walk move=e
+@black on
+@wait time=500
+[texton]
+[if exp='game.party.getFirstGuy() !== void']
+	We escaped from the women's bath in a panic![r][k]
+[else]
+	[リーダー] and the others left the bathhouse looking embarrassed.[k]
+[endif]
+[name f=other_03]It was probably Murmur's doing. It's unbelievable she'd play a prank like this.[k]
+[textoff]
+@wait time=500
+@warp map=ヤネクの森・東 x=6 y=29 way=n sound=door1
+@black off
+
+[eventoff]
+
+
+*radmila_4
+
+; 途中階
+@saveon
+[texton]
+[ムールムール v=vm236 f=07]「Hey! You guys!」[k]
+[リーダー f=05]「...!」[k]
+Suddenly, I heard Murmur's voice from behind me![k]
+[textoff]
+@wait time=800
+@walk turn=e
+@walk turn=n
+@walk move=n
+@walk move=w
+@walk move=w
+@wait time=800
+@fg c=8005 left=450 top=60
+[texton w=1]
+Halfway up the tower, Murmur made a surprise appearance.[k]
+Murmur is in the middle of the room, wielding her spear and glaring at us hatefully.[k]
+[ムールムール v=vm237 f=07]「You guys are really persistent! Why are you following me?」[k]
+[ポラリス v=vp089 f=07]「To stop your plans, Murmur!」[k]
+[ムールムール v=vm238 f=08]「Polaris...! You came here too...」[k]
+[ポラリス v=vp090 f=07]「Murmur, why are you building such a tower? Stop harming humans!」[k]
+[ムールムール v=vm239 f=07]「You're so annoying! Don't try and order me around!」[k]
+[ムールムール v=vm240 f=07]「This tower was built so that anyone could get to the heavenly realm where the gods live!」[k]
+[ポラリス v=vp091 f=07]「To heaven...? What are you going to do once you get there?!」[k]
+@fg c=satan left=450 top=60
+[ムールムール v=vm241 f=15]「Isn't it obvious? I'm going to take revenge on those annoying gods!」[k]
+[ムールムール v=vm242 f=15]「Inciting the the demons of the underworld to climb this tower and invade the heavens would cause chaos there! And the earth where humans live might be destroyed too!」[k]
+[ポラリス v=vp092 f=11]「W-why would you do that...?!」[k]
+[ムールムール v=vm243 f=15]「I told you! Revenge! This is punishment for all the suffering you've caused us! You deserve it!」[k]
+We must stop her evil schemes at all costs. We must protect the earth... and humanity.[k]
+[ムールムール v=vm244 f=07]「I won't let anyone interfere with my plans! You're all going to die here! Come out, Thunder Dragon!」[k]
+@se f=roar
+@fg l=9011 left=220 top=0
+[name n="Thunder Dragon" f=dragon_02]「Roaaaaar!」[k]
+A huge dragon appeared before us![k]
+@fg c=satan left=450 top=60
+[ムールムール v=vm245 f=04]「Well then, I'll leave the rest to you!」[k]
+@cl c
+[ポラリス v=vp093 f=08]「Stop! Murmur!」[k]
+[textoff]
+@cl l b
+@se f=roar
+@fg c=9012 left=450 top=0
+[texton]
+[name n="Thunder Dragon" f=dragon_02]「Roaaaaar!」[k]
+When I tried to chase after the fleeing Murmur, the dragon she had summoned blocked the way.[k]
+[ポラリス v=vp094 f=08]「There's no other choice. Let's defeat this dragon first!」[k]
+[textoff]
+@clf
+
+; サンダードラゴンと戦闘
+@monster pos=3 name=サンダードラゴン
+@callbattle bgm=boss
+@notice text="Defeated the Thunder Dragon!"
+@delevent
+
+[texton w=0]
+Somehow, we managed to defeat the dragon. However, Murmur escaped somewhere.[k]
+[ポラリス v=vp095 f=07]「Let's hurry and chase after Murmur! We must stop her plans!」[k]
+[textoff]
+[eventoff]
+
+
+*radmila_5
+
+; 最上階
+[texton]
+[リーダー f=05]「There she is...!」[k]
+We discovered Murmur standing alone on what finally appears to be the roof![k]
+[textoff]
+@fg c=8006 left=450 top=60
+[texton w=1]
+[ムールムール v=vm246 f=11]「What? You've already got this far?」[k]
+@fg c=8004 left=450 top=60
+[ムールムール v=vm247 f=53]「Ugh! You're so annoying! Annoying, annoying, annoying! When are you gonna give up chasing me?!」[k]
+[ポラリス v=vp096 f=07]「Murmur! Give up! There's nowhere left for you to run!」[k]
+@fg c=8005 left=450 top=60
+[ムールムール v=vm248 f=07]「What? What are you getting so cocky about? There's no way the great Murmur would lose to the likes of you!」[k]
+[ムールムール v=vm249 f=07]「Since it comes to this, I'll crush you guys with all my might! I'll make you regret coming this far!」[k]
+The devil raised her spear high and yelled skywards.[k]
+[ムールムール v=vm250 f=07]「Come! Greater Demons!」[k]
+@fg l=demon_black left=230 top=-40 b
+@fg c=8005 left=450 top=60 b
+@fg r=demon_black left=630 top=-40
+Then, two Greater Demons appeared on either side of her![k]
+[ムールムール v=vm251 f=07]「Let's settle this!」[k]
+[textoff]
+@clf
+
+@anireset
+@eval exp='game.backScreen.loadImages(%[storage: "PE_base_view"])'
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream1.pee")'
+@eval exp='game.dungeonView.skyLayer.loadImages("0000")'
+@eval exp='game.backScreen.visible = true'
+@eval exp='game.backScreen.absolute = -113'
+
+@monster pos=10 name=ムールムール
+@monster pos=1 name=グレーターデーモン
+@monster pos=5 name=グレーターデーモン
+@callbattle bgm=devil gameover=true escape=false stopbgm=true
+
+@eval exp='particle_object.stopparticle(%[slot: 10, force: true])'
+@eval exp='game.backScreen.clear()'
+@eval exp='game.backScreen.absolute = -105'
+@eval exp='game.dungeonView.skyLayer.loadImages("sky_nightforest")'
+@saveon
+
+@fg c=8008 left=450 top=60
+[texton]
+[ムールムール v=vm252 f=28]「I can't believe it! How could I lose to you guys? That's impossible!」[k]
+[ムールムール v=vm253 f=28]「You gotta be kidding... I can't lose here! Not until I unleash my true demonic power to take revenge on the heavenly realm...」[k]
+[ムールムール v=vm254 f=28]「...If I lose here, I'll lose everything... So there's no choice but to use it now! My true power!」[k]
+[リーダー f=05]「What...?!」[k]
+@fg c=8007 left=450 top=60
+[ムールムール v=vm255 f=17]「Ooooooooooooooooooooo!」[k]
+[textoff]
+
+@image layer=e2 storage=PE_base_full visible=true left=0 top=0
+@startemit layer=e2 storage=PE_smoke_black3 time=-1
+
+[texton]
+Murmur lets out a mighty roar that is unimaginable from her small body![k]
+Then, a vortex of evil energy converged on Murmur and she began to release enormous magical power![k]
+[ポラリス v=vp097 f=11]「No! Don't let her use that power!」[k]
+[ポラリス v=vp098 f=11]「Murmur is unleashing her hidden magical powers to awaken her true demonic abilities! Once that happens, there's no stopping her!」[k]
+[ムールムール v=vm256 f=15]「You idiot! It's too late!」[k]
+[textoff]
+
+@se f=thunder1
+@flash time=500
+@w05
+@se f=thunder1
+@flash time=500
+@w05
+@se f=thunder1
+@quake hmax=5 vmax=2
+@clearemit layer=e2
+@fg l=screen_white left=450 top=0 b
+@fg c=8009 left=450 top=60
+@image layer=e3 storage=PE_base_view visible=true left=0 top=0
+@startemit layer=e3 storage=PE_rising_rocks time=-1
+@w2
+@quake hmax=3 vmax=1
+
+[texton]
+With a loud crackling sound, Murmur transforms![k]
+[textoff]
+
+@w1
+@se f=devilroar
+@fg c=8010 left=450 top=-100 t=1000
+@w1
+
+@quake hmax=2 vmax=1
+[texton]
+Parts of her body became covered in scales, and her wings spread wider. She had transformed into a powerful, dragon-like creature![k]
+[ポラリス v=vp099 f=08]「It may already be too late...!」[k]
+[textoff]
+
+@w05
+@stopquake
+@anime_fadeout layer=e3
+@clearemit layer=e3
+@cl b
+@fg c=murmur left=450 top=-100 t=1000
+@w1
+
+[texton w=1]
+[魔公ムールムール v=vm257 f=03]「Hahahahaha! Now you guys will never be able to beat me! Serves you right!」[k]
+[魔公ムールムール v=vm258 f=01]「In this form, I can ascend to the heavens! I'll take revenge on the gods and rule over both gods and mortals from the heavens! Hahahaha!」[k]
+[ポラリス v=vp100 f=08]「Damn...!」[k]
+[魔公ムールムール v=vm259 f=02]「...But first, I have to deal with you annoying people.」[k]
+[魔公ムールムール v=vm260 f=15]「I'm going to kill all of you right now! Be prepared!」[k]
+[textoff]
+@saveoff
+
+; ムールムール上昇
+@mu f=boss
+@se f=byun2
+@move layer=3 time=100 path=0,-768,255
+@wm
+@layopt layer=3 visible=false left=0 top=0
+@wait time=500
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=500
+@image layer=e0 storage=0043 left=0 top=-720 visible=true
+@move layer=e0 time=500 path=0,0,255
+@wait time=1000
+
+@se f=wing2
+[texton]
+With that, Murmur flapped her large wings and soared high into the sky![k]
+[魔公ムールムール v=vm261 f=07]「Take this! Meteor Shower!」[k]
+[textoff]
+
+; メテオシャワー
+@wait time=500
+@image layer=e1 storage=screen_blue
+@image layer=e3 storage=PE_base_full left=0 top=0 visible=true mode=psdodge
+@image layer=9 page=back storage=9999 visible=true left=0 top=0
+@anime_fadein layer=e1
+@playse storage=meteor
+@startemit layer=e3 storage=PE_meteor time=4000
+@wait time=2000
+@eval exp='game.view.top -= 600'
+@eval exp='game.view.skyLayer.top -= 600'
+@layopt layer=e0 visible=false
+@wait time=1000
+@playse buf=1 storage=bashan3
+@trans method=universal rule=rule_45 time=1000
+@wt
+@wait time=500
+@layopt layer=9 visible=false
+@layopt layer=9 page=back visible=false
+@layopt layer=e1 visible=false
+@layopt layer=e0 visible=false
+@layopt layer=3 visible=false
+@layopt layer=3 visible=false page=back
+@clearemit layer=e3
+
+; 元の画面に戻る
+@saveon
+[texton]
+@quake time=1000
+[   if exp='isTEO'][テオ f=12]「Damn...!」[k]
+[elsif exp='isMAX'][マックス f=11]「Wow!」[k]
+[elsif exp='isHUM'][リム v=vh092 f=17]「Kyaa!」[k]
+[elsif exp='isELF'][クレア v=ve093 f=17]「Kyaa!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd090 f=17]「Kyaa!」[k]
+[elsif exp='isGNO'][ミューズ v=vg080 f=17]「Kyaa!」[k]
+[elsif exp='isSYL'][マルエット v=vs094 f=17]「Kyaa!」[k]
+[endif]
+Murmur caused a cascade of burning meteorites to rain down from the sky![k]
+
+[魔公ムールムール v=vm262 f=03]「Hahahaha! Humans are such weaklings! You can't even fight back, so take this!」[k]
+The enemy is attacking from above, so we are at a significant disadvantage, with limited means to fight back. If this continues...[k]
+@fgf c=ポラリス f=07
+[ポラリス v=vp101 f=07]「It's okay! Leave it to me!」[k]
+[textoff]
+@cl
+@wait time=500
+
+@playse buf=0 storage=byun2
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@wait time=50
+@eval exp='game.view.top += 120'
+@eval exp='game.view.skyLayer.top += 120'
+@playse buf=1 storage=fire3
+@eval exp='game.backScreen.loadImages(%[storage: "PE_base_view"])'
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream2.pee")'
+@eval exp='game.dungeonView.effectLayer.loadImages(%[storage: "0000"])'
+@eval exp='game.dungeonView.effectLayer.visible = true'
+@eval exp='game.backScreen.visible = true'
+@eval exp='game.view.top -= 600'
+@eval exp='game.view.skyLayer.top -= 600'
+@wait time=1000
+
+[texton]
+Suddenly, our party was launched into the air![k]
+[textoff]
+
+@stopse buf=1
+@eval exp='particle_object.stopparticle(%[slot: 10])'
+@wait time=1000
+@image layer=e0 left=0 top=0 opacity=0 visible=true storage=BE_sky_back
+@image layer=e1 left=0 top=560 visible=true storage=BE_sky_cloud clipwidth=900 clipheight=300
+@layopt layer=e1 index=-95
+@move layer=e1 time=2000 path=0,260,255
+@wm
+@move layer=e0 time=2000 path=0,0,255
+@wm
+@wait time=1000
+
+[texton]
+[リーダー f=12]「W-we're flying in the sky...?」[k]
+The party stood in midair, as if it were solid ground. Could this be the power of Lady Polaris?[k]
+[ポラリス v=vp102 f=08]「I used my power to lift you all up! Now we should be able to fight Murmur!」[k]
+She truly is a god. To think she could perform such a feat.[k]
+[ポラリス v=vp103 f=08]「Let's go! Let's chase Murmur!」[k]
+[textoff]
+
+@layopt layer=e0 visible=false
+@layopt layer=e1 index=-1 visible=false
+@eval exp='game.dungeonView.effectLayer.loadImages(%[storage: "0000"])'
+@playse buf=0 storage=byun2
+@playse buf=1 storage=fire3
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream3.pee")'
+@wait time=2000
+@stopse buf=1
+@eval exp='particle_object.stopparticle(%[slot: 10])'
+@wait time=1000
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream1.pee")'
+@wait time=1000
+@fgf c=8011 left=-900 top=-560
+@move layer=3 time=3000 path=32,-110,255 accel=-2
+@wm
+
+@se f=wing2
+[texton]
+Thanks to Lady Polaris blessing us with the ability to fly, our party was able to catch up with Murmur midair.[k]
+[魔公ムールムール v=vm263 f=08]「Tch...! So you're still at it...!」[k]
+[ポラリス v=vp104 f=07]「This power won't last very long, but it should be enough to defeat Murmur! I'll leave the rest to you! Please defeat her!」[k]
+[魔公ムールムール v=vm264 f=07]「Huh? What kind of ridiculous drivel is that? You think you can defeat me? Impossible!」[k]
+[魔公ムールムール v=vm265 f=07]「It doesn't matter if you guys can fly now! Either way, I'm going to kill you! Be prepared!」[k]
+[textoff]
+
+; 最終戦
+@monster pos=3 name=魔公ムールムール
+@layopt layer=3 visible=false
+@layopt layer=3 page=back visible=false
+@eval exp='game.eraseCharactorLayer(3)'
+@callbattle bgm=lastboss skipstart=true stopbgm=true gameover=true escape=false
+
+; 勝利
+@anireset
+@eval exp='game.backScreen.loadImages(%[storage: "PE_base_view"])'
+@eval exp='particle_object.start(game.backScreen, 10, "PE_lightstream1.pee")'
+@eval exp='game.dungeonView.skyLayer.loadImages("0000")'
+@eval exp='game.backScreen.visible = true'
+@eval exp='game.dungeonView.effectLayer.loadImages(%[storage: "0000"])'
+
+[texton w=0]
+[魔公ムールムール v=vm266 f=17]「Gyaaa!」[k]
+After a fierce battle, our party finally dealt the final blow to Murmur![k]
+She loses her strength and plummets to the ground, unable to flap her wings.[k]
+[ポラリス v=vp105 f=07]「I'll bring everyone down to the rooftop for now. Then I'll seal Murmur!」[k]
+[textoff]
+@cl
+
+@outf f=0000
+@playse buf=0 storage=byun2
+@playse buf=1 storage=fire3
+@image layer=e3 storage=PE_base_full visible=true
+@startemit layer=e3 storage=PE_lightstream4 time=600
+@wait time=1000
+@stopse buf=1
+@clearemit layer=e3
+@wait time=1000
+@image layer=e3 storage=PE_base_full visible=true
+@startemit layer=e3 storage=PE_lightstream5 time=-1
+@wait time=1000
+@image layer=2 storage=7002 visible=true left=600 top=-435
+@image layer=1 storage=8012 visible=true left=-100 top=700
+@move layer=1 time=5000 path=,0, accel=-2
+@wait time=2000
+@move layer=2 time=3000 path=,100, accel=-2
+@wm
+
+[texton w=1]
+Lady Polaris quickly lowered us to the roof of the tower, then flapped her white wings and chased after Murmur as she fell.[k]
+[ポラリス v=vp106 f=07]「Be sealed!」[k]
+[textoff]
+@se f=shakin3
+@flash time=200
+@w05
+@se f=shakin3
+@flash time=200
+@w05
+[texton]
+Then, she showered Murmur in holy light.[k]
+@shake layer=1 loop=10 time=50 length=5
+[魔公ムールムール v=vm267 f=17]「Waaaaahhh!」[k]
+Murmur, began to suffer under the bombardment of holy power. Drained from the previous battle, she had no way to escape.[k]
+[ポラリス v=vp107 f=07]「Now, sleep, Murmur!」[k]
+[textoff]
+@se f=shakin3
+@flash time=200
+@w05
+@se f=shakin3
+@flash time=200
+@w05
+@shake layer=1 loop=10 time=50 length=5
+@w05
+[texton]
+[魔公ムールムール v=vm268 f=09]「Oh no! Stop it! Stop it, you damn god!」[k]
+It is said that high-ranking demons will revive no matter how many times they are defeated. However, if they are sealed away with divine power, they will not be able to easily revive.[k]
+[ポラリス v=vp108 f=07]「This is it!」[k]
+[textoff]
+@se f=shakin3
+@flash time=200
+@w05
+@se f=shakin3
+@flash time=200
+@w1
+@se f=shakin4
+@flash on=0
+@image layer=1 storage=8013 left=-110 top=-10
+@wait time=1000
+@flash off=2000
+@w05
+@shake layer=1 loop=20 time=50 length=5
+[texton]
+[魔公ムールムール v=vm269 f=17]「Gyaaaaaaaaaaaaaaa!」[k]
+@move layer=1 time=5000 path=,800, accel=2
+[textoff]
+@wait time=2000
+[texton]
+Polaris intensifies her holy light! Murmur's agonized cries fill the air.[k]
+Enveloped in holy light, Murmur falls to the bottom of the canyon, unable to move.[k]
+@image layer=2 storage=7003 visible=true left=600 top=100
+Lady Polaris watched her quietly and intently.[k]
+[ポラリス v=vp109 f=51]「The sealing is complete. Goodbye, Murmur.」[k]
+[魔公ムールムール v=vm270 f=17]「Damn it! Damn it! Damn it!」[k]
+[魔公ムールムール v=vm271 f=09]「I'm not done yet! I'll never give up!」[k]
+[魔公ムールムール v=vm272 f=17]「I will definitely, definitely come back to life someday and take revenge on all you gods and mortals! Remember that!」[k]
+[textoff]
+@stopmove
+@w1
+@fa
+@image layer=e4 storage=0000 visible=true left=0 top=0 opacity=0
+@move layer=e4 time=2000 path=,,255
+@wm
+@clearemit layer=e3
+@outf
+@w2
+
+; 地上
+@saveon
+@eval exp='game.guest.removeMember(o.ポラリス)'
+@eval exp='o.ラドミラの塔１Ｆ.sky = "nightforest"'
+@eval exp='game.changePosition(%[map: "ラドミラの塔１Ｆ", x: 12, y: 4, way: "n"], true)'
+@gameon fade
+@mu f=outdoor
+[texton w=1]
+We have finally succeeded in defeating the great demon Murmur. We bow deeply to Lady Polaris, who lent us her power.[k]
+@fg c=ポラリス f=02
+[ポラリス v=vp110 f=02]「No, thank you all for defeating the devil. Without you, the world would have been in big trouble.」[k]
+@fg c=ポラリス f=03
+[ポラリス v=vp111 f=03]「All of you here are undoubtedly true heroes. I would like to express my heartfelt admiration for your courage.」[k]
+@fg c=ポラリス f=02
+[ポラリス v=vp112 f=02]「Well then, I will return to the heavenly realm. If anything else happens, please come to my temple.」[k]
+[textoff]
+
+@backlay
+@image layer=7 page=back storage=screen_yellowlight visible=true
+@trans method=crossfade time=500
+@wt
+@se f=kira1
+@image layer=e2 storage=PE_base_full visible=true left=0 top=0
+@startemit layer=e2 storage=PE_powder8 time=-1
+@cl t=1000
+@wait time=2000
+@anime_fadeout layer=7,e2
+@clearemit layer=e2
+@layopt layer=7 page=back visible=false
+@fa
+@out
+@w05
+
+[texton w=0]
+With those words, Lady Polaris ascended to the heavens in a pillar of light.[k]
+After seeing Lady Polaris off, we returned to Sapphire City.[k]
+[textoff]
+@out
+@w2
+
+; サファイアシティ・闘技場
+@mu f=city
+@bgf f=0009
+@se f=cheer
+@w1
+[texton w=0]
+[フィオナ姫 f=01]「You did a really good job. Thanks to everyone, peace has been maintained in this country.」[k]
+[リーダー]'s group were honored for their achievements by the princess in front of the gathered citizens in the center of the arena.[k]
+Surrounded by loud cheers, they all wave shyly to the gathered citizens.[k]
+@eval exp='f.num = game.party.members.count - 1'
+*_loop_braves
+@eval exp='tf.temp = game.party.members[f.num]'
+[name n=&'tf.temp.displayName' key=&'tf.temp.keyName' f=02]「...」[k]
+@eval exp='f.num --'
+@jump target=*_loop_braves cond='f.num >= 0'
+Once upon a time, our party were nothing more than inexperienced adventurers.[k]
+However, after a long journey, we finally defeated the great demon Murmur and became heroes who brought peace to the country.[k]
+[textoff]
+@fa
+@out t=2000
+@wait time=1500
+@jump storage="main13.scn" target=*staff_roll
+
+
+
+
+;■山小屋パブでの会話
+
+*event_山小屋パブ_3
+
+@wait time=500
+[texton]
+[name n="Middle-aged woman"]「Oh, do you have a magic stone by any chance?」[k]
+As we took our seats, a nearby middle-aged woman spoke to us.[k]
+[name n="Middle-aged woman"]「I had one too, so I know all about them.」[k]
+That's unexpected. If the story is true, is it possible to get or borrow it from her?[k]
+[name n="Middle-aged woman"]「What? You're collecting magic stones?」[k]
+[name n="Middle-aged woman"]「Unfortunately, I lost it. A few months ago.」[k]
+[name n="Middle-aged woman"]「I used to wear that [b]Opal Magic Stone[/b] all the time, but then I dropped it.」[k]
+[name n="Middle-aged woman"]「When I entered the open-air bath at the hot spring, I slipped and fell.」[k]
+[name n="Middle-aged woman"]「Then the magic stone came off and rolled out of the open-air bath... right over a steep cliff next to it!」[k]
+We asked what happened to the magic stone after that.[k]
+[name n="Middle-aged woman"]「I gave up, since it fell somewhere I'd never be able to get to. Maybe the magic stone is still there.」[k]
+What a resigned woman. She doesn't seem to understand how precious the stone is.[k]
+[name n="Middle-aged woman"]「[b]Yanek Hot Springs[/b] is where it was. The Opal Magic Stone fell down the cliff outside the [b]women's open-air bath[/b].」[k]
+[name n="Middle-aged woman"]「Honestly, I think it's going to be pretty hard to find that thing, so good luck with that. I don't need it anymore, so if you can find it, it's yours.」[k]
+[textoff]
+[baroff]
+
+
+
+
+*jail_05
+
+; 監獄の外
+@wait time=500
+
+; サンドラが仲間だった場合
+[if exp='game.waitingMembers.has(o.サンドラ)']
+	@fg c=サンドラ f=05
+	[texton w=1]
+	[サンドラ v=vn038 f=05]「Oh, there you are. Honestly, I was so worried.」[k]
+	When we walked out of the jail, Sandra was waiting for us. Apparently, she was safe.[k]
+	@clf
+	@se f=period
+	@notice text="<y>Sandra rejoined the party!"
+[endif]
+
+; ミレディが仲間だった場合
+[if exp='game.waitingMembers.has(o.ミレディ)']
+	@fg c=ミレディ f=01
+	[texton w=1]
+	[ミレディ v=vm182 f=01]「Ahh! There you are! You're safe～!」[k]
+	When we walked out of the jail, Miredy was waiting for us. Apparently, she was safe.[k]
+	@clf
+	@se f=period
+	@notice text="<y>Miredy rejoined the party!"
+[endif]
+
+; ポラリスが仲間だった場合
+[if exp='game.waitingMembers.has(o.ポラリス)']
+	@fg c=ポラリス f=01
+	[texton w=1]
+	[ポラリス v=vp031 f=01]「We were very worried. I am glad to hear that everyone is safe.」[k]
+	When we walked out of the jail, Lady Polaris was waiting for us. Apparently, she was safe.[k]
+	@clf
+	@se f=period
+	@notice text="<y>Polaris rejoined the party!"
+[endif]
+
+; 監獄の外
+@wait time=500
+@eval exp='game.party.minimumRecovery()'
+@fg c=マリア f=00
+[texton w=1]
+[マリア v=va218 f=02]「Well, that's it for me. Thanks for your help, everyone.」[k]
+[textoff]
+@cl
+@eval exp='game.guest.removeMember(o.マリア)'
+@eval exp='game.restoreMembers()'
+@se f=period
+@notice text="<y>Maria left the party.<r>Guests who left have returned."
+[eventoff]
+
+
+
+
+
+
+
+
+;■ポラリスとの会話
+
+;◇パターン５・魔石が１２個で、オニキスの魔石（ニセモノ）が混じっている時の会話
+*polaris_5
+
+; ポラリスの神殿・祭壇
+[texton]
+[リーダー f=05]「...?」[k]
+That's strange... we definitely collected 12 magic stones, but one of them isn't glowing. What on earth is going on?![k]
+[ポラリス v=vp054 f=polaris_99]「...There's a fake mixed in there.」[k]
+Lady Polaris answered.[k]
+[ポラリス v=vp055 f=polaris_99]「Among the 12 magic stones you collected, there is one fake. Someone must have made a clever imitation of the real thing. Magic stones sell for a high price.」[k]
+[ポラリス v=vp056 f=polaris_99]「There must be a genuine magic stone somewhere. Please search for it. I know it's going to be difficult, but...」[k]
+Unbelievable. So we were tricked into buying a fake.[k]
+...There's no point in being discouraged. We'll have to pull ourselves together and search for the last one again. We're almost there.[k]
+[textoff]
+[eventoff]
+

@@ -1,0 +1,964 @@
+﻿// living.tjs
+// キャラクター共通クラス
+
+
+class LivingObjectLayer extends PieceLayer
+{
+	// モンスターやキャラの共通動作を書いたクラス
+
+	var master;	// 管理オブジェクト
+	var darkCoverLayer;	// 暗くするレイヤー
+	var lightingLayer;	// 明るくするレイヤー
+	var flashLayer;	// フラッシュレイヤー
+	var numberLayer;	// 飛び出す文字レイヤー
+	var statusLayer;	// ステータス表示
+
+	// 各種共通項目
+	var name = "";	// 名前
+	var id;	// ID
+	var team;		// 所属する陣営
+	var group;	// 所属するグループ（列）
+	var isUserChara = false;	// ユーザー操作キャラ ( CharaObject クラスのインスタンス ) かどうか
+	var isGuest = false;	// ゲストかどうか
+	var isSpecial = false;	// ストーリーに絡む特別なゲストかどうか
+	var isHeroine = false;	// ヒロインかどうか
+	var isHiring = false;	// 一時雇用かどうか（召喚モンスターも含む）
+	var weapon = "claw";	// 武器（通常攻撃で参照）
+	var subWeapon;	// 補助武器
+	var btcmd = [];	// 実行できるコマンド（魔法や戦闘コマンド。ユーザーが選んで実行するもの）
+	var skill = [];	// 所持しているスキル（パッシブスキル。所持するのみで自動的に発動するもの）
+	var weak = [];	// 弱点となる属性
+	var resist = [];	// 耐性のある属性
+	var block = [];	// 完全に防ぐ耐性
+	var status = [];	// 現在所持しているステータス。何もなければ健康
+	var sickTime = [];	// 状態異常にかかっている残り時間
+	var avoidingTrap = false;	// 罠を回避したかどうか。
+	var dead = false;	// 死んでいるかどうか
+	var invincible = false;	// 無敵かどうか。true なら攻撃が当たらない。イベントで使う
+	var heat = 0;
+
+	// パラメータ
+	var level = 1;	// レベル
+	var exp = 0;		// 稼いだ経験値
+	var marks = 0;	// 倒した敵の数
+	var rip = 0;		// 死亡回数
+	var _life = 1;			// ＨＰ
+	var _maxLife = 1;		// 最大ＨＰ
+	var _power = 0;			// 武芸
+	var _intellect = 0;	// 知性
+	var _piety = 0;			// 信仰心
+	var _vitality = 0;	// 生命力
+	var _speed = 0;			// 敏捷性
+	var _luck = 0;			// 運
+	var destroy = 0;		// 破壊力。装備破壊確率に影響する
+
+	// 戦闘時に使う変数
+	var act;	// 戦闘時の行動
+	var target;	// 戦闘時の行動の対象（攻撃対象など）
+	var actionFixed = false;	// すでに別のプロセスを経て行動が決定されてしまったかどうか
+	var brokenItem;	// 攻撃によって壊れた所持アイテムを一時保存する場所
+	var result = 0;	// 色々なことに使う結果一時保存
+	var displayName;
+
+	// アニメに使う変数
+	var animTimer;	// アニメ用タイマー
+	var shakeAnim = false;	// キャラを揺らすかどうか
+	var blinkAnim = false;	// キャラを点滅させるかどうか
+	var animCounter = 0;
+	var numAnimList = [ , ,-16,-10, -5, -2, +2, +5,+10,+16, -5, -2, +2, +5, -2, +2];
+	var thisAnimList = [+25,-10,-10,-10,+10,-10,+10,-10,+10,-10, +5];
+	var blinkingTime = 6;
+	var numberAppearingTime = 2;
+	var damageAnimTime = 20;
+	var afterMarginTime = 20;	// 次のアニメが開始するまでのマージン（位置移動用）
+
+	function LivingObjectLayer(par, master, id)
+	{
+		super.PieceLayer(par);
+		this.master = master;
+		this.id = id;
+		focusable = true;
+
+		// 暗くするレイヤー
+		darkCoverLayer = new DarkCoverLayer(this);
+		darkCoverLayer.absolute = 100;
+
+		// 明るくするレイヤー
+		lightingLayer = new LightingLayer(this);
+
+		// 一瞬光らせるレイヤー
+		flashLayer = new LightingLayer(this);
+		flashLayer.type = ltPsScreen;	// ltScreen は描画乱れが起きるのでやめた
+		flashLayer.opacity = 255;
+
+		// ダメージ値を表示するレイヤー
+		numberLayer = new global.Layer(kag, kag._primaryLayer);
+		with(numberLayer)
+		{
+			.setSize(200, 36);
+			.fillRect(0, 0, numberLayer.width, numberLayer.height, 0x00000000);
+			.font.face = "MS PGothic";
+			.font.height = 28;
+			.font.bold = true;
+			.hitThreshold = 256;
+		}
+
+		// ステータス（状態異常）を表示するレイヤー
+		statusLayer = new DecoLayer(this);
+		with(statusLayer)
+		{
+			.setSize(44, 154);
+			.clear();
+			.absolute = 10;
+			.visible = true;
+		}
+
+		// アニメーションに使うタイマー
+		animTimer = new Timer(processDamageAnim, "");
+		animTimer.interval = 20;
+	}
+
+	function finalize()
+	{
+		invalidate darkCoverLayer;
+		invalidate lightingLayer;
+		invalidate flashLayer;
+		invalidate numberLayer;
+		invalidate statusLayer;
+		invalidate animTimer;
+		super.finalize(...);
+	}
+
+	//---------------------------------------------------------------------------
+	// プロパティ
+
+	property selectable
+	{
+		setter(v){ darkCoverLayer.visible = ! (super.selectable = v); }
+		getter{ return super.selectable; }
+	}
+
+	property active
+	{
+		// 行動可能かどうか
+		getter
+		{
+			if(dead) return false;
+			for(var i = 0; i < status.count; i++)
+			{
+				if(! status[i].control && status[i] != o.魅了) return false;
+			}
+			return true;
+		}
+	}
+
+	property knockOut
+	{
+		// すでに何らかの形で倒されている（攻撃の対象から外れる）
+		getter{ return dead || status.has(o.石化) || status.has(o.麻痺); }
+	}
+
+	property slot
+	{
+		// 各パーティー内における位置（順位）
+		getter
+		{
+			if(typeof parent.members != "undefined") return parent.members.find(this);
+		}
+	}
+
+	property life
+	{
+		setter(v){ _life = cap(v, maxLife); updateLife(); }
+		getter{ return cap(_life, maxLife); }
+	}
+
+	property maxLife
+	{
+		setter(v){ _maxLife = cap(v, 99999); updateLife(); }
+		getter{ return _maxLife; }
+	}
+
+	property power
+	{
+		setter(v){ _power = cap(v, 99, 1); }
+		getter{ return _power; }
+	}
+
+	property intellect
+	{
+		setter(v){ _intellect = cap(v, 99, 1); }
+		getter{ return _intellect; }
+	}
+
+	property piety
+	{
+		setter(v){ _piety = cap(v, 99, 1); }
+		getter{ return _piety; }
+	}
+
+	property vitality
+	{
+		setter(v){ _vitality = cap(v, 99, 1); }
+		getter{ return _vitality; }
+	}
+
+	property speed
+	{
+		setter(v){ _speed = cap(v, 99, 1); }
+		getter{ return _speed; }
+	}
+
+	property luck
+	{
+		setter(v){ _luck = cap(v, 99, 1); }
+		getter{ return _luck; }
+	}
+
+	property atk
+	{
+		getter{ return getAffectedParam("attack", intrandom(attack[0], attack[1])); }
+	}
+
+	property def
+	{
+		getter{ return cap(getAffectedParam("defense", defense),, 1); }
+	}
+
+	property acu
+	{
+		getter{ return getAffectedParam("accuracy", power); }
+	}
+
+	property spd
+	{
+		getter{ return getAffectedParam("speed", speed); }
+	}
+
+	function getAffectedParam(key, value)
+	{
+		// 様々な条件によって加減算されるパラメータを返す
+		for(var i = 0; i < status.count; i++)
+		{
+			value = status[i].affectedParam(key, value);	// ステータス
+		}
+		if(act !== void) value = act.affectedParam(key, value);	// 行動
+		return value;
+	}
+
+	//---------------------------------------------------------------------------
+	// セーブロード
+
+	function store()
+	{
+		var dic = %[];
+		dic.name = name;
+		dic.dead = dead;
+		dic.level = level;
+		dic.exp = exp;
+		dic.marks = marks;
+		dic.rip = rip;
+		dic.trust = _trust;
+		dic.life = _life;
+		dic.maxLife = _maxLife;
+		dic.power = _power;
+		dic.intellect = _intellect;
+		dic.piety = _piety;
+		dic.vitality = _vitality;
+		dic.speed = _speed;
+		dic.luck = _luck;
+		dic.sickTime = sickTime;
+		dic.btcmdNames = [];
+		for(var i = 0; i < btcmd.count; i++) dic.btcmdNames.add(btcmd[i].name);
+		dic.skillNames = [];
+		for(var i = 0; i < skill.count; i++) dic.skillNames.add(skill[i].name);
+		dic.statusNames = [];
+		for(var i = 0; i < status.count; i++) dic.statusNames.add(status[i].name);
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		name = dic.name;
+		dead = dic.dead;
+		level = dic.level;
+		exp = dic.exp;
+		marks = dic.marks;
+		rip = dic.rip;
+		_trust = dic.trust;
+		_life = dic.life;
+		_maxLife = dic.maxLife;
+		_power = dic.power;
+		_intellect = dic.intellect;
+		_piety = dic.piety;
+		_vitality = dic.vitality;
+		_speed = dic.speed;
+		_luck = dic.luck;
+		sickTime.assign(dic.sickTime);
+		btcmd = [];
+		for(var i = 0; i < dic.btcmdNames.count; i++) btcmd.add(o[dic.btcmdNames[i]]);
+		skill = [];
+		for(var i = 0; i < dic.skillNames.count; i++) skill[i] = o[dic.skillNames[i]];
+		status = [];
+		for(var i = 0; i < dic.statusNames.count; i++) status[i] = o[dic.statusNames[i]];
+	}
+
+	//---------------------------------------------------------------------------
+	// レイヤー管理・動作等
+
+	function selected(enabled)
+	{
+		// キャラを選択状態にする。列選択モードなら列全部を選択状態にする
+		if(! selectable)
+		{
+			lightingLayer.visible = false;
+			return;
+		}
+		if(master.rowSelectMode)
+		{
+			for(var i = 0; i < group.count; i++)
+			{
+				group[i].lightingLayer.visible = enabled;
+			}
+		}
+		else
+		{
+			lightingLayer.visible = enabled;
+		}
+	}
+
+	function onFocus(focused, direction)
+	{
+		// カーソルは合っているのにキーボードで Enter を押しても何も起こらないという矛盾をなくすため
+		// 今回はマウスエンターとフォーカスを同期させる仕様にする
+		// ※吉里吉里のフォーカス自動移動の仕組みにより思わぬトラブルを招くことがあるので
+		//   selected を実行したくない時はここをフォーカスできないようにしておくこと
+		selected(true);
+		super.onFocus(...);
+	}
+
+	function onBlur(focused)
+	{
+		selected(false);
+		super.onBlur(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		if(shift != ssLeft) master.itemDoubleClicked = false;
+		super.onMouseMove(...);
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(! selectable) return;
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(master.itemDoubleClicked)
+		{
+			master.itemDoubleClicked = false;
+			return;
+		}
+		if(! selectable) return;
+		if(button == mbRight) window.onPrimaryRightClick();
+		else if(button == mbLeft && ! System.getKeyState(VK_RBUTTON)) master.onSelectAction(this);
+		super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		// 方向キーの方角に応じてフォーカスの移動先を変える仕様にする以上
+		// 従来のレイヤーの重ね合わせ順に依存したフォーカスの移動の仕組みは邪魔になってしまうので
+		// window にキーイベントを発生させるのはやめて focusable の状態に依存しない作りにする
+
+		if(! selectable) return;
+		if(key == BT_CANCEL || key == BT_CANCEL2) window.onPrimaryRightClick();
+		else if(key == BT_OK || key == BT_OK2) master.onSelectAction(this);
+		else super.onKeyDown(...);
+	}
+
+	//---------------------------------------------------------------------------
+	// 表示・アニメ等
+
+	function updateLife()
+	{
+		// ＨＰ表示を更新する
+		// オーバーライドする
+	}
+
+	function resetPos()
+	{
+		// このレイヤーをそのキャラの定位置に配置する
+		// オーバーライドする
+	}
+
+	function cutInFigureOnBattle()
+	{
+		// バトル中の行動開始時にカットインが入るタイミングで呼び出される
+		// オーバーライドする
+	}
+
+	function damageAnim(value)
+	{
+		// ダメージアニメ開始
+		numberLayer.absolute = parent.absolute + absolute + 1;
+		drawDamage(value);
+		blinkAnim = shakeAnim = (+value > 0);
+		if(shakeAnim) playSound("beat");
+		if(value[0] == "b")
+		{
+			playSound("kira2");
+			blinkAnim = true;
+		}
+		animCounter = 0;
+		animTimer.enabled = true;
+	}
+
+	function drawDamage(value)
+	{
+		// ダメージ値を表示する
+		var color = 0xFFFFFF;
+		if(value == "0")
+		{
+			value = "MISS!";
+		}
+		else if(/[^0-9]/.test(value))
+		{
+			color = + value.substr(2, 8);
+			value = value.substr(11);
+		}
+		var str = " " + value;	// 袋文字が欠けてしまうので…
+		numberLayer.clear();
+		numberLayer.drawText(88 - str.length * 6, 0, str, color,,, 2048,, 3);
+	}
+
+	function processDamageAnim()
+	{
+		// ダメージアニメ
+		var t = numAnimList[animCounter];
+		if(t !== void) numberLayer.top += t;
+		animCounter ++;
+		if(animCounter <= blinkingTime && blinkAnim) flashLayer.visible = ! flashLayer.visible;
+		if(animCounter == numberAppearingTime) numberLayer.visible = true;
+		else if(animCounter == damageAnimTime) numberLayer.visible = false;
+		else if(animCounter == damageAnimTime + afterMarginTime) animTimer.enabled = false;
+	}
+
+	//---------------------------------------------------------------------------
+	// ステータス
+
+	function updateStatus()
+	{
+		// ステータス表示を更新する
+		var temp = new global.Layer(window, parent);
+		var num = 0;
+		statusLayer.clear();
+		var col = statusLayer.height \ 22;
+		for(var i = 0; i < status.count; i++)
+		{
+			if(status[i].icon == "") continue;
+			temp.loadImages(status[i].icon);
+			statusLayer.copyRect(num \ col * 22, num % col * 22, temp, 0, 0, 22, 22);
+			num ++;
+		}
+	}
+
+	function setStatus(statusObj, force = false, time)
+	{
+		// 新たなステータスを追加する
+		// sickTime を任意に設定したい時は time に指定する
+		if(status.has(statusObj)) return false;	// すでにかかっているか
+		if(! statusObj.cond(this)) return false;	// 発生条件が適合しているか
+		if(! force && isCancelStatusEffect(statusObj)) return false;	// 耐性によってレジストされたかどうか
+		statusObj.onSetStatus(this);
+		status.add(statusObj);
+		if(time === void) time = statusObj.sickTime;
+		sickTime.add(time >= 2 ? intrandom(time - time \ 3, time + time \ 3) : time);
+		updateStatus();
+		return true;
+	}
+
+	function setStatusByMagic(statusObj, attacker, borderScore)
+	{
+		// 敵の魔法によって新たなステータスが追加される
+		// borderScore は score の合計値が越えなければならない値の最大値
+		// 0 ～ borderScore の範囲の値がランダムで選ばれそれを score が越えたら発動
+		// その後 setStatus 内でレジスト判定がなされる
+		var score = attacker.intellect + attacker.level - level;
+		if(random * borderScore > score) return false;
+		return setStatus(statusObj);
+	}
+
+	function isCancelStatusEffect(exf)
+	{
+		// 敵の特殊効果を無効化したかどうかを返す
+		if(exf == o.死亡 && life == 0) return false;	// 即死耐性とは区別する必要がある
+		if(block.has("全異常") || block.has(exf.name)) return true;
+		if((resist.has("全異常") || resist.has(exf.name)) && isResistStatusEffect(20)) return true;
+		return isResistStatusEffect();
+	}
+
+	function isResistStatusEffect(additionalResistPower = 0)
+	{
+		// 敵の特殊効果をレジストしたかどうかを返す計算式
+		return random < (piety * 2 + additionalResistPower) / 100;
+	}
+
+	function removeStatus(statusObj)
+	{
+		// 指定のステータスを消去する
+		var num = status.find(statusObj);
+		if(num == -1) return;
+		status.erase(num);
+		sickTime.erase(num);
+		statusObj.onRemoveStatus(this);
+		updateStatus();
+	}
+
+	function clearStatus(byCommand)
+	{
+		// ステータスを全消去する
+		for(var i = status.count - 1; i >= 0; i--)
+		{
+			var stat = status[i];
+			if(byCommand && stat == o.拘束) continue;
+			status.erase(i);
+			sickTime.erase(i);
+			stat.onRemoveStatus(this);
+		}
+		updateStatus();
+	}
+
+	function retire(statusObj)
+	{
+		// 戦闘不能にさせられた時の処理 オーバーライドする
+		// statusObj は何によって戦闘不能にさせられたか
+	}
+
+	function revive(statusObj)
+	{
+		// 戦闘不能から復活する時の処理 オーバーライドする
+	}
+
+	function beStonedImage()
+	{
+		// 画像を石化状態にする
+	}
+
+	function beFrozenImage()
+	{
+		// 画像を凍結状態にする
+	}
+
+	function beSoftenImage()
+	{
+		// 画像を状態異常から元に戻す
+	}
+
+	function checkStatusByMoving()
+	{
+		// １歩歩くごとに状態をチェックし何かあれば効果が発動したり状態が変化したりする
+		for(var i = status.count - 1; i >= 0; i--)
+		{
+			if(sickTime[i] > 0) sickTime[i] --;
+			if(sickTime[i] == 0) removeStatus(status[i]);
+			else status[i].effectInMoving(this);
+		}
+	}
+
+	function checkStatusByOneTurn()
+	{
+		// １ターン行動するごとに状態をチェックし何かあれば効果が発動したり状態が変化したりする
+	}
+
+	function clearStatusOnBattleEnd()
+	{
+		// 戦闘が終わった時に一部ステータスをリセットする
+		for(var i = status.count - 1; i >= 0; i--)
+		{
+			if(status[i].eraseAtEndOfBattle) removeStatus(status[i]);
+		}
+	}
+
+	function clearStatusOnDungeonExit()
+	{
+		// ダンジョンから出た時に一部ステータスをリセットする オーバーライドする
+	}
+
+	//---------------------------------------------------------------------------
+	// 戦闘関連
+
+	function getTarget(getNext)
+	{
+		// setTarget で設定された target の値を元に現在の攻撃目標を得る
+		// 攻撃目標を得たいときはこれを呼び出す
+
+		if(target === void) return;
+		if(target instanceof "Array")
+		{
+			// 配列のときは頭から順に対象を探す
+			// getNext を true にすると、前回得た目標の次の位置にいる目標を得る
+			if(! getNext) target.curIndex = 0;
+			while(target.curIndex < target.count)
+			{
+				var one = target[target.curIndex];
+				target.curIndex ++;
+				if(isActionReachTarget(act, one)) return one;
+			}
+			if(! getNext && act.range == 2)
+			{
+				// 対象に指定した列から１人も相手が見つからなかったら別の列を対象にする
+				target = getRandomTarget(act);	// 新たな列を指定
+				if(target === void) return;	// それでも対象が見つからなかったら何もしない
+				return getTarget();	// 新たに指定した列から選び直す
+			}
+		}
+		else
+		{
+			// 単独のときは対象をそのまま返す
+			// 目標が消えていた場合は適当な相手を見つけて殴る
+			if(getNext) return;	// 単独なので次はない
+			if(master.inBattle && (status.has(o.魅了) || status.has(o.混乱))) return getRandomTarget(act);
+			if(isActionReachTarget(act, target)) return target;
+			if(act.toEnemy) return getRandomTarget(act);
+		}
+	}
+
+	function isActionReachTarget(act, target)
+	{
+		// 指定した攻撃が指定した相手に届くかどうかを返す
+
+		// 味方への行動の場合
+		if(! act.toEnemy && ! ["trap", "fixture", "event"].has(act.category))
+		{
+			if(! target.dead) return true;	// 生きていれば無条件でターゲットに
+			if(target.team == master.enemy) return false;	// 対象が敵モンスターなら生存が絶対条件（魅了時対策）
+			if(team == master.party) return true;	// 死んでいてもプレイヤーの選択ならばターゲットに
+			if(act.attrib == "蘇生") return true;	// ゲストでも蘇生魔法ならターゲットに（敵は蘇生魔法を使わない）
+		}
+
+		// 敵への攻撃 or 罠の場合
+		if(target.dead || target.life == 0 || target.status.has(o.石化)) return false;
+			// 死亡判定が後になることがあるので target.life == 0 だけの敵も対象から外す
+		if(target.status.has(o.潜伏)) return false;
+		if(act.category != "capture" && target.status.has(o.拘束)) return false;
+		if(act.category == "capture" && (target.status.has(o.凍結) || target.status.has(o.衰弱))) return false;
+		if(act == o.触手攻撃 && target.status.has(o.凍結)) return false;
+		return getReach(act) >= target.group.depth;
+	}
+
+	function getRandomTarget(act, chooseWeakTraget = false)
+	{
+		// 指定した行動に合う適当な攻撃対象をランダムに選び出す
+		if(act.range < 0) return;
+		if(act.range == 0) return this;	// 範囲が０
+		var betray = status.has(o.魅了) || (status.has(o.混乱) && random > 0.5);
+		var members = master.getTeam(this, ! act.toEnemy ^ betray, act.toGuest);
+		if(act.range == 3) return members;	// 範囲が３
+		var targets = [];
+		for(var i = 0; i < members.count; i++)
+		{
+			if(act.toEnemy && members[i] == this) continue;	// 魅了時に自分を攻撃させない
+			if(isActionReachTarget(act, members[i])) targets.add(members[i]);
+		}
+		dm("対象となる数  " + targets.count);
+		var one = act.pickUpTarget(targets, this, chooseWeakTraget);
+		if(one === void) return;	// 対象が見つからなかった
+		if(act.range == 2) return one.group;	// 範囲が２
+		return one;	// 範囲が１
+	}
+
+	function getUsableActions()
+	{
+		// 現在、使用可能なコマンドを列挙する
+		// 条件に合わない行動はコマンドから除外する
+		var arr = [];
+		for(var i = btcmd.count - 1; i >= 0; i--)
+		{
+			if(! btcmd[i].auto) continue;
+			if(! btcmd[i].cond(this)) continue;
+			if(btcmd[i].magicLV > 0 && master.firstStrike !== void) continue;
+			if(btcmd[i].magicLV > 0 && ! isUsableMagic(btcmd[i])) continue;
+			if(btcmd[i].toEnemy && getReach(btcmd[i]) < 0) continue;	// 届かない攻撃は除外
+			if(btcmd[i].determined(this, master.enemy) === false) continue;	// むしろ除外
+			if(btcmd[i].determined(this, master.enemy)) return [btcmd[i]];
+				// actionFixed を起こしたい場合は determined の中に記述する
+			arr.add(btcmd[i]);
+		}
+		if(getReach(o.攻撃) >= 0) arr.add(o.攻撃);
+		if(o.逃げる.cond(this)) arr.add(o.逃げる);
+		return arr;
+	}
+
+	function getReach(act)
+	{
+		// 指定した攻撃が現在の位置から敵陣のどの深さまで届くのかを返す
+		return getActionLength(act) - group.depth;
+	}
+
+	function getActionLength(act)
+	{
+		// 通常攻撃の長さを返す
+		// オーバーライドする
+	}
+
+	function checkCurrentAction()
+	{
+		// 行動に消費（アイテム、ＭＰ等）が必要な場合、
+		// 何らかの理由で使用できなかったらメッセージを返す
+		if(act === void) return "Action cancelled!";
+		return act.checkCurrentAction(this);
+	}
+
+	function useResource(res)
+	{
+		// 行動に消費（アイテム、ＭＰ等）が必要な場合、消費する
+	}
+
+	function getWeaponExtraDamageName()
+	{
+		// 追加ダメージの属性名を返す
+		// オーバーライドする
+	}
+
+	function getExtraEffects(target)
+	{
+		// 通常攻撃時の追加効果を返す。skill の中に入っている status オブジェクトが追加効果
+		var arr = [];
+		for(var i = 0; i < skill.count; i++)
+		{
+			if(skill[i].category != "status") continue;
+			if(skill[i].isExtraEffectOccuring(this, target)) arr.add(skill[i]);
+		}
+		return arr;
+	}
+
+	function getCancelAction(enemy, inCounter)
+	{
+		// 攻撃を無効化できたらその行動を返す
+
+		// カウンターだったら通常攻撃を実行したとする
+		var enemyAct = inCounter ? o.攻撃 : enemy.act;
+
+		// 敵への攻撃でなければ何もなし
+		if(! enemyAct.toEnemy) return;
+
+		// パーティースキル等による無効化
+		if(team == master.party)
+		{
+			var cancelObj = team.getCancelAction(enemy, inCounter);
+			if(cancelObj !== void) return cancelObj;
+		}
+
+		// 耐性による無効化
+		if(enemyAct.reach == -1 && block.has(enemy.getWeaponExtraDamageName())) return o.耐性防御;	// 武器による攻撃
+		if(block.has(enemyAct.attrib)) return o.耐性防御;
+
+		// スキルによる無効化
+		for(var i = 0; i < skill.count; i++)
+		{
+			if(skill[i].category != "cancel") continue;
+			if(skill[i].isCancelSucceed(this, enemy, inCounter)) return skill[i];
+		}
+	}
+
+	function isAttackCanceledByTentacle(enemyAct)
+	{
+		// 触手など性的な手段で攻撃をキャンセルされたかどうかを返す
+		if(! enemyAct.toEnemy) return;
+		
+	}
+
+	function getAffectedDamage(damage, atrb)
+	{
+		// 様々な影響により変化したダメージを返す
+		// モンスターやアイテムには矛盾する属性を設定しないようにくれぐれも気を付けること
+		if(block.has(atrb)) return 0;	// 不要になるかも
+		if(atrb == "火" && skill.has(o.耐熱)) return damage \ 2;
+		if(resist.has(atrb) || status.has(o.抵抗)) return damage \ 2;
+		if(weak.has(atrb)) return damage * 3 \ 2;
+		if(atrb == race.name) return damage * 3 \ 2;
+		return damage;
+	}
+
+	function isCounterAttacking(en)
+	{
+		// カウンター攻撃したかどうかを返す
+		if(! isCounterAttackPossible(en)) return false;
+		if(act == o.カウンター) return true;
+		if(skill.has(o.反撃) && random < 1.3) return true;
+		return false;
+	}
+
+	function isCounterAttackPossible(en)
+	{
+		// カウンター攻撃ができる条件が整っているかどうかを返す
+		if(! active) return false;
+		if(life == 0) return false;	// 今回の攻撃で０になってしまった
+		if(en.team == team) return false;	// 味方への行動
+		if(en.act.category != "normal") return false;	// 魔法や特殊攻撃への反撃はない
+		if(en.act.reach >= 2) return false;	// 遠距離攻撃への反撃はない
+		if(en.act.reach == -1 && typeof en.equip != "undefined" && en.equip.main !== void
+			 && en.equip.main.w_reach >= 2) return false;	// 遠距離武器への反撃はない
+		if(status.has(o.恐怖) || status.has(o.魅了) || status.has(o.衰弱)) return false;
+		if(! isActionReachTarget(o.攻撃, en)) return false;
+		dm("反撃判定をクリア   " + name + "  " + en.act.name);
+		return true;
+	}
+
+	function isReflectingAttack(enemyAct)
+	{
+		// 	敵の魔法・魔力系攻撃を反射したかどうかを返す
+		return status.has(o.反射) && enemyAct.magicLV != 0 && enemyAct.attrib != "物理";
+	}
+
+	function isAttackingAgain(en)
+	{
+		// ２回攻撃できたかどうかを返す
+		if(act != o.攻撃) return false;
+		if(subWeapon === void) return false;
+		if(subWeapon == "shaker") return false;	// 楽器では２回攻撃できない
+		if(! isActionReachTarget(o.再攻撃, en))
+		{
+			// 最初のターゲットが戦闘不能になっていたら次の標的を探す
+			var nextTarget = getRandomTarget(o.再攻撃);
+			if(nextTarget === void) return false;
+			master.curTarget = nextTarget;
+		}
+		return true;
+	}
+
+	function tryToBreakItem(hitScore, pow)
+	{
+		// 装備の破壊を試みて破壊されたら brokenItem にそれを保存する
+		// オーバーライドする
+		// なお、現在の仕様では敵のアイテムは破壊されない
+	}
+
+	function cancelAction()
+	{
+		// バトル中の行動をキャンセルする
+		master.fightingOrder.remove(this);
+	}
+
+	//---------------------------------------------------------------------------
+	// アイテム関連
+
+	function getTotalWeight()
+	{
+		// 装備の総重量を返す
+		// オーバーライドする
+	}
+
+	function addParam(param, value)
+	{
+		// 指定したパラメータ名と値に従ってパラメータを変動させ飛び出す数字を返す
+		// コマンドやアイテムを使用した際などに用いる
+
+		if(value == 0) return 0;
+
+		// 体力増減
+		if(param == "life")
+		{
+			life += value;
+			if(value > 0) return "0,0x80F080," + value;
+			else return "0,0xFFFFFF," + value;
+		}
+
+		// プロパティの中身に直接代入する必要があるもの
+		var arr = ["maxLife", "power", "intellect", "piety", "vitality", "speed", "luck"];
+
+		// パラメータ増減
+		if(arr.has(param)) this["_" + param] += value;
+		else this[param] += value;
+		if(param == "maxLife") updateLife();
+		if(value > 0) return "0,0x80F0F0," + value;
+		else return "0,0xF0A080," + value;
+	}
+
+	//---------------------------------------------------------------------------
+	// 各種コマンド
+
+	function isMagicUser()
+	{
+		// 使える魔法が１つでもあるかどうかを返す
+		for(var i = 0; i < btcmd.count; i++)
+		{
+			if(btcmd[i].magicLV > 0) return true;
+		}
+		return false;
+	}
+
+	function isMagicCategoryValid(category)
+	{
+		// 魔法のカテゴリに使える魔法があるかどうかを返す
+		for(var i = 0; i < btcmd.count; i++)
+		{
+			if(btcmd[i].category == category) return true;
+		}
+		return false;
+	}
+
+	function getMagicPermission()
+	{
+		// 現在の魔法の許可状態を調べ、使用不可ならメッセージを返す
+		if(! active || status.has(o.恐怖)) return "<y>Can't currently use magic.";
+		if(isSealedMagic() && ! isMagicCategoryValid("amagic")) return "Magic is currently sealed.";
+	}
+
+	function isUsableMagic(cmd)
+	{
+		// 指定した魔法が使えるかどうかを返す
+		if(! active) return false;
+		if(! btcmd.has(cmd)) return false;
+		if(cmd.checkCurrentAction(this) !== void) return false;
+		return true;
+	}
+
+	function hasMagicPoint(cmd)
+	{
+		// 指定した魔法を使うのに必要なＭＰがあるかどうかを返す
+		return true;
+	}
+
+	function isSealedMagic()
+	{
+		// 魔法が封じられているかどうかを返す
+		return status.has(o.沈黙);
+	}
+
+	function isUsableSkill(cmd)
+	{
+		// 指定したパッシブスキルが使えるかどうかを返す
+		return active && skill.has(cmd) && cmd.cond(this);
+	}
+
+	function isFloating()
+	{
+		// 浮遊しているかどうかを返す
+		return isUsableSkill(o.浮遊);
+	}
+
+	function isSwimming()
+	{
+		// 泳げるかどうかを返す
+		return isUsableSkill(o.潜水);
+	}
+
+	function deleteDuplicateSkills()
+	{
+		for(var i = 0; i < btcmd.count; i++)
+		{
+			btcmd.unique(btcmd[i]);
+		}
+
+		for(var i = 0; i < skill.count; i++)
+		{
+			skill.unique(skill[i]);
+		}
+	}
+	//---------------------------------------------------------------------------
+}

@@ -1,0 +1,119 @@
+﻿; 伯爵の屋敷
+
+name = 伯爵の屋敷１Ｆ
+insideName = １Ｆ
+upper = 伯爵の屋敷２Ｆ
+level = 44
+bgm = bad
+margin = 3
+shadow = dark
+sky = forest
+roof = wood
+
+; パーツ画像
+━ = plaster
+　 = wood
+／ = door
+∫ = pick
+〆 = key
+☗ = door
+︻ = panel
+㊤ = ladderu
+Ⓑ = ladderd
+① = human
+② = human
+③ = human
+⑷ = br_hp
+
+; 敵情報
+maxGroups = 2
+monsters = ローグ,ハイウェイマン,ブッシュワッカー
+traps = 石つぶて,毒針,しびれ針
+
+; 移動ポイント
+(A) = map:ヤネクの森・西, x:16, y:6, way:s, symbol:exit, ask:Leave the dungeon?
+(B) = map:下水道・通路, x:25, y:14, lift:down
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  ┏━━━┳━━━━━┳━━━━━┓
+ 4┃　　　／　　　　　／　　　　Ⓑ┃
+  ┃　　　┃　┏∫━━┫　　　　　┃
+ 3┃①　　┃　┃敵　　┃　　　　　┃
+  ┣━━━┫　┃　　　┃　　　　　┃
+ 2┃　　②／　┃　　　┃　　　　　┃
+  ┃　　　┃　┃　　　┃　　　　　┃
+ 1┃⑷　　┃　┃　　③┃　　　　　┃
+  ┣━━━┛　┗━━━┫　　　　　┃
+ 0┃㊤　　　　　　　　／　　　　Ⓐ┃
+  ┗━━━━━━━━━┻━━━━☗┛
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[7][4].event = 5;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+*event_2
+;[exp] true
+*event_3
+;[exp] true
+
+@delevent
+@wait time=500
+@eval exp='f.temp = "priest_" + ["red", "purple", "green"].draw()'
+@fg c=&'f.temp + "_nude"'
+[texton w=1]
+[name n=Girl f=&'f.temp + "_03"']「Oh, you guys are...?」[k]
+[if exp='game.isFreeMode']
+	We told her we were here to help her.[k]
+[else]
+	[テオ f=05]「We're here to help you. Now, get out of here!」[k]
+[endif]
+[name n=Girl f=&'f.temp + "_03"']「Thank you!」[k]
+[textoff]
+@cl
+@se f=period
+@notice text="<y>One girl rescued!"
+@eval exp='f.rescuedSlaves ++'
+@changefloor pimg=void
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("life", 200)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP restored!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] ! o.人身売買の証拠をつかめ.accepted && ! o.人身売買の証拠をつかめ.completed
+
+[texton w=0]
+[name n=Resident]「What are you guys doing here?」[k]
+[リーダー f=06]「Ah...!」[k]
+It was wrong to go into someone's house without having any business there. We hurriedly turned back.
+ [k]
+[textoff]
+@eval exp='game.moveToFloorVertically(%[map: "下水道・通路", x: 25, y: 14, lift: "down"])'
+
+[eventoff]
+;-------------------------------------------------------------------------------

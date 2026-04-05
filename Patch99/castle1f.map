@@ -1,0 +1,125 @@
+﻿; 城
+
+name = 常闇の城１Ｆ
+insideName = １Ｆ
+upper = 常闇の城２Ｆ
+level = 36
+bgm = shadow
+margin = 3
+shadow = dark
+sky = stormyforest
+roof = stone
+outfield = soild
+
+; パーツ画像
+━ = stone_h
+✜ = stone_h
+… = half
+　 = marble
+／ = door
+〆 = key
+☖ = arch
+☗ = gate
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+⑷ = br_maxmp
+⑸ = br_maxmp
+
+; 敵情報
+monsters = バンパイアラット,バンパイアバット,ナイトメア,ナイトスケルトン,ガスト,ヴァンパイア,ノスフェラトゥ
+
+; 移動ポイント
+(A) = map:モイーズ湿地帯・死霊の森, x:0 ,y:6, way:e, symbol:exit ,ask:Leave the dungeon?
+
+; 宝箱
+box[1] = ボム,宝箱の鍵,マルチヒールの巻物_u,聖なるハンドベル_u,特効薬,リターンの巻物_u
+box[2] = 死の指輪_u,金のアンク,聖者のフレイル_u,ミサイルシールドの巻物_u
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  ┏━━━━━┓									┏━━━━━┓
+10┃⑷　⑸　　┃									┃　　　　㊤┃
+  ┃　　　　　┣━━━━━━━━━┛　　　　　┃
+ 9┃　　　　　【②　　　　　　　　　　　　　　┃
+  ┣━━／━︻╋━━━━━━━━━━━┓　　　┃
+ 8┃　　　　③┃　　　　　　　　　　　┃　　　┃
+  ┗━┓　　　┃　┏━━━━━┳↓━━┫　┏━┛
+ 7		┃　　　┃❶┃　　敵　　┃敵　　┃　┃
+  		┃　　　┗━┻━┳／━━┻／━━┛　┃
+ 6		┃㊤　　　　　　┃　　　　　　　　　┃
+  		┣━━━━✜━━┫　　　　　　　　　┗━┓
+ 5		┃　　　　　　　〆　　　　　　　　　　Ⓐ☗
+  		┃　┏┯━━┳━┫　　　　　　　　　┏━┛
+ 4		┃　┃①　　┃　┃　　　　　　　　　┃
+  		┃　┃　　　┃　┣／┳━━／━━┓　┃
+ 3		┃　┃　　❷┃　┃敵┃　　敵　　┃　┃
+  ┏━┛　┃　　　┃　┗↑┻━━━━━┫　┗━┓
+ 2┃　　　┃　　　┃　　　　　　　　　┃　　　┃
+  ┃　┏━┻━┳⧻┻━━━━━━━━━┛　　　┃
+ 1┃　┃　　敵／　　　　　　　　　　　　　　　┃
+  ┃　┃　　　┣━━━━━━━━━┓　　　　　┃
+ 0┃㊤┃　　　┃									┃　　　　㊤┃
+  ┗━┻━━━┛									┗━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[4][5].e.key = pos[5][5].w.key = o.吸血鬼の鍵;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+f.saveIsForbidden = false;
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=3 y=2 way=s mode=open
+@wait time=800
+@notice text="I heard a door open somewhere!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="When all the towers are lit, <r>the path to the vampire lord will open."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Magical Source"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+*event_5
+;[exp] onObjectTrigger
+
+@barrel noguest
+@damage v=&'game.curTarget.addParam("maxMagic", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max MP permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

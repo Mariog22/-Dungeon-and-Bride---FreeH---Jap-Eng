@@ -1,0 +1,417 @@
+﻿; 種族データ
+; 種族名は全角７文字まで
+
+name	人間Ａ
+keyName	リム
+img	hum1
+edit	always
+sex	女
+race	ヒューマン
+power	8
+intellect	8
+piety	5
+vitality	9
+speed	8
+luck	9
+color	yellow,brown,green,black
+threeSize	80,55,85
+favoriteFood	fruits
+dislikedFood	poke
+trim	120,48
+face	145,96
+main	100,335
+sub	290,330
+hideMain	145,225
+hideSub	253,225
+chest	94,162
+waist	94,324
+bust	135,182
+hip	127,359
+leg	94,527
+arm	61,290
+subArm	266,299
+hideArm	111,223
+subArmOrder	100
+ex_face	216,106
+ex_main	0,0
+ex_sub	0,0
+ex_chest	203,157
+ex_waist	242,286
+ex_bust	242,179
+ex_hip	319,305
+ex_leg	288,544
+ex_arm	104,211
+ex_subArm	375,191
+ex_subArmOrder	30
+ex_subWeaponOrder	35
+ex_harpOrder	35
+lg_face	226,193
+lg_chest	0,330
+items	町娘の服,白いブラ,白いパンツ,ふっくらパン
+cmt_awake	...Hmm?,Wait!
+cmt_sorry	Sorry
+cmt_bra	Don't take off my bra!
+cmt_noBra	Stop! I'm not wearing a bra!
+cmt_panties	Don't take off my panties!
+cmt_noPan	Stop! I haven't got panties on!
+cmt_erected	This is scary...,No...
+figureTop	50
+
+name	エルフＡ
+keyName	クレア
+img	elf1
+edit	always
+sex	女
+race	エルフ
+power	7
+intellect	10
+piety	10
+vitality	6
+speed	9
+luck	6
+color	yellow,purple,green,blue
+threeSize	87,58,88
+desire	20
+favoriteFood	vegetable
+dislikedFood	chickenWithLemon
+trim	117,27
+face	144,63
+main	75,352
+sub	302,350
+hideMain	135,190
+hideSub	254,184
+chest	86,130
+waist	86,306
+bust	111,143
+hip	107,328
+leg	86,518
+arm	48,279
+subArm	260,279
+hideArm	117,183
+subArmOrder	700
+ex_face	278,79
+ex_main	0,0
+ex_chest	179,136
+ex_waist	179,311
+ex_bust	267,166
+ex_hip	232,349
+ex_leg	179,574
+ex_arm	184,275
+ex_subArm	184,275
+ex_subArmOrder	990
+ex_subWeaponOrder	980
+ex_harpOrder	980
+lg_face	275,150
+lg_chest	0,272
+items	エルフの服,白いブラ,白いパンツ,ふっくらパン
+cmt_awake	...What?,Look
+cmt_sorry	Oh, I failed.
+cmt_bra	Don't take off my bra!
+cmt_noBra	Stop! I'm not wearing a bra!
+cmt_panties	Don't take off my panties!
+cmt_noPan	Stop! I haven't got panties on!
+cmt_erected	Fool!,Oh, big...
+figureTop	50
+
+name	ドワーフＡ
+keyName	フレデリカ
+img	dwa1
+edit	always
+sex	女
+race	ドワーフ
+power	10
+intellect	7
+piety	10
+vitality	10
+speed	5
+luck	6
+resist	眠り
+color	red,yellow,black,blue
+threeSize	94,60,90
+favoriteFood	beef
+dislikedFood	fish
+trim	120,40
+face	151,80
+main	92,249
+sub	279,240
+hideMain	140,245
+hideSub	233,240
+chest	96,149
+waist	96,309
+bust	125,167
+hip	123,330
+leg	96,511
+arm	73,195
+subArm	224,195
+hideArm	114,231
+subArmOrder	700
+ex_face	249,115
+ex_main	0,0
+ex_chest	178,174
+ex_waist	178,335
+ex_bust	244,192
+ex_hip	251,374
+ex_leg	178,568
+ex_arm	190,319
+ex_subArm	327,285
+ex_bowOrder	890
+ex_drumOrder	910
+ex_magicOrder	890
+ex_gripOrder	920
+ex_subArmOrder	900
+ex_subWeaponOrder	910
+lg_face	229,191
+lg_chest	0,348
+items	ドワーフ民族衣装,白いブラ,白いパンツ,ふっくらパン
+cmt_awake	...What?
+cmt_sorry	Sorry
+cmt_bra	Please don't take my bra～
+cmt_noBra	Please don't, I haven't got a bra on～!
+cmt_panties	Please don't take my panties～
+cmt_noPan	Please don't, I haven't got panties on～!
+cmt_erected	Eek!,Please stop
+figureTop	50
+
+name	ノームＡ
+keyName	ミューズ
+img	gno1
+edit	always
+sex	女
+race	ノーム
+power	7
+intellect	7
+piety	10
+vitality	8
+speed	10
+luck	7
+color	blue,purple,yellow,green
+threeSize	76,54,83
+favoriteFood	fish
+dislikedFood	liquor
+trim	123,66
+face	149,108
+main	102,394
+sub	304,391
+hideMain	160,255
+hideSub	247,253
+chest	88,181
+waist	88,345
+bust	144,199
+hip	117,373
+leg	88,538
+arm	82,320
+subArm	250,320
+hideArm	136,250
+subArmOrder	100
+ex_face	296,105
+ex_main	0,0
+ex_chest	221,174
+ex_waist	221,336
+ex_bust	282,185
+ex_hip	264,378
+ex_leg	221,596
+ex_arm	116,176
+ex_subArm	397,172
+ex_gripOrder	900
+ex_weaponOrder	890
+ex_subArmOrder	30
+ex_subWeaponOrder	890
+lg_face	264,203
+lg_chest	0,355
+items	ノームのローブ,白いブラ,白いパンツ,ふっくらパン
+cmt_awake	...Hmm?,What's that?
+cmt_sorry	Excuse me...
+cmt_bra	Don't take my bra...!
+cmt_noBra	No... I'm not wearing a bra...!
+cmt_panties	Don't take my panties...
+cmt_noPan	No... I've got no panties on...!
+cmt_erected	I'm scared,Eeek...!
+figureTop	50
+
+name	シルフＡ
+keyName	マルエット
+img	syl1
+edit	always
+sex	女
+race	シルフ
+power	5
+intellect	7
+piety	7
+vitality	6
+speed	10
+luck	12
+color	yellow,red,blue,purple
+threeSize	75,50,79
+favoriteFood	cake
+dislikedFood	vegetable
+trim	125,67
+cutIn	0,214
+face	153,115
+main	100,328
+sub	261,328
+hideMain	160,250
+hideSub	226,255
+chest	80,189
+waist	80,343
+bust	143,205
+hip	115,362
+leg	95,542
+arm	82,293
+subArm	247,293
+hideArm	105,242
+subArmOrder	100
+ex_cutIn	77,209
+ex_face	257,93
+ex_main	0,0
+ex_chest	168,157
+ex_waist	168,310
+ex_bust	226,174
+ex_hip	212,333
+ex_leg	168,525
+ex_arm	175,145
+ex_subArm	175,284
+ex_armOrder	900
+ex_gripOrder	920
+ex_subArmOrder	20
+ex_weaponOrder	910
+ex_bowOrder	910
+ex_drumOrder	910
+ex_magicOrder	910
+lg_face	255,184
+lg_chest	0,324
+skill	浮遊
+items	シルフのドレス,白いブラ,白いパンツ,ふっくらパン
+cmt_awake	...Huh!,Wait!
+cmt_sorry	I'm sorry ☆
+cmt_bra	What are you doing, pervert?!
+cmt_noBra	Stop! I'm not wearing a bra!
+cmt_panties	What are you doing, pervert?!
+cmt_noPan	Stop! I haven't got panties on!
+cmt_erected	Put it away!,You pervert!
+figureTop	50
+
+name	人間Ｂ
+keyName	リーゼル
+img	lise
+edit	freeModeOnly
+sex	女
+race	ヒューマン
+power	8
+intellect	8
+piety	5
+vitality	9
+speed	8
+luck	9
+color	brown,blue,green,yellow
+threeSize	83,55,86
+favoriteFood	fish
+dislikedFood	fruits
+trim	126,35
+face	151,76
+main	78,308
+sub	345,304
+hideMain	152,227
+hideSub	267,225
+chest	85,142
+waist	85,304
+bust	147,164
+hip	115,347
+leg	85,529
+arm	61,175
+subArm	242,172
+hideArm	132,223
+subArmOrder	790
+ex_face	249,83
+ex_main	0,0
+ex_chest	195,133
+ex_waist	195,311
+ex_bust	263,155
+ex_hip	251,345
+ex_leg	195,556
+ex_arm	44,82
+ex_subArm	347,171
+ex_armOrder	900
+ex_weaponOrder	915
+ex_bowOrder	910
+ex_magicOrder	910
+ex_harpOrder	910
+ex_drumOrder	910
+ex_gripOrder	920
+ex_subArmOrder	800
+ex_subWeaponOrder	890
+lg_face	257,128
+lg_chest	0,274
+items	布の服,白いブラ,白いパンツ,ふっくらパン
+cmt_awake	...Huh!,Wait!
+cmt_sorry	Sorry
+cmt_bra	Don't take off my bra!
+cmt_noBra	Stop! I'm not wearing a bra!
+cmt_panties	Don't take off my panties!
+cmt_noPan	Stop! I haven't got panties on!
+figureTop	50
+
+name	人間Ｃ
+keyName	テオ
+img	theo
+edit	freeModeOnly
+sex	男
+race	ヒューマン
+power	10
+intellect	8
+piety	5
+vitality	10
+speed	8
+luck	7
+color	orange,brown,blue,yellow
+desire	80
+favoriteFood	chicken
+dislikedFood	cake
+trim	122,20
+face	171,69
+main	57,344
+sub	325,340
+chest	63,117
+waist	63,309
+hip	96,346
+leg	63,551
+arm	34,287
+subArm	298,287
+subArmOrder	790
+items	トランクス,布の服,革のブーツ,ふっくらパン,ふっくらパン
+cmt_awake	...Hmm?,What's that?
+cmt_sorry	I'm sorry
+cmt_panties	<y>This can't be removed
+cmt_noPan	<y>This can't be removed
+
+name	エルフＢ
+keyName	マックス
+img	max
+edit	freeModeOnly
+sex	男
+race	エルフ
+power	10
+intellect	8
+piety	8
+vitality	10
+speed	11
+luck	10
+color	yellow,brown,green,orange
+desire	80
+favoriteFood	liquor
+dislikedFood	chickenWithLemon
+trim	130,25
+face	165,57
+main	66,333
+sub	300,340
+chest	38,111
+waist	38,339
+hip	82,363
+leg	38,579
+arm	44,286
+subArm	271,290
+subArmOrder	790
+items	布の服,トランクス,布のズボン
+cmt_awake	...What?,See that?
+cmt_sorry	Sorry, sorry.
+cmt_panties	Hey, don't take off my pants.
+cmt_noPan	What? Do you want to see my cock?

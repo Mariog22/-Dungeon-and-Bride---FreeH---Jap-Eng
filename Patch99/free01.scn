@@ -1,0 +1,1864 @@
+﻿; フリーモード用シナリオ
+
+
+
+
+;■イントロダクション
+
+*introduction_1
+
+; 導入
+@wait time=1000
+@gameon fade=true time=1000
+@playmapsound
+@wait time=1000
+[texton w=1]
+[b][nw]<About Free Mode>[/nw][/b][r]
+In Free Mode the player is not bound by the storyline, so you can focus solely on the game.[k]
+The scenarios will be minimal and necessary to complete the game, with only a storyline and generic quests aimed at defeating the final boss.[k]
+There are also no fixed members for the scenario. There is no specific protagonist either, so you can freely organize your party and proceed with the game. There are also no restrictions on lodging at inns.[k]
+In addition, characters such as Max and Riselle, who can't be altered in the story mode, can be freely created here for use in a party.[k]
+On the other hand, while it is free, it is also for advanced players, as no specific steps of the strategy are given and there are few necessary hints. It is intended for those who are familiar with this type of game.[k]
+In addition, [b]none of the events associated with the story or based on the inn system[/b] occur. If you want to see those, we recommend that you play the story mode.[k]
+Let the game begin. First, go to the guild and form a party.[k]
+[textoff]
+[eventoff]
+
+
+*introduction_2
+
+; 各種チュートリアル
+@wait time=500
+@addevent name=戦闘 num=1
+@call storage="main01.scn" target=*tutorial_1
+[if exp='tf.result']
+	[texton w=1]
+	There are various [b red]treasure chests, signs, buttons[b] and other items in the dungeon.[/b][k]
+	To interact with them, [b red]move to it[b] and either [b red]click[/b] on them, or press the [b red]interact button[b] (by default the space key or the third button on the game pad).[/b][k]
+	[textoff]
+[endif]
+@jump storage="main01.scn" target=*tutorial_3
+
+
+
+
+;■フリーモード用初回ギルド受付
+
+*city_3
+[texton w=0]
+[受付 f=desk_00]「Welcome to the Royal Guild. Here you can recruit fellow adventurers!」[k]
+[受付 f=desk_00]「By the way, what is the name of your party?」[k]
+[textoff]
+@jump storage="main04.scn" target=*input_party_name
+
+
+
+
+;■ポラリスの神殿
+
+*shrine_2
+@saveon
+@fg c=シュバルツ
+[texton w=1]
+[シュバルツ]「Hmm? Are you adventurers?」[k]
+There was an adventurer in the rear of the temple.[k]
+[シュバルツ]「My name is Schwarz. What are you guys doing here?」[k]
+You told him that you were here at the request of the Princess of Sapphire Castle.[k]
+[シュバルツ]「When I heard that the Temple of Polaris was being raided, I couldn't stand still.」[k]
+[シュバルツ]「...This temple is an important place dedicated to the god Polaris, who brought peace to this world. We must protect it.」[k]
+[シュバルツ]「I'd like to ask for your help.」[k]
+[シュバルツ]「You see, many monsters are gathered in the room ahead.」[k]
+[シュバルツ]「They intend to enter the Hall of the Gods ahead and destroy the altar. We must stop them at all costs.」[k]
+[シュバルツ]「When I see an opportunity, I intend to rush into the room and defeat the monsters. Would you guys be willing to fight with me?」[k]
+Your objectives are the same. You have decided to accept Schwarz's offer to fight together.[k]
+[textoff]
+@clf
+@eval exp='game.guest.entry(o.シュバルツ)'
+@se f=period
+@notice text="<y>Schwarz joined the party!"
+[eventoff]
+
+
+*shrine_3
+@saveon
+[texton w=0]
+We looked into the room and saw a large number of orcs loitering.[k]
+We stay where we are and observe the room.[k]
+[悪魔 v=vm026 f=07]「Seriously! Why won't it open?!」[k]
+Among the crowd of orcs was a demon.[k]
+The demon looks quite frustrated, as if something is not going her way.[k]
+[悪魔 v=vm027 f=08]「Grr～! How is this wretched door supposed to open?! I push and pull, and use unlocking magic, but it won't even budge!」[k]
+Apparently the demon is really struggling to open the stone door in front of her.[k]
+[悪魔 v=vm028 f=07]「That damn god is really pissing me off! There's no way a door should be enough to keep me out!」[k]
+∗bang!∗[k]
+The demon, perhaps considerably annoyed, kicks the hard stone door with hatred.[k]
+[悪魔 v=vm029 f=08]「Grr～! If that's how you want it, I'll go in there, even if I have to smash through the wall!」[k]
+[悪魔 v=vm030 f=07]「You lot! Smash through this wall with everything you've got!」[k]
+[オーク]「Rrrragh!」[k]
+Obeying the demon's orders, all the orcs began to attack the temple walls![k]
+They slam their axes and hammers vigorously against the wall, over and over again. The temple shakes slightly, and a sound like a rumbling of the earth echoes throughout the temple.[k]
+And... the stone walls began to fall apart due to the destructive activities of these orcs.[k]
+[シュバルツ]「This isn't good... If we don't do something...」[k]
+[シュバルツ]「We cannot let them destroy our precious temple. We must stop it...!」[k]
+[textoff]
+@wait time=500
+@walk move=n
+@walk move=n
+@wait time=500
+[texton w=1]
+[シュバルツ f=07]「Stop!」[k]
+@fg c=悪魔 f=06
+[悪魔 v=vm031 f=06]「Hmm? Is someone here?」[k]
+[シュバルツ f=07]「I will not allow you to desecrate the Temple any further!」[k]
+[悪魔 v=vm032 f=05]「What? Adventurer! You're not going to get in my way!」[k]
+[シュバルツ f=07]「Stop the destruction of the Temple now!」[k]
+[悪魔 v=vm034 f=07]「Shut up! Who's going to stop, you idiot! Don't you dare give me orders like that!」[k]
+[悪魔 v=vm035 f=07]「Orcs! Defeat these disgusting humans!」[k]
+@se f=wing1
+@fg c=8001 left=440 top=-60
+The demon unfurled her wings and soared out of reach.[k]
+[オーク]「Rrrragh!」[k]
+Suddenly, all the orcs attack![k]
+[シュバルツ]「We'll deal with the demon later! Let's clean up these orcs first!」[k]
+[textoff]
+@clf
+
+@monster pos=0 name=オーク
+@monster pos=1 name=オーク
+@monster pos=2 name=オーク
+@monster pos=3 name=オーク
+@monster pos=4 name=オーク
+@monster pos=5 name=オーク
+@monster pos=6 name=オーク
+@monster pos=8 name=オークソルジャー
+@monster pos=9 name=オークソルジャー
+@monster pos=10 name=オークソルジャー
+@monster pos=11 name=オークソルジャー
+@monster pos=12 name=オークソルジャー
+@callbattle escape=false
+
+@fg c=8002 left=440 top=-60
+[texton w=1]
+[悪魔 v=vm036 f=12]「Wow, seriously? ...Pathetic!」[k]
+[悪魔 v=vm037 f=08]「Unh～! I hate you～! Seriously, what the hell is wrong with you people!」[k]
+The devil, who had been watching the battle from the air, yells her frustration.[k]
+[シュバルツ f=07]「I won't let you run amok! Come down here, devil!」[k]
+[悪魔 v=vm038 f=07]「Hmph! Who the hell would?!」[k]
+[シュバルツ f=07]「Why are you attacking this temple?! What do you want?!」[k]
+[悪魔 v=vm039 f=05]「Huh? This place is dedicated to a god. It's only natural that I, a devil, want to destroy it, isn't it?」[k]
+[悪魔 v=vm040 f=08]「Besides, Polaris, the god here, was the one who was dumb enough to seal me away in the past!」[k]
+The god Polaris seems to have a history with this demon.[k]
+[悪魔 v=vm041 f=08]「That's why I'm so pissed off! I won't be satisfied unless I get my revenge!」[k]
+[悪魔 v=vm042 f=06]「There are still other monsters in this world that were sealed away in the previous crusade...」[k]
+[悪魔 v=vm043 f=15]「I'm going to set them all free and let them ravage this world! I'm going to ruin everything!」[k]
+[シュバルツ f=07]「Nah... Why would you do such a thing!」[k]
+[悪魔 v=vm044 f=05]「Huh? I'm a demon. Of course I want to destroy the human world!」[k]
+[悪魔 v=vm045 f=06]「The world was originally ruled by us demons, you know? Then, the annoying gods and angels sided with you humans and drove the demons out of this world...」[k]
+[悪魔 v=vm046 f=15]「That's why I'm going to free all the sealed demons and monsters and return them to the world under my rule! Get it?」[k]
+[シュバルツ f=07]「I will not let you and your demons have your way! You won't get away with what you're up to!」[k]
+[悪魔 v=vm047 f=15]「If you can, why don't you try it? There's no way you idiots can stop me, though～」[k]
+[textoff]
+@se f=wing2
+@cl
+@wait time=500
+@walk turn=s
+@wait time=500
+[texton]
+With that, the demon flapped her wings furiously as she headed for the temple exit.[k]
+[シュバルツ f=07]「Wait! Don't let it get away!」[k]
+@fg c=8002 left=440 top=-60
+[悪魔 v=vm048 f=07]「Who the hell is going to get caught by you people! Just die already, you idiot!」[k]
+@se f=wing2
+@cl
+And with that final retort, she left the temple...[k]
+[シュバルツ]「I never thought the devil would try to overthrow the world... We can't just let this go.」[k]
+[？？？ v=vp001 key=ポラリス noface buf=12]「Adventurers... please come to the altar room...」[k]
+Suddenly, someone's voice echoed throughout the room.[k]
+[シュバルツ]「Hmm? Who are you?」[k]
+Someone is calling out to us from somewhere.[k]
+[？？？ v=vp002 key=ポラリス noface buf=12]「Please come to the altar room...」[k]
+[textoff]
+@wait time=500
+@walk turn=n
+@wait time=500
+[texton]
+The mysterious voice seems to come from behind the closed stone door.[k]
+[シュバルツ]「The altar room is the very place the demon was trying to enter earlier. It appears we're being invited inside.」[k]
+That said, the stone door is still in the way...[k]
+The demon couldn't budge it earlier.[k]
+So how do we get to the altar...?[k]
+[textoff]
+[eventoff]
+
+
+*shrine_4
+@saveon
+[texton]
+I took another look at the stone door.[k]
+It looks really heavy, and I can't tell how to open it. How on earth can I...[k]
+@wait time=500
+@playse storage=tremble
+@quake time=3000 hmax=5 vmax=0
+∗rumble∗[auto time=1000]
+@stopquake
+@playse storage=rockdrop
+@changewall himg=arch type=space behind=true
+Standing in front of the door, it began to move with a heavy thud, opening the way to the altar room![k]
+The door opened as if inviting us in. Did whoever spoke to us open it?[k]
+[シュバルツ f=02]「Well, at any rate, the door is open. Let's go inside for now.」[k]
+[textoff]
+[eventoff]
+
+
+*shrine_5
+@saveon
+[texton]
+At the far end of the altar room was a large stone pillar, with a stone monument standing in front of it.[k]
+I brought my face close to the stone monument to read the words on it, when...[k]
+[textoff]
+@image layer=e0 mode=psdodge5 opacity=0 storage=screen_white visible=true
+@move layer=e0 time=500 path=,,96
+@wm
+@wait time=1000
+[texton]
+∗pweeew∗[k]
+Suddenly, the surrounding walls began to glow![k]
+The light fills the entire room with a gentle glow.[k]
+[？？？ v=vp004 key=ポラリス f=polaris_99 buf=12]「Brave ones, welcome to this altar.」[k]
+It is the voice from earlier! The voice, wherever it is coming from, echoes throughout the room.[k]
+[？？？ v=vp005 key=ポラリス f=polaris_99 buf=12]「I am Polaris, god of harmony.」[k]
+[シュバルツ f=00]「Lady Polaris?!」[k]
+Polaris, god of harmony. One of the four great gods who watch over this world.[k]
+So, this voice is the voice of God?![k]
+[ポラリス v=vp007 f=polaris_99]「I've been waiting for brave souls like you.」[k]
+[ポラリス v=vp008 f=polaris_99]「Thank you for protecting the temple from the demons earlier. This is the only place where my voice can be heard by the people. Such an important place was about to be lost.」[k]
+[ポラリス v=vp009 f=polaris_99]「That demon you drove away just now is one of the senior demons who bring chaos to this world. Her name is Murmur.」[k]
+[ポラリス v=vp010 f=polaris_99]「Murmur is very magical and also very cunning. For the sake of world peace, she must not be left unchecked.」[k]
+; ↓ v=vp013 のアレンジ
+[ポラリス v=vp113 f=polaris_99]「To destroy her, you need my power as a god. Help me manifest in this world.」[k]
+[ポラリス v=vp014 f=polaris_99]「I reside in the world of gods. I cannot wield sufficient power as it is. For me to be powerful, I must descend to this world!」[k]
+[ポラリス v=vp015 f=polaris_99]「Collect 12 Magic Stones.」[k]
+[ポラリス v=vp016 f=polaris_99]「Magic Stones are special gems that contain my divine power. Collecting them all can accomplish miracles!」[k]
+[ポラリス v=vp017 f=polaris_99]「Please visit here again after you have collected the 12 Magic Stones. Then I will be able to descend to earth.」[k]
+We asked where these magic stones were.[k]
+[ポラリス v=vp018 f=polaris_99]「I do not know that. They were once enshrined in this temple, but over the last several hundred years, they have been pillaged.」[k]
+[ポラリス v=vp019 f=polaris_99]「They are lost, but not destroyed. Although it is slight, I can sense the power of the twelve Magic Stones.」[k]
+[ポラリス v=vp020 f=polaris_99]「Some may not be far off. You simply need search for them.」[k]
+[リーダー f=06]「...」[k]
+It's like trying to catch a cloud... finding a rock who knows where...[k]
+[シュバルツ f=00]「Magic Stones. Well, I heard that someone I know has one in his possession.」[k]
+[ポラリス v=vp021 f=polaris_99]「Magic Stones are very beautiful and luminous gemstones, and are of incomparably higher value.」[k]
+[ポラリス v=vp022 f=polaris_99]「Therefore, the inhabitants of this world must be taking good care of them. You would not treat one roughly or throw it away.」[k]
+[シュバルツ f=00]「I have heard many rumors, not only from my acquaintances but also from others, of people possessing what may be Magic Stones. Following those rumors could well be valuable.」[k]
+If that's the case, it's worth looking for.[k]
+We communicated our willingness to try to find the 12 magic stones.[k]
+[ポラリス v=vp024 f=polaris_99]「Thank you, brave adventurer.」[k]
+[ポラリス v=vp025 f=polaris_99]「Please observe the monument in front of you.」[k]
+[textoff]
+@reduceinfo
+@image layer=4 storage="crystal_slot" left=227 top=102 visible=true
+[texton w=2]
+On it, several crystals were laid out in a circle.[k]
+There were 12 crystals in total. This is consistent with the number of Magic Stones mentioned by the god Polaris.[k]
+[ポラリス v=vp026]「Each of these crystals reacts and glows when a Magic Stone is brought close to it, if it is real.」[k]
+[ポラリス v=vp027]「In other words, when all these 12 crystals light up, I can descend unto this world.」[k]
+[ポラリス v=vp028]「Right now, not a single crystal is lit, but as you collect Magic Stones, the number of crystals that light up will gradually increase.」[k]
+[ポラリス v=vp029]「Once you have collected all the Magic Stones, approach this monument again. Then I will be able to appear before you.」[k]
+[textoff]
+@layopt layer=4 left=0 top=0 visible=false
+@w05
+[texton w=0]
+[ポラリス v=vp030 f=polaris_99]「Then I will return once more to the world of the gods. If you need anything else, please come back here and call on me.」[k]
+[textoff]
+@move layer=e0 time=500 path=,,0
+@wm
+@layopt layer=e0 opacity=255 visible=false
+[texton]
+The ambient light gradually faded, and the voice of Lady Polaris could no longer be longer heard.[k]
+[textoff]
+@fg c=シュバルツ
+[texton w=1]
+[シュバルツ]「I know it's hard work, but this job is something only we adventurers can do. Let's work together.」[k]
+[シュバルツ]「I'll follow that devil. See you later.」[k]
+[textoff]
+@cl
+@se f=period
+@eval exp='game.guest.removeMember(o.シュバルツ)'
+@notice text="<y>Schwarz left the party."
+
+@addevent name=サファイア城 num=4
+@eval exp='o.ポラリス神殿を守ってほしい.flag = 1'
+@addevent name=サファイアシティ num=15
+[eventoff]
+
+
+*shrine_6
+
+; サファイア城（姫謁見後からの派生）
+; 新規クエスト等を追加する
+@addevent name=サファイアシティ num=2
+@eval exp='o.ドロシーの魔法店.appeared = o.ドロシーの魔法店.visible = true'
+@eval exp='o.ベトリヌスの酒場.quests.remove(o.ポラリス神殿を守ってほしい)'
+@eval exp='o.ベトリヌスの酒場.quests.unshift(o.コボルド退治)'
+@eval exp='o.ベトリヌスの酒場.quests.add(o.盗賊メンバー派遣の依頼　)'
+@eval exp='o.ベトリヌスの酒場.quests.add(o.スライム軍団の討伐)'
+@addevent name=ランドン渓谷・崖上 num=7
+@delevent name=闘技場 num=0
+[townoff]
+
+＜ベトリヌスの酒場・クエストの流れ＞
+
+墓参り
+ポラリス神殿を守ってほしい―┬→コボルド退治―┬→ ワイルド・ブルのアジトを探せ
+														│								│		※枠が空き次第追加
+														│								│
+														│								│※上記受領により派生
+														│								└→ オークの拠点を制圧せよ
+														│											※終わらせることで警備隊長が戻る
+														│
+														├→スライム軍団の討伐 → オーケストラを作りたい → 飛び入り参加求む！
+														├→盗賊メンバー派遣の依頼　
+														└→若さを維持したい
+
+・枠が空き次第追加（警備隊長が戻っていることが必要）
+		売春組織の実体を暴け
+		教団を壊滅させろ
+		ワイルド・ブル壊滅作戦（「ワイルド・ブルのアジトを探せ」が終わっている事が必要）
+
+・枠が空き次第追加
+		人身売買の証拠をつかめ
+
+
+
+
+;■古代の迷宮
+
+*labyrinth_2
+
+; 古代の迷宮・入口の部屋
+@saveon
+@fg c=devil_yellow left=450 top=-15
+[texton]
+[name n="Lesser Devil" f=devil_00]「What?! What the hell are you doing?」[k]
+To my surprise, as soon as we entered, there was the ringleader of the incident![k]
+[name n="Lesser Devil" f=devil_00]「Oh? You're to rescue the women?」[k]
+[name n="Lesser Devil" f=devil_00]「That's not going to happen. They're part of the nursery.」[k]
+[name n="Lesser Devil" f=devil_00]「I need them to build up a big army of Headless. You can't have them.」[k]
+[if exp='game.party.getFirstHeroine() !== void']
+	[name n="Lesser Devil" f=devil_00]「...Hey, some of you guys would work too. Great, I'll catch you and add you to the nursery!」[k]
+[endif]
+[textoff]
+@clf
+
+; レッサーデビルと戦闘
+@monster pos=3 name=レッサーデビル
+@callbattle bgm=boss escape=true gameover=true
+; 勝利
+
+[texton]
+[name n="Lesser Devil" f=devil_00]「Damn, too strong! Time to retreat!」[k]
+The Lesser Devil, now afraid of us, ran out of the room in a panic![k]
+We chased after it to try and discover where the girls are![k]
+[textoff]
+@walk move=n
+@walk move=n
+@walk move=n
+[eventoff]
+
+
+*labyrinth_3
+
+; 古代の迷宮・奥の通路
+@fgf c=9003 left=450 top=140
+[texton]
+[name n="Lesser Devil" f=devil_00]「...!」[k]
+There the Lesser Devil is![k]
+[name n="Lesser Devil" f=devil_00]「Damn! Persistent bastards!」[k]
+@cl
+We continue chasing after the Lesser Devil![k]
+[textoff]
+@wait time=200
+@walk move=s
+@wait time=100
+@playse storage=door2
+@changefloor type=air trap=air img=void info=空中 x=6 y=3
+@changefloor type=air trap=air img=void info=空中 x=6 y=2
+@wait time=500
+[texton]
+[リーダー f=05]「...!」[k]
+Suddenly, the floor opens beneath us! It's a pit![k]
+[name n="Lesser Devil" f=devil_00]「Pfft, you idiot!」[k]
+[textoff]
+[eventoff]
+
+
+*labyrinth_4
+
+; 古代の迷宮・地下の部屋
+@saveon
+[texton]
+With a violent impact, we hit the ground.[k]
+We were dropped underground. It seems we fell right into a cunning trap...[k]
+Looking around, it's a large underground room. It is dimly lit and there is nothing around.[k]
+[textoff]
+@wait time=200
+@walk move=s
+@wait time=50
+@walk turn=w
+@wait time=300
+[texton]
+And looking more closely, there's something moving in the darkness of the room.[k]
+Then I heard the gasps of many women![k]
+[textoff]
+@w05
+@eval exp='sf["picevent46"] = true'
+@bg f=event46_p0_01
+[texton w=2]
+[少女]「Haa, haa...」[k]
+; @bg f=event46_p0_02
+[少女]「Ahh... no...!」[k]
+; @bg f=event46_p0_03
+[少女]「Ahh... it feels good...!」[k]
+; @bg f=event46_p0_04
+[少女]「Ah... Ah... Ah... Ah...」[k]
+Dozens of naked men and women were copulating in front of me.[k]
+The girls are forced to lie prone on the floor or on all fours in a state of undress, while muscular men fuck them with single-minded devotion.[k]
+It is a very bizarre sight, but what amazes me most is the way the men look.[k]
+The men's heads are all missing![k]
+The men, who had lost everything from the neck up, were vigorously shaking their hips, with only their crotches standing strong.[k]
+It is alive. Even without a head, its body is rather full of vitality. The reproductive functions are clearly functioning.[k]
+If you look, you can see an opening where the head should have been, and what looks like fangs or a tongue are peeking out from inside. Could it be that they eat with the hole in the neck?[k]
+[name n=Monster f=headless_00]「Kooooooooooooo...!」[k]
+@bg f=event46_p0_02
+[少女]「Ah, nooooo...!」[k]
+Suddenly, one of the monsters ejaculated.[k]
+A large amount of semen pours into the girl's widely spread vagina, flooding outward from where they're joined.[k]
+Could she become pregnant... with a monster's child?[k]
+The sexual acts continue endlessly. It's an unceasing repetition of the collision of flesh and flesh.[k]
+In this bizarre place, the girls are now in a state of delirium. They are about to be consumed by madness.[k]
+[textoff]
+@out
+@w05
+
+@gameon
+@fg c=悪魔
+[texton w=1]
+[？？？ v=vm049 key=ムールムール buf=13]「Ha! Surprised, you new sacrifices?」[k]
+We hear a familiar female voice. It's the demon Murmur...![k]
+Is she up to something again?[k]
+[ムールムール v=vm050 f=01]「This is a factory for the creation of Headless soldiers. Here, human women are impregnated with Headless children to create new soldiers.」[k]
+[ムールムール v=vm051 f=04]「A Headless is literally a person without a head. In layman's terms, a brainless moron! ♪」[k]
+[ムールムール v=vm052 f=15]「No brain, no ability to think about anything. They just eat and fuck... Gahahahaha! Isn't that funny?
+ 」[k]
+[ムールムール v=vm053 f=01]「Headless grow up very fast ♪ They're born within a week of conception and become adults within three weeks.」[k]
+[ムールムール v=vm054 f=04]「So just a month after conception, you've got a mature man with a strong body and cock ♪」[k]
+[ムールムール v=vm055 f=01]「The Headless that grow will create more new Headless, doubling in one month and quadrupling in two months.」[k]
+[ムールムール v=vm056 f=15]「As long as there are human women, the number of Headless will increase super fast! Isn't that great?」[k]
+[ムールムール v=vm057 f=01]「They're stupid, so if you offer them food and sex, they'll do whatever you say.」[k]
+[ムールムール v=vm058 f=03]「Keep making more and more, and in no time at all, we'll have a large army of Headless soldiers! Then, no adventurers will be able to compete with them! Hehe, I'm so smart～!」[k]
+Don't even think of such a horrifying plan... Such a horrible scheme must be foiled![k]
+[if exp='game.party.getFirstHeroine() !== void']
+	[ムールムール v=vm059 f=01]「Hehe, you guys will soon become their playthings too.」[k]
+	[ムールムール v=vm060 f=15]「But don't be afraid! Soon enough, you'll feel so good about having sex with those guys that you won't care about anything else! Gahahaha!」[k]
+	[ムールムール v=vm065 f=15]「Come on, Headless! Strip them and make the women your cock slaves! The men are food!」[k]
+[else]
+	[ムールムール v=vm066 f=15]「Come on, Headless! Strip them, chop them up and eat them!」[k]
+[endif]
+@fg l=headless_beige left=150 top=50 b
+@fg c=headless_beige left=350 top=50 b
+@fg a=headless_beige left=550 top=50 b
+@fg r=headless_beige left=750 top=50
+[name n=Headless f=headless_00]「...!」[k]
+With the devil's command, the Headless all turned towards us.[k]
+[name n=Headless f=headless_00]「Gooooooooo...」[k]
+A group of Headless approach with an eerie low growl. Behind them is a wall, and there is no way out.[k]
+...It appears we have no choice but to take these guys down.[k]
+[textoff]
+@clf
+
+; ヘッドレスと戦闘
+; 一時的にコマンドを外す
+@eval exp='m.ヘッドレス.btcmd.remove(o.化物陵辱)'
+@eval exp='m.ヘッドレス.btcmd.remove(o.仲間を呼ぶ)'
+@monster pos=0 name=ヘッドレス
+@monster pos=1 name=ヘッドレス
+@monster pos=2 name=ヘッドレス
+@monster pos=3 name=ヘッドレス
+@monster pos=4 name=ヘッドレス
+@monster pos=5 name=ヘッドレス
+@monster pos=6 name=ヘッドレス
+@monster pos=7 name=ヘッドレス
+@monster pos=8 name=ヘッドレス
+@monster pos=9 name=ヘッドレス
+@monster pos=10 name=ヘッドレス
+@monster pos=11 name=ヘッドレス
+@monster pos=12 name=ヘッドレス
+@monster pos=13 name=ヘッドレス
+@callbattle bgm=boss gameover=true
+; 戦闘勝利
+; コマンドを元に戻す
+@eval exp='m.ヘッドレス.btcmd.push2(o.化物陵辱, o.仲間を呼ぶ)'
+@eval exp='game.party.minimumRecovery()'
+
+@fg c=悪魔 f=12
+[texton w=1]
+[ムールムール v=vm067 f=12]「Seriously...? Defeating that large army...!」[k]
+@fgf c=悪魔 f=07
+[ムールムール v=vm068 f=07]「Damn! Headless are way too weak! They're totally useless!」[k]
+@se f=wing2
+@cl b
+@fg c=8002 left=440 top=-60
+Murmur spreads her wings and flies up in a flurry of wingbeats.[k]
+[ムールムール v=vm070 f=07]「You're never getting out of there anyway! Go die in that dark hole! Idiots!」[k]
+[textoff]
+@se f=wing2
+@cl
+[texton w=0]
+With another parting insult, Murmur flew out through the hole in the ceiling through which we'd fallen.[k]
+Speaking of which, are the girls who were captured safe? We rush toward the girls.[k]
+[textoff]
+@fg c=priest_purple_nude left=450
+[texton w=1]
+[少女 f=priest_purple_02]「Mostly... Thank you very much.」[k]
+The girls thank us one after another. They seem to be completely exhausted, but their condition isn't bad, all things considered.[k]
+We identified ourselves as adventurers, and told the girls we'd find a path leading to the exit of the labyrinth and come to their rescue afterwards.[k]
+[少女 f=priest_purple_03]「Oh, wait a minute, Adventurer!」[k]
+[少女 f=priest_purple_02]「Actually, I have a knack for healing magic. Before you go, I could help you recover?」[k]
+[textoff]
+@clf
+
+; 回復とレベルアップ
+@call storage="anime.ks" target=*fountain_star
+@eventsleep effect=false
+@changefloor pimg=human
+
+@fgf c=priest_purple_nude left=450
+[texton w=1]
+[少女 f=priest_purple_02]「Beyond this room is a vast labyrinth.」[k]
+[少女 f=priest_purple_02]「It is a very complicated maze. If you don't have a map, you could be wandering around in there forever!」[k]
+[少女 f=priest_purple_02]「Moreover, more Headless infest it. It will be extremely difficult to break through. Please be careful.」[k]
+[textoff]
+@clf
+[eventoff]
+
+
+*labyrinth_5
+
+; 古代の迷宮・入口の部屋
+@fg c=devil_yellow left=450 top=-15
+[texton]
+[name n="Lesser Devil" f=devil_00]「Who's that?」[k]
+[name n="Lesser Devil" f=devil_00]「Y-you guys...?! How the hell did you get out of that labyrinth?!」[k]
+[name n="Lesser Devil" f=devil_00]「Damn...! If that's how it is, I'll do whatever it takes to take you guys down! Hey, guys, gather round!」[k]
+At the order of Lesser Devil, his minions gathered from all over the place. The other side was also fighting with all its might.[k]
+[textoff]
+@clf
+
+; 再びレッサーデビルと戦闘
+@monster pos=1 name=オークソルジャー
+@monster pos=2 name=スケルトンガード
+@monster pos=4 name=スケルトンガード
+@monster pos=5 name=オークソルジャー
+@monster pos=10 name=レッサーデビル
+@callbattle bgm=boss escape=false gameover=true
+; 勝利
+@out
+@wait time=500
+@saveon
+
+[texton]
+Having defeated the enemy, we lowered a rope ladder into the underground room and succeeded in rescuing all the girls.[k]
+We then returned safely to the village with the rescued girls.[k]
+[textoff]
+@wait time=500
+
+; シーガルの村
+@eval exp='game.view.close()'
+@eval exp='game.openTownView(o.シーガルの村)'
+@gameon
+@mu f=beach
+[texton]
+[name n=Villager]「Thank you! Thank you so much!」[k]
+[name n=Villager]「It is truly a dream come true to see my daughter again. How can I ever thank you guys enough...」[k]
+[name n="Village Chief"]「You guys have been such a great help. This is just a small thank you from the villagers. Please accept it.」[k]
+[textoff]
+
+@complete name=さらわれた少女たちの救出
+@treasure item=エメラルドの魔石
+
+@wait time=500
+@eval exp='game.enterTown(o.シーガルの村, o.かもめ亭, true)'
+@delevent map=古代の迷宮Ｂ２ num=3
+@delevent map=古代の迷宮Ｂ２ num=4
+@changefloor map=古代の迷宮Ｂ２ x=6 y=2 pimg=void
+@changefloor map=古代の迷宮Ｂ２ x=1 y=3 pimg=void
+@addevent name=かもめ亭 num=10
+[eventoff]
+
+
+
+
+;■ワイルド・ブルイベント・ヒューマン
+
+;◇ワイルド・ブルイベント01
+*hum_wildbull_01
+
+; ワイルド・ブルのアジト
+@saveon
+[texton w=0]
+[リーダー] entered their hideout in search of the captive [リム].[k]
+[リーダー]「[リム]!」[k]
+[textoff]
+@fg c=リム e=奴隷の鎧・上,奴隷の鎧・下 f=09
+[texton w=1]
+[リム f=09]「...」[k]
+When [リム] was called, she emerged... But![k]
+[リム]'s breasts are basically fully exposed. While her crotch is barely covered, her butt is completely visible.[k]
+@fg r=アレックス e=上半身裸 left=600 f=00
+[アレックス f=00]「Kuku, isn't it a pretty good look?」[k]
+Then Alex appears. Alex smiles slyly and stands next to [リム], holding her by the shoulders.[k]
+[アレックス f=01]「I own this girl. You have no right to complain.」[k]
+[リム f=10]「...」[k]
+[リーダー] hates to admit it, but Alex is right. There is nothing the party can do about [リム] now.[k]
+@fg a=alex_touch_hand left=520 b
+@fg r=アレックス e=触り left=520 f=02 b
+@fg c=リム f=37
+[アレックス f=02]「It's up to me how I treat this girl. Like this...」[k]
+[リム v=vh634 f=25]「Ah...!」[k]
+Alex roughly grabbed [リム]'s nipples from behind.[k]
+[リム v=vh635 f=37]「Oh... No...!」[k]
+Alex rubbed and twisted [リム]'s exposed nipples with a dirty touch.[k]
+[リム v=vh636 f=37]「Ah... Oh... No... Ah...! No...!」[k]
+[アレックス f=02]「Kukuku, are you starting to feel it?」[k]
+[リム]'s cheeks are stained with embarrassment, and a small voice escapes as if she has felt it.[k]
+Alex continued to tease [リム]'s nipples by kneading and pinching them with his fingers.[k]
+[リム]'s nipples were pointy and elastic, repelled by the movement of Alex's fingers.[k]
+[リム v=vh637 f=37]「Ah... Oh... No... I can't do this in front of the captain... Ahh...!」[k]
+[リム]'s voice gradually turns distressed. She is feeling Alex's caresses.[k]
+[アレックス f=02]「Kuku, you're not so sure about that.」[k]
+[リーダー] could do nothing but watch helplessly as [リム]'s chest was fondled by Alex...[k]
+@cl a b
+@fg r=アレックス e=上半身裸 left=600 f=02 b
+@fg c=リム f=38
+[アレックス f=02]「I'm going to [if exp='o.リム.getTotalSexCount() == 0']turn her into a woman[else]screw her again[endif] tonight.」[k]
+[アレックス f=02]「So, what do you say? You want to fight, I'll fight you.」[k]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+@fg r=アレックス left=600 f=05
+[アレックス f=05]「What the hell?」[k]
+[アレックス f=05]「...Huh, all right. But you might not like the result! Hey, [リム], fight hard!」[k]
+@fg c=リム f=29
+[リム v=vh638 f=29]「Ha... Yes...」[k]
+Alex and [リム] went straight into battle stance.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*hum_wildbull_02
+
+; ワイルド・ブルのアジト
+@saveon
+@fg c=アレックス e=汗だく・勃起 f=06
+[texton w=1]
+[アレックス f=00]「Hey, you guys.」[k]
+Alex appeared in front of us, naked and with his penis standing upright.[k]
+[アレックス f=0]「Sorry, sorry, I was in the middle of an orgy.」[k]
+@fg c=アレックス f=01
+[アレックス f=00]「Oi! Get over here!」[k]
+Alex beckons someone at the back of the room.[k]
+@cl b c
+@fg l=アレックス f=06 b
+@fg r=リム e=汗だく f=64
+[リム v=vh639 f=64]「Yes, Alex. Do you need something...?」[k]
+[リーダー f=12]「...!」[k]
+[リム] walks over, naked, and stands in front of Alex.[k]
+@fg r=リム f=31
+[リム v=vh640 f=31]「Captain...!」[k]
+[リム] looks surprised when she notices us.[k]
+However, she doesn't try and cover her exposed and sweaty body.[k]
+@fg l=アレックス f=04
+[アレックス f=00]「We were having some fun just now, huh?!」[k]
+@fg r=リム f=64
+[リム f=64]「...」[k]
+[アレックス f=00]「This woman's really sensitive. If I poke the back of her pussy with the tip of my cock, she'll cum immediately.」[k]
+[リム f=64]「... (Kyaa)」[k]
+@fg l=アレックス f=02
+[アレックス f=00]「You like guys to fuck you from behind, don't you?」[k]
+[リム f=64]「...」[k]
+[リム]'s face is bright red. But she doesn't deny Alex's words.[k]
+∗squelch∗[k]
+@fg r=リム f=37
+[リム v=vh641 f=37]「Ahh...!」[k]
+A clear liquid dribbled down [リム]'s thighs from her crotch.[k]
+@fg l=アレックス f=04
+[アレックス f=00]「Gahahaha! Was the thought of it enough to make you wet?」[k]
+@fg r=リム f=40
+[リム f=40]「... (Kyaa)」[k]
+@fg l=アレックス f=02
+[アレックス f=00]「What a perverted woman. Gahahahaha!」[k]
+[リム f=64]「...」[k]
+[アレックス f=00]「So, what are you going to do? Are you going to fight me?」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [リム], fight hard!」[k]
+[リム v=vh642 f=29]「L-like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+Alex and [リム] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+
+
+;◇ワイルド・ブルイベント03
+*hum_wildbull_03
+
+; ワイルド・ブルのアジト
+@saveon
+@out
+@bg chara=リム f=event12 p0=01 p1=hair p2=01 p3=01
+[texton w=2]
+[リーダー f=11]「...!」[k]
+There was a naked [リム].[k]
+[リム] isn't wearing a single thread. She has her hands on the wall and her butt sticking out.[k]
+[アレックス f=00]「This girl's pussy is already wet! Come on, feel free to thrust your cock into this lascivious hole!」[k]
+Beyond [リム] was Alex. Alex grins down at [リム], who looks embarrassed.[k]
+@bg chara=リム f=event12 p0=01 p1=hair p2=02 p3=01
+A naked man approaches her.[k]
+[name n=Customer]「Hehe, she's a pretty good woman. This should be good.」[k]
+The man's crotch is fully erect, and he approaches [リム] with excitement.[k]
+No way, are you intending to have sex with [リム]?![k]
+[textoff]
+
+@gameon
+@fgf c=thief_green_fight2
+[texton w=1]
+[盗賊 f=thief_green_02]「Oops, customers, please wait your turn. And pay in advance.」[k]
+One of Alex's friends stood in front of [リーダー] when they approached [リム].[k]
+[盗賊 f=thief_green_02]「[リム]? Are you guys her friends by any chance?」[k]
+[リーダー] asked the man what he was planning to do.[k]
+[盗賊 f=thief_green_01]「Kuku, what do you think? We're making her take customers, of course!」[k]
+@fg c=アレックス f=02
+[アレックス f=02]「So there you have it. Head home if you understand.」[k]
+[リーダー] is outraged at their terrible treatment of [リム].[k]
+But [リーダー] has no right to speak. The rules of the duel are absolute. Once you lose a duel and your friends are taken, you have no choice but to give up.[k]
+[textoff]
+@out
+
+@bgf chara=リム f=event12 p0=02 p4=hair p5=01
+[texton w=2]
+[name n=Customer]「Hehehe... Then, it's about time to put it in...」[k]
+@bg chara=リム f=event12 p0=02 p4=hair p5=02
+∗slurp∗[k]
+[リム v=vh643 f=37]「Aaahh...!」[k]
+[name n=Customer]「It looks like it's wet enough... I'll push it in as it is.」[k]
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+[if exp='isDemoVersion']
+	@call storage="hevent.ks" target=*trial_version_return
+	@jump target=*_skip_trial_version_hum
+[endif]
+;-----------------------------------------------------------------------
+[textoff]
+@outf
+
+@gameon
+@fgf c=アレックス f=02
+[texton w=1]
+[アレックス f=02]「Oh yeah, today's the first time she's served a customer.」[k]
+[アレックス f=02]「But all you can do is watch while your old friend surrenders her body to a man she doesn't even know, for money.」[k]
+[textoff]
+@outf
+
+@bgf chara=リム f=event12 p0=02 p4=hair p5=02
+[texton w=2]
+∗sluurp∗[k]
+[リム v=vh644]「Ahhhh...!」[k]
+The bloodshot glans sinks into [リム] as the customer thrusts his hips forward![k]
+[name n=Customer]「Okay, let's go...」[k]
+@bg chara=リム f=event12 p0=02 p4=hair p5=03
+∗thrust∗[k]
+[リム v=vh645]「Oh... No... No... No...!」[k]
+The hardened meat pole slowly penetrates into [リム], little by little. And then...[k]
+@bgf chara=リム f=event12 p0=02 p4=hair p5=04
+@quake time=500 hmax=5 vmax=5
+∗sliip!∗[k]
+[リム v=vh646]「Aaaaaa...!」[k]
+Finally, the customer was inserted deep into her! [リム] was completely defiled.[k]
+[name n=Customer]「Ohhhhhhh, this is good. I might not last long.」[k]
+[リム], who was always so innocent and cheerful, had a penis inserted into her by a man she didn't know.[k]
+[name n=Customer]「Now, let me have some fun... Here you go!」[k]
+@bg chara=リム f=event12 p0=02 p4=hair p5=05 t=500
+@bg chara=リム f=event12 p0=02 p4=hair p5=04 t=500
+@bg chara=リム f=event12 p0=02 p4=hair p5=05 t=500
+@bg chara=リム f=event12 p0=02 p4=hair p5=04 t=500
+∗sluurp sluurp sluurp sluurp∗[k]
+[リム v=vh647]「Ah... Ah... Ah... Ah...」[k]
+The client man firmly gripped [リム]'s butt and began rhythmically thrusting his hips forward.[k]
+[name n=Customer]「Phew... I'm feeling good... I can't get enough!」[k]
+The customer exhales contentedly, savoring the sensation of [リム]'s vagina.[k]
+[リム] let out a small scream as she endured the man's thrusts.[k]
+@bg chara=リム f=event12 p0=02 p4=hair p5=05 t=500
+@bg chara=リム f=event12 p0=02 p4=hair p5=04 t=500
+@bg chara=リム f=event12 p0=02 p4=hair p5=05 t=500
+@bg chara=リム f=event12 p0=02 p4=hair p5=04 t=500
+∗sluurp sluurp sluurp sluurp∗[k]
+The penis is thrust into [リム] with wet noises.[k]
+[リム v=vh648]「Ah... Oh... No... Ah...! No...!」[k]
+[リム] moans in pain. It must be painful to be forced into having sex like this.[k]
+[name n=Customer]「Ugh! I'm cumming!」[k]
+[リム v=vh649]「Oh, no...!」[k]
+@bg chara=リム f=event12 p0=02 p4=hair p5=05 t=500
+@bg f=9999
+The client man's whole body shook as he fired deeply into [リム].[k]
+@bg chara=リム f=event12 p0=02 p4=hair p5=06
+When he pulled out his penis, a thick, milky liquid spurted out from inside her vagina.[k]
+[name n=Customer]「Whew... What a great woman. This is the best. Now, one more time...」[k]
+[アレックス f=00]「Oh, your time's up. Next customer, please!」[k]
+[name n=Customer]「Huh...? It's over already...?」[k]
+Urged by Alex, the customer moved away from [リム].[k]
+@bg chara=リム f=event12 p0=02 p4=hair p5=02
+Then the next customer approached, his crotch standing erect.[k]
+[name n="Second Guest"]「I can't take it anymore! Let's get it in right away!」[k]
+@bgf chara=リム f=event12 p0=02 p4=hair p5=05
+@quake time=500 hmax=5 vmax=5
+∗sluurp!∗[k]
+[リム v=vh650]「Aahhh...!」[k]
+Without a moment's rest, [リム] was forced to take on the next customer. With no foreplay, he quickly thrust his penis into her vagina.[k]
+Even though one man only just finished, she immediately had to take a second penis.[k]
+But she can't disobey Alex's orders. All she can do is keep quiet and take each man's penis in turn...[k]
+[textoff]
+@out
+@w05
+
+*_skip_trial_version_hum
+@gameon
+@fgf c=アレックス f=05
+[texton w=1]
+[アレックス f=05]「Hey! How long are you going to stand there?」[k]
+[アレックス f=05]「If you're not buying our woman, you're hurting our business! Get the hell out of here!」[k]
+@clf
+@eval exp='game.party.escape(true)'
+[textoff]
+@w1
+[texton w=0]
+We were kicked out of the room by Alex.[k]
+[リーダー] and the others were stunned when [リム] was humiliated. But they could do nothing but leave, unable to put up any resistance...[k]
+[textoff]
+@mu f=&'game.map.bgm'
+[eventoff]
+
+
+;◇ワイルド・ブルイベント04・４回目以降
+*hum_wildbull_04
+
+; ワイルド・ブルのアジト
+@saveon
+[texton w=1]
+[盗賊 f=thief_blue_01]「Hey, it's a new customer.」[k]
+[盗賊 f=thief_green_02]「Oi! [リム]! It's another customer!」[k]
+@fg c=リム e=裸 f=31
+[リム v=vh651 f=29]「Yes...」[k]
+[textoff]
+@out
+@bg chara=リム f=event12 p0=03 p6=hair p7=01
+[texton w=1]
+[リム v=vh652 f=25]「Go ahead...」[k]
+[name n=Customer]「Heh, I'll have some then.」[k]
+[textoff]
+@out
+@gameon
+[texton w=1]
+When I visited Wild Bull's hideout, I found that [リム] was serving a client again today.[k]
+[textoff]
+@eval exp='game.party.escape(true)'
+[eventoff]
+
+
+
+
+;■ワイルド・ブルイベント・エルフ
+
+;◇ワイルド・ブルイベント01
+*elf_wildbull_01
+
+; ワイルド・ブルのアジト
+@saveon
+[texton w=1]
+[アレックス f=05]「What?! Is it a visitor?!」[k]
+As [リーダー] and the others entered the room, they heard Alex's voice from the back of the room.[k]
+[アレックス f=05]「Hey, [クレア]! Go see!」[k]
+[クレア v=ve512 e=奴隷の鎧・上,奴隷の鎧・下 f=09]「Y-yes...」[k]
+@fgf c=クレア f=09
+[クレア v=ve513 f=09]「I'm sorry, who are you...?」[k]
+@fgf c=クレア f=31
+[クレア f=31]「...!」[k]
+[リーダー f=12]「[クレア]!」[k]
+[リーダー] and the others were taken aback by [クレア]'s indecent attire.[k]
+@fgf c=クレア f=30
+Her voluptuous breasts were exposed, and her crotch was barely covered.[k]
+While her breasts are slightly supported by a metal bra, her nipples were on full display.[k]
+@fg r=アレックス x=480 y=-50
+[アレックス f=00]「Ah, you like it?」[k]
+Alex wandered over. He put an arm round [クレア] and laughed cheerfully.[k]
+@fgf c=クレア f=37
+[クレア v=ve515 f=37]「Ah...!」[k]
+Alex poked [クレア]'s fully visible nipples with his fingers![k]
+At Alex's touch, [クレア] squealed a little.[k]
+[アレックス f=00]「Kuku, I get to squeeze this one's big tits as much as I want.」[k]
+@fgf c=クレア f=38
+[クレア v=ve516 f=38]「No, no...!」[k]
+Alex roughly squeezes [クレア]'s breasts as if to show them off. Her face turned red as she endured Alex's actions.[k]
+@fgf c=クレア f=40
+[アレックス f=00]「This outfit is Wild Bull's women's uniform. Every woman with us has to dress like this.」[k]
+[クレア f=40]「...」[k]
+[アレックス f=00]「By the way, another rule says you can't hide your ass or boobs. If you do, that means punishment.」[k]
+[リーダー]'s shoulders shudder at such a selfish statement.[k]
+[アレックス f=02]「Shut up! I can do what I want with members of my party. If you have a problem with that, you shouldn't have lost the duel.」[k]
+[クレア f=40]「...」[k]
+[リーダー] hates it, but can't argue... because that's the law of adventuring parties.[k]
+@fg r=アレックス x=480 y=-50
+[アレックス f=02]「Was that all? If you get it, then beat it.」[k]
+[アレックス f=02]「Or do you want to fight us? That's fine. What are you going to do?」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [クレア], fight hard.」[k]
+[textoff]
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*elf_wildbull_02
+
+@saveon
+@fg c=0022 index=900 b
+@bg chara=クレア f=event36 p0=hair p1=01 p2=01 p3=01 left=100 top=-65
+[texton w=3 left=532 top=468]
+[アレックス]「Oh, what can I do for you?」[k]
+[リーダー]「...!」[k]
+[クレア] appeared with Alex. [リーダー] was speechless at her shocking appearance.[k]
+To my surprise, she came out with her hands on the floor while Alex held her legs![k]
+She's isn't wearing a stitch of clothing. Her breasts and butt are all exposed.[k]
+Her thighs were open, and Alex, also naked, was between her legs. They approached, despite being joined at the crotch.[k]
+[アレックス]「I'm fucking this girl's pussy with my dick right now. How does it look?」[k]
+@bgf chara=クレア f=event36 p0=hair p1=01 p2=03 p3=04 left=100 top=-65
+@shake layer=0 loop=3 time=20 length=2
+@w05
+@shake layer=0 loop=3 time=20 length=2
+With that said, Alex held both of [クレア]'s legs and thrust her hips forward![k]
+@se f=kucha
+[クレア]「Ahhhh...!」[k]
+[アレックス]「It looks like you're feeling my dick. Well, let me make you feel even better!」[k]
+@bgf chara=クレア f=event36 p0=hair p1=01 p2=03 p3=04 left=100 top=-65
+@se f=kucha
+@shake layer=0 loop=3 time=20 length=2
+@w05
+@se f=kucha
+@shake layer=0 loop=3 time=20 length=2
+[クレア]「Ahh... Stop... Alex... Ahh... ahhh...!」[k]
+@bg chara=クレア f=event36 p0=hair p1=01 p2=01 p3=03 left=100 top=-65
+[クレア] was flushed and sweaty, as was Alex.[k]
+Alex began thrusting his hips.[k]
+@bgf chara=クレア f=event36 p0=hair p1=02 p2=03 p3=04 left=100 top=-65
+@se f=kucha
+@shake layer=0 loop=3 time=20 length=2
+@w05
+Holding both her legs, he grinds his hips, thrusting his stiff penis into [クレア]'s vagina.[k]
+[クレア v=ve520]「Aaah... Aaah... That feels good... Alex... Aaah...!」[k]
+[アレックス]「Feeling good? Come on, let's give it our all in front of your old friends!」[k]
+[クレア v=ve521]「Oh, no, no, don't do that... Not in front of everyone... Ahhh, no... No!」[k]
+[アレックス]「You sound pretty excited when you say that, huh?!」[k]
+@se f=kucha
+@shake layer=0 loop=3 time=20 length=2
+@w05
+[クレア v=ve522]「Aaahhh... No... No!」[k]
+Alex thrusts his hips and forcefully fucks [クレア].[k]
+Smack, smack, smack, as their bodies collide with each other, while disgusting wet noises echo through the air.[k]
+It is the sound of Alex's hot meaty rod stirring in [クレア]'s honey pot filled with lewd juices.[k]
+[アレックス]「See, see, you love getting pounded from the back, don't you?」[k]
+@se f=kucha
+∗sluuurp!∗[k]
+[クレア v=ve523]「Haaaaan...! Ahh...! There... There... Ahhh...!」[k]
+[クレア] is panting a lot. Even in front of everyone, she can't hold back any longer.[k]
+[クレア v=ve524]「Aaah... I can't take it anymore... I'm cumming...!」[k]
+@flash on=1000
+@bgf chara=クレア f=event36 p0=hair p1=01 p2=01 p3=03 left=100 top=-65
+@flash off=1000
+Suddenly, [クレア]'s whole body shook![k]
+[アレックス]「...What? Did you cum? That didn't take long.」[k]
+[クレア v=ve525]「Ahh ahh ahh ahh ahh...」[k]
+[アレックス]「You have no shame at all. Climaxing in front of your friends.」[k]
+[アレックス]「Then I'll cum, too!」[k]
+@bgf chara=クレア f=event36 p0=hair p1=02 p2=02 p3=04 left=100 top=-65
+∗slurp slurp slurp slurp slurp!∗[k]
+[クレア v=ve526]「Ahhhh...!」[k]
+[アレックス]「I'll fire my thick sperm! Take this!」[k]
+@flash
+@w05
+@flash
+@bgf chara=クレア f=event36 p0=hair p1=03 p2=02 p3=04 left=100 top=-65
+∗spurt! spurt! spurt!∗[k]
+[クレア v=ve527]「Aaaaaaahhh...!」[k]
+Alex thrust deep into [クレア] and came at the very back...[k]
+[textoff]
+@w05
+@gameon
+@fg l=アレックス e=汗だく f=06 b
+@fg r=クレア e=汗だく f=52
+[texton w=1]
+[アレックス f=03]「Phew, that felt good. I'm happy. Gahahaha!」[k]
+[クレア f=52]「...」[k]
+[アレックス f=00]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+; 決闘する
+[texton w=1]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [クレア], fight hard!」[k]
+[クレア v=ve528 f=29]「Really? Like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+Alex and [クレア] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント03
+*elf_wildbull_03
+; ワイルド・ブルイベント・３回目以降
+
+; ワイルド・ブルのアジト
+@saveon
+@bgf chara=クレア f=event36a p0=hair p1=01
+[texton w=3 left=512 top=448]
+∗sluurp sluurp sluurp sluurp∗[k]
+[盗賊]「Phew... That was a good fuck.」[k]
+[クレア v=ve529]「Aahhh... I'm... going to cum again...!」[k]
+[盗賊]「Hurry! Hurry and let me have her!」[k]
+Today too, [クレア] is being treated like a sex toy by the Wild Bull guys.[k]
+[textoff]
+@eval exp='game.party.escape(true)'
+[eventoff]
+
+
+
+;■ワイルド・ブルイベント・ドワーフ
+
+;◇ワイルド・ブルイベント01
+*dwa_wildbull_01
+
+; ワイルド・ブルのアジト
+@saveon
+[texton w=0]
+We went into the Wild Bull stronghold to rescue our friends. Then...[k]
+[textoff]
+
+@fg c=フレデリカ e=奴隷の鎧・上,奴隷の鎧・下 f=29
+[texton w=1]
+[フレデリカ f=29]「...」[k]
+Shockingly, there was a bare looking [フレデリカ] there.[k]
+Although a metal bra-like object was supporting her chest, her ample breasts were almost completely exposed, and most importantly, so were her nipples.[k]
+@cl b
+@fg r=アレックス f=00 b
+@fg c=フレデリカ f=29
+[アレックス f=00]「Hehe, doesn't it look good?」[k]
+Suddenly, Alex appeared from behind [フレデリカ]![k]
+[アレックス f=00]「Why make her dress like this? It's obvious, isn't it?」[k]
+@cl b
+@fg r=アレックス left=500 b
+@fg c=フレデリカ f=37
+[フレデリカ v=vd593 f=37]「Ah...!」[k]
+Alex put his hands behind [フレデリカ]'s back and grabbed her breasts, which were popping out of the metal rings![k]
+[フレデリカ v=vd594 f=37]「Ah... Oh... No... I can't... ah...」[k]
+[アレックス f=03]「Haha, this way I can enjoy these lewd tits anytime I want!」[k]
+He then rubs her large breasts with his disgusting hands.[k]
+Her exposed nipples suddenly hardened and began to jut out from the center of the ring.[k]
+[アレックス f=00]「Haha... So soft... I must enjoy this feeling to the fullest!」[k]
+[フレデリカ v=vd595 f=38]「Oh, no... Don't... No... No...!」[k]
+[フレデリカ]'s breasts are being defiled by Alex's dirty hands.[k]
+However, [リーダー] can't do anything... As long as [フレデリカ] is part of Wild Bull, there is nothing that can be done.[k]
+@cl b
+@fg r=アレックス b
+@fg c=フレデリカ f=50
+[アレックス f=03]「Well, I enjoyed it.」[k]
+[フレデリカ f=50]「... ∗sob∗」[k]
+[アレックス f=03]「Thanks for giving me such a nice girl! Well, I'll enjoy it as much as I can! Gahahahaha!」[k]
+Alex was smiling proudly. [リーダー] could do nothing but bite their lips in front of him...[k]
+[フレデリカ f=50]「... ∗sob∗」[k]
+[アレックス f=00]「So what are you gonna do? Fight us?」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton w=1]
+[アレックス f=05]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [フレデリカ], fight hard!」[k]
+[フレデリカ v=vd596 f=29]「Ha... Yes...」[k]
+Alex and [フレデリカ] went straight into battle stance.[k]
+[textoff]
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*dwa_wildbull_02
+
+; ワイルド・ブルのアジト
+@saveon
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=01 p3=01
+[texton w=2]
+[フレデリカ v=vd597 e=奴隷の鎧・下 f=39]「∗liick liick slurp∗」[k]
+When [リーダー] and the others entered the room, [フレデリカ] was in the middle of squeezing Alex's thing.[k]
+She lies on the floor with Alex straddling her, his filthy meatpole between her voluptuous breasts.[k]
+[アレックス e=裸 f=05]「Okay! Use those boobs to rub my dick more!」[k]
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=01 p3=02
+[フレデリカ v=vd598 f=38]「Yes... I'm sorry, Alex... Ng... Uh...」[k]
+[アレックス f=05]「This time, you're not using your mouth enough! Use your tongue more!」[k]
+[フレデリカ v=vd599 f=40]「Yes, sorry... ∗slurp∗」[k]
+[フレデリカ]'s breasts and mouth were defiled by Alex.[k]
+His meat pole is sandwiched between her white breasts and she is forced to suck that dirty phallus.[k]
+[フレデリカ v=vd600 f=40]「∗lick lick mmph mmph∗」[k]
+[アレックス f=02]「All right... That's it... Squeeze harder.」[k]
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=01 p3=01
+[フレデリカ v=vd601 f=38]「Yes... Alex... Chuuuuuuuuh...」[k]
+[フレデリカ] does as Alex tells her to do, using her own breasts and squeezing Alex's thing as hard as she can.[k]
+[アレックス f=00]「Fu...」[k]
+Alex sighs with a loathsome, pleasant feeling.[k]
+[アレックス f=02]「I can't get enough of this feeling. It feels so good to have your tits wrapped around my cock!」[k]
+[アレックス f=03]「Yeah, a woman with big boobs is just asking to have a cock squashed between them like this! Big tits must be put to good use! Gahahahahaha!」[k]
+[リーダー] couldn't help but be angry with Alex for spewing insults at [フレデリカ].[k]
+[アレックス f=17]「Ugh!」[k]
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=02 p3=02
+Suddenly, a vigorous jet of white fluid shot out of Alex's tip![k]
+[フレデリカ v=vd602 f=37]「Kya!」[k]
+[アレックス f=17]「Woooooo!」[k]
+With a grunt from Alex, a large amount of semen is sprayed onto [フレデリカ]'s face![k]
+Her pretty face was completely tarnished by Alex's dirty semen.[k]
+[アレックス f=04]「I got it out. I feel so refreshed.」[k]
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=02 p3=01
+[フレデリカ f=40]「...」[k]
+Alex smiles with satisfaction, while [フレデリカ] is just stunned, cum dribbling on her skin...[k]
+[textoff]
+@out
+@w05
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+[if exp='isDemoVersion']
+	@call storage="hevent.ks" target=*trial_version_return
+[endif]
+;-----------------------------------------------------------------------
+
+@gameon
+@fg l=アレックス e=裸 f=03 b
+@fg r=フレデリカ e=汗だく f=39
+[texton w=1]
+[アレックス f=03]「Phew, that felt good. I'm happy. Gahahaha!」[k]
+[フレデリカ f=39]「...」[k]
+[アレックス f=01]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=05]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [フレデリカ], fight hard!」[k]
+[フレデリカ v=vd596 f=29]「Ha... Yes...」[k]
+Alex and [フレデリカ] went straight into battle stance.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント03
+*dwa_wildbull_03
+
+; ワイルド・ブルのアジト
+@saveon
+@bg chara=フレデリカ f=event43 p0=02 p4=hair p5=01 p6=01
+[texton w=2]
+[フレデリカ v=vd603]「Ah... Ah... Ah... Ah...」[k]
+When I entered the room, I found [フレデリカ] surrounded by several men.[k]
+[フレデリカ] is completely naked. The tips of the men's bare erect penises are pressed against her large, exposed breasts.[k]
+They want to use her soft nipples to feel good. The men were so enthusiastic that they kept pushing their phalluses against her breasts.[k]
+And then... Alex's magnificent big cock was thrusting deeply into her secret place.[k]
+Alex's towering manhood pushes her entrance wide open.[k]
+[フレデリカ] was already tainted.[k]
+[if exp='o.フレデリカ.firstPartnerKey == "alex"']
+	[アレックス e=裸 f=00]「Kukuku, I turned this girl into a woman!」[k]
+[else]
+	[アレックス f=00]「Kukuku, I've already had my fill of this girl.」[k]
+[endif]
+∗sluurp sluurp sluurp sluurp∗[k]
+@bg chara=フレデリカ f=event43 p0=02 p4=hair p5=01 p6=02
+[フレデリカ v=vd604]「Ah... Ahhh... Alex... ah...」[k]
+[フレデリカ] repeatedly moves up and down while making disgusting wet noises.[k]
+Every time [フレデリカ] moves, Alex's strong penis slithers in and out of her gaping vaginal opening.[k]
+A large amount of love juice was dripping at the joint.[k]
+[フレデリカ v=vd605]「Ahhh... ah... ah... aaaaahhh...!」[k]
+[フレデリカ]'s movements become heated.[k]
+Even if she did not originally want to have a relationship with Alex, she's too aroused by the sex and being devoured by pleasure.[k]
+[フレデリカ v=vd606]「An... ahh... Aaahhh... Alex...!」[k]
+[フレデリカ] shakes her hips.[k]
+Alex's cock is clearly making her feel good.[k]
+[フレデリカ] is a woman. She can't stop herself from becoming lewd when penetrated by a strong dwarf.[k]
+How many times must she have had sex with Alex and his friends now...?[k]
+[アレックス]「Okay, it's time to start shooting some cum!」[k]
+@bg chara=フレデリカ f=event43 p0=02 p4=hair p5=02 p6=02
+∗spuurt! spuurt!∗[k]
+[フレデリカ v=vd607]「Aaaahhh... nooooo...!」[k]
+Alex unleashed his sperm into [フレデリカ], who cried hesitantly![k]
+Alex's body shook and he ejaculated into her vagina. [フレデリカ] obediently received it.[k]
+Meanwhile, on the upper half of her body, two rigid male genitals press into her ample breasts, causing them to change shape in a variety of ways.[k]
+[男]「Ugh...! I'm cumming...!」[k]
+One of the men reaches climax and sprays [フレデリカ]'s breasts with white fluid.[k]
+[男]「Ugh...! Me too...!」[k]
+The other man also shoots vigorously at her breasts.[k]
+[フレデリカ v=vd608]「Ha ha ha...」[k]
+[フレデリカ] receives the men's sperm on her body with a look of ecstasy.[k]
+She had already become a tool for the men to relieve their sexual desires.[k]
+[リーダー f=10]「[フレデリカ]...」[k]
+Regret for having put her, my precious companion, through this pain surges through my heart.[k]
+[textoff]
+@out
+@w05
+
+@gameon
+@fg l=アレックス e=汗だく f=03 b
+@fg r=フレデリカ e=汗だく f=64
+[texton w=1]
+[アレックス f=03]「Phew, that felt good. I'm happy. Gahahaha!」[k]
+@fgf l=アレックス f=00
+[アレックス f=00]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [フレデリカ], fight hard!」[k]
+[フレデリカ f=29]「L-like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+Alex and [フレデリカ] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント04
+*dwa_wildbull_04
+
+; ワイルド・ブルのアジト
+@saveon
+@fg l=thief_blue_nude1 b
+@fg r=thief_green_nude2 b
+@fg c=フレデリカ e=汗だく f=29
+[texton w=1]
+[盗賊 f=thief_blue_03]「Kuu～! Her boobs really feel good!」[k]
+[盗賊 f=thief_green_04]「Hey! Hurry up and squash my cock!」[k]
+[フレデリカ v=vd609 f=29]「Please take turns... ∗lick∗ ∗slurp∗」[k]
+What must it be like to offer your body to an unwanted partner?[k]
+[textoff]
+@clf
+@eval exp='game.party.escape(true)'
+[eventoff]
+
+
+
+
+;■ワイルド・ブルイベント・ノーム
+
+;◇ワイルド・ブルイベント01
+*gno_wildbull_01
+
+; ワイルド・ブルのアジト
+@saveon
+[texton w=0]
+[リーダー] entered their hideout in search of the captive [ミューズ].[k]
+But on finding her, [リーダー] was astonished.[k]
+[textoff]
+@out
+
+@bg chara=ミューズ f=event10 p0=hair p1=01 p2=01 p3=01
+[texton w=2]
+[ミューズ v=vg534]「Um... Please give it back...」[k]
+[アレックス]「No. I told you we're confiscating everything you have.」[k]
+[ミューズ v=vg535]「At least... Just a pair of panties...」[k]
+[アレックス]「Not so fast. When you join Wild Bull, you play by our rules, no matter what.」[k]
+[ミューズ v=vg536]「Oh no...」[k]
+[ミューズ] is stripped naked and complains with a tearful look on her face. But Alex and the others only laugh with amusement at her.[k]
+[男]「Hee hee hee, you have a cute ass.」[k]
+@bg chara=ミューズ f=event10 p0=hair p1=01 p2=01 p3=02
+[ミューズ v=vg537]「Hyah!」[k]
+[リーダー f=12]「[ミューズ]!」[k]
+One of the Wild Bull guys touched [ミューズ]'s butt, which were fully exposed![k]
+[男]「Come on, don't hide your boobs. It's a rule here that women don't hide their boobs!」[k]
+Then he pulls [ミューズ]'s arm forcefully![k]
+[ミューズ v=vg538]「No, please don't...!」[k]
+[男]「Come on, show us your boobs! Don't be shy!」[k]
+[ミューズ v=vg539]「No, no...!」[k]
+[textoff]
+
+@gameon
+@fg c=アレックス e=通常 f=07
+[texton w=1]
+[アレックス f=07]「Aah! What the hell are you doing?」[k]
+Alex noticed our presence and came toward us.[k]
+[アレックス f=07]「What the hell are you doing here?」[k]
+[リーダー] appealed to Alex not to do terrible things to their companion.[k]
+[アレックス f=06]「...」[k]
+[アレックス f=05]「...You're mistaken. She's not one of you.」[k]
+[アレックス f=02]「We took that girl from you in a duel. We own her. I hope you haven't forgotten that!」[k]
+[リーダー]'s teeth are gritted. Alex was right. Unless they waited until the captivity period was over and then recaptured her in another duel, [ミューズ] would not return.[k]
+[アレックス f=01]「Shut up. I'm free to do whatever I want with her. That's the rule. You have no right to interfere!」[k]
+[リーダー f=10]「...」[k]
+[アレックス f=02]「If you want to hate someone, hate yourselves for losing the duel. So get the hell out of here.」[k]
+[アレックス f=02]「...Or you can fight us. If you want to fight, we'll fight.」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=05]「What the hell?」[k]
+[アレックス f=02]「...Huh, all right. But you might not like the result! Hey, [ミューズ], fight hard!」[k]
+[ミューズ v=vg541 f=29]「L-like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+[ミューズ] gets into a fighting stance, despite her outfit.[k]
+I don't want to fight [ミューズ]...! But she's a member of Wild Bull now, so I can't go against the rules...![k]
+[アレックス f=01]「Here we go! Bastards!」[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 2'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*gno_wildbull_02
+
+; ワイルド・ブルのアジト
+@saveon
+[texton w=1]
+We went into Wild Bull's hideout.[k]
+[リーダー f=06]「...」[k]
+There's no one in the room. Are the Wild Bull guys in the back room?[k]
+[textoff]
+@se f=door1
+@fg c=ミューズ e=奴隷の鎧・上,奴隷の鎧・下 f=05
+[texton w=1]
+[ミューズ v=vg542 f=05]「Yes, who is it...」[k]
+@fgf c=ミューズ e=穴あき鎧・手ブラ f=31
+[ミューズ f=31]「...!」[k]
+Shockingly, [ミューズ] showed up wearing armor that exposed her nipples. She looked embarrassed at the sight of [リーダー] and the others.[k]
+@fgf c=ミューズ f=30
+[ミューズ v=vg544 f=30]「It's embarrassing... don't look too much...」[k]
+@cl b
+@fgf c=ミューズ f=30 b
+@fg r=アレックス e=上半身裸 f=05
+[アレックス f=05]「Hey, [ミューズ], what are you doing there?」[k]
+@fg r=アレックス f=00
+[アレックス f=00]「...What the hell do you want?」[k]
+[アレックス f=05]「...These clothes? All the women here are required to wear the clothes I choose for them.」[k]
+[リーダー] appealed to them not to humiliate [ミューズ].[k]
+@fg r=アレックス f=00
+[アレックス f=00]「Don't you know who you're talking to? I'm the chief of Wild Bull. What I say is absolute here, so shut your mouth!」[k]
+For adventurers, the party code is absolute. After they took [ミューズ], they knew this would happen.[k]
+[リーダー] sincerely regretted losing the duel.[k]
+@fg r=アレックス f=02
+[アレックス f=02]「Hey, take a look.」[k]
+@cl b
+@fg a=アレックス e=つまみ left=706 f=02 b
+@fg c=ミューズ e=穴あき鎧・つまみ f=30
+∗lift∗[k]
+@fg c=ミューズ f=31
+[ミューズ f=31]「Ah...!」[k]
+[リーダー f=11]「[ミューズ]!」[k]
+Alex lifted off [ミューズ]'s lower covering![k]
+Underneath, her secret place was fully exposed. To my surprise, she wasn't wearing anything else.[k]
+[アレックス f=02]「See, no panties!」[k]
+@fg c=ミューズ f=38
+[ミューズ f=38]「... (Kyaa)」[k]
+[ミューズ]'s face turns red as her crotch is exposed.[k]
+[アレックス f=02]「In this outfit, you can pee and shit anytime you want. Convenient, right?」[k]
+[アレックス f=02]「And, of course, it's quick to stick a cock in.」[k]
+@cl b
+@fg r=アレックス e=上半身裸 left=600 f=00 b
+@fg c=ミューズ e=穴あき鎧・手ブラ f=29
+With that, Alex nudged [ミューズ].[k]
+[アレックス f=00]「Hey, [ミューズ]. What do you think, isn't it about time you had sex with me?」[k]
+[ミューズ v=vg545 f=29]「That... I don't want to do that...!」[k]
+[アレックス f=00]「What's wrong with you? You've already shown me everything. All you have to do now is give up your pussy, right?」[k]
+[ミューズ v=vg546 f=38]「I really don't want to... Please forgive me...!」[k]
+[アレックス f=00]「You're a stubborn one, aren't you? Sooner or later, I'm going to fuck you. Hurry up and make up your mind.」[k]
+@cl b
+@fg a=alex_touch_hand left=520 b
+@fg r=アレックス e=触り left=520 f=02 b
+@fg c=ミューズ e=奴隷の鎧・上,奴隷の鎧・下 f=37
+With that said, he reached down to [ミューズ]'s chest and began to play with her exposed nipples.[k]
+[ミューズ v=vg547 f=37]「Oh... No...!」[k]
+[ミューズ] looks as if she felt it for a moment.[k]
+@cl b
+@fg r=アレックス e=上半身裸 left=600 f=06 b
+@fg c=ミューズ f=38
+[アレックス f=06]「Hunh... She's getting there. Well, it's only a matter of time.」[k]
+[アレックス f=00]「So what are you going to do? You gonna fight? If you want to fight, I'll fight you.」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+@fg r=アレックス left=600 f=05
+[texton]
+[アレックス f=05]「What the hell?」[k]
+[アレックス f=05]「...Huh, all right. But you might not like the result! Hey, [ミューズ], fight hard!」[k]
+@fg c=ミューズ f=29
+[ミューズ v=vg548 f=29]「Y-yes...」[k]
+Alex and [ミューズ] went straight into battle stance![k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント03
+*gno_wildbull_03
+
+; ワイルド・ブルのアジト
+@saveon
+@se f=door1
+@fg c=thief_green_nude2
+[texton w=1]
+[男 f=thief_green_04]「What the hell, you guys? What are you doing here?!」[k]
+The door to the back room opened and a man from Alex's group stepped out.[k]
+The man is completely naked. He didn't seem to pay any attention to that and just greets [リーダー].[k]
+[男 f=thief_green_04]「We're having an orgy right now. Go home.」[k]
+[男 f=thief_green_04]「Yeah. So go home, we're busy!」[k]
+[リーダー f=12]「Ah, then [ミューズ] is...」[k]
+[リーダー] stopped the man who was about to return to the back room, and persisted.[k]
+[男 f=thief_green_04]「[ミューズ]?」[k]
+@fg c=thief_green_nude1
+[男 f=thief_green_03]「Yeah, she's with Alex right now...」[k]
+[textoff]
+@cl b
+
+@fg c=0022 index=900 b
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=03 p6=01 left=200 top=-20
+[texton w=1]
+[アレックス e=裸 f=00]「What is it? You wanted to see me?」[k]
+[リーダー f=12]「...!」[k]
+Alex strolled out of the back room.[k]
+Shockingly, Alex walked over to us with a naked [ミューズ] held up to his chest with her legs spread widely![k]
+[ミューズ v=vg549 e=汗だく f=30]「Don't look at me...!」[k]
+[ミューズ] is completely undressed. Her breasts and crotch are both exposed.[k]
+And Alex's ferocious cock was nestled in her bare, wet crotch.[k]
+[アレックス f=03]「Gahahaha! What do you think of the sight of your former comrade swallowing my cock?!」[k]
+Alex shows off their union.[k]
+[ミューズ] turned red in the face, teary-eyed and embarrassed.[k]
+[アレックス f=03]「The other day, I finally got to fuck her. With my big dick, I [if exp='o.ミューズ.firstPartnerKey == "alex"']made her a woman[else]penetrated her pussy[endif].」[k]
+[アレックス f=00]「This one was so cute in bed. She had her eyes closed and her body was shaking...」[k]
+[アレックス f=03]「The first time I inserted my cock into her, she grabbed the sheets and held on desperately while trying to withstand it. Well, it's not my fault that my dick is so big! Gahahahahaha!」[k]
+[アレックス f=06]「...Now she's getting excited by my dick. Like this.」[k]
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=01 left=200 top=-30 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=01 left=200 top=-20 t=500
+∗sluurp∗[k]
+[ミューズ v=vg550 f=37]「Oh... Aaaaahhh...!」[k]
+Alex lowered his arms and let [ミューズ] drop a bit! He also thrusts upwards from below![k]
+The penis between [ミューズ]'s legs enters her vagina more deeply, and she involuntarily lets out a sweet sigh.[k]
+[アレックス f=00]「Kuku, doesn't that feel good?」[k]
+Alex further rocked [ミューズ]'s body up and down, thrusting his pole into her soaking wet honey pot.[k]
+[ミューズ v=vg551 f=37]「Oh... oh... oh... oh...!」[k]
+With the tip of Alex plunging deep inside, [ミューズ] lets out a wistful moan every time she's lowered.[k]
+[アレックス f=00]「You love my dick, don't you? There you go.」[k]
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=01 left=200 top=-30 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=01 left=200 top=-20 t=500
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=01 left=200 top=-30 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=01 left=200 top=-20 t=500
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg552 f=37]「Anh, ah, cuuh, ah, ah, ah, ah, ah, ah... ah...!」[k]
+A black, shiny, tough penis slides in and out of [ミューズ]'s pink hole.[k]
+As her excitement grew, [ミューズ]'s breathing became ever rougher and more shameful.[k]
+[ミューズ v=vg553 f=38]「Hmmm...!」[k]
+[textoff]
+@flash on=500
+@bgf chara=ミューズ f=event35 p0=hair p1=01 p2=05 p6=01 left=200 top=-20 t=500
+@flash off=500
+[texton w=1]
+Suddenly, [ミューズ]'s wet skin convulses and her whole body goes rigid.[k]
+[アレックス f=00]「Oh, you're cumming? Well, me too.」[k]
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=02 left=200 top=-40 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=02 left=200 top=-20 t=500
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=02 left=200 top=-40 t=500
+@bg chara=ミューズ f=event35 p0=hair p1=01 p2=04 p6=02 left=200 top=-20 t=500
+Alex shook his ass hard and thrust wildly inside [ミューズ]![k]
+@bg chara=ミューズ f=event35 p3=hair p4=02 p5=04 p6=02 left=200 top=-50 t=500
+[アレックス f=04]「Ugh!」[k]
+[ミューズ v=vg554 f=37]「Hah... no eh...!」[k]
+[textoff]
+@flash
+@flash
+@bg chara=ミューズ f=event35 p3=hair p4=03 p5=02 p6=01 left=200 top=-20
+[texton w=1]
+Alex ejaculated inside [ミューズ]'s vagina. She was completely defiled by Alex's evil desire.[k]
+[ミューズ v=vg555 f=51]「Ha... ha... ha... ha...」[k]
+With a sullen look on her face, and still connected to Alex, [ミューズ]'s shoulders rise and fall with her heavy breathing.[k]
+Her crotch, which accepted a penis to its depths is on full display and is dripping white fluid from the conjuncture. But despite that, or perhaps because she's still in ecstasy, she shows no signs of shame.[k]
+[アレックス f=00]「Kukukuku, you're a dirty girl to orgasm with people watching.」[k]
+[アレックス f=01]「Get it now? This girl is completely mine, body and soul! Gahahahahahahaha!」[k]
+Alex's high, triumphant laugh echoed through the room.[k]
+[アレックス f=00]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton w=1]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result. Hey, [ミューズ], battle.」[k]
+[textoff]
+@gameon
+@layopt layer=0 page=back visible=false left=0 top=0
+@cl b
+@fg l=アレックス e=汗だく・勃起 b
+@fg r=ミューズ e=汗だく f=51
+[texton w=1]
+Alex pulled his penis out of [ミューズ] and lowered her to the floor. The semen that had poured into her spilled out.[k]
+[ミューズ] is dizzy on her feet, perhaps because she just reached climax.[k]
+[アレックス f=05]「Hey, you okay? Fight hard.」[k]
+[ミューズ v=vg556 f=52]「Y-yes...」[k]
+Alex and [ミューズ] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 2'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 2'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント04
+*gno_wildbull_04
+
+; ワイルド・ブルのアジト
+@saveon
+@fg r=thief_red_nude1 x=500 y=-40 b
+@fg l=bandit_red_nude x=100 b
+@fg c=ミューズ e=汗だく f=37
+[texton w=1]
+[ミューズ v=vg557 f=37]「Ahh ahh ahh ahh ahh...」[k]
+[男 f=bandit_red_02]「[ミューズ]! I had a lot of sex today! But, it's late at night, so we'd better stop!」[k]
+[男 f=thief_red_03]「Hey, I'm still hard, don't give me that.」[k]
+[男 f=bandit_red_02]「Actually, me too! ...All right! Let's both go one more round today!」[k]
+[ミューズ v=vg558 f=29]「Please forgive me... I can't stand any more...」[k]
+
+[男 f=bandit_red_02]「Shut up! I said I'd do it, so I'm gonna do it! Now spread your legs!」[k]
+Today too, [ミューズ] is being treated like a sex toy by the Wild Bull guys.[k]
+[textoff]
+@cl
+@eval exp='game.party.escape(true)'
+[eventoff]
+
+
+
+
+;■ワイルド・ブルイベント・シルフ
+
+;◇ワイルド・ブルイベント01
+*syl_wildbull_01
+
+; ワイルド・ブルのアジト
+@saveon
+[texton w=0]
+We went into the Wild Bull stronghold to rescue our friends. Then...[k]
+[textoff]
+@se f=door1
+@fg l=アレックス b
+@fg r=マルエット e=奴隷の鎧・上,奴隷の鎧・下 f=30
+[texton w=1]
+[アレックス f=00]「Hey, fellas.」[k]
+Suddenly, the back door opened and Alex entered with [マルエット].[k]
+[マルエット] was wearing a bra that bared her nipples, and her crotch was only barely covered.[k]
+She's dressed like a whore.[k]
+[アレックス f=03]「Well, it's no use showing off such flat boobs, but this is our rule. As long as you're a woman, you wear this outfit! Gahahaha!」[k]
+[マルエット f=52]「...」[k]
+It was painful to look at her, red to the ears with shame.[k]
+[アレックス f=02]「I'm sure you know, but you've got no right to complain. You lost the duel. What I do with her is up to me!」[k]
+[リーダー] hates to admit it, but Alex is right. There's nothing the party can do about it.[k]
+[アレックス f=06]「Well, now that your friends are here, let's show them what you can do, eh, sylph girl?」[k]
+@fg l=アレックス e=下半身裸 b
+@fg r=マルエット f=29
+Saying this, Alex suddenly took off his pants, exposing his penis in full![k]
+[マルエット f=29]「...!」[k]
+[アレックス f=02]「Suck it. I taught you that before.」[k]
+[マルエット f=52]「...」[k]
+[textoff]
+@out
+@bg t=100 chara=マルエット f=event44 p0=hair p1=01 p2=03
+[texton w=2]
+[マルエット] silently kneels at Alex's feet and faces Alex's long, slack penis.[k]
+[アレックス]「Come on, come on, suck it.」[k]
+[マルエット]「...」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=02 p2=07
+[マルエット] holds Alex's penis in her hand and puts her mouth on the tip of it.[k]
+Then, she licked the glans with his tongue, making a slapping sound.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=02 p2=08
+[マルエット v=vs631]「∗lick lick slurp∗」[k]
+[アレックス]「All right, keep going.」[k]
+Alex's pole begins to swell as [マルエット] continues licking it.[k]
+[アレックス]「Okay, now suck my cock properly.」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=04 p2=02
+[マルエット] does as she is told, taking the tip of his penis in her mouth and sucking on the glans.[k]
+[マルエット v=vs632]「Mmm... Snap... Mmm... Much...」[k]
+[マルエット] looks very distressed, as if the penis is poking the back of her throat.[k]
+[アレックス]「Hey, suck it hard!」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=04 p2=01
+[マルエット v=vs633]「Mugu... I'm doing it...」[k]
+[アレックス]「Hey! Don't talk back to me!」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=04 p2=02
+[マルエット v=vs634]「Aah! I'm... I'm sorry...」[k]
+[リーダー]「[マルエット]...!」[k]
+[マルエット] is smacked by Alex, but continues to suck his cock.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=05 p2=02
+[アレックス]「Okay? You're small and not sexy, so the only thing you can do is suck cock! At least suck it hard and make it feel good! You know what I mean!」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=04 p2=01
+[マルエット]「...!」[k]
+[アレックス]「What's that? Those defiant eyes?」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=05 p2=02
+[マルエット v=vs635]「...It's nothing. ∗slurp∗ ∗slurp∗」[k]
+[リーダー]「Ahh...!」[k]
+They make [マルエット] suck their dirty penises and then beat her and insult her... What a horrible way to be treated.[k]
+But we cannot stop this. We cannot go against the rules of the duel.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=06 p2=02
+[アレックス]「All right, let's get it out! Make sure you drink it all.」[k]
+With that, he holds [マルエット]'s head and thrusts his penis into her mouth himself![k]
+[マルエット v=vs636]「Hmmm... Mmmmmm...! Muguugu...!」[k]
+[マルエット] grimaced in pain as Alex roughly thrust his penis into her.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=07 p2=02
+∗spuurt! spurt spurt spurt!∗[k]
+[マルエット v=vs637]「Nggghhhh! ∗cough! cough!∗」[k]
+Alex ejaculates in [マルエット]'s mouth! She chokes up at the force of the spurt of semen.[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=08 p2=06
+[アレックス]「You idiot! I told you to drink all my cum!」[k]
+[マルエット v=vs638]「∗hak∗ ...I'm sorry...」[k]
+[リーダー]「[マルエット]...」[k]
+As she spat out the semen, [マルエット] apologized with tears in her eyes.[k]
+[textoff]
+@out
+
+@w05
+@gameon
+@fg l=アレックス e=裸 f=02 b
+@fg r=マルエット f=56
+[texton w=1]
+[マルエット f=56]「... ∗sob∗」[k]
+[アレックス f=00]「So what are you gonna do? Fight us?」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [マルエット], fight hard!」[k]
+[マルエット v=vs639 f=29]「Really? Like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+Alex and [マルエット] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*syl_wildbull_02
+
+; ワイルド・ブルのアジト
+@saveon
+@bg t=100 chara=マルエット f=event44 p0=hair p1=05 p2=02
+[texton w=2]
+[マルエット v=vs640]「Ugh... ∗slurp∗ Mmmm... ∗lick∗」[k]
+[アレックス]「Kuku, you're getting better and better!」[k]
+[マルエット] was forced to suck Alex's thing today.[k]
+The sight of him forcing her to suck that extremely thick penis with her small mouth is painful.[k]
+[アレックス]「All right, that's about right. Get your mouth off me.」[k]
+@bg t=100 chara=マルエット f=event44 p0=hair p1=03 p2=03
+[マルエット v=vs641]「What? But I haven't made you cum yet... 」[k]
+Alex instructs [マルエット] to stop the act. His penis has clearly not reached its limit yet, and remains taut.[k]
+[textoff]
+@w05
+@gameon
+@fg l=アレックス e=下半身裸・勃起 b
+@fg r=マルエット e=奴隷の鎧・上,奴隷の鎧・下 f=56
+[texton w=1]
+[アレックス f=06]「That's fine. Now, lie on your back on the floor.」[k]
+[マルエット f=26]「...」[k]
+@cl r
+[マルエット] does as Alex says and lies on her back on the floor.[k]
+[アレックス f=00]「Okay, stay in that pose, hold your knees with both hands and open your thighs.」[k]
+[マルエット v=vs642 f=25]「What...?」[k]
+[マルエット v=vs643 f=29]「No..! You'd see my vagina...」[k]
+[アレックス f=07]「Just get on with it!」[k]
+[マルエット f=38]「...! ∗gulp∗」[k]
+Alex intimidates [マルエット], who reluctantly complies.[k]
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+[if exp='isDemoVersion']
+	@call storage="hevent.ks" target=*trial_version_return
+	@jump target=*_skip_trial_version_syl
+[endif]
+;-----------------------------------------------------------------------
+[textoff]
+@out
+@bg chara=マルエット f=event63 p0=hair p1=01 p2=03
+[texton w=2]
+[マルエット v=vs644 f=51]「This... Like this...?」[k]
+[マルエット] strikes a disgusting pose, her face red with embarrassment. The important part of her body is completely visible.[k]
+[アレックス f=00]「All right... But it's a slippery, unsexy pussy. It's like a kid's pussy.」[k]
+[マルエット f=52]「...! (Eek!)」[k]
+[マルエット]'s face flushes red as she is humiliated, and she holds still with tears in her eyes.[k]
+[アレックス f=02]「Well, let's get it in before it shrivels up.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=01 p2=02
+[マルエット f=47]「...!」[k]
+[アレックス f=00]「I'm not into fucking people like you either, but I heard that sylph pussy is very good. I just thought I'd give it a try.」[k]
+With that said, Alex grabs both of [マルエット]'s legs and brings the tip of his penis closer to her vagina![k]
+@bg chara=マルエット f=event63 p0=hair p1=03 p2=01
+[マルエット v=vs645 f=47]「That... I don't want to do that!」[k]
+[アレックス f=02]「Let's see, what does this little pussy taste like? Heh heh...」[k]
+@bg chara=マルエット f=event63 p0=hair p1=03 p2=04
+∗sluurp∗[k]
+[マルエット v=vs646 f=49]「Oww!」[k]
+[アレックス f=08]「Damn, it's too tight to get in there.」[k]
+Alex places his tip at [マルエット]'s entrance and tries to forcefully insert it.[k]
+However, the penis is too big for the vagina. Even the tip does not fit.[k]
+[アレックス f=02]「Oh well, I guess I'll just wet myself a little more.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=02 p2=05
+Alex placed the rod part of his penis against [マルエット]'s crack and moved it back and forth as if rubbing it.[k]
+[マルエット v=vs647 f=37]「Ah... ah... ahhh...!」[k]
+[アレックス f=16]「Kuku, you're starting to feel it.」[k]
+Alex uses his rod to attack her sensitive areas.[k]
+[マルエット] was feeling pretty good, letting out a sweet sigh and twisted her hips erotically.[k]
+[マルエット v=vs648 f=37]「Ah... ahh... no... I can feel it... ahhh...!」[k]
+[アレックス f=00]「Kukuku, you are so sensitive. You have a body like a kid, but you're a dirty little thing.」[k]
+∗sluurp sluurp sluurp∗[k]
+Her pussy is getting wet and the sound of the disgusting water begins to echo.[k]
+@bg chara=マルエット f=event63 p0=hair p1=01 p2=02
+[マルエット v=vs649 f=39]「Aaaahhhhhh...」[k]
+[アレックス f=01]「Oh, so wet. I didn't think you were such a dirty girl.」[k]
+[マルエット f=47]「... ∗sob∗」[k]
+[アレックス f=02]「Now, if it's this wet, it will go in easily.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=03 p2=02
+∗sluurp∗[k]
+[マルエット v=vs650 f=47]「Ah...!」[k]
+Alex tried again to insert it. When he placed the tip and put some force behind it, the tip sank in.[k]
+[アレックス f=02]「Now, let's put more in. Relax.」[k]
+[マルエット v=vs651 f=50]「Wait... It still hurts... Ahh..!」[k]
+Alex's rod went sliding in. [マルエット] grimaced, as if it was still hurting.[k]
+@bg chara=マルエット f=event63 p0=hair p1=04 p2=04
+∗sluurp!∗[k]
+[マルエット v=vs652]「Ahh!」[k]
+Finally, the penis was swallowed close to the base.[k]
+[アレックス]「Phew... This is tight. That's really tight.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=04 p2=05
+[マルエット v=vs653]「Ugh... it hurts...!」[k]
+[アレックス]「I can't help it, I have a big dick! You're gonna have to put up with me! Hey!」[k]
+@bg chara=マルエット f=event63 p0=hair p1=05 p2=05
+∗sluurp sluurp sluurp∗[k]
+[マルエット v=vs654]「Ah... ah... no... stop... ahh...!」[k]
+Ignoring [マルエット], who wrinkles her brow, Alex begins moving.[k]
+[アレックス]「Phew... I see... this is good. It feels as good as the rumors say.」[k]
+∗sluurp sluurp sluurp∗[k]
+[マルエット v=vs655]「Ah... Ah... Ugh... It hurts... Stop it... Ahh...!」[k]
+Alex moves in [マルエット] like it's cramped. Still, it clearly feels pretty good, as he lets out a sigh of satisfaction.[k]
+Meanwhile, [マルエット] still looks to be in pain as she patiently endures Alex's thrusts.[k]
+[アレックス]「Wow... that pussy is squeezing my dick tightly. I can't get enough of this!」[k]
+∗sluurp! sluurp! sluurp! sluurp!∗[k]
+Alex can't help but increase the speed of his thrusts![k]
+[マルエット v=vs656]「Ah... ah... stop it... nooooo...」[k]
+[アレックス]「Ugh! I can't take it anymore! Ugh!」[k]
+@flash t=200
+@w05
+@flash t=200
+∗spurt! spurt!∗[k]
+[マルエット v=vs657]「Nooooooo...!」[k]
+Alex ejaculated as soon as possible, even though he had only been inserted for a short time! He shoots his sperm as much as he can inside [マルエット]![k]
+@bg chara=マルエット f=event63 p0=hair p1=06 p2=06
+[アレックス]「Whew, I already came. I never knew a Sylph's pussy would feel so good.」[k]
+[マルエット]「...」[k]
+Alex is completely satisfied. Meanwhile, [マルエット] was crying from humiliation and pain...[k]
+[textoff]
+@out
+@w05
+
+*_skip_trial_version_syl
+@gameon
+@fg l=アレックス e=汗だく b
+@fg r=マルエット e=汗だく f=56
+[texton w=1]
+[if exp='! isDemoVersion']
+	[アレックス f=03]「Phew, that felt good. I'm happy. Gahahaha!」[k]
+	[アレックス f=03]「I don't get excited at all when I see you naked, but when I fuck you, it's great!」[k]
+[endif]
+[マルエット f=56]「...」[k]
+[アレックス f=00]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [マルエット], fight hard!」[k]
+[マルエット v=vs658 f=29]「Really? Like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+Alex and [マルエット] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 2'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント03
+*syl_wildbull_03
+
+; ワイルド・ブルのアジト
+@saveon
+@fg r=thief_red_nude1 x=500 y=-40 b
+@fg l=bandit_red_nude x=100 b
+@fg c=マルエット e=汗だく f=38
+[texton w=1]
+[マルエット v=vs659 f=37]「Ahh ahh ahh ahh ahh...」[k]
+[男 f=thief_red_03]「Ahhhh, that felt good! Her pussy feels really good.」[k]
+[男 f=bandit_red_02]「I'm next! Let me fuck you!」[k]
+[男 f=bandit_yellow_02]「I can't wait to fuck her too! I can't take it anymore!」[k]
+[マルエット v=vs660 f=38]「Ugh... I can't take it anymore...」[k]
+Today too, [マルエット] is being treated like a sex toy by the Wild Bull guys.[k]
+[textoff]
+@clf
+@eval exp='game.party.escape(true)'
+[eventoff]
+

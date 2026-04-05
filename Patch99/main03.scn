@@ -1,0 +1,493 @@
+﻿; コリンズの森～サファイアシティへ到達
+
+
+
+;■プロローグ５・サファイアシティへの旅
+
+;◇イベント01・マリアたちと再会
+*trip_1
+
+; 森の通路
+@mu f=guild
+@fg l=マリア f=02 b
+@fg r=リーゼル f=05
+[texton w=1]
+[マリア v=va018 f=05]「Hey, are you guys...?」[k]
+[テオ f=05]「Oh... you were...!」[k]
+[マックス f=21]「Oh! That's Maria!」[k]
+To my surprise, on the road we ran into Maria, the female adventurer we met earlier in an abandoned house in the forest.[k]
+[リーゼル f=06]「...」[k]
+Riselle was right behind her. I guess she and Maria continued adventuring together.[k]
+[マックス f=03]「Oh～ what a coincidence! I can't believe we met in a place like this! I feel like it's fate, don't you, Maria?!」[k]
+[マリア v=va019 f=07]「Hey! Don't say anything creepy!」[k]
+[シュバルツ f=00]「What's this? Do you know them?」[k]
+[テオ f=05]「Yeah, we met during a quest once.」[k]
+[マリア v=va020 f=02]「Are you guys on your way to Sapphire City?」[k]
+[テオ f=01]「Yeah. What are you both doing here?」[k]
+[マリア v=va021 f=10]「About that... we're heading to Sapphire City too... but we're having a bit of a problem and can't go any further!」[k]
+[シュバルツ f=00]「What's going on?」[k]
+[マリア v=va022 f=10]「Yeah... actually...」[k]
+[textoff]
+@black on=500 time=500 off=500
+[texton]
+[テオ f=05]「You can't afford the toll?!」[k]
+[マリア v=va023 f=10]「Yeah... they are charging ridiculous tolls that we can't afford...」[k]
+According to Maria, a party of adventurers are blocking the road and demanding a toll to pass.[k]
+The name of the party is Wild Bull.[k]
+They are a well-known group of corrupt adventurers in Sapphire City, and they are said to be making money by doing all sorts of evil things behind the scenes.[k]
+They stop everyone who tries to pass through here and demand exorbitant tolls.[k]
+If they can't pay, they're not allowed through. Anyone trying to force their way through will be attacked.[k]
+[マックス f=09]「Ha, I guess nasty folk like that are everywhere.」[k]
+[マリア v=va024 f=13]「Hey, do you guys have any money? I'll pay you back when we get there! Hey, please!」[k]
+[テオ f=12]「We don't have that much money either... sorry...」[k]
+[マリア v=va025 f=09]「Is that right...? Ahhhhhh, I don't know what to do.」[k]
+[リーゼル f=09]「...」[k]
+Maria holds her head. Riselle also looks troubled.[k]
+We can't get stranded here. We must escape from [if exp='isDemoVersion']our pursuers[else]Blue[endif] at all costs.[k]
+[テオ f=05]「Mr. Schwarz. Do you have any suggestions?」[k]
+[シュバルツ f=20]「...」[k]
+[シュバルツ f=20]「It is unbecoming of an adventurer to abuse their power to collect tolls without permission... This is unacceptable! Unforgivable!」[k]
+[マックス f=12]「Huh? Old man, no way...」[k]
+[シュバルツ f=07]「We must defeat them to restore passage and take back the money they stole!」[k]
+[マックス f=12]「No way, seriously?!」[k]
+[マリア v=va026 f=05]「What? But they seemed pretty strong, though, didn't they? Are you sure?」[k]
+[シュバルツ f=00]「We can't let such villains go unchecked. I'll need your help, too.」[k]
+[テオ f=06]「...」[k]
+We certainly need to do something to progress, and since we've no money, it will have to be by force.[k]
+[テオ f=05]「I understand. I'll follow your lead.」[k]
+[マックス f=09]「I guess so... it seems you don't have any other good ideas...」[k]
+[シュバルツ f=01]「Right, let's go! Everybody, follow me!」[k]
+[マリア v=va027 f=05]「Oh, wait!」[k]
+[textoff]
+@cl
+[eventoff bgm]
+
+
+;◇イベント02・ワイルド・ブル出現
+*trip_2
+
+; 川の橋の前ワイルド・ブルが通行人たちから通行料を取っている
+@saveon
+[texton]
+[テオ f=05]「Ah...!」[k]
+I saw people gathering at the end of the forest path.[k]
+[マリア v=va028 f=07]「It's them! They're the ones who wouldn't let me through!」[k]
+Maria pointed to several large men beyond a group of people milling about.[k]
+They stand blocking the only bridge over a large river.[k]
+The men looked ill-mannered and menaced the travelers, brandishing swords in their hands.[k]
+So that's Wild Bull...[k]
+[textoff]
+@mu f=hideout
+@fg c=alex top=50 f=00
+[texton w=1]
+[name n="Dwarf Man" key=アレックス e=通常 f=00]「OK! Anyone who wants to cross, hand over 100,000G! Don't be stingy now!」[k]
+A large, heavily bearded dwarf is demanding exorbitant amounts of money from passersby.[k]
+Many distressed people loiter around, evidently unable or unwilling to pay.[k]
+[name n="Dwarf Man" key=アレックス f=00]「Come on, pay up! If you can't, then give up and turn around!」[k]
+[name n="Male Subordinate" f=thief_red_01]「Alex, the father and son over there just paid 200,000G.」[k]
+[アレックス f=00]「Alright, you guys, you're through!」[k]
+[name n="Traveler Father and Son"]「...Damn!」[k]
+A traveler and his son, who paid the money in tears, walked away biting their lips. Their faces were completely pale, probably from the considerable damage to their pocketbooks.[k]
+[テオ f=06]「...」[k]
+It's a terrible story. These men are the worst, taking advantage of people's weakness to extort money from them.[k]
+There is no reason to comply with such an unreasonable demand, but when several strong men threaten you, there is nothing an ordinary person can do about it.[k]
+Especially their apparent leader, Alex, who looks huge for a dwarf. You can tell just by looking at him that he has considerable strength.[k]
+No matter how good Mr. Schwarz is, I don't think he can beat an opponent like that.[k]
+[マックス f=08]「Hmm, really, go against those guys?」[k]
+[マリア v=va029 f=09]「Hey, what should we do? ...We have to go on, but we can't pass this way...」[k]
+[アレックス f=00]「Hmm?」[k]
+The dwarf's gaze suddenly turns toward us.[k]
+@fg c=9004 top=50
+[アレックス f=01]「...You're the girl who was here earlier. Did you find some money?」[k]
+His remarks are addressed to Maria.[k]
+[マリア v=va030 f=12]「Oh, I don't have any money...」[k]
+[リーゼル f=09]「...」[k]
+[アレックス f=01]「I told you, if you can't pay, you can't pass! Now go get the money!」[k]
+[マリア f=12]「...」[k]
+[リーゼル v=vl009 f=09]「Maria...」[k]
+[アレックス f=06]「Hmm...?」[k]
+@fg c=アレックス
+Alex approached us, as if he had something on his mind.[k]
+[マリア v=va031 f=12]「Hey, what's this...」[k]
+[アレックス f=06]「...Hmm!」[k]
+[アレックス f=02]「Well, you and the girl next to you, I'll let you through.」[k]
+[マリア v=va032 f=05]「What? Really?」[k]
+[アレックス f=02]「Well, if you guys do something nice for me in return.」[k]
+[マリア v=va033 f=12]「Huh...!」[k]
+[リーゼル f=09]「...!」[k]
+Alex looks at Maria and Riselle with a vulgar smile. Riselle trembles under his gaze.[k]
+[アレックス f=04]「Yeah, come play with us. Let's have some fun together!」[k]
+[マリア v=va034 f=11]「No! I'm not going anywhere with you people!」[k]
+[アレックス f=02]「I see. Well then, I can't let you through. Hee hee hee.」[k]
+@cl c b
+@fg l=アレックス b
+@fg r=シュバルツ f=07
+[シュバルツ f=07]「Hey! You, Dwarf!」[k]
+Mr. Schwarz, who had been silently watching the exchange, intervened between Maria and the man.[k]
+@fg l=アレックス f=05
+[アレックス f=05]「Hmm? What the hell, dude? Get out of the way!」[k]
+[シュバルツ f=07]「It is you scoundrels who should get out of my way!」[k]
+[name n="Male Subordinate" f=thief_red_01]「Hey, old man! You're being rude to Alex!」[k]
+@fg l=アレックス f=08
+[アレックス f=08]「...Think you can get away with talking to me like that, huh?」[k]
+[シュバルツ f=07]「We won't be paying a thing! Just get out of the way, scoundrels!」[k]
+Mr. Schwarz is unyielding in the face of his opponents. What's behind that calm confidence?[k]
+Alex, on the other hand is thoroughly riled up.[k]
+[アレックス f=07]「...Old man, we're the famous Wild Bull! Still want to talk so cocky?!」[k]
+[シュバルツ f=07]「Your name means nothing to me. I said get out of the way!」[k]
+[アレックス f=08]「You...!」[k]
+Alex held up the sword in his hand. Then his gang all pointed their own swords at Mr. Schwarz.[k]
+[アレックス f=07]「You'll be sorry you ever pissed me off, old man!」[k]
+[シュバルツ f=00]「You wish to attack? Well, that's good. I'll play with you.」[k]
+Mr. Schwarz draws his sword too. He's really going to fight Wild Bull...![k]
+[シュバルツ f=00]「...By the way, scum as you are, you're still a party of adventurers, are you not?」[k]
+[アレックス f=08]「What about it?」[k]
+[シュバルツ f=00]「We are an adventuring party too. So this is a battle between adventuring parties.」[k]
+[シュバルツ f=07]「Therefore, I declare this challenge a duel!」[k]
+[マックス f=11]「Ehhhhh?!」[k]
+[アレックス f=08]「A duel!」[k]
+[テオ f=12]「...」[k]
+Duel... A special battle for a party of adventurers.[k]
+Dueling is a special kind of battle fought according to certain rules set by Duel, the God of War.[k]
+Once a decision is made to fight a duel and the battle has begun, it cannot be stopped until it is settled.[k]
+During the battle, an area is sealed off by a mystical force, making it impossible for duelists to escape or for outsiders to intervene at all.[k]
+And the most special thing about the duel... is that even those killed during battle will be revived afterwards.[k]
+That's the power of the god Duel.[k]
+Instead, the loser of the duel must obey the orders of the winner. There are several types of orders that can be issued.[k]
+The loser cannot ignore the orders given. If they disobey, the life that was returned to them will be swiftly reclaimed.[k]
+That's the contract that Duel, the god of war, forces all participants to be bound by when a battle is declared a duel.[k]
+[シュバルツ f=00]「Well? Are you going to accept my challenge?!」[k]
+[アレックス f=08]「...All right. I'll take it. Hey, fellas! Let's beat the crap out of these bastards!」[k]
+[シュバルツ f=07]「All right, we're doing this too! [テオ]! Max! Get ready!」[k]
+[テオ f=05]「Yes!」[k]
+[マックス f=28]「Oh come on, you're really going to do it? ...Damn it! I've got to get my ass in gear!」[k]
+@cl
+I have no choice but to believe in Mr. Schwarz and fight. I will win this duel and open up a future for myself as an adventurer![k]
+[textoff]
+
+; ワイルド・ブルと戦闘
+@eval exp='game.curTeam = o.ワイルド・ブル'
+@monster pos=0 name=ローグ
+@monster pos=1 name=ローグ
+@monster pos=2 name=ローグ
+@monster pos=3 name=アレックス
+@monster pos=4 name=ローグ
+@monster pos=5 name=ローグ
+@monster pos=6 name=ローグ
+@anime_duel_net visible=true
+@eval exp='game.inDuelBattle = true'
+@callbattle bgm=boss stopbgm=true
+@anime_duel_net visible=false
+@anime_duel_sign visible=false
+@eval exp='game.party.minimumRecovery(true)'
+@jump target=*_trip_2_win cond='game.getBattleResult() == "win"'
+
+; 敗北
+[texton]
+[テオ f=12]「Damn...!」[k]
+[アレックス f=00]「Hmmm, for all your big talk, that sucked.」[k]
+We lost the battle, even with the help of someone as strong as Mr. Schwarz.[k]
+We survived, but we were stranded.[k]
+Soon [if exp='isDemoVersion']our pursuers[else]Blue[endif] discovered us, and our desperate escape failed. My adventure with Max ended in vain.[k]
+[textoff]
+@jump storage="script.ks" target=*_event_game_over
+; 勝利
+*_trip_2_win
+
+@mu f=guild
+[texton]
+[アレックス f=12]「Damn, damn, damn!」[k]
+[シュバルツ f=00]「Hmph, you're all talk.」[k]
+[マックス f=01]「Wow... I knew the old man was strong...」[k]
+Thanks to Mr. Schwarz's efforts, our party won our first duel.[k]
+Through the mystical power of the god of war, the defeated Wild Bull members were spared.[k]
+However, on revival, the losers will temporarily be in a [b]weakened[/b] state, barely able to move their limbs or mouths for 30 minutes.[k]
+This phenomenon makes the loser unable to touch the winner at all after the duel is over. Casting magic in this state is beyond them, preventing surprise attacks.[k]
+Thus, the winner can safely walk away. It's all by the power of the god of war, but it's a very well-designed system indeed.[k]
+[シュバルツ f=07]「Now, the victor's orders! You will forfeit all the money you took as tolls!」[k]
+One thing that the winner of a duel can order the loser to do is to make him give up all his possessions. That's what Mr. Schwarz just ordered Wild Bull to do.[k]
+@getitem gold=100000
+We took all the money the Wild Bull members had. Now that they were immobile, we were able to recover the money without any difficulty.[k]
+Some of the money taken was returned to the travelers who had been robbed.[k]
+[name n=Traveler]「Thank you, Mr. Adventurer!」[k]
+[シュバルツ f=02]「Come on, you're safe now. Everyone, cross the bridge while you still can.」[k]
+[name n=Traveler]「I will not forget this favor, adventurer.」[k]
+[アレックス f=12]「Damn...! Oh, fuck you...!」[k]
+Curses can be heard from Alex as he crawls on the ground.[k]
+[シュバルツ f=00]「Don't ever do this again. Well, we'll be on our way.」[k]
+@fg l=マリア f=01 b
+@fg r=リーゼル f=06
+[マリア v=va035 f=01]「I wasn't sure what was going to happen at one point, but thanks to you, I can get through here. Thank you, Mr. Schwarz.」[k]
+[リーゼル v=vl010 f=05]「Thank you...」[k]
+[シュバルツ f=02]「No need to thank me. It is only natural for adventurers to defeat those who have wronged us.」[k]
+[マリア v=va036 f=01]「Thanks you guys! You're pretty dependable.」[k]
+[マックス f=03]「Come on! It's no big deal!」[k]
+[テオ f=06]「Said Max, who didn't do much of anything.」[k]
+[マックス f=01]「By the way, what about both of you? You're going to Sapphire City, aren't you?」[k]
+[マリア v=va037 f=02]「Ah, yeah...」[k]
+[マックス f=03]「You can come with us if you want. I'm sure you'll feel safer if we work together, right?」[k]
+[マリア f=06]「...」[k]
+[マリア v=va038 f=02]「...Yeah, that's for sure. What do you think, Riselle?」[k]
+[リーゼル v=vl011 f=05]「If that's what you want, Maria...」[k]
+[マリア v=va039 f=01]「All right, then let's go together.」[k]
+[マックス f=03]「Yes! That's a deal!」[k]
+[テオ f=05]「Hey Max, you can't just decide on your own. We have to ask Mr. Schwarz...」[k]
+[シュバルツ f=02]「I don't mind. Feel free to come along. It's not safe for women to travel alone.」[k]
+[テオ f=06]「If you say so...」[k]
+[マックス f=15]「No problem! Maria! Riselle! Welcome!」[k]
+[マリア v=va040 f=02]「Yeah, nice to be here.」[k]
+[リーゼル v=vl012 f=05]「Thank you...」[k]
+[textoff]
+@cl
+@st
+@se f=up3
+@eval exp='game.party.entry(o.リーゼル)'
+@eval exp='game.guest.entry(o.マリア)'
+@notice text="<y>Maria and Riselle have joined the party!"
+@ws buf=2
+@eval exp='game.clock = game.timeOfADay * 3 \ 4'
+@eval exp='game.gameFrame.updateClock()'
+[eventoff bgm]
+
+
+;◇イベント03・シーガルの村に到達
+*trip_3
+
+; 村の広場
+@wait time=500
+@saveon
+[texton w=0]
+We arrived at Seagull Village. It is a peaceful seaside village about halfway along the route to Sapphire City.[k]
+The sun was already beginning to set by the time we reached the village, partly due to unexpected interruptions along the way.[k]
+[シュバルツ f=00]「We still have a long way to go to Sapphire City. Let's spend the night in this village.」[k]
+I'd like to hurry ahead to escape [if exp='isDemoVersion']our pursuers[else]Blue[endif], but we have no choice here.[k]
+[マリア v=va041 f=01]「Hey! We still have some time before the sun goes down, so why don't we all go swimming for a bit?」[k]
+[テオ f=05]「Eh...」[k]
+[マックス f=03]「Oh, I love it! I haven't been to the beach in ages!」[k]
+[マリア v=va042 f=01]「Okay, Riselle?」[k]
+[リーゼル v=vl013 f=05]「I don't mind if you want, Maria...」[k]
+[テオ f=06]「...」[k]
+Bathing in the ocean...[k]
+We need to get away from [if exp='isDemoVersion']our pursuers[else]Blue[endif], so I'm not sure we should be playing like this...[k]
+[textoff]
+@out
+
+@wait time=500
+@gameon
+@mu f=happy
+@fg l=マリア e=ビキニ b
+@fg r=リーゼル e=青いビキニ・上,青いビキニ・下 f=26
+@wait time=500
+[texton w=1]
+[マリア v=va043 f=01]「Well then! I found a cute swimsuit at an armor store here in town, so I bought it!」[k]
+[リーゼル f=26]「...」[k]
+Maria and Riselle appeared in bathing suits.[k]
+Their bikinis expose so much skin that I can't help but get embarrassed.[k]
+[テオ f=29]「...」[k]
+[マリア v=va044 f=01]「Hey, you! What are you looking away for?」[k]
+[テオ f=26]「I didn't mean to look away...」[k]
+[マリア v=va045 f=03]「Hehehe, he's embarrassed! So cute～!」[k]
+[リーゼル f=26]「...」[k]
+Of course I'm embarrassed... Why are you both so bold...?[k]
+@fg c=リーゼル f=05 b
+@fg l=マリア f=05 b
+@fg r=マックス e=冒険者のパンツ,勃起 f=03
+[マックス f=03]「Oh! That's great, both of you look great! I'm so excited!」[k]
+Max appeared excitedly, dressed in his swimming trunks.[k]
+[マックス f=03]「You two are soooo good! I can't stop looking!」[k]
+@fg l=マリア f=11 b
+@fg c=リーゼル f=09
+[マリア v=va046 f=11]「Hey! Get away from me! Don't look at me!」[k]
+[マックス f=05]「Ehh～! Why the hell not! You're showing [テオ]!」[k]
+[マリア v=va047 f=11]「I hate you because you give me dirty looks!」[k]
+[マックス f=01]「No, I'm not, okay? I'm just celebrating two beautiful people, okay?!」[k]
+[マリア v=va048 f=11]「You're thinking dirty thoughts! Don't tell me otherwise when you're looking like that!」[k]
+[リーゼル v=vl014 f=09]「Max... is scary...」[k]
+[マックス f=03]「Oh, sorry, sorry ♪」[k]
+@fg l=マリア b
+@fg c=リーゼル
+[マリア v=va049 f=01]「Totally... Riselle, let's go for a quick swim!」[k]
+[リーゼル v=vl015 f=25]「Y-yeah...」[k]
+[マックス f=03]「Ah! I'm coming with you!」[k]
+[マリア v=va050 f=07]「You, don't follow me!」[k]
+[マックス f=03]「Oh, Maria, you're so stingy.」[k]
+[マリア v=va051 f=02]「Hey, you're not coming?」[k]
+Maria asks me this as I stand there in a daze.[k]
+[テオ f=05]「Eh... Eh...」[k]
+[シュバルツ f=00]「We can't go any further today anyway. Why don't you go stretch your wings once in a while?」[k]
+[テオ f=06]「...」[k]
+[テオ f=01]「Understood, then I will.」[k]
+[textoff]
+@out
+@w05
+
+; 砂浜
+@bg f=0021
+[texton w=1]
+[マリア v=va052 f=03]「Crap! It's cold!」[k]
+[リーゼル v=vl016 f=01]「It's cold... sea water...」[k]
+[マックス f=03]「Ah, cold! Maria! I'm gonna splash you! Here, Riselle, too, take this!」[k]
+[リーゼル v=vl017 f=09]「Ah, stop, please...」[k]
+[マリア v=va053 f=07]「Hey, stop it, Max! Riselle, we'll get him back together! Take that!」[k]
+[テオ e=冒険者のパンツ f=01]「Ahahaha...」[k]
+Maria and Max are innocently frolicking. Riselle is also discreetly playing in the water.[k]
+I had been tense before, but as I played with everyone, I gradually began to relax.[k]
+When was the last time I had fun playing like this...?[k]
+[テオ f=06]「...」[k]
+[if exp='! isDemoVersion']
+	After all, we had to escape Blue at all costs, in order to live like human beings again.[k]
+[endif]
+@se f=bashan1
+@bgf f=9999
+[texton w=1]
+∗thump!∗[k]
+@bgf f=event67 p0=01 p1=09
+[リーゼル v=vl018 f=17]「Kya!」[k]
+Riselle, who was playing near me, lost her balance and fell on her butt.[k]
+[テオ f=12]「Hey, are you okay?」[k]
+@bg f=event67 p0=01 p1=06
+[リーゼル v=vl019 f=26]「Y-yeah...」[k]
+I held out my hand to help Riselle up.[k]
+@bg f=event67 p0=01 p1=01
+[リーゼル v=vl020 f=25]「Thank you...」[k]
+[テオ f=25]「...」[k]
+Riselle thanks me with a downcast look, dripping water.[k]
+I couldn't take my eyes off the sight of the water trickling down her translucent skin.[k]
+[マリア v=va054 f=01]「Hey, you two! What are you staring at each other for?」[k]
+[マックス f=15]「Oh? [テオ], do you have a thing for little Riselle?」[k]
+[テオ f=29]「No, it's not like that...」[k]
+For the time being, I denied it, but inwardly, I couldn't suppress my beating heart.[k]
+[textoff]
+@fa
+@out
+@wait time=500
+
+; 村の酒場
+@bg f=0012
+@mu f=guild
+[texton w=1]
+After enjoying the water for a while, we visited a tavern in the village. The five of us sat around the dinner table in the darkness of the evening.[k]
+[マックス e=通常 f=03]「No, the way you fought during the day was awesome! You must be really strong, old man!」[k]
+[シュバルツ f=02]「Hmph, that's no big deal.」[k]
+[マリア v=va055 e=通常 f=01]「Ohhhh, Mr. Schwarz, that's so cool!」[k]
+[テオ e=通常 f=01]「Ahahaha...」[k]
+[if exp='isDemoVersion']
+	[マリア v=va056 f=02]「Tell us about yourselves. You were adventurers in that town, right? What was your adventuring life like?」[k]
+	[テオ f=06]「Let's see...」[k]
+	[マックス f=06]「Hmmm, I'd rather forget about it.」[k]
+	[マリア v=va057 f=06]「Hmm? You're kind of brusque, aren't you?」[k]
+	[テオ f=02]「Yeah... life in that town was tough.」[k]
+	Max and I told Maria and the others about the various events that had befallen us in that town.[k]
+	[マックス f=09]「I've seriously been through hell!」[k]
+[else]
+	For the first time in ages, I had a meal free from tension.[k]
+	[マックス f=01]「But I didn't know that just not having those people around would be so comforting～!」[k]
+	[マリア v=va058 f=05]「Who are those people?」[k]
+	[マックス f=08]「I'm talking about Blue and his friends! They've been working me and [テオ] to the bone for so long! I never had a moment's peace eating with them.」[k]
+	[テオ f=02]「It's true. I haven't had an enjoyable dinner like this in a long time.」[k]
+	[マリア v=va059 f=05]「Wow. They sound like terrible people.」[k]
+	[マックス f=07]「It was so bad! He was always rough on people, beat them up, got angry if they were in a bad mood, it was like hell!」[k]
+[endif]
+[マリア v=va060 f=02]「Hmmm, you guys had a hard time.」[k]
+[リーゼル e=通常 f=05]「...」[k]
+[マリア v=va061 f=02]「But even then, the two of you kept working hard to become adventurers.」[k]
+[マックス f=03]「Well. It's a dream I've had since I was a kid.」[k]
+[マリア v=va062 f=01]「Wow, that's quite a thing to say. You as well?」[k]
+[テオ f=02]「...Yeah, well, sort of.」[k]
+[リーゼル f=05]「...」[k]
+[テオ f=01]「Hey, Riselle, why did you decide to become an adventurer?」[k]
+[リーゼル v=vl021 f=05]「Eh...」[k]
+[テオ f=02]「I can understand Maria, but you don't seem like the type. So I was wondering what the reason was...」[k]
+[マリア v=va063 f=07]「Hey! What's "I can understand Maria" supposed to mean?!」[k]
+[リーゼル f=06]「...」[k]
+[テオ f=13]「Oh, if you don't want to talk about it, you don't have to...」[k]
+[リーゼル f=06]「...」[k]
+[マリア v=va064 f=02]「It was, you know, Riselle's grandmother who started it.」[k]
+[テオ f=05]「Eh...」[k]
+[マリア v=va065 f=02]「It's fine to tell them, right, Riselle?」[k]
+[リーゼル v=vl022 f=06]「Y-yeah...」[k]
+Riselle's grandmother, Zelma, was a great mage whose name was known throughout the kingdom.[k]
+She fought in several wars, and gained an important position in the kingdom, but retired when she approached middle age.[k]
+According to Maria's story, after retiring from active service, Mage Zelma taught magic to her children and grandchildren.[k]
+She was committed to nurturing her successors by educating her descendants in magic.[k]
+Riselle was one of them.[k]
+Zelma seems to have had high expectations for Riselle, and her guidance was quite strict.[k]
+However, her talent didn't flourish. Even Zelma herself didn't understand why. Is it because her personality make her unsuited for it? Or was she just not that talented to begin with?[k]
+
+[マックス f=06]「So, Riselle is being forced to train as an adventurer...?」[k]
+[マリア v=va066 f=02]「Well, something like that. Zelma seems to think her talent will flourish once she gets some real-world experience.」[k]
+[マックス f=09]「Like a lion that pushes its own cubs down to the bottom of the valley, huh? That's harsh, isn't it? Didn't you think of refusing, Riselle?」[k]
+[リーゼル v=vl023 f=06]「I didn't...」[k]
+[テオ f=05]「Why?」[k]
+[リーゼル v=vl024 f=10]「Because... I don't want to go back there.」[k]
+[テオ f=05]「...!」[k]
+Riselle said with a thoughtful expression on her face. I was speechless.[k]
+[マリア v=va067 f=14]「Well... it's a bit complicated, Riselle's family...」[k]
+According to Maria, Riselle's mother died when she was very young.[k]
+Her father remarried, but her new stepmother was abusive to Riselle, partly because of her inability to do magic well.[k]
+What was most painful was that Riselle blamed her birth parents for her lack of magical ability.[k]
+[リーゼル v=vl025 f=01]「...I don't find my life as an adventurer hard at all now. Because I have Maria.」[k]
+Then, her usually expressionless face broke into a wry smile.[k]
+[テオ f=05]「...」[k]
+Riselle's smile looked so fragile that it made me wince.[k]
+I want to protect her... the thought suddenly crossed my mind.[k]
+[textoff]
+@fa
+@out
+@wait time=500
+@eval exp='game.party.minimumRecovery()'
+@eventsleep
+@wait time=500
+
+; 翌朝
+@eval exp='game.clock = game.timeOfADay \ 4'
+@eval exp='o.シーガルの村.img = "town_seagull"'
+@eval exp='game.townView.loadImages(o.シーガルの村.img)'
+@eval exp='o.リーゼル.insertItem(o.青いビキニ・上)'
+@eval exp='o.リーゼル.insertItem(o.青いビキニ・下)'
+@gameon
+@mu f=&'game.map.bgm'
+@wait time=500
+[texton w=0]
+Next morning.[k]
+[シュバルツ f=00]「Sapphire City is located further north from this village. Exit through the [b]north gate[/b] and make sure to stick to the road.」[k]
+[シュバルツ f=00]「There are several shops in this village. You may want to make preparations before you leave.」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント04・村の出口
+*trip_4
+
+[texton]
+[シュバルツ f=00]「Just down the road north is Sapphire City.」[k]
+[シュバルツ f=00]「There's a cliff on the way, so please don't fall off. The monsters below are tough, and you'll have a hard time getting back on the road.
+ 」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント05・途絶えた橋
+*trip_5
+
+; 森の道の途中で橋が落ちて通れない場所がある
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+@wait time=500
+[texton]
+[テオ f=05]「Oh, that's the bridge...」[k]
+There is a deep-looking pond in front of me, and the bridge over it is cut off in the middle. How do I cross this?[k]
+[シュバルツ f=00]「Don't worry, I'll take care of it. [r][emb exp='o.ジャンプ.displayName']!」[k]
+[textoff]
+@wait time=500
+@playse buf=2 storage=period
+@wait time=500
+@eval exp='game.walk("jumpForward")'
+@wait time=1000
+[texton]
+[マックス f=01]「Ooh!」[k]
+Mr. Schwarz cast a spell and the party was able to leap over to the other side.[k]
+[マリア v=va068 f=01]「Hey, you're amazing! You can do anything!」[k]
+[シュバルツ f=00]「It's the [emb exp='o.ジャンプ.displayName'] spell. It's useful, so I suggest you learn it as soon as possible.」[k]
+[textoff]
+[eventoff]

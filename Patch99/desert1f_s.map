@@ -1,0 +1,306 @@
+﻿;  砂漠
+
+name = タルハ砂漠・南
+insideName = Desert South
+level = 43
+bgm = desert
+isOutdoor = true
+shadow = dark
+sky = cloudywild
+blank = rock
+outfield = sand
+effect = PE_sandstorm
+sound = blizzard2
+
+; 画像パーツ
+━ = rock
+　 = sand
+❖ = sand
+＋ = rock
+△ = rock
+❑ = cube
+⑵ = bulletin
+⑷ = bulletin
+⑸ = br_pie
+⑹ = monument
+⑺ = monument
+
+; 敵情報
+maxGroups = 2
+monsters = 砂ぐも,サラマンダー,デザートバイパー,ラミア,アサシン,ソードダンサー
+traps = 毒針,酸スプレー,爆弾,警報
+
+; 移動ポイント
+(A) = map:タルハ砂漠・峡谷, x:14, y:0, way:n, symbol:movev, ask:Go to the next map?
+(B) = map:縦穴Ｂ１, x:6, y:5, symbol:cave, ask:Go to the dungeon?
+(C) = map:ダストウェルの町, enter:ダストウェルの町・北門, ask:Enter town?
+(D) = map:エミール平原, x:10, y:36
+
+; 宝箱
+box[1] = １０連泊券,パワースリング_u,いやしの竪琴_u,経験のコイン（大）,金貨（特大）
+box[2] = 罠はない,ハートの鍵,金貨（特大）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+  																													▲
+59		┃❖┃																							┃Ⓐ┃
+  		┃	┃																							┃　┃
+58		┃❖┃																							┃　┃
+  		┃	┃			┏━━━━━━━━━━━━━┓					┃　┃
+57		┃❖┃			┃　　　　　　　　　　　　　┃					┃　┃
+  		┃	┃			┃　┏━━━━━━━━━┓　┃					┃　┃
+56		┃❖┃			┃　┃									┃　┃					┃　┃
+  		┃	┃			┃　┃									┃　┃			┏━┛　┃
+55		┃❖┃			┃　┃									┃　┃			┃　　　┃
+  								┃　┃									┃　┃			┃　　　┃
+54								┃　┃									┃　┃			┃　　　┃
+  		┏━━━━━┛　┃									┃　┃			┃　　　┃
+53		┃　　　　　　　┃△	❖	❖	❖┃	┃　┃			┃　　　┃
+  		┃　┏━━━━━┛							┗━┛　┃			┃　　　┃
+52		┃　┃						△	❖	❖	❖▲Ⓑ　　┃			┃　　　┃
+  		┃　┃													┏━━━┛	┏━┛　　　┃
+51		┃　┃								❖	△	△┃					┃　　　　　┃
+  		┃　┃																			┃　　　　　┗━┓
+50		┃　┃																			┃　　　　　　　┃
+  		┃　┃																	┏━┛　　　　　　　┃
+49		┃　┃																	┃　　　　　　　　　┃
+  		┃　┗━━━━━━━━━━━━━━━━━┛　　　　　　　　　┃
+48		┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  		┗━━━━━━━━━━━━━┓　　　　　　　┏━━━━━┓　┃
+47																┃　　　　　　　┃					┃Ｖ┃
+  																┃　　　┏━━━┛					┃　┗━┓
+46																┃Λ　　┃									┃Ｖ　　┃
+  														┏━┛　┏━┛							┏━┛　　　┃
+45														┃　　Λ┃									┃　　　　　┃
+  														┃　　　┗━━━━━━━━━┛　　　　　┃
+44														┃　　　　　　　　　　　　　　　　　　　┃
+  														┃　　　　　　　　　　　　　　　　　　　┃
+43														┃　　　　　　　　　　　　　　　　　　　┃
+  														┃　　　　　　　　　　　　　　　　　　　┗━┓
+42														┃　　　　　　回　　　　　　　　Λ　　⑦　＜┃
+  												┏━┛　　　　　　　　　　　　　　　　　　　　　┃
+41												┃　　Λ　　　　　　　　　　　　　　　　　　　Λ┃
+  												┃　　　　　　　　　　　　　　　　　　　　　　　┃
+40												┃　　　　　　　　　　Λ　Λ　　　　　　　　　Λ┃
+  										┏━┛　　　　　　　　　　　　　　　　　　　　　　　┃
+39										┃　　　　　　　　　　　　　　　　　　　　　　　　Λ┃
+  								┏━┛　　　　　　　　　　　　　　　　　　　　　　　┏━┛
+38								┃　　　　　　　　回　　　　　　　　　　　Λ　　　　┃
+  				┏━━━┛　　　　　　　　　　　　　　　　　　　　　　　　　┃
+37				┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  		┏━┛　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+36		┃　　　　　　　　　　　　⑨　　　　　Λ　　　　　　　　　⑧　　┃
+  ┏━┛　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┏━┛
+35┃＞　＞　＞　＞　＞　＞　Ｖ　Λ　　　　　　　　　　　　　　　Λ┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+34┃Λ　Ｖ　＜　＜　＜　＜　Ｖ　Λ　　　　　　　　　　　　　＞　Λ┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃
+33┃Λ　Ｖ　＞　＞　Ｖ　Λ　Ｖ　Λ　⤴　　　　　　　　　＞　Λ　　┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┗━┓
+32┃Λ　Ｖ　Λ　Ｖ　＜　Λ　Ｖ　Λ　　　　　　　　　＞　Λ　　　　　　┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┏━┓　┃
+31┃Λ　Ｖ　Λ　＞　＞　Λ　Ｖ　Λ　　　　　＞　＞　Λ　　　　┃	┃　┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃	┃　┃
+30┃Λ　①　Λ　＜　＜　＜　＜　Λ　　　　　Λ　Λ　　　　　　┃	┃　┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃	┃　┃
+29┃Λ　＞　＞　＞　＞　＞　＞　Λ　　　　　Λ　Λ　　　　　　┃	┃　┃
+  ┃　　　　　　　　　　　　　　　　　　　　　　　　　　　　　┃	┃　┃
+28┃Λ　＜　＜　＜　＜　＜　＜　＜　　　　　Λ　Λ　　　　　　┃	┃❶┃
+  ┗━┓　　　　　　　　　　　　　　　　　　　　　　　　　┏━┛	┗━┛
+27		┃　　　　　　　　　　　　　　　　　　Λ　Λ　＜　＜┃
+  		┃　　　　　　　　　　　　　　　　　　　　　　　　　┃
+26		┃　　　　　　　　　　＞　＞　＞　＞　Λ　　　　　　┃
+  		┃　　　　　　　　　　　　　　　　　　　　　　　　　┗━┓
+25		┃　　　　　　　　　　＞　＞　＞　＞　Λ　　　　　　　　┃
+  		┗━┓　　　　　　　　　　　　　　　　　　　　　　　　　┃
+24				┃　　　　⑩　　　　　　　　　⤴　　　　　　　　　　┃
+  				┃　　　　　　　　　　　　　　　　　　　　　　　　　┃
+23				┃　　　　Λ　＜　＜　＜　＜　＜　　　　　　　　　　┃
+  				┃　┏━━━━━━━┓　　　　　　　　　　　　　　　┃
+22				┃　┃							┃Λ　＜　＜　　　　　　　　　　┃
+  				┣＋┫							┃　　　　　　　　　　　　　　　┃
+21				┃　┃							┃　　　　　　　　　　　　　　　┃
+  				┃　┃					┏━┛　　　　　　　　　　　　　　　┃
+20				┃　┃					┃　　　　　　　　　　　　　　　　　┃
+  				┃　┃					┃　　　　　　　　　　　　　　　┏━┛
+19				┃　┃					┃　　　　　　⑵　　　　　　　　┃
+  ┏━━━┛　┃			┏━┛　　　┏━━━━━┓　　　　　┃
+18┃⑸　　　　┃			┃　　　　　┃					┃　　　　　┃
+  ┗━━━━━┛			┃　　　┏━┛					┗━┓　　　┃
+17										┃　　　┃									┃　　　┃
+  										┃　　　┃									┃　　　┃
+16										┃　　❑┃									┃　　❑┃
+  										┃　　　┃							┏━┛　　　┗━┓
+15										┃　　　┃							┃　　　　　　　┃
+  										┃　　　┃							┃　　　　　　　┃
+14										┃③　③┃							┃③　③　③　　┃
+  										┃　　　┃							┃　　　　　┏━┛
+13										┃③　③┃							┃③　③　③┃
+  										┃　　　┗━━━┓			┃　　　　　┃
+12										┃③　③　　　　┃			┃❑　③　③┃
+  										┃　　　　　　　┗━┓	┃　　　　　┃
+11										┃③　③　　　　　　┃	┃③　③　③┃
+  ┏━━━┓					┃　　　　　　　　　┃	┃　　　　　┃
+10┃　　　┃					┃③　③　　　❑　　┃	┃③　③　③┃
+  ┃　　　┃					┃　　　┏━━━━━┛	┃　　　　　┃
+ 9┃　　⑹┃					┃③　③┃							┃③　❑　③┃
+  ┃　┏━┛			┏━┛　　　┃							┃　　　　　┃
+ 8┃　┃					┃　　③　③┃							┃③　③　△┃
+  ┃　┃					┃　　　　　┃							┃　　　　　┃
+ 7┃　┃					┃　　③　③┃							┃③　③　③┃
+  ┃　┗━━━━━┛　　　　　┃							┃　　　　　┗━━━━━━━┓
+ 6┃　　　　　　　　　　③　③┃							┃③　③　③　　　　　　　　┃
+  ┗━━━┓　┏━━━┓　　　┃							┃　　　　　┏━━━━━┓　┃
+ 5				┃　┃			┃③　③┃							┃③　③　③┃					┃　┃
+  				┃　┃			┃　　　┃							┃　　　　　┃					┃　┃
+ 4				┃　┃			┃△　△┃							┃△　△　△┃❖┃			┃　┃
+  		┏━┛　┃			┃　　　┃							┃　　　　　┃	┃			┃　┃
+ 3		┃　　　┃			┃△　△┃							┃△　△　△┃❖┃			┃　┃
+  		┃　　　┃			┃			┃							┃					┃	┃			┃　┃
+ 2		┃⑪　⑷┃			┃❖	❖┃							┃❖	❖	❖┃❖┃			┃　┃
+  		┃　┏━┛			┃			┃							┃					┃	┃			┃　┃
+ 1		┃⑪┃					┃❖	❖┃							┃❖	❖	❖┃❖┃			┃　┃
+  		┃　┃					┃			┃							┃					┃	┃			┃　┃
+ 0		┃Ⓒ┃					┃❖	❖┃							┃❖	❖	❖┃❖┃			┃❷┃
+  			▲																														┗━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[1][30].f.icon = 33;
+pos[1][30].f.info = "強制移動";
+pos[11][12].event = pos[12][9].event = 3;
+pos[1][2].f.antiWarp = pos[1][1].f.antiWarp = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@eval exp='o.混乱.sickTime += 20'
+@eval exp='for(var i = 0; i < game.party.members.count; i++) game.party.members[i].setStatus(o.混乱)'
+@eval exp='o.混乱.sickTime -= 20'
+@walk move=s
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Be careful of strong crosswinds from the south ahead!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove
+
+@eval exp='tf.i = 1'
+*_check_loop
+[eventoff cond='game.map.pos[game.party.curX][game.party.curY - tf.i].f.type == "movable"']
+@eval exp='tf.i ++'
+@jump target=*_check_loop cond='tf.i < 5'
+@eval exp='tf.temp = true'
+*_blow_loop
+[eventoff cond='game.party.curY == 18']
+[eventoff cond='game.map.pos[game.party.curX][game.party.curY + 1].f.type != "floor"']
+@popup text="I was blown away by the strong wind!" cond='tf.temp'
+@eval exp='tf.temp = false'
+@walk move=n
+@jump target=*_blow_loop
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="The town at the end of the world - Dustwell"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("piety", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Faith permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@question title="There is a stone monument. Would you like to touch it?"
+[eventoff cond='! tf.result']
+@se f=period
+@eval exp='o.タルハ砂漠・南.setWarp(0, 10, "D", "warp")'
+@eval exp='o.エミール平原.setWarp(10, 36, "G", "warp")'
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] inSearching
+
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] inSearching
+
+@delevent
+@getitem item=貞操帯の鍵
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] inSearching
+
+@delevent
+@getitem item=鉄の指輪
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] inSearching
+
+@delevent
+@getitem item=５連泊券
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+@se f=dragstone
+@eval exp='game.map.reset()'
+@eval exp='game.map.setWarp(0, 10, "D", "warp")' cond='! game.map.events.has(6)'
+@wait time=800
+@warp x=9 y=20 way=s
+@notice text="All the stones on the floor have returned to their original positions. You were also warped!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_11
+;[exp] ! isFreeMode && wife === void
+
+[texton w=0]
+[name n="Tough Man" f=manzur_00]「What? There's not a single married person in this party!」[k]
+[name n="Tough Man" f=manzur_00]「I hate singles parties! Get outta here!」[k]
+[textoff]
+@walk move=n
+@walk move=n cond='game.party.curY == 2'
+
+[eventoff]
+;-------------------------------------------------------------------------------

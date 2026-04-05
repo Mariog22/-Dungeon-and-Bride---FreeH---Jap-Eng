@@ -1,0 +1,123 @@
+﻿; 霧の島の洞窟
+
+name = 霧の島の洞窟Ｂ１
+insideName = Cave B1
+lower = 霧の島の洞窟Ｂ２
+level = 29
+bgm = evil
+margin = 1
+shadow = dark
+sky = black
+outfield = soil
+blank = rock
+roof = stone
+antiWarp = true
+
+; 画像パーツ
+━ = soil
+　 = soil
+〰 = water
+❑ = cube
+☗ = upstair
+☖ = arch
+⧻ = fence
+︻ = panel
+㊦ = ladderd
+⑷ = br_luc
+
+; 敵情報
+monsters = パイレーツ,キャプテン,モンストラスバット,バンパイアバット,バンパイアラット,ボーパルハムスター
+
+; 移動ポイント
+(A) = map:霧の島・地上, x:8, y:10, way:w, symbol:upstair, ask:Leave the dungeon?
+(B) = map:霧の島・地上, x:11, y:0, way:e, symbol:upstair, ask:Leave the dungeon?
+(C) = map:霧の島・地上, x:5, y:2, way:s, symbol:upstair, ask:Leave the dungeon?
+
+; 宝箱
+box[1] = 黄金の人魚像,金貨（超特大）,金貨（超特大）,金貨（特大）,金貨（特大）,金貨（大）,金貨（大）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━━━━━━━━━━━━━┓			┏━━━━━┓
+10┃　　　　　　　　　　　　　┃			☗Ⓐ　　〰〰┃
+  ┃　■■■■■■■■■■■　┗━━━╋━┓　〰〰┃
+ 9┃　■■■■■■■■■■■　　　　　┃	┃　〰〰┃
+  ┃　■■■■■■■■■■■　┏━┓　┗━┛　〰〰┃
+ 8┃①■■■■■■■■■■■　┃	┃　　　　　　　┃
+  ┣⧻┓■■■■■■■■■■■┃	┃〰〰　┏━┓　┃
+ 7┃❶■■■■■■■■■■■■┃	┃〰〰　┃	┃　┃
+  ┣⧻┛■■■■■■■■■■■┗━┻━┓　┣━┛　┃
+ 6┃②■■■■■■■■■■■❑　　　　┃　┃　　敵┃
+  ┃　■■■■■■■■┏━━━━━┓　┃　┃　　　┃
+ 5┃　　　　　　　　　┃　　　　　┃　┃㊦┃③　　┃
+  ┣━━━━━┳━┓　┃　┏━┓　┃　┣━╋︼━━┫
+ 4┃　　　　　┃	┃　┃　┃	┃　┃　┃	┃⑷　　┃
+  ┃　┏━┓　┗━┛　┃　┣━┛　┃　┗━┫　　　┃
+ 3┃　┃	┃　　　　　┃Ⓒ┃〰〰　┃　　　┃　　敵┃
+  ┃　┣━┻━┳━┓　┣☗┫〰〰　┣━┓　┣━┓　┃
+ 2┃　┃　　　┃	┃　┃	┃〰〰　┃	┃　┃	┃　┃
+  ┃　┃　　　┗━┛　┃	┃〰〰　┗━┛　┗━┛　┃
+ 1┃　┃　　敵　　　　┃	┃〰〰　　　　　　　　　┃
+  ┃　┗━━━━━━━┻━┻━━━━━━━━━┳━┛
+ 0┃　　　　　　　　　　　　　　　　　　　　Ⓑ☗
+  ┗━━━━━━━━━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[0][8].f.img = "soilr";
+pos[0][6].f.img = "soilr";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(0, 7, "n", "close");
+switchFence(0, 7, "s", "close");
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] map.pos[0][7].s.type == "wall"
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=0 y=7 way=s mode=switch
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] map.pos[0][7].n.type == "wall"
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=0 y=7 way=n mode=switch
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="There was graffiti on the wall that read:<r>If you leave this floor, the door will close again. Is there any way to open the door opposite without leaving this floor?"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("luck", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had luck permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

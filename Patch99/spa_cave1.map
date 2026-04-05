@@ -1,0 +1,148 @@
+﻿; 温泉
+
+name = 温泉・洞窟Ｂ１
+insideName = Cave B1
+upper = 温泉・浴場
+lower = 温泉・洞窟Ｂ２
+level = 28
+bgm = cave
+isOutdoor = true
+shadow = dark
+sky = black
+blank = rock
+antiWarp = true
+outfield = soil
+
+; 画像パーツ
+━ = soil_h
+　 = soil
+❖ = soil
+△ = rock
+☗ = gate
+Ⓑ = ladderl
+⑴ = bulletin
+
+; 敵情報
+maxGroups = 2
+monsters = レッドスライム,サラマンダー
+traps = 石つぶて
+
+; 移動ポイント
+(A) = map:温泉・岩場, x:11, y:2, way:s, symbol:exit, ask:Leave the dungeon?
+(B) = map:温泉・浴場, lift:up
+
+; 宝箱
+box[1] = 罠はない,鉄の槍,固い杖,バトルハンマー,シャムシール,モーニングスター,良い短剣,革のムチ
+box[2] = 罠はない,アイスロッド,ロングボウ,スリング,ボム,召喚びん
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+  ┏━━━━━━━━━━━━━━━━━┓
+15┃　　④　　　　　　　　　　　　　　┃
+  ┃　　　┏━━━━━━━━━━━┓　┃
+14┃　　④┃											┃　┃
+  ┗━┓　┃											┃　┗━━━━━┓
+13		┃　┃											┃　　　　　　③┃
+  		┃　┃											┗━━━━━┓　┃
+12		┃　┃																	┃　┃
+  		┃　┃					┏━━━━━━━┓			┃　┃
+11		┃　┃					┃　　　　　　　┃			┃　┃
+  		┃■┃					┃■┏━━━┓　┃			┃　┃
+10		┃■┃					┃■┃			┃　┃			┃　┃
+  		┃■┃					┃■┃	┏━┛　┃			┃　┃
+ 9		┃■┃					┃■┃	┃　　　┃			┃　┃
+  		┃■┃					┃■┃	┃　　　┃			┃　┃
+ 8		┃■┃					┃■┃	┃　　Ⓑ┃			┃　┃
+  		┃■┗━			━┛■┃	┗━━━┛			┃　┃
+ 7		┃■■■			■■■┃									┃　┃
+  		┗━━━			━━━┛							┏━┛　┃
+ 6																				┃❶　　┃
+  																				┃　　　┃
+ 5																				┃❷　　┃
+  																				┃　　　┃
+ 4																				┃　　　┃
+  																				┗━┓　┃
+ 3																						┃Ⓐ┃
+  																						┗☗┛
+ 2																							❖
+  
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[11][3].event = 2;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(4);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@roadguide w=Exit e="Tool Shed"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@delevent
+@addevent map=温泉・脱衣所 num=11
+@addevent map=温泉・浴場 num=7
+@addevent map=温泉・浴場 num=8
+@wait time=500
+@walk move=n
+@wait time=500
+[texton]
+[キャラ f=05]「This is...!」[k]
+When I entered the hole in the middle of the cliff, I found a cave with neatly arranged walls inside.[k]
+There are well-used construction tools scattered around. Could it be a mine shaft or something?[k]
+[if exp='ELF || SYL'][キャラ f=06]「...There's no way to go back, so I guess I'll just have to go and see.」[k]
+[elsif exp='HUM || DWA || GNO'][キャラ f=05]「...There is no way to go back, so I think it's worth moving forward.」[k]
+[endif]
+If this was a mine tunnel, there must be an exit that workers would have used. Thinking this, we walked deeper into the cave in search of an exit.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@delevent
+[texton]
+[キャラ]'s group walk through the cave naked. The air inside the cave is cool, and they can't help but shiver.[k]
+[if exp='ELF2'][キャラ f=32]「It's so embarrassing to wander around a cave naked...」[k]
+[elsif exp='SYL2'][キャラ f=28]「I feel really embarrassed walking around a cave naked.」[k]
+[elsif exp='HUM2'][キャラ f=29]「Walking naked in a cave is really embarrassing...」[k]
+[elsif exp='DWA2'][キャラ f=29]「Walking naked in a cave is very embarrassing.」[k]
+[elsif exp='GNO2'][キャラ f=25]「It's kind of embarrassing to walk around naked in a cave...」[k]
+[endif]
+No one is watching us naked right now.[r]
+...I understand that, but I couldn't help feeling uneasy about doing so in a place where people don't normally walk around naked.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;------------------------------------------------------------------------------

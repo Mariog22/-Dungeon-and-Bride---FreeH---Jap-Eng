@@ -1,0 +1,165 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔７Ｆ
+insideName = ７Ｆ
+upper = ラドミラの塔８Ｆ
+lower = ラドミラの塔６Ｆ
+level = 50
+bgm = tower
+margin = 3
+shadow = dark
+sky = dawnforest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+　 = marble
+〰 = water
+／ = door
+☖ = arch
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+
+; 敵情報
+monsters = マスターランサー,デュエリスト,アークプリースト,メイガス,ネクロマンサー,マスターアーチャー,バーグラー,マスターシャドウ,オークキング,コボルドリーダー
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  		┏━┳━━━━━━━━━┳━━━━━┓
+ 8		┃③☜炎　＜　＜　＜　　┃　　　　㊤┃
+  		┣☟┻━━━━━━━━━┻━━━━━┫
+ 7		┃∴〰≫〰④〰④〰④〰≫〰④〰≫〰⑥┃
+  		┃∴〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰　┃
+ 6		┃∴〰≫〰⑤〰⑤〰⑤〰④〰⑤〰④〰⑥┃
+  		┃∴〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰　┃
+ 5		┃∴〰≫〰④〰≫〰④〰⑤〰④〰⑤〰⑥┃
+  		┃∴〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰　┃
+ 4		【⑦〰≫〰⑤〰④〰⑤〰④〰⑤〰④〰⑥┃
+  		┃∴〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰　┃
+ 3		┃∴〰≫〰④〰⑤〰④〰⑤〰≫〰⑤〰⑥┃
+  		┃∴〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰　┃
+ 2		┃∴〰≫〰⑤〰④〰⑤〰④〰④〰≫〰⑥┃
+  		┃∴〰〰〰〰〰〰〰〰〰〰〰〰〰〰〰　┃
+ 1		┃∴〰≫〰≫〰⑤〰≫〰⑤〰⑤〰≫〰⑥┃
+  		┣☝┳━━━━━━━━━┳┯━━┳━┫
+ 0		┃③☜㊦　　　　　　　　⧻②　　／①┨
+  		┗━┻━━━━━━━━━┻━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+for(var y = 1; y <= 7; y++)
+{
+	for(var x = 3; x <= 8; x++)
+	{
+		if(pos[x][y].event == 4) pos[x][y].f.icon = 49;
+		else if(pos[x][y].event == 5) pos[x][y].f.icon = 48;
+		else pos[x][y].f.icon = 47;
+		pos[x][y].f.img = "water";
+		pos[x][y].f.type = "stream";
+		pos[x][y].f.info = "流れる水";
+	}
+	pos[9][y].f.antiWarp = true;
+}
+pos[1][4].f.antiWarp = true;
+setElevator(9, 0);
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="11Ｆ" exp='tf.result = ["ラドミラの塔11Ｆ", "up"]'
+@select text="10Ｆ" exp='tf.result = ["ラドミラの塔10Ｆ", "up"]'
+@select text="９Ｆ" exp='tf.result = ["ラドミラの塔９Ｆ", "up"]'
+@select text="６Ｆ" exp='tf.result = ["ラドミラの塔６Ｆ", "down"]'
+@select text="４Ｆ" exp='tf.result = ["ラドミラの塔４Ｆ", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=7 y=0 way=w mode=open
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove
+
+@changefloor x=9 y=&'f.tower_flag_positon' pimg=void icon=void cond='f.tower_flag_positon !== void'
+@eval exp='f.tower_flag_positon = intrandom(1, 7)'
+@changefloor x=9 y=&'f.tower_flag_positon' pimg=warp icon=20
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+[if exp='WAY == "e" || WAY == "w"']
+	@walk turn=s
+	@walk move=s
+[else]
+	@walk turn=e
+	@walk move=e
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+[if exp='WAY == "e" || WAY == "w"']
+	@walk turn=n
+	@walk move=n
+[else]
+	@walk turn=e
+	@walk move=e
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+[if exp='game.party.curY == f.tower_flag_positon']
+	@warp x=7 y=8 way=e
+[else]
+	@warp x=6 y=8 way=w
+	@walk move=w
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@notice text="First, complete the map. Then, aim for the mark."
+
+[eventoff]
+;-------------------------------------------------------------------------------

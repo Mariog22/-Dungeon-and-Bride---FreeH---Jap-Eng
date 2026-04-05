@@ -1,0 +1,235 @@
+﻿; 水竜の神殿
+
+name = 水竜の神殿Ｂ２
+insideName = Ｂ２
+upper = 水竜の神殿Ｂ１
+lower = 水竜の神殿Ｂ３
+pool = 水竜の神殿Ｂ３
+level = 30
+bgm = labyrinth
+external = n:2, e:1
+isOutdoor = true
+shadow = dark
+sky = black
+roof = stone
+outfield = marble
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = stone_h
+－ = stone
+　 = marble
+☐ = marble
+～ = pond
+／ = door
+∫ = pick
+〆 = key
+﹃ = ladder
+︻ = panel
+┯ = button
+⒌ = barrel
+⒍ = br_vit
+⒎ = barrel
+
+; 敵情報
+maxGroups = 2
+monsters = ブルースライム,電気ねずみ,サンダーウィスプ,ウンディーネ,セイレーン,ラミア
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  +1  
+  
++2		┃					┃
+  		┃					┃
++1		┃					┃
+  		┣━━┯━━┫															┏━━━┓	┳－－﹃┳
+17		┃␣␣␣␣␣┃			┃			┃							┃⒌☐⒍┃	┃　　　┃
+  		┃␣␣␣␣␣┃			┃			┃	┏━━━┓	┃☐☐☐┃	┃　　　┃
+16		┃␣␣␣␣␣┃			┃			┃	┃␣␣␣┃	┃⒎☐☐┃	┃　　　┃
+  ┏━┛␣␣␣␣␣┗━┓	┣－－－┫	┃␣␣␣┃	┃☐☐☐┃	┃　　　┃
+15┃␣␣␣␣␣␣␣␣␣┃	┃　　　┃	┃␣␣␣┃	┃☐☐☐┃	┃　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃　　　┗━┛␣␣␣┃	┃☐☐☐┗━┫　　　┃
+14┃␣␣␣␣␣␣␣␣␣┃	┃　　　␣␣␣␣␣␣┃	┃☐☐☐☐☐┃　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃　　　␣␣␣␣␣␣┃	┃☐☐☐☐☐┃　　　┃
+13┃␣␣␣␣␣␣␣␣␣┃	┃　　　␣␣␣␣␣␣┃	┃☐☐☐☐Ｅ∫　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃　　　┏━┓␣␣␣┃	┗━━━━━┫　　　┃
+12┃␣␣␣␣␣␣␣␣␣┃	┃　　　┃	┃␣␣␣┃							┃　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃　　　┃	┃␣␣␣┗━━━━━━━┛␣␣␣┃
+11┃␣␣␣␣␣␣␣␣␣┃	┃　　　┃	┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃　
+  ┗━┓　　　　　┏━┛	┃　　　┃	┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃
+10		┃　　　　　┃			┃　　　┃	┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃
+  		┃　　　　　┗━━━┛　　　┃	┃␣␣␣┏━━━━━━━┓␣␣␣┃
+ 9		【④　　　　　　　　　　　　┃	┃␣␣␣┃							┃␣␣␣┃
+  		┃　　　　　　　　　　　　　┃	┃␣␣␣┃	┏━━━┓	┃␣␣␣┃
+ 8		┃　　　　　　　　　　　　　┃	┃␣␣␣┃	┠⓵☐☐┃	┃␣␣␣┃
+  		┗━━━━━━━━━━━━━┛	┃␣␣␣┃	┃☐☐☐┃	┃␣␣␣┃
+ 7																		┃␣␣␣┃	┃☐☐☐┃	┃　　　┃
+  ┏━━━━━━━━━┓							┃␣␣␣┃	┣━━〆┫	┃　　　┃
+ 6┃␣␣␣␣␣␣␣␣␣┃	┃			┃	┃␣␣␣┃	┃　　　┃	┃　　　┃
+  ┃␣␣␣␣␣␣␣␣␣┃	┃			┃	┃␣␣␣┃	┃　　　┃	┃　　　┃
+ 5┃␣␣␣␣␣␣␣␣␣┃	┃			┃	┃␣␣␣┃	┃　　　┃	┃　　　┃
+  ┃␣␣␣┏━┓␣␣␣┣━┻━━┯┫	┃␣␣␣┃	┃␣␣␣┃	┣－－﹄┫
+ 4┃␣␣␣┃	┃␣␣␣┃　　　　②┃	┃␣␣␣┃	┃␣␣␣┃	┃			┃
+  ┃␣␣␣┃	┃␣␣␣┃　　　　　┃	┃␣␣␣┃	┃␣␣␣┃	┃			┃
+ 3┃␣␣␣┃	┃␣␣␣┃　　　　　┃	┃␣␣␣┃	┃␣␣␣┃	┃			┃
+  ┃␣␣␣┃	┗━━━┻━━━━━┛	┃␣␣␣┃	┃␣␣␣┃
+ 2┃␣␣␣┃													┃␣␣␣┃	┃␣␣␣┃
+  ┃␣␣␣┗━━━━━━━━━━━━━┛␣␣␣┗━┛␣␣␣┃
+ 1┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃
+  ┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃
+ 0┃␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  +1  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[2][17].event = 3;
+pos[13][6].n.key = o.水門の鍵;
+pos[16][17].n.img = "stone";
+pos[16][5].s.img = "stone";
+pos[12][8].w.himg = "bt_water";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(underWater)
+{
+	sky = "deepwater";
+	effect = "PE_water_bubble";
+}
+else
+{
+	sky = "black";
+	effect = void;
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+[if exp='game.map.pos[0][0].f.type == "water"']
+	@notice text="Nothing happened."
+	[eventoff]
+[endif]
+
+@eval exp='o.水竜の神殿Ｂ２.underWater = false'
+@eval exp='f.filledEast_3F = true'
+@eval exp='f.filledEast_4F = true'
+
+@eval exp='tf.temp = %[type: "air", img: void, trap: "drained"]'
+@call storage=&'o.水竜の神殿Ｂ１.mapFile' target=*_change_waterway_b1
+
+@eval exp='tf.temp = %[type: "water", img: "pond", trap: "water"]'
+@call storage=&'o.水竜の神殿Ｂ２.mapFile' target=*_change_waterway_b2
+
+@eval exp='tf.temp = %[type: "air", img: void, trap: "drained"]'
+@call storage=&'o.水竜の神殿Ｂ３.mapFile' target=*_change_waterway_b3
+@call storage=&'o.水竜の神殿Ｂ４.mapFile' target=*_change_waterway_b4
+
+@se f=bashan1
+@wait time=500
+@notice text="I heard the sound of water flowing somewhere."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_change_waterway_b2
+
+[iscript]
+o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp,  0,  0,  1,  4);
+o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp,  0,  5,  4,  6);
+o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp,  3,  3,  4,  4);
+o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp,  2,  0, 11,  1);
+o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp, 12,  0, 13,  4);
+o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp,  9,  2, 10, 16);
+o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp,  8, 13,  8, 14);
+o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp, 11, 10, 14, 11);
+o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp, 15,  8, 16, 11);
+if(tf.temp.type == "air" || f.filledWest_3F)
+{
+	o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp,  0, 11,  4, 15);
+	o.水竜の神殿Ｂ２.changeFloorsOfWideArea(tf.temp,  1, 16,  3, 17);
+}
+if(game.map == o.水竜の神殿Ｂ２)
+{
+	game.map.sky = "black";
+	game.map.effect = void;
+	game.view.setEnvironmentInfo(game.map);
+	game.updateView();
+}
+[endscript]
+
+@return
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@changewall x=6 y=4 way=n img=stone
+@changewall x=7 y=4 way=n img=stone
+@changewall map=水竜の神殿Ｂ１ x=6 y=4 way=n type=space img=void behind=true
+@changewall map=水竜の神殿Ｂ１ x=7 y=4 way=n type=space img=void behind=true
+@se f=dragstone
+@wait time=500
+@notice text="I heard the sound of something heavy moving somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@changewall x=1 y=17 way=n img=stone
+@changewall x=2 y=17 way=n img=stone
+@changewall x=3 y=17 way=n img=stone
+@changewall map=水竜の神殿Ｂ１ x=1 y=17 way=n type=space img=void behind=true
+@changewall map=水竜の神殿Ｂ１ x=2 y=17 way=n type=space img=void behind=true
+@changewall map=水竜の神殿Ｂ１ x=3 y=17 way=n type=space img=void behind=true
+@se f=dragstone
+@wait time=500
+@notice text="I heard the sound of something heavy moving somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="Altar entrance  →"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+*event_7
+;[exp] onObjectTrigger
+
+@barrel
+@eval exp='game.curTarget.setStatus(o.抵抗, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had magic resistance temporarily increased!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("vitality", 2)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Vitality permanently increased by 2!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------

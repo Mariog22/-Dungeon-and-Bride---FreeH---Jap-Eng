@@ -1,0 +1,2835 @@
+﻿; シナリオ・シルフ編・Ｂパート
+
+
+
+;■主人公編・後半
+
+;◇主人公イベント04
+*theo_04
+
+; とある山頂
+@saveon
+@w05
+[texton w=0]
+[テオ f=05]「This is...!」[k]
+Continuing up the mountain, we came to a good vantage point. It appears that this is the summit.[k]
+Well...[k]
+[テオ f=02]「This place is... The air is kind of clean...」[k]
+For some reason, I feel very refreshed. I feel like I could stay here forever.[k]
+[textoff]
+@fg c=マルエット f=02
+[texton w=1]
+[マルエット v=vs206 f=03]「Pfft, even you can tell.」[k]
+[テオ f=05]「What?」[k]
+[マルエット v=vs207 f=02]「The air here is very clear and breezy. There are lots of wind spirits floating around.」[k]
+[テオ f=05]「Ah...」[k]
+[マルエット v=vs208 f=02]「This could be... a good place.」[k]
+[テオ f=05]「What?」[k]
+[マルエット v=vs209 f=16]「It's nothing. Let's go, Captain.」[k]
+[テオ f=05]「O-oh...」[k]
+With those meaningful words, [マルエット] quickly left.[k]
+[textoff]
+@cl
+[eventoff]
+
+
+;◇主人公イベント05
+*theo_05
+
+; 朝・宿屋のロビー
+@saveon
+@bg f=0001
+@mu f=guild
+[texton w=0]
+[テオ e=通常 f=05]「Phew, I slept well today...」[k]
+Today is a holiday. I decided to give everyone in the party a day off and let them relax.[k]
+After all, we need a break once in a while. Above all, I want to relieve myself from the fatigue that has built up.[k]
+[textoff]
+@se f=door1
+@fgf c=マルエット f=62
+[texton w=1]
+[マルエット v=vs210 f=62]「Captain!」[k]
+With a slam, the door opened as wide as it would go, and [マルエット] entered the room.[k]
+[テオ f=05]「What's wrong, [マルエット]?」[k]
+[マルエット v=vs211 f=58]「Come with me today!」[k]
+[テオ f=05]「Eh?」[k]
+[マルエット v=vs212 f=62]「Just come with me! It's important!」[k]
+[テオ f=10]「What's the rush...?」[k]
+@fgf c=マルエット f=06
+[マルエット v=vs213 f=06]「I want to go back to the summit we visited the other day.」[k]
+[テオ f=05]「Summit?」[k]
+I search my memory. Ah, there...[k]
+[マルエット v=vs214 f=06]「I want to go back to that plateau. To see if it's suitable as a new home for us sylphs.」[k]
+[テオ f=05]「...! That means...!」[k]
+@fgf c=マルエット f=15
+[マルエット v=vs215 f=15]「Yeah, I think I may have found the place I've been looking for.」[k]
+[テオ f=01]「That's great. Congratulations!」[k]
+@fgf c=マルエット f=06
+[マルエット v=vs216 f=06]「So, come with me.」[k]
+[テオ f=05]「What? Why me...?」[k]
+@fgf c=マルエット f=62
+[マルエット v=vs217 f=62]「Just do it! You're my captain, right?」[k]
+[テオ f=12]「Ehhhh...?」[k]
+What... I thought I could take a break today...[k]
+...However, I can't let [マルエット] go alone to a place where monsters might appear.[k]
+[テオ f=02]「Okay, I'll go with you, if you want.」[k]
+@fgf c=マルエット f=01
+[マルエット v=vs218 f=01]「Good. Then let's get going!」[k]
+[textoff]
+@out
+@w05
+[hoteloff leave=true]
+
+
+;◇主人公イベント06
+*theo_06
+
+; とある山頂
+@saveon
+@w05
+[texton w=0]
+[テオ f=06]「I believe it was here.」[k]
+[マルエット] and I came to the summit we'd visited before.[k]
+As before, there is a cool breeze blowing, making me feel very refreshed.[k]
+[マルエット v=vs219 f=01]「Okay, let's investigate this place some more.」[k]
+[マルエット] and I walked around the area for a while, carefully examining the surrounding environment.[k]
+[テオ f=05]「...So, what do you think?」[k]
+[textoff]
+@fg c=マルエット f=02
+[texton w=1]
+[マルエット v=vs220 f=16]「...Just as I thought. There are many wind spirits living here, and the air is very clean.」[k]
+[マルエット v=vs221 f=02]「This is exactly the right sort of place for us sylphs to live.」[k]
+[テオ f=01]「Which means...!」[k]
+[マルエット v=vs222 f=15]「I've found it... Our new home. The goal of my journey.」[k]
+[テオ f=01]「You did it, [マルエット]! Congratulations!」[k]
+[マルエット v=vs223 f=04]「Yeah, thanks.」[k]
+[マルエット]'s expression is one of satisfaction and pride.[k]
+[マルエット v=vs224 f=19]「It didn't take as long as I thought it would. I guess my goal is accomplished now.」[k]
+[テオ f=05]「...So, you'll be leaving us, [マルエット]...」[k]
+[マルエット v=vs225 f=02]「Don't worry. I won't quit your party.」[k]
+[テオ f=05]「O-oh, yeah?」[k]
+[マルエット v=vs226 f=02]「If I leave suddenly, you'll be in trouble, won't you? I'll stay with you a little longer.」[k]
+[マルエット v=vs227 f=16]「Well, it's been quite fun adventuring with this party too. I'll be back after I report to everyone in the village about this place.」[k]
+[テオ f=02]「Ah... That's good to know.」[k]
+@fg c=マルエット f=58
+[マルエット v=vs228 f=58]「What? Why don't you look happier?!」[k]
+[テオ f=13]「I'm glad! Of course I am! I'm just a little surprised. I thought you were going to quit the party.」[k]
+@fg c=マルエット f=30
+[マルエット v=vs229 f=30]「Honestly... It's not like I can quit now...」[k]
+; ↑ 少しボソボソとした口調で
+[テオ f=05]「What? What did you just say?」[k]
+@fg c=マルエット f=19
+[マルエット v=vs230 f=19]「Nothing! Come on, let's go, now we're done!」[k]
+[textoff]
+@cl
+[texton w=0]
+[テオ f=05]「Ah, wait, [マルエット].」[k]
+I chase after [マルエット], who turns away and walks away. Then...[k]
+@st
+[テオ f=05]「...!」[k]
+[テオ f=11]「[マルエット]! Get back!」[k]
+[マルエット v=vs231 f=11]「What...? Kyaaaah!」[k]
+Something attacked [マルエット] from the sky! She quickly dodged it.[k]
+@mu f=ghost
+@se f=roar
+[？？？ f=dragon_04]「Gyaaaah!」[k]
+[テオ f=12]「That's... a dragon!」[k]
+When I looked up, I saw the shadow of a large dragon flapping its wings.[k]
+The dragon is staring at us from above. Perhaps it is waiting for the next opportunity to attack.[k]
+[テオ f=10]「Apparently that dragon also considers this a good home.」[k]
+[マルエット v=vs233 f=07]「I won't let a dragon take away the new land I've found! Captain, let's fight!」[k]
+[テオ f=06]「Understood.」[k]
+@se f=roar
+[name n=Dragon f=dragon_04]「Gyaaaah!」[k]
+The dragon attacked us![k]
+[textoff]
+
+; ドラゴンと戦闘
+@monster pos=3 name=ガスドラゴン
+@adjust pos=3 life=512 level=32 attack=12～19
+@callbattle bgm=boss escape=false gameover=true
+; 勝利
+@w05
+@saveon
+
+[texton w=0]
+[テオ f=01]「All right! We managed to beat it!」[k]
+The slain dragon lies at our feet. We protected the sylphs' new home.[k]
+[textoff]
+@fg a=マルエット f=15
+[texton w=1]
+[マルエット v=vs234 f=15]「I won't let you take away my new home!」[k]
+[マルエット] looks down at the fallen dragon, looking triumphant.[k]
+[テオ f=05]「...!」[k]
+[textoff]
+@mu f=ghost
+@se f=roar
+@fg a=マルエット f=05 b
+@fg c=dragon_green left=450 top=-90
+@w05
+[texton w=1]
+[name n=Dragon f=dragon_04]「Gyaaaah!」[k]
+Suddenly, the head of the dragon rose, not as defeated as we believed![k]
+[テオ f=11]「Watch out, [マルエット]!」[k]
+@fg a=マルエット f=11
+[マルエット v=vs235 f=17]「What...? Kyaaaah!」[k]
+@wait time=500
+@image layer=e4 storage=BE_wind left=-605 top=250 visible=true
+@playse storage=byun2
+@move layer=e4 path=512,, time=200
+@wm
+@clf a
+@move layer=e4 path=1024,, time=200
+@wm
+@layopt layer=e4 visible=false left=0 top=0
+The dragon slashed at [マルエット]! I quickly jumped towards her to protect her from the attack.[k]
+However [――――][k]
+@se f=beat
+@cl b
+@st
+@bgf f=0055
+@quake time=500 hmax=50 vmax=50
+∗bang!∗[k]
+@wq
+@bgf f=0000
+@image layer=5 storage=0053 left=0 top=0 visible=true
+[テオ f=09]「Ugh!」[k]
+Suddenly, the dragon's arm struck out, sending me flying through the air![k]
+[マルエット v=vs236 f=11]「Captain!」[k]
+[テオ f=12]「Damn...!」[k]
+; 空中に投げ出される
+@move layer=5 path=,-768,0 time=500 accel=2
+I was thrown high into the air and fell straight down the cliff![k]
+@wm
+@image layer=5 storage=PE_base_full visible=true left=0 top=0 opacity=255
+@startemit layer=5 storage=PE_lightstream6 time=-1
+There are no branches to grab onto. There is no footing nearby. There is only a deep valley below me.[k]
+It's... hopeless![k]
+[テオ f=09]「Damn it... I really messed up...」[k]
+[マルエット v=vs237 f=49]「Captain!」[k]
+As [マルエット] screamed, I fall into the valley below.[k]
+Her figure on the cliff above grew smaller and smaller.[k]
+It's over...[k]
+I can't believe my adventure is ending like this...[k]
+But if I protected [マルエット], maybe that's okay.[k]
+@move layer=5 path=,,0 time=500
+[テオ f=10]「...」[k]
+I prepared for my own death and quietly closed my eyes.[k]
+...[k]
+@clearemit layer=5
+@eval exp='o.マルエット.color += "_wg"'
+@bgf f=9999
+[マルエット v=vs238 e=裸 f=27]「Captain!」[k]
+Suddenly, I heard [マルエット]'s voice, fairly close![k]
+[テオ f=12]「What?!」[k]
+@mu f=battle2
+@bgf chara=マルエット f=event77 p0=hair p1=01
+[マルエット v=vs239 f=61]「Captain, don't die!」[k]
+[テオ f=12]「[マルエット]...?!」[k]
+To my surprise, [マルエット] was diving towards me.[k]
+[name key=マルエット f=27]However, there is something different about her.[k]
+[テオ f=12]「...Wings?!」[k]
+[マルエット] had large wings on her back.[k]
+[マルエット v=vs240 f=27]「I'll save you!」[k]
+She put on speed and caught up with me as I fell.[k]
+@se f=beat
+@bgf f=9999
+@quake time=500 hmax=20 vmax=20
+[マルエット v=vs241 f=61]「Captain!」[k]
+[テオ f=12]「Oof!」[k]
+Finally, [マルエット] caught my falling body![k]
+Then she took me in her arms and soared back up into the sky.[k]
+[textoff]
+@fa
+@out
+@w2
+
+; 崖の途中の岩場
+@image layer=e1 storage=0054 left=0 top=0 visible=true
+@bg f=event89 left=92 chara=マルエット p0=hair p1=arm p3=leg p4=82
+@mu f=peace
+[texton w=1]
+[マルエット v=vs242 e=股隠し f=82]「Phew...」[k]
+[テオ f=13]「Thanks, [マルエット]. You saved me.」[k]
+[マルエット] lowered me onto to a small rocky area halfway up the cliff.[k]
+I truly escaped death. If [マルエット] hadn't saved me, I would have been finished.[k]
+[テオ f=05]「[マルエット]... Your wings...」[k]
+Diaphanous, vivid wings extended down her back... And they're very large.[k]
+I'm astonished at their size, considering [マルエット]'s physique.[k]
+@bg f=event89 left=92 chara=マルエット p0=hair p1=arm p3=leg p4=06
+[マルエット v=vs243 f=06]「I told you before. All sylphs have wings, we just usually keep them hidden inside us.」[k]
+@bg f=event89 left=92 chara=マルエット p0=hair p1=arm p3=leg p4=19
+[マルエット v=vs244 f=19]「Still, in an emergency, I can use my wings to fly. It puts a lot of strain on my body though, so I can't do it for long.」[k]
+[テオ f=06]「...」[k]
+So there are limitations. Still, it is amazing to be able to fly like that.[k]
+Well...[k]
+[テオ f=13]「Umm... Why are you naked?」[k]
+@bg f=event89 left=92 chara=マルエット p0=hair p1=arm p3=leg p4=71
+[マルエット v=vs245 f=71]「It's not by choice! My wings are so big they ripped through my clothes!」[k]
+[マルエット]'s wings grew from her shoulders to the upper part of her butt.[k]
+Normally, winged creatures tend to have wings growing only from the center of their backs. However, in the case of the Sylph tribe, it seems the wings extend all the way down to their lower bodies.[k]
+What's more, her wings were larger than her body. These wings pierced through her clothes, upper and lower, spreading out powerfully.[k]
+I see... It would be difficult to wear clothes with wings like that. That's why she refused when I asked to see her wings before.[k]
+@bg f=event89 left=92 chara=マルエット p0=hair p1=arm p3=leg p4=61
+[マルエット v=vs246 f=61]「Don't stare. Pervert!」[k]
+[テオ f=12]「I'm sorry...」[k]
+I gave her something to cover her body for the time being.[k]
+[textoff]
+@layopt layer=0 left=0 top=0 page=back
+@out
+@w05
+@bg f=0053
+[texton w=1]
+[name n=Dragon f=dragon_04]「Gaaa! Gaaa!」[k]
+[マルエット v=vs247 e=タオル＆裸 f=09]「Well...」[k]
+; ↑ がっかりした声で
+[テオ f=10]「Hide... They're gathering.」[k]
+The cries of many dragons can be heard from above.[k]
+Looking up the cliff towards the mountaintop, we saw several dragons flying around.[k]
+Apparently, this place has already become a home for many dragons.[k]
+It's possible to get rid of one or two, but when so many gather, it's more than we can handle.[k]
+@image layer=e1 storage=0054 left=0 top=0 visible=true
+@bg f=event89 left=92 chara=マルエット p0=hair p2=01 p3=leg p4=10
+[マルエット v=vs248 f=10]「It's no good after all... I thought I'd found a good place...」[k]
+[マルエット]'s shoulders droop completely.[k]
+[テオ f=02]「Cheer up. Someday you'll find another place worthy of a good sylph village.」[k]
+@bg f=event89 left=92 chara=マルエット p0=hair p2=01 p3=leg p4=10
+[マルエット v=vs249 f=10]「...Yes.」[k]
+Biting her lip, [マルエット] gave a small nod.[k]
+@move layer=0 time=500 path=,,0
+@wm
+@layopt layer=0 opacity=255 left=0 top=0 visible=false
+@layopt layer=0 opacity=255 left=0 top=0 visible=false page=back
+I hugged [マルエット]'s shoulder. She laid her head on my chest.[k]
+[テオ f=05]「...」[k]
+I can't imagine how disappointed she must be today. I know she's missed her people.[k]
+I wonder if I can help her in any way...[k]
+[テオ f=12]「Uh...」[k]
+@image layer=5 storage=0000 left=0 top=0 visible=true opacity=0
+@move layer=5 time=500 path=,,255
+What the... Suddenly I felt faint...[k]
+@se f=dosa
+@quake time=200 hmax=5 vmax=5
+∗thud!∗[k]
+[マルエット v=vs250 f=05]「Captain?!」[k]
+[マルエット v=vs251 f=27]「Captain! Captain!」[k]
+[textoff]
+@fa
+@out
+@wait time=2000
+@eval exp='o.マルエット.color = o.マルエット.color.substr(0, o.マルエット.color.length - 3)'
+@eval exp='o.マルエット.makeBustups()'
+
+; 宿屋に戻る・ベッドの上
+[texton w=1]
+...[k]
+...[k]
+@bg f=0001
+[テオ e=通常 f=12]「Uh...」[k]
+I'm... inside an inn...?[k]
+@mu f=love
+@fg c=マックス e=通常 f=01
+[マックス f=01]「Oh, you're awake.」[k]
+It seems that I am lying in a bed at an inn. [マックス] was standing beside me.[k]
+[テオ f=12]「[マックス]... What happened...?」[k]
+[マックス f=01]「[マルエット] came to me, frantically asking for help. She took me to the bottom of the valley, and there you were, bleeding. So I carried you here.」[k]
+[テオ f=14]「I see... Thanks, [マックス].」[k]
+I must have collapsed from the injury the dragon gave me.[k]
+[マックス f=01]「You should thank [マルエット] too. She stayed up all night taking care of you, you know?」[k]
+[テオ f=05]「Um... [マルエット]...?」[k]
+I glance over at the bed.[k]
+[マルエット e=通常 f=19]「... ∗zzz∗」[k]
+[テオ f=06]「...」[k]
+There was [マルエット], sleeping with her face buried in my bed.[k]
+[マルエット f=19]「... ∗zzz∗」[k]
+[テオ f=05]「[マルエット]...」[k]
+Ah... You must have fallen asleep because you were so tired from taking care of me... I'm sorry...[k]
+[マックス f=01]「Okay, I'll take off now.」[k]
+@cl
+[マックス] leaves the room. Only [マルエット] and I remain.[k]
+[マルエット f=19]「... ∗zzz∗」[k]
+[テオ f=06]「...」[k]
+[マルエット] sleeps peacefully beside me, her head resting on the bed, breathing softly.[k]
+Her innocent sleeping face really looks young.[k]
+Her head, shoulders, and hands are so small that she looks too delicate to be fighting alongside us in an adventuring party.[k]
+Such a small girl, with her large wings and thin arms, held me as I fell...[k]
+What's more, she took such good care of me. Her sweetness made my heart melt.[k]
+[テオ f=05]「[マルエット]...」[k]
+I found myself irresistibly drawn to this girl, and gently stroked her hair.[k]
+[マルエット v=vs252 f=65]「Aaa...」[k]
+Then [マルエット], who had been asleep, woke up.[k]
+[マルエット v=vs253 f=67]「Captain... ?」[k]
+[テオ f=02]「Sorry, I woke you up.」[k]
+[マルエット v=vs254 f=02]「You're awake. Good...」[k]
+Seeing my face, [マルエット] looks relieved.[k]
+[テオ f=02]「I heard from [マックス]. He said you've been taking care of me the whole time...」[k]
+[マルエット v=vs255 f=02]「No, it's... It's okay. Is your wound okay now?」[k]
+[テオ f=02]「Yeah, thanks to you.」[k]
+[マルエット v=vs256 f=09]「I was worried about you... The wound from the dragon was pretty deep...」[k]
+[マルエット f=10]「...」[k]
+[マルエット v=vs257 f=10]「I'm sorry... You were trying to protect me, and you got cut so deeply...」[k]
+[テオ f=02]「It's fine. You saved my life afterwards, after all.」[k]
+[テオ f=01]「If it weren't for you, I would have died. [マルエット], you saved my life.」[k]
+[マルエット v=vs258 f=70]「That's... exaggerating things.」[k]
+[テオ f=05]「Hey, what happened to your wings?」[k]
+[マルエット v=vs259 f=19]「I tucked them away ages ago. I can't leave them out for too long. It tires me out from the strain.」[k]
+[テオ f=06]「Hmm...」[k]
+Apparently that's just how her wings work.[k]
+[マルエット v=vs260 f=62]「Captain, don't do anything so reckless again! My wings aren't something I can just whip out whenever I want! Besides...」[k]
+[テオ f=05]「Besides?」[k]
+[マルエット v=vs261 f=30]「...I was really worried. You didn't wake up at all...」[k]
+; ↑ ボソボソとした声で
+[テオ f=05]「[マルエット]...」[k]
+[テオ f=02]「I understand, I'll keep that in mind. I'm really sorry for worrying you.」[k]
+[マルエット v=vs262 f=02]「Well... I just wanted you to understand...」[k]
+I am a little surprised by her modesty, which she never shows normally.[k]
+I was happy to see a different side of [マルエット] than usual.[k]
+[textoff]
+@fa
+@out
+@w05
+
+; 元に戻す
+@delevent map=ペンスキー峠・峠道 num=7
+@delevent map=ペンスキー峠・峠道 num=8
+@delevent name=サファイアシティ・北西門 num=8
+@delevent name=サファイアシティ・北東門 num=8
+@delevent name=サファイアシティ・南西門 num=7
+@delevent name=下水道入口 num=8
+@delevent name=王立ギルド num=12
+@delevent name=待合所 num=9
+@delevent name=ベトリヌスの酒場 num=22
+@delevent name=冒険者の宿 num=17
+@delevent name=ホテル・クイーン num=5
+@delevent name=サファイア城 num=15
+@delevent name=公園 num=12
+@delevent name=闘技場 num=13
+@showeventbtns map=サファイアシティ
+@eval exp='game.restoreMembers()'
+
+; サファイアシティへ
+@eval exp='o.マルエット.moveHeart(o.テオ, 20)'
+@eval exp='game.enterTown(o.サファイアシティ, o.冒険者の宿, true)'
+@gameon
+[townoff]
+
+
+;◇主人公イベント07
+*theo_07
+
+; 宿屋の一室・マルエットひとり
+@saveon
+@fg c=マルエット e=通常 f=06 b
+@bg f=0001
+[texton w=1]
+[マルエット f=06]「...」[k]
+The captain hasn't arrived yet...[k]
+Tonight, [テオ] and I are scheduled to stay in this room alone. But only his luggage is here right now.[k]
+@mu f=love
+@fg c=マルエット f=10
+[マルエット v=vs263 f=10]「Captain...」[k]
+I slowly picked up the weapon he was using and called out his name in the silent room.[k]
+My chest feels tight. A warm feeling wells up inside me.[k]
+@fg c=マルエット f=30
+[マルエット f=30]「...」[k]
+I think I've fallen in love with the captain...[k]
+I remember when we went to the summit together. At that time, the captain risked his life to protect me...[k]
+@fg c=マルエット f=05
+[マルエット v=vs264 f=05]「Ah...!」[k]
+@se f=place
+Suddenly, my hand slipped and I dropped the captain's weapon.[k]
+@fg c=マルエット f=63
+[マルエット v=vs265 f=63]「Ah...!」[k]
+; ↑ 悩ましい声で
+The next moment, the captain's weapon hit my crotch, and a painful sensation spread throughout my body![k]
+[マルエット v=vs266 f=63]「On no... The captain's weapon made me feel like this...」[k]
+Somehow... I feel dirty...![k]
+@fg c=マルエット f=38
+[マルエット v=vs267 f=38]「Ahh...!」[k]
+@cl
+My fingers reach for my crotch. I can't help but touch the spot that makes me feel good.[k]
+No... I can't take it anymore...![k]
+[textoff]
+@out
+
+@bg chara=マルエット f=event75 p0=hair p1=01 p2=04
+[texton w=2]
+[マルエット v=vs268]「Ah... Ah... Ah... Ah...」[k]
+I took off my panties, put one foot on the table next to me, and rubbed my crotch against the corner.[k]
+[マルエット v=vs269]「Ahh... that feels good... Captain... give me more... ahh!」[k]
+While imagining myself being touched by the captain, I frantically comforted myself down there.[k]
+[textoff]
+@out
+@w1
+
+@bgf f=0002
+[texton w=1]
+[テオ f=06]「...Hmm?」[k]
+When I arrived in front of my room, I heard [マルエット]'s voice coming from inside.[k]
+Somehow, it sounds strained...[k]
+[テオ f=05]「[マルエット], I'm coming in, okay?」[k]
+Concerned, I decided to go inside and take a look.[k]
+[textoff]
+@out
+@w05
+
+@bgf chara=マルエット f=event75 p0=hair p1=01 p2=04
+[texton w=2]
+[マルエット v=vs270]「Ah... Ah... Ah... Ah...」[k]
+[テオ]「...!」[k]
+When I entered, I found [マルエット] panting with one leg raised over the table.[k]
+What's more, she had taken off her panties and her lower body was completely exposed. Apparently, she hadn't noticed that I had come in.[k]
+Is this... masturbation?![k]
+She rubs her private parts against the table, desperately seeking pleasure.[k]
+[マルエット v=vs271]「Ah... ah... it's good... it's good...!」[k]
+[テオ]「...」[k]
+@bg chara=マルエット f=event75 p0=hair p1=01 p2=01
+[マルエット v=vs272]「Mmm... That feels good...! Eeek!」[k]
+Suddenly, [マルエット] noticed me![k]
+[マルエット v=vs273]「Don't... look... at me...」[k]
+[テオ]「[マルエット]...?!」[k]
+My head was spinning, and I couldn't move from where I stood.[k]
+Meanwhile, [マルエット] said not to watch, but she doesn't stop masturbating.[k]
+[マルエット v=vs274]「Please... don't look... Go away, quickly...!」[k]
+[テオ]「...! ∗gulp∗」[k]
+Somehow, it seems like she can't stop even if she wants to. Is she feeling that good...?[k]
+@bg chara=マルエット f=event75 p0=hair p1=01 p2=04
+[マルエット v=vs275 f=]「Please... hurry and get out... my pussy is throbbing... I can't stop...!」[k]
+[textoff]
+
+@bgf f=0001
+[texton w=1]
+[テオ f=32]「...! (Ah!)」[k]
+[テオ f=32]「I'm sorry! I'll leave right away!」[k]
+I came to my senses and rushed out of the room.[k]
+[textoff]
+@out
+@w05
+
+[texton w=1]
+Come to think of it, I've heard that sylphs are particularly sensitive and prone to getting wet.[k]
+Sylphs have small vaginas, which can make sexual intercourse with men difficult. So that's a mechanism evolved to alleviate the pain.[k]
+[textoff]
+@w1
+
+; 小一時間後・部屋に戻る
+@fg c=マルエット e=通常 f=29 b
+@bg f=0001
+[texton w=1]
+About an hour later.[k]
+[テオ f=30]「I'm, uh... I'm sorry about earlier.」[k]
+Feeling awkward, I cautiously returned to my room.[k]
+[マルエット v=vs276 f=29]「...Don't apologize. It makes me feel awkward...」[k]
+[テオ f=30]「... Sorry.」[k]
+In the end, all I could do was apologize.[k]
+[マルエット v=vs277 f=30]「...You despise me.」[k]
+[テオ f=12]「N-no, that's not true! Since you're a sylph, it's something you can't help.」[k]
+@fg c=マルエット f=31
+[マルエット f=31]「... (Kyaaaa)」[k]
+@fg c=マルエット f=61
+[マルエット v=vs278 f=61]「Don't say that! It makes me feel even more embarrassed!」[k]
+[テオ f=12]「I-I'm sorry..」[k]
+How awkward. I don't know what to do...[k]
+[テオ f=12]「I'll forget about what happened earlier. So, [マルエット], try not to worry about it...」[k]
+@fg c=マルエット f=30
+[マルエット v=vs279 f=30]「Okay, I get it...」[k]
+Although it was awkward, the atmosphere did not become hostile, which was a slight relief.[k]
+We just lay down silently.[k]
+[textoff]
+@fa
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント08・告白イベント
+*theo_08
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=calm
+@fg c=マルエット e=通常 f=10
+[texton w=1]
+[マルエット f=10]「...」[k]
+[テオ e=通常 f=05]「[マルエット]...?」[k]
+[マルエット] isn't her usual energetic self today. She seems to be thoroughly depressed for some reason.[k]
+[テオ f=05]「Hey, [マルエット]. Is something wrong?」[k]
+[マルエット f=09]「...」[k]
+[マルエット v=vs280 f=10]「...No, nothing. Just...」[k]
+; ↑ いつもの元気がない
+[テオ f=05]「Just?」[k]
+@fg c=マルエット f=70
+[マルエット v=vs281 f=70]「Somehow... I'm tired...」[k]
+[テオ f=05]「...Could it be about her search for the the sylph tribe's new home?」[k]
+[マルエット v=vs282 f=69]「I'm thinking of giving up on looking for a new home... I'll never find anything anyway.」[k]
+[テオ f=06]「What's wrong? That's not like you, [マルエット].」[k]
+@fg c=マルエット f=09
+[マルエット v=vs283 f=09]「After all, we sylphs haven't found it even after searching for decades.」[k]
+[マルエット v=vs284 f=10]「The place that you and I found ended up being a dragon's lair...」[k]
+[テオ f=06]「...」[k]
+@fg c=マルエット f=70
+[マルエット v=vs285 f=70]「In the end, there is no such thing as a new place to call home... If I keep searching, it will only be a waste of effort.」[k]
+[テオ f=05]「It's only been one miss. Are you giving up already?」[k]
+@fg c=マルエット f=07
+[マルエット v=vs286 f=07]「Don't say that so easily, Captain!」[k]
+[テオ f=05]「[マルエット]...!」[k]
+[マルエット v=vs287 f=07]「Do you understand that I've been searching for a place that may not even exist in this vast world?」[k]
+[テオ f=06]「Well...」[k]
+@fg c=マルエット f=10
+[マルエット v=vs288 f=10]「It's a lonely journey that may continue for the rest of my life... I don't want that.」[k]
+[テオ f=06]「[マルエット]...」[k]
+@fg c=マルエット f=48
+[マルエット v=vs289 f=48]「Right now, I'm with everyone in the party, but once the party disbands, I'll be alone again...」[k]
+[マルエット v=vs290 f=50]「I don't want to be lonely anymore...! I really want to stop doing this...! Ugh...!」[k]
+[テオ f=06]「...」[k]
+Overcome with emotion, [マルエット] let out a small sob. Her slender shoulders shook slightly.[k]
+I am deeply moved by how sad she seems.[k]
+[textoff]
+
+; 選択肢・告白するかどうか
+@command type=short
+@select text="Sorry for saying something irresponsible" target=*_theo_08_n
+@select text="I'll help you look for it" target=*_theo_08_y
+[s]
+
+*_theo_08_n
+; 選択肢１・告白しない
+
+[texton w=1]
+[テオ f=06]「I'm sorry for saying something irresponsible. Yes, it sounds really painful.」[k]
+@fg c=マルエット f=68
+[マルエット f=68]「...」[k]
+[テオ f=05]「I didn't understand how painful your situation was at all, [マルエット]. I'm truly sorry.」[k]
+[マルエット v=vs291 f=68]「No... it's fine...」[k]
+[テオ f=05]「Well... If it's too hard, maybe you should just quit? You've worked hard enough. I'm sure the people back home will understand.」[k]
+[マルエット f=68]「...」[k]
+[マルエット v=vs292 f=33]「...Well, I'm not really the adventurous type...」[k]
+[テオ f=06]「[マルエット]...」[k]
+[マルエット v=vs293 f=33]「But I'll do my best while I'm in your party. I look forward to working with you in the future.」[k]
+[テオ f=02]「Yes. Thank you very much.」[k]
+[textoff]
+@fa
+@out
+@w05
+@eval exp='o.マルエット.moveHeart(o.テオ, -20)'
+[hoteloff]
+
+*_theo_08_y
+; 選択肢２・告白する
+
+[texton w=1]
+[テオ f=06]「[マルエット], I'll help you look for it.」[k]
+@fg c=マルエット f=45
+[マルエット v=vs294 f=45]「Eh...」[k]
+[テオ f=05]「Even if this journey with the party ends, I won't leave you, [マルエット]. Let's search for it together...」[k]
+@fg c=マルエット f=71
+[マルエット v=vs295 f=71]「What do you mean, "let's search for it together"? Don't be so irresponsible!」[k]
+[テオ f=05]「What...?」[k]
+[マルエット v=vs296 f=72]「I told you I don't know if I'll ever find it, even if I spend my whole life looking for it. Do you really understand that?!」[k]
+[テオ f=06]「I understand that, [マルエット].」[k]
+[マルエット v=vs297 f=71]「You don't understand!」[k]
+[マルエット] cries out with tears in her eyes.[k]
+@fg c=マルエット f=48
+[マルエット v=vs298 f=48]「...You might come along, for a while. But eventually, you'll get tired of me and leave... I'll end up alone again...」[k]
+@fa
+[テオ f=06]「I'll stick with it for life.」[k]
+@fg c=マルエット f=47
+[マルエット v=vs299 f=47]「Eh?」[k]
+[テオ f=05]「I'll accompany you in your search for a new home until you find it. No matter how long it takes...」[k]
+@mu f=love
+[マルエット v=vs300 f=47]「Really...?」[k]
+[テオ f=06]「I won't abandon you! I'll never let you feel alone!」[k]
+I face [マルエット] head-on and tell her seriously.[k]
+[テオ f=05]「You're important to me, [マルエット].」[k]
+[マルエット v=vs301 f=47]「Cap...tain...」[k]
+[テオ f=06]「I want to stay by your side forever. Is that okay?」[k]
+At first, it may have been out of sympathy.[k]
+But now she is the most important person to me. I want to protect her. My words were true. That's why...[k]
+@fg c=マルエット f=49
+[マルエット v=vs302 f=49]「Captain!」[k]
+@clf
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+[テオ f=05]「[マルエット]...!」[k]
+Suddenly, [マルエット] threw her arms around me.[k]
+I was surprised for a moment, but I held her body firmly.[k]
+[テオ f=06]「[マルエット]...」[k]
+[マルエット v=vs303 f=49]「Uaaah... Captain... Captain...!」[k]
+[テオ f=02]「...」[k]
+I gently hug [マルエット], who is crying hysterically in my arms.[k]
+It must have been tough for her. She must have felt lonely. No matter how brave she acted, [マルエット] was just a normal girl.[k]
+[テオ f=02]「[マルエット]...!」[k]
+I felt strongly that I wanted to protect this small warmth.[k]
+[textoff]
+@fa
+@out
+@w05
+@addevent name=マルエット num=6
+@addevent name=マルエット num=7
+@addevent name=マルエット num=8
+@eval exp='o.マルエット.moveHeart(o.テオ, 20)'
+[hoteloff]
+
+
+;◇主人公イベント09・恋人イベント
+*theo_09
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+Tonight, it's just [マルエット] and me.[k]
+@fg c=マルエット e=通常 f=22
+[マルエット v=vs304 f=22]「Hey, Captain.」[k]
+[テオ e=通常 f=02]「What is it?」[k]
+[マルエット v=vs305 f=22]「Can I sit there?」[k]
+[テオ f=02]「Sure, feel free.」[k]
+@cl
+[マルエット] sat down between my legs as I sat on the bed, leaning her back against my chest.[k]
+I hug [マルエット] from behind. She's really small and fits perfectly in my arms.[k]
+Since that incident the other day, whenever [マルエット] and I are alone, she has started to freely show her affection for me like this.[k]
+She always acted strong, but maybe deep down she wanted someone to lean on...[k]
+[マルエット v=vs306 f=24]「Captain... I love you...」[k]
+[テオ f=02]「Me too, [マルエット].」[k]
+[マルエット] and I had a quiet moment alone.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント10・一度仲良くなったが、その後疎遠になった場合
+*theo_10
+
+; 宿屋のロビー
+@fg c=マルエット e=通常 f=25
+[texton]
+[マルエット v=vs307 f=25]「Aaa...」[k]
+[テオ e=通常 f=05]「[マルエット]...」[k]
+I run into [マルエット] in the lobby in the morning, and there's an awkwardness between us.[k]
+@fg c=マルエット f=10
+[マルエット v=vs308 f=10]「Hey... Can we just split up?」[k]
+[テオ f=06]「Yeah... That's for the best.」[k]
+[マルエット] and I have decided to end our relationship. Unfortunately, I have to respect [マルエット]'s feelings.[k]
+At one time, she wanted to marry me, but that turned out to be a fleeting dream.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント11・プロポーズイベント
+*theo_11
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[マルエット v=vs309 e=通常 f=24]「Ufufu... Captain...」[k]
+[テオ e=通常 f=06]「...」[k]
+Tonight, once again, [マルエット] is leaning her body against my chest and acting affectionate.[k]
+A sweet time for just the two of us... This isn't bad at all.[k]
+But we can't remain like this forever. If I want to stay with her, I have to say what needs to be said.[k]
+[textoff]
+
+; 選択肢・プロポーズするか否か
+@command type=short
+@select text="Do it properly" target=*_theo_11_y
+@select text="Wait a little longer" target=*_theo_11_n
+[s]
+
+*_theo_11_n
+; 選択肢１・保留
+
+[texton w=1]
+[テオ f=06]「...」[k]
+Let's hold off for now. Until I've made up my mind.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+*_theo_11_y
+; 選択肢２・プロポーズする
+
+[texton w=1]
+[テオ f=05]「Hey, [マルエット].」[k]
+@fg c=マルエット e=通常・大 f=02
+[マルエット v=vs310 f=02]「Huh? What is it?」[k]
+I step away from [マルエット] and face her head-on.[k]
+[テオ f=05]「I have something to tell you today.」[k]
+[マルエット v=vs311 f=06]「What's up?」[k]
+[テオ f=10]「Well...」[k]
+[テオ f=12]「Will you marry me?」[k]
+@fg c=マルエット f=25
+[マルエット v=vs312 f=25]「Ehh...?」[k]
+@fg c=マルエット f=31
+[マルエット v=vs313 f=31]「M-m-marriage?!」[k]
+[テオ f=05]「If we're going to be together forever, isn't it right to have that kind of relationship? If so, I think it's better to do it sooner rather than later.」[k]
+[マルエット v=vs314 f=31]「Wait a minute! It's too soon for me to suddenly get married...」[k]
+[テオ f=05]「What are you talking about? There's nothing strange about getting married.」[k]
+@fg c=マルエット f=30
+[マルエット v=vs315 f=30]「That's...」[k]
+[テオ f=06]「Or don't you want to marry me?」[k]
+@fg c=マルエット f=59
+[マルエット v=vs316 f=59]「No, I don't mind! That's not true at all!」[k]
+@fg c=マルエット f=30
+[マルエット f=30]「...」[k]
+[マルエット v=vs317 f=30]「But... I was a little surprised when you suddenly proposed... I hadn't thought about it at all...」[k]
+[テオ f=05]「[マルエット]...」[k]
+@fg c=マルエット e=通常・大・上げ f=22
+[マルエット e=通常 f=22]「...」[k]
+Then [マルエット] silently takes my hand.[k]
+[テオ f=05]「[マルエット]...?」[k]
+[マルエット v=vs318 f=22]「...Sure.」[k]
+[テオ f=05]「Eh?」[k]
+[マルエット v=vs319 f=22]「I'll... marry you...」[k]
+[マルエット] muttered shyly, looking up at me.[k]
+[テオ f=01]「[マルエット]...!」[k]
+@fg c=マルエット e=通常・大・上げ f=64
+[マルエット v=vs320 e=通常 f=64]「We're going to end up in that kind of relationship someday anyway. So whether it happens sooner or later doesn't really matter.」[k]
+@fg c=マルエット e=通常・大・上げ f=23
+[マルエット v=vs321 e=通常 f=23]「It makes me so happy to hear your resolve... Captain, I love you ♪」[k]
+[テオ f=01]「Thank you, [マルエット]...!」[k]
+@cl
+I hugged [マルエット].[k]
+Then [マルエット] stretches up as high as she can and hugs me back.[k]
+[テオ f=02]「[マルエット]...!」[k]
+I will definitely protect this small back. I made that vow while holding my future wife in my arms.[k]
+[textoff]
+@out
+@w05
+@delevent name=マルエット num=6
+@delevent name=マルエット num=7
+@delevent name=マルエット num=8
+@addevent name=マルエット num=9
+@addevent name=テオ num=1
+@eval exp='game.wife = o.マルエット'
+[hoteloff]
+
+
+;◇主人公イベント12・メインシナリオからの結婚式の続き
+*theo_wedding
+
+; どこかの教会
+@saveon
+@bg chara=マルエット f=event24 p0=hair p1=01
+@mu f=wedding
+@w1
+[texton w=2]
+[マルエット v=vs322]「I never thought I'd end up marrying you...」[k]
+[テオ]「Yeah, I couldn't have imagined it when we first met.」[k]
+[name n=&'o.マルエット.displayName + "’s Mother"']「Congratulations, [マルエット]!」[k]
+[マルエット v=vs323]「Yes, thank you, Mom.」[k]
+[マルエット]'s parents, relatives, and village elders from the sylph village where she lives also rushed to attend our ceremony.[k]
+[name n=&'o.マルエット.displayName + "’s Mother"']「You were such a mama's girl and couldn't stay away from me, but now you're getting married... You're all grown up, [マルエット].」[k]
+[マルエット v=vs324]「Come on! Mom, don't say unnecessary things!」[k]
+[name n="Sylph Elder"]「Moving to a new land is our sylph tribe's long-cherished wish. Please help [マルエット] with her mission, as her husband.」[k]
+[テオ]「Yes, I will support her with all my might!」[k]
+From now on, [マルエット] and I will embark on a long journey that will last our entire lives.[k]
+No matter what happens, we will never part. I felt that strongly.[k]
+[textoff]
+@fa
+@out
+@w2
+
+; 結婚式の２週間後
+[texton w=0]
+Two weeks later.[k]
+[textoff]
+@w05
+
+; 朝・宿屋の一室・ベッドの上
+@bg f=0007
+@mu f=beach
+@w05
+[texton w=1]
+...[k]
+[テオ e=裸 f=06]「...」[k]
+Is it morning...?[k]
+[テオ f=06]「...」[k]
+I wake up to find something hitting my face.[k]
+[マルエット v=vs325 e=裸 f=19]「Nng...」[k]
+; ↑ 実際は「すーすー」という寝息
+[テオ f=06]「...[マルエット] again...」[k]
+What was in front of my eyes was the sole of my wife [マルエット]'s foot.[k]
+I found out when we got married that [マルエット] is a very restless sleeper. When we share a bed, she often kicks me.[k]
+[テオ f=06]「Well, she can't help it...」[k]
+I sit up and look at my wife who is still sleeping comfortably.[k]
+[マルエット v=vs326 f=19]「Nng...」[k]
+; ↑ 実際は「すーすー」という寝息
+[テオ f=02]「... ∗chuckle∗」[k]
+She's really delicate...[k]
+Looking at [マルエット] sleeping sprawled out all over the futon, she can seem childlike.[k]
+It is strange because she's now my wife.[k]
+[マルエット v=vs327 f=65]「Mmm... Oh, good morning, dear.」[k]
+[テオ f=02]「Good morning, [マルエット].」[k]
+[マルエット] woke up, sleepily rubbing her eyelids.[k]
+[マルエット] and I have been married for almost two weeks now. Today we resume adventuring with the party.[k]
+I had given everyone in the party a leave of absence the day after the wedding. We had been fighting constantly, so I thought it would be good for everyone to relax.
+ [k]
+And during this period, [マルエット] and I enjoyed our married life to the fullest. But that vacation ended yesterday. The days of just the two of us staying at the inn are now over.
+ 
+ [k]
+[テオ f=05]「Everyone in the party will be here soon, so it's time to get up.」[k]
+[マルエット v=vs328 f=73]「∗yaaaaawn∗ ...Yeah...」[k]
+; ↑ 大あくび
+[textoff]
+@out
+@mu f=enjoy
+@jump storage="main12.scn" target=*wedding_02
+;  → メインシナリオ・結婚後のパーティー再結成へ
+
+
+;◇主人公イベント20・冒険再開後、最初の日の宿の夜
+*theo_20
+
+; 宿屋の一室
+@saveon
+@w05
+@out
+@bg chara=マルエット f=event53 p0=hair p1=01 p2=04
+@mu f=peace
+@w05
+[texton w=2]
+[マルエット v=vs329]「Ahhh... ahh... ah... ah...」[k]
+[テオ]「Okay... [マルエット]... That's it...」[k]
+In the evening, I left the party and went to be alone with my wife, [マルエット], in a room at the inn.[k]
+It was late at night and we were getting physical.[k]
+We are a married couple. We'll have sex like this at night, even if the adventure has resumed.[k]
+The other members may have a lot of misconceptions about us, but we can't nurture our love as a couple if we are concerned about that.[k]
+@bg chara=マルエット f=event53 p0=hair p1=01 p2=02
+[マルエット v=vs330]「Ahhh... Ha ha ha... Hey, dear... Does that feel good...?」[k]
+[テオ]「Oh, it's so good. Your vagina is the best...!」[k]
+@bg chara=マルエット f=event53 p0=hair p1=01 p2=04
+[マルエット v=vs331]「Ahhh... Really...? Ahh... I'm so happy... Ahhhh!」[k]
+My wife [マルエット] is shaking her hips on top of me.[k]
+In our married life, [マルエット] is often on top.[k]
+I lie down and let [マルエット] put it in herself, moving around as she pleases.[k]
+She has a small vagina, and insertion is very taxing on her. That's why I let her do it at her own pace. For me, just putting it in feels good enough.[k]
+@bg chara=マルエット f=event53 p0=hair p1=01 p2=05
+[マルエット v=vs332]「Ohhh... Ohhh... Your dick feels so good...!」[k]
+[マルエット]'s vagina, which was very tight, has recently become much easier to loosen.[k]
+She used to be in a lot of pain, but now she feel good with my penis.[k]
+I would say that our sex life as a couple is becoming better. I'm happy about that.[k]
+[マルエット v=vs333]「Mmm... ah... Ah...! Ahh...!」[k]
+Pushing the entrance to the limit, [マルエット] takes my penis into her.[k]
+The view was very sexy.[k]
+[マルエット v=vs334]「Ahhh... ahh... ahhh...」[k]
+[マルエット]'s breathing becomes heavier and heavier as she becomes more and more excited.[k]
+Her crotch is very wet and makes disgusting wet sounds.[k]
+@bg chara=マルエット f=event53 p0=hair p1=01 p2=04
+[マルエット v=vs335]「Ah... Ah... Dear... Ahhhhhhhh!」[k]
+[テオ]「Ah, [マルエット]...! That feels too good...! No, I'm cumming...!」[k]
+@bg chara=マルエット f=event53 p0=hair p1=01 p2=01
+[マルエット v=vs336]「No... Wait, dear... Don't cum yet... Ahh..!」[k]
+@flash t=200
+@w05
+@flash t=200
+@bgf chara=マルエット f=event53 p0=hair p1=02 p2=01
+∗spuurt! spuurt!∗[k]
+[テオ]「Ugh...!」[k]
+@bg chara=マルエット f=event53 p0=hair p1=02 p2=04
+[マルエット v=vs337]「Aaaahhh... nooooo...」[k]
+I couldn't stand the feeling of vaginal pleasure and came before [マルエット]...[k]
+[textoff]
+@out
+@w05
+@bgf f=0001
+[texton w=0]
+[マルエット v=vs338 e=裸 f=58]「Ugh! Why did you cum first?!」[k]
+[テオ e=裸 f=12]「Sorry... It just feels so good inside...」[k]
+[マルエット v=vs339 f=58]「I was so close to cumming too...」[k]
+I came first and [マルエット] got mad at me... I still have a long way to go as her husband.[k]
+I ejaculate inside [マルエット] every time. We both talked about it and decided to have a baby as soon as possible.[k]
+She goes through great lengths to have sex, so I have to do my best to impregnate her.[k]
+Well...[k]
+[マルエット v=vs340 f=74]「Dear... I love you...」[k]
+[テオ f=02]「[マルエット]...」[k]
+When I see my wife clinging to my chest like this, she really does look young.[k]
+It's strange, since, she's aiming to become a mother.[k]
+[テオ f=01]「Good luck having a healthy baby...」[k]
+I stroked [マルエット]'s head, as I hope to do one day with our child.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント21・２日目以降・満足
+*theo_21
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=0]
+[マルエット v=vs341 e=汗だく・開き f=37]「Ah, ah, that feels good, ah, that feels good!」[k]
+[テオ e=裸 f=14]「You're horny today, [マルエット]. Does it feel good?」[k]
+[マルエット v=vs342 f=38]「Yeah... It's good... Oh, I can't stop my hips...!」[k]
+Tonight [マルエット] was feeling better than ever when she had sex with me. My wife is very cute as she shakes her hips enthusiastically.[k]
+[マルエット v=vs343 f=37]「Ahhh... I'm going to cum!」[k]
+[テオ f=12]「Let's do it together, [マルエット]!」[k]
+@out
+@w05
+@bgf f=0001
+[texton w=0]
+[マルエット v=vs344 f=74]「Ahhh... That was... really good...」[k]
+[テオ f=02]「I'm glad you're happy.」[k]
+[マルエット v=vs345 f=24]「I love you... Dear...」[k]
+It seemed like [マルエット] had started to cum when she had sex with me. I was proud as a husband to be able to satisfy my wife.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント22・２日目以降・不満
+*theo_22
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[マルエット v=vs346 e=汗だく・開き f=37]「Ah... Ah... Dear... Your penis... That's good... Ah...」[k]
+[テオ e=裸 f=28]「Ugh... I'm cumming...!」[k]
+[マルエット v=vs347 f=29]「Wait, I'm not cumming yet...! Wait, wait!」[k]
+[テオ f=28]「Ugh...!」[k]
+Tonight I had sex with [マルエット] again, and did my best to meet her needs. But...[k]
+[マルエット v=vs348 f=71]「Honestly! You've got to be a more patient!」[k]
+[テオ f=12]「Sorry... I'll do my best next time...」[k]
+I ended up feeling good only for myself and couldn't respond to [マルエット]'s request. It feels too good inside her...[k]
+I felt bad, since I wasn't able to satisfy her.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント23・２日目以降・拒絶
+*theo_23
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[テオ e=通常 f=05]「Hey, [マルエット]...」[k]
+I get into bed and reach for [マルエット], who is already in bed.[k]
+[マルエット v=vs349 e=通常 f=19]「No! I'm not in the mood today!」[k]
+[テオ f=10]「I-I see. That's fine...」[k]
+[マルエット] sharply rejects the invitation. Then she turned her back on me and quickly fell asleep.[k]
+I had to give up on sex and just go to sleep...[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント24・ブルーと浮気後
+*theo_24
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[マルエット v=vs350 e=裸 f=40]「Mmm... mmm... mmm... mmm...」[k]
+[テオ e=裸 f=28]「Ugh...!」[k]
+[マルエット v=vs351 f=98]「∗pant∗ ∗pant∗」[k]
+[マルエット f=98]（It doesn't feel so good... Maybe I can't cum with my husband's anymore...）[k]
+[テオ f=28]「I'm... I'm cumming...!」[k]
+[textoff]
+@flash on=500 off=500
+[texton w=1]
+[マルエット v=vs352 f=98]「Dear... Are you done?」[k]
+[テオ f=29]「Sorry...」[k]
+[マルエット v=vs353 f=66]「No, it's fine. Don't worry about it. Well, good night.」[k]
+[マルエット] doesn't seem to be angry, and simply looks at me, then goes to sleep.[k]
+Maybe she doesn't expect anything of me anymore... When I thought of that, I felt empty.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇グッドエンディング・主人公の子を出産エンド
+*good_ending
+
+; 主人公たちの自宅
+@bg f=0022
+@mu f=wedding
+[texton w=1]
+[マルエット v=vs354 e=通常 f=62]「Hey! Prie! Eat your dinner properly!」[k]
+[テオ e=通常 f=06]「...」[k]
+[マルエット v=vs355 f=17]「Heeeeey, Prie～! Please listen to your mother～!」[k]
+[テオ f=02]「...」[k]
+My wife [マルエット] is having a hard time dealing with our energetic daughter Prie. It's a familiar sight.[k]
+Prie is our one child. She's quite a tomboy, and disciplining her is quite a struggle.[k]
+Watching my daughter run around and [マルエット] chasing after her, they look more like sisters than mother and daughter.[k]
+[テオ f=06]「...」[k]
+After the battle with the devil, [マルエット] became pregnant with Prie and gave birth to her.[k]
+After that, I left the childcare to [マルエット] and took on jobs nearby to support the household finances.[k]
+Of course, I don't intend to continue living like this forever. Once my daughter is old enough, I plan to return to my life as an adventurer.[k]
+Continuing the journey to find a new place to live. That was the promise I made to my wife, [マルエット].[k]
+I will accompany [マルエット] on her journey. I have vowed to devote my life to my beloved wife.[k]
+@fg c=マルエット e=通常・大 f=83
+[マルエット v=vs356 f=83]「Ahhh, I wish this little girl would grow up faster!」[k]
+[テオ f=05]「Why?」[k]
+@fg c=マルエット e=通常・大 f=02
+[マルエット v=vs357 f=02]「...Because I want to resume my journey to find a new home soon.」[k]
+[テオ f=05]「Wasn't searching for a new place difficult?」[k]
+@fg c=マルエット e=通常・大 f=06
+[マルエット f=06]「...」[k]
+@fg c=マルエット e=通常・大 f=84
+[マルエット v=vs358 f=84]「It won't be difficult... because I'll be with you! ♪」[k]
+[テオ f=05]「[マルエット]...」[k]
+[テオ f=01]「...Yeah, I want to go soon, all three of us.」[k]
+@cl
+I gently hugged [マルエット] and stroked her head. Then [マルエット], as if relieved, rested her head on my chest.[k]
+Feeling the warmth of my precious wife in my arms, I looked forward to the days of my new journey.[k]
+[textoff]
+@fa
+@out
+@jump storage="main13.scn" target=*staff_roll
+
+
+
+
+;■ブルー編１・結婚前にブルーと宿泊を強制される
+
+;◇ブルーイベント01
+*blue_01
+
+@saveon
+@call storage="stay.ks" target=*kick_out_by_blue
+@jump target=*_blue_01_freemode cond='game.isFreeMode'
+@jump target=*_blue_01_case1 cond='game.curChara.inSameRoom(o.テオ)'
+@jump target=*_blue_01_case2
+
+;＜主人公とヒロインが２人きりだった場合＞
+*_blue_01_case1
+
+; 宿屋の一室
+@fg l=マルエット e=通常 f=05 b
+@bg f=0001
+@mu f=anxiety
+@se f=door1
+@w1
+@fg r=ブルー e=通常 f=05
+[texton w=1]
+[ブルー f=05]「Hey, anyone there?」[k]
+[マルエット f=08]「...!」[k]
+[テオ e=通常 f=10]「Blue...!」[k]
+[マルエット] and I were hanging out in our room when Blue suddenly opened the door and came in.[k]
+@fg r=ブルー f=06
+[ブルー f=06]「...」[k]
+@fg l=マルエット f=28
+[マルエット v=vs359 f=28]「What are you talking about?」[k]
+@jump target=*_blue_01_common
+;  → 共通ルート１へ
+
+
+;＜主人公とヒロインが別室でブルーがヒロインのいる部屋に入った場合＞
+*_blue_01_case2
+
+; 宿屋の廊下
+@bg f=0002
+@fg c=ブルー e=通常 f=06
+@w05
+@cl
+@w05
+[texton w=0]
+[テオ e=通常 f=05]「Aaa...」[k]
+Just now I saw Blue go into someone's room.[k]
+I'm sure [マルエット] is staying in that room...[k]
+[テオ f=10]「...」[k]
+With a bad feeling, I decided to go to the room.[k]
+[textoff]
+@out
+
+; 宿屋の一室
+@se f=door1
+@fg l=マルエット e=通常 f=28 b
+@fg r=ブルー f=06 b
+@bgf f=0001
+@mu f=anxiety
+@w05
+[texton w=1]
+[ブルー f=06]「...」[k]
+[マルエット v=vs359 f=28]「What are you talking about?」[k]
+[テオ f=12]「[マルエット]...! Blue...!」[k]
+When I entered the room, Blue and [マルエット] were standing facing each other.[k]
+@jump target=*_blue_01_common
+;  → 共通ルート１へ
+
+
+;＜共通ルート１＞
+*_blue_01_common
+Blue silently looks down at [マルエット] with detachment.[k]
+What is Blue thinking? Surely not...?![k]
+[ブルー f=06]「You're fine.」[k]
+[マルエット v=vs360 f=05]「Eh?」[k]
+@fg r=ブルー f=05
+[ブルー f=05]「You'll do. Now, deal with me.」[k]
+@fg l=マルエット f=59
+[マルエット v=vs361 f=59]「What...?!」[k]
+Blue announced that he'd partner [マルエット]. Her face turns pale.[k]
+[テオ f=12]「Wait! Blue!」[k]
+[ブルー f=06]「What is it?」[k]
+[テオ f=12]「It would be too cruel to touch [マルエット]! Please, leave her alone!」[k]
+@fg l=マルエット f=29
+[マルエット v=vs362 f=29]「Captain...」[k]
+[ブルー f=05]「...Have you guys forgotten your promise to me?」[k]
+[マルエット f=29]「...!」[k]
+[テオ f=12]「Well, that's true, but...」[k]
+[ブルー f=05]「Any woman will do for me. You understand, sylph girl?」[k]
+@fg l=マルエット f=60
+[マルエット f=60]「...」[k]
+@fg l=マルエット f=75
+[マルエット v=vs363 f=75]「...All right, all right. Suit yourself.」[k]
+[テオ f=12]「[マルエット]!」[k]
+@fg l=マルエット f=35
+[マルエット v=vs364 f=35]「It's okay, Captain. It's nothing to worry about. I am a grown sylph, after all.」[k]
+[テオ f=12]「[マルエット]...」[k]
+@fg r=ブルー f=02
+[ブルー f=02]「That's a promising mindset. Get naked for now.」[k]
+[textoff]
+@out
+@w05
+
+@fg l=マルエット e=白いパンツ,手ブラ f=30 b
+@fg r=ブルー f=02 b
+@bg f=0001
+@mu f=darkside
+[texton]
+[マルエット v=vs365 f=30]「... Yes.」[k]
+One by one, [マルエット] removes her clothes, leaving her in just a pair of panties.[k]
+[マルエット f=38]「... (Kyaa)」[k]
+[マルエット] is red up to her ears when Blue sees her half-naked state.[k]
+[ブルー f=05]「...That's not sexy. Doesn't get me in the mood at all.」[k]
+[マルエット f=32]「...!」[k]
+@fg l=マルエット e=白いパンツ,手ブラ f=31 b
+@fg r=ブルー e=下半身裸 f=02
+Blue unbuckled his belt and suddenly pulled his pants down in front of [マルエット]'s eyes![k]
+[マルエット v=vs366 f=31]「Eeek...!」[k]
+Blue's drooping penis is thrust in front of her.[k]
+[ブルー f=05]「Lick it.」[k]
+[マルエット v=vs367 f=29]「N-no...」[k]
+[ブルー f=05]「You don't have a choice. Don't make me repeat myself. Just lick it already.」[k]
+[マルエット f=54]「...」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=マルエット f=event44 p0=hair p1=11 p2=03
+@w05
+[texton w=2]
+[マルエット] knelt at Blue's feet. She gazed nervously at the male organ in front of her.[k]
+[マルエット f=54]「...」[k]
+[ブルー f=05]「Come on, hurry up.」[k]
+[マルエット f=54]「...」[k]
+@bg chara=マルエット f=event44 p0=hair p1=12 p2=07
+∗liick∗[k]
+[ブルー]「... ∗grin∗」[k]
+[マルエット] extended her small tongue and licked Blue's tip.[k]
+[ブルー]「Come on, lick me some more. Make my dick stand up.」[k]
+[マルエット v=vs368]「Yes... Yes... ∗lick∗」[k]
+[マルエット] flicked her tongue over Blue's cock. Then it jerked.[k]
+[ブルー]「Yeah, that's it.」[k]
+@bg chara=マルエット f=event44 p0=hair p1=13 p2=03
+As [マルエット] continued to lick his cock, Blue's penis began to rise and get bigger and harder.[k]
+[マルエット]「...!」[k]
+Then, Blue's penis was fully erect. It was so big that [マルエット]'s eyes widened and her face scrunched up in horror.[k]
+[マルエット v=vs369]「I-I'm scared...!」[k]
+[ブルー]「Now, suck it. Put it in your mouth and suck it with your tongue.」[k]
+[マルエット]「...!」[k]
+@bg chara=マルエット f=event44 p0=hair p1=15 p2=02
+[マルエット] resolves herself and takes Blue's penis into her small mouth.[k]
+[マルエット v=vs370]「∗slurp... slurp...∗」[k]
+Then, with a frown on her face, she began to suck his penis noisily.[k]
+[ブルー]「All right, stroke the shaft with your hand too.」[k]
+[マルエット v=vs371]「∗liick liick slurp∗」[k]
+With sweat on her forehead, [マルエット] continues to suck Blue's penis with a desperate look on her face.[k]
+[ブルー]「All right... That's good. You can do it.」[k]
+Blue's male organ is too big for her small mouth, and she sucks it uncomfortably.[k]
+Blue looked down at her with satisfaction.[k]
+[ブルー]「Damn... It's time...!」[k]
+@bg chara=マルエット f=event44 p0=hair p1=16 p2=02
+Blue suddenly grabbed her by the hair and shook her head roughly![k]
+Then, with great force, he shoves his erect penis fully into [マルエット]'s mouth![k]
+[マルエット v=vs372]「Mugg! Ngguuuuuuuuu!」[k]
+[ブルー]「Okay, here it goes! Drink it all! Ugh!」[k]
+@flash
+@w05
+@flash
+∗spurt! spurt!∗[k]
+@bg chara=マルエット f=event44 p0=hair p1=17 p2=02
+[マルエット v=vs373]「Hmmmm!」[k]
+Blue released his filthy sperm into [マルエット]'s mouth![k]
+@bg chara=マルエット f=event44 p0=hair p1=18 p2=05
+[マルエット v=vs374]「Ugh! ∗cough! cough!∗」[k]
+A large amount of semen shot into [マルエット]'s mouth! She couldn't take it and gagged.[k]
+[ブルー]「Hey, I told you to drink it all.」[k]
+@bg chara=マルエット f=event44 p0=hair p1=18 p2=04
+[マルエット v=vs375]「I-I'm sorry...」[k]
+[ブルー]「Well, okay. Next time, drink up properly. Now, I'm going to go fuck Sandra or something.」[k]
+[textoff]
+@out
+@w05
+
+@bg f=0001
+[texton w=0]
+Blue was satisfied and quickly put on his pants and went away.[k]
+[マルエット] was left covered in semen.[k]
+[テオ f=12]「Are you okay, [マルエット]?」[k]
+[マルエット f=78]「...」[k]
+[マルエット] was stunned. Her expression clearly showed her exhaustion.[k]
+I'm sorry I put you in this position...[k]
+I kept apologizing to [マルエット] in my heart.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーイベント02
+*blue_02
+@saveon
+@call storage="stay.ks" target=*kick_out_by_blue
+@jump target=*_blue_02_freemode cond='game.isFreeMode'
+@jump target=*_blue_02_case1 cond='game.curChara.inSameRoom(o.テオ)'
+@jump target=*_blue_02_case2
+
+;＜主人公とヒロインが同室かつ好感度が高い場合＞
+*_blue_02_case1
+
+; 宿屋の一室
+@fg l=ブルー e=下半身裸 f=05 b
+@fg r=マルエット e=通常 f=29 b
+@bg f=0001
+@mu f=shadow
+[texton w=1]
+[ブルー f=05]「Hey, sylph woman. Suck my dick again.」[k]
+[マルエット f=29]「...」[k]
+Blue entered our room without knocking, immediately pulled down his pants, and demanded oral sex from [マルエット].[k]
+[ブルー f=05]「Hey, hurry up!」[k]
+[テオ e=通常 f=12]「Wait, Blue, don't do this to her...」[k]
+@fg l=ブルー f=08
+[ブルー f=08]「What? You got a problem with me?」[k]
+[テオ f=10]「... ∗gulp∗」[k]
+Blue gives me a sharp look, and I can't help but fall silent.[k]
+Blue's gaze is sharp and predatory...[k]
+Even now, after time has passed and I've defeated him once, my body stiffens as soon as I see those eyes glaring at me.[k]
+Will I never be able to defy Blue again?[k]
+@fg r=マルエット f=35
+[マルエット v=vs376 f=35]「It's okay, Captain. This is no big deal.」[k]
+[テオ f=12]「[マルエット]...」[k]
+I'm sorry... I'm really sorry, [マルエット].[k]
+@fg l=ブルー f=02
+[ブルー f=02]「Okay, let's get started right away.」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=マルエット f=event44 p0=hair p1=16 p2=02
+[texton w=2]
+[マルエット v=vs377]「∗lick liick slurp∗」[k]
+[ブルー]「You're getting better and better at this.」[k]
+[マルエット], now bare-chested and wearing only panties, sucks Blue's penis.[k]
+With her passionate fellatio, Blue's penis rose up proudly.[k]
+@jump target=*_blue_02_common
+;  → 共通ルート２へ
+
+
+;＜主人公とヒロインが別室でブルーがヒロインのいる部屋に入った場合＞
+*_blue_02_case2
+
+; 宿屋の一室
+@bg chara=マルエット f=event44 p0=hair p1=16 p2=02
+@mu f=shadow
+[texton w=2]
+[マルエット v=vs377]「∗lick liick slurp∗」[k]
+[ブルー]「You're getting better and better at this.」[k]
+[テオ]「[マルエット]...!」[k]
+Concerned about [マルエット], I went to her room to check on her.[k]
+[マルエット] is topless and wearing only her panties. She was sucking Blue's penis again today.[k]
+Blue's male organ was rising to a prominent position due to the intense blowjob.[k]
+@jump target=*_blue_02_common
+;  → 共通ルート２へ
+
+
+;＜共通ルート２＞
+*_blue_02_common
+@fg l=ブルー e=下半身裸・勃起 f=05 b
+@fg r=マルエット e=白いパンツ,手ブラ f=78 b
+@bgf f=0001
+[texton w=1]
+[ブルー f=05]「All right, stop right there.」[k]
+Suddenly, Blue had [マルエット] stop sucking his cock.[k]
+[マルエット f=78]「...?」[k]
+[マルエット] looks puzzled. What will he make her do next?[k]
+@fg l=ブルー f=02
+[ブルー f=02]「Now, make me cum with intercrural sex.」[k]
+[マルエット v=vs378 f=79]「I'm... sorry?」[k]
+[ブルー f=01]「Don't you know? I'm gonna put my dick between your legs and rub it between your thighs and your pussy.」[k]
+@fg r=マルエット f=53
+[マルエット v=vs379 f=53]「Huh...?」[k]
+[ブルー f=02]「I guess I have no choice. I'll teach you how to do it.」[k]
+@cl l
+Blue then lay on his back on the bed.[k]
+Between his legs was a fully swollen penis.[k]
+[ブルー f=01]「Come on, straddle me here and make me cum between your legs.」[k]
+@fg r=マルエット f=54
+[マルエット f=54]「...」[k]
+[マルエット] looks puzzled while looking at it.[k]
+[ブルー f=05]「Didn't you hear me?! Just hurry up!」[k]
+[マルエット v=vs380 f=54]「Y-yes...」[k]
+@cl b
+@fg c=マルエット f=54
+Just as [マルエット] was about to straddle Blue.[k]
+[ブルー f=07]「Idiot! Take off your panties! You think you can do it wearing panties?!」[k]
+@fgf c=マルエット f=53
+@shake layer=3 loop=3 time=20 length=2
+[マルエット v=vs381 f=53]「I-I'm sorry...」[k]
+@cl
+@fg c=マルエット e=裸,手ブラ f=40
+@w05
+[マルエット f=40]「...」[k]
+[マルエット] dropped her panties with embarrassment.[k]
+[マルエット]'s beautiful crotch was exposed. Blue gazed at her most embarrassing part seriously.[k]
+[ブルー f=02]「What's the matter with you, you're so smooth. It looks like a kid's pussy.」[k]
+[マルエット f=40]「... (Ahhhhh)」[k]
+[ブルー f=02]「Come on, get straddling my dick.」[k]
+[textoff]
+@out
+
+@bg chara=マルエット f=event64 p0=hair p1=01 p2=03
+[texton w=2]
+As Blue orders, she straddles his waist and sits down so that their genitals are pressed together.[k]
+[マルエット]「...」[k]
+[マルエット] then slid her hips back and forth, keeping the meat stick between her legs.[k]
+@bg chara=マルエット f=event64 p0=hair p1=01 p2=04
+[マルエット v=vs382]「Ahh...!」[k]
+Her sensitive vagina rubbed against Blue's rod, and she let out a brief cry.[k]
+@bg chara=マルエット f=event64 p0=hair p1=01 p2=03
+[マルエット]「...」[k]
+[ブルー]「Come on, keep moving more and more.」[k]
+@bg chara=マルエット f=event64 p0=hair p1=02 p2=05
+[マルエット v=vs383]「Mmm... ah... Ah...! Ahh...!」[k]
+Following Blue's command, [マルエット] begins to move her hips back and forth.[k]
+[マルエット] pouts with frustration and rubs Blue penis between her legs.[k]
+Each time she moves back and forth, the tip of Blue's dick emerges from between [マルエット]'s thighs and genitals.[k]
+[ブルー]「Yeah, that's it.」[k]
+[マルエット v=vs384]「Haaahhh... ah... ah ah ah ah...」[k]
+[マルエット]'s voice becomes more and more heated, as if it feels good to have her crotch rubbing against the pole.[k]
+[ブルー]「What is it? Are you starting to feel good?」[k]
+[ブルー]「Kuku, even a pussy like this can feel good.」[k]
+[マルエット]'s movements become more and more frenetic.[k]
+She presses her crack against the penis and rubs it along the shaft to pleasure herself.[k]
+Before long, [マルエット]'s crotch was soggy and wet, and her love juices were smeared on Blue's penis.[k]
+[マルエット v=vs385]「Ah... Ah... Ahhh... Ahhh... I'm feeling it... Ahhhh!」[k]
+[ブルー]「That's good. Keep it up.」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[マルエット v=vs386]「Ah... Ahhh... It feels so good... I'm going to... Ahhhh... I can't stop!」[k]
+[マルエット] repeats the back-and-forth motion even more vigorously.[k]
+She forgets all about the shame she felt earlier and rubs his rod frantically to devour the pleasure.[k]
+@bg chara=マルエット f=event64 p0=hair p1=02 p2=04
+[マルエット v=vs387]「Ah... Ah... Ahhh!」[k]
+@flash on=1000 t=500 off=500
+@bgf chara=マルエット f=event64 p0=hair p1=02 p2=02
+[マルエット]'s whole body shakes. She came on Blue's penis.[k]
+[ブルー]「Well, it looks like you came. Well, I'm gonna...」[k]
+@bg chara=マルエット f=event64 p0=hair p1=03 p2=02
+∗spurt spurt∗[k]
+[マルエット v=vs388]「Kyaa...!」[k]
+Blue also ejaculated.[k]
+[マルエット v=vs389]「Phew...」[k]
+[ブルー]「You have a sensitive clit. You have an innocent face, but you're a dirty girl.」[k]
+@bg chara=マルエット f=event64 p0=hair p1=01 p2=03
+[マルエット]「... (Kyaa)」[k]
+[マルエット] was so overcome by pleasure that she indulged herself.[k]
+She couldn't say anything in response to Blue's words, and just stood there in a daze...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーイベント03
+*blue_03
+
+@saveon
+@call storage="stay.ks" target=*kick_out_by_blue
+@jump target=*_blue_03_freemode cond='game.isFreeMode'
+@jump target=*_blue_03_case1 cond='game.curChara.inSameRoom(o.テオ)'
+@jump target=*_blue_03_case2
+
+;＜主人公とヒロインが同室かつ好感度が高い場合＞
+*_blue_03_case1
+
+; 宿屋の一室
+@se f=door1
+@fg l=マルエット e=通常 f=29 b
+@fg r=ブルー e=通常 f=02 b
+@bg f=0001
+@mu f=anxiety
+[texton w=1]
+[ブルー f=02]「Hey.」[k]
+[マルエット v=vs390 f=29]「Ah...!」[k]
+[テオ e=通常 f=10]「Blue...」[k]
+[マルエット] and I were spending time together when Blue came in without knocking.[k]
+[ブルー f=05]「[テオ], stay outside the room. I have business with [マルエット].」[k]
+[テオ f=12]「G-got it.」[k]
+I couldn't go against Blue... I had no choice but to do as he said.[k]
+[textoff]
+@out
+@w05
+@jump target=*_blue_03_common
+;  → 共通ルート３へ
+
+
+;＜主人公とヒロインが別室でブルーがヒロインのいる部屋に入った場合＞
+*_blue_03_case2
+
+; 宿屋の廊下
+@se f=door1
+@bg f=0002
+@mu f=anxiety
+[texton w=0]
+[テオ f=10]「...」[k]
+Right now, [マルエット] is alone with Blue.[k]
+I wonder what Blue is doing to [マルエット] right now...[k]
+[textoff]
+@out
+@w05
+@jump target=*_blue_03_common
+;  → 共通ルート３へ
+
+
+;＜共通ルート３＞
+*_blue_03_common
+
+; 宿屋の一室
+@bg chara=マルエット f=event64 p0=hair p1=02 p2=04
+[texton w=2]
+[マルエット v=vs391]「Ah... Ah... Ah... Ah...」[k]
+[ブルー]「Kuku, you seem to be enjoying it too.」[k]
+[マルエット] was once again engaged in intercrural sex with Blue.[k]
+She rubs his penis enthusiastically, and her crotch is completely wet, as if she feels good too.[k]
+[マルエット v=vs392]「Ah... Ah... Haaah...」[k]
+[textoff]
+
+@bgf f=0001
+[texton w=0]
+[ブルー e=裸 f=05]「Okay, stop for a second.」[k]
+[マルエット e=裸 f=53]「...!」[k]
+Blue grabbed [マルエット]'s leg to still her movements. [マルエット] looked at Blue's face with somewhat frustrated eyes.[k]
+[ブルー f=05]「Here, you lie there.」[k]
+@quake time=500 hmax=5 vmax=5
+[マルエット v=vs393]「Kya!」[k]
+Blue lightly pushed [マルエット] away and laid her on the bed.[k]
+[マルエット v=vs394]「W-what are you doing...?」[k]
+[ブルー]「...I heard that sylph women's pussies are really good. I wanted to try it myself.」[k]
+[textoff]
+
+@bg chara=マルエット f=event74 p0=hair p1=01 p2=01
+@mu f=darkside
+[texton w=2]
+[マルエット]「...!」[k]
+Realizing that Blue's words meant insertion, [マルエット] turned pale.[k]
+[マルエット v=vs395]「No... Please don't do that...!」[k]
+[マルエット] is overcome with fear and tries to run away.[k]
+Blue's anger is mounting. However, she is cornered against the wall and cannot escape.[k]
+[ブルー]「You came on my dick last time, why so restrained now? And you're so wet. You've come this far, you've got no choice but to fuck me until the end.」[k]
+@bg chara=マルエット f=event74 p0=hair p1=02 p2=01
+Saying that, Blue grabbed [マルエット]'s butt and pressed the tip of his penis against her wet vaginal opening.[k]
+[ブルー]「It looks a little tight, but if it's this wet, you'll manage somehow.」[k]
+[マルエット v=vs396]「No... No...! Stop...!」[k]
+[ブルー]「Let's go! Yaa!」[k]
+@bgf chara=マルエット f=event74 p0=hair p1=03 p2=04
+@quake time=500 hmax=5 vmax=5
+@w05
+∗squelch!∗[k]
+[マルエット v=vs397]「Ahhhh!」[k]
+Blue's penis was swallowed by [マルエット]![k]
+[ブルー]「Here we go, more to go! Hmph!」[k]
+∗slurp∗[k]
+[マルエット v=vs398]「Aaaahhhh!」[k]
+Blue's huge penis entered [マルエット]'s narrow vaginal opening in one motion, spreading it open![k]
+Finally, [マルエット] was violated by Blue.[k]
+@bgf chara=マルエット f=event74 p0=hair p1=03 p2=06
+[マルエット v=vs399]「Ugh... Uuuuuugh...!」[k]
+[マルエット] looks anguished. Even though she is very wet, the size difference is enough that it has to be painful.[k]
+[ブルー]「Come on, relax, or it will hurt more.」[k]
+[マルエット v=vs400]「∗pant∗ ∗pant∗」[k]
+[ブルー]「All right, let's move.」[k]
+@bgf chara=マルエット f=event74 p0=hair p1=04 p2=04
+[マルエット v=vs401]「Ahh... Wait, please... Ahh!」[k]
+∗sluurp sluurp sluurp∗[k]
+Blue is relentless. Without caring about [マルエット], who is writhing in a cold sweat, he thrusts into her vagina.[k]
+[ブルー]「Huh, this feels really good. It's the best pussy ever!」[k]
+[マルエット v=vs402]「Ah... Ah... No... Stop... Aah!」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[マルエット] writhes in agony, her hair disheveled. Tears well up in her eyes. But Blue shows no mercy.[k]
+[ブルー]「I can't get enough of this tightness!」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[マルエット v=vs403]「No, stop... Aaah...! No more... Stop... Mmm, ahh!」[k]
+[ブルー]「Damn...! That's so tight... I'm about to cum... Ahh!」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[ブルー]「I can't take it anymore! I'm going to let it out inside!」[k]
+[マルエット v=vs404]「Nooooo! Nooooo!」[k]
+@flash
+@flash
+@flash
+∗spurt!∗ ∗spurt!∗ ∗spurt!∗[k]
+[ブルー]「Ugh...!」[k]
+[マルエット v=vs405]「No way!」[k]
+@bgf chara=マルエット f=event74 p0=hair p1=05 p2=05
+With his penis deep inside her vagina, Blue ejaculates into [マルエット] with a feeling of pleasure...[k]
+[textoff]
+@out
+@w05
+
+@bgf f=0001
+[texton w=0]
+[マルエット v=vs406 f=50]「Uuuu... ∗sob∗」[k]
+[ブルー f=53]「Well, that was pretty good. I'll fuck you again sometime soon.」[k]
+[マルエット f=48]「...」[k]
+Blue left with a look of contentment on his face, while [マルエット] was drenched in tears...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーイベント04
+*blue_04
+
+; 宿屋の一室
+@saveon
+@se f=door1
+@bg chara=マルエット f=event74 p0=hair p1=04 p2=04
+@mu f=shadow
+[texton w=2]
+[マルエット v=vs407]「Ah... Ah... Ah... Ah...」[k]
+[ブルー]「Huh, doing it with you isn't so bad after all. It feels good.」[k]
+Today, [マルエット] was once again used by Blue as a sex toy.[k]
+[マルエット] prayed that the act would end quickly, and simply endured it silently.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーイベント05
+*blue_05
+
+; 朝のロビー
+@saveon
+@bg f=0003
+@w05
+[texton w=1]
+[テオ f=05]「Huh...?」[k]
+We're about to leave, but Blue and [マルエット] aren't here yet.[k]
+[テオ f=06]「They're late... What's going on...?」[k]
+@fg c=マルエット f=30 e=中立の胸当て,ひものパンツ,革の手袋,サンダル
+@mu f=anxiety
+[マルエット v=vs408 f=30]「Good morning...」[k]
+; ↑ 元気がない
+[テオ f=12]「[マルエット]...!」[k]
+Suddenly, [マルエット] appeared.[k]
+That's a pretty revealing outfit... Why are you dressed like that...?[k]
+@fg r=ブルー e=通常 f=02 left=745
+[ブルー e=通常 f=02]「Ah, you like it?」[k]
+[テオ f=12]「Blue!」[k]
+Then Blue came up behind her. Was this his doing?![k]
+[ブルー f=94]「I made her dress like that. I like looking at women's asses.」[k]
+[テオ f=10]「Blue...!」[k]
+What on earth...! Come to think of it, Riselle was dressed like this too...[k]
+[マルエット v=vs409 f=29]「Hey, Blue. You should let me wear something on top of it...」[k]
+[ブルー f=02]「What's this? Are you embarrassed? You're just a kid.」[k]
+[マルエット v=vs410 f=60]「How many times have I said I'm not a kid...」[k]
+@se f=whip
+@flash t=200
+@fg c=マルエット f=61 b
+@fgf r=4002 left=705
+∗smack!∗[k]
+[マルエット v=vs411 f=61]「Aaaah! What are you doing?!」[k]
+[テオ f=12]「Blue!」[k]
+Blue slapped [マルエット]'s butt, hard![k]
+@fg r=4001 left=705
+[ブルー f=01]「Save being embarrassed when your butt gets bigger! Hahaha!」[k]
+@fg c=マルエット f=68
+[マルエット f=68]「... ∗sob∗」[k]
+[マルエット] was embarrassed in front of everyone and had tears in her eyes. How horrible...![k]
+However, no one can stop him. None of us can go against Blue.[k]
+[テオ f=10]「Damn it!」[k]
+I was desperately trying to suppress my anger toward Blue.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ブルー編２・妻としてブルーとの宿泊を求められる
+
+;◇ブルー人妻イベント10・妻としてブルーとの宿泊を求められた最初の夜
+*married_01
+
+; 宿屋の一室
+@call storage="main12.scn" target=*revive_4
+@fg l=マルエット e=通常 f=10 b
+@fg r=ブルー e=通常 f=06 b
+@bgf f=0001
+@mu f=worry
+@se f=door1
+[texton w=1]
+∗slam∗[k]
+[マルエット f=10]「...」[k]
+The door to the room is locked. My husband won't be coming back...[k]
+[マルエット f=10]「...!」[k]
+I can't rely on my husband! I resolved to be Blue's partner![k]
+[ブルー f=19]「Well... I said I would hold you, but what should I do...」[k]
+@fg l=マルエット f=35
+[マルエット v=vs412 f=35]「What's wrong? He isn't going to?」[k]
+[ブルー f=19]「I mean, with a skinny body like yours, my dick just won't stand up...」[k]
+[ブルー f=06]「How could [テオ] think of marrying such a childish woman? Is he a lolicon?」[k]
+@fg l=マルエット f=28
+[マルエット f=28]「...」[k]
+Blue says that with a sigh. How rude![k]
+But if this guy doesn't care about me, that's a good thing...[k]
+@fg r=ブルー f=01
+[ブルー f=01]「That said, it wouldn't be fun unless I made that bastard [テオ] feel as bad as possible. For now...」[k]
+[name f=other_04]Blue took a round metal object out of his pocket.[k]
+@fg l=マルエット f=25
+[マルエット v=vs413 f=25]「What's that...?」[k]
+[ブルー f=01]「These are your new panties. Take off the ones you're wearing right now and put these on.」[k]
+@fg l=マルエット f=29
+[マルエット v=vs414 f=29]「W-what?! No way!」[k]
+[ブルー f=01]「Give up. You have no choice but to do as I say.」[k]
+@fg l=マルエット f=28
+[マルエット f=28]「...」[k]
+I just have to be patient for now... I have to do my best...![k]
+[textoff]
+@out
+@w05
+@fg c=マルエット e=鋼鉄の貞操帯,手ブラ f=30 b
+@fg r=ブルー f=02 b
+@bg f=0001
+[texton]
+[マルエット f=30]「... (Kyaa)」[k]
+[ブルー f=01]「Hmm, that looks pretty good.」[k]
+After Blue stripped me naked, he put some kind of metal underwear-like device on me.[k]
+How humiliating... Even if it's Blue's order, why do I have to wear something like this?[k]
+[マルエット v=vs415 f=29]「Hey, what is this?」[k]
+[ブルー f=02]「It's a chastity belt.」[k]
+[マルエット v=vs416 f=25]「A chastity belt...?!」[k]
+[ブルー f=02]「As you can see, as long as you wear this, no man will be able to stick his dick in you.」[k]
+[ブルー f=02]「And now, I'm going to lock this chastity belt. You won't be able to take it off on your own.」[k]
+[マルエット v=vs417 f=29]「No way...!」[k]
+[ブルー f=01]「In other words, no man other than me can have sex with you without my permission. Not even your husband. Right now, you belong to me.」[k]
+[マルエット f=30]「...」[k]
+Going to such lengths for that... Blue, do you hate my husband that much...?[k]
+[マルエット v=vs418 f=29]「But with something like this attached, I can't even pee... Please take it off.」[k]
+[ブルー f=02]「Don't worry, you can pee.」[k]
+@fg c=マルエット f=61 b
+@fg r=ブルー e=触り f=02 left=470 top=30 b
+@fg a=blue_default_hand left=470 top=30
+[マルエット v=vs419 f=61]「Hyah!」[k]
+[ブルー f=02]「... ∗grin∗」[k]
+Blue reached out and grabbed my crotch![k]
+And Blue runs his finger along my vertical slit through the narrow opening in the chastity belt![k]
+[ブルー f=02]「There's a small hole here for if you need to piss.」[k]
+@fg c=マルエット f=63
+[マルエット v=vs420 f=63]「Ah... Oh... No... No...!」[k]
+Then he started to fondle my sensitive parts with his fingers.[k]
+[ブルー f=02]「You can even crap in it. There's a hole in the back. Only a dick can't go in. It's well designed, isn't it?」[k]
+Saying that, Blue removed his finger from my crotch.[k]
+[マルエット v=vs421 f=63]「Aah, aah...」[k]
+@fg r=ブルー f=01 fix
+[ブルー f=01]「Huh? What is it? Did you feel it?」[k]
+Blue teases my clitoris halfway, and my pussy starts to tingle...[k]
+No... I can't stand it...![k]
+[textoff]
+@out
+
+@bg chara=マルエット f=event63 p0=hair p1=07 p2=05
+@w05
+[texton w=2]
+[マルエット v=vs422]「Ahh...!」[k]
+I reached out my finger to my clitoris.[k]
+I crouch down and stimulate my sensitive areas with my fingers.[k]
+[ブルー]「What? Are you going to do it yourself?」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[マルエット v=vs423]「Ah... Ah... Aaaah...」[k]
+No... I can't stop my fingers...![k]
+Blue is right in front of me, grinning as he watches me masturbate. But I can't stop...![k]
+[ブルー]「Hey, you're surprisingly lewd, aren't you?」[k]
+[マルエット v=vs424]「Blue messed with that part... Ahhh!」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+Love juice is overflowing... But I can't stop...![k]
+Ah... It feels better and better...![k]
+[マルエット v=vs425]「Ah, ah, ahhhhh!」[k]
+@flash on=1000 t=500 off=500
+A wave of pleasure ran through my whole body, and my mind went blank.[k]
+I... I came... Right in front of Blue...![k]
+[マルエット v=vs426]「Phew...」[k]
+[ブルー]「Hahaha! That was quite a sight to behold! You're quite the pervert, aren't you?」[k]
+@bg chara=マルエット f=event63 p0=hair p1=07 p2=03
+[マルエット]「... ∗sob∗」[k]
+[ブルー]「Damn, your chastity belt is soaking wet with your pussy juice. Damn, you're a hopeless slut, despite your appearance.」[k]
+[マルエット]「... ∗sob∗」[k]
+I want to say it's not true, but I can't deny it...![k]
+Why was I born with this body...?[k]
+[ブルー]「She may look like a kid, but she's actually a married woman with a horny body that she doesn't know what to do with.」[k]
+[マルエット]「...」[k]
+[ブルー]「I'm going to keep playing with you. Hehehe, I've got a new hobby now.」[k]
+[マルエット]「...」[k]
+I couldn't say anything back to Blue, who was smiling contentedly...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント02
+*married_02
+
+; 宿屋の一室・テオが１人で宿泊している時
+@saveon
+@bg f=0001
+[texton w=1]
+[テオ e=通常 f=10]「...」[k]
+I wonder if [マルエット] is being held by Blue again by now...[k]
+@mu f=worry
+@fg c=マルエット e=通常 f=29
+[マルエット v=vs427 f=29]「Dear...」[k]
+[テオ f=12]「[マルエット]...!」[k]
+[マルエット], who was supposed to be with Blue, suddenly appeared.[k]
+[テオ f=12]「[マルエット], why are you here...?」[k]
+@fg c=マルエット f=33
+[マルエット v=vs428 f=33]「Um, Blue told me to come and give you some service.」[k]
+[テオ f=05]「Service?」[k]
+[マルエット v=vs429 f=64]「Dear... Look...!」[k]
+[textoff]
+@fg c=マルエット e=鋼鉄の貞操帯 f=64
+@w05
+[texton w=1]
+[テオ f=12]「[マルエット]...!」[k]
+Suddenly, [マルエット] took off her clothes.[k]
+I see my wife naked for the first time in ages. However, I notice something unfamiliar on her lower body.[k]
+[テオ f=12]「Hey, [マルエット], what's that thing attached to your crotch...?」[k]
+[マルエット v=vs430 f=64]「A chastity belt. It seems like Blue really wants to stop you from having sex...」[k]
+[テオ f=09]「A chastity belt...?! Damn it... That Blue...!」[k]
+@fg c=マルエット f=33
+[マルエット v=vs431 f=33]「I'm sorry, honey. But right now, I can't have sex with you...」[k]
+[textoff]
+@out
+
+@bg chara=マルエット f=event63 p0=hair p1=07 p2=03
+@mu f=adult
+@w05
+[texton w=2]
+Saying that, [マルエット] sat down on the floor and spread her legs wide.[k]
+[テオ]「[マルエット]...!」[k]
+[マルエット v=vs432]「But I can do something like this...」[k]
+Her crotch, covered by a chastity belt, is clearly visible.[k]
+How sexy...! Showing me such a lewd pose...![k]
+[マルエット v=vs433]「This is all I can do right now... I want you to be happy...」[k]
+Saying that, [マルエット] inserted her finger into the narrow opening of the chastity belt.[k]
+Then, she ran her fingers along the seam and started playing with it herself![k]
+@bg chara=マルエット f=event63 p0=hair p1=07 p2=04
+[マルエット v=vs434]「Mmm... ah... Ah...! Ahh...!」[k]
+[テオ]「[マルエット]...!」[k]
+∗slurp slurp slurp slurp∗[k]
+[マルエット v=vs435]「Ahhh... ahh... Ahhh...」[k]
+My wife's face turned bright red as she frantically played with her clitoris, letting out agonizing moans.[k]
+She wriggles her hips, spreads her legs wide, and masturbates provocatively.[k]
+[マルエット v=vs436]「Ah... That feels good... That feels so good...!」[k]
+[テオ]「...!」[k]
+I can't take my eyes off it...![k]
+I never imagined my wife could be so lewd...![k]
+@bg chara=マルエット f=event63 p0=hair p1=07 p2=02
+[マルエット v=vs437]「Ah... Your penis... It's getting bigger...」[k]
+[テオ]「Of course! Since you're looking this sexy...!」[k]
+@bg chara=マルエット f=event63 p0=hair p1=07 p2=01
+[マルエット v=vs438]「Aah... I want your penis...」[k]
+[テオ]「[マルエット]...!」[k]
+[マルエット] wants it...![k]
+Of course I want to put it in too! I want to take off that chastity belt and thrust it into [マルエット]...![k]
+Damn it...! What should I do...?![k]
+[textoff]
+
+@fg c=ブルー e=勃起 f=02 b
+@bgf f=0001
+[texton w=1]
+[ブルー f=02]「Do you want a dick, sylph?」[k]
+[マルエット e=汗だく・開き f=32]「...!」[k]
+[テオ f=12]「Blue?!」[k]
+Suddenly, Blue was standing behind us, having entered the room at some point.[k]
+@fg c=ブルー f=03
+[ブルー f=03]「Hey, [テオ], did you get excited seeing your wife's dirty appearance? Hahahaha!」[k]
+@fg c=ブルー f=02
+[ブルー f=02]「But unfortunately, you can't remove this chastity belt. I have the key.」[k]
+[テオ f=09]「Damn...!」[k]
+[ブルー f=02]「The key to her chastity belt is in my hands. Only I have the right to fuck this horny wife.」[k]
+@fg c=ブルー e=下半身裸・勃起 f=02
+Saying that, Blue took off his pants and revealed his erection.[k]
+[マルエット f=25]「...!」[k]
+Then, Blue approaches [マルエット], who is lying down.[k]
+[ブルー f=02]「Well, I'll take it off for you.」[k]
+[textoff]
+@cl b
+
+@bgf chara=マルエット f=event63 p0=hair p1=01 p2=02
+[texton w=2]
+@se f=kacha
+∗click∗[k]
+[マルエット v=vs439]「Oh...」[k]
+Blue removed the chastity belt.[k]
+[ブルー]「Oho, you're soaking wet.」[k]
+Her wet vagina was now exposed.[k]
+Then Blue approaches with his penis erect.[k]
+[マルエット] did not resist. She waited quietly for Blue to insert himself.[k]
+[マルエット v=vs440]「I'm sorry, honey. I really want your dick right now, but Blue won't let me...」[k]
+[テオ]「[マルエット]...!」[k]
+[ブルー]「That's right. Then I'll exercise my right to screw this girl.」[k]
+@bgf chara=マルエット f=event63 p0=hair p1=08 p2=04
+@quake time=500 hmax=5 vmax=5
+∗squelch!∗[k]
+[マルエット v=vs441]「Aaahhh...!」[k]
+Blue thrust himself roughly into [マルエット]![k]
+[ブルー]「It went in more smoothly than I expected. [テオ], it's thanks to you using it so much.」[k]
+∗sluurp sluurp sluurp∗[k]
+[マルエット v=vs442]「Ahhh... ahh... ah... ah...」[k]
+[マルエット] lets out a sweet moan.[k]
+She feels good with Blue inside her...![k]
+[ブルー]「Hehehe, it feels good to fuck someone else's wife! Wahahaha!」[k]
+[テオ]「Damn...!」[k]
+∗sluurp sluurp sluurp∗[k]
+[マルエット v=vs443]「Ah... Ahhh... Yes... Ahhh...!」[k]
+[マルエット]'s breathing becomes increasingly labored.[k]
+Her sensuality rises each time Blue thrusts. Because we've made love so many times, I know that well...[k]
+∗sluurp sluurp sluurp∗[k]
+[ブルー]「But it's really tight...! It's a great pussy.」[k]
+∗sluurp sluurp sluurp∗[k]
+[マルエット v=vs444]「Ah... Ah... Ah...」[k]
+[ブルー]「To be able to enjoy such a delicious pussy every night. [テオ], you're so cheeky!」[k]
+∗sluurp sluurp sluurp∗[k]
+[マルエット v=vs445]「Aaah... Aaahhh...!」[k]
+[テオ]「...」[k]
+[マルエット]'s panting becomes even more intense.[k]
+That means...! [マルエット] is about to cum...![k]
+[マルエット v=vs446]「Mmm... ah... Ah...! Ahh...!」[k]
+[テオ]「...!」[k]
+[ブルー]「I see! Then I'll make you cum!」[k]
+∗slurp slurp slurp slurp slurp slurp!∗[k]
+[マルエット v=vs447]「Ah, ah, ah, ah!」[k]
+[ブルー]「I'm coming too! Ugh!」[k]
+[テオ]「Wait! Not inside!」[k]
+[ブルー]「Ugh!」[k]
+[マルエット v=vs448]「Ahhhhhhhhhhh...!」[k]
+∗spuurt! spuurt!∗[k]
+Blue ignored my protests and came inside [マルエット]![k]
+With it deeply thrust inside [マルエット], he repeatedly shakes his body.[k]
+@bg chara=マルエット f=event63 p0=hair p1=06 p2=05
+Blue unhesitatingly poured his semen into my beloved wife...[k]
+[textoff]
+@bg f=9999
+@fa
+@out
+@w05
+
+@fg c=ブルー e=汗だく f=02 b
+@bgf f=0001
+@mu f=worry
+[texton w=1]
+[ブルー f=02]「Phew... That felt good. It's not often you find a pussy this good.」[k]
+[ブルー f=01]「I see, [テオ]. Now I understand why you married that sylph woman!」[k]
+[テオ f=12]「What the...?!」[k]
+[ブルー f=01]「I wondered why you married a woman with no sex appeal whatsoever, but now the mystery is solved!」[k]
+[ブルー f=03]「This great pussy was your goal! What a pervert you are! Hahahaha!」[k]
+[テオ f=12]「N-no, that's not it...!」[k]
+[ブルー f=01]「Hey, sylph! Your husband married you just to get some of this pussy! That's despicable!」[k]
+[マルエット e=汗だく・開き f=78]「...」[k]
+[テオ f=12]「No! That's not true at all! Believe me, [マルエット]!」[k]
+[マルエット f=78]「...」[k]
+I desperately argue with Blue, who says something outrageous. [マルエット] remains silent, exhausted...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント03
+*married_03
+
+; 宿屋の一室
+@saveon
+@bgf chara=マルエット f=event63 p0=hair p1=08 p2=04
+@mu f=darkside
+@w05
+[texton w=2]
+[マルエット v=vs449]「Ah... Ah... Ah... Ah...」[k]
+[ブルー]「Phew... Still tight as ever...」[k]
+Tonight, Blue entered the room, unlocked my chastity belt, and started having sex.[k]
+Usually, he makes me do sexual things, but doesn't go as far as penetration. What's wrong with him?[k]
+[ブルー]「Normally, sex with a woman like you doesn't really get me going, but even so, I've decided to fuck you every night from now on.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=08 p2=02
+[マルエット v=vs450]「Eh...? Why is that...? Because my pussy feels good...?」[k]
+[ブルー]「That's true. But that's not all.」[k]
+[ブルー]「I want to get you pregnant...」[k]
+[マルエット]「...?」[k]
+[ブルー]「I thought it would be interesting if you got pregnant with my child instead of [テオ]'s.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=08 p2=01
+[マルエット v=vs451]「What...?!」[k]
+No way...! If you do that, I'll be in trouble...![k]
+[マルエット v=vs452]「Wait, Blue! Don't do that!」[k]
+[ブルー]「It's too late! I'm going to cum! Ugh!」[k]
+@flash
+@w05
+@flash
+@bgf chara=マルエット f=event63 p0=hair p1=06 p2=04
+∗spuurt!∗ ∗spuurt!∗[k]
+[マルエット v=vs453]「Nooooooo...!」[k]
+Blue ignored my protests and came inside me...[k]
+[マルエット v=vs454]「Ugh... I told you you couldn't do it...」[k]
+[ブルー]「You can't go against me. You have no choice but to quietly let me cum inside you.」[k]
+@bg chara=マルエット f=event63 p0=hair p1=06 p2=03
+[マルエット]「...」[k]
+[ブルー]「While I'm in this party, let's see if I can get you pregnant, hahaha!」[k]
+[マルエット]「...」[k]
+I am at a loss in front of Blue, who is laughing loudly.[k]
+I realized that this man was truly terrifying.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント04・４日目以降
+*married_04
+
+; 宿屋の一室
+@saveon
+@bgf f=0001
+@mu f=anxiety
+[texton w=0]
+[マルエット v=vs455 e=汗だく・開き f=37]「Ah... ah... no... ah...!」[k]
+[ブルー e=汗だく f=02]「Your pussy really tightens up well.」[k]
+[マルエット v=vs456 f=53]「Please... Forgive me... No more...!」[k]
+[ブルー f=01]「Hey, it's not over yet! You promised to keep me company until I was satisfied.」[k]
+Today, [マルエット] was once again forced into an extramarital relationship with Blue.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ホテルイベント・主人公と同室
+
+; ラブホで売春組織が暗躍している
+; 主人公たちはラブホに一般のカップルのふりをして潜入し事件を解決する
+
+;◇主人公ホテルイベント・夜
+*hotel_theo_1
+
+; ラブホテルの一室
+@saveon
+@mu f=affair
+@se f=door1
+@bgf f=0004
+@wait time=1000
+@fg l=テオ f=10 b
+@fg r=マルエット f=25
+[texton w=1]
+[テオ f=10]「...」[k]
+[マルエット v=vs457 f=25]「Wow... The whole room is pink... Ahh...」[k]
+After checking in, I went into a love hotel room with [マルエット].[k]
+The room is pink. There is a heart-shaped bed.[k]
+The bath is also in the same room, albeit separated by a screen.[k]
+[マルエット] scurries around the room, looking at things curiously.[k]
+@fgf r=マルエット f=36
+[マルエット v=vs458 f=36]「Well, as an adult, I'm not fazed by a room like this.」[k]
+@fgf l=テオ f=05
+[テオ f=05]「Do you know what this place is for, [マルエット]?」[k]
+@fgf r=マルエット f=27
+[マルエット v=vs459 f=27]「Of course I know! Don't be silly!」[k]
+@fgf r=マルエット f=30
+[マルエット f=30]「... (Kyaa)」[k]
+[マルエット]'s face quickly turned red, as if she had realized something.[k]
+[マルエット v=vs460 f=30]「Oh, you know, I know what I'm supposed to do here, but I'm not quite ready yet...!」[k]
+@fgf l=テオ f=02
+[テオ f=02]「I understand, so please rest assured that I will not do anything.」[k]
+@fgf r=マルエット f=79
+[マルエット v=vs461 f=79]「N-no, that's not it...」[k]
+@se f=door1
+@fgf l=テオ f=05 b
+@fgf r=マルエット f=05
+∗slam∗[k]
+[従業員]「Excuse me, excuse me.」[k]
+[テオ f=05]「Aaa...」[k]
+An employee unexpectedly entered the room.[k]
+[従業員]「We offer a free laundry service. Please put your clothes in this basket. We will wash them and return them to you by tomorrow morning.」[k]
+[マルエット]「...」[k]
+A laundry service...?[k]
+It may be convenient, but we brought weapons and other items with us in case something happened. I'd rather not leave our belongings with others.[k]
+[テオ f=05]「Uh... That's fine...」[k]
+[従業員]「We are sorry, but this service is mandatory for all guests staying at this hotel.」[k]
+[テオ f=05]「What...?」[k]
+You're saying laundry service is mandatory? What on earth is going on?[k]
+[従業員 f=01]「You see, we have had problems in the past with guests staying at this hotel, including vandalism and murder...」[k]
+[従業員 f=01]「To prevent any problems, we ask our customers to leave all their luggage, including what they are wearing.」[k]
+[テオ f=06]「I see...」[k]
+[従業員]「In return, we will wash the clothes you leave with us. Thank you very much for your cooperation.」[k]
+[テオ f=06]「...」[k]
+We're here to conduct an undercover investigation of this hotel. I'm a little reluctant to check in all our luggage...[k]
+However, disobeying the employees will be regarded with suspicion. It would be counterproductive to be refused accommodation.[k]
+[テオ f=05]「I can't help it. Let's do as she says, [マルエット].」[k]
+@fgf r=マルエット f=57
+[マルエット v=vs462 f=57]「Ehh～! I don't want to leave my clothes with someone else.」[k]
+[テオ f=05]「No, that's not possible. If we can't stay here, we'd cause trouble for Sandra.」[k]
+@fgf r=マルエット f=58
+[マルエット v=vs463 f=58]「...Fine then.」[k]
+[従業員]「Thank you for your cooperation! Please them in this basket. Please wear this instead.」[k]
+[textoff]
+@out
+@w1
+
+@bgf f=0004 b
+@fg l=テオ e=バスタオル f=26 b
+@fg r=マルエット e=バスタオル f=60
+[texton]
+[テオ f=26]「...」[k]
+[マルエット v=vs464 f=60]「What the... What do you mean, wear this...?!」[k]
+; ↑ 怒り気味に
+After depositing all of our clothes, [マルエット] and I were only clad in towels.[k]
+This was all the employee offered us to wear.[k]
+[テオ f=25]「Um... You didn't have anything else to wear?」[k]
+[従業員]「Sorry, we wanted to provide bathrobes, but unfortunately we are out of stock...」[k]
+[テオ f=26]「Oh no...」[k]
+[従業員]「...Isn't it fine? Given what you are both here for, after all.」[k]
+The employee then smiles a little condescendingly.[k]
+[テオ f=26]「...」[k]
+...This is one of those places where if you stand out too much, people may become suspicious. Ostensibly, [マルエット] and I are just an ordinary couple who came to stay at a love hotel.[k]
+[テオ f=05]「I understand. Please take care of the laundry.」[k]
+[従業員]「Well, enjoy yourselves.」[k]
+@se f=door1
+∗slam∗[k]
+[テオ f=26]「...」[k]
+[マルエット v=vs465 f=60]「Don't look at me so much...」[k]
+[テオ f=25]「I-I know.」[k]
+Now we are facing each other almost naked, save a single piece of cloth.[k]
+And this is a love hotel... In this situation, it would be strange not to be aware of the other party.[k]
+[マルエット v=vs466 f=72]「I'll take the bed, okay?」[k]
+[テオ f=05]「Eh?」[k]
+@fgf r=マルエット f=71
+[マルエット v=vs467 f=71]「You can't sleep in it as well, not like that!」[k]
+@fgf l=テオ f=01
+[テオ f=01]「Uh, yeah. Of course I know. I'll sleep on the floor.」[k]
+[テオ f=02]「You're an unmarried girl.  It's obviously better not to share a bed with a man.」[k]
+[マルエット f=72]「...」[k]
+@fgf r=マルエット f=68
+[マルエット v=vs468 f=68]「...Uh-huh.」[k]
+; ↑ 少し気まずそうに
+[テオ f=02]「Well, good night.」[k]
+@cl
+I lay on the floor in a towel and closed my eyelids.[k]
+Then [マルエット] seemed to fall asleep under the covers.[k]
+[textoff]
+@out
+@w05
+@bg f=0057
+[texton w=0]
+...[k]
+...[k]
+[マルエット v=vs469 f=68]「Hey... Captain...」[k]
+[マルエット]'s quiet voice can be heard coming from the bed.[k]
+[テオ f=05]「Hmm?」[k]
+[マルエット v=vs470 f=68]「Umm... I'm sorry.」[k]
+[テオ f=02]「No, I don't mind. Good night.」[k]
+[マルエット v=vs471 f=64]「Good night...」[k]
+We fell asleep.[k]
+[textoff]
+@out
+@w05
+@jump storage="main11.scn" target=*hotel_2
+
+
+;◇主人公ホテルイベント・朝
+*hotel_theo_2
+
+; ラブホテルの一室・朝
+@bg f=9999
+@bg f=0064 t=2000
+[texton w=1]
+[テオ e=バスタオル f=06]「...」[k]
+It's morning...?[k]
+I wake up on the floor. Come to think of it, I slept at a love hotel last night...[k]
+I wonder if [マルエット] woke up...?[k]
+Lying down, I glance toward the bed and see what appears to be [マルエット]'s head on the bed.[k]
+It seems like she's still asleep.[k]
+[テオ f=06]「...」[k]
+I think I should wake her up soon. Check-out time is approaching...[k]
+I got up and approached [マルエット]'s bed where she was sleeping. Then...[k]
+[textoff]
+
+@mu f=peace
+[texton w=1]
+[テオ f=25]「...!」[k]
+[マルエット e=裸 f=19]「... ∗zzz∗」[k]
+[テオ f=25]「This is...!」[k]
+[マルエット] was still fast asleep. The problem was the way she was sleeping.[k]
+She was lying naked on her back. The towel was completely undone, and the blanket had been kicked off the bed.[k]
+Her legs are spread wide apart, exposing her private parts completely.[k]
+[テオ f=26]「... (Kyaa)」[k]
+This is awkward... For now, I'll just cover the futon she kicked off with a blanket...[k]
+I picked up the futon that had fallen on the floor and tried to quietly cover her body with it so that [マルエット] wouldn't notice.[k]
+@se f=beat
+@quake time=500
+@flash
+∗smack!∗[k]
+[テオ f=28]「Ugh...!」[k]
+Suddenly, [マルエット]'s heel hit me squarely in the face! I stumbled, still holding the futon.[k]
+Did I wake her up?![k]
+[マルエット f=19]「... ∗zzz∗」[k]
+[テオ f=26]「...」[k]
+Good. She seems to still be asleep.[k]
+But I'm surprised... I didn't know [マルエット] slept so badly...[k]
+I carefully covered her naked body with a futon again.[k]
+[textoff]
+@out
+@w05
+@fg c=マルエット e=バスタオル f=02 b
+@bgf f=0064
+@mu f=guild
+[texton w=1]
+[マルエット v=vs472 f=02]「Good morning, Captain.」[k]
+[テオ f=12]「Oh, good morning...」[k]
+[マルエット] woke up. She seemed oblivious to everything, acting as if nothing had happened.[k]
+[マルエット v=vs473 f=05]「Hey, what's with that bruise on your cheek?」[k]
+[テオ f=13]「I-I just fell over...」[k]
+[マルエット v=vs474 f=02]「Hmm, what a clumsy captain.」[k]
+[textoff]
+@out
+@bg f=0064 b
+@fg l=テオ e=現在の装備 f=06 b
+@fg r=マルエット e=現在の装備 f=02
+[texton w=1]
+[従業員]「Good morning. The clothes we received yesterday have been washed and brought to you.」[k]
+The hotel employee brought the clothes and luggage we left behind yesterday. We hurriedly put them on and checked out of the hotel.[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+@eval exp='o.マルエット.strip.theo = "裸"'
+@jump storage="main11.scn" target=*hotel_4
+
+
+
+;■ホテルイベント・マックスと同室
+
+;◇マックスホテルイベント・夜
+*hotel_max_1
+
+; ラブホテルの一室
+@se f=door1
+@mu f=bad
+@bgf f=0004
+@fg l=マックス e=バスタオル,勃起 f=03 b
+@fg r=マルエット e=バスタオル f=60
+[texton w=1]
+[マックス f=03]「...So, tonight it's just the two of us with only a towel each!」[k]
+[マックス f=03]「To be honest, you're not my type, but if we can have a good time, I'm all for it! Let's have fun, [マルエット]!」[k]
+[マルエット f=60]「...!」[k]
+@fgf l=マックス f=22
+[マックス f=22]「Okay, [マルエット], let's get right to it...」[k]
+[マルエット v=vs475 f=59]「Keep away from me!」[k]
+[マックス f=60]「What's wrong with you? You're being so cold. We're at a love hotel, after all. Let's get along.」[k]
+[マルエット v=vs476 f=59]「Get away from me! Stay away from me! I won't forgive you if you come any closer!」[k]
+@fgf l=マックス f=12
+[マックス f=12]「Oh come on, you don't have to look so scary...」[k]
+[マックス f=60]「Sandra's order was to stay in a love hotel as lovers, wasn't it? So let's act like lovers, okay?」[k]
+@fgf r=マルエット f=71
+[マルエット v=vs477 f=71]「I only roomed with you because I had no choice! I'm not going to act as your girlfriend!」[k]
+@se f=beat
+@quake time=500
+@flash time=200
+∗bang!∗[k]
+[マックス f=12]「Ouch! Don't kick me!」[k]
+[マルエット v=vs478 f=71]「Ya! Ya!」[k]
+@se f=beat
+@flash time=200
+@quake time=500
+@wq
+@se f=beat
+@flash time=200
+@quake time=500
+∗bang!∗ ∗bang!∗[k]
+[マックス f=12]「Wow! You idiot! Don't do that.」[k]
+[マルエット v=vs479 f=71]「Go to the end of the room and sleep there!」[k]
+[マックス f=25]「What the hell, you're not letting me in the bed?」[k]
+[マルエット v=vs480 f=71]「Of course not! I'm not going to sleep with you! I'm the only one who sleeps in the bed!」[k]
+@fgf l=マックス f=15
+[マックス f=15]「Haha～ I get it.」[k]
+@fgf r=マルエット f=60
+[マルエット v=vs481 f=60]「What do you mean you understand...」[k]
+[マックス f=15]「You're scared, right?」[k]
+[マルエット v=vs482 f=60]「Afraid? Afraid of what?」[k]
+[マックス f=15]「[マルエット] is still a child, so maybe she's afraid of being treated as an adult woman?」[k]
+[マルエット v=vs483 f=71]「I told you I'm not a child!」[k]
+@fgf l=マックス f=67
+[マックス f=67]「You know, [マルエット]. A grown woman should act appropriately when she's alone with a man.」[k]
+[マルエット v=vs484 f=60]「What do you mean...?」[k]
+[マックス f=67]「A mature woman doesn't make a fuss when she gets into an adult atmosphere with a man.」[k]
+[マックス f=01]「Adults are all about mood. They naturally go to bed, lay on top of each other, and enjoy sex. That's what adults are all about, right?」[k]
+[マルエット v=vs485 f=59]「Well, that just means you want to be dirty, doesn't it?」[k]
+[マックス f=01]「What's wrong with that? This is a love hotel, remember? Grown-up men and women are cool with places like this and don't break the mood. Any adult would do this.」[k]
+[マルエット v=vs486 f=60]「Oh, no... You're just lying... again...」[k]
+[マックス f=67]「It's childish to make a fuss and get scared over something as trivial as sex. I'm embarrassed to see it.」[k]
+[マルエット v=vs487 f=59]「Huh...!」[k]
+[マックス f=59]「Well, it's impossible for little [マルエット] to do that. She's at that age where she'd rather suck her mommy's boob than get her own sucked! Hahahahahahaha!」[k]
+[マルエット f=59]「...! (Aaaaahhh!)」[k]
+[マルエット v=vs488 f=71]「You! If you say any more, I won't forgive you!」[k]
+[マックス f=01]「Then let me hold you. If you're an adult woman, you can easily comply with a man's requests, right?」[k]
+[マルエット v=vs489 f=60]「B-but that's...」[k]
+@fgf l=マックス f=09
+[マックス f=09]「Ha, I guess you're still a child on the inside... I'm sorry I had high expectations.」[k]
+[マックス f=09]「Ohhhh, if I'd been sharing a room with another girl, I'd have enjoyed some atmospheric sex by now. Aww, it's not my lucky day to be staying at a love hotel.」[k]
+[マックス f=09]「Lucky [テオ]... I bet he's enjoying sex to his heart's content with the girl he took to this atmospheric love hotel with him!」[k]
+@fgf r=マルエット f=29
+[マルエット v=vs490 f=29]「What...?」[k]
+[マルエット v=vs491 f=29]「...Lies! The captain would never do such a thing!」[k]
+[マックス f=01]「Come on, [テオ]'s a guy too. If he went to a love hotel with a girl, he'd surely have sex with her.」[k]
+[マルエット f=30]「...」[k]
+[マックス f=09]「I wanted to have sex too... Oh well, I'm so unlucky. If only my partner wasn't [マルエット]...」[k]
+[マルエット f=30]「...」[k]
+@fgf r=マルエット f=75
+[マルエット v=vs492 f=75]「F-fine then... I'll do it... sex.」[k]
+@fgf l=マックス f=22
+[マックス f=22]「That's the way it should be! Let's get started!」[k]
+@fg l=マックス f=22 left=550 index=1900 b
+@fg r=マルエット f=29
+[マックス] happily approaches [マルエット].[k]
+[マックス f=22]「Okay, let's start with the boobs...」[k]
+[マックス] puts his hand on [マルエット]'s towel![k]
+@fgf r=マルエット f=79
+[マルエット f=79]「...!」[k]
+@fgf r=マルエット f=61
+[マルエット v=vs493 f=61]「No... I still don't want to!」[k]
+@clf l
+@se f=beat
+@flash time=200
+@quake time=500
+∗thump!∗[k]
+[マルエット] refused [マックス] and pushed him away with both hands.[k]
+[マックス f=27]「What the hell? There's no way you're not gonna let me fuck you now!」[k]
+@fgf r=マルエット f=81 fix
+[マルエット v=vs494 f=81]「Aah!」[k]
+
+@mu f=action
+@clf
+@se f=dosa
+@quake time=500
+However, [マックス] couldn't control himself, pushed [マルエット] onto the bed, and ripped off her towel in one swift motion![k]
+He then reaches for [マルエット]'s crotch![k]
+[マルエット v=vs495 e=裸 f=37]「Ah...!」[k]
+[マックス]'s fingers precisely caught [マルエット]'s most sensitive spot. A sweet noise escapes her mouth and she immediately relaxes.[k]
+Sylphs have particularly weak clits. [マックス] knew this and skillfully attacked [マルエット]'s crotch, making her unable to resist.[k]
+It's easy to explore the secret places of the naked [マルエット]. Her weak spot is skillfully caressed with a finger which makes her intoxicated with sensuality.[k]
+[マルエット v=vs496 f=37]「Oh... No... No... Ahh..!」[k]
+[マックス e=裸 f=22]「Heh, heh, heh. Feels good, doesn't it?」[k]
+[マルエット v=vs497 f=37]「Really... Ah! Not there... No... Ah! I'm going to feel it... Haaaan...」[k]
+[マックス f=03]「Seriously, your clit is so weak～! It was so worthwhile to play with you.」[k]
+[マルエット v=vs498 f=37]「Ahhh... If you do that to me... I... Ahhh..! That feels so good... Aaahhh...!」[k]
+∗slurp slurp slurp∗[k]
+[マックス f=04]「It's getting wet... ♪ Soaking wet already. You like it that much?」[k]
+[マックス f=01]「Oh, you got so wet. You have a body like a little kid, but you're pretty horny.」[k]
+[マックス f=03]「Well... Now that my dick is standing up, it's time to have sex! Your childish body doesn't do it for me, but I'm sure it will feel good once I get it in there!」[k]
+[マルエット v=vs499 f=47]「No... Don't put it in...」[k]
+[マックス f=15]「Give it up. I told you love hotels are for sex. I still have to finish!」[k]
+[マックス] straddles [マルエット], who is lying down.[k]
+[マックス f=03]「Tonight is a night for grown-ups! Come make memories with me for the night, [マルエット]!」[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+@jump storage="main11.scn" target=*hotel_3
+
+;◇マックスホテルイベント・朝
+*hotel_max_2
+
+; ラブホテルの一室・朝
+@bg chara=マルエット f=event62 p0=hair p1=04 p2=03
+@mu f=adult
+[texton w=2]
+[マルエット v=vs500]「Ahhh... ahh... Ahhh...」[k]
+[マックス]「Woooooow! Your pussy is so tight and nice!」[k]
+[マックス] continued having sex with [マルエット] in the morning.[k]
+The previous night, he already had sex with [マルエット] five times due to how good fucking her felt.[k]
+[マルエット] felt completely at the mercy of [マックス]'s technique.[k]
+[マックス]「How do you like it, [マルエット]? Does my dick feel good?」[k]
+[マルエット v=vs501]「I don't understand... No... Oh no!」[k]
+[マックス]「Of course you know. You came three times yesterday after all ♪ You look so innocent, but you're pretty naughty, aren't you?」[k]
+∗thrust thrust thrust thrust∗[k]
+[マルエット v=vs502]「Oh, oh, no, no, no... If you do it so hard... I... Ahh..!」[k]
+[マックス]「Woooooow! It feels so good, I can't stop my hips!」[k]
+@bg chara=マルエット f=event62 p0=hair p1=04 p2=01
+[マルエット v=vs503]「Oh...」[k]
+; ↑ 一瞬静かになる
+[マックス]「What? Did you cum again?」[k]
+[マルエット]「...」[k]
+[マルエット]'s face turns red and her eyes are teary.[k]
+[マックス]「Well then, I'll let myself go too! Ugh!」[k]
+[textoff]
+@fa
+@out
+@w05
+
+@bg f=0064
+@mu f=bad
+[texton w=1]
+[マルエット e=現在の装備 f=52]「...」[k]
+[マックス e=現在の装備 f=03]「Wheeew, that was a really good night! I was disappointed at first, but well, that sex!」[k]
+[マルエット f=52]「...」[k]
+[マックス f=15]「You've got a cute face but you're pretty dirty ♪ My cock made you cum so much ♪」[k]
+[マルエット f=52]「...」[k]
+[マックス f=05]「...You've become so quiet. You usually attack me.」[k]
+[マルエット v=vs504 f=52]「Shut up... What do you care...」[k]
+[マックス f=03]「Well, I've had a good time, so I don't mind... Let's go to the front desk now.」[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+
+; マックス関連イベント消滅
+@delevent name=マルエット num=20
+@delevent name=マルエット num=21
+@delevent name=マルエット num=22
+@delevent name=マルエット num=23
+@eval exp='o.マルエット.strip.max = "汗だく"'
+@recordsex guy=マックス sex=6 orgasm=5 date=&'game.date - 1'
+@recordsex guy=マックス sex=2 orgasm=3
+@eval exp='o.マルエット.moveHeart(o.マックス, 5)'
+
+@jump storage="main11.scn" target=*hotel_5
+
+
+
+;■不倫イベント
+
+;◇マックス不倫イベント
+*adultery_max
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=adult
+[texton w=0]
+[マルエット v=vs505 e=下着 f=37]「Ah... Ah... Ah... Ah...」[k]
+[マルエット] confirmed that no one was around and began to comfort herself between her legs.[k]
+She had been feeling frustrated lately, and finally couldn't take it anymore.[k]
+[マルエット v=vs506 f=37]「Ah... That feels good... It's better when I do it myself... !」[k]
+[textoff]
+@fg c=マックス e=勃起 f=63
+[texton w=1]
+[マックス f=63]「Hey, [マルエット], what are you doing?」[k]
+[マルエット v=vs507 f=81]「Eek.. [マックス]... How long have you been there...?!」[k]
+@fgf c=マックス f=03
+[マックス f=03]「What's that? Could it be that you're frustrated? All right! I'll comfort you instead!」[k]
+@cl
+[マルエット v=vs508 f=81]「Oh... No...!」[k]
+[textoff]
+@out
+@w05
+@bg chara=マルエット f=event62 p0=hair p1=04 p2=03
+[texton w=2]
+[マルエット v=vs509]「Ah... Ah... That feels good... It feels so good...!」[k]
+[マックス]「Hehe, it seems like you're not so bad after all! My dick feels good, doesn't it?」[k]
+[マルエット v=vs510]「Ah, ah... aaah... I'm cumming...!」[k]
+[マルエット] reaches climax as [マックス] thrusts his huge cock into her.[k]
+[マックス]「Hey, you already came? How much pent-up desire did you have?」[k]
+[マルエット v=vs511]「Phew...」[k]
+[マックス]「...Seriously, what is [テオ] doing? This is unfair to you.」[k]
+[マルエット v=vs512]「Ahhh... [マックス]... more... please...」[k]
+[マックス]「Sure. Tonight, instead of [テオ], I'll take good care of you!」[k]
+Despite her childlike appearance, [マルエット]'s heart yearned for the excitement of adulthood. She couldn't resist that desire.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナス不倫イベント
+*adultery_linus
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=affair
+[texton w=0]
+[マルエット v=vs513 e=汗だく・開き f=37]「Ahhh... Linus... That's good... !」[k]
+[ライナス e=裸 f=21]「Hehehe, I never thought you'd want to have sex with me, [マルエット]. I'm so happy!」[k]
+[マルエット v=vs514 f=38]「Because... Linus's penis... is so nice...!」[k]
+[ライナス f=22]「I'll give you lots of love, [マルエット].」[k]
+Surprisingly, [マルエット] engaged in an extramarital affair with Linus after becoming dissatisfied with her sex life with [テオ].[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+
+
+
+
+
+
+;■フリーモード
+
+*_blue_01_freemode
+@fg l=マルエット e=通常 f=28 b
+@fg r=ブルー e=通常 f=06 b
+@bgf f=0001
+@mu f=anxiety
+@w05
+[texton w=1]
+Blue and [マルエット] are alone in the room.[k]
+Blue silently looks down at [マルエット] with detachment.[k]
+[ブルー f=06]「You're fine.」[k]
+[マルエット v=vs360 f=05]「Eh?」[k]
+@fg r=ブルー f=05
+[ブルー f=05]「You'll do. Now, deal with me.」[k]
+@fg l=マルエット f=59
+[マルエット v=vs361 f=59]「What...?!」[k]
+Blue announced that he'd partner [マルエット]. Her face turns pale.[k]
+[ブルー f=05]「Any woman will do for me. You understand, sylph girl?」[k]
+@fg l=マルエット f=60
+[マルエット f=60]「...」[k]
+@fg l=マルエット f=75
+[マルエット v=vs363 f=75]「...All right, all right. Suit yourself.」[k]
+@fg r=ブルー f=02
+[ブルー f=02]「That's a promising mindset. Get naked for now.」[k]
+[textoff]
+@out
+@w05
+
+@fg l=マルエット e=白いパンツ,手ブラ f=30 b
+@fg r=ブルー f=02 b
+@bg f=0001
+@mu f=darkside
+[texton]
+[マルエット v=vs365 f=30]「... Yes.」[k]
+One by one, [マルエット] removes her clothes, leaving her in just a pair of panties.[k]
+[マルエット f=38]「... (Kyaa)」[k]
+[マルエット] is red up to her ears when Blue sees her half-naked state.[k]
+[ブルー f=05]「...That's not sexy. Doesn't get me in the mood at all.」[k]
+[マルエット f=32]「...!」[k]
+@fg l=マルエット e=白いパンツ,手ブラ f=31 b
+@fg r=ブルー e=下半身裸 f=02
+Blue unbuckled his belt and suddenly pulled his pants down in front of [マルエット]'s eyes![k]
+[マルエット v=vs366 f=31]「Eeek...!」[k]
+Blue's drooping penis is thrust in front of her.[k]
+[ブルー f=05]「Lick it.」[k]
+[マルエット v=vs367 f=29]「N-no...」[k]
+[ブルー f=05]「You don't have a choice. Don't make me repeat myself. Just lick it already.」[k]
+[マルエット f=54]「...」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=マルエット f=event44 p0=hair p1=11 p2=03
+@w05
+[texton w=2]
+[マルエット] knelt at Blue's feet. She gazed nervously at the male organ in front of her.[k]
+[マルエット f=54]「...」[k]
+[ブルー f=05]「Come on, hurry up.」[k]
+[マルエット f=54]「...」[k]
+@bg chara=マルエット f=event44 p0=hair p1=12 p2=07
+∗liick∗[k]
+[ブルー]「... ∗grin∗」[k]
+[マルエット] extended her small tongue and licked Blue's tip.[k]
+[ブルー]「Come on, lick me some more. Make my dick stand up.」[k]
+[マルエット v=vs368]「Yes... Yes... ∗lick∗」[k]
+[マルエット] flicked her tongue over Blue's cock. Then it jerked.[k]
+[ブルー]「Yeah, that's it.」[k]
+@bg chara=マルエット f=event44 p0=hair p1=13 p2=03
+As [マルエット] continued to lick his cock, Blue's penis began to rise and get bigger and harder.[k]
+[マルエット]「...!」[k]
+Then, Blue's penis was fully erect. It was so big that [マルエット]'s eyes widened and her face scrunched up in horror.[k]
+[マルエット v=vs369]「I-I'm scared...!」[k]
+[ブルー]「Now, suck it. Put it in your mouth and suck it with your tongue.」[k]
+[マルエット]「...!」[k]
+@bg chara=マルエット f=event44 p0=hair p1=15 p2=02
+[マルエット] resolves herself and takes Blue's penis into her small mouth.[k]
+[マルエット v=vs370]「∗slurp... slurp...∗」[k]
+Then, with a frown on her face, she began to suck his penis noisily.[k]
+[ブルー]「All right, stroke the shaft with your hand too.」[k]
+[マルエット v=vs371]「∗liick liick slurp∗」[k]
+With sweat on her forehead, [マルエット] continues to suck Blue's penis with a desperate look on her face.[k]
+[ブルー]「All right... That's good. You can do it.」[k]
+Blue's male organ is too big for her small mouth, and she sucks it uncomfortably.[k]
+Blue looked down at her with satisfaction.[k]
+[ブルー]「Damn... It's time...!」[k]
+@bg chara=マルエット f=event44 p0=hair p1=16 p2=02
+Blue suddenly grabbed her by the hair and shook her head roughly![k]
+Then, with great force, he shoves his erect penis fully into [マルエット]'s mouth![k]
+[マルエット v=vs372]「Mugg! Ngguuuuuuuuu!」[k]
+[ブルー]「Okay, here it goes! Drink it all! Ugh!」[k]
+@flash
+@w05
+@flash
+∗spurt! spurt!∗[k]
+@bg chara=マルエット f=event44 p0=hair p1=17 p2=02
+[マルエット v=vs373]「Hmmmm!」[k]
+Blue released his filthy sperm into [マルエット]'s mouth![k]
+@bg chara=マルエット f=event44 p0=hair p1=18 p2=05
+[マルエット v=vs374]「Ugh! ∗cough! cough!∗」[k]
+A large amount of semen shot into [マルエット]'s mouth! She couldn't take it and gagged.[k]
+[ブルー]「Hey, I told you to drink it all.」[k]
+@bg chara=マルエット f=event44 p0=hair p1=18 p2=04
+[マルエット v=vs375]「I-I'm sorry...」[k]
+[ブルー]「Oh well. Drink properly next time.」[k]
+[textoff]
+@out
+@w05
+
+@bg f=0001
+[texton w=0]
+Blue was satisfied and quickly put on his pants and went away.[k]
+Afterwards, [マルエット] was left covered in semen, her face clearly exhausted.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+*_blue_02_freemode
+
+@fg l=ブルー e=下半身裸 f=05 b
+@fg r=マルエット e=通常 f=29 b
+@bg f=0001
+@mu f=shadow
+[texton w=1]
+[ブルー f=05]「Hey, sylph woman. Suck my dick again.」[k]
+[マルエット f=29]「...」[k]
+Blue suddenly pulled down his pants and demanded oral sex from [マルエット].[k]
+@fg l=ブルー f=02
+[ブルー f=02]「Okay, let's get started right away.」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=マルエット f=event44 p0=hair p1=16 p2=02
+[texton w=2]
+[マルエット v=vs377]「∗lick liick slurp∗」[k]
+[ブルー]「You're getting better and better at this.」[k]
+[マルエット], now bare-chested and wearing only panties, sucks Blue's penis.[k]
+With her passionate fellatio, Blue's penis rose up proudly.[k]
+
+@fg l=ブルー e=下半身裸・勃起 f=05 b
+@fg r=マルエット e=白いパンツ,手ブラ f=78 b
+@bgf f=0001
+[texton w=1]
+[ブルー f=05]「All right, stop right there.」[k]
+Suddenly, Blue had [マルエット] stop sucking his cock.[k]
+[マルエット f=78]「...?」[k]
+[マルエット] looked confused.[k]
+@fg l=ブルー f=02
+[ブルー f=02]「Now, make me cum with intercrural sex.」[k]
+[マルエット v=vs378 f=79]「I'm... sorry?」[k]
+[ブルー f=01]「Don't you know? I'm gonna put my dick between your legs and rub it between your thighs and your pussy.」[k]
+@fg r=マルエット f=53
+[マルエット v=vs379 f=53]「Huh...?」[k]
+[ブルー f=02]「I guess I have no choice. I'll teach you how to do it.」[k]
+@cl l
+Blue then lay on his back on the bed.[k]
+Between his legs was a fully swollen penis.[k]
+[ブルー f=01]「Come on, straddle me here and make me cum between your legs.」[k]
+@fg r=マルエット f=54
+[マルエット f=54]「...」[k]
+[マルエット] looks puzzled while looking at it.[k]
+[ブルー f=05]「Didn't you hear me?! Just hurry up!」[k]
+[マルエット v=vs380 f=54]「Y-yes...」[k]
+@cl b
+@fg c=マルエット f=54
+Just as [マルエット] was about to straddle Blue.[k]
+[ブルー f=07]「Idiot! Take off your panties! You think you can do it wearing panties?!」[k]
+@fgf c=マルエット f=53
+@shake layer=3 loop=3 time=20 length=2
+[マルエット v=vs381 f=53]「I-I'm sorry...」[k]
+@cl
+@fg c=マルエット e=裸,手ブラ f=40
+@w05
+[マルエット f=40]「...」[k]
+[マルエット] dropped her panties with embarrassment.[k]
+[マルエット]'s beautiful crotch was exposed. Blue gazed at her most embarrassing part seriously.[k]
+[ブルー f=02]「What's the matter with you, you're so smooth. It looks like a kid's pussy.」[k]
+[マルエット f=40]「... (Ahhhhh)」[k]
+[ブルー f=02]「Come on, get straddling my dick.」[k]
+[textoff]
+@out
+
+@bg chara=マルエット f=event64 p0=hair p1=01 p2=03
+[texton w=2]
+As Blue orders, she straddles his waist and sits down so that their genitals are pressed together.[k]
+[マルエット]「...」[k]
+[マルエット] then slid her hips back and forth, keeping the meat stick between her legs.[k]
+@bg chara=マルエット f=event64 p0=hair p1=01 p2=04
+[マルエット v=vs382]「Ahh...!」[k]
+Her sensitive vagina rubbed against Blue's rod, and she let out a brief cry.[k]
+@bg chara=マルエット f=event64 p0=hair p1=01 p2=03
+[マルエット]「...」[k]
+[ブルー]「Come on, keep moving more and more.」[k]
+@bg chara=マルエット f=event64 p0=hair p1=02 p2=05
+[マルエット v=vs383]「Mmm... ah... Ah...! Ahh...!」[k]
+Following Blue's command, [マルエット] begins to move her hips back and forth.[k]
+[マルエット] pouts with frustration and rubs Blue penis between her legs.[k]
+Each time she moves back and forth, the tip of Blue's dick emerges from between [マルエット]'s thighs and genitals.[k]
+[ブルー]「Yeah, that's it.」[k]
+[マルエット v=vs384]「Haaahhh... ah... ah ah ah ah...」[k]
+[マルエット]'s voice becomes more and more heated, as if it feels good to have her crotch rubbing against the pole.[k]
+[ブルー]「What is it? Are you starting to feel good?」[k]
+[ブルー]「Kuku, even a pussy like this can feel good.」[k]
+[マルエット]'s movements become more and more frenetic.[k]
+She presses her crack against the penis and rubs it along the shaft to pleasure herself.[k]
+Before long, [マルエット]'s crotch was soggy and wet, and her love juices were smeared on Blue's penis.[k]
+[マルエット v=vs385]「Ah... Ah... Ahhh... Ahhh... I'm feeling it... Ahhhh!」[k]
+[ブルー]「That's good. Keep it up.」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[マルエット v=vs386]「Ah... Ahhh... It feels so good... I'm going to... Ahhhh... I can't stop!」[k]
+[マルエット] repeats the back-and-forth motion even more vigorously.[k]
+She forgets all about the shame she felt earlier and rubs his rod frantically to devour the pleasure.[k]
+@bg chara=マルエット f=event64 p0=hair p1=02 p2=04
+[マルエット v=vs387]「Ah... Ah... Ahhh!」[k]
+@flash on=1000 t=500 off=500
+@bgf chara=マルエット f=event64 p0=hair p1=02 p2=02
+[マルエット]'s whole body shakes. She came on Blue's penis.[k]
+[ブルー]「Well, it looks like you came. Well, I'm gonna...」[k]
+@bg chara=マルエット f=event64 p0=hair p1=03 p2=02
+∗spurt spurt∗[k]
+[マルエット v=vs388]「Kyaa...!」[k]
+Blue also ejaculated.[k]
+[マルエット v=vs389]「Phew...」[k]
+[ブルー]「You have a sensitive clit. You have an innocent face, but you're a dirty girl.」[k]
+@bg chara=マルエット f=event64 p0=hair p1=01 p2=03
+[マルエット]「... (Kyaa)」[k]
+[マルエット] was so overcome by pleasure that she indulged herself.[k]
+She couldn't say anything in response to Blue's words, and just stood there in a daze...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+*_blue_03_freemode
+
+; 宿屋の一室
+@bg chara=マルエット f=event64 p0=hair p1=02 p2=04
+[texton w=2]
+[マルエット v=vs391]「Ah... Ah... Ah... Ah...」[k]
+[ブルー]「Kuku, you seem to be enjoying it too.」[k]
+[マルエット] was once again engaged in intercrural sex with Blue.[k]
+She rubs his penis enthusiastically, and her crotch is completely wet, as if she feels good too.[k]
+[マルエット v=vs392]「Ah... Ah... Haaah...」[k]
+[textoff]
+
+@bgf f=0001
+[texton w=0]
+[ブルー e=裸 f=05]「Okay, stop for a second.」[k]
+[マルエット e=裸 f=53]「...!」[k]
+Blue grabbed [マルエット]'s leg to still her movements. [マルエット] looked at Blue's face with somewhat frustrated eyes.[k]
+[ブルー f=05]「Here, you lie there.」[k]
+@quake time=500 hmax=5 vmax=5
+[マルエット v=vs393]「Kya!」[k]
+Blue lightly pushed [マルエット] away and laid her on the bed.[k]
+[マルエット v=vs394]「W-what are you doing...?」[k]
+[ブルー]「...I heard that sylph women's pussies are really good. I wanted to try it myself.」[k]
+[textoff]
+
+@bg chara=マルエット f=event74 p0=hair p1=01 p2=01
+@mu f=darkside
+[texton w=2]
+[マルエット]「...!」[k]
+Realizing that Blue's words meant insertion, [マルエット] turned pale.[k]
+[マルエット v=vs395]「No... Please don't do that...!」[k]
+[マルエット] is overcome with fear and tries to run away.[k]
+Blue's anger is mounting. However, she is cornered against the wall and cannot escape.[k]
+[ブルー]「You came on my dick last time, why so restrained now? And you're so wet. You've come this far, you've got no choice but to fuck me until the end.」[k]
+@bg chara=マルエット f=event74 p0=hair p1=02 p2=01
+Saying that, Blue grabbed [マルエット]'s butt and pressed the tip of his penis against her wet vaginal opening.[k]
+[ブルー]「It looks a little tight, but if it's this wet, you'll manage somehow.」[k]
+[マルエット v=vs396]「No... No...! Stop...!」[k]
+[ブルー]「Let's go! Yaa!」[k]
+@bgf chara=マルエット f=event74 p0=hair p1=03 p2=04
+@quake time=500 hmax=5 vmax=5
+@w05
+∗squelch!∗[k]
+[マルエット v=vs397]「Ahhhh!」[k]
+Blue's penis was swallowed by [マルエット]![k]
+[ブルー]「Here we go, more to go! Hmph!」[k]
+∗slurp∗[k]
+[マルエット v=vs398]「Aaaahhhh!」[k]
+Blue's huge penis entered [マルエット]'s narrow vaginal opening in one motion, spreading it open![k]
+Finally, [マルエット] was violated by Blue.[k]
+@bgf chara=マルエット f=event74 p0=hair p1=03 p2=06
+[マルエット v=vs399]「Ugh... Uuuuuugh...!」[k]
+[マルエット] has a look of anguish on her face.[k]
+[ブルー]「Come on, relax, or it will hurt more.」[k]
+[マルエット v=vs400]「∗pant∗ ∗pant∗」[k]
+[ブルー]「All right, let's move.」[k]
+@bgf chara=マルエット f=event74 p0=hair p1=04 p2=04
+[マルエット v=vs401]「Ahh... Wait, please... Ahh!」[k]
+∗sluurp sluurp sluurp∗[k]
+Blue is relentless. Without caring about [マルエット], who is writhing in a cold sweat, he thrusts into her vagina.[k]
+[ブルー]「Huh, this feels really good. It's the best pussy ever!」[k]
+[マルエット v=vs402]「Ah... Ah... No... Stop... Aah!」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[マルエット] writhes in agony, her hair disheveled. Tears well up in her eyes. But Blue shows no mercy.[k]
+[ブルー]「I can't get enough of this tightness!」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[マルエット v=vs403]「No, stop... Aaah...! No more... Stop... Mmm, ahh!」[k]
+[ブルー]「Damn...! That's so tight... I'm about to cum... Ahh!」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[ブルー]「I can't take it anymore! I'm going to let it out inside!」[k]
+[マルエット v=vs404]「Nooooo! Nooooo!」[k]
+@flash
+@flash
+@flash
+∗spurt!∗ ∗spurt!∗ ∗spurt!∗[k]
+[ブルー]「Ugh...!」[k]
+[マルエット v=vs405]「No way!」[k]
+@bgf chara=マルエット f=event74 p0=hair p1=05 p2=05
+With his penis deep inside her vagina, Blue ejaculates into [マルエット] with a feeling of pleasure...[k]
+[textoff]
+@out
+@w05
+
+@bgf f=0001
+[texton w=0]
+[マルエット v=vs406 f=50]「Uuuu... ∗sob∗」[k]
+[ブルー f=53]「Well, that was pretty good. I'll fuck you again sometime soon.」[k]
+[マルエット f=48]「...」[k]
+Blue left with a look of contentment on his face, while [マルエット] was drenched in tears...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+; 終わり

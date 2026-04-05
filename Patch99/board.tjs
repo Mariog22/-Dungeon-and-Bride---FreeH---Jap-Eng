@@ -1,0 +1,1119 @@
+﻿// board.tjs
+// 盤面レイヤー
+// 方向キーやマウス操作で子レイヤのフォーカスを移動させる仕組み
+
+
+//----------------------------------------------------------------------------------------
+class BoardLayer extends BaseWindow
+{
+	// 方向キーで子レイヤ間でフォーカスを移動させる機能を持たせた盤面の基本クラス
+
+	var targetLayers = [];	// フォーカスを受け取る子レイヤの集まり
+	var adjustX = 1;	// フォーカスを自然に移動させるための他軸方向の距離の補正値
+	var adjustY = 1;	// 小さいほどキーの方向軸からずれていても選ばれやすくなる
+	var pointerMark;	// 何を指しているか分かりやすくする矢印
+
+	function BoardLayer(par, master)
+	{
+		super.BaseWindow(...);
+		name = "盤面レイヤー";
+
+		// 矢印作成
+		pointerMark = new DecoLayer(this);
+		pointerMark.loadImages("image_finger");
+	}
+
+	function finalize()
+	{
+		invalidate pointerMark;
+		super.finalize();
+	}
+
+	function pointToObject(obj)
+	{
+		// 選択項目を矢印で指す。矢印を使いたい場合はこれを呼び出すこと
+		if(! MOUSE_HIDDEN) return;
+		pointerMark.setPos(obj.left - 20, obj.top + obj.height \ 2 - 16);
+		pointerMark.visible = true;
+		pointerMark.absolute = obj.absolute + 100000;
+	}
+
+	function disappearPointer()
+	{
+		// 矢印を消す
+		pointerMark.visible = false;
+	}
+
+	function isEitherWithinOtherWidth(one, other)
+	{
+		// どちらか一方がもう一方の横幅の範囲に収まっているかどうかを返す
+		// 極端に横長 or 縦長の物体がもう一方を完全に辺の内側に収めているのに選ばれないことがあるのを回避する
+		if(one.left == other.left || one.left + one.width == other.left + other.width) return true;
+		if(one.left < other.left) return (one.left + one.width > other.left + other.width);
+		else return (one.left + one.width < other.left + other.width);
+	}
+
+	function isEitherWithinOtherHeight(one, other)
+	{
+		// どちらか一方がもう一方の高さの範囲に収まっているかどうかを返す
+		if(one.top == other.top || one.top + one.height == other.top + other.height) return true;
+		if(one.top < other.top) return (one.top + one.height > other.top + other.height);
+		else return (one.top + one.height < other.top + other.height);
+	}
+
+	function getDeltaX(self, target)
+	{
+		// 自身から対象までの基準点におけるＸ軸の距離を測る（この場合の基準点はレイヤーの中心）
+		return (target.left + target.width \ 2) - (self.left + self.width \ 2);
+	}
+
+	function getDeltaY(self, target)
+	{
+		// 自身から対象までの基準点におけるＹ軸の距離を測る（この場合の基準点はレイヤーの中心）
+		return (target.top + target.height \ 2) - (self.top + self.height \ 2);
+	}
+
+	function getLayerByKey(curLayer, key)
+	{
+		// 移動先の候補（ターゲット）の中から押したキーの方角で出来るだけ近い候補を選び出す
+
+		var min = 1000000000;	// 十分に大きい数
+		var dx, dy, withinW, withinH, target;
+
+		for(var i = 0; i < targetLayers.count; i++)
+		{
+			if(! isvalid targetLayers[i]) continue;
+			if(targetLayers[i] == curLayer || ! targetLayers[i].visible || ! targetLayers[i].selectable) continue;
+			dx = getDeltaX(curLayer, targetLayers[i]);
+			dy = getDeltaY(curLayer, targetLayers[i]);
+			withinW = isEitherWithinOtherWidth(curLayer, targetLayers[i]);
+			withinH = isEitherWithinOtherHeight(curLayer, targetLayers[i]);
+
+			// たどり着けない場所を発生させないため以下のようにしている
+			// ・指定方向の45度以内に収まっているものは全て近い順に選ぶ（補正値が１の場合）
+			// ・同じ距離の場合は常に指定方向の右手側を選ぶ
+			switch(key)
+			{
+				case VK_LEFT:
+					dx = -dx;
+					if(dy < 0) dy ++;
+				case VK_RIGHT:
+					if(key == VK_RIGHT && dy > 0) dy --;
+					if(dx <= 0) dx += 5000;	// 逆方向は極力選ばれないように優先順位を下げる
+					dx = abs(dx) * adjustX;
+					dy = abs(dy) * adjustY;
+					if(dx * 2 < abs(dy) && ! withinH) dx += 5000;	// 22.5度に収まっていなければ優先順位を下げる
+					if(dx < abs(dy) && ! withinH) dx += 2000;	// 45度に収まっていなければ少し優先順位を下げる
+					break;
+				case VK_UP:
+					dy = -dy;
+					if(dx > 0) dx --;
+				case VK_DOWN:
+					if(key == VK_DOWN && dx < 0) dx ++;
+					if(dy <= 0) dy += 5000;
+					dx = abs(dx) * adjustX;
+					dy = abs(dy) * adjustY;
+					if(dy * 2 < abs(dx) && ! withinW) dy += 5000;
+					if(dy < abs(dx) && ! withinW) dy += 2000;
+			}
+
+			if(dx + dy < min)
+			{
+				min = dx + dy;
+				target = targetLayers[i];
+			}
+		}
+
+		return target;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class PieceLayer extends Layer
+{
+	// 上の盤面レイヤーに乗せる子レイヤの基本クラス
+
+	var _selectable = true;	// これが false だとフォーカスがここに移動しなくなる
+
+	function PieceLayer(par)
+	{
+		super.Layer(par.window, par);
+		focusable = true;
+		hitThreshold = 0;	// 初期値がないと親レイヤーの enabled を操作するまで使用できない
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	property selectable
+	{
+		setter(v){ focusable = _selectable = v; }
+		getter{ return _selectable; }
+	}
+
+	function onNodeEnabled()
+	{
+		hitThreshold = 0;	// ↓ を元に戻す（ボタンを押せなくなるので）
+	}
+
+	function onNodeDisabled()
+	{
+		hitThreshold = 256;	// こうすることで親レイヤが操作不可のときマウスの当たり判定を透過するようになる
+	}
+
+	function focusAndPointToObject()
+	{
+		// 吉里吉里の自動フォーカス機能によっていつの間にかフォーカスがここに来ている場合があり
+		// すでにフォーカスされていると focus を呼び出しても何もしないので
+		// 確実にポイントを移動させたいときには通常の focus の代わりにこれを呼び出す
+		if(! focused) focus();
+		else parent.pointToObject(this);
+	}
+
+	function onFocus(focused, direction)
+	{
+		// フォーカスを得たときの動作を必ず記述すること
+		cursor = crHandPoint;
+		parent.pointToObject(this);
+		super.onFocus(...);
+	}
+
+	function onBlur(focused)
+	{
+		// フォーカスを失ったときの動作を必ず記述すること
+		cursor = crArrow;
+		parent.disappearPointer();
+		super.onBlur(...);
+	}
+
+	function onMouseEnter()
+	{
+		if(! selectable) return;
+		if(MOUSE_HIDDEN) return;
+			// ↑ キーボード操作時に隠れたマウスの所にフォーカスが再度動いてしまうのを防ぐため
+		focus();
+		super.onMouseEnter();
+	}
+
+	function onMouseLeave()
+	{
+		if(! selectable) return;
+		if(MOUSE_HIDDEN) return;
+			// ↑ キーボード操作時にレイヤーが隠れたマウスに乗るとフォーカスが失われてしまうのを防ぐため
+		unfocus();
+		super.onMouseLeave();
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		super.onKeyDown(...);
+		window.hideMouseCursor();	// 誤解を招かないため、カーソルを一時的に隠す
+		if(isArrowButton(...))
+		{
+			// 方向キーが押されているなら他のオブジェクトを探してフォーカスする
+			var target = parent.getLayerByKey(this, key);
+			if(target !== void) target.focus();
+		}
+		else
+		{
+			// 何もなければＫＡＧのフックを処理する
+			window.preProcessKeys(key, shift);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class CommandBoard extends BoardLayer
+{
+	// コマンド選択用のボードを作るクラス
+
+	var commands = [];
+	var buttonImage = "btn_cmd_white";
+	var cmdLength = 7;
+	var cmdAlign = "left";
+
+	function CommandBoard(par, master)
+	{
+		super.BoardLayer(...);
+		name = "コマンドボード";
+		adjustX = 1;
+		adjustY = 100000;	// 縦横の差を十分に付けることでカーソルが斜めに移動しなくなる
+		targetLayers = commands;
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < commands.count; i++) invalidate commands[i];
+		super.finalize();
+	}
+
+	function clear()
+	{
+		super.clear();
+		for(var i = 0; i < commands.count; i++)
+		{
+			commands[i].visible = false;
+			invalidate commands[i];
+		}
+		commands.clear();
+	}
+
+	function open()
+	{
+		super.open();
+		setPos(window.scWidth - width >> 1, window.scHeight - height >> 1);
+		clear();
+		if(KEY_PRESSED) window.hideMouseCursor();
+	}
+
+	function putCommand(dic)
+	{
+		// テキストコマンドを１つ追加
+		commands[commands.count] = new CommandButton(this);
+		var cmd = commands[commands.count - 1];
+		cmd.onSelectAction = dic.func;
+		cmd.onSelectActionParam = dic.param;
+		cmd.loadImages(dic.img !== void ? dic.img : buttonImage + "_" + cmdLength);
+		var ml = (cmd.width - cmdLength * (font.height + 1)) \ 2;
+		var mt = (cmd.height - font.height) \ 2;
+		cmd.setPos(dic.left - ml, dic.top - mt);
+		var p = 0;
+		if (cmdAlign != "left") {
+			// ml*2 below is to account for right button edge
+			p = cmd.width - ml*2 - font.getTextWidth(dic.text);
+            if(cmdAlign == "center") p \= 2;
+		}
+		cmd.cond = (dic.cond ! || dic.cond === void);
+		var colour = cmd.cond ? (dic.color !== void ? dic.color : chColor) : 0xA0A0A0;
+		drawText(dic.left + p, dic.top, master.restoreName(dic.text), colour,,, 2048, edgeColor, 3);
+		cmd.name = dic.text;
+	}
+
+	function focusToFirstCommandByKey()
+	{
+		// キーボード操作時はフォーカスを先頭に
+		if(KEY_PRESSED || MOUSE_HIDDEN)
+		{
+			for(var i = 0; i < commands.count; i++)
+			{
+				if(! commands[i].selectable || ! commands[i].cond) continue;
+				commands[i].focus();
+				return;
+			}
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class CommandButton extends PieceLayer
+{
+	// 上の盤面レイヤーに乗せるコマンドオブジェクト
+
+	var onSelectAction;	// 押したときに実行するコマンド
+	var onSelectActionParam;
+	var btnPadding = 0;
+	var cond = true;
+
+	function CommandButton(par)
+	{
+		super.PieceLayer(par);
+		visible = true;
+	}
+
+	property selectable
+	{
+		setter(v)
+		{
+			drawState(v ? 0 : 3);
+			super.selectable = v;
+		}
+		getter{ return super.selectable; }
+	}
+
+	function loadImages(storage)
+	{
+		super.loadImages(storage);
+		setSize(imageWidth \ 4, imageHeight);
+	}
+
+	function drawState(n)
+	{
+		imageLeft = -width * n;
+	}
+
+	function onFocus(focused, direction)
+	{
+		playSound("point", 2);
+		drawState(2);
+		super.onFocus(...);
+	}
+
+	function onBlur(focused)
+	{
+		drawState(selectable ? 0 : 3);
+		super.onBlur(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		game.itemDoubleClicked = false;
+		super.onMouseMove(...);
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(button == mbLeft && selectable && ! game.itemDoubleClicked)
+		{
+			drawState(1);
+			if(cond) playSound("click");
+			else playSound("buzzer");
+		}
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(game.itemDoubleClicked)
+		{
+			game.itemDoubleClicked = false;
+			return;
+		}
+		if(button == mbRight)
+		{
+			playSound("cancel");
+			window.onPrimaryRightClick();
+		}
+		else if(button == mbLeft && selectable)
+		{
+			drawState(2);
+			if(cond) onSelectAction(onSelectActionParam);
+		}
+		super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();
+		if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			if(kag.focusedLayerIsNull) return;	// フォーカス null 時のキー二重送信問題対策
+			playSound("cancel");
+			window.onPrimaryRightClick();
+		}
+		else if(key == BT_OK || key == BT_OK2)
+		{
+			drawState(1);
+			playSound(cond ? "click" : "buzzer");
+			if(cond) onSelectAction(onSelectActionParam);
+		}
+		else super.onKeyDown(...);
+	}
+
+	function onKeyUp(key, shift, process=true)
+	{
+		if(key == BT_OK || key == BT_OK2) drawState(2);
+		else super.onKeyUp(...);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class LightCommandButton extends CommandButton
+{
+	// 上の盤面レイヤーに乗せる光るコマンドボタン
+
+	var darkCoverLayer;	// 一瞬暗くするレイヤー
+	var lightingLayer;	// 一瞬明るくするレイヤー
+
+	function LightCommandButton(par)
+	{
+		super.CommandButton(par);
+		type = ltAlpha;
+		darkCoverLayer = new DarkCoverLayer(this);
+		lightingLayer = new LightingLayer(this);
+	}
+
+	function finalize()
+	{
+		invalidate darkCoverLayer;
+		invalidate lightingLayer;
+		super.finalize();
+	}
+
+	function drawState(n)
+	{
+		lightingLayer.visible = (n == 1 || n == 2);
+		darkCoverLayer.visible = (n == 3);
+	}
+
+	function loadImages(storage)
+	{
+		global.Layer.loadImages(...);
+		setSizeToImageSize();
+		darkCoverLayer.paintAll(this);
+		lightingLayer.paintAll(this);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class NormalCommandWindow extends CommandBoard
+{
+	// コマンドウインドウ（通常タイプ）
+
+	var curLineTop = 0;
+	var columnCount = 2;
+	var columnWidth = 240;
+	var lineHeight = 40;
+	var marginTitleAndCmd = 6;	// タイトルとコマンドの最低幅
+	var cmdMarginTop = 32;	// コマンドの最上端（描画開始位置）
+	var cmdMarginLeft = 38;	// コマンドの左端
+	var cmdMarginBottom = 35;	// コマンドの最下端
+	var focusLastCommand = false;
+	var lastCommandIndex;	// 最後のコマンドを記憶しておく
+	var record = false;	// コマンドの選択記録を取るかどうか
+	var result;	// シナリオ上から利用した時の結果保存用
+
+	function NormalCommandWindow(par, master)
+	{
+		super.CommandBoard(...);
+		name = "コマンドウインドウ";
+		marginL = 32;
+		marginT = 26;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function open(cmds, title)
+	{
+		super.open();
+		if(title !== void)
+		{
+			write("<g>" + title + "<w>");
+			reline();
+			y = cap(max(cmdMarginTop, y + marginTitleAndCmd), height - cmdMarginBottom - font.height);
+		}
+		putCommands(cmds);
+	}
+
+	function close()
+	{
+		if(focusLastCommand)
+		{
+			var num = commands.find(kag.focusedLayer);
+			if(num != -1) lastCommandIndex = num;
+		}
+		super.close();
+	}
+
+	function putCommands(cmds)
+	{
+		// コマンドを表示
+		for(var i = 0; i < cmds.count; i++)
+		{
+			var dic = cmds[i];
+			dic.left = (i % columnCount) * columnWidth + cmdMarginLeft;
+			dic.top = (i \ columnCount) * lineHeight + y;
+			putCommand(dic);
+			commands[i].type = ltDodge;	// ボタンは ltAddAlpha 形式で作ること
+		}
+		if(focusLastCommand && lastCommandIndex !== void && lastCommandIndex < commands.count)
+		{
+			commands[lastCommandIndex].focus();
+		}
+		else
+		{
+			focusToFirstCommandByKey();
+		}
+	}
+
+	function openByTag(elm)
+	{
+		// イベントモードでウインドウを表示させる（コマンドは後で）
+		open([], elm.title);
+		if(elm.left !== void) left = +elm.left;
+		if(elm.top !== void) top = +elm.top;
+		if(elm.length !== void) cmdLength = +elm.length;
+		if(elm.cancel) master.previewActions = [executeLastCommandByRightClick, void];
+		else master.rightClickEnabled = false;
+		record = (+elm.record || elm.record === void);
+	}
+
+	function putCommandByTag(elm)
+	{
+		// イベントモードで出したウインドウにコマンド設置
+		if(record)
+		{
+			elm.rec = "lnk_" + kag.currentRecordName + "_" + elm.text;
+			if(sf[elm.rec] > 0) chColor = 0xFFE0A0;
+		}
+		var num = commands.count;
+		var dic = %[];
+		dic.text = elm.text;
+		dic.func = processScenario;
+		dic.param = %[];	// mp はすぐ消えるので完全コピーが必要
+		(Dictionary.assign incontextof dic.param)(elm);
+		dic.left = (num % columnCount) * columnWidth + cmdMarginLeft;
+		dic.top = (num \ columnCount) * lineHeight + y;
+		if(elm.cmdcond !== void) dic.cond = elm.cmdcond !;
+		putCommand(dic);
+		chColor = 0xFFFFFF;
+		commands[num].type = ltDodge;	// ボタンは ltAddAlpha 形式で作ること
+	}
+
+	function executeLastCommandByRightClick()
+	{
+		// イベントモードでウインドウ出した時の右クリックで最後のコマンドを実行する
+		commands[-1].onSelectAction(commands[-1].onSelectActionParam);
+	}
+
+	function processScenario(elm)
+	{
+		// 結果を保存してシナリオ再開
+		super.close();
+		master.rightClickEnabled = true;
+		master.resetPrevForKag();
+		if(elm.exp !== void) elm.exp ! ;
+		kag.trigger("askQuestion");
+		if(elm.target !== void || elm.storage !== void) kag.process(elm.storage, elm.target);
+		if(record && elm.rec !== void) sf[elm.rec] ++;	// 選択回数を記録
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class MarkersBoard extends BoardLayer
+{
+	// マーカーとエリアを乗せるボードを作るクラス
+	// マウスのドラッグか、キーボードのホールド切替で
+	// ボード上のマーカーを決まったエリアに移動したりする
+	// 動作としては、掴み状態（ホールド or ドラッグ）になっているかどうかで
+	// targetLayers の参照先が markers <-> areas で入れ替わり方向キーを押した時の選択対象が変わる
+	// 使い方としては、通常時（掴んでいない時）に選択したい物は markers に
+	// 掴み状態のときに選択したい物（場所）は areas に入れておけば良い
+
+	var markers = [];	// マーカー。通常は選択、掴み状態時は本体が移動
+	var areas = [];	// マーカーの移動先。マーカーが掴み状態のときに移動先として選ばれる
+	var holdingMarker;	// 現在ホールド中のマーカー（キーボード操作専用）
+
+	function MarkersBoard(par, master)
+	{
+		super.BoardLayer(...);
+		name = "マーカーボード";
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < markers.count; i++) invalidate markers[i];
+		for(var i = 0; i < areas.count; i++) invalidate areas[i];
+		super.finalize();
+	}
+
+	function getAreaUnderMouse()
+	{
+		// マウスボタンが離された時どのエリアを取得するかをここに書く
+		//（マーカーの取得はマーカーのマウスエンターでできるので必要なし）
+	}
+
+	function getMarkerByKey(curMarker, key)
+	{
+		// 非ホールド時にどのマーカーにフォーカスを動かすかを書く
+		targetLayers = markers;
+		return getLayerByKey(curMarker, key);
+	}
+
+	function getAreaByKey(curArea, key)
+	{
+		// ホールド時にどのエリアにマーカーを動かすかを書く
+		targetLayers = areas;
+		return getLayerByKey(curArea, key);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class MarkerLayer extends PieceLayer
+{
+	// ボード上で利用するドラッグ or ホールドできるマーカー
+
+	var gripX;	// 掴んだ場所Ｘ
+	var gripY;	// 掴んだ場所Ｙ
+	var dragging = false;	// マウスドラッグ中か
+	var holding = false;	// キーボードでホールド中か
+	var belong;	// 現在所属しているエリア
+	var heightOfLift = 10000;	// ドラッグ中に持ち上がるＺ軸高さ
+	var defaultOrder;	// 本来の順位
+
+	function MarkerLayer(par)
+	{
+		super.PieceLayer(par);
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function loadImages(storage)
+	{
+		super.loadImages(storage);
+		setSize(imageWidth \ 4, imageHeight);
+	}
+
+	property absolute
+	{
+		setter(v){ defaultOrder = super.absolute = v; }
+		getter{ return super.absolute; }
+	}
+
+	function drawState(n)
+	{
+		imageLeft = -width * n;
+		super.absolute = defaultOrder + heightOfLift * (n == 1);
+	}
+
+	function onFocus(focused, direction)
+	{
+		if(holding || dragging) drawState(1);
+		else drawState(2);
+		super.onFocus(...);
+	}
+
+	function onBlur(focused)
+	{
+		if(dragging) return;
+		drawState(0);
+		super.onBlur(...);
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(button == mbLeft)
+		{
+			dragging = true;
+			drawState(1);
+			gripX = cursorX;
+			gripY = cursorY;
+			belong.removeMarker(this);
+		}
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbLeft && dragging)
+		{
+			dragging = false;
+			drawState(0);
+			var ar = parent.getAreaUnderMouse(this);
+			if(ar !== void)
+			{
+				belong.removeMarker(this);
+				if(! ar.dropAction(this)) belong.dropAction(this);
+			}
+			else
+			{
+				belong.dropAction(this);
+			}
+		}
+		super.onMouseUp(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		if(! dragging) return;
+		if(x < -100 || x > width + 100 || y < -100 || y > height + 100)
+		{
+			// カーソルがレイヤーから（大きく）出たらボタンが離されている
+			onMouseLeave();	// 他のイベントが優先されるらしいのでこうせざるを得ない
+		}
+		else if(parent.cursorX >= 0 && parent.cursorX < parent.width
+					 && parent.cursorY >= 0 && parent.cursorY < parent.height)
+		{
+			left = parent.cursorX - gripX;
+			top = parent.cursorY - gripY;
+		}
+		super.onMouseMove(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();	// カーソルを隠す（スーパークラスを呼ばない箇所があるため）
+		if(key == BT_CANCEL || key == BT_CANCEL2)
+		{
+			if(holding)
+			{
+				holding = false;
+				parent.holdingMarker = void;
+				drawState(2);
+			}
+			else
+			{
+				window.onPrimaryRightClick();
+			}
+		}
+		else if(key == BT_OK || key == BT_OK2)
+		{
+			holding = ! holding;
+			parent.holdingMarker = holding ? this : void;
+			drawState(holding ? 1 : 2);
+		}
+		else if(isArrowButton(...))
+		{
+			if(holding)
+			{
+				var ar = parent.getAreaByKey(belong, key);
+				if(ar === void) return;
+				belong.removeMarker(this);
+				ar.putMarker(this);
+				parent.pointToObject(this);
+			}
+			else
+			{
+				var mk = parent.getMarkerByKey(this, key);
+				if(mk !== void) mk.focus();
+			}
+		}
+		else
+		{
+			super.onKeyDown(...);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class AreaLayer extends Layer
+{
+	// マーカーの移動対象となるエリア
+
+	var selectable = true;	// これが false だとフォーカスがここに移動しなくなる
+
+	function AreaLayer(par)
+	{
+		super.Layer(par.window, par);
+		name = "ボード内エリア";
+		focusable = false;
+		fillRect(0, 0, width, height, 0x00000000);
+		hitThreshold = 0;	// 初期値がないと親レイヤーの enabled を操作するまで使用できない
+	}
+
+	function dropAction(mark)
+	{
+		// マーカーがドロップされるとこれが呼ばれる
+		// false を返すと何もしない
+	}
+
+	function putMarker(mark)
+	{
+		// マーカーをここに置いたときの処理
+	}
+
+	function removeMarker(mark)
+	{
+		// マーカーをここから動かしたときの処理
+	}
+
+	function onNodeEnabled()
+	{
+		hitThreshold = 0;
+	}
+
+	function onNodeDisabled()
+	{
+		hitThreshold = 256;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class FixedButtonWithMarkers extends LightCommandButton
+{
+	// マーカーと同時に使用する光る固定コマンドボタン
+	// 作ったら markers の中に入れる
+
+	function FixedButtonWithMarkers(par)
+	{
+		super.LightCommandButton(...);
+		selectable = true;
+		visible = false;
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();	// 誤解を招かないため、カーソルを一時的に隠す
+		if(isArrowButton(...))
+		{
+			var mk = parent.getMarkerByKey(this, key);
+			if(mk !== void) mk.focus();
+		}
+		else super.onKeyDown(...);
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class SpinButton extends PieceLayer
+{
+	// スピンボタン。左右キー or マウスクリックで値を変更できる
+
+	var valueBox;
+	var downButton;
+	var upButton;
+	var valueLength = 3;	// 値の文字数（全角）
+
+	function SpinButton(par)
+	{
+		super.PieceLayer(...);
+
+		valueBox = new DecoLayer(this);
+		with(valueBox)
+		{
+			.focusable = false;
+			.visible = true;
+			.font.height = 26;
+		}
+
+		downButton = new global.CommandButton(this);
+		with(downButton)
+		{
+			.focusable = false;
+			.onSelectAction = changeValue;
+			.onSelectActionParam = false;
+			.onMouseEnter = function()
+			{
+				drawState(2);
+				parent.onMouseEnter();
+			};
+			.onMouseLeave = function()
+			{
+				drawState(0);
+			};
+		}
+
+		upButton = new global.CommandButton(this);
+		with(upButton)
+		{
+			.focusable = false;
+			.onSelectAction = changeValue;
+			.onSelectActionParam = true;
+			.onMouseEnter = function()
+			{
+				drawState(2);
+				parent.onMouseEnter();
+			};
+			.onMouseLeave = function()
+			{
+				drawState(0);
+			};
+		}
+	}
+
+	function finalize()
+	{
+		invalidate valueBox;
+		invalidate downButton;
+		invalidate upButton;
+		super.finalize();
+	}
+
+	property selectable
+	{
+		setter(v)
+		{
+			drawState(v ? 0 : 2);
+			upButton.visible = downButton.visible = super.selectable = v;
+		}
+		getter{ return super.selectable; }
+	}
+
+	function loadImages(storage)
+	{
+		super.loadImages(storage + "_box_" + valueLength);
+		setSize(imageWidth \ 3, imageHeight);
+		valueBox.setSize(valueBox.font.height * valueLength + 24, valueBox.font.height + 2);
+		downButton.loadImages(storage + "_leftarrow");
+		upButton.loadImages(storage + "_rightarrow");
+		valueBox.setPos(width - valueBox.width >> 1, height - valueBox.height >> 1);
+		downButton.setPos(valueBox.left - downButton.width - 5, height - downButton.height >> 1);
+		upButton.setPos(valueBox.left + valueBox.width + 5, height - upButton.height >> 1);
+		visible = true;
+	}
+
+	function drawState(n)
+	{
+		imageLeft = -width * n;
+	}
+
+	function onFocus(focused, direction)
+	{
+		playSound("point", 2);
+		drawState(1);
+		super.onFocus(...);
+	}
+
+	function onBlur(focused)
+	{
+		drawState(selectable ? 0 : 2);
+		super.onBlur(...);
+	}
+
+	function changeValue(increase)
+	{
+		// オーバーライド
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(button == mbLeft) return;
+		super.onMouseDown(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(button == mbLeft) return;
+		if(button == mbRight)
+		{
+			playSound("cancel");
+			window.onPrimaryRightClick();
+		}
+		super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		window.hideMouseCursor();
+		if(key == BT_LEFT || key == BT_LEFT2)
+		{
+			downButton.drawState(1);
+			changeValue(false);
+		}
+		else if(key == BT_RIGHT || key == BT_RIGHT2)
+		{
+			upButton.drawState(1);
+			changeValue(true);
+		}
+		else super.onKeyDown(...);
+	}
+
+	function onKeyUp(key, shift, process=true)
+	{
+		if(key == BT_LEFT || key == BT_RIGHT || key == BT_LEFT2 || key == BT_RIGHT2)
+		{
+			downButton.drawState(0);
+			upButton.drawState(0);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class NumberSpinButton extends SpinButton
+{
+	// 数値増減スピンボタン
+
+	var value = 0;
+	var max = 1;
+	var min = 0;
+	var onChangeAction;
+
+	function NumberSpinButton(par)
+	{
+		super.SpinButton(...);
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function changeValue(increase)
+	{
+		// オーバーライド
+		var v = increase ? value + 1 : value - 1;
+		if(v > max || v < min) return;
+		if(! onChangeAction(v, this)) return;
+		value = v;
+		updateValue();
+	}
+
+	function updateValue()
+	{
+		var fig = (string(max)).length;
+		var l = valueBox.width - valueBox.font.getTextWidth(string(max)) >> 1;
+		var t = valueBox.height - valueBox.font.height >> 1;
+		valueBox.clear();
+		valueBox.drawText(l, t + 1, ("%" + fig + "d").sprintf(value), 0xFFFFFF,,, 2048, 0x000000, 2);
+			// 半角文字はやや上よりに表示されるので縦位置を１つ下げる
+	}
+
+	function setControl(v)
+	{
+		value = v;
+		updateValue();
+		visible = true;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class ArraySpinButton extends SpinButton
+{
+	// 配列選択スピンボタン
+
+	var array = [];
+	var index = 0;
+	var value;
+	var onChangeAction;
+
+	function ArraySpinButton(par)
+	{
+		super.SpinButton(...);
+	}
+
+	function finalize()
+	{
+		super.finalize();
+	}
+
+	function onFocus(focused, direction)
+	{
+		super.onFocus(...);
+		parent.pointerMark.left = 405;	// 左にずらす
+	}
+
+	function changeValue(increase)
+	{
+		// オーバーライド
+		var id = increase ? index + 1 : index - 1;
+		if(id < 0) id = array.count - 1;
+		else if(id >= array.count) id = 0;
+		if(! onChangeAction(array[id], this)) return;
+		index = id;
+		value = array[id];
+		updateValue();
+	}
+
+	function updateValue()
+	{
+		var str = array[index].displayName;
+		if(str === void) {
+			str = array[index].name;
+		}
+		var l = valueBox.width - valueBox.font.getTextWidth(str) >> 1;
+		var t = valueBox.height - valueBox.font.height >> 1;
+		valueBox.clear();
+		valueBox.drawText(l, t, str, 0xFFFFFF,,, 2048, 0x000000, 2);
+	}
+
+	function setControl(id)
+	{
+		index = id;
+		value = array[id];
+		updateValue();
+		visible = true;
+	}
+}
+
+//----------------------------------------------------------------------------------------

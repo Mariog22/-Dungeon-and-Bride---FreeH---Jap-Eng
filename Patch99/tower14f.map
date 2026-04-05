@@ -1,0 +1,153 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔14Ｆ
+insideName = 14Ｆ
+upper = ラドミラの塔15Ｆ
+lower = ラドミラの塔13Ｆ
+level = 62
+bgm = tower
+margin = 3
+shadow = dark
+sky = dawnforest
+roof = stone
+antiWarp = true
+
+; パーツ画像
+━ = stone_h
+✜ = stone_h
+… = half
+　 = marble
+／ = door
+┯ = button
+㊦ = ladderd
+
+; 敵情報
+monsters = マンイーター,怒りの霊魂,サイクロプス,ゴールドマン,ケイブジャイアント
+
+; 移動ポイント
+(A) = x:2, y:3
+(B) = x:1, y:7
+(C) = x:6, y:7
+(D) = x:8, y:3
+(E) = x:7, y:1
+(F) = x:4, y:7
+(G) = x:7, y:6
+(H) = x:2, y:6
+
+; 宝箱
+box[1] = 罠はない,スライムの彫像
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  		┏━━┯━━━━━━━━━┯┳┯┓
+ 8		┃Ⓒ　③　　　　　Ⓐ　　　③┃①┃
+  		┣………┓　┏……　┏……　┣／┫
+ 7		┃　　㊦￤　￤　　　￤　　　￤②┨
+  		┃　┏…┫　┗…┓　￤　┏…┛　┃
+ 6		┃　￤　￤　　Ⓔ￤　￤　￤　　　┃
+  		┃　￤　┗…┓　￤　￤　￤　……┫
+ 5		┃Ⓐ￤❶　Ⓖ￤　￤　￤　￤Ⓒ　　┃
+  		┃　┣………┛　￤　￤　┣…┓　┃
+ 4		┃　￤　　　　Ⓖ　　　Ⓓ￤　￤　┃
+  		┃　┣…┓　┏……………┛　￤　┃
+ 3		┠③￤　￤　￤Ⓕ　　　Ⓗ　　✜　┃
+  		┣…┛　￤　￤　￤　…………┻━┫
+ 2		┃　　　　Ⓑ￤　￤Ⓓ　　　　　③┨
+  		┃　…………┫　┗…………………┫
+ 1		┃　　　　③￤　　　　　　　　③┨
+  		┗━━━━┷┻━━━━━━━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(8, 8);
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! visited)
+{
+	setWarp(1, 8, void, "warp");
+	setWarp(1, 5, void, "warp");
+	setWarp(3, 2, void, "warp");
+	setWarp(3, 5, void, "warp");
+	setWarp(4, 6, void, "warp");
+	setWarp(4, 4, void, "warp");
+	setWarp(4, 3, void, "warp");
+	setWarp(5, 8, void, "warp");
+	setWarp(5, 2, void, "warp");
+	setWarp(6, 4, void, "warp");
+	setWarp(6, 3, void, "warp");
+	setWarp(7, 5, void, "warp");
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger || (onUseEventItem && curItem == o.小さなボタン)
+
+[if exp='game.map.events.has(2)']
+	@se f=kacha
+	@notice text="There is an elevator, but it does not seem to be working."
+	[eventoff]
+[endif]
+
+@jump storage="tower16f.map" target=*_set_16button cond='game.onUseEventItem'
+@command title="Which button will you press?" cancel=true
+@select text="17Ｆ" exp='tf.result = ["ラドミラの塔17Ｆ", "up"]'
+@select text="16Ｆ" exp='tf.result = ["ラドミラの塔16Ｆ", "up"]' cond='f.floor16opened'
+@select text="15Ｆ" exp='tf.result = ["ラドミラの塔15Ｆ", "up"]'
+@select text="11Ｆ" exp='tf.result = ["ラドミラの塔11Ｆ", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=motor
+@notice text="The machine roared, and the elevator next to it started moving!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+[iscript]
+	tf.temp = game.map.getWarpInfo(1, 5);
+	game.map.setWarp(1, 8, tf.temp !== void ? void : "C", "warp");
+	game.map.setWarp(1, 5, tf.temp !== void ? void : "A", "warp");
+	game.map.setWarp(3, 2, tf.temp !== void ? void : "B", "warp");
+	game.map.setWarp(3, 5, tf.temp !== void ? void : "G", "warp");
+	game.map.setWarp(4, 6, tf.temp !== void ? void : "E", "warp");
+	game.map.setWarp(4, 4, tf.temp !== void ? void : "G", "warp");
+	game.map.setWarp(4, 3, tf.temp !== void ? void : "F", "warp");
+	game.map.setWarp(5, 8, tf.temp !== void ? void : "A", "warp");
+	game.map.setWarp(5, 2, tf.temp !== void ? void : "D", "warp");
+	game.map.setWarp(6, 4, tf.temp !== void ? void : "D", "warp");
+	game.map.setWarp(6, 3, tf.temp !== void ? void : "H", "warp");
+	game.map.setWarp(7, 5, tf.temp !== void ? void : "C", "warp");
+[endscript]
+
+[eventoff]
+;-------------------------------------------------------------------------------

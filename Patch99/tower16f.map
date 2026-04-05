@@ -1,0 +1,182 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔16Ｆ
+insideName = 16Ｆ
+upper = ラドミラの塔17Ｆ
+lower = ラドミラの塔15Ｆ
+level = 80
+bgm = tomb
+margin = 3
+shadow = dark
+sky = dawnforest
+roof = stone
+effect = screen_dark
+
+; パーツ画像
+━ = stone_h
+… = half
+＋ = stone_h
+　 = marble
+〼 = marble
+毒 = poison
+△ = rock
+／ = door
+☖ = arch
+⧻ = fence
+┯ = button
+⑸ = br_maxhp
+⑹ = br_agl
+
+; 敵情報
+monsters = レブナント,スケルトンキング,ゴースト,パワーリッチ
+
+; 宝箱
+box[1] = 石化解除薬,石化解除薬,運の秘薬,ドクロの杖_ub,死の指輪_ub,死の大斧_ub
+box[2] = 罠はない,悪魔の彫像
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  		┏━━━┳━┳━━━┳━━━┳┯┓
+ 8		┃△　△￤❷￤△　△￤毒　⑸┃①┃
+  		┃　　　￤　￤　　　┃　┏…╋／┫
+ 7		┃〼　　　④　〼　　￤〼￤　＋　┃
+  		┃　　　　　　　　　￤　￤　┣☖┫
+ 6		┃△　〼　④　△　〼￤〼　②┃　┨
+  		┣…………　…………┛　　　┗⧻┫
+ 5		┃　　〼　　　△　〼　　　　　〼┃
+  		┃　………　┏━━━┓　　　　　┃
+ 4		┃△　〼　〼⧻③　　☖〼　△　〼┃
+  		┣━━━┓　┗━━━┛　　　　　┃
+ 3		┃⑹　毒┃敵　〼　　　〼　〼　△┃
+  		┃　　　┃　￤　　　┏━┳━━☖┫
+ 2		┃毒　毒／　￤△　　☖　＋　　❶┃
+  		┗━━━┻━┻━━━┻━┻━━━┛
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(8, 8);
+pos[1][3].f.img = "poison";
+pos[1][3].f.trap = "poisonSwamp";
+pos[7][8].f.img = "poison";
+pos[7][8].f.trap = "poisonSwamp";
+pos[3][8].f.antiWarp = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="17Ｆ" exp='tf.result = ["ラドミラの塔17Ｆ", "up"]'
+@select text="15Ｆ" exp='tf.result = ["ラドミラの塔15Ｆ", "down"]'
+@select text="14Ｆ" exp='tf.result = ["ラドミラの塔14Ｆ", "down"]'
+@select text="11Ｆ" exp='tf.result = ["ラドミラの塔11Ｆ", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@delevent
+[texton]
+The floor is completely dilapidated, as if no one has been there for a long time. It is dimly lit and even feels eerie.[k]
+Looking around, I see white bones scattered all over the floor. Did they all die here, unable to escape?[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove || inSearching
+
+[if exp='game.inSearching']
+	@delevent
+	@getitem item=破邪の指輪
+	[eventoff]
+[endif]
+
+[texton]
+What appears to be human bones are scattered around. Could they belong to people involved in the construction of this tower?
+ [k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] party.hasItem(o.悪魔の彫像)
+
+@wait time=800
+[texton]
+[リーダー f=06]「...!」[k]
+Suddenly, I felt a terrifying killing intent from behind me![k]
+[？？？]「It's mine... I won't let you steal it...」[k]
+[textoff]
+@wait time=800
+@walk turn=n
+@wait time=800
+@monster pos=3 name=リッチキング
+@callbattle bgm=crisis gameover=true escape=false
+@eval exp='game.restoreMembers()'
+@notice text="Defeated the Lich King!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 50)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max HP permanently increased by 50!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("speed", 2)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Speed permanently increased by 2!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_set_16button
+
+@wait time=1500
+@btmes off
+[texton]
+[リーダー f=05]「This is...!」[k]
+The moment I saw the panel with the elevator buttons lined up on it, I remembered that small button.[k]
+Looking closely at the panel, there is a hole that seems to fit this button perfectly.[k]
+[リーダー f=06]「...」[k]
+@se f=kacha
+∗click∗[k]
+The button fitted perfectly into the hole.[k]
+...Maybe this will allow us to go to a new floor.[k]
+[textoff]
+@eval exp='f.floor16opened = true'
+@eval exp='game.party.ejectItem(o.小さなボタン)'
+
+[eventoff]
+;-------------------------------------------------------------------------------

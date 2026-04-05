@@ -1,0 +1,191 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔11Ｆ
+insideName = 11Ｆ
+upper = ラドミラの塔12Ｆ
+lower = ラドミラの塔10Ｆ
+level = 58
+bgm = tower
+margin = 3
+shadow = dark
+sky = dawnforest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+‥ = soil
+… = half
+　 = marble
+☐ = marble
+◇ = soilr
+／ = door
+☖ = arch
+⧻ = fence
+; ﹃ = ladder
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+⑺ = fountain
+
+; 敵情報
+monsters = エキドナ,セイレーン,マッドウイング,見習いサキュバス,サキュバス,エルダーサキュバス,オークキング,コボルドリーダー,サイクロプス
+
+; 宝箱
+box[1] = 特効薬,特効薬,ハイエーテル,ハイエーテル,精霊の縫い糸,復活の粉,復活の粉,修理の巻物,修理の巻物,修理の巻物
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  		┏━━━━━┳━━━┳━━━┳┯┓
+ 8		┃　　　　　／　　　／　　　┃②┃
+  		┃　　　　　┃　　　┃　　　┗／┫
+ 7		┃　　　　⑥┃❶　　【⑤　　　　┃
+  		┃　┏／━︼┻━━━┻━┓　　　┃
+ 6		┃⑺┃◇　　　◇　　　◇┃㊦　　┃
+  		┣━┛　　　　　　　　　┗━┓　┃
+ 5		┃◇　　　◇　　　◇　　　◇┃　┃
+  		┃　　　　　　　　　　　　　┃　┃
+ 4		┃　　◇　　　◇　　　◇　　┃　┃
+  		┃　　　　　　　　　　　　　┃　┃
+ 3		┃◇　　　◇　　　◇　　　⑨┃　┃
+  		┃　　　　　　　　　　　　　┃　┃
+ 2		┃　　◇　　　◇　　　◇　　┃　┃
+  		┣━┓　　　　　　　　　┏━┛　┗━┓
+ 1		┃㊤┃　　◇　⑧　◇　　┃　　　　④】
+  		┃　┗━━━━／━━━━┫　┏⧻┳━┫
+ 0		┃　　　　　　　　　　　┃③┃　／①┨
+  		┗━━━━━━━━━━━┻┷┻━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(8, 8);
+setElevator(9, 0);
+pos[9][1].e.img = "stone";
+pos[7][3].f.img = "soild";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="10Ｆ" exp='tf.result = ["ラドミラの塔10Ｆ", "down"]'
+@select text="９Ｆ" exp='tf.result = ["ラドミラの塔９Ｆ", "down"]'
+@select text="７Ｆ" exp='tf.result = ["ラドミラの塔７Ｆ", "down"]'
+@select text="６Ｆ" exp='tf.result = ["ラドミラの塔６Ｆ", "down"]'
+@select text="４Ｆ" exp='tf.result = ["ラドミラの塔４Ｆ", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger || (onUseEventItem && curItem == o.小さなボタン)
+
+[if exp='o.ラドミラの塔14Ｆ.events.has(2)']
+	@se f=kacha
+	@notice text="There is an elevator, but it does not seem to be working."
+	[eventoff]
+[endif]
+
+@jump storage="tower16f.map" target=*_set_16button cond='game.onUseEventItem'
+@command title="Which button will you press?" cancel=true
+@select text="17Ｆ" exp='tf.result = ["ラドミラの塔17Ｆ", "up"]'
+@select text="16Ｆ" exp='tf.result = ["ラドミラの塔16Ｆ", "up"]' cond='f.floor16opened'
+@select text="15Ｆ" exp='tf.result = ["ラドミラの塔15Ｆ", "up"]'
+@select text="14Ｆ" exp='tf.result = ["ラドミラの塔14Ｆ", "up"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=8 y=0 way=n mode=open
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="The switch to operate the elevator is located on the upper floor."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Waiting Room"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@notice text="Arena Entrance"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@question title="<y>Will you drink water from the gushing spring?" cancel=true
+[if exp='tf.result']
+	@eval exp='o.噴水.doDamage = o.グランドヒール.doDamage'
+	@eval exp='o.噴水.resultMessage = o.グランドヒール.resultMessage'
+	@btcmd name=噴水
+	@notice text="Party's HP restored!"
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] WAY == "s"
+
+[texton]
+[？？？]「Hey, where are you going? The fun is just about to begin!」[k]
+[textoff]
+@walk turn=n
+@wait time=800
+@walk move=n
+@walk move=n
+@wait time=800
+@monster pos=3 name=アークデビル
+@callbattle gameover=true bgm=boss
+@notice text="Defeated the Archdevil!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] inSearching
+
+@delevent
+@getitem item=大きな召喚びん
+
+[eventoff]
+;-------------------------------------------------------------------------------

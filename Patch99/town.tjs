@@ -1,0 +1,512 @@
+﻿// town.tjs
+// 町画面と町オブジェクト
+
+
+//----------------------------------------------------------------------------------------
+class TownView extends BoardLayer
+{
+	// 町のビュー（景色）画面のクラス
+
+	var spots = [];	// 各施設やイベントの起こる場所
+	var eventBtns = [];	// イベントボタン
+	var curSpot;	// 現在選択されている場所
+	var playerSymbol;	// プレイヤーキャラアイコン
+	var playerTimer;	// プレイヤーキャラアイコンをアニメさせるためのタイマー
+	var doorPlate;	// 施設名表示
+	var curTown;	// 現在訪れている町。ロクトフェイトにも利用されるので消さずに保存しておく
+
+	function TownView(par, master)
+	{
+		super.BoardLayer(...);
+		name = "町ビュー";
+		setSize(900, 560);
+		focusable = true;
+		targetLayers = spots;
+		notification = false;
+		hitThreshold = 256;	// これで操作不可の時マウスの当たり判定を透過するようになる（子レイヤがない場合）
+
+		doorPlate = new DecoLayer(this);
+		with(doorPlate)
+		{
+			.loadImages("frame_door_plate");
+			.setSizeToImageSize();
+			.setPos(width - .width, 4);
+			.absolute = 110;
+			.visible = true;
+			.font.height = 24;
+			.font.bold = true;
+			//.font.face = "ＭＳ Ｐ明朝";
+		}
+
+		playerSymbol = new global.Layer(window, this);
+		playerSymbol.hitThreshold = 256;
+		playerSymbol.setSize(80, 80);
+		playerSymbol.absolute = 100;
+
+		playerTimer = new Timer(playerWalking, "");
+		playerTimer.interval = 300;
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < eventBtns.count; i++) invalidate eventBtns[i];
+		invalidate doorPlate;
+		invalidate playerSymbol;
+		invalidate playerTimer;
+		super.finalize();
+	}
+
+	property inStable
+	{
+		getter{ return true; }
+	}
+
+	function resetPos()
+	{
+		setPos(0, 0);
+	}
+
+	function focus()
+	{
+		// フォーカスは町レイヤー自身が受け取り、子レイヤの選択状態をコントロールする
+		super.focus();
+		if(curSpot === void || ! isvalid curSpot) curSpot = spots[0];
+		if(curSpot !== void) setFocusToSpot(curSpot);
+	}
+
+	function open()
+	{
+		// 町画面を開く
+		visible = true;
+		doorPlate.visible = true;
+		if(curSpot !== void) setPlayerSymbol(curSpot);
+	}
+
+	function close()
+	{
+		// 町画面を閉じる
+		playerWalkStop();
+		enabled = false;
+		visible = false;
+		clear();
+	}
+
+	function goToStreet(here, notOpen = false)
+	{
+		// 町全景。店から戻る時や、町に入った直後に呼ぶ
+		if(here !== void) curSpot = here;
+		open();
+		if(notOpen) visible = false;
+		if(! notOpen) playMusic(curTown.bgm);
+		if(curTown.checkEvent()) return;	// 宿泊直後は時刻が MORNING でイベントチェックが行われる
+		if(master.hour == "morning" && master.checkEvent()) return;
+		master.hour = "day";	// 時刻を DAY に
+		master.onGameRestart();
+	}
+
+	function returnToHotel()
+	{
+		// ホテルに戻る（夜の散策中）
+		playerWalkStop();
+		enabled = false;
+		master.view = master.hotelView;
+		master.map = master.hotelView.curHotel;
+		master.hotelView.visible = true;
+	}
+
+	function clear()
+	{
+		// 町画面をクリアする
+		for(var i = 0; i < master.houses.count; i++) master.houses[i].visible = false;
+		for(var i = 0; i < eventBtns.count; i++) invalidate eventBtns[i];
+			// イベントはその都度削除する必要がある
+		spots.clear();
+		eventBtns.clear();
+	}
+
+	function loadPlayerSymbol()
+	{
+		// プレイヤーシンボルを読み込む
+		if(master.party.members.count == 0)
+		{
+			playerSymbol.loadImages("symbol_dummy");
+			return;
+		}
+		var sym = master.party.members[0];
+		var file = sym.model.img + "_symbol_" + sym.color;
+		if(! Storages.isExistentStorage(file + ".png")) file = "symbol_dummy";
+		playerSymbol.loadImages(file);
+	}
+
+	function loadTownMap(townObj)
+	{
+		// マップを作成
+		clear();
+		loadImages(townObj.img);
+		loadPlayerSymbol();	// プレイヤーシンボルを読み込む
+		curSpot = void;	// 文字盤をホテル以外にするため
+		curTown = townObj;	// 最後に訪れた町を記憶
+
+		for(var i = 0; i < townObj.houses.count; i++)
+		{
+			var house = townObj.houses[i];
+			house.visible = house.appeared;
+			if(! enabled) house.onNodeDisabled();
+			spots.add(house);
+		}
+
+		for(var i = 0; i < townObj.eventBtns.count; i++)
+		{
+			if(townObj.eventBtns[i].hide) continue;
+			setEventButton(townObj.eventBtns[i]);
+		}
+	}
+
+	function setEventButton(elm)
+	{
+		// イベントボタンを設置する
+		var btn = new HouseOfEvent(master);
+		btn.set(elm);
+		spots.add(btn);
+		eventBtns.add(btn);
+		if(! enabled) btn.onNodeDisabled();
+		return btn;
+	}
+
+	function removeEventButton(elm)
+	{
+		// イベントボタンを撤去する
+		for(var i = 0; i < eventBtns.count; i++)
+		{
+			var btn = eventBtns[i];
+			if(btn.eventRef.label != elm.label) continue;
+			eventBtns.remove(btn);
+			spots.remove(btn);
+			if(curSpot == btn) setFocusToSpot(spots[0]);
+			invalidate btn;	// 無効化すれば自動的に消える？
+			return;
+		}
+	}
+
+	function playerWalking()
+	{
+		if(! enabled) return;
+		playerSymbol.imageLeft = -80 - playerSymbol.imageLeft;
+	}
+
+	function playerWalkStop()
+	{
+		playerTimer.enabled = false;
+	}
+
+	function drawDoorPlate(str, isEvent)
+	{
+		doorPlate.clear();
+		var l = doorPlate.width - doorPlate.font.getTextWidth(str) - 20;
+		doorPlate.drawText(l, 6, str, isEvent ? 0xFFFF00 : 0xFFFFFF);
+	}
+
+	function setPlayerSymbol(obj)
+	{
+		curSpot = obj;
+		playerSymbol.setPos(obj.left + obj.width - 60, obj.top + obj.height - 82);
+		playerSymbol.visible = true;
+	}
+
+	function setFocusToSpot(obj)
+	{
+		if(curSpot !== void && isvalid curSpot) curSpot.drawState(0);
+		setPlayerSymbol(obj);
+		playerTimer.enabled = true;
+		drawDoorPlate(obj.displayName, obj instanceof "HouseOfEvent");
+		obj.drawState(2);
+	}
+
+	function isPeopleAround()
+	{
+		if(curSpot === void) return false;
+		return curSpot.peopleAround;
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if(! MOUSE_HIDDEN)
+		{
+			master.turnOffCharasHilight();
+			window.hideMouseCursor();	// 誤解を招かないため、カーソルを一時的に隠す
+		}
+
+		if(isArrowButton(...))
+		{
+			var target;
+			if(curSpot === void) target = spots[0];
+			else target = getLayerByKey(curSpot, key);
+			if(target !== void) setFocusToSpot(target);
+		}
+		else if(key == BT_OK || key == BT_OK2)
+		{
+			if(curSpot !== void) curSpot.onSelectAction();
+		}
+		else if(key == BT_MAGIC || key == BT_MAGIC2)
+		{
+			master.gameFrame.openMagicCommand();
+		}
+		else if(key == BT_ITEM || key == BT_ITEM2)
+		{
+			master.gameFrame.openItemCommand();
+		}
+		else if(key == BT_SAVE || key == BT_SAVE2)
+		{
+			master.gameFrame.openSaveCommand();
+		}
+		else if(kag.focusedLayerIsNull)
+		{
+			return;	// フォーカス null 時のキーイベント二重送信問題対策
+		}
+		else
+		{
+			super.onKeyDown(key, shift, false);
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class TownObject
+{
+	// 町オブジェクト
+
+	var master, id;
+	var name = "";
+	var kind = "town";
+	var bgm = "town";
+	var img = "";
+	var blind;	// 辻褄合わせ用  void にしておく
+	var houses = [];
+	var events = [];
+	var conditions = [];
+	var eventBtns = [];
+	var level = 0;
+	var displayName;
+
+	function TownObject(master, id)
+	{
+		this.master = master;
+		this.id = id;
+	}
+
+	function store()
+	{
+		var dic = %[];
+		dic.name = name;	// オブジェクト再現のキーとして使うため保存
+		dic.img = img;
+		dic.events = events;
+		dic.eventBtns = eventBtns;
+		dic.bgm = bgm;
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		if(dic.bgm !== void) bgm = dic.bgm;
+		img = dic.img;
+		events.assign(dic.events);
+		eventBtns.assignStruct(dic.eventBtns);
+	}
+
+	function inputData(key, data)
+	{
+		if(key == "house")
+		{
+			var dic = strToDic(data);
+			houses.add(o[dic.name]);
+			o[dic.name].setPos(dic.x, dic.y);
+		}
+		else if(key == "name")
+		{
+			this[key] = data;
+			displayName = data; // Default
+		}
+		else
+		{
+			this[key] = data;
+		}
+	}
+
+	function addEventButton(elm)
+	{
+		// イベントボタンを追加する。
+		// mp はすぐ消えるので完全コピーすること
+		// 返り値は保存した情報。すぐにボタンを設置するときに利用する
+		var dic = %[];
+		(Dictionary.assign incontextof dic)(elm);
+		if(dic.name === void) dic.name = dic.label;
+		eventBtns.add(dic);
+		return dic;
+	}
+
+	function deleteEventButton(elm)
+	{
+		// イベントボタンを削除する
+		for(var i = 0; i < eventBtns.count; i++)
+		{
+			if(eventBtns[i].label != elm.label) continue;
+			eventBtns.erase(i);
+			return;
+		}
+	}
+
+	function hideAllEventButtons()
+	{
+		// 一時的にすべてのイベントボタンを隠す（次にマップを開いたときに反映される）
+		for(var i = 0; i < eventBtns.count; i++)
+		{
+			eventBtns[i].hide = true;
+		}
+	}
+
+	function showAllEventButtons()
+	{
+		// 隠したすべてのイベントボタンを表示させる（次にマップを開いたときに反映される）
+		for(var i = 0; i < eventBtns.count; i++)
+		{
+			eventBtns[i].hide = false;
+		}
+	}
+
+	function getMagicPermission()
+	{
+		return;	// 町では自由に魔法を唱えられる
+	}
+
+	function isCurFieldWide()
+	{
+		return true;
+	}
+
+	function checkEvent(checkOnly = false)
+	{
+		// イベント発生チェック
+		// street.ks の ;[exp] をチェックし真ならば該当イベントシナリオに飛ぶ
+		// ※町と施設のイベントは後から追加した方を優先する
+		var res = HouseObject.checkEvent(...);
+		if(res && ! checkOnly && master.hour == "morning") master.hour ="day";
+		return res;
+	}
+}
+
+//----------------------------------------------------------------------------------------
+/*
+＜メモ＞
+
+◆サクサクモード案
+・経験値２倍
+・アイテム出現率２倍
+・レアアイテムは出ない（エロ系アイテムは出る）
+・やり込みダンジョンにも行けない
+・レベル上限がある（シナリオクリアには差し支えない程度）
+・出現しないイベントは全体の５％程度
+
+
+◆レイヤーの重ね合わせ
+各パーツのレイヤーは少し大きめに作って透明の箇所をあえて残す
+手前にある柱に後ろの壁の継ぎ目を隠したり
+手前パーツの岩や森をわざと張り出させて後ろを隠し自然に見せる
+
+
+◆性格について
+一応キャラと職業には３つの性格を持たせるが、パーティーを組む際の制限は作らない
+ただし転職の際に選べる職業は制限される
+性格はレアアイテムで変更可能にする
+
+
+
+◆個人の状態
+・毒     石化と両立しない
+・沈黙   石化・麻痺と両立しない
+・睡眠   石化・恐怖・麻痺と両立しない
+・恐怖   石化・睡眠・麻痺と両立しない
+・麻痺   石化・睡眠・恐怖・沈黙と両立しない
+・石化   他の全てと両立しない
+・死     他の全てと両立しない
+・灰     他の全てと両立しない
+・攻撃力の上昇   基本値に一定値プラスされる  上限がある
+・防御力の上昇   基本値に一定値プラスされる  上限がある
+
+
+◆パーティーの状態
+・保護   マポーフィックをかけた状態  防御力が上がる
+・浮遊   リトフェイトをかけた状態  ピット等の罠を回避
+・照明   ロミルワをかけた状態  暗いダンジョンで視界を広げる
+・警戒   ダンジョンの仕掛けに気付きやすくなる
+※モンスター識別（ラツマピック）は仕様の都合で無し
+
+
+◆スキルについて
+
+・修復技能
+これを持つキャラに壊れたアイテムを預けておくとそのうち直っている
+
+・鑑定技能
+＜案１＞
+これを持つキャラがいると未鑑定のアイテムは右クリックで鑑定できる
+アイテムのレベルを、技能を持つキャラの中で最大のレベルが上回っていると鑑定成功
+失敗しても恐怖状態にはならない
+＜案２＞
+右クリックしたときに誰が鑑定するか選択させる
+失敗したら恐怖になったり、強引に装備させられてしまったりする
+
+・扉解錠技能
+錠前付き扉の前に立ち、キャラメニューから解錠を選ぶ
+キャラのレベルが錠前のレベルを上回っていると一定確率で成功。失敗すると罠発動もある
+なお、特定の鍵が必要な扉はどうやっても開けることはできない
+
+・探索技能
+これを持つキャラがいると隠された仕掛けがあるブロックで何かありそうなのを教えてくれる
+
+tanga   Ｔバック
+thongs  紐パン
+
+
+戦闘（リズム重視・ややホラー調・若干の悲壮感）
+ボス戦闘（激しい・恐ろしさ）
+ラスボス（力強さ・神秘的）
+
+ダンジョン（激しい）
+ダンジョン（神秘的）
+ラストダンジョン（勇壮・悲壮感）
+洞窟（おどろおどろしい）
+塔・断崖（勇ましい）
+平原・緑の森（楽しい）
+霧の立ちこめる森・砂漠（寂しげ）
+暗い森・夜・墓場（ホラー調）
+
+町（楽しげ）
+村（静か）
+酒場（賑やか）
+ギルド（勇ましい）
+宿屋（安らぎ）
+宿屋（アダルト）
+ショップ（胸が弾む）
+寺院（おごそか）
+※町外れは直接ダンジョン等に行くのでナシ
+
+恋愛（甘い雰囲気）
+恋愛（切ない）
+恋愛（感動的）
+エロ（アダルト）
+エロ（安っぽい）
+エロ（後ろ暗い）
+
+イベント（悲しい）
+イベント（寂しげ）
+イベント（ギャグ調）
+イベント（軽めのコミカル）
+イベント（恐ろしい）
+イベント（伝説的）
+イベント（絶望的）
+
+エピローグ（感動的）
+エンディング（懐かしい）
+
+[ドワーフ]「オレ様には１人部屋を用意してくれよ。ま、女とだったら相部屋でも構わねえがな！」
+*/

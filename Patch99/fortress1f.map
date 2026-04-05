@@ -1,0 +1,198 @@
+﻿; 森の城塞
+
+name = 森の城塞１Ｆ
+insideName = １Ｆ
+upper = 森の城塞２Ｆ
+level = 23
+bgm = eerie
+margin = 3
+roof = stone
+shadow = dark
+sky = forest
+outfield = soil
+
+; 各パーツ
+━ = stoner
+　 = marble
+／ = door
+∫ = pick
+☗ = gate
+⧻ = fence
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+⑴ = monument
+⑸ = br_pie
+⑹ = br_pie
+
+; 敵情報
+maxGroups = 1
+monsters = クレリック,アコライト,ハイプリースト,ディサイプル,アルケミスト
+
+; 移動ポイント
+(A) = map:コリンズの森, x:36, y:74, way:w, symbol:exit ,ask:Leave the dungeon?
+
+; 宝箱
+box[1] = 聖なるメイス_u,聖なるサンダル_u,聖なるローブ_u,デスクラウドの巻物,マインドリードの魔法書_u
+box[2] = 罠はない,教団の鍵
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  ┏━━━┳━━━┳━━━┳━━━┳━━━━━┓
+ 9┃⑸　⑹┃　　　┃　　　┃　　　┃　　　　❷┃
+  ┃　　　┃　　　┃　　　┃　　　┃　　　　　┃
+ 8┃　　　┃⑧　　┃　　　┃⑩　　┃⑫　　　　┃
+  ┃　　　┗／━━┻／━━┻／━━┻∫━━━━┫
+ 7【④　　　　　　　　　　　　　　　　　　　　┃
+  ┃　┏／━━┳／━━┳／━━┳／━━┳／━━┫
+ 6┃　┃⑦　　┃　　　┃⑨　　┃　　　┃⑪　　┃
+  ┃　┃　　　┃　　　┃　　　┃　　　┃　　　┃
+ 5┃㊤┃　　　┃　　　┃　　　┃　　　┃　　　┃
+  ┣━┻━━━┻━━━┻━━━┻━━━┻━━━┫
+ 4┃　　　　　　　　　　　　　　　　　　　　　┃
+  ┃　┏━━━┓　　　　　　　　　┏━━━┓　┃
+ 3┃　┃　　　┃　　　　　　　　　┃　　　┃　┃
+  ┃　┃　　　┃　┏━━⧻━━┓　┃　　　┃　┃
+ 2┃　┃　　　／　┃　　⑴　　┃　／敵　　┃　┃
+  ┃　┣／━━┫　┃　　　　　┃　┣━━━┫　┃
+ 1┃　┃敵　　┃　┃　　　　②】　┃　　❶┃　┃
+  ┃　┃　　　┣／┫　　　　　┣∫┛　　　┃　┃
+ 0┃㊤┃　　　【③┃　　Ⓐ　　┃　　　　　┃㊤┃
+  ┗━┻━━━┻━┻━━☗━━┻━━━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+f.codeNumber = [1058, 3420, 5931, 9716].draw();
+changeObject(%[himg: "pn_" + f.codeNumber], 3, 0, "w");
+if(! loading) events.push2(7, 8, 9, 10, 11, 12);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@call target=*input_number
+[if exp='tf.num == f.codeNumber']
+	@delevent
+	@playse storage=kacha
+	@wait time=800
+	@se f=fence
+	@switchfence x=5 y=2 way=n mode=open
+	@notice text="The door opened!"
+[else]
+	@playse storage=buzzer
+	@notice text="Nothing happened."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="The secret number changes every day.<r>Anyone going out should write it down before leaving.<r>The number is posted on the wall of the small room on the west side."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text=&'"The secret number is <y>" + f.codeNumber'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="Member Lounge"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+*event_6
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("piety", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Faith permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+*event_8
+;[exp] true
+*event_9
+;[exp] true
+*event_10
+;[exp] true
+*event_11
+;[exp] true
+*event_12
+;[exp] true
+
+[if exp='! f.firstEncounteredCultMembers']
+	@eval exp='f.firstEncounteredCultMembers = true'
+	[texton]
+	[name n="Cult Member"]「You guys are outsiders, aren't you? How did you get in here?」[k]
+	The cult members attacked![k]
+	[textoff]
+[endif]
+@callbattle gameover=true
+@delevent
+@jump target=*_dropMembersItem
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*input_number
+
+@eval exp='tf.num = ""'
+*_input_loop
+@command title=&'"Please enter a 4-digit number  <c>" + tf.num'
+[if exp='tf.num.length == 4']
+	@eval exp='tf.num = +tf.num'
+	@wait time=1000
+	@eval exp='game.curBoard.close()'
+	@wait time=200
+	@return
+[endif]
+@select text="1" exp='tf.result = 1'
+@select text="6" exp='tf.result = 6'
+@select text="2" exp='tf.result = 2'
+@select text="7" exp='tf.result = 7'
+@select text="3" exp='tf.result = 3'
+@select text="8" exp='tf.result = 8'
+@select text="4" exp='tf.result = 4'
+@select text="9" exp='tf.result = 9'
+@select text="5" exp='tf.result = 5'
+@select text="0" exp='tf.result = 0'
+[ask]
+[eventoff cond='tf.result === void']
+@eval exp='tf.num += tf.result'
+@jump target=*_input_loop
+;-------------------------------------------------------------------------------
+*_dropMembersItem
+
+@eval exp='game.inEvent = false'
+[if exp='random < 0.7 && f.dropMembersCardEnabled && game.findItem(o.信徒の称号・太陽, true) === void']
+	@eval exp='game.treasureBox.drops.add(%[itemData: o.信徒の称号・太陽, state: WHOLE])'
+[elsif exp='random < 0.3']
+	@eval exp='game.treasureBox.drops.add(%[itemData: o.教団のバッジ, state: WHOLE])'
+[endif]
+@eval exp='game.appearTreasureBox()'
+@eval exp='f.saveEnabled = true'
+[s]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,130 @@
+﻿; 廃屋
+
+name = 森の中の廃屋１Ｆ
+insideName = １Ｆ
+upper = 森の中の廃屋２Ｆ
+lower = 森の中の廃屋Ｂ１
+level = 6
+bgm = hideout
+margin = 3
+external = n:1, s:1, w:1
+shadow = dark
+sky = forest
+roof = wood
+outfield = soil
+
+; 各種パーツ
+━ = wood_h
+― = wood_h
+－ = wood
+‥ = wood
+　 = wood
+☐ = soil
+☒ = wood
+〰 = water
+ｗ = water
+⏃ = woods
+／ = door
+☗ = door
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+
+; 敵情報
+battleRate = 0
+monsters = スライム,コボルド,オーク,ローグ
+traps = 石つぶて,毒針,しびれ針,酸スプレー
+
+; 移動ポイント
+(A) = map:ブレイブタウン, enter:森の中の廃屋入口, ask:Leave the dungeon?
+
+; 宝箱
+box[1] = 罠はない,ロングソード,鎖かたびら,ふっくらパン,ふっくらパン,金貨（小）,金貨（小）
+box[2] = 罠はない,棍棒,革鎧,革のズボン,ふっくらパン,良い短剣,スリープの巻物,金貨（小）
+box[3] = シルバースケイル・上_u,シルバースケイル・下_u,清浄の指輪_u
+box[4] = 覚醒の指輪_u,パルチザン_u,金貨（大）,金貨（大）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;   -1   0   1   2   3   4   5   6   7   8   9  10  
+  
++1	⏃⏃⏃⏃⏃
+  	⏃⏃⏃⏃⏃┏－┳－－－－－━━━︻━━━━━━┓
+ 6	⏃⏃➍ｗｗⅼ☐／　　　　　　　　③　　　　　　┃
+  	⏃⏃ｗｗｗⅼ☐┣━━━━━━━┳／━━┳━┓　┃
+ 5	⏃⏃ｗｗｗⅼ☐←　　　　　　　┃　　❶┃☒┃　┃
+  	⏃⏃ｗｗｗⅼ☐┣／┳━━━┓　┃　　　┃　┃　┃
+ 4	⏃⏃☐☐☐ⅼ☐ⅼ　┃　　　┃㊦┃②　　┃　┃　┃
+  	⏃⏃☐☐☐ⅼ☐ⅼ　┃　　　┣━┻／━━┫　┃　┃
+ 3	⏃⏃☐☐☐ⅼ☐ⅼ　／敵　　┃　　　　　┃　┃　┃
+  	⏃⏃☐☐☐ⅼ☐ⅼ　┣━━━┫　　　　　┃　┃　┃
+ 2	⏃⏃☐☐☐ⅼ☐ⅼ　／敵　　┃　　①　　┃　┃　┃
+  	⏃⏃☐☐☐ⅼ☐┣━┫　　　┣━━／━━╋―┛　┃
+ 1	⏃⏃☐☐☐→☐┃　┃　　❸┃　　　　　┃〰〰　┃
+  	⏃⏃☐☐☐ⅼ☐┃　┗━━━┫　　　　　┃〰〰　┃
+ 0	⏃⏃☐☐☐ⅼ☐／　　　　㊤┃　　Ⓐ　　┃❷　　┃
+  	⏃⏃⏃⏃⏃┗－┻－－－－－┻━━☗━━┻━━━┛
+-1	⏃⏃⏃⏃⏃
+  
+;   -1   0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[1][1].e.img = pos[2][1].w.img = "wood";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+; 戦闘チュートリアル
+@addevent name=戦闘 num=1
+@monster pos=2 name=スライム
+@monster pos=3 name=スライム
+@monster pos=4 name=スライム
+@callbattle gameover=true
+@delevent
+
+[texton w=5]
+[マックス f=03]「Alright! It's a big victory!」[k]
+[マックス f=01]「Oh? It looks like the enemy dropped a treasure chest. What kind of treasure is in it? Let's open it right away.」[k]
+[マックス f=01]「Oops, be careful, [b]treasure chests are usually trapped[/b]. First, carefully [b]disarm the trap[/b].」[k]
+[マックス f=01]「It's a good idea to check the party's opinions to determine the type.」[k]
+[textoff]
+
+@addevent name=全般 num=44
+@treasure item=革の手袋,木の盾,金貨（小） trap=石つぶて level=1
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@delevent
+@wait time=500
+[texton w=5]
+[マックス f=03]「Oh, there's a treasure chest over there! Lucky! Let's get it right away.」[k]
+[b]In dungeons, various things like [b red]treasure chests,[r]signposts, and buttons[/b] can be found.[/b][k]
+[b]Move to them, [b]then [b red]click[b] them with the mouse, or[r][b red]Option button[b] (By default, the space key or the third[r]button on the gamepad).[/b][k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="← 2nd floor"
+
+[eventoff]
+;-------------------------------------------------------------------------------

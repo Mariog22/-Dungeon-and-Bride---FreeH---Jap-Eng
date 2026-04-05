@@ -1,0 +1,125 @@
+﻿; 魔女の隠れ家
+
+
+name = 魔女の隠れ家Ｂ５
+insideName = Ｂ５
+upper = 魔女の隠れ家Ｂ４
+lower = 魔女の隠れ家Ｂ６
+level = 23
+bgm = hideout
+roof = stone
+shadow = dark
+sky = black
+blank = rock
+antiWarp = true
+
+; 各パーツ
+━ = stoney
+… = halfy
+　 = marble
+❑ = cube
+／ = door
+☖ = arch
+⧻ = fence
+－ = pole
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  ┏━┳━━︻━━┳━┳━┳━━━┓
+ 5┃槍／消　④　　￤　￤　￤　　　┃
+  ┃　┃　　　　　￤　￤　￤　　　┃
+ 4┃　┃　　　　❑　　　❑　　　　┃
+  ┣⧻┫　　　　　　　　　　　……┫
+ 3┃①┃　　　　　　　　　　　　　┃
+  ┃　┣－－－┓　　　　　　　……┫
+ 2┃　┃＋　　┃　　　　③　　　　┃
+  ┃　┃　　　┃　　　　　　　……┫
+ 1┃　┃　　　┃　　　　③　　　　┃
+  ┃　┃　　　┃　￤　￤　￤　　　┃
+ 0┃㊤┃　　㊦┃　￤　￤②￤　　　┃
+  ┗━┻━━━┻━┻━┻━┻━━━┛
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] map.isPartition(0, 3, "n")
+
+[if exp='! game.party.hasItem(o.時のスイッチ)']
+	@notice text="I hear a voice from somewhere:<y><r>This door will not be opened to those without a <p>Time Switch<y>."
+	[eventoff]
+[endif]
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=0 y=3 way=n mode=open
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove && ! party.isFloating() && map.getWallInfo(1, 3, "s").type == "wall"
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@eval exp='game.map.changeObject(%[img: void, type: "space"], 1, 3, "s", true)'
+@eval exp='game.map.changeObject(%[img: void, type: "space"], 2, 3, "s", true)'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove
+
+@eval exp='tf.temp = game.map.getWallInfo(1, 3, "s")'
+[if exp='game.map.getFloorInfo(5, 0).type == "movable"']
+	[if exp='tf.temp.type == "wall"']
+		@wait time=800
+		@se f=fence
+		@eval exp='game.map.changeObject(%[img: void, type: "space"], 1, 3, "s", true)'
+		@eval exp='game.map.changeObject(%[img: void, type: "space"], 2, 3, "s", true)'
+	[endif]
+[elsif exp='tf.temp.type == "space"']
+	@wait time=800
+	@se f=fence
+	@eval exp='game.map.changeObject(%[img: "pole", type: "wall"], 1, 3, "s", true)'
+	@eval exp='game.map.changeObject(%[img: "pole", type: "wall"], 2, 3, "s", true)'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="There is a switch somewhere. Look hard, but those who float in the air are out of luck."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+@se f=dragstone
+@eval exp='o.魔女の隠れ家Ｂ５.reset()'
+@eval exp='o.魔女の隠れ家Ｂ６.reset(, game.events.has(61))'
+@wait time=800
+@warp map=魔女の隠れ家Ｂ５ x=0 y=2 way=n
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;===============================================================================

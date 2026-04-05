@@ -1,0 +1,248 @@
+﻿; ポラリスの神殿
+
+name = ポラリスの神殿
+insideName = Temple
+level = 4
+bgm = shrine
+margin = 1
+shadow = dark
+sky = black
+roof = marble
+blank = rock
+outfield = marble
+
+; パーツ画像
+━ = marble
+　 = marble
+〰 = water
+☖ = arch
+☗ = exit
+⧻ = stonegate
+︻ = panel
+⑹ = monument
+
+; 敵情報
+maxGroups = 2
+monsters = コボルド,オーク
+traps = 石つぶて,毒針,しびれ針
+
+; 移動ポイント
+(A) = map:デールコインの森, x:21, y:1, way:n, symbol:exit ,ask:Leave the dungeon?
+(B) = x:3, y:2
+(C) = x:3, y:14
+
+; 宝箱
+box[1] = 毒針,金貨（中）,ハイポーション,モーニングスター,聖なるローブ,バルキリーの書
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  
+  ┏━━━━━┳━┳━━━━━┓
+19┃〰〰　　　┃	┃　　　〰〰┃
+  ┃〰〰　　　┗━┛　　　〰〰┃
+18┃〰〰　　　　⑹　　　　〰〰┃
+  ┃〰〰　　　　　　　　　〰〰┃
+17┃〰〰　　　　　　　　　〰〰┃
+  ┃〰〰　　　　　　　　　〰〰┃
+16┃〰〰　　　　　　　　　〰〰┃
+  ┣━━━━━━⧻━━━━━━┫
+15┃　　　　　　⑤　　　　　　┃
+  ┃　　　　　　　　　　　　　┃
+14┃　　　　　　　　　　　　　┃
+  ┃　　　　　　　　　　　　　┃
+13┃　　　　　　　　　　　　　┃
+  ┣━━━┳━━☖━━┳━━━┫
+12┃〰〰〰┃　　④　　┃〰〰〰┃
+  ┃〰〰〰┃　┏━━━┫〰〰〰┃
+11┃③　　☖②┃〰〰〰┃敵　　┃
+  ┣☖━━┻━┫〰〰〰┗☖━━┫
+10┃　　　　　┃　　　　　　　┃
+  ┣━━━┓　┃　┏━━━┓　┃
+ 9┃〰〰　☖　┃　┃〰〰〰┃　┃
+  ┃〰〰　┣━┛　┃〰〰〰┃　┃
+ 8┃〰〰　☖　　　☖敵　　┃　┃
+  ┣━━━┛　┏━┻━━━┛　┃
+ 7┃　　　　　┃　　　　　　　┃
+  ┃　┏━━━┫　┏━━━┓　┃
+ 6┃　┃〰〰〰┃　┃〰〰　┃　┃
+  ┃　┃〰〰〰┃　┃〰〰　┃　┃
+ 5┃　☖　　❶┃　┃〰〰敵☖　┃
+  ┣━┻━━━┻☖┻━━━┻━┫
+ 4┃〰〰　　　　　　　　　〰〰┃
+  ┃〰〰　┏━━︻━━┓　〰〰┃
+ 3┃〰〰　┃〰〰①〰〰┃　〰〰┃
+  ┃〰〰　┃〰〰　〰〰┃　〰〰┃
+ 2┃〰〰　┃　　　　　┃　〰〰┃
+  ┃〰〰　┃　　　　　┃　〰〰┃
+ 1┃〰〰　☖　　　　　☖　〰〰┃
+  ┗━━━┻━┳☖┳━┻━━━┛
+ 0						┃Ⓐ┃
+  						┗☗┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[3][21].f.img = "soil";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Temple of Polaris, God of Harmony"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@delevent
+@addevent num=3
+@addevent num=4
+@eval exp='game.map.noBattle = true'
+@jump storage="main04.scn" target=*shrine_2
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+[texton]
+[シュバルツ]「Wait, you can't just leave the monsters running amok!」[k]
+[textoff]
+@walk move=e
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+[if exp='! game.map.events.has(6)']
+	@delevent num=3
+	@addevent num=5
+	@addevent num=6
+	@walk turn=n
+	@wait time=500
+	@jump storage="main04.scn" target=*shrine_3
+[else]
+	[texton]
+	I was told to go into the altar room. It would be best to look around more before leaving.[k]
+	[textoff]
+	@walk move=n
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] party.lastIsMove && map.pos[3][15].n.type == "wall"
+
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+@wait time=500
+
+; ミレディがいるとき
+[if exp='! isDemoVersion && ! game.isFreeMode && game.guest.members.has(o.ミレディ)']
+	[texton]
+	[テオ f=08]「The door won't open. I wonder why?」[k]
+	The door to the Hall of the Gods was closed. Even though I'm a demon hunter, there's no sign of it opening. Why?[k]
+	Maybe there's some divine reason not to open the door right now. I guess I'll come back later.
+	 [k]
+	[textoff]
+	[eventoff]
+[endif]
+
+; 初回のイベント
+[if exp='game.map.events.has(6)']
+	@delevent
+	@jump storage="main04.scn" target=*shrine_4
+[endif]
+
+; 通常の扉開放
+@playse storage=tremble
+@quake time=2000 hmax=5 vmax=0
+@wq
+@playse storage=rockdrop
+@changewall himg=arch type=space behind=true
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+; ポラリスとの会話
+[if exp='f.talkToPolaris !== void']
+	@eval exp='tf.num = game.getNumOfJewels(, true)'
+	[if exp='tf.num < 12']
+		@eval exp='tf.num = f.talkToPolaris'
+		@eval exp='f.talkToPolaris = void'
+		@jump storage="main12.scn" target=&'"*polaris_" + tf.num'
+	[endif]
+[endif]
+
+; 初回のイベント
+[if exp='game.map.events.has(4)']
+	@delevent num=3
+	@delevent num=4
+	@eval exp='o.ポラリスの神殿.setWarp(3, 14, "B", "warp")'
+	@eval exp='o.ポラリスの神殿.setWarp(3, 2, "C", "warp")'
+	@jump storage="main04.scn" target=*shrine_5
+[endif]
+
+; 石版の確認
+@reduceinfo
+@image layer=4 storage="crystal_slot" left=227 top=102 visible=true
+@pimage layer=4 dx=292 dy= 37 storage="crystal_garnet" cond='game.party.hasItem(o.ガーネットの魔石)'
+@pimage layer=4 dx=350 dy= 94 storage="crystal_amethyst" cond='game.party.hasItem(o.アメジストの魔石)'
+@pimage layer=4 dx=371 dy=173 storage="crystal_aquamarine" cond='game.party.hasItem(o.アクアマリンの魔石)'
+@pimage layer=4 dx=350 dy=251 storage="crystal_diamond" cond='game.party.hasItem(o.ダイアモンドの魔石)'
+@pimage layer=4 dx=292 dy=308 storage="crystal_emerald" cond='game.party.hasItem(o.エメラルドの魔石)'
+@pimage layer=4 dx=214 dy=329 storage="crystal_moonstone" cond='game.party.hasItem(o.ムーンストーンの魔石)'
+@pimage layer=4 dx=136 dy=308 storage="crystal_ruby" cond='game.party.hasItem(o.ルビーの魔石)'
+@pimage layer=4 dx= 78 dy=251 storage="crystal_peridot" cond='game.party.hasItem(o.ペリドットの魔石)'
+@pimage layer=4 dx= 58 dy=173 storage="crystal_sapphire" cond='game.party.hasItem(o.サファイアの魔石)'
+@pimage layer=4 dx= 78 dy= 94 storage="crystal_opal" cond='game.party.hasItem(o.オパールの魔石)'
+@pimage layer=4 dx=136 dy= 37 storage="crystal_topaz" cond='game.party.hasItem(o.トパーズの魔石)'
+@pimage layer=4 dx=214 dy= 16 storage="crystal_lapislazuli" cond='game.party.hasItem(o.ラピスラズリの魔石)'
+
+@eval exp='tf.num = game.getNumOfJewels(, true)'
+[if exp='! f.onyxTurnedOutImitation && tf.num == 11 && game.party.hasItem(o.オブシダンの魔石)']
+	[texton w=2]
+	A total of 11 crystals are currently shining.[k]
+	[textoff]
+	@layopt layer=4 left=0 top=0 visible=false
+	@eval exp='f.onyxTurnedOutImitation = true'
+	@jump storage="main12.scn" target=*polaris_5
+[elsif exp='tf.num == 12']
+	@image layer=4 storage="crystal_shine" left=227 top=102
+	@wait time=1000
+	@se f=magic4
+	@image layer=e0 mode=psdodge5 opacity=0 storage=screen_white visible=true
+	@move layer=e0 time=500 path=,,96
+	@wm
+	@wait time=1000
+	[texton w=2]
+	All the crystals lit up! The crest in the center is glowing!
+	 [k]
+	[textoff]
+	@layopt layer=4 left=0 top=0 visible=false
+	@jump storage="main13.scn" target=*advent_1
+[else]
+	[texton w=2]
+	Currently, a total of [emb exp='tf.num'] crystals are shining.[k]
+	[textoff]
+	@layopt layer=4 left=0 top=0 visible=false
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,107 @@
+﻿; 大洞窟
+
+name = 大洞窟Ｂ50
+insideName = Ｂ50
+upper = 大洞窟Ｂ49
+level = 98
+bgm = dungeon
+isOutdoor = true
+shadow = dark
+sky = black
+blank = rock
+outfield = soild
+
+; 各パーツ
+━ = soild_h
+　 = soild
+㊤ = ladderl
+① = human
+
+; 敵情報
+monsters = インキュバス,ナイトインプ,見習いサキュバス,サキュバス,エルダーサキュバス,マウンテンデビル,グレーターデビル,グレーターデーモン
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+  
+19	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+18	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+17	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+16	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+15	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+14	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+13	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+12	　　　　　　　　　　　　　　　　　　　　　　　　①　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+11	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+10	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 9	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 8	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 7	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 6	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 5	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 4	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 3	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 2	　　　　㊤　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 1	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+ 0	　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@se f=howling
+@wait time=1000
+@se f=roar
+@fg c=9013 left=450 top=0
+@w05
+[texton]
+[？？？  f=dragon_03]「Humans... What are they doing here...」[k]
+With an eerie voice echoing through the air, a pure white dragon appeared before us! We readied our weapons![k]
+[？？？  f=dragon_03]「You have courage to challenge me... I will teach you your place...」[k]
+The dragon attacked us![k]
+[textoff]
+@clf
+@monster pos=3 name=アースドラゴン
+@callbattle bgm=satan gameover=true escape=false
+@treasure item=闇のネックレス trap=死神の鎌 level=99
+@delevent
+; 記録
+@eval exp='sf.huntedEarthDragonWithoutHyperBombs = true' cond='game.hyperBombsCount == 0'
+
+[eventoff]
+;===============================================================================

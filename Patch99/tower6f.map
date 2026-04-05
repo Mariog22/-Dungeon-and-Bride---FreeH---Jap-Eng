@@ -1,0 +1,218 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔６Ｆ
+insideName = ６Ｆ
+upper = ラドミラの塔７Ｆ
+lower = ラドミラの塔５Ｆ
+level = 48
+bgm = tower
+margin = 3
+shadow = dark
+sky = forest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+　 = marble
+／ = door
+☖ = arch
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+
+; 敵情報
+monsters = マスターランサー,デュエリスト,アークプリースト,メイガス,ネクロマンサー,マスターアーチャー,バーグラー,マスターシャドウ,オークキング,コボルドリーダー
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  		┏━┳┯┳━━━━━┳┯┳━━━┳━┓
+ 8		┃　┃⑧┃　　　　　┃⑧┃　　　／⑥┨
+  		┃　┗／┛　┏━┓　┗／┛　　　┗━┫
+ 7		┃　　　　　／⑤┨　　　　　　　　　┃
+  		┃　　　　　┗━┛　　　┏━┓　　　┃
+ 6		【③　　　　　　　　　　／⑧┨　　㊦┃
+  		┣⧻┓　　　　　┏━┓　┗━┛　　　┃
+ 5		【⑩┃　　　　　／⑧┨　　　　　　　┃
+  		┣⧻┫　　　　　┗━┛　　　┏━┓　┃
+ 4		【⑩┃　　　　　　　　　　　／⑧┨　┃
+  		┣⧻┫　　　┏／┓　　　　　┗━┛　┃
+ 3		【⑩┃　　　┃⑧┃　　　　　　　　　┃
+  		┣⧻┫　　　┗┷┛　┏━┓　　　┏━┫
+ 2		【⑩┃　　　　　　　┠⑦／　　　／⑨┨
+  		┣／┻━┓　　　　　┗━┛　　　┗━┫
+ 1		┃　　　┃　　　　　　　　　　　　　┃
+  		┃　　　┃　┏／┓　　　┏┯━━┳━┫
+ 0		┃　　㊤┃　┃④┃　　　⧻②　　／①┨
+  		┗━━━┻━┻┷┻━━━┻━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(9, 0);
+
+pos[1][5].w.himg = "pn_wood";
+pos[1][4].w.himg = "pn_sword";
+pos[1][3].w.himg = "pn_moon";
+pos[1][2].w.himg = "pn_anch";
+
+pos[2][8].n.himg = "bt_heart";
+pos[4][7].e.himg = "bt_sword";
+pos[4][3].s.himg = "bt_sun";
+pos[4][0].s.himg = "bt_wood";
+pos[5][5].e.himg = "bt_rain";
+pos[6][8].n.himg = "bt_star";
+pos[6][2].w.himg = "bt_anch";
+pos[7][6].e.himg = "bt_snow";
+pos[8][4].e.himg = "bt_cloud";
+pos[9][8].e.himg = "bt_moon";
+pos[9][2].e.himg = "bt_skull";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! game.inLoading && events.has(4))
+{
+	switchFence(1, 5, "n", "close");
+	switchFence(1, 4, "n", "close");
+	switchFence(1, 3, "n", "close");
+	switchFence(1, 2, "n", "close");
+}
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="11Ｆ" exp='tf.result = ["ラドミラの塔11Ｆ", "up"]'
+@select text="10Ｆ" exp='tf.result = ["ラドミラの塔10Ｆ", "up"]'
+@select text="９Ｆ" exp='tf.result = ["ラドミラの塔９Ｆ", "up"]'
+@select text="７Ｆ" exp='tf.result = ["ラドミラの塔７Ｆ", "up"]'
+@select text="４Ｆ" exp='tf.result = ["ラドミラの塔４Ｆ", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=7 y=0 way=w mode=open
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="The four doors should be opened in order from the front. Otherwise, the path will be closed again."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@jump target=*event_8 cond='game.map.pos[1][4].n.type == "space" || game.map.pos[1][3].n.type == "space"'
+@se f=kacha
+[if exp='game.map.pos[1][5].n.type == "wall"']
+	@wait time=800
+	@se f=fence
+	@switchfence x=1 y=5 way=n mode=open
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@jump target=*event_8 cond='game.map.pos[1][3].n.type == "space"'
+@se f=kacha
+[if exp='game.map.pos[1][5].n.type == "space" && game.map.pos[1][4].n.type == "wall"']
+	@wait time=800
+	@se f=fence
+	@switchfence x=1 y=4 way=n mode=open
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+
+@jump target=*event_8 cond='game.map.pos[1][5].n.type == "space" && game.map.pos[1][4].n.type == "wall"'
+@se f=kacha
+[if exp='game.map.pos[1][4].n.type == "space" && game.map.pos[1][3].n.type == "wall"']
+	@wait time=800
+	@se f=fence
+	@switchfence x=1 y=3 way=n mode=open
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@jump target=*event_8 cond='game.map.pos[1][5].n.type == "space" && game.map.pos[1][3].n.type == "wall"'
+@se f=kacha
+[if exp='game.map.pos[1][3].n.type == "space" && game.map.pos[1][2].n.type == "wall"']
+	@wait time=800
+	@se f=fence
+	@switchfence x=1 y=2 way=n mode=open
+	@delevent num=4
+	@delevent num=5
+	@delevent num=6
+	@delevent num=7
+	@delevent num=8
+	@wait time=500
+	@notice text="All doors are open!"
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@se f=kacha
+[if exp='game.map.pos[1][5].n.type == "space"']
+	@wait time=800
+	@se f=fence
+	@switchfence x=1 y=5 way=n mode=close
+	@switchfence x=1 y=4 way=n mode=close
+	@switchfence x=1 y=3 way=n mode=close
+	@switchfence x=1 y=2 way=n mode=close
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@btcmd message="It's a poison gas trap!" name=毒ガス
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] onObjectTrigger
+
+@notice text="There is a symbol drawn on the stone tablet."
+
+[eventoff]
+;-------------------------------------------------------------------------------

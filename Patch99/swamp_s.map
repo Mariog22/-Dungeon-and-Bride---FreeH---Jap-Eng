@@ -1,0 +1,372 @@
+﻿; 湿地帯
+
+name = モイーズ湿地帯・死霊の森
+insideName = Dead Forest
+level = 30
+bgm = tomb
+isOutdoor = true
+shadow = dark
+sky = stormyforest
+outfield = soild
+blank = rock
+effect = PE_storm
+
+; 画像パーツ
+━ = stone_h
+ᆖ = stone
+　 = soild
+❖ = soild
+〓 = wood
+〰 = water
+⏃ = woodsd
+⑊ = door
+☗ = gate
+⑴ = bulletin
+⑶ = br_pie
+⑼ = bulletin
+
+; 敵情報
+maxGroups = 2
+monsters = スケルトンガード,グール,ガスト,レイス,ファントム,ネクロマンサー
+traps = 毒ガス,爆弾,ラミアの瞳,亡霊の群れ,媚薬の霧,死神の鎌,淫魔の触手,グラビティ,テレポート
+
+; 移動ポイント
+(A) = map:モイーズ湿地帯・東の沼地, x:16 ,y:0, way:n, symbol:movev, ask:Go to the next map?
+(B) = map:常闇の城１Ｆ, x:10, y:5, way:w, symbol:cave, ask:Go to the dungeon?
+(C) = map:モイーズ湿地帯・死者の沼, x:6 ,y:29, way:s, symbol:movev, ask:Go to the next map?
+(D) = map:モイーズ湿地帯・死者の沼, x:7 ,y:29, way:s, symbol:movev, ask:Go to the next map?
+
+; 宝箱
+box[1] = マジカルボウ_u,タワーシールド,ゴールドトンファー_u,経験のコイン（中）,金貨（大）
+box[2] = 悪魔の盾_u,ブラックブーツ_u,復活の粉,金貨（大）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  
+  																																	▲
+59					⏃⏃⏃⏃⏃													⏃⏃⏃⏃⏃⏃⏃	⏃⏃Ⓐ⏃⏃	⏃⏃❖	❖⏃⏃
+  					⏃⏃⏃⏃⏃													⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃	⏃⏃			⏃⏃
+58			⏃⏃⏃⏃❶⏃⏃⏃⏃											⏃⏃　　　⏃⏃	⏃⏃　⏃⏃	⏃⏃❖	❖⏃⏃
+  			⏃⏃⏃⏃　⏃⏃⏃⏃											⏃⏃　　　⏃⏃	⏃⏃　⏃⏃	⏃⏃			⏃⏃
+57			⏃⏃　　　　　⏃⏃											⏃⏃敵　　⏃⏃	⏃⏃　⏃⏃	⏃⏃❖	❖⏃⏃
+  			⏃⏃　　　　　⏃⏃											⏃⏃　⏃⏃⏃⏃	⏃⏃　⏃⏃	⏃⏃			⏃⏃
+56			⏃⏃　　　　　⏃⏃											⏃⏃　⏃⏃⏃⏃	⏃⏃　⏃⏃	⏃⏃❖	❖⏃⏃
+  			⏃⏃　　　　　⏃⏃											⏃⏃　⏃⏃			⏃⏃　⏃⏃
+55			⏃⏃　　　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃			⏃⏃　⏃⏃⏃⏃
+  			⏃⏃　　　　　⏃⏃			⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃			⏃⏃　⏃⏃⏃⏃
+54			⏃⏃　　⑦　　⏃⏃			⏃⏃　　　⏃⏃	⏃⏃　⏃⏃			⏃⏃　　　⏃⏃
+  			⏃⏃⏃⏃　⏃⏃⏃⏃			⏃⏃　　　⏃⏃	⏃⏃　⏃⏃			⏃⏃⏃⏃　⏃⏃
+53	⏃⏃⏃⏃⏃⏃⑦⏃⏃⏃⏃			⏃⏃敵　　⏃⏃	⏃⏃　⏃⏃			⏃⏃⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃⏃	⏃⏃　⏃⏃					⏃⏃　⏃⏃
+52	⏃⏃　　　　　⏃⏃					⏃⏃　⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃					②
+  	⏃⏃　⏃⏃⏃⏃⏃⏃					⏃⏃　⏃⏃			⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃			ᆖᆖ⑊ᆖᆖ
+51	⏃⏃　⏃⏃⏃⏃⏃⏃					⏃⏃　⏃⏃			⏃⏃　　　　　⏃⏃⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃									⏃⏃　⏃⏃			⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃
+50	⏃⏃　⏃⏃									⏃⏃　⏃⏃			⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃									⏃⏃　⏃⏃							⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃　⏃⏃
+49	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃							⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃							⏃⏃　⏃⏃									⏃⏃　⏃⏃
+48	⏃⏃　　　　　　　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+47	⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃〰〰〰〰〰〰〰〰　⏃⏃	⏃⏃　　　　　　　　　⏃⏃
+  					⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃〰〰〰〰〰〰〰〰　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+46					⏃⏃　⏃⏃					⏃⏃　　　〓④〓④〓〓〓〓〓　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  					⏃⏃　⏃⏃					⏃⏃⏃⏃⏃⏃〰〰〰〰〰〰〰⏃⏃⏃⏃	⏃⏃　⏃⏃
+45					⏃⏃　⏃⏃					⏃⏃⏃⏃⏃⏃〰〰〰〰〰〰〰⏃⏃⏃⏃	⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃									⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+44					⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃													⏃⏃　⏃⏃
+43	⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃〰〰❷〰〰⏃⏃⏃⏃⏃⏃									⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃〰〰〓〰〰⏃⏃⏃⏃⏃⏃									⏃⏃　⏃⏃
+42	⏃⏃　　　　　⏃⏃	⏃⏃〰〰〓〓〓〓〓〰〰⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃〰〰〰〰〰〰〰〰〰⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃
+41	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃〰〰〰〰〰〰〰〰〰⏃⏃	⏃⏃　　　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃　⏃⏃			⏃⏃⏃⏃〰〰〰〰〰〰〰〰〰⏃⏃	⏃⏃　⏃⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃⏃
+40	⏃⏃　⏃⏃			⏃⏃　　⑧　⑧　⑧　　　　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃　　⑴　　　　　　　　⏃⏃
+  	⏃⏃　⏃⏃			⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃	⏃⏃　　　　　⏃⏃⏃⏃⏃　⏃⏃
+39	⏃⏃　⏃⏃			⏃⏃　　⑧　⑧　⑧⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃	⏃⏃　　　　　⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃			⏃⏃　　　　　　　⏃⏃					⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+38	⏃⏃　⏃⏃			⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃			⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃			⏃⏃⏃⏃　⏃⏃
+37	⏃⏃　⏃⏃			⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃　　　　　　　⏃⏃	⏃⏃　⏃⏃			⏃⏃　　　⏃⏃
+  	⏃⏃　⏃⏃							⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃			⏃⏃　⏃⏃⏃⏃
+36	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃⏃⏃　⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃⏃⏃　⏃⏃⏃⏃
+35	⏃⏃　　　　　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃⏃			⏃⏃　　　　　⏃⏃	⏃⏃　　　〰〰⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃									⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　　　〰〰⏃⏃
+34	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　　⑤〰〰⏃⏃
+  													⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃					⏃⏃　　　〰〰⏃⏃
+33			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　　　　　　　　　　⏃⏃	⏃⏃⏃⏃⏃⏃　　⑤〰〰⏃⏃
+  			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃　　　〰〰⏃⏃
+32			⏃⏃　　⑥　⑥　⑥　　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　　　　⑤　⑤〓〓⏃⏃
+  			⏃⏃　〰〰〰〰〰〰〰〰〰〰⏃⏃					⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃〰〰〰〰〰⏃⏃
+31			⏃⏃⑥〰〰〰〰〰〰〰〰〰〰⏃⏃					⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃〰〰〰〰〰⏃⏃
+  			⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃					⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+30			⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃					⏃⏃　⏃⏃					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  			⏃⏃　⏃⏃															⏃⏃　⏃⏃					⏃⏃　⏃⏃
+29			⏃⏃　⏃⏃															⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃
+  			⏃⏃　⏃⏃															⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃
+28			⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⑶⏃⏃	⏃⏃　　　　　　　⏃⏃
+  			⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+27			⏃⏃　⏃⏃⏃⏃⏃　　　　　　　　　⏃⏃	⏃⏃　　敵　　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  			⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃〰〰　⏃⏃	⏃⏃⏃⏃　　　⏃⏃							⏃⏃　⏃⏃
+26			⏃⏃　　　　　　　⏃⏃⏃⏃⏃〰〰　⏃⏃	⏃⏃⏃⏃　　　⏃⏃							⏃⏃　⏃⏃
+  			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃〰〰　⏃⏃			⏃⏃⏃⏃⏃⏃⏃							⏃⏃　⏃⏃
+25			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃〰〰　⏃⏃			⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  															⏃⏃〰〰　⏃⏃											⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+24													⏃⏃⏃⏃〰〰　⏃⏃									⏃⏃⏃⏃　　　　　　　⏃⏃
+  													⏃⏃⏃⏃〰〰　⏃⏃									⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃
+23													⏃⏃　　　　　⏃⏃									⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃
+  													⏃⏃　⏃⏃⏃⏃⏃⏃									⏃⏃　⏃⏃⏃⏃
+22													⏃⏃　⏃⏃⏃⏃⏃⏃									⏃⏃　⏃⏃⏃⏃
+  													⏃⏃　⏃⏃													⏃⏃　⏃⏃
+21													⏃⏃　⏃⏃													⏃⏃　⏃⏃
+  													⏃⏃　⏃⏃													⏃⏃　⏃⏃
+20													⏃⏃　⏃⏃													⏃⏃　⏃⏃
+  													⏃⏃　⏃⏃													⏃⏃　⏃⏃
+19													⏃⏃　⏃⏃													⏃⏃　⏃⏃
+  													⏃⏃　⏃⏃													⏃⏃　⏃⏃
+18													⏃⏃　⏃⏃													⏃⏃　⏃⏃
+  													⏃⏃　⏃⏃													⏃⏃　⏃⏃
+17													⏃⏃　⏃⏃													⏃⏃　⏃⏃⏃⏃⏃⏃
+  													⏃⏃　⏃⏃													⏃⏃　⏃⏃⏃⏃⏃⏃
+16									⏃⏃⏃⏃⏃⏃　⏃⏃													⏃⏃　　　　　⏃⏃
+  									⏃⏃⏃⏃⏃⏃　⏃⏃													⏃⏃⏃⏃　　　⏃⏃
+15							⏃⏃⏃⏃　　　　　⏃⏃													⏃⏃⏃⏃⑼　　⏃⏃
+  							⏃⏃⏃⏃〓〰〰⏃⏃⏃⏃															⏃⏃⏃⏃　⏃⏃
+14							⏃⏃〰〰〓〰〰⏃⏃⏃⏃															⏃⏃⏃⏃　⏃⏃
+  							⏃⏃〰〰〓〰〰⏃⏃																			⏃⏃　⏃⏃
+13							⏃⏃〰〰〓〰〰⏃⏃																			⏃⏃　⏃⏃
+  							⏃⏃〰〰〓〰〰⏃⏃																			⏃⏃　⏃⏃
+12							⏃⏃〰〰〓〰〰⏃⏃																			⏃⏃　⏃⏃
+  							⏃⏃〰〰〓〰〰⏃⏃																			⏃⏃　⏃⏃
+11					⏃⏃⏃⏃〰〰〓〰〰⏃⏃																			⏃⏃　⏃⏃
+  					⏃⏃⏃⏃〰〰〓〰〰⏃⏃																			⏃⏃　⏃⏃
+10					⏃⏃　　　　　〰〰⏃⏃																			⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃																			⏃⏃　⏃⏃
+ 9┃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃																			⏃⏃　⏃⏃⏃⏃
+  ┃⏃⏃⏃⏃⏃⏃　⏃⏃																									⏃⏃　⏃⏃⏃⏃
+ 8┃　　　⏃⏃⏃　⏃⏃																									⏃⏃　　　⏃⏃⏃⏃
+  ┃　　　⏃⏃⏃　⏃⏃																									⏃⏃　　　⏃⏃⏃⏃
+ 7┃　　　⏃⏃⏃　⏃⏃																									⏃⏃　　　　　⏃⏃
+  ┃　　　⏃⏃⏃　⏃⏃																									⏃⏃⏃⏃　　　⏃⏃
+ 6☗Ⓑ　　　　　　⏃⏃																									⏃⏃⏃⏃　　　⏃⏃	❖
+  ┃　　　⏃⏃⏃⏃⏃⏃																											⏃⏃　　　⏃⏃
+ 5┃　　　⏃⏃⏃⏃⏃⏃																											⏃⏃　　　⏃⏃
+  ┃　　　⏃⏃																															⏃⏃　　　⏃⏃
+ 4┃　　　⏃⏃																															⏃⏃　　　⏃⏃
+  ┃⏃⏃⏃⏃⏃																															⏃⏃　　　⏃⏃
+ 3┃⏃⏃⏃⏃⏃																									⏃⏃❖⏃⏃	⏃⏃　　　⏃⏃
+  																															⏃⏃	⏃⏃	⏃⏃　　　⏃⏃
+ 2																															⏃⏃❖⏃⏃	⏃⏃　　　⏃⏃
+  																															⏃⏃	⏃⏃	⏃⏃　　　⏃⏃
+ 1																															⏃⏃❖⏃⏃	⏃⏃　　　⏃⏃
+  																															⏃⏃	⏃⏃	⏃⏃　　　⏃⏃
+ 0																															⏃⏃❖⏃⏃	⏃⏃Ⓒ　Ⓓ⏃⏃
+  																																							▲	▲
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setHouse(21, 52);
+pos[10][46].f.img = "wood";
+pos[11][46].f.img = "wood";
+pos[7][43].f.img = "wood";
+pos[0][6].event = pos[19][0].event = pos[20][0].event = 10;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@roadguide s="Castle" e="Swamp of the Dead"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@addevent name=イーラ教団 num=0
+@shop name=イーラ教団
+@walk turn=s move=s
+[texton]
+[ブラザー]「Come back again, heh heh heh.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("piety", 2)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had Faith permanently increased by 2!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] game.party.members.count > 1
+*event_5
+;[exp] game.party.members.count > 1
+*event_6
+;[exp] game.party.members.count > 1
+
+@eval exp='tf.arr = []'
+@eval exp='tf.arr.assign(game.party.members)'
+@eval exp='tf.arr.remove(o.テオ)' cond='! game.isFreeMode'
+@eval exp='tf.captured = game.curChara = tf.arr.draw()'
+@eval exp='game.party.removeMember(tf.captured)'
+
+[texton]
+[if exp='isTEO || isMAX'][キャラ f=11]「Whoa, what the hell?!」[k]
+[else][キャラ f=11]「Kya!」[k]
+[endif]
+Suddenly, one of our companions was pulled down by something![k]
+[if exp='isMAX'][マックス f=17]「Oh no! Help me!」[k]
+[elsif exp='isTEO'][テオ f=17]「Damn it! You...!」[k]
+[elsif exp='isHUM || isDWA'][キャラ f=17]「Help me!」[k]
+[elsif exp='isELF || isSYL'][キャラ f=17]「No! Let go of me!」[k]
+[elsif exp='isGNO || isLIS'][キャラ f=17]「Ugh... someone help me...!」[k]
+[endif]
+[リーダー f=11]「[キャラ]!」[k]
+[キャラ] was about to be dragged underwater by a corpse that appeared from the water![k]
+[if exp='game.leader.sex == "男"'][リーダー f=07]「Wait! I'm coming to help you!」[k]
+[else][リーダー f=17]「Wait! I'll help you!」[k]
+[endif]
+[textoff]
+
+@monster pos=1 name=レブナント
+@monster pos=2 name=レブナント
+@monster pos=3 name=レブナント
+@monster pos=4 name=レブナント
+@monster pos=5 name=レブナント
+@callbattle escape=false
+
+@se f=period
+@eval exp='game.party.entry(tf.captured)'
+@notice text=&'"<c>" + tf.captured.displayName + "<y> rescued!"'
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+@delevent
+@w05
+@fgf c=priest_purple_default left=450 top=70
+[texton]
+[name n=Woman f=priest_purple_01]「Someone help me!」[k]
+[if exp='WAY != "n"']
+	[textoff]
+	@wait time=200
+	@walk turn=n
+	@wait time=200
+	[texton]
+[endif]
+[リーダー f=11]「...!」[k]
+Deep in the forest, a young woman was surrounded by a large number of ghosts! [r]
+We must rescue her quickly![k]
+[textoff]
+@clf
+
+@wait time=500
+@walk move=n
+@walk move=n
+@wait time=500
+@monster pos=0 name=レイス
+@monster pos=1 name=レイス
+@monster pos=2 name=レイス
+@monster pos=3 name=レイス
+@monster pos=4 name=レイス
+@monster pos=5 name=レイス
+@monster pos=6 name=レイス
+@monster pos=7 name=ゴースト
+@monster pos=8 name=ゴースト
+@monster pos=9 name=ゴースト
+@monster pos=10 name=ゴースト
+@monster pos=11 name=ゴースト
+@monster pos=12 name=ゴースト
+@monster pos=13 name=ゴースト
+@callbattle escape=false
+
+[texton]
+[リーダー f=05]「...Huh? That person from earlier...」[k]
+After defeating the ghosts, I looked around and saw that the woman who had been asking for help earlier was nowhere to be found.[k]
+[リーダー f=05]「An illusion? I thought it was strange that a woman was walking alone in the depths of the forest...
+ 」[k]
+Perhaps the ghosts were trying to add to their number by baiting adventurers into trying to aid the illusion.
+ [k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] map.pos[7][53].f.box === void
+
+@delevent
+[texton]
+[リーダー f=11]「...!」[k]
+Suddenly I was surrounded by a large number of undead![k]
+[textoff]
+
+@monster pos=0  name=ガスト
+@monster pos=1  name=ガスト
+@monster pos=2  name=ガスト
+@monster pos=3  name=ガスト
+@monster pos=4  name=ガスト
+@monster pos=5  name=ガスト
+@monster pos=6  name=ガスト
+@monster pos=7  name=ガスト
+@monster pos=8  name=ガスト
+@monster pos=9  name=ガスト
+@monster pos=10 name=ガスト
+@monster pos=11 name=ガスト
+@monster pos=12 name=ガスト
+@monster pos=13 name=ガスト
+@monster pos=14 name=ガスト
+@monster pos=15 name=ガスト
+@monster pos=16 name=ガスト
+@monster pos=17 name=ガスト
+@monster pos=18 name=ガスト
+@monster pos=19 name=ガスト
+@monster pos=20 name=ガスト
+@callbattle escape=false
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] onObjectTrigger
+
+@notice text="Ahead lies the Swamp of the Dead. Danger, stay away. Many people have gone missing there."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] true
+
+[if exp='f.kidnappedElfID !== void']
+	; エルフ誘拐イベント時の移動制限。ダンジョンに入れないようにする
+	[texton]
+	[テオ f=06]「We should go somewhere else.」[k]
+	[textoff]
+	@walk move=n
+[else]
+	; 死者の沼から戻ってきた時の会話
+	@delevent
+	@jump storage="main11.scn" target=*pond_3
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

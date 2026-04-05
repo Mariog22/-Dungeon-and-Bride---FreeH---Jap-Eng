@@ -1,0 +1,150 @@
+﻿; 魔女の隠れ家
+
+name = 魔女の隠れ家Ｂ７
+insideName = Ｂ７
+upper = 魔女の隠れ家Ｂ６
+pool = 魔女の隠れ家Ｂ７水中
+level = 23
+bgm = hideout
+external = s:1
+roof = stone
+shadow = dark
+sky = black
+blank = rock
+outfield = marble
+antiWarp = true
+
+; 各パーツ
+━ = stoney
+　 = marble
+～ = pool
+❑ = cube
+／ = door
+⧻ = fence
+☖ = gate
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+⑹ = br_maxmp
+⑺ = br_maxmp
+
+; 宝箱
+box[1] = 精霊の縫い糸,精霊の縫い糸,ドルフィンスーツ_u
+box[2] = 罠はない,炎のロッド,魔法の鎖かたびら,魔女のスカート,貝のお守り,解呪の巻物・改,男の秘薬,女の秘薬
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  ┏━━━━━━━━━━━━━┳━┓
+ 5┃～～～～～～～～❑　　　　┃③┃
+  ┃～┏━┓～～～～　　　　　┗／┫
+ 4┃～→④】　　❑　　　　　❑　　┃
+  ┃～┃　┗━┓　┏━━━┓　　　┃
+ 3┃～┃　　❷┃　┃❶　　／　　　┃
+  ┣━┛　┏━┛　┗━━━┛　　　┃
+ 2【⑤　　┃　　　　　　❑　　　　┃
+  ┃　　　┣━┳━━━┓　　　　　┃
+ 1┃⑹　　→　┃　　①⧻　　　　②】
+  ┃　┏━┛　┃　　　┗━━━━━┫
+ 0┃⑺┃～～　→　　　　　　　　㊤┃
+  ┗━┻━━━┻━━━━━━━━━┛
+-1			　
+  
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[0][4].f.eraseMagic = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(4, 1, "e", "close");
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] map.isPartition(4, 1, "e")
+
+[if exp='! game.party.hasItem(o.時のスイッチ)']
+	@notice text="I hear a voice from somewhere:<y><r>This door will not be opened to those without a <p>Time Switch<y>."
+	[eventoff]
+[endif]
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=4 y=1 way=e mode=open
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="If you want to open the way, sink every rock into the water."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove
+
+@question title="I found a journal left by another adventurer!<r>Read it?" cancel=true
+@eventoff cond='! tf.result'
+[texton]
+[b]To exit this floor, you must push all four rocks on this floor into the water to the northwest. That's it, nothing more.
+ [k]
+[b]Just concentrate on how to move the rocks, nothing else. Don't give up, there is always a way.
+ [k]
+[b]But it is not so straightforward, as you will see if you try. You need to think carefully about how you move the rocks. If you make a mistake, you can easily get stuck.
+ [k]
+[b]Creating a route around the room is key. As long as this passage is available, it will be possible to bring the rocks to the water's edge. Move the rocks frequently to keep the path clear as you work.
+ 
+ [k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="You've done well in your ordeal, so I'm going to reward you."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Magical Source"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] onObjectTrigger
+*event_7
+;[exp] onObjectTrigger
+
+@barrel noguest
+@damage v=&'game.curTarget.addParam("maxMagic", 1)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had max MP permanently increased by 1!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+@se f=dragstone
+@eval exp='o.魔女の隠れ家Ｂ７.reset()'
+@eval exp='o.魔女の隠れ家Ｂ７水中.reset()'
+@wait time=800
+@warp map=魔女の隠れ家Ｂ７ x=3 y=1 way=e
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;===============================================================================

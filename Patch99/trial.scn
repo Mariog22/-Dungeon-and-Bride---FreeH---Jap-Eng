@@ -1,0 +1,155 @@
+﻿; 体験版用シナリオ
+
+
+
+;■ゲームの紹介
+
+*introduction
+
+@wait time=500
+[texton w=0]
+Welcome to the Dungeon and Bride trial version![r]
+This game is a 3D dungeon RPG.[k]
+Explore dungeons and complete various quests to grow your party and advance the story. [r]
+The goal is to marry the heroine and defeat the last boss to reach the ending.[k]
+Party members, with the exception of a few characters, can be created by the user. [r]
+Create a heroine of your choice and proceed with your own adventure.[k]
+This trial version allows you to play a small portion of the game.[r]
+Please experience what kind of game it is.[k]
+Please note that the maximum level is [b][emb exp='game.levelCapOnDemo'][/b], and maximum magic level is [b][emb exp='game.magicLevelCapOnDemo'][/b].[k]
+[textoff]
+
+@question title="Would you like to play the prologue?<r>(Riselle and Maria can be used for a short time.)"
+@jump storage="main01.scn" target=*cottage_1 cond='tf.result'
+
+
+
+;■プロローグを飛ばす場合
+;-----------------------------------------------------------------------------------------
+[iscript]
+
+// クエスト
+o.ベトリヌスの酒場.quests.remove(o.盗賊メンバー派遣の依頼);
+o.赤いネックレスを探してほしい.complete();
+o.盗賊メンバー派遣の依頼.complete();
+
+// サファイアシティ
+o.サファイアシティ.events = [];
+o.シーガルの村.events = [];
+o.王立ギルド.events = [5];
+o.待合所.events = [2];
+o.ベトリヌスの酒場.events = [2];
+o.冒険者の宿.events = [2];
+o.アイテム保管庫.events = [];
+o.サファイア城.events = [2, 3];
+o.公園.events = [];
+o.サファイアシティ・北西門.events = [];
+o.サファイアシティ・北東門.events = [];
+o.サファイアシティ・南西門.events = [];
+o.サファイアシティ・南東門.events = [6];
+o.下水道入口.events = [];
+o.サファイアシティ・北西門.requireMembers = true;
+o.サファイアシティ・北東門.requireMembers = true;
+o.サファイアシティ・南西門.requireMembers = true;
+o.下水道入口.requireMembers = true;
+
+// シーガルの村
+o.シーガルの村.img = "town_seagull";
+o.海岸ギルド.appeared = true;
+o.潮風のペンション.appeared = true;
+o.かもめ亭.appeared = true;
+o.かもめ亭.events.push2(13);
+o.魔法の店うみねこ.appeared = true;
+o.シーサイド保管庫.appeared = true;
+o.マーメイドビューティ.appeared = true;
+o.海の男の武器店.events = [1];
+o.シーガルの村・東門.events = [2];
+o.シーガルの村・南門.events = [];
+o.シーガルの村・北門.requireMembers = true;
+o.シーガルの村・東門.requireMembers = true;
+o.シーガルの村・南門.requireMembers = true;
+o.海の男の武器店.selection = [o.カトラス, o.サーベル, o.木の槍, o.ジャベリン, o.鉄の槍];
+o.海の男の武器店.specialItem = [o.シャムシール, o.パルチザン, o.トライデント];
+o.海の男の武器店.restockItems();
+
+// ダンジョン
+o.ランドン渓谷・崖上.events = [1, 3, 5, 6, 7, 8, 9, 10, 11];
+o.コリンズの森.events = [9, 19];
+o.ランドン渓谷・谷底.events.push2(4);
+o.フーラ雪原・南の森.events.push2(10);
+o.ヤネクの森・霧の谷.events.push2(5);
+
+// その他
+game.events.push(13, 15, 17, 21, 22, 23, 25, 26);
+game.closeItems.remove(o.ボム);
+game.party.gold = 100000;
+game.lapse = true;
+
+game.guest.entry(o.ライナス);
+game.guest.entry(o.ミレディ);
+game.enterTown(o.サファイアシティ, o.サファイアシティ・南西門);
+
+f.safeReturnFromHeadless = false;
+f.heroineEventProgress = true;
+
+game.lovers.add(o.ライナス);
+
+if(game.chara[2] == o.リーゼル && o.リーゼル.exp != 436)
+{
+	o.待合所.entry(o.リーゼル);
+	o.リーゼル.regular = false;
+}
+
+game.notPlayInFullVersion = true;	// ここから先は製品版での継続不可
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+[s]
+
+
+
+;■回想をスキップ
+
+*skip_past
+
+@wait time=1000
+@out
+[texton w=0]
+After this, the protagonists are unable to stay here in Bravetown for various reasons.[k]
+On the way, they meet a veteran adventurer named Schwarz, who leads them on an escapade to a town called Sapphire City.[k]
+In the demo version, you start again from the point where you left town to escape your pursuers. From here, aim to reach Sapphire City.[k]
+[textoff]
+@w1
+
+;-----------------------------------------------------------------------------------------
+; 設定
+[iscript]
+
+o.テオ.levelUpToTheLast();
+o.マックス.levelUpToTheLast();
+o.テオ.recovery();
+o.マックス.recovery();
+o.シュバルツ.recovery();
+
+game.guest.entry(o.シュバルツ);
+f.fountainForOpeningEvent = true;
+game.clock = game.timeOfADay * 5 \ 8;
+game.gameFrame.updateClock();
+game.view.close();
+game.openDungeonView(%[map:"コリンズの森", x: 37, y: 1, way: "w"]);
+o.コリンズの森.sky = "dawnforest";
+game.view.skyLayer.loadImages("sky_" + o.コリンズの森.sky);
+game.view.startExplore();
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+@gameon
+@eval exp='game.exitTravelMode()'
+@wait time=500
+
+[texton w=0]
+[シュバルツ]「Well then, [テオ], Max.」[k]
+[シュバルツ]「Sapphire City is just north of here. There is a village on the way. We must go there first.」[k]
+[textoff]
+
+[eventoff]

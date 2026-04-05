@@ -1,0 +1,1532 @@
+﻿; シナリオ・ドワーフ編・Ａパート
+
+
+
+;■主人公編・前半
+
+;◇主人公イベント01
+*theo_01
+
+; 宿屋の一室
+@saveon
+@fg c=フレデリカ e=通常 f=03 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ e=通常 f=02]「[フレデリカ], good to see you today.」[k]
+[フレデリカ v=vd176 f=03]「Yes, looking forward to staying with you～!」[k]
+When I said hello, [フレデリカ] replied in a cheerful voice.[k]
+She is a very bright and honest girl, although her laid-back nature is a bit of a drawback. As a leader, I am very grateful to have her.[k]
+@fg c=フレデリカ f=01
+[フレデリカ v=vd177 f=01]「You know, I'm really enjoying my current adventure!」[k]
+[テオ f=02]「Oh, what have you enjoyed so far?」[k]
+[フレデリカ v=vd178 f=22]「Let's see... I've been to a lot of towns, and I've eaten some great food there...」[k]
+[フレデリカ v=vd179 f=23]「I came from a dwarven village deep in the mountains, so everything I see is new to me. So every day is fun...」[k]
+Come to think of it, you said something like that before. You had never left your village until you became an adventurer.[k]
+[フレデリカ v=vd180 f=21]「It's all thanks to you recruiting me at the guild.」[k]
+[フレデリカ v=vd181 f=23]「If you hadn't, I would have had to give up being an adventurer and return to my village. Thank you, Captain!」[k]
+[テオ f=02]「You've been a great help to me as well. Thanks again, [フレデリカ]!」[k]
+[フレデリカ v=vd182 f=04]「Heh heh heh... You're welcome...」[k]
+[テオ f=01]「So, what are some of the best places you've been to?」[k]
+[フレデリカ v=vd183 f=02]「Well... so far...」[k]
+[フレデリカ v=vd184 f=03]「Ah! I was so impressed with the steak restaurant on the main street in Sapphire City. That was so good! I had never had such delicious meat!」[k]
+[テオ f=02]「Anything else?」[k]
+[フレデリカ v=vd185 f=04]「I also liked the Gull's Nest in Seagull Village! The seafood dishes there are excellent～!」[k]
+[フレデリカ v=vd186 f=01]「Also, the meat pie shop near Sapphire Castle is great! I keep coming back for their pies...」[k]
+[テオ f=13]「Wait... It's all food stores.」[k]
+@fg c=フレデリカ f=31
+[フレデリカ f=31]「...! (Ah!)」[k]
+[フレデリカ v=vd187 f=33]「No, no! There were lots of good places besides food stores! For example, umm... Let's see...」[k]
+@se f=guuu
+@fg c=フレデリカ f=32
+∗rumble∗[k]
+[フレデリカ f=32]「... (Kyaaaa)」[k]
+Suddenly, a loud noise rang out from [フレデリカ]'s belly.[k]
+[テオ f=01]「Hahaha, you must be hungry. Actually, I am too. Let's go get something to eat in town now.」[k]
+[フレデリカ f=25]「...!」[k]
+@fg c=フレデリカ f=23
+[フレデリカ v=vd188 f=23]「Yes, Captain!」[k]
+[フレデリカ] replies cheerfully, I knew she was hungry.[k]
+Afterwards, the two of us filled our stomachs at a restaurant in town.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント02
+*theo_02
+
+; 宿屋の一室
+@saveon
+@fg c=フレデリカ e=タンクトップ f=03 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ f=02]「We're rooming together again. Nice to see you again today.」[k]
+[フレデリカ v=vd189 f=03]「Yes, let's get along tonight!」[k]
+[フレデリカ] is cheerful as always. I'm sure we'll have a good time tonight.[k]
+Even so...[k]
+[テオ f=26]「...」[k]
+@fg c=フレデリカ e=タンクトップ f=05
+[フレデリカ v=vd190 f=05]「What's wrong? Is something wrong?」[k]
+[テオ f=33]「No, no... It's nothing...」[k]
+[フレデリカ]'s clothes are somehow too thin and her large breasts are particularly prominent.[k]
+I couldn't calm down as [フレデリカ] approached me innocently.[k]
+[フレデリカ v=vd191 f=05]「Captain, you look a little red. Perhaps you have a cold?」[k]
+[テオ f=33]「O-oh, no, I'm fine.」[k]
+@fg c=フレデリカ e=タンクトップ・大 f=08
+[フレデリカ v=vd192 f=08]「Really?」[k]
+With that said, [フレデリカ] draws even closer.[k]
+[テオ f=25]「Ah... [フレデリカ]...」[k]
+@fg c=フレデリカ e=タンクトップ・大 f=56
+Then she puts her forehead on my forehead.[k]
+[テオ f=26]「...!」[k]
+Right in front of me is [フレデリカ]'s ample cleavage...![k]
+My head is racing... I can't stay calm... My face is getting hot too...[k]
+@fg c=フレデリカ e=タンクトップ・大 f=07
+[フレデリカ v=vd193 f=07]「...Captain, you are hot! I knew you had a fever! You have to take proper rest when you catch a cold!」[k]
+[テオ f=33]「No... I'm telling you, it's really nothing...」[k]
+[フレデリカ] is full of sex appeal, yet innocent, and I was at her mercy...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント03
+*theo_03
+
+; サファイアシティの道具屋
+@eval exp='game.itemWin.openSpecialBuyMode()'
+@eval exp='game.itemWin.enabled = true'
+@eval exp='game.itemWin.enabled = false'
+@eval exp='game.itemWin.shopWin.setSelectingMark(game.itemWin.shopWin.buttons[1]);
+@eval exp='game.curChara = game.chara[f.hairbandDwarfID]'
+@w05
+[texton w=0]
+[name n=Nora f=nora_00]「Come on, we've got good products! Go ahead and buy them!」[k]
+[テオ f=05]「Ah...!」[k]
+[name f=other_02]I found a lovely hair clip on the store's merchandise shelf.[k]
+[name f=other_02]This would look great on [フレデリカ]... I think I'll buy it...[k]
+[name n=Nora f=nora_01]「What is it? Are you interested in this hair clip? Is it a present for your girlfriend?」[k]
+[テオ f=10]「Oh... No... It's not like that...」[k]
+[name n=Nora f=nora_00]「Now on special sale, it's a super deal! Come on, the early bird gets the worm! Don't miss out on this great opportunity!」[k]
+[textoff]
+[shopoff]
+
+
+;◇主人公イベント04
+*theo_04
+
+; 宿屋の一室
+@saveon
+@fg c=フレデリカ e=通常 f=05 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ f=02]「Hey, [フレデリカ]. I have something for you today.」[k]
+[フレデリカ v=vd194 f=05]「You have something for me...?」[k]
+[name f=other_02]I give [フレデリカ] the hair clip I bought in town.[k]
+[フレデリカ v=vd195 f=05]「Is this...?」[k]
+[テオ f=02]「It's a hair clip. I happened to find it in town and thought it would look good on you. You always tie your hair up in a bun, right? I thought you might use it.」[k]
+[フレデリカ v=vd196 f=05]「...You're giving it to me?」[k]
+[テオ f=02]「It's a gift to show my appreciation for your work. Please accept it if you like.」[k]
+[フレデリカ v=vd197 f=25]「Captain...!」[k]
+[フレデリカ] stares at the hair clip with wide eyes. Will she be pleased?[k]
+@fg c=フレデリカ f=30
+[フレデリカ f=30]「...」[k]
+@fg c=フレデリカ f=52
+[フレデリカ v=vd198 f=52]「...Sorry! That isn't possible!」[k]
+[テオ f=05]「[フレデリカ]?」[k]
+@fg c=フレデリカ f=29
+[フレデリカ v=vd199 f=53]「I can't wear this... I'm sorry, Captain.」[k]
+[テオ f=12]「E-eh...?」[k]
+She refused to accept my gift... Maybe I was presumptuous... Or maybe she doesn't like me...?[k]
+[テオ f=13]「Didn't you like it...? I'm sorry for giving you a boring present.」[k]
+[フレデリカ v=vd200 f=29]「No, no! It's not that!」[k]
+[テオ f=05]「Eh?」[k]
+[フレデリカ v=vd201 f=29]「The hair clip I always wear... It's a traditional accessory that every dwarf girl wears...」[k]
+[テオ f=05]「It's a tradition?」[k]
+[フレデリカ v=vd202 f=29]「So I'm not allowed to wear any other hair clips... It's a rule...」[k]
+[テオ f=05]「Like a family code?」[k]
+[フレデリカ v=vd203 f=30]「Yes...」[k]
+Oh, I see. Then this is no good...[k]
+@fg c=フレデリカ f=24
+[フレデリカ v=vd204 f=24]「But I'm glad you thought of me... I'll keep this hair clip...」[k]
+She then lovingly held the hair clip I had given her to her chest.[k]
+[テオ f=01]「You will take it?」[k]
+[フレデリカ v=vd205 f=23]「Yes... I can't wear it, but... I'll take good care of it...」[k]
+[テオ f=01]「Thank you. I'm glad to hear that.」[k]
+[フレデリカ v=vd206 f=24]「Captain... I love it...」[k]
+[フレデリカ] hugs the hair clip I gave her. I'm happy that she's so happy. At one point I was surprised because I thought she had turned me down.[k]
+But still, it's tough being a dwarf. I can't believe there are even codes for things like that.[k]
+I felt a little sorry for [フレデリカ], who is always so innocent and naive.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント05
+*theo_05
+
+; 宿屋の一室
+@saveon
+@fg c=フレデリカ e=通常 f=03 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ e=通常 f=02]「Shall we have dinner together today?」[k]
+[フレデリカ v=vd207 f=03]「Yes!」[k]
+[フレデリカ] is in good spirits today. Let's take her to a bar in town, shall we?[k]
+[textoff]
+@out
+; 町のマップ表示
+@eval exp='game.hour = "night"'
+@eval exp='o.サファイアシティ.img = "town_sapphire_night"'
+@eval exp='game.openTownView(o.サファイアシティ)'
+[eventoff]
+
+
+;◇主人公イベント06
+*theo_06
+
+; 町の酒場
+@saveon
+@out
+@bg f=0012
+[texton w=1]
+[テオ e=通常 f=02]「Is it tasty, [フレデリカ]?」[k]
+[フレデリカ v=vd208 e=通常 f=03]「Yes! It's delicious and great～!」[k]
+[フレデリカ] looks really happy as she tucks into her spare ribs. Seeing her like that makes me kind of happy too.[k]
+I enjoy hanging out with this girl... I might want to spend more time with her...[k]
+[フレデリカ v=vd209 f=56]「Hmm, hmm! ...Eh?」[k]
+; ↑ 口に食べ物が入っている
+[フレデリカ v=vd210 f=33]「Umm, Captain... It's embarrassing when you stare at me...」[k]
+[テオ f=13]「I'm sorry! I was just...」[k]
+Oh no, I couldn't resist staring at her...[k]
+I wonder if I'm starting to like [フレデリカ]...[k]
+[textoff]
+@out
+@eval exp='game.restoreMembers()'
+@showeventbtns map=サファイアシティ
+@eval exp='o.サファイアシティ.img = "town_sapphire"'
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+[hoteloff]
+
+
+
+
+;■マックス編
+
+;◇マックスイベント01
+*max_01
+
+; 宿屋の一室
+@saveon
+@bg f=0001 b
+@mu f=trick
+@fg l=マックス e=通常 f=03 b
+@fg r=フレデリカ e=タンクトップ f=13
+[texton w=1]
+[マックス f=03]「Yo! [フレデリカ]! Good to see you tonight!」[k]
+[フレデリカ v=vd452 f=13]「Ha... Yes... Good to see you...」[k]
+[マックス f=04]「So, what are you going to do now? We still have some time before bedtime.」[k]
+[フレデリカ v=vd453 f=13]「Okay, well, let's talk...」[k]
+[マックス f=03]「Fine, let's talk a lot until the night is over!」[k]
+[フレデリカ v=vd454 f=13]「Ha... Yes...」[k]
+@fg l=マックス f=32
+[マックス f=32]「... ∗stare∗」[k]
+@fg r=フレデリカ f=10
+[フレデリカ f=10]「...」[k]
+[マックス] is staring at me... What is it?[k]
+[マックス f=32]「... ∗stare∗」[k]
+[マックス f=32]（[フレデリカ] has big boobs... As I'd expect from a dwarf. Hee hee hee...）[k]
+[マックス f=32]（I bet she looks amazing when she takes off her clothes... I want to see them... I want to rub them...）[k]
+@fg r=フレデリカ f=09
+[フレデリカ v=vd455 f=09]「Um... [マックス], you've been looking at me for a while now, what's wrong?」[k]
+@fg l=マックス f=31
+[マックス f=31]「What the...?!」[k]
+@fg l=マックス f=33
+[マックス f=33]「Ah, sorry, sorry, did I look at you that much?」[k]
+[フレデリカ v=vd456 f=09]「Yes... you did...」[k]
+@fg l=マックス f=23
+[マックス f=23]「No offense. Sorry!」[k]
+[フレデリカ v=vd457 f=10]「Y-yes...」[k]
+@fg l=マックス f=32
+[マックス f=32]（I should have known. I was staring too hard.）[k]
+[マックス f=32]（But I just can't take my eyes off those boobs～）[k]
+[フレデリカ f=10]「...」[k]
+I continued to be troubled by [マックス]'s mysterious gaze...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント02
+*max_02
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=trick
+[texton w=1]
+@se f=door1
+∗slam∗[k]
+@fg c=フレデリカ e=タンクトップ f=03
+[フレデリカ v=vd458 f=03]「Phew～ that felt good～!」[k]
+After taking a bath, I returned to my bedroom.[k]
+@cl b
+@fg l=フレデリカ f=03 b
+@fgf r=マックス e=通常 f=03
+[マックス f=03]「Yo! [フレデリカ]!」[k]
+@fgf l=フレデリカ f=31
+[フレデリカ v=vd459 f=31]「Kya! [マックス]! What are you doing here?」[k]
+[マックス f=03]「Why? Because this is my room today.」[k]
+@fg l=フレデリカ f=09
+[フレデリカ v=vd460 f=09]「Oh... What? Was that so...?」[k]
+@fg r=マックス f=22
+[マックス f=22]「So I'm looking forward to staying with you! By the way...」[k]
+[マックス] looks at me again.[k]
+[フレデリカ v=vd461 f=09]「W-what is it...?」[k]
+[マックス f=22]「No... I just thought, [フレデリカ], you have big boobs.」[k]
+@fg l=フレデリカ f=93
+[フレデリカ v=vd462 f=93]「E-eeeeeeh?! (Kaaaaaaaaah!)」[k]
+My face heats up when he suddenly says something embarrassing.[k]
+Come to think of it, I'm only wearing a tank top right now. You can see the outline of my breasts.[k]
+@fg l=フレデリカ f=52
+[フレデリカ v=vd463 f=52]「Why say that～?! Honestly! [マックス], you idiot!」[k]
+@fg r=マックス f=03
+[マックス f=03]「Sorry, sorry... but big boobs are a good thing, right? It means you're an attractive woman.」[k]
+@fg l=フレデリカ f=53
+[フレデリカ v=vd464 f=53]「But it's still embarrassing... Sexual harassment...」[k]
+@fg r=マックス f=01
+[マックス f=01]「I get it! I won't say it again, sorry I embarrassed you.」[k]
+[マックス f=01]「Ah! How about we go get something to eat now? I'll buy you something as an apology!」[k]
+@fg l=フレデリカ f=33
+[フレデリカ v=vd465 f=33]「...Well, if I eat something in the middle of the night, I'll gain weight...」[k]
+@se f=guuu
+∗rumble∗[k]
+@fg l=フレデリカ f=55
+[フレデリカ f=55]「... (Kyaaaa)」[k]
+@fg r=マックス f=03
+[マックス f=03]「You're hungry, right? Let's go!」[k]
+@fg l=フレデリカ f=33
+[フレデリカ v=vd466 f=33]「Okay, well, just something small...」[k]
+I was hungry, so I decided to accept [マックス]'s favor...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+*max_03
+@saveon
+@bg f=0001
+@mu f=guild
+@fg l=マックス e=通常 f=62 b
+@fg r=フレデリカ e=タンクトップ f=05
+[texton w=1]
+[マックス f=62]「[フレデリカ], I have something important to tell you today.」[k]
+[フレデリカ v=vd467 f=05]「Something important... Is it?」[k]
+[マックス] told me this as soon as he entered the room.[k]
+What's up with the serious face all of a sudden... What on earth is this important thing he wants to say...?[k]
+@fg l=マックス f=06
+[マックス f=06]「[フレデリカ], listen carefully.」[k]
+[フレデリカ f=06]「...」[k]
+[マックス] stares at me with serious eyes.[k]
+[マックス f=06]「[フレデリカ]... I...」[k]
+@fg l=マックス f=07
+@st
+[マックス f=07]「I like you!」[k]
+[フレデリカ v=vd468 f=25]「Eh...」[k]
+[マックス f=07]「I've fallen in love with you! So please go out with me!」[k]
+@fg r=フレデリカ f=95
+[フレデリカ v=vd469 f=95]「W-whaaaaaaat?!」[k]
+@mu f=bad
+[マックス f=25]「All right? So date me, [フレデリカ]!」[k]
+[if exp='! game.isFreeMode']
+	[フレデリカ v=vd470 f=95]「Wait, didn't you like Maria?」[k]
+	[マックス f=53]「Yeah, I like Maria, too! But I like you even more!」[k]
+	@fg r=フレデリカ f=30
+	[フレデリカ v=vd471 f=29]「[マックス]...」[k]
+[endif]
+What an important thing it was. A confession to me.[k]
+I don't know what to do... I'm at a loss if you suddenly say something like that... I'm so embarrassed...[k]
+[フレデリカ v=vd472 f=30]「I'm sorry... I don't really feel that way about you...」[k]
+@fg l=マックス f=25
+[マックス f=25]「What the hell, you like someone else?!」[k]
+[if exp='! game.isFreeMode']
+	[フレデリカ f=05]「...!」[k]
+	The man I love...[k]
+	[マックス f=25]「So there was one?! Who is that guy? Tell me!」[k]
+	[フレデリカ f=30]「...」[k]
+	I... I'm talking about the Captain...[k]
+	But I'm too embarrassed to tell [マックス] that...![k]
+[endif]
+[フレデリカ v=vd473 f=30]「Well... I don't really like anyone...」[k]
+[マックス f=25]「Then why don't you go out with me? You can go out with me! Huh?」[k]
+[フレデリカ v=vd474 f=30]「T-that's...」[k]
+I can't go out with [マックス]... I don't know how to say no...[k]
+[マックス f=54]「Okay, okay, here's what we'll do.」[k]
+[マックス f=53]「Just one date, one date with me!」[k]
+[フレデリカ v=vd475 f=29]「So, is it a date...」[k]
+[マックス f=54]「If you still don't want to go out with me after that date, I'll give up gracefully. How's that?」[k]
+[フレデリカ f=30]「...」[k]
+[マックス f=25]「Come on, please, just one chance! If it doesn't work out, I'll give up...」[k]
+[フレデリカ f=30]「...」[k]
+@fg r=フレデリカ f=29
+[フレデリカ v=vd476 f=29]「...Well, okay.」[k]
+@fg l=マックス f=03
+[マックス f=03]「Yay!」[k]
+@fg r=フレデリカ f=93
+[フレデリカ v=vd477 f=93]「But it's really just once. That's a promise.」[k]
+[マックス f=15]「Yeah, I know! I'm gonna make you like me!」[k]
+[フレデリカ f=30]「...」[k]
+I'm in trouble...[if exp='! game.isFreeMode'] I like the captain...[endif][k]
+But if this will get him to give up, I'm willing to go out with him once...[k]
+[textoff]
+@out
+@w05
+[texton w=0]
+[マックス f=03]（Yes, I managed to get a date!）[k]
+[if exp='! game.isFreeMode']
+	[マックス f=22]（To be honest, I haven't changed my mind about going out with Maria, but I'd like to fuck [フレデリカ] too...）[k]
+[endif]
+[マックス f=15]（I'm curious about the other girls, but first I have to have a go with [フレデリカ]! If I push a little, she'll let me fuck her.）[k]
+[textoff]
+@w05
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+[hoteloff]
+
+*max_04
+@jump target=*_replace_max_04 cond='game.isFreeMode'
+; 宿屋のロビー・夕方（チェックイン直後）
+@saveon
+@w05
+@bg f=0002
+[texton w=0]
+[テオ e=通常 f=05]「Huh? Where's [マックス]? Come to think of it, [フレデリカ]'s not here either...」[k]
+[textoff]
+@fg c=ライナス e=通常 f=56
+[texton w=1]
+[ライナス f=56]「Yeah, they just left. They said it was a trial date.」[k]
+[テオ f=05]「A trial date! [マックス] and [フレデリカ]?!」[k]
+When did those two...?! I mean, what is [マックス] going to do about Maria?[k]
+[textoff]
+@out
+@w05
+; サファイアシティ・町中
+@fg l=フレデリカ e=通常 f=03 b
+@fg r=マックス e=通常 f=15 b
+@bgf f=0006
+@mu f=enjoy
+[texton w=1]
+*_skip_max_04
+[フレデリカ v=vd478 f=03]「Ahhhhhh, it was fun～!」[k]
+[マックス f=15]「That circus from just now is the top troupe in Sapphire City! There isn't another that can do tricks like that!」[k]
+[フレデリカ v=vd479 f=22]「I've never seen anything like that...」[k]
+[マックス f=03]「Wasn't it great? You can only find something like that in Sapphire City. I hope you enjoyed it.」[k]
+[フレデリカ v=vd480 f=22]「Yes... The city is great after all... [マックス], you know a lot about it.」[k]
+[マックス f=03]「Oh well! Well, it's getting dark, let's go out to eat! Actually, I have a reservation at a nice restaurant!」[k]
+[textoff]
+@out
+@w05
+
+; レストラン
+@bgf f=0012
+[texton w=0]
+[フレデリカ v=vd481 f=03]「Fuu～ delicious～!」[k]
+[マックス f=15]「This is one of the best three-star restaurants in Sapphire City! The taste is second to none!」[k]
+[フレデリカ v=vd482 f=23]「I see... That's why it tastes so good.」[k]
+[マックス f=03]「And the portions were so large that even the gluttonous [フレデリカ] must have been satisfied, right?」[k]
+[フレデリカ v=vd483 f=93]「Honestly... Gluttonous indeed... But I forgive you because it was delicious...」[k]
+[フレデリカ v=vd484 f=05]「...But it was pretty expensive, wasn't it? Ordering that much food at such a fine restaurant...」[k]
+[マックス f=03]「I'm happy to do this for my beloved [フレデリカ]!」[k]
+[フレデリカ v=vd485 f=29]「...I'm sorry you went through all this for me...」[k]
+[マックス f=03]「No, it's fine. It's a trial date, so that's natural! Now, on to our next destination!」[k]
+[textoff]
+@out
+@w05
+
+; ラブホテルの前
+@bgf f=0039
+@mu f=bad
+[texton w=0]
+[フレデリカ f=31]「...!」[k]
+I shudder when I see the place [マックス] brought me to![k]
+[フレデリカ v=vd486 f=63]「This is a love hotel, isn't it?!」[k]
+[マックス f=01]「Yeah, what about it?」[k]
+[フレデリカ v=vd487 f=63]「Um... You're not going in here, are you?」[k]
+[マックス f=01]「Of course, of course. We can't stay out all night.」[k]
+[マックス f=03]「I've reserved the most expensive room! Come on, let's get in there!」[k]
+[フレデリカ v=vd488 f=65]「Wait, wait a minute! I can't go in here!」[k]
+[マックス f=05]「Oh, come on, what are you talking about? I told you I reserved a room. Don't tell me you want me to go in there alone?」[k]
+[フレデリカ v=vd489 f=63]「Because... Love hotels are... It's a place where you do all kinds of things... I don't like that...」[k]
+[マックス f=61]「...[フレデリカ], you probably don't know this because you came from the country, but love hotels are a staple of the city dating scene.」[k]
+[フレデリカ v=vd490 f=63]「I-is that so...?」[k]
+[マックス f=15]「A circus or a play, a sumptuous dinner at a three-star restaurant, and finally, sex at a love hotel! This is a date plan in the city!」[k]
+[マックス f=21]「Come on, let's get in there already!」[k]
+[マックス] pulls my hand![k]
+[フレデリカ v=vd491 f=52]「No, I don't want to!」[k]
+@se f=whip
+@flash t=200
+∗smack!∗[k]
+[フレデリカ f=63]「...」[k]
+[マックス f=25]「[フレデリカ]...!」[k]
+I smacked off [マックス]'s hand! He looked puzzled.[k]
+[マックス f=27]「Isn't the end of a date usually at a love hotel? It was you who said we could go on a date!」[k]
+[フレデリカ v=vd492 f=63]「But... I didn't go on this date with the intention of...」[k]
+[マックス f=54]「...Oh, come on, don't be silly, [フレデリカ].」[k]
+[フレデリカ v=vd493 f=09]「What...?」[k]
+[マックス f=53]「The circus you saw today, how much do you think they charged for that?」[k]
+[フレデリカ v=vd494 f=63]「T-that's...」[k]
+[マックス f=53]「The same goes for the meal you had at the three-star restaurant. You ate so much of that expensive food! Do you have any idea how much I paid for that?」[k]
+[フレデリカ v=vd495 f=63]「That's because you said I can eat as much as I want...」[k]
+[マックス f=08]「So much to eat and no hotel? You've got to be kidding me!」[k]
+[フレデリカ f=30]「...」[k]
+[マックス f=62]「Anyway, let's go into the hotel. That way I'll be satisfied.」[k]
+[フレデリカ f=30]「...」[k]
+[textoff]
+@out
+@w05
+
+; ラブホテルの一室
+@bg chara=フレデリカ f=event25 p0=hair p1=04 p2=03
+@mu f=action
+[texton w=2]
+[フレデリカ v=vd496]「Ah... Ah... Ah... Ah...」[k]
+[マックス]「Muhy! [フレデリカ]'s pussy feels really good!」[k]
+I eventually gave in to [マックス]'s protests and went into the love hotel.[k]
+When I entered the room, [マックス] suddenly attacked me and made me have sex with him...[k]
+[フレデリカ v=vd497]「Ahhh... No... [マックス]... Stop it... Ahh..!」[k]
+[マックス]「This big ass, big boobs... And pussy! It's really great!」[k]
+[マックス]「I've wanted to have sex with you since the first time we met. I'm so excited to finally get to fuck you!」[k]
+∗sluurp sluurp sluurp∗[k]
+[フレデリカ v=vd498]「An... Oh... Don't be so... Don't be so rough... Ahh..!」[k]
+[マックス]「Damn, my dick feels so good, I can't stop my hips!」[k]
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[フレデリカ v=vd499]「Oh no... [マックス], come on... Stop it...」[k]
+[マックス]'s big, hot cock rampages inside me![k]
+I don't like it, but [マックス], who wants to feel good, doesn't listen.[k]
+He buries his penis deep inside me and shakes his hips.[k]
+∗slurp slurp slurp slurp slurp!∗[k]
+[フレデリカ v=vd500]「Ah... Ah... Ah... Ah...」[k]
+[マックス]「Ohhhhhh! I can't get enough of it!」[k]
+∗slurp slurp slurp slurp slurp!∗[k]
+[フレデリカ v=vd501]「An, an, ah, ah, ah!」[k]
+[マックス]「Noooo! I'm at my limit!」[k]
+[マックス]「I'm going to shoot my thick sperm into [フレデリカ]'s wet pussy!」[k]
+@enst
+@flash
+@w05
+@flash
+@flash
+∗spurt! spurt! spurt!∗[k]
+[フレデリカ v=vd502]「Nooooooooo...!」[k]
+[マックス]「Ooooooooooooooooooooo!」[k]
+[textoff]
+@flash on=1000
+@w05
+@fa
+@out
+@w05
+
+@bgf f=0004
+@mu f=bad
+[texton w=0]
+[マックス e=汗だく f=92]「Phew～ that felt good～!」[k]
+[フレデリカ v=vd503 e=裸 f=50]「Ugh... [マックス]... That's terrible...」[k]
+; ↑ 涙ぐみながら
+[マックス f=15]「What's so terrible about it? You felt good, didn't you?」[k]
+[フレデリカ v=vd504 f=50]「Ugh... Not good at all...」[k]
+[マックス f=03]「Hey! You actually felt good! Tell me honestly!」[k]
+[フレデリカ v=vd505 f=50]「It really wasn't good... I'm not lying...」[k]
+[マックス f=59]「Well, I'll leave it at that! Well, I'm tired now and I'm going to bed!」[k]
+With that said, [マックス] quickly fell asleep snoring.[k]
+I couldn't help but resent him when I saw his happy sleeping face as he raped me without regard for my feelings...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント05
+*max_05
+
+; 宿屋の一室
+@saveon
+@bg f=0001 b
+@mu f=adult
+@fg l=フレデリカ e=タンクトップ f=31 b
+@fgf r=マックス e=バスタオル,勃起 f=03
+[texton w=1]
+[マックス f=03]「[フレデリカ]! Let's do it again today!」[k]
+[フレデリカ f=31]「...!」[k]
+When I entered the room, [マックス] was already dressed only in a bath towel, his penis erect and waiting for me.[k]
+@fg l=フレデリカ f=52
+[フレデリカ v=vd506 f=52]「I don't want to! I won't do it with you again!」[k]
+@fg r=マックス f=15
+[マックス f=15]「What are you talking about? I'm already ready here! You can't stop now!」[k]
+@fg r=マックス e=バスタオル,勃起,腕上げ f=22 left=500
+[マックス f=22]「Come on, [フレデリカ], get out of those clothes.」[k]
+Then [マックス] grabs me with his penis standing up.[k]
+@fgf l=フレデリカ f=37
+@shake layer=2 loop=5 time=20 length=2
+[フレデリカ v=vd507 f=37]「No, don't...! Don't...!」[k]
+[マックス f=22]「Come on, let's do it. We've done it before, so don't be stingy about it now.」[k]
+@shake layer=2 loop=5 time=20 length=2
+[フレデリカ v=vd508 f=37]「No... Nooooo...!」[k]
+[マックス f=22]「One time! Just once! Just let me fuck you once, and I'll feel better... 」[k]
+[フレデリカ v=vd509 f=54]「You said that the other day～!」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=フレデリカ f=event25 p0=hair p1=04 p2=03
+@en f=kuchafast
+[texton w=2]
+[フレデリカ v=vd510]「Ah... Ah... Ah... Ah...」[k]
+[マックス]「Fuuuu～ I knew it, sex with [フレデリカ] is the best!」[k]
+In the end, I was overcome by [マックス]'s persistence and gave up my body again...[k]
+I feel ashamed of myself for not being able to firmly refuse his relentless invitations...[k]
+And... I hate my body for enjoying such sex...[k]
+But...[k]
+[フレデリカ v=vd511]「Ahhh... aaaaahhh... [マックス]... ah...! Ahh...!」[k]
+[マックス]「How's that? My dick is getting better and better, isn't it?」[k]
+[フレデリカ v=vd512]「Aaah... [マックス]... I'm... going to cum...!」[k]
+[マックス]「I'm gonna cum too! Let's cum together!」[k]
+I ended up having sex with [マックス] again today and he made me cum...[k]
+[textoff]
+@enst
+@out
+@w05
+[hoteloff]
+
+
+;◇マックスイベント06
+*max_06
+
+; 宿屋の廊下
+@saveon
+@out
+@bg f=0002
+[texton w=0]
+[テオ e=通常 f=05]「What...?」[k]
+I heard a small scream from the room where [フレデリカ] and [マックス] were staying.[k]
+What?! Did something happen to [フレデリカ]?[k]
+[テオ f=05]「Oh...」[k]
+The door's a little open...?[k]
+From inside, I can hear squeals that sound like [フレデリカ]. What in the world is going on in there?[k]
+Curious, I peeked inside through the crack. Then [――――][k]
+[textoff]
+@out
+@w05
+
+; 宿屋の一室
+@bg chara=フレデリカ f=event25 p0=hair p1=04 p2=03
+@mu f=adult
+@en f=kuchafast
+[texton w=0]
+[フレデリカ v=vd513 e=汗だく f=37]「Ahh... [マックス]...」[k]
+[マックス e=汗だく f=03]「You're really wet inside, [フレデリカ]! Erotic!」[k]
+[フレデリカ v=vd514 f=37]「Ahhh... [マックス]... please calm down...!」[k]
+[テオ f=12]「[フレデリカ]...!」[k]
+[フレデリカ]... How long have you been in a relationship with [マックス]...?![k]
+[マックス] fucks [フレデリカ] with a crazy passion. And [フレデリカ], was also panting, seeking more satisfaction.[k]
+[テオ f=10]「...」[k]
+If [フレデリカ] wants to have a relationship with [マックス], I don't have a right to say anything about it...[k]
+I quietly closed the door and left.[k]
+[textoff]
+@enst
+@fa
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ライナス編
+
+;◇ライナスイベント01
+*linus_01
+
+; 宿屋の一室
+@saveon
+@bgf f=0001
+@mu f=trick
+@fg l=ライナス left=300 e=通常 f=06 b
+@fg r=フレデリカ e=通常 f=03
+[texton w=1]
+[フレデリカ v=vd515 f=03]「Linus, let's get along tonight!」[k]
+[ライナス f=06]「...」[k]
+@fg r=フレデリカ e=通常 f=05
+[フレデリカ v=vd516 f=05]「Huh? What's the matter, Linus?」[k]
+[ライナス f=06]「Hi... [フレデリカ]...」[k]
+Linus' reaction seems to be slower than usual. Is something wrong?[k]
+@fg r=フレデリカ e=通常 f=09
+[フレデリカ v=vd517 f=09]「You look a bit down, is there something troubling you?」[k]
+[ライナス f=06]「Troubles... Yeah, I guess so...」[k]
+[ライナス f=06]「...No, this isn't the kind of trouble you can talk about openly. It's all my fault...」[k]
+@fg r=フレデリカ e=通常 f=01
+[フレデリカ v=vd518 f=01]「Please don't say that. If you like, I'll listen to you.」[k]
+[ライナス f=14]「You're so sweet, [フレデリカ]...」[k]
+[ライナス f=13]「Well, I remembered being kicked out of a party I once led... I was just feeling sorry for myself and regretting my inadequacies.」[k]
+@fg r=フレデリカ e=通常 f=09
+[フレデリカ v=vd519 f=09]「Linus...」[k]
+[ライナス f=06]「I thought I was doing the best I could. I brought in good money, and made useful equipment, and so on. But none of that meant anything...」[k]
+[フレデリカ v=vd520 f=09]「That's not true!」[k]
+[ライナス f=06]「I was working on new equipment today, hoping to at least continue developing as an alchemist... But...」[k]
+[フレデリカ v=vd521 f=05]「But?」[k]
+[ライナス f=06]「I can't get it to work... I'm not satisfied with my equipment at all...」[k]
+@fg l=ライナス left=300 e=通常 f=17
+[ライナス f=17]「...Damn! I'm so incompetent! I can't do anything anymore!」[k]
+[フレデリカ v=vd522 f=09]「That's not true! You're is not incompetent!」[k]
+[ライナス f=05]「[フレデリカ]...!」[k]
+@fg r=フレデリカ e=通常 f=04
+[フレデリカ v=vd523 f=04]「You're just a little out of form right now! I'm sure you'll make something good in time!」[k]
+@fg l=ライナス left=300 e=通常 f=02
+[ライナス f=02]「...Thank you. I'm very happy to hear that.」[k]
+[ライナス f=02]「Actually, I'm working on a piece of equipment right now, but I just can't get it to look right...」[k]
+Saying this, Linus takes out something like a cloth rag from his bag.[k]
+@fg r=フレデリカ e=通常 f=05
+[フレデリカ v=vd524 f=05]「A women's leotard...?」[k]
+[ライナス f=02]「This is the equipment I'm developing right now, but I just can't find a way to make it both sturdy and easy to move around in. I've tried everything, so I just don't know what to do...」[k]
+[ライナス f=01]「Oh, wait! [フレデリカ], would you try this on?」[k]
+[フレデリカ v=vd525 f=05]「O-oh, me?」[k]
+[ライナス f=06]「I want you to put this on, do the moves I tell you to do, and see if you can move without problems. If not, I'll know what needs improvement.」[k]
+@fg r=フレデリカ e=通常 f=07
+[フレデリカ v=vd526 f=07]「I understand! As long as you're okay with me!」[k]
+[ライナス f=02]「Thanks, [フレデリカ]! Well, could you give it a quick try?」[k]
+@fg r=フレデリカ e=通常 f=03
+[フレデリカ v=vd527 f=03]「Yes! I'm on it!」[k]
+[textoff]
+@out
+@bgf f=0001
+@fg l=ライナス left=300 e=通常 f=22 b
+@fg r=フレデリカ e=強化レオタード f=29
+[texton w=1]
+[フレデリカ f=29]「...」[k]
+[ライナス f=21]「Good, good ♪ As expected of [フレデリカ], you're wearing it well!」[k]
+[フレデリカ v=vd528 f=29]「Um... Isn't it a bit tight?」[k]
+[ライナス f=22]「I'm trying to improve the performance and the fit to the body! But it should be easy to move in!」[k]
+[フレデリカ v=vd529 f=29]「Well, okay...」[k]
+[ライナス f=21]「Try it out and see how you feel when you wield a weapon! I am sure you will feel the ease of movement!」[k]
+Linus hands me a stick-shaped weapon.[k]
+[フレデリカ v=vd530 f=29]「Okay, well, I'll try...」[k]
+[ライナス f=22]「Yeah! Please do!」[k]
+@fg r=フレデリカ e=強化レオタード f=17
+[フレデリカ v=vd531 f=17]「Well, then... Yaa!」[k]
+I raised my weapon and brought it down with a bang![k]
+∗rip∗[k]
+@fg r=フレデリカ e=強化レオタード f=11
+[フレデリカ f=11]「？」[k]
+I thought I just heard a strange sound coming from my shoulder...?[k]
+@se f=tear
+@cl b
+@bgf f=9999
+@w05
+@fg l=ライナス left=300 e=通常 f=22 b
+@fg r=フレデリカ e=強化レオタード・破け f=31 b
+@bg f=0001 t=200
+∗rrrippp!∗[k]
+@fg r=フレデリカ e=強化レオタード・破け f=31
+[フレデリカ f=31]「...!」[k]
+Both shoulders tore apart with a ripping sound![k]
+[ライナス f=21]「Ooh!」[k]
+The top half flopped down, completely exposing my breasts![k]
+@fg r=フレデリカ e=強化レオタード・手ブラ f=37
+[フレデリカ v=vd532 f=37]「Kyaaa!」[k]
+I hastily cover my chest![k]
+[フレデリカ f=30]「...」[k]
+[ライナス f=21]「Heh heh heh... Hey, are you okay?」[k]
+[フレデリカ v=vd533 f=29]「I'm fine... But...」[k]
+My breasts... Linus was really staring at my breasts...[k]
+[ライナス f=21]「Sorry! I'm really sorry! There was a durability issue!」[k]
+[フレデリカ f=30]「... (Kyaa)」[k]
+[ライナス f=22]「I'll have to go over the design again! I'm really sorry!」[k]
+[フレデリカ v=vd534 f=30]「Honestly... Please be more careful, Linus.」[k]
+I'm so embarrassed... But I was able to help Linus, so I guess it was all for the best...?[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスイベント02
+*linus_02
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=trick
+@fg l=ライナス e=通常 f=01 b left=300
+@fg r=フレデリカ e=通常 f=02
+[texton w=1]
+[ライナス f=03]「No, I'm sorry about the other day! I'm sorry I embarrassed you!」[k]
+[フレデリカ v=vd535 f=02]「I don't care anymore. More importantly, how is development going?」[k]
+[ライナス f=01]「Thanks to you! I'm feeling much better now!」[k]
+[フレデリカ v=vd536 f=03]「Wow, really?」[k]
+[ライナス f=02]「So, I'd like you to test the finished prototype again... Okay?」[k]
+@fg r=フレデリカ e=通常 f=29
+[フレデリカ v=vd537 f=29]「Oh... Another test...? What?」[k]
+[ライナス f=03]「I've reinforced the shoulder a lot this time, so it won't be shredded anymore.」[k]
+@fg r=フレデリカ e=通常 f=02
+[フレデリカ v=vd538 f=02]「Okay, then it's fine ♪」[k]
+[ライナス f=01]「I've also completely redesigned the material to make it even easier to move around in! I'm sure you'll love it!」[k]
+[フレデリカ v=vd539 f=03]「Really? Then I want to wear it as soon as possible!」[k]
+[ライナス f=01]「Oh, by all means. Well, I'll step out of the room, so call me when you're done getting dressed!」[k]
+[textoff]
+@out
+
+@fg l=ライナス e=通常 f=22 b left=300
+@fg r=フレデリカ e=強化レオタード f=53 b
+@bg f=0001
+[texton w=1]
+[フレデリカ f=53]「...」[k]
+[ライナス f=03]「Oh～! As always, you look stunning in it!」[k]
+[フレデリカ v=vd540 f=93]「Um... It's even tighter than before...」[k]
+[ライナス f=01]「It's all about extreme fit and ease of movement! Now, try moving like you're in combat again!」[k]
+[フレデリカ v=vd541 f=25]「Ah... Yes... Well then...」[k]
+@fg r=&'"1301_" + o.フレデリカ.color' left=630 top=50
+I swung the sword that was handed to me. Then the next moment...[k]
+@se f=tear
+@cl b
+@bgf f=9999
+∗rrrippp!∗[k]
+@w05
+@fg l=ライナス f=22 b fix
+@fg r=&'"1302_" + o.フレデリカ.color' b fix
+@bgf f=0001
+[フレデリカ f=31]「...!」[k]
+[ライナス f=21]「Oh, wow! ♪」[k]
+The leotard couldn't stand the pressure and ripped to shreds![k]
+@fg r=フレデリカ e=裸,手ブラ f=54
+[フレデリカ v=vd542 f=54]「Kyaaa!」[k]
+I'm naked...! I'm totally naked...! With Linus watching...![k]
+[ライナス f=21]「Sorry, [フレデリカ], are you okay?」[k]
+[フレデリカ v=vd543 f=54]「Don't look! Don't look at me!」[k]
+[ライナス f=21]「Ooooooh, that's strange. Why did it tear?」[k]
+[フレデリカ v=vd544 f=54]「Just get out of the room as soon as possible!」[k]
+[textoff]
+@out
+@w05
+
+@fg l=ライナス e=通常 f=22 b left=300
+@fg r=フレデリカ e=バスタオル f=48 b
+@bg f=0001
+[texton w=1]
+[フレデリカ v=vd545 f=48]「That's terrible... Linus... ∗sob∗」[k]
+[ライナス f=22]「No, I'm so sorry! It wasn't supposed to be like this...」[k]
+[フレデリカ v=vd546 f=47]「I was so embarrassed! I'm really angry, you know!」[k]
+[ライナス f=03]「I'm really sorry! Forgive me!」[k]
+Linus, with his hands clasped together and his head bowed in desperation, apologizes profusely.[k]
+If he's this apologetic, I'm willing to forgive him... He doesn't seem to have had any bad intentions.[k]
+[フレデリカ v=vd547 f=48]「...I understand. I forgive you. But there won't be a next time!」[k]
+[ライナス f=03]「Thanks, [フレデリカ]!」[k]
+[textoff]
+@out
+@w05
+
+; ライナスの心の中
+[texton w=0]
+[ライナス f=01]（Kuku, she really is a softy, that dwarf. I made it so that it would tear on purpose.）[k]
+[ライナス f=21]（I got to see something good. I love your big boobs!）[k]
+[ライナス f=01]（I'll do something even more disgusting next time... Kukuku...）[k]
+[textoff]
+@w05
+;-----------------------------------------------------------------------
+; 体験版はここで終了
+@jump storage="hevent.ks" target=*trial_version_end cond='isDemoVersion'
+;-----------------------------------------------------------------------
+[hoteloff]
+
+
+;◇ライナスイベント03
+*linus_03
+
+; 宿屋の一室
+@saveon
+@fg l=ライナス e=通常 f=13 b left=300
+@fg r=フレデリカ e=通常 f=25 b
+@bg f=0001
+@mu f=trick
+[texton w=1]
+[ライナス f=13]「Hi [フレデリカ]! I need you to test some new equipment again.」[k]
+Linus, without any remorse, tried to make me test equipment again.[k]
+@fg r=フレデリカ f=66
+[フレデリカ v=vd548 f=66]「No, I won't! No more testing!」[k]
+@fg l=ライナス f=12 fix
+[ライナス f=12]「Hey, why not?」[k]
+[フレデリカ v=vd549 f=07]「It was really bad last time! I don't want to be embarrassed anymore. I won't do it!」[k]
+@fg l=ライナス f=13 fix
+[ライナス f=13]「It won't be like that this time! I promise!」[k]
+[フレデリカ v=vd550 f=07]「I don't trust you! It ripped twice! Of course I don't want to.」[k]
+[ライナス f=59]「I've learned from my previous mistakes, and this time I've designed it so that it will never tear! Please, just one more test.」[k]
+[フレデリカ v=vd551 f=66]「I said I don't want to! Please give up!」[k]
+@fg l=ライナス f=09 fix
+[ライナス f=09]「Oh no...」[k]
+@fg r=フレデリカ f=08
+[フレデリカ f=08]「...」[k]
+This may sound a little harsh, but I have to say no firmly here. I definitely don't want to get naked again.[k]
+[ライナス f=10]「I see... I'm sorry, I didn't mean to impose.」[k]
+[フレデリカ f=08]「...」[k]
+@fg l=ライナス f=20 fix
+[ライナス f=20]「Oh... I'm just a useless creator after all...」[k]
+@fg r=フレデリカ f=10
+[フレデリカ f=10]「...」[k]
+Somehow... I'm starting to feel a little sorry for him again...[k]
+No, no, no! I definitely don't want to be naked again![k]
+[ライナス f=19]「...」[k]
+[フレデリカ f=10]「...」[k]
+If Linus doesn't recover from this, maybe it will be my fault... What would I do then...?[k]
+[ライナス f=19]「...」[k]
+@fg r=フレデリカ f=09
+[フレデリカ v=vd552 f=09]「Um... If it's just once... I could...」[k]
+@fg l=ライナス f=09 fix
+[ライナス f=09]「...Are you sure?」[k]
+[フレデリカ v=vd553 f=09]「Yes... You're sure it won't break this time, right?」[k]
+@fg l=ライナス f=13 fix
+[ライナス f=13]「Oh, of course! It will never break! You bet!」[k]
+@fg r=フレデリカ f=02
+[フレデリカ v=vd554 f=02]「I understand. I believe you.」[k]
+@fg l=ライナス f=03 fix
+[ライナス f=03]「Thank you! Well, let's take care of it right away, then!」[k]
+He then hands me a new prototype.[k]
+@fg r=フレデリカ f=05
+[フレデリカ f=05]「...」[k]
+Again, a leotard. The material is obviously thicker than before, so looks more durable.[k]
+I think this will work...[k]
+[フレデリカ v=vd555 f=02]「Okay, I'm going to get changed. Can you leave the room...?」[k]
+[ライナス f=03]「Oh! Looking good!」[k]
+[textoff]
+@out
+@w05
+
+@fg l=ライナス e=通常 f=03 b left=300
+@fg r=フレデリカ e=最強レオタード f=53 b
+@bg f=0001
+[texton w=1]
+[ライナス f=03]「I love it! You've got a good figure, so it looks great!」[k]
+[フレデリカ v=vd556 f=53]「Ugh... Isn't this a little too tight, don't you think?」[k]
+It was tight before, but this time it is even tighter. It really hurts to wear it.[k]
+@fg l=ライナス f=02 fix
+[ライナス f=02]「Hmmm, maybe I reinforced the material a little too much. But it couldn't be helped. I wanted to make sure it would never tear.」[k]
+@fg r=フレデリカ f=38
+[フレデリカ v=vd557 f=38]「Ugh... I'm in pain...」[k]
+[ライナス f=13]「O-oh, was it really so tight? Well, you can take it off now, okay?」[k]
+@fg r=フレデリカ f=31
+[フレデリカ v=vd558 f=31]「Okay, well, I'll just slip off the shoulders... Ah!」[k]
+@fg r=フレデリカ e=最強レオタード・食い込み f=31
+Ggh![k]
+@fg r=フレデリカ f=37
+[フレデリカ v=vd559 f=37]「Ah... Ahh...!」[k]
+@fg l=ライナス f=21 fix
+[ライナス f=21]「Oooh!」[k]
+When I pulled on the leotard to take out my arm, it bit into my crotch![k]
+Moreover, it tightens all over my body, making it impossible to take the leotard off![k]
+[フレデリカ v=vd560 f=37]「Oh no! If it digs in like that... Ahh!」[k]
+[ライナス f=21]「Hey, are you okay? Heh heh heh.」[k]
+The fabric of the crotch bit into the crack of my vagina, and the sides were exposed.[k]
+Moreover, the cloth rubbed against my crack and stimulated my sensitive parts![k]
+@fg r=フレデリカ f=38
+[フレデリカ v=vd561 f=38]「Ah... Oh... Don't... Don't look... No...!」[k]
+The more I move, the more the leotard moves in my crotch in a weird way, rubbing up against my naughty spot. And the cloth is a little rough and feels good.[k]
+Oh no... I'm starting to feel it...[k]
+It feels so good, I can't even stand up...![k]
+[textoff]
+@w05
+
+@cl b
+@bgf chara=フレデリカ f=event56 p0=hair p1=01 p2=04
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+[texton w=2]
+[フレデリカ v=vd562 f=37]「Ahhhh...!」[k]
+I couldn't help but lie down on the floor. Linus looked down at me.[k]
+[ライナス f=21]「Are you okay, [フレデリカ]? Hee hee hee.」[k]
+@bg chara=フレデリカ f=event56 p0=hair p1=01 p2=03
+[フレデリカ v=vd563 f=38]「Please... Please take off these clothes...!」[k]
+[ライナス f=21]「What? I went to the trouble of making it so they'd never come off.」[k]
+[フレデリカ v=vd564 f=38]「Please... I can't take it anymore...!」[k]
+My sensitive bean was being stimulated so much that I was on the verge of climax.[k]
+If I don't do this, I'll cum in front of Linus...![k]
+[ライナス f=01]「I can't help it. I'll undress you then.」[k]
+Linus takes out a pair of scissors and brings them close to my crotch.[k]
+[ライナス f=04]「Okay, I'll cut it for you. Just hold still.」[k]
+@bg chara=フレデリカ f=event56 p0=hair p1=02 p2=05
+With that, Linus tugged at the cloth that was digging into the crack![k]
+[フレデリカ v=vd565 f=37]「Aaahhh...! Nooooooo...!」[k]
+[ライナス f=21]「Hey, didn't I tell you not to move?」[k]
+Saying this, Linus pulls the cloth even more insistently. My clitoris is furiously stimulated.[k]
+Oh, no... I can't take it anymore...![k]
+@bg chara=フレデリカ f=event56 p0=hair p1=02 p2=04
+[フレデリカ v=vd566 f=37]「Ahhhhhhh...!」[k]
+[textoff]
+
+@flash on=1000 t=200 off=500
+[texton w=2]
+I'm... I'm cumming...! In front of Linus...![k]
+[ライナス f=03]「Okay, I'll cut it～!」[k]
+@se f=buchi
+@flash
+@bgf chara=フレデリカ f=event56 p0=hair p1=03 p2=06
+∗snip!∗[k]
+The crotch of my leotard was cut off and I was released from the hell of pleasure...[k]
+[フレデリカ v=vd567 f=39]「Ahh ahh ahh ahh ahh...」[k]
+[ライナス f=21]「Ohhhhh! Your pussy is soaked! Well, [フレデリカ], you must have felt good?」[k]
+@bg chara=フレデリカ f=event56 p0=hair p1=03 p2=03
+[フレデリカ f=50]「... ∗sob∗」[k]
+[textoff]
+
+@bg f=0001 b
+@fgf c=ライナス e=下半身裸・勃起 f=03
+[texton w=1]
+[ライナス f=03]「If you're this wet, I'll feel sorry for you if I don't help you finish off!」[k]
+[フレデリカ v=vd568 f=43]「What... Noooo!」[k]
+Linus suddenly removed his pants and took out a hard penis![k]
+[textoff]
+@cl b
+
+@mu f=action
+@bg chara=フレデリカ f=event56 p0=hair p1=03 p2=01 p3=01
+[texton w=2]
+Taking advantage of my collapsed state, Linus pressed his penis against my vagina![k]
+[フレデリカ v=vd569 f=49]「Hey, wait a minute...! Hey!」[k]
+[ライナス f=39]「It's too late! There you go!」[k]
+@bgf chara=フレデリカ f=event56 p0=hair p1=03 p2=04 p3=02
+@quake time=500 hmax=10 vmax=10
+∗slip!∗[k]
+[フレデリカ v=vd570]「Ahhhhhhh...!」[k]
+Linus' penis went in![k]
+Linus penetrates deeper and deeper into my reluctant body, until he's all the way inside![k]
+[フレデリカ]「...」[k]
+When I looked between my legs, I saw my vagina wrapped around Linus' thick penis...[k]
+I... I was violated...![k]
+[ライナス]「Phew, it's all in there. How does that feel?」[k]
+@bgf chara=フレデリカ f=event56 p0=hair p1=03 p2=06 p3=02
+[フレデリカ v=vd571]「Ugh... Linus, it's terrible...」[k]
+[ライナス]「What are you talking about? If you're this wet, wouldn't it feel better to have a cock in you?」[k]
+[フレデリカ v=vd572]「That's not the point... It's terrible...」[k]
+[ライナス]「You can't help what you've already got in there. Let's have fun, [フレデリカ]!」[k]
+∗squish squish squish∗[k]
+@bgf chara=フレデリカ f=event56 p0=hair p1=03 p2=05 p3=02
+[フレデリカ v=vd573]「Ah... Ah... Ah... Ah...」[k]
+[ライナス]「Wow～! Your big boobs are shaking! I'm so excited～!」[k]
+Linus thrusts into me.[k]
+Linus's thick cock slithers in and out of my vagina.[k]
+I don't like this...! I can't have sex with this person...![k]
+[ライナス]「Ahhh～ your pussy feels so good!」[k]
+[フレデリカ v=vd574]「Ah... Ahh... Stop it... Linus... No...!」[k]
+[ライナス]「Hey, you'll feel better in no time! There you go!」[k]
+∗squish squish squish squish∗[k]
+[フレデリカ v=vd575]「Please... Please pull out your penis... Ahhh...!」[k]
+[ライナス]「What are you saying? How can I pull out now when you feel so good?」[k]
+[フレデリカ v=vd576]「Ahhh... Oh... I really... I don't want to... Aaaaahhh...!」[k]
+[ライナス]「I can't believe you're saying that now! It feels so good, there's no way I can stop!」[k]
+∗squish squish squish squish squish squish squish!∗[k]
+[フレデリカ v=vd577]「Oh no... Stop...」[k]
+[ライナス]「Kuuuu～! It feels so good, I can't stop my hips～!」[k]
+No matter how much I pleaded, Linus would not stop. Rather, he thrusts even harder.[k]
+I just had to endure Linus pounding my body.[k]
+∗squish squish squish squish squish!∗[k]
+@bgf chara=フレデリカ f=event56 p0=hair p1=03 p2=04 p3=02
+[フレデリカ v=vd578]「Ahh... Ahhh... Aaaaahhh...! Aaahhh...!」[k]
+I don't like it, but... It feels so good...[k]
+Due to the intense attack on my clitoris earlier, I was experiencing a constant rush of pleasure in my groin.[k]
+No...! I don't want to enjoy this man's penis...![k]
+[ライナス]「Damn...! I can't take it anymore...! I'm cumming...!」[k]
+[textoff]
+@flash t=100
+@wait time=200
+@flash t=100
+[texton w=2]
+∗spurt! spurt!∗[k]
+@bgf chara=フレデリカ f=event56 p0=hair p1=04 p2=05
+Linus hurriedly pulls out his penis![k]
+But not quickly enough, and he came inside me![k]
+[フレデリカ v=vd579]「Ah...! Nooooooo...!」[k]
+Linus' semen is sprayed into my vagina![k]
+[フレデリカ]「...」[k]
+My vagina was completely filled with his sperm...[k]
+[ライナス]「Phew... That was good... That was a nice pussy...」[k]
+With a look of contentment on his face, Linus sighs.[k]
+[フレデリカ]「...」[k]
+Meanwhile, I was unexpectedly raped by a party member and could only lie stunned...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスイベント04
+*linus_04
+
+; 宿屋の一室
+@saveon
+@fg l=ライナス e=バスタオル・勃起 f=03 left=300 b
+@fg r=フレデリカ e=通常 f=31 b
+@bg f=0001
+[texton w=1]
+[ライナス f=03]「Hey [フレデリカ]! I've been waiting for you!」[k]
+[フレデリカ f=31]「...!」[k]
+Linus was waiting for me in his room, dressed only in a bath towel.[k]
+[ライナス f=04]「I've already showered. I can't wait for you to have one too.」[k]
+@fg r=フレデリカ f=63
+[フレデリカ v=vd580 f=63]「What, why?」[k]
+[ライナス f=03]「It's obvious! Sex, sex, sex! I've been looking forward to the night coming and having sex with you!」[k]
+A tent has already been pitched between Linus' legs.[k]
+@fg r=フレデリカ f=65
+[フレデリカ v=vd581 f=65]「Wait a minute! Why are you assuming that you are going to have sex with me!」[k]
+@fg l=ライナス f=22 fix
+[ライナス f=22]「What? You're going to do it, aren't you?」[k]
+@fg r=フレデリカ f=52
+[フレデリカ v=vd582 f=52]「No! I will not have sex with you!」[k]
+[ライナス f=22]「What are you talking about, we've already had sex once. It's just the two of us, so let's have some fun.」[k]
+[フレデリカ v=vd583 f=52]「I didn't want to have sex with you in the first place!」[k]
+[ライナス f=21]「Again～! You really want to get laid. It's okay, don't be shy.」[k]
+@fg r=フレデリカ f=65
+[フレデリカ v=vd584 f=65]「No, it's not like that...!」[k]
+@fg l=ライナス f=39 fix
+[ライナス f=39]「Just hurry up and fuck me! I can't take it anymore!」[k]
+@fgf r=フレデリカ f=62
+[フレデリカ v=vd585 f=62]「Aah!」[k]
+@clf
+@se f=dosa
+@quake time=500 hmax=5 vmax=20
+[texton w=0]
+Linus jumps on me![k]
+[ライナス f=21]「Uhehehe, [フレデリカ]～!」[k]
+[フレデリカ v=vd586 f=37]「Stop! Please stop, Linus!」[k]
+[textoff]
+@out
+@w05
+
+@bg chara=フレデリカ f=event56 p0=hair p1=04 p2=04 p3=02
+[texton w=2]
+[フレデリカ v=vd587]「Ahh... ah... ah... Linus...! Ahhh...!」[k]
+[ライナス]「Kuu～, your pussy is so slippery and feels so good～!」[k]
+In the end, Linus pushed me to have sex with him again...[k]
+Why can't I say no to these things?[k]
+[フレデリカ v=vd588]「Haa, haa...」[k]
+[ライナス]「The reason you end up having sex with me even though you say you don't want to is that you really like sex!」[k]
+No, no, no...![k]
+But it's my fault for not saying no properly... For not having the courage to firmly reject him...[k]
+[ライナス]「Well, then, since we both like it, let's enjoy sex a lot!」[k]
+∗slurp slurp slurp slurp slurp slurp!∗[k]
+[フレデリカ v=vd589]「Oh no... Enough already... Linus...」[k]
+In the end, I had no choice but to do as Linus wanted me to do...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナスイベント05
+*linus_05
+
+; 宿屋の一室
+@saveon
+@out
+@bg chara=フレデリカ f=event56 p0=hair p1=04 p2=05 p3=02
+[texton w=2]
+[フレデリカ v=vd590 e=汗だく f=37]「Ah, ah, ah!」[k]
+[ライナス e=汗だく f=01]「Oooo... your pussy really does get wet...」[k]
+[フレデリカ v=vd591 f=37]「Ahh... Linus... give me more...!」[k]
+[textoff]
+@out
+@w05
+
+; 宿屋の廊下
+@bgf f=0002
+@mu f=adult
+[texton w=0]
+[テオ e=通常 f=12]「[フレデリカ]...!」[k]
+When did [フレデリカ] and Linus get into that kind of intimate relationship...?![k]
+I left the room, dazed.[k]
+[textoff]
+@fa
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ワイルド・ブル編
+
+;◇ワイルド・ブルイベント01
+*wildbull_01
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*dwa_wildbull_01 cond='game.isFreeMode'
+@saveon
+@bgf f=0022 cond='f.replayMode'
+[texton w=0]
+We went into the Wild Bull stronghold to rescue our friends. Then...[k]
+[textoff]
+
+@fg c=フレデリカ e=奴隷の鎧・上,奴隷の鎧・下 f=29
+[texton w=1]
+[フレデリカ v=vd592 f=29]「Ah... Captain...」[k]
+[テオ f=11]「[フレデリカ]...!」[k]
+Shockingly, there was a bare looking [フレデリカ] there.[k]
+Although a metal bra-like object was supporting her chest, her ample breasts were almost completely exposed, and most importantly, so were her nipples.[k]
+[テオ f=12]「What the... Why are you dressed like that?!」[k]
+@cl b
+@fg r=アレックス f=00 b
+@fg c=フレデリカ f=29
+[アレックス f=00]「Why do you think?」[k]
+Suddenly, Alex appeared from behind [フレデリカ]![k]
+[テオ f=10]「Alex... You...!」[k]
+[アレックス f=00]「Why make her dress like this? It's obvious, isn't it?」[k]
+@cl b
+@fg r=アレックス left=500 b
+@fg c=フレデリカ f=37
+[フレデリカ v=vd593 f=37]「Ah...!」[k]
+[テオ f=12]「Alex...!」[k]
+Alex put his hands behind [フレデリカ]'s back and grabbed her breasts, which were popping out of the metal rings![k]
+[フレデリカ v=vd594 f=37]「Ah... Oh... No... I can't... ah...」[k]
+[アレックス f=03]「Haha, this way I can enjoy these lewd tits anytime I want!」[k]
+He then rubs her large breasts with his disgusting hands.[k]
+Her exposed nipples suddenly hardened and began to jut out from the center of the ring.[k]
+[テオ f=11]「Stop it, Alex!」[k]
+[アレックス f=00]「Haha... So soft... I must enjoy this feeling to the fullest!」[k]
+[フレデリカ v=vd595 f=38]「Oh, no... Don't... No... No...!」[k]
+[フレデリカ]'s breasts are being defiled by Alex's dirty hands.[k]
+But there is nothing I can do... As long as [フレデリカ] is with Wild Bull, I'm sorry, I can't help you...![k]
+@cl b
+@fg r=アレックス b
+@fg c=フレデリカ f=50
+[アレックス f=03]「Well, I enjoyed it.」[k]
+[フレデリカ f=50]「... ∗sob∗」[k]
+[テオ f=12]「[フレデリカ]...!」[k]
+[アレックス f=03]「Thanks for giving me such a nice girl! Well, I'll enjoy it as much as I can! Gahahahaha!」[k]
+[テオ f=10]「Damn...!」[k]
+Alex was smiling proudly. I could do nothing but bite my lip in front of him...[k]
+[フレデリカ f=50]「... ∗sob∗」[k]
+[アレックス f=00]「So what are you gonna do? Fight us?」[k]
+[textoff]
+@return cond='f.replayMode'
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton w=1]
+[アレックス f=05]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [フレデリカ], fight hard!」[k]
+[フレデリカ v=vd596 f=29]「Ha... Yes...」[k]
+Alex and [フレデリカ] went straight into battle stance.[k]
+[textoff]
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント02
+*wildbull_02
+
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*dwa_wildbull_02 cond='game.isFreeMode'
+@saveon
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=01 p3=01
+[texton w=2]
+[フレデリカ v=vd597 e=奴隷の鎧・下 f=39]「∗liick liick slurp∗」[k]
+[テオ f=12]「[フレデリカ]...!」[k]
+When I entered the room, [フレデリカ] was in the middle of squeezing Alex's member.[k]
+She lies on the floor with Alex straddling her, his filthy meatpole between her voluptuous breasts.[k]
+[アレックス e=裸 f=05]「Okay! Use those boobs to rub my dick more!」[k]
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=01 p3=02
+[フレデリカ v=vd598 f=38]「Yes... I'm sorry, Alex... Ng... Uh...」[k]
+[アレックス f=05]「This time, you're not using your mouth enough! Use your tongue more!」[k]
+[フレデリカ v=vd599 f=40]「Yes, sorry... ∗slurp∗」[k]
+[フレデリカ]'s breasts and mouth were defiled by Alex.[k]
+His meat pole is sandwiched between her white breasts and she is forced to suck that dirty phallus.[k]
+[フレデリカ v=vd600 f=40]「∗lick lick mmph mmph∗」[k]
+[アレックス f=02]「All right... That's it... Squeeze harder.」[k]
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=01 p3=01
+[フレデリカ v=vd601 f=38]「Yes... Alex... Chuuuuuuuuh...」[k]
+[フレデリカ] does as Alex tells her to do, using her own breasts and squeezing Alex's thing as hard as she can.[k]
+[アレックス f=00]「Fu...」[k]
+Alex was sighing with such pleasure that it was infuriating.[k]
+[アレックス f=02]「I can't get enough of this feeling. It feels so good to have your tits wrapped around my cock!」[k]
+[アレックス f=03]「Yeah, a woman with big boobs is just asking to have a cock squashed between them like this! Big tits must be put to good use! Gahahahahaha!」[k]
+[テオ f=10]「Damn...!」[k]
+Damn... I can't help but be angry at Alex for being so insulting to [フレデリカ]![k]
+But I can't do anything now...! As long as [フレデリカ] belongs to Wild Bull, I can't stop this...![k]
+[アレックス f=17]「Ugh!」[k]
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=02 p3=02
+Suddenly, a vigorous jet of white fluid shot out of Alex's tip![k]
+[フレデリカ v=vd602 f=37]「Kya!」[k]
+[アレックス f=17]「Woooooo!」[k]
+With a grunt from Alex, a large amount of semen is sprayed onto [フレデリカ]'s face![k]
+Her pretty face was completely tarnished by Alex's dirty semen.[k]
+[アレックス f=04]「I got it out. I feel so refreshed.」[k]
+@bg chara=フレデリカ f=event43 p0=01 p1=hair p2=02 p3=01
+[フレデリカ f=40]「...」[k]
+Alex smiles with satisfaction, while [フレデリカ] is just stunned, cum dribbling on her skin...[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+
+
+
+
+
+
+@gameon
+@fg l=アレックス e=裸 f=03 b
+@fg r=フレデリカ e=奴隷の鎧・下 f=39
+[texton w=1]
+[アレックス f=03]「Phew, that felt good. I'm happy. Gahahaha!」[k]
+[テオ f=08]「Damn...! Alex...!」[k]
+[フレデリカ f=39]「...」[k]
+[アレックス f=01]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=05]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [フレデリカ], fight hard!」[k]
+[フレデリカ v=vd596 f=29]「Ha... Yes...」[k]
+Alex and [フレデリカ] went straight into battle stance.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント03
+*wildbull_03
+
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*dwa_wildbull_03 cond='game.isFreeMode'
+@saveon
+@bg chara=フレデリカ f=event43 p0=02 p4=hair p5=01 p6=01
+[texton w=2]
+[フレデリカ v=vd603]「Ah... Ah... Ah... Ah...」[k]
+[テオ]「[フレデリカ]...!」[k]
+When I entered the room, I found [フレデリカ] surrounded by several men.[k]
+[フレデリカ] is completely naked. The tips of the men's bare erect penises are pressed against her large, exposed breasts.[k]
+They want to use her soft nipples to feel good. The men were so enthusiastic that they kept pushing their phalluses against her breasts.[k]
+And then... Alex's magnificent big cock was thrusting deeply into her secret place.[k]
+Alex's towering manhood pushes her entrance wide open.[k]
+[フレデリカ] was already tainted.[k]
+[if exp='o.フレデリカ.firstPartnerKey == "alex"']
+	[アレックス e=裸 f=00]「Kukuku, I turned this girl into a woman!」[k]
+[else]
+	[アレックス f=00]「Kukuku, I've already had my fill of this girl.」[k]
+[endif]
+∗sluurp sluurp sluurp sluurp∗[k]
+@bg chara=フレデリカ f=event43 p0=02 p4=hair p5=01 p6=02
+[フレデリカ v=vd604]「Ah... Ahhh... Alex... ah...」[k]
+[フレデリカ] repeatedly moves up and down while making disgusting wet noises.[k]
+Every time [フレデリカ] moves, Alex's strong penis slithers in and out of her gaping vaginal opening.[k]
+A large amount of love juice was dripping at the joint.[k]
+[フレデリカ v=vd605]「Ahhh... ah... ah... aaaaahhh...!」[k]
+[フレデリカ]'s movements become heated.[k]
+Even if she did not originally want to have a relationship with Alex, she's too aroused by the sex and being devoured by pleasure.[k]
+[フレデリカ v=vd606]「An... ahh... Aaahhh... Alex...!」[k]
+[フレデリカ] shakes her hips.[k]
+I feel...! Alex's cock is making me feel so good...![k]
+[フレデリカ] is a woman. She can't stop herself from becoming lewd when penetrated by a strong dwarf.[k]
+How many times must she have had sex with Alex and his friends now...?[k]
+[アレックス]「Okay, it's time to start shooting some cum!」[k]
+@bg chara=フレデリカ f=event43 p0=02 p4=hair p5=02 p6=02
+∗spuurt! spuurt!∗[k]
+[フレデリカ v=vd607]「Aaaahhh... nooooo...!」[k]
+Alex unleashed his sperm into [フレデリカ], who cried hesitantly![k]
+Alex's body shook and he ejaculated into her vagina. [フレデリカ] obediently received it.[k]
+Meanwhile, on the upper half of her body, two rigid male genitals press into her ample breasts, causing them to change shape in a variety of ways.[k]
+[男]「Ugh...! I'm cumming...!」[k]
+One of the men reaches climax and sprays [フレデリカ]'s breasts with white fluid.[k]
+[男]「Ugh...! Me too...!」[k]
+The other man also shoots vigorously at her breasts.[k]
+[フレデリカ v=vd608]「Ha ha ha...」[k]
+[フレデリカ] receives the men's sperm on her body with a look of ecstasy.[k]
+She had already become a tool for the men to relieve their sexual desires.[k]
+[テオ]「Sorry, [フレデリカ]...」[k]
+Regret for having put her, my precious companion, through this pain surges through my heart.[k]
+I couldn't protect [フレデリカ]. Now it's too late.[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+@gameon
+@fg l=アレックス e=汗だく f=03 b
+@fg r=フレデリカ e=汗だく f=64
+[texton w=1]
+[アレックス f=03]「Phew, that felt good. I'm happy. Gahahaha!」[k]
+[テオ f=08]「Damn...! Alex...!」[k]
+[フレデリカ f=64]「...」[k]
+@fgf l=アレックス f=00
+[アレックス f=00]「So what are you going to do? You gonna fight? My dick feels better. I'd be happy to fight you.」[k]
+[textoff]
+
+; 選択肢・決闘するかしないか
+@call storage="duel.ks" target=*wildbull_offer
+
+; 決闘する
+[texton]
+[アレックス f=00]「What the hell?」[k]
+[アレックス f=00]「...Huh, all right. But you might not like the result! Hey, [フレデリカ], fight hard!」[k]
+[フレデリカ f=29]「L-like this...?」[k]
+[アレックス f=05]「Of course! Get your weapon!」[k]
+Alex and [フレデリカ] took a fighting stance, despite being stark naked.[k]
+[textoff]
+@eval exp='f.fightNakedry[0] = 1'
+@eval exp='f.fightNakedry[game.curTeam.slaves.find(game.curChara) + 2] = 1'
+@jump storage="duel.ks" target=*wildbull_start
+
+
+;◇ワイルド・ブルイベント04
+*wildbull_04
+
+; ワイルド・ブルのアジト
+@jump storage="free01.scn" target=*dwa_wildbull_04 cond='game.isFreeMode'
+@saveon
+@fg l=thief_blue_nude1 b
+@fg r=thief_green_nude2 b
+@fg c=フレデリカ e=汗だく f=29
+[texton w=1]
+[盗賊 f=thief_blue_03]「Kuu～! Her boobs really feel good!」[k]
+[盗賊 f=thief_green_04]「Hey! Hurry up and squash my cock!」[k]
+[フレデリカ v=vd609 f=29]「Please take turns... ∗lick∗ ∗slurp∗」[k]
+What must it be like to offer your body to an unwanted partner?[k]
+I can't let them abuse her any more. We must help her quickly...[k]
+[textoff]
+@clf
+@eval exp='game.party.escape(true)'
+[eventoff]
+
+
+;◇ワイルド・ブル救出イベント・懐妊直後
+*wildbull_pregnant
+
+; 救出した直後
+@saveon
+@fg c=フレデリカ e=穴あき鎧・妊娠 f=09
+[texton w=1]
+[テオ f=05]「[フレデリカ], I'm sorry it took me so long to come help you. Come on, let's go home together.」[k]
+[フレデリカ f=09]「...」[k]
+[テオ f=05]「Hmm? What's wrong?」[k]
+[フレデリカ v=vd610 f=10]「I... I have to tell the captain...」[k]
+[テオ f=02]「What? Say it.」[k]
+@fg c=フレデリカ e=穴あき鎧・妊娠 f=10
+[フレデリカ v=vd611 f=10]「Well... I... I think I'm having a... A baby.」[k]
+[テオ f=12]「What?! Whose?!」[k]
+[フレデリカ v=vd612 f=10]「I don't know... I think it might be someone from Wild Bull...」[k]
+[テオ f=10]「...」[k]
+Damn, Wild Bull doesn't even use birth control...! What do they think they're doing with [フレデリカ]'s body...?![k]
+@fg c=フレデリカ e=穴あき鎧・妊娠 f=50
+[フレデリカ v=vd613 f=50]「...What should I do?」[k]
+[テオ f=05]「Anyway, let's go back to Sapphire City! If we talk to the guild, we might be able to work something out.」[k]
+[textoff]
+@out
+@w05
+[texton]
+I took [フレデリカ] back to Sapphire City.[k]
+After consulting with the guild, [フレデリカ] was able to rest for a while on the second floor of the waiting area.[k]
+@call storage="stay.ks" target=*describe_support
+[textoff]
+@w05
+
+; 待合所のベッド
+@bg f=0007
+[texton]
+[テオ f=02]「You can stay here until the baby is safely delivered.」[k]
+[フレデリカ v=vd614 e=マタニティドレス f=10]「I'm sorry... I've become a burden to everyone...」[k]
+[テオ f=02]「That's not true. Take care of yourself and your baby. We'll be waiting for you.」[k]
+[textoff]
+@out
+@return
+
+
+;◇ワイルド・ブル救出イベント・臨月間近
+*wildbull_bigbelly
+
+; 救出した直後
+@saveon
+@fg c=フレデリカ e=穴あき鎧・ボテ腹 f=09
+[texton w=1]
+[フレデリカ v=vd615 f=09]「Captain...」[k]
+[テオ f=02]「[フレデリカ], I'm sorry I'm late helping you. Come on, let's go home together.」[k]
+[フレデリカ v=vd616 f=09]「Excuse me, Captain...」[k]
+[テオ f=02]「Why is [フレデリカ] apologizing?」[k]
+[フレデリカ v=vd617 f=09]「I can't fight for you with a body like this...」[k]
+[テオ f=02]「Forget about battles. Right now, you need to put your baby and your body first.」[k]
+[テオ f=02]「I heard there is a facility in Sapphire City where you can take a rest. You can relax there for a while.」[k]
+[textoff]
+@out
+@w05
+[texton]
+I took [フレデリカ] back to Sapphire City.[k]
+After consulting with the guild, [フレデリカ] was able to rest for a while on the second floor of the waiting area.[k]
+@call storage="stay.ks" target=*describe_support
+[textoff]
+@w05
+
+; 待合所のベッド
+@bg f=0007
+[texton]
+[テオ f=02]「You can stay here until the baby is safely delivered.」[k]
+[フレデリカ v=vd618 e=マタニティドレス　 f=10]「I'm sorry... Captain...」[k]
+[テオ f=02]「It's nothing for you to apologize for. I'll be looking forward to the day when you're back.」[k]
+[textoff]
+@out
+@return
+
+
+
+
+;■背徳の鎧イベント
+
+;◇背徳の鎧イベント
+*sexy_armor
+
+@fg c=フレデリカ f=37
+@saveon
+[texton w=1]
+[フレデリカ v=vd619 f=37]「Haaaaaaan...!」[k]
+The armor forced on [フレデリカ] by the power of a curse contained a shocking surprise![k]
+An object resembling a male penis extended from within the pants and penetrated all the way into [フレデリカ]'s vagina.[k]
+@fg c=フレデリカ f=38
+[フレデリカ v=vd620 f=38]「P-please don't look at me... 」[k]
+[フレデリカ]s cheeks were flushed with embarrassment. She's red up to her ears.[k]
+Her crotch is already beginning to drip lewd juices from the crack between her legs. She is embarrassed, but she is feeling it.[k]
+@fg c=フレデリカ f=50
+[フレデリカ v=vd621 f=50]「I'm dying of embarrassment...! Ugh...」[k]
+@cl
+[フレデリカ] finally crouched down on the ground in embarrassment.[k]
+Tears are in her eyes and her body is trembling. I'll feel sorry for her if it continues like this. I have to do something about it soon...!
+ [k]
+[textoff]
+@w05
+[eventoff]
+
+
+
+
+
+;■フリーモード
+
+*_replace_max_04
+
+@out
+@w05
+@fg l=フレデリカ e=通常 f=03 b
+@fg r=マックス e=通常 f=15 b
+@bgf f=0006
+@mu f=enjoy
+[texton w=1]
+[マックス] and [フレデリカ] had gone out into town together for the trial date they had previously agreed to.[k]
+@jump target=*_skip_max_04
+

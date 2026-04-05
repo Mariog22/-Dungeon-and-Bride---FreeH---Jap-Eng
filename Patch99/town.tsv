@@ -1,0 +1,109 @@
+﻿name	サファイアシティ
+displayName	Sapphire City
+bgm	city
+img	town_sapphire
+house	name:王立ギルド, x:396, y:337
+house	name:待合所, x:748, y:160
+house	name:冒険者の宿, x:303, y:400
+house	name:ホテル・クイーン, x:536, y:466
+house	name:ベトリヌスの酒場, x:479, y:295
+house	name:マリオン武器工房, x:633, y:386
+house	name:鎧屋ドミンゴ, x:179, y:299
+house	name:世界一の道具店, x:623, y:190
+house	name:ドロシーの魔法店, x:191, y:128
+house	name:アウラ中央教会, x:415, y:452
+house	name:イーラ中央寺院, x:247, y:40
+house	name:アイテム保管庫, x:721, y:280
+house	name:サファイア城, x:365, y:123
+house	name:闘技場, x:831, y:186
+house	name:アイテム博物館, x:405, y:216
+house	name:公園, x:147, y:220
+house	name:サファイアシティ・北西門, x:77, y:60
+house	name:サファイアシティ・北東門, x:810, y:68
+house	name:サファイアシティ・南西門, x:198, y:493
+house	name:サファイアシティ・南東門, x:687, y:492
+house	name:下水道入口, x:635, y:87
+
+name	ブレイブタウン
+displayName	Bravetown
+bgm	town
+img	town_amber
+house	name:冒険者ギルド, x:688, y:287
+house	name:ホテル琥珀, x:378, y:345
+house	name:マルティナの酒場, x:526, y:299
+house	name:剣の店リーネ, x:454, y:471
+house	name:アイザック防具店, x:761, y:456
+house	name:ドナの道具屋, x:302, y:413
+house	name:ブレイブタウン教会, x:187, y:253
+house	name:冒険者の保管庫, x:698, y:383
+house	name:自宅, x:562, y:397
+house	name:ブルーのアジト, x:487, y:133
+house	name:ブレイブタウン・北門, x:222, y:116
+house	name:ブレイブタウン・西門, x:145, y:415
+house	name:森の中の廃屋入口, x:628, y:60
+house	name:町外れの遺跡入口, x:816, y:60
+
+name	シーガルの村
+displayName	Seagull Village
+bgm	beach
+img	town_seagull
+house	name:海岸ギルド, x:637, y:415
+house	name:潮風のペンション, x:242, y:115
+house	name:かもめ亭, x:593, y:310
+house	name:海の男の武器店, x:511, y:475
+house	name:マーメイドビューティ, x:670, y:211
+house	name:ヘルガの薬屋, x:687, y:292
+house	name:魔法の店うみねこ, x:575, y:176
+house	name:浜辺の教会, x:535, y:377
+house	name:シーサイド保管庫, x:427, y:186
+house	name:砂浜, x:358, y:409
+house	name:シーガルの村・北門, x:488, y:60
+house	name:シーガルの村・東門, x:784, y:250
+house	name:シーガルの村・南門, x:733, y:474
+
+name	ノースロップ村
+displayName	Northrop Village
+bgm	winter
+img	town_northrop
+house	name:雪の町のギルド, x:218, y:415
+house	name:雪の宿, x:700, y:446
+house	name:山小屋パブ, x:263, y:314
+house	name:ハンターズウェポン, x:154, y:290
+house	name:兵士の鎧屋, x:593, y:427
+house	name:アイテムの店パメラ, x:511, y:368
+house	name:マジカル☆ウェンディ, x:344, y:170
+house	name:雪国の礼拝堂, x:484, y:291
+house	name:銀世界の保管庫, x:355, y:249
+house	name:エヴァの家, x:624, y:187
+house	name:ノースロップ村・北門, x:582, y:76
+house	name:ノースロップ村・南門, x:339, y:482
+
+name	地下の町ライムストーン
+displayName	Limestone Underground City
+bgm	underground
+img	town_underground
+house	name:大洞窟ホテル, x:648, y:122
+house	name:大洞窟バル, x:224, y:74
+house	name:雑貨店ハッピードッグ, x:603, y:327
+house	name:ホークワロスの魔法店, x:321, y:75
+house	name:地下教会, x:221, y:222
+house	name:地下の保管庫, x:229, y:390
+house	name:コルトンの家 , x:420, y:81
+house	name:地下街出口・西, x:116, y:98
+house	name:地下街出口・東, x:765, y:168
+
+name	ダストウェルの町
+displayName	Dustwell Town
+bgm	frontier
+img	town_dustwell
+house	name:達人のギルド, x:601, y:302
+house	name:簡易宿泊所, x:211, y:236
+house	name:町営食堂, x:441, y:260
+house	name:砂漠の戦士の店, x:347, y:129
+house	name:よろず屋マンゴー, x:335, y:420
+house	name:最果ての教会, x:587, y:135
+house	name:塵埃の保管庫, x:189, y:425
+house	name:ダストウェルの町・北門, x:780, y:87
+house	name:ダストウェルの町・南門, x:510, y:490
+house	name:ムニョスの家 , x:624, y:187
+house	name:井戸, x:335, y:200

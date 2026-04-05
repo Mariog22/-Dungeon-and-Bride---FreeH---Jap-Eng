@@ -1,0 +1,2549 @@
+﻿; シナリオ・ノーム編・Ｂパート
+
+
+
+;■主人公編・後半
+
+;◇主人公イベント06
+*theo_06
+
+; サファイアシティ・入店時
+@saveon
+@w05
+[texton w=1]
+[テオ f=05]「Hey [マックス], I'm thinking of giving everyone in the party the day off tomorrow, what do you think?」[k]
+[マックス f=01]「Whoa, what's going on, all of a sudden?」[k]
+[テオ f=06]「I'm going to a guild meeting. As the leader of the party, I have to be there.」[k]
+[マックス f=01]「I see. Well we'll take it easy while you do.」[k]
+Before staying at the inn, I made my announcement and everyone gladly accepted.[k]
+[textoff]
+@eventsleep effect=false
+@out
+@w05
+
+; 宿屋・朝のロビー
+@bg f=0002
+@mu f=guild
+[texton w=1]
+Next morning.[k]
+[マックス f=03]「Well, I'm off to see Maria for the first time in a while!」[k]
+[テオ f=02]「Say hi to Maria for me, [マックス].」[k]
+It seems that everyone went to visit family or find entertainment.[k]
+Well, I have to go to the guild...[k]
+[textoff]
+@fg c=ミューズ e=通常 f=05
+[texton w=1]
+[ミューズ f=05]「...」[k]
+In the lobby of the inn, I found [ミューズ] standing alone.[k]
+[テオ f=02]「Oh, aren't you going somewhere, [ミューズ]?」[k]
+[ミューズ v=vg198 f=05]「I... I don't really have anywhere to go, so...」[k]
+[テオ f=05]「Don't you want to go back to your home village or visit your family like everyone else?」[k]
+@fg c=ミューズ f=10
+[ミューズ f=10]「...」[k]
+[テオ f=02]「You said before that it's somewhere near Landon Canyon, right? That's close to this town. Why don't you go there?」[k]
+[ミューズ f=10]「...」[k]
+[ミューズ v=vg199 f=10]「I... can't go back to the village...」[k]
+@cl
+[テオ f=05]「Oh, [ミューズ]!」[k]
+Leaving only that remark, [ミューズ] hurried away.[k]
+[テオ f=06]「...」[k]
+...What do you mean you can't go back to your village?[k]
+Maybe there is some complication. I'm a little worried about [ミューズ]...[k]
+[textoff]
+@out
+[hoteloff leave=true]
+
+
+;◇主人公イベント07
+*theo_07
+
+; 宿屋の一室
+@saveon
+@fg c=ミューズ e=通常 f=06 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[テオ e=通常 f=05]「Hey, [ミューズ]. About the other day...」[k]
+[ミューズ f=06]「...」[k]
+[テオ f=05]「You said you can't go back to your village, why is that?」[k]
+@fg c=ミューズ f=10
+[ミューズ f=10]「...」[k]
+[ミューズ] awkwardly looks away from me and doesn't speak.[k]
+I guess she doesn't want to tell me.[k]
+[テオ f=12]「Sorry! I didn't mean to intrude if you don't want to tell me...」[k]
+[ミューズ v=vg200 f=10]「...I can't get into the village.」[k]
+[テオ f=05]「Eh?」[k]
+[ミューズ v=vg201 f=10]「I really want to go back to my village. My family and the people in the village may be waiting. But once I enter the village, it's the end for me...」[k]
+[テオ f=05]「Once you enter the village, it's the end? What do you mean?」[k]
+[ミューズ f=10]「...」[k]
+[ミューズ v=vg202 f=10]「...I'll tell you. What happened, and why I can't go back...」[k]
+[textoff]
+@fa
+@out
+
+; ミューズの回想・過去の話
+@mu f=anxiety
+[texton w=1]
+As you can tell from me, gnomes, are small and frail.[k]
+We could never win a war with another race. So in order to protect ourselves, we built settlements in remote caves and lived inconspicuously.[k]
+I was also born in a village like that. There, we lived a modest life, growing crops that grew in the dark and selling ore.[k]
+[textoff]
+@out
+@bg f=0065
+[texton w=1]
+One day, a group of human bandits came to our village from somewhere.[k]
+They probably noticed that the ore from our village fetches a high price.[k]
+They were armed and said that from that day, they would rule the village.[k]
+Of course that's a ridiculous demand.[k]
+...But none of the adults in the village defied the bandits.[k]
+Because when you resist... you can't win.[k]
+[textoff]
+@out
+[texton w=1]
+So the bandits' rule began.[k]
+Adults, children, and the elderly were all sent out to mine for ore, and were forced to work day and night.[k]
+Most of the profits from the ore trade went to the bandits, and we gnomes were given only a little food and forced to work.[k]
+The village and our freedom wasn't ours any more.[k]
+[textoff]
+@out
+@bg f=event102 p0=02
+[texton w=1]
+The young women of the village were gathered in one of the large houses in the settlement.[k]
+They were forced to live as the mountain bandits' playthings.[k]
+They were forced to wear only the bare minimum of clothing and humiliated day after day at the whim of the bandits.[k]
+[if exp='f.killedBanditsRapeGnome']
+	; 回避ルート・回避可能なのは最初の１人だけ
+	Fortunately, I wasn't targeted by them and was able to preserve my chastity.[k]
+	However, some girls couldn't endure a life of sexual servitude and took their own lives.[k]
+	@eval exp='f.killedBanditsRapeGnome = false'
+[else]
+	; 寝取られルート
+	[textoff]
+	[texton w=2]
+	@bg f=event99 p1=02
+	...That's when I first experienced a man.[k]
+	Some girls couldn't endure a life of sexual servitude and took their own lives.[k]
+	@eval exp='o.ミューズ.sexCount.other += 12'
+	@eval exp='o.ミューズ.firstPartnerKey = "other"'
+	@eval exp='o.ミューズ.loversCount += 5'
+	@eval exp='o.ミューズ.pourCount += 6'
+[endif]
+[textoff]
+@out
+
+@bg f=0066
+[texton w=1]
+One day...[k]
+I and a few other girls happened to be unobserved by the bandits.[k]
+We were near the exit of the cave at the time, so we decided to take this opportunity to escape from the village.[k]
+But on our way out, we were discovered. They chased us angrily toward the exit of the cave.[k]
+...Then, the other girls shielded me, so I could escape.[k]
+"You at least, should be free". That's what they said to me.[k]
+[textoff]
+@out
+
+@bg f=0054
+@mu f=calm
+[texton w=1]
+Thanks to them, I was able to escape from the bandits.[k]
+...But my heart was filled with anxiety.[k]
+I had never left the village, and I had never lived alone. I sometimes wished I could have stayed with my family and everyone else, even if life was hard.[k]
+But I did not return to the village.[k]
+I didn't want to waste the sacrifice of the girls who helped me leave...[k]
+[textoff]
+@out
+
+@bg f=0019
+[texton w=1]
+I set out for the town. And I managed to reach Sapphire City.[k]
+But I didn't know what to do. Although I was free, I had no one to rely on, and I was at a loss as to how I should live from now on.[k]
+While I was wandering around the streets lost, some people from the guild took me in.[k]
+There I learned that there was a way of life called "adventuring". I learned that I could earn money as an adventurer by making use of gnomes' magical powers.[k]
+Of course, the guild members also told me that there are other ways to work.[k]
+But... I chose to be an adventurer.[k]
+Because I wanted to become stronger. [r]
+Realizing that if I was weak, I would be unfairly dominated, I didn't want to live that way anymore.[k]
+...But in reality, it wasn't so easy.[k]
+I was a low-level, inexperienced adventurer, and it was difficult to find a party willing to hire me.[k]
+Eventually, the guild members began urging me to look for other work, and I almost gave up on being an adventurer.[k]
+One day...[k]
+[textoff]
+@out
+
+; 回想・ゲーム序盤のテオとの出会いの場面
+@fg c=5001 b
+@bg f=0047
+[texton w=1]
+[name n=&'o.テオ.displayName' f=theo_sepia_01]「Oh... are you the gnome who's joining my party?」[k]
+[name n=&'o.ミューズ.displayName' f=gno1_sepia_05]「...!」[k]
+[name n=&'o.ミューズ.displayName' f=gno1_sepia_06]「... ∗nod∗」[k]
+@fgf c=5002
+[name n=&'o.テオ.displayName' f=theo_sepia_02]「Ah, good. I'm [テオ]. Nice to meet you. And you are?」[k]
+[name n=&'o.ミューズ.displayName' v=vg001 f=gno1_sepia_05]「...[ミューズ].」[k]
+@fgf c=5001
+[name n=&'o.テオ.displayName' f=theo_sepia_01]「I'm looking forward to working with you, [ミューズ].」[k]
+[name n=&'o.ミューズ.displayName' f=gno1_sepia_06]「... ∗nod∗」[k]
+One party leader hired me.[k]
+A person kindly reached out to me and said we would work together. It was... you.[k]
+[textoff]
+@out
+
+@fg c=ミューズ e=通常 f=24 b
+@bg f=0001
+[texton w=1]
+[テオ f=06]「...」[k]
+[ミューズ v=vg203 f=24]「If you hadn't called on me, I would have been helpless for a long time... Thanks to you, I found my place in the world...」[k]
+@fg c=ミューズ e=通常・大 f=48
+[ミューズ] then approached me and held the hem of my clothes tightly.[k]
+[テオ f=05]「[ミューズ]...」[k]
+[ミューズ v=vg204 f=48]「I want you to keep me close to you... If you abandon me, I...」[k]
+[ミューズ]'s voice is getting shakier and shakier as she struggles to speak.[k]
+[テオ f=02]「It's okay, [ミューズ]. I'm not going to abandon you.」[k]
+[ミューズ v=vg205 f=47]「Captain...!」[k]
+@cl
+[ミューズ]'s eyes were moistening and she gently leaned her body against my arm.[k]
+I hug her shoulder.[k]
+She is shy and seemingly unreliable, but she is here because she summoned up her courage and overcame great hardship.[k]
+She is so small and fragile in my arms that I can't help but want to protect her.[k]
+I would never let [ミューズ] be harmed again.[k]
+[テオ f=01]「By the way, what happened to the village where you lived?」[k]
+@fg c=ミューズ e=通常・大 f=10
+[ミューズ v=vg206 f=10]「I don't know, I haven't been back for a long time. But...」[k]
+[ミューズ v=vg207 f=10]「Maybe even now... it's still under the control of those bandits.」[k]
+[テオ f=12]「Oh no...!」[k]
+What a thing to imagine. How can it be that the weak were so close, but continued to suffer without our knowledge?[k]
+[テオ f=06]「...」[k]
+...I didn't become an adventurer just for money or fame.[k]
+I wanted to do this because I wanted to help people... I wanted to be of service to the world, like my father.[k]
+[テオ f=05]「Hey, [ミューズ]. Take me to your village.」[k]
+@fg c=ミューズ e=通常・大 f=05
+[ミューズ v=vg208 f=05]「What...?」[k]
+[テオ f=06]「I can't ignore this. I'm an adventurer.」[k]
+@fg c=ミューズ e=通常・大 f=58
+[ミューズ v=vg209 f=58]「Don't tell me you're going to fight those people...?!」[k]
+[ミューズ v=vg210 f=57]「Don't! There are too many of them... They are underhanded and dangerous.」[k]
+[テオ f=05]「I understand. But I can't just look the other way. People who are being oppressed...!」[k]
+@fg c=ミューズ e=通常・大 f=30
+[ミューズ f=30]「...」[k]
+[テオ f=05]「No...?」[k]
+[ミューズ v=vg211 f=30]「...I understand. I'll tell you where it is.」[k]
+[ミューズ v=vg212 f=30]「But please don't do anything reckless...! If anything happens to you... I...」[k]
+[テオ f=02]「I know. Thanks for your concern.」[k]
+[textoff]
+@out
+@w05
+
+[texton]
+According to [ミューズ], her home village is in [b]a cave[/b] at the bottom of Landon Canyon.[k]
+We should go there as soon as we're ready.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント08
+*theo_08
+
+; 洞窟内・ノームの村
+@saveon
+[texton w=0]
+[テオ f=05]「This is [ミューズ]'s home village...!」[k]
+A small settlement was built a short distance into the cave.[k]
+In a pit visible at the far end of the village, emaciated gnomes are being put to work mining.[k]
+A few large human men are watching the gnomes with their weapons at the ready. They are probably the bandits.[k]
+[name n=Bandit f=bandit_blue_01]「Mm? Who the hell are you?!」[k]
+One of the men in the bandit group noticed our presence![k]
+[テオ f=05]「We are adventurers here under orders from the Sapphire City Guard. We are here to arrest you bandits occupying this gnome village.」[k]
+I had consulted the Sapphire City Guard about this matter beforehand.[k]
+The bandits were so cunning that they had the gnome chief write a memorandum delegating the right to govern the village to the bandits.[k]
+Of course, the document would have been forced to be written by the bandits through intimidation. However, it had become the official proof of the contract.[k]
+In fact, the Sapphire City Guard was aware of the situation in this village. However, because of that contract, they couldn't touch this village until now.[k]
+I carefully explained what [ミューズ] had told me to the security team. The security team agreed that it was an unlawful contract and that it was invalid.[k]
+Between the bandits, who had a bad reputation, and us, who had built up their trust with our achievements as adventurers, it goes without saying which of us they believed.[k]
+The security team gave our party the task of apprehending them. This means we are here with the endorsement of Sapphire City.[k]
+[name n=Bandit f=bandit_red_01]「You're arresting us?」[k]
+[name n=Bandit f=bandit_blue_01]「Don't let the adventurers get the better of you. Hey! You guys! There's an intruder in our village!」[k]
+When the bandit called out, his fellow bandits gathered around him.[k]
+[name n="Bandit Leader" f=bandit_yellow_01]「What's going on? Who are these guys?」[k]
+[name n=Bandit f=bandit_blue_01]「Some adventurers are trying to pick a fight with us!」[k]
+[name n="Bandit Leader" f=bandit_yellow_01]「What the?! Hey, guys! Let's beat these guys to a pulp!」[k]
+[テオ f=06]「...!」[k]
+The bandits suddenly attacked![k]
+[textoff]
+
+; 山賊たちと戦闘
+@monster pos=0 name=バンディット
+@monster pos=1 name=バンディット
+@monster pos=2 name=バンディット
+@monster pos=3 name=バンディット
+@monster pos=4 name=バンディット
+@monster pos=5 name=バンディット
+@monster pos=6 name=バンディット
+@monster pos=7 name=パイレーツ
+@monster pos=8 name=パイレーツ
+@monster pos=9 name=パイレーツ
+@monster pos=10 name=パイレーツ
+@monster pos=11 name=パイレーツ
+@monster pos=12 name=パイレーツ
+@monster pos=13 name=パイレーツ
+@monster pos=15 name=キャプテン
+@monster pos=16 name=キャプテン
+@monster pos=17 name=キャプテン
+@monster pos=18 name=キャプテン
+@monster pos=19 name=キャプテン
+@callbattle bgm=boss escape=false gameover=true
+; 勝利
+
+@wait time=500
+[texton w=0]
+[テオ f=02]「That was easier than I thought.」[k]
+They only had force of numbers on their side, rather than real combat experience.[k]
+[name n=Gnome]「Thank you for your help, Mr. Adventurer!」[k]
+[name n=Gnome]「Many gnomes are being held captive by bandits beyond this cave. Please can you help them as well?」[k]
+[テオ f=05]「We'll take care of it.」[k]
+[textoff]
+[eventoff]
+
+
+;◇主人公イベント09
+*theo_09
+
+; 洞窟内・ノームの村の一角
+@saveon
+@bg f=event102 p0=01
+@mu f=darkside
+[texton w=2]
+[name n="Gnome Girl"]「An... An... An...」[k]
+[name n="Gnome Girl"]「Oh... Please... Forgive me...!」[k]
+[name n="Gnome Girl"]「Ahh... so violent... aaahhh!」[k]
+[テオ]「This is...!」[k]
+Young gnome women were being raped by bandits.[k]
+The gnome girls are gathered in one of the caves, all of them stripped bare, and continue to endure the men's relentless humiliation.[k]
+[name n=Bandit]「Heh... It's nice and tight.」[k]
+[name n=Bandit]「Gnome girls aren't that sexy, but they've got great pussies!」[k]
+[name n=Bandit]「Hey, you! Make a better sound!」[k]
+∗smack!∗[k]
+One of the bandits roughly smacks the gnome girl on the butt![k]
+[name n="Gnome Girl"]「Ahhh... don't be rough with me...!」[k]
+The gnome girls writhe in agony. The bandits looked down at these girls with a lecherous smile on their faces as they continued to relentlessly rape them.[k]
+[name n=Bandit]「Well, it's time to go ahead and fire the first shot of the day!」[k]
+[name n="Gnome Girl"]「Please... don't cum inside today...!」[k]
+[name n=Bandit]「Shut up! I want to cum inside you! You guys just have to shut up and take it!」[k]
+∗slurp slurp slurp slurp slurp!∗[k]
+The man increases the pace of his thrusting all the way up to ejaculation.[k]
+[name n="Gnome Girl"]「Ahhhh...!」[k]
+[name n="Gnome Girl"]「If you do that to me... I...!」[k]
+[name n="Gnome Girl"]「I'm... I'm cumming...!」[k]
+The men shot their sperm into the gnome girls in unison![k]
+Ignoring their will, the men pour their sperm inside them until they're satisfied.[k]
+[name n="Gnome Girl"]「Ohhhh!」[k]
+[name n="Gnome Girl"]「No, no, no...」[k]
+The weak girls have no ability to refuse. No matter how they are treated, they have no choice but to do as they are told.[k]
+[textoff]
+@outf
+@return cond='f.replayMode'
+@gameon
+@mu f=brave
+[texton w=0]
+[テオ f=07]「Stop!」[k]
+[name n=Bandit f=bandit_red_02]「Mm? Who the hell are you?!」[k]
+[テオ f=05]「We are adventurers who have come to liberate the gnome village! Let them go now!」[k]
+[name n=Bandit f=bandit_blue_02]「Adventurers, huh?」[k]
+[name n=Bandit f=bandit_red_02]「Hmmm, dumbasses. I can't believe they came into our stronghold...」[k]
+[textoff]
+@fg c=bandit_yellow top=120 left=450
+@fg l=bandit_blue top=120 left=250
+@fg r=bandit_red top=120 left=650
+[texton w=0]
+The bandits pull on their discarded clothes and approach us with weapons at the ready.[k]
+[name n=Bandit f=bandit_red_01]「We'll crush you, too, and the women will be added to our sex slaves!」[k]
+[ミューズ f=08]「...!」[k]
+[テオ f=05]「[ミューズ], let's go! Defeat these guys and save your people!」[k]
+[ミューズ f=08]「... ∗nod∗」[k]
+[name n=Bandit f=bandit_blue_01]「Huh? You're the gnome who ran away, right?」[k]
+[name n=Bandit f=bandit_red_01]「Stupid girl, coming back here...」[k]
+[name n=Bandit f=bandit_blue_01]「I'll screw you too. Just like your friends! Yaaa!」[k]
+The bandits suddenly attacked![k]
+[textoff]
+@clf
+
+; 山賊たちと戦闘
+@monster pos=0 name=パイレーツ
+@monster pos=1 name=バンディット
+@monster pos=2 name=バンディット
+@monster pos=3 name=バンディット
+@monster pos=4 name=バンディット
+@monster pos=5 name=バンディット
+@monster pos=6 name=パイレーツ
+@monster pos=8 name=パイレーツ
+@monster pos=9 name=キャプテン
+@monster pos=10 name=キャプテン
+@monster pos=11 name=キャプテン
+@monster pos=12 name=パイレーツ
+@callbattle bgm=boss escape=false gameover=true
+; すべての山賊を倒していたら次のイベントへ
+
+@jump target=*theo_10
+
+
+;◇主人公イベント10
+*theo_10
+; ノームたちを全員解放する
+
+; すべての山賊を倒したらイベント開始
+[eventoff cond='game.map.events.has(5)']
+[eventoff cond='game.map.events.has(6)']
+[eventoff cond='game.map.events.has(7)']
+[eventoff cond='game.map.events.has(8)']
+
+@out
+@w1
+@eval exp='game.changePosition(%[x:12, y:7, way:"n"], true)'
+@gameon fade
+@eval exp='game.curChara = game.chara[f.returningGnomeID]'
+
+; ノームの村・広場
+@saveon
+@mu f=wedding
+[texton w=0]
+[name n=Gnome]「Thank you very much. We're finally free of them!」[k]
+[name n=Gnome]「Thank you so much. [ミューズ], you brought all these people to help us... You really did a great job.」[k]
+[ミューズ v=vg213 f=10]「No... I'm sorry it took me so long...」[k]
+[name n=Gnome]「Now that we are free from the bandit gangs, we will be able to return to our lives. It's thanks to all of you.」[k]
+[マックス f=03]「No～! It's no big deal! No problem at all!」[k]
+The gnomes expressed their gratitude. Their expressions were full of joy.[k]
+[ミューズ f=02]「... ∗smile∗」[k]
+[ミューズ] looked at her fellow villagers with a smile on her face.[k]
+[テオ f=02]「Well done, [ミューズ].」[k]
+[ミューズ v=vg214 f=03]「...Yes!」[k]
+[textoff]
+@out
+@w05
+
+@eval exp='game.changePosition(%[x:14, y:3, way:"w"], true)'
+@gameon fade
+[texton w=0]
+[name n=Gnome]「We too, will become stronger so that we can protect our village from outside enemies.」[k]
+[テオ f=02]「Good luck. I'll be cheering for you.」[k]
+[name n=&'o.ミューズ.displayName + "’s Mother"']「[ミューズ], are you really leaving again?」[k]
+[ミューズ v=vg215 f=02]「Yeah ...I'm a part of this party now, so...」[k]
+[name n=&'o.ミューズ.displayName + "’s Mother"']「I see... Well, that's fine, if that's what you've chosen. Good luck with your adventuring.」[k]
+[ミューズ v=vg216 f=01]「Yes, thank you. Well, I'll visit again soon, mother...」[k]
+[textoff]
+@fg c=ミューズ f=02
+[texton w=1]
+After saying goodbye to her mother, [ミューズ] returned to our party.[k]
+[テオ f=05]「If you want, I can give you some time off? I'm sure you'd love to spend some time with your family...」[k]
+[ミューズ v=vg217 f=22]「It's okay... I want to be by your side and be of help to you for now...」[k]
+[テオ f=01]「[ミューズ]...」[k]
+[ミューズ]'s eyes shone with strength as she spoke of her determination.[k]
+[textoff]
+@out
+@w05
+
+; 帰り道
+[texton w=0]
+We then handed the bandits over to the guards who followed behind us, and left the village.[k]
+On the way back from the village, [ミューズ] walked side by side with me.[k]
+As if this was a place she wouldn't give up to anyone.[k]
+[textoff]
+@fa
+@w05
+
+@eval exp='game.changePosition(%[map: "ランドン渓谷・谷底", x:25, y:31, way:"w"], true)'
+@changefloor pimg=human x=13 y=8
+@changefloor pimg=human x=10 y=6
+@changefloor pimg=human x=8 y=8
+@eval exp='o.ノームの洞窟.events = [2, 9, 10, 11]'
+@eval exp='f.presentedStoneByGnome = false'
+@eval exp='o.ミューズ.moveHeart(o.テオ, 20)'
+@addevent name=ミューズ num=6
+[eventoff bgm]
+
+
+;◇主人公イベント11
+*theo_11
+
+; 宿屋の一室
+@saveon
+@fg c=ミューズ e=通常 f=02 b
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[ミューズ v=vg218 f=01]「Captain... Let's both eat sweets together today...」[k]
+[テオ e=通常 f=10]「Uh, yeah.」[k]
+@cl
+[ミューズ] prepares snacks as usual and eats them with me.[k]
+When I sit down on the bed, [ミューズ] sits right next to me and snuggles her body into my arm.[k]
+[テオ f=12]「H-hey, [ミューズ]. Isn't that a little too close?」[k]
+@fg c=ミューズ e=通常・大 f=05
+[ミューズ v=vg219 f=05]「What is?」[k]
+[テオ f=10]「No... I mean... The distance between you and me...」[k]
+[ミューズ v=vg220 f=05]「...What about it...? Is it annoying?」[k]
+[テオ f=10]「No, no, it's not annoying, not at all...」[k]
+[ミューズ] was more assertive than before, which made me a little nervous.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント12・告白イベント
+*theo_12
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=guild
+[texton w=1]
+[ミューズ e=通常 f=56]「...」[k]
+[テオ e=通常 f=10]「...」[k]
+[ミューズ f=56]「...」[k]
+[テオ f=12]「H-hey, [ミューズ]? Do you have a minute?」[k]
+[ミューズ v=vg221 f=56]「...What is it?」[k]
+; ↑ 淡々と
+[テオ f=12]「When you hold onto my arm... I can't move.」[k]
+To my surprise, [ミューズ] clung to my arm silently and refused to leave.[k]
+As soon as she entered the room, she sat down next to me and held my arm tightly, not letting go.[k]
+What in the world is going on... Did something happen to her?[k]
+[テオ f=12]「Hey, [ミューズ]...」[k]
+@fg c=ミューズ e=通常・大 f=56
+[ミューズ v=vg222 f=56]「I've decided I won't let you go...」[k]
+; ↑ 静かに強気で
+[ミューズ] says so with determined eyes.[k]
+I'm not quite sure what you mean, and I'm confused.[k]
+[テオ f=10]「I don't know what to say... I can't move around like this...」[k]
+[ミューズ v=vg223 f=56]「If you promise not to leave me for the rest of my life, I'll let you go...」[k]
+[テオ f=12]「Eh...?」[k]
+That can't be...![k]
+@fg c=ミューズ e=通常・大 f=30
+[ミューズ v=vg224 f=30]「...I realized... I can't do without you anymore...」[k]
+@fg c=ミューズ e=通常・大 f=29
+[ミューズ v=vg225 f=29]「I'll do anything for you... So please... Will you let me stay by your side for the rest of my life?」[k]
+[テオ f=10]「...」[k]
+[textoff]
+
+; 選択肢・ミューズの要望を聞くかどうか
+@command type=short
+@select text="I'll be by your side forever" target=*_theo_12_y
+@select text="There are other good men out there" target=*_theo_12_n
+[s]
+
+*_theo_12_y
+; 選択肢１・ミューズの要望を聞く
+
+[texton w=1]
+[テオ f=12]「All right! All right, [ミューズ]!」[k]
+@fg c=ミューズ e=通常・大 f=54
+[ミューズ v=vg226 f=54]「What...?」[k]
+[テオ f=12]「I'll stay by your side for the rest of my life! I'll never leave you! So let go of me for now!」[k]
+@fg c=ミューズ e=通常 f=54
+I grabbed her shoulders and pulled her away from me.[k]
+Then I looked at her from the front.[k]
+[ミューズ v=vg227 f=05]「Captain...?」[k]
+@fa
+[テオ f=06]「I care about you too. That's why I'll never let you go.」[k]
+@mu f=love
+@fg c=ミューズ f=47
+[ミューズ v=vg228 f=47]「Cap...tain...!」[k]
+[ミューズ]'s eyes become moist.[k]
+[テオ f=02]「I love you, [ミューズ].」[k]
+When I quietly told her this, [ミューズ] was overcome by emotion,[k]
+@clf
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+[ミューズ v=vg229 f=49]「Captain!」[k]
+[テオ f=05]「[ミューズ]...!」[k]
+[ミューズ] hugged me as hard as she could.[k]
+[ミューズ v=vg230 f=41]「Me too... I love you too...!」[k]
+[テオ f=01]「[ミューズ]...」[k]
+[ミューズ v=vg231 f=61]「I can stay by your side forever...?!」[k]
+[テオ f=02]「Yeah, of course.」[k]
+Feeling each other's warmth, [ミューズ] and I shared the words we had been keeping in our hearts for a long time.[k]
+We held each other for a while.[k]
+[textoff]
+@fa
+@out
+@w05
+@addevent name=ミューズ num=8
+@addevent name=ミューズ num=9
+@addevent name=ミューズ num=10
+@eval exp='o.ミューズ.moveHeart(o.テオ, 20)'
+[hoteloff]
+
+*_theo_12_n
+; 選択肢２・適当にはぐらかす
+
+[texton w=1]
+[テオ f=13]「Well... I think it's best not to rush a decision like that, don't you think?」[k]
+@fg c=ミューズ e=通常・大 f=54
+[ミューズ v=vg232 f=54]「What...?」[k]
+[テオ f=02]「I'm glad you feel that way, but you shouldn't be so quick to decide that, [ミューズ].」[k]
+[テオ f=01]「There are plenty of people besides me who can be counted on, when you look.」[k]
+@fg c=ミューズ e=通常・大 f=10
+[ミューズ f=10]「...」[k]
+[ミューズ v=vg233 f=10]「...I see... Maybe.」[k]
+@fg c=ミューズ e=通常 f=10
+[ミューズ] released me. Her expression darkened somewhat.[k]
+But that's okay. It's better for her to cool down a bit. You shouldn't make promises like that on the spur of the moment.[k]
+[ミューズ f=10]「...」[k]
+I felt a little pain in my heart at her depressed state, but I did not say any more kind words to her.[k]
+[textoff]
+@out
+@w05
+@eval exp='o.ミューズ.moveHeart(o.テオ, -30)'
+[hoteloff]
+
+
+;◇主人公イベント13・恋人イベント
+*theo_13
+
+; 宿屋の一室
+@saveon
+@fg c=ミューズ e=通常・大 f=21 b
+@bg f=0001
+@mu f=love
+[texton w=1]
+[ミューズ v=vg234 f=21]「Captain... I'm so happy to be with you today...」[k]
+[ミューズ] sits side by side with me on the bed and gently pulls me close.[k]
+[ミューズ v=vg235 f=24]「When I'm with you... I feel at ease...」[k]
+[テオ f=02]「[ミューズ]...」[k]
+[ミューズ] and I had a quiet moment alone.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇主人公イベント14・一度仲良くなったが、その後疎遠になった場合
+*theo_14
+
+; 宿屋の一室
+@saveon
+@fg c=ミューズ e=通常 f=05 b
+@bg f=0002
+[texton]
+[ミューズ v=vg236 f=05]「Oh...」[k]
+[テオ f=05]「[ミューズ]...」[k]
+I run into [ミューズ] in the lobby in the morning, and there's an awkwardness between us.[k]
+@fg c=ミューズ f=10
+[ミューズ v=vg237 f=10]「I... I can't stay by your side any more...!」[k]
+[テオ f=06]「...I see. All right.」[k]
+@cl
+Before we knew it, things had become awkward between [ミューズ] and me. We decided to end our relationship. It was sad, but I had to respect [ミューズ]'s feelings.[k]
+At one time, she wanted to marry me, but that turned out to be a fleeting dream.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント15・プロポーズイベント
+*theo_15
+
+; 宿屋の一室
+@saveon
+@fg c=ミューズ e=通常 f=03 b
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[ミューズ v=vg238 f=03]「I'm with the captain today too...」[k]
+[テオ f=02]「Oh.」[k]
+I've thought a lot about it since I found out how [ミューズ] felt.[k]
+After all... Maybe it's time for me to make up my mind.[k]
+[textoff]
+
+; 選択肢・プロポーズするか否か
+@command type=short
+@select text="Gather your resolve" target=*_theo_15_y
+@select text="It's too early" target=*_theo_15_n
+[s]
+
+*_theo_15_n
+; 選択肢１・保留
+
+[texton w=1]
+[テオ f=06]「...」[k]
+No... Maybe I should think about it more carefully.[k]
+In the end, I spent tonight with [ミューズ] as usual.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+*_theo_15_y
+; 選択肢２・プロポーズする
+
+[texton w=1]
+[テオ f=12]「Hey, [ミューズ].」[k]
+@fg c=ミューズ f=01
+[ミューズ v=vg239 f=01]「What is it?」[k]
+[テオ f=06]「I... I've been thinking a lot since then. If I'm going to be with you for the rest of my life, I need to make some things clear.」[k]
+@fg c=ミューズ f=54
+[ミューズ v=vg240 f=54]「What...? That means...」[k]
+[テオ f=10]「[ミューズ], will you marry me?」[k]
+@fg c=ミューズ f=25
+[ミューズ f=25]「...!」[k]
+[テオ f=05]「That's what it means to be by someone's side forever, right?」[k]
+[テオ f=06]「So I thought it would be better to get married properly. That way, you don't have to feel anxious anymore.」[k]
+@fg c=ミューズ f=48
+[ミューズ v=vg241 f=48]「Cap...tain...!」[k]
+[テオ f=10]「I want to marry you. What do you think?」[k]
+@clf
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+∗thump!∗[k]
+[テオ f=05]「[ミューズ]...!」[k]
+[ミューズ] hugged me as hard as she could.[k]
+[テオ f=05]「[ミューズ]...」[k]
+[ミューズ v=vg242 f=50]「I will...! I will marry you, Captain...!」[k]
+[テオ f=02]「That's good. Thanks, [ミューズ].」[k]
+[ミューズ v=vg243 f=50]「So now I can stay by your side for the rest of my life...?」[k]
+[テオ f=01]「Yes. Let's spend the rest of our lives together.」[k]
+[ミューズ] and I embraced again.[k]
+[ミューズ], with her slender arms, hugs me desperately.[k]
+I wanted to protect her forever... I felt that strongly.[k]
+[textoff]
+@out
+@w05
+@delevent name=ミューズ num=8
+@delevent name=ミューズ num=9
+@delevent name=ミューズ num=10
+@addevent name=テオ num=1
+@eval exp='game.wife = o.ミューズ'
+[hoteloff]
+
+
+;◇主人公イベント・メインシナリオからの結婚式の続き
+*theo_wedding
+
+; どこかの教会
+@saveon
+@bg chara=ミューズ f=event47 p0=hair p1=01 p2=02
+@mu f=wedding
+@w1
+[texton w=2]
+[テオ]「[ミューズ], will you share my life with me?」[k]
+Saying this, I hold out my hand to [ミューズ]. Just like that day when I first met her.[k]
+[ミューズ]「...」[k]
+@bg chara=ミューズ f=event47 p0=hair p1=01 p2=01
+[ミューズ v=vg244]「...Yes, with pleasure.」[k]
+[ミューズ] also took my hand.[k]
+[name n=Gnome]「Congratulations on your marriage!」[k]
+[name n=Gnome]「Marrying the hero who saved our village! Congratulations!」[k]
+People from the Gnome village also came to today's ceremony.[k]
+[name n=&'o.ミューズ.displayName + "’s Mother"']「Be happy. I'll be praying for you!」[k]
+[ミューズ v=vg245]「Yeah, thanks, mother.」[k]
+[name n=&'o.ミューズ.displayName + "’s Mother"']「Don't embarrass your husband by being too clingy! You've always been a bit spoiled...」[k]
+[ミューズ v=vg246]「I... I wouldn't do that...!」[k]
+[テオ]「Ahaha...」[k]
+The wedding ceremony was filled with a friendly atmosphere. Everyone is smiling so happily that one forgets the hardships of the past.[k]
+I must never destroy this happiness... I held such determination in my heart.[k]
+[textoff]
+@fa
+@out
+@w2
+
+; 結婚式の２週間後
+[texton w=0]
+Two weeks later.[k]
+[textoff]
+@w05
+
+; 朝・宿屋の一室・ベッドの上
+@bg f=0007
+@mu f=peace
+@w05
+[texton w=1]
+[テオ e=裸 f=06]「...」[k]
+Morning...[k]
+Before I knew it, the sun was already quite high in the sky. I have to get up early and get ready.[k]
+After a two week break, today we resume our activities as a party. We will once again pursue the path of adventurers with our friends.[k]
+I had given everyone in the party a leave of absence the day after the wedding. We had been fighting constantly, so I thought it would be good for everyone to relax.
+ [k]
+However, it was only yesterday that I could sleep until the sun was high in the sky. If I don't get up and get ready quickly, everyone will be here.[k]
+[ミューズ e=裸 f=19]「... ∗zzz∗」[k]
+[テオ f=05]「[ミューズ], it's morning. Get up.」[k]
+[ミューズ f=19]「... ∗zzz∗」[k]
+[テオ f=06]「...」[k]
+I try to shake her, but she doesn't wake up easily. As I found out when I got married, [ミューズ] is quite a heavy sleeper.[k]
+[ミューズ f=19]「... ∗zzz∗」[k]
+[ミューズ] continues to sleep in an indecent state.[k]
+We have sex almost every night.[k]
+As soon as we get into bed, we start doing it, and when we get tired, we just fall asleep. That's how every day is. So when we wake up in the morning, we're both still naked.[k]
+[テオ f=05]「Come on, [ミューズ], wake up already.」[k]
+[ミューズ f=19]「... ∗zzz∗」[k]
+[テオ f=05]「If you don't get up soon, [マックス] will see you naked!」[k]
+[ミューズ v=vg247 f=62]「Umm...」[k]
+; ↑ 目が覚める。少し苦しそうに
+[ミューズ v=vg248 f=63]「...I don't want that...」[k]
+; ↑ 静かに嫌悪感をあらわす
+[ミューズ] finally wakes up. We quickly got ready and rushed to the lobby where everyone was waiting for us.[k]
+[textoff]
+@fa
+@out
+@mu f=enjoy
+@jump storage="main12.scn" target=*wedding_02
+;  → メインシナリオ・結婚後のパーティー再結成へ
+
+
+;◇主人公イベント20・冒険再開後、最初の日の宿の夜
+*theo_20
+
+; 宿屋の一室
+@saveon
+@w1
+@out
+@bg f=0001
+@mu f=peace
+@w05
+[texton w=1]
+After a meal with the whole party, everyone went to their own rooms.[k]
+Of course, [ミューズ] and I are alone in a room together. Well, we are a married couple, so it's only natural.[k]
+[テオ e=通常 f=02]「Today was another adventure for all of us. I'm looking forward to what's to come, [ミューズ].」[k]
+@fg c=ミューズ e=通常 f=10
+[ミューズ f=10]「...」[k]
+[ミューズ] seems rather dissatisfied.[k]
+[テオ f=05]「Huh? You're not happy?」[k]
+[ミューズ f=10]「...」[k]
+[ミューズ v=vg249 f=10]「...I would have preferred to be alone with you a little bit longer.」[k]
+; ↑ 少し不満そうに
+[テオ f=01]「I know... But it's good that we can be alone together at night like this.」[k]
+[ミューズ f=08]「... ∗pout∗」[k]
+[テオ f=13]「It's just, our job is to be adventurers, and we can't make a living if we don't form a party to take quests, right?」[k]
+[ミューズ v=vg250 f=09]「Well... I know, but...」[k]
+[テオ f=02]「Instead, let's enjoy this evening to the fullest. No one will disturb us now; it's just the two of us as a couple.」[k]
+@fg c=ミューズ f=26
+[ミューズ f=26]「...」[k]
+@fg c=ミューズ f=29
+[ミューズ v=vg251 f=29]「Dear... It's time...」[k]
+; ↑ 悩ましい声で
+[ミューズ] is getting horny and appeals to me with restless eyes.[k]
+[テオ f=02]「I know. Come here.」[k]
+I took off my clothes and got into bed. Then [ミューズ] quickly stripped off her clothes and got into bed with me.[k]
+[textoff]
+@out
+@w1
+
+@bg chara=ミューズ f=event11 p0=hair p2=01 p3=02
+@mu f=love
+[texton w=2]
+[ミューズ v=vg252]「Please do it...!」[k]
+[ミューズ] waits for me, spreading her legs wide, not even waiting to be caressed.[k]
+Her vagina was open right in front of my eyes.[k]
+She was already soaking wet and smelling obscene.[k]
+[テオ]「[ミューズ]...」[k]
+My wife is so horny that my penis is also getting hard.[k]
+[ミューズ v=vg253]「Your penis... I can't wait to receive it...」[k]
+[テオ]「Can't you wait? You're a dirty girl, [ミューズ].」[k]
+I nuzzle my face between her legs and stimulate her vagina with my tongue.[k]
+@bg chara=ミューズ f=event11 p0=hair p2=01 p3=05
+[ミューズ v=vg254]「Ah... Ah...」[k]
+Piquantly, [ミューズ]'s skin reacts. Her love juices overflow even more.[k]
+@bg chara=ミューズ f=event11 p0=hair p2=01 p3=06
+[ミューズ v=vg255]「Dear... That's okay... Come on, put it in...!」[k]
+[テオ]「I can't help it. Well, I guess it's time to...」[k]
+@bg chara=ミューズ f=event11 p1=hair p2=03 p4=04
+∗slurp∗[k]
+[ミューズ v=vg256]「Haaaaaan...!」[k]
+My penis slipped into [ミューズ]'s soaking wet pussy.[k]
+[ミューズ] lets out a gasp of pleasure.[k]
+[ミューズ v=vg257]「Ahhh... Dear... Dear...!」[k]
+[テオ]「You're usually so quiet, but when you have sex with me, you're so energetic!」[k]
+@bg chara=ミューズ f=event11 p1=hair p2=03 p4=06
+[ミューズ v=vg258]「Honestly... Why are you saying that... That's mean...」[k]
+[テオ]「Sorry, sorry. Okay, I'll move.」[k]
+@bg chara=ミューズ f=event11 p1=hair p2=03 p4=04
+∗sluurp sluurp sluurp∗[k]
+[ミューズ v=vg259]「Ah... Ah... Dear... Good... More...!」[k]
+[テオ]「Feels good, doesn't it, [ミューズ]?」[k]
+∗sluurp sluurp sluurp∗[k]
+[ミューズ v=vg260]「Ah... Dear... More... Ahh...! Ohh...!」[k]
+[ミューズ] writhes sensually with each stroke.[k]
+She was so sensual that I couldn't imagine her as the quiet and cute girl she usually is. My excitement was rising rapidly.[k]
+[ミューズ v=vg261]「Dear... I... I'm... I'm cumming...!」[k]
+[テオ]「Okay, let's cum together!」[k]
+I quickly increased the speed of my thrusts, and we both climaxed.[k]
+@flash on=1000 t=500 off=500
+@bg chara=ミューズ f=event11 p0=hair p2=02 p3=02
+Then I released my seed into [ミューズ] with all my might.[k]
+[textoff]
+@out
+@w1
+@bg f=0001
+[texton w=1]
+[ミューズ v=vg262 e=汗だく f=39]「Ahh ahh ahh ahh ahh...」[k]
+[テオ e=裸 f=02]「You were intense today, [ミューズ].」[k]
+[ミューズ v=vg263 f=92]「...Yes... Today was good...」[k]
+Phew, I managed to make you cum today.[k]
+I have only been able to make [ミューズ] cum properly a few times. I need to be able to satisfy her soon.[k]
+I do not use contraception. Whenever I have sex with [ミューズ], I always ejaculate inside her.[k]
+After all, I want to have children soon. [ミューズ] feels the same way.[k]
+[ミューズ v=vg264 f=21]「You've put out a lot today... Dear...」[k]
+[ミューズ]'s crotch is overflowing with my sperm.[k]
+[ミューズ v=vg265 f=24]「A baby with you... May it happen soon...」[k]
+Then [ミューズ] quietly closes her eyes.[k]
+I watched her smilingly as I fell asleep.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+;◇主人公イベント21・２日目以降・満足890
+*theo_21
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[ミューズ v=vg266 e=裸 f=37]「Ah... Haa... It feels so good...!」[k]
+[if exp='o.テオ.penis >= 16']
+	[ミューズ v=vg267 f=38]「Ah... Deep inside... It's hitting... Ahhh...!」[k]
+[endif]
+[テオ e=裸 f=12]「[ミューズ]! I'll cum inside you!」[k]
+Tonight, I had a sex with [ミューズ] again. It was very erotic to see her acting wildly.[k]
+[ミューズ v=vg268 f=38]「Haa, haa...」[k]
+[テオ f=02]「You were intense today, [ミューズ].」[k]
+[ミューズ v=vg269 f=38]「Because... Because, dear, it feels so good...」[k]
+[ミューズ] looks completely satisfied. I hope we can have this kind of sex again.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント22・２日目以降・不満
+*theo_22
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[テオ e=裸 f=09]「Ugh! I'm cumming!」[k]
+[ミューズ v=vg270 e=裸 f=39]「Wait, dear... More... Please...!」[k]
+Tonight, I had sex with [ミューズ] again. She responded to my needs to the fullest.[k]
+[ミューズ f=10]「...」[k]
+[ミューズ] looks somewhat bored. She didn't seem to feel very good.[k]
+[テオ f=05]「Sorry, I'll try harder next time.」[k]
+I went to sleep vowing to satisfy [ミューズ] the next time.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント23・２日目以降・拒絶
+*theo_23
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[テオ e=通常 f=05]「[ミューズ], tonight...」[k]
+I get into bed and reach for [ミューズ]'s body.[k]
+[ミューズ v=vg271 e=寝室のキャミソール f=10]「Sorry... I don't feel like it today...」[k]
+[テオ f=06]「Okay, well... Well, I guess I'll call it a day then.」[k]
+I gave up on having sex with [ミューズ] and went straight to sleep.[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇主人公イベント24・ブルーと浮気後
+*theo_24
+
+; 宿屋のベッド
+@saveon
+@bg f=0001
+@mu f=peace
+[texton w=1]
+[テオ e=裸 f=09]「Ugh...! It's coming out...!」[k]
+[ミューズ e=裸 f=63]「...」[k]
+Tonight I had sex with [ミューズ] again.[k]
+But [ミューズ] remained passive. She just stares like a dead fish.[k]
+[テオ f=05]「Well, I guess it wasn't very good...?」[k]
+[ミューズ v=vg272 f=63]「I'm sorry, dear... I'm just not in the mood today...」[k]
+[テオ f=02]「I see. Well, it can't be helped.」[k]
+[ミューズ f=63]（Sorry, my dear...）[k]
+[ミューズ f=63]（Sex with [emb exp='o.ミューズ.develop.blue > o.ミューズ.develop.max ? "!1!" : "!2!"'] is so good that you can't satisfy me anymore...!）[k]
+[textoff]
+@out
+[hoteloff]
+
+
+;◇グッドエンディング・主人公の子を出産エンド
+*good_ending
+
+; 主人公たちの自宅
+@bg f=0060
+@mu f=wedding
+[texton w=1]
+[ミューズ v=vg273 e=通常 f=01]「Good girl, Ellen.」[k]
+[テオ e=通常 f=06]「...」[k]
+My daughter Ellen sleeps peacefully in her mother [ミューズ]'s arms. She is quiet and gentle, just like her mother.[k]
+Now that we are married, the three of us are living a quiet life in the gnome village, [ミューズ]'s hometown. It has been three years already.[k]
+I am entrusted with the role of protecting the village as a guard. Due to the incident that occurred in the village in the past, everyone seems to place a great deal of trust in me.[k]
+The adventurer business is effectively on hiatus. For someone like me, who dedicated my life to becoming an adventurer, this is a somewhat unsatisfactory situation.[k]
+But I thought that such a peaceful life wasn't so bad either.[k]
+I did it...[k]
+@fg c=ミューズ e=通常・大 f=68
+[ミューズ v=vg274 f=68]「It brings back memories... Those days when I was an adventurer.」[k]
+[テオ f=05]「[ミューズ]...」[k]
+@fg c=ミューズ f=67
+[ミューズ v=vg275 f=67]「I'm very happy now. But sometimes I think... I wish I could regain the passion I felt when I was adventuring with you...」[k]
+[テオ f=05]「[ミューズ]...」[k]
+I had a vague feeling that was the case. [ミューズ] sometimes showed a look of dissatisfaction, as if she were hungry for something.[k]
+And I feel the same way. My desire for adventure is still alive and well.[k]
+@clf
+[name n="Gnome Elder"]「Go, [ミューズ].」[k]
+[ミューズ v=vg276 f=54]「Elder...!」[k]
+Perhaps having overheard our conversation, the eldest elder of the village spoke.[k]
+[name n="Gnome Elder"]「You are a daughter of gnomes, yet you have traveled the world on adventures and fought against great demons. There is no way that someone like you could be satisfied being confined to such a small village.」[k]
+[ミューズ v=vg277 f=05]「Elder...」[k]
+[name n="Gnome Elder"]「Leave your daughter Ellen to us. We villagers owe you and your husband a great debt of gratitude. We will do our utmost to support you in whatever you wish to do.」[k]
+[ミューズ v=vg278 f=21]「Elder...! Thank you very much!」[k]
+[テオ f=02]「Thank you for your kind words!」[k]
+@fg c=ミューズ f=22
+[ミューズ f=22]「...」[k]
+[ミューズ]'s eyes begin to sparkle. She doesn't say it out loud, but she can't contain her excitement.[k]
+[テオ f=01]「...Shall we go, [ミューズ]?」[k]
+@fg c=ミューズ f=23
+[ミューズ v=vg279 f=23]「...Yes, my love!」[k]
+We decided to embark on another adventure. Once again, our hearts were filled with passion.[k]
+[textoff]
+@fa
+@out
+@jump storage="main13.scn" target=*staff_roll
+
+
+
+
+;■ブルー編１・結婚前にブルーと宿泊を強制される
+
+;◇ブルーイベント01
+*blue_01
+@saveon
+@call storage="stay.ks" target=*kick_out_by_blue
+@jump target=*_blue_01_freemode cond='game.isFreeMode'
+@jump target=*_blue_01_case1 cond='game.curChara.inSameRoom(o.テオ)'
+@jump target=*_blue_01_case2
+
+;＜主人公とヒロインが同室だった場合＞
+*_blue_01_case1
+
+; 宿屋の一室
+@bg f=0001
+@mu f=guild
+@fg c=ミューズ e=通常 f=22
+[texton w=1]
+[ミューズ v=vg280 f=22]「Captain... Do you want some snacks?」[k]
+[テオ e=通常 f=13]「Ah, thank you, [ミューズ].」[k]
+Today, [ミューズ] is even more attached to me than usual.[k]
+I'm glad that she likes me so much, but her dependence on me is getting stronger, which sometimes worries me a little.[k]
+@se f=door1
+@cl b
+@fg l=ミューズ f=12 b
+@fg r=ブルー e=通常 f=08
+@mu f=anxiety
+∗slam∗[k]
+[ブルー f=08]「Hey, [テオ].」[k]
+All of a sudden, Blue entered the room![k]
+Why is Blue here...?[k]
+[ブルー f=08]「...」[k]
+Blue is glaring at me. He is clearly angry.[k]
+@fg l=ミューズ f=29
+[ミューズ f=29]「...」[k]
+[テオ f=12]「W-what is it, Blue?」[k]
+[ブルー f=08]「What is it?! Did you forget what I said?!」[k]
+[テオ f=12]「Eh?」[k]
+@fg r=ブルー f=07
+[ブルー f=07]「I told you that if you want me to accompany you, you need to provide me with a woman each night!」[k]
+[テオ f=12]「W-well, I have been...」[k]
+[ブルー f=07]「You haven't at all! Every night, you just assign me some random woman! Stop screwing around!」[k]
+[テオ f=10]「Well... I don't know what to say...」[k]
+[ブルー f=08]「Who do you think I am... to be satisfied by that level of hospitality...」[k]
+@fg r=ブルー f=06
+[ブルー f=06]「In the meantime, I need a new woman. One I haven't slept with yet. Now.」[k]
+[テオ f=12]「Okay. I'll take care of it by tomorrow...」[k]
+[ブルー f=08]「Tomorrow?! You must be joking, I can't wait that long!」[k]
+[ブルー f=06]「... ∗glance∗」[k]
+@fg l=ミューズ f=12
+[ミューズ f=12]「...! (Eek!)」[k]
+Suddenly, Blue and [ミューズ] made eye contact.[k]
+@fg r=ブルー f=05
+[ブルー f=06]「...」[k]
+[ブルー f=05]「You, you're going to be my partner today.」[k]
+[テオ f=12]「Blue?!」[k]
+Surprisingly, Blue nominated [ミューズ]! She stiffens in fear![k]
+[ブルー f=05]「You heard me. Come on, get undressed.」[k]
+@jump target=*_blue_01_common
+;  → 共通ルート１へ
+
+
+;＜主人公とヒロインが別室でブルーがヒロインのいる部屋に入った場合＞
+*_blue_01_case2
+
+; 宿屋の廊下
+@bg f=0002
+@fg c=ブルー e=通常 f=06
+@w05
+@cl
+@w05
+[texton w=0]
+[テオ e=通常 f=05]「Ah...!」[k]
+Just now I saw Blue enter [ミューズ]'s room.[k]
+Blue, what on earth do you want with [ミューズ]...?[k]
+[テオ f=09]「...!」[k]
+I was curious and decided to go to [ミューズ]'s room.[k]
+[textoff]
+@out
+@w05
+
+; ミューズの部屋
+@bgf f=0001
+@mu f=anxiety
+@se f=door1
+[texton w=1]
+[テオ f=12]「Blue!」[k]
+I opened the door to [ミューズ]'s room.[k]
+@fg l=ミューズ e=通常 f=54 b
+@fg r=ブルー e=通常 f=08
+[ミューズ f=54]「...!」[k]
+[ブルー f=06]「...What the hell are you doing here, [テオ]?」[k]
+Inside are [ミューズ] and Blue.[k]
+Blue stood looking down at [ミューズ], who was sitting on the bed.[k]
+@fg l=ミューズ f=66
+[ミューズ f=66]「...」[k]
+[ミューズ] clearly seems frightened.[k]
+[テオ f=12]「Blue! What are you going to do to [ミューズ]?」[k]
+@fg r=ブルー f=01
+[ブルー f=01]「It's obvious. I'm gonna screw this woman.」[k]
+[テオ f=12]「What the...!」[k]
+[ブルー f=02]「I told you. If you want me to go with you, you have to let me have all the women I want.」[k]
+[テオ f=12]「Wait a minute. I'll have another woman ready by tomorrow. So I don't want you to touch [ミューズ]. Please, Blue.」[k]
+@fg r=ブルー f=08
+[ブルー f=08]「Tomorrow?! You must be joking, I can't wait that long!」[k]
+@fg r=ブルー f=02
+[ブルー f=02]「Come on, gnome, let's get started. [テオ], stay outside.」[k]
+@jump target=*_blue_01_common
+;  → 共通ルート１へ
+
+
+;＜共通ルート１＞
+*_blue_01_common
+@fg l=ミューズ f=65 b
+@fg r=ブルー e=上半身裸 f=02 left=500
+With that, Blue took off his shirt and approached [ミューズ].[k]
+[ミューズ v=vg281 f=65]「N-no...」[k]
+[テオ f=12]「Hey, wait! [ミューズ] probably can't handle that. So...!」[k]
+[ブルー f=02]「Huh?! She's a woman, isn't she? She'll do fine.」[k]
+@fg l=ミューズ f=66
+[ミューズ f=66]「...」[k]
+[テオ f=12]「B-but...」[k]
+@fg r=ブルー f=05 fix
+[ブルー f=05]「You haven't forgotten your promise to me, have you? I don't really care what happens to this party, do you?」[k]
+[テオ f=09]「Damn...!」[k]
+[ミューズ f=66]「...」[k]
+@fg r=ブルー f=02 fix
+[if exp='o.ミューズ.sexCount.blue == 0']
+	[ブルー f=02]「All right, let me fuck you quickly. So, strip, now.」[k]
+	[ミューズ f=66]「... ∗shiver∗」[k]
+	[ミューズ] is visibly frightened. Her whole body trembles as she stares at the approaching Blue.[k]
+	[ブルー f=02]「There's no need to be so scared. All women do it. You'll be fine in no time.」[k]
+	[ミューズ f=66]「...」[k]
+[endif]
+[ブルー f=02]「I'll take it off.」[k]
+[ミューズ v=vg282 f=65]「Aaa...」[k]
+@fg l=ミューズ e=白いブラ,白いパンツ f=66
+Blue puts his hand on [ミューズ]'s clothes and slowly undresses her.[k]
+@fg l=ミューズ e=白いパンツ f=66
+[ミューズ] does not resist. Her chest is exposed, her panties are revealed, and her clothes are pulled off her legs.[k]
+[ミューズ f=66]「...」[k]
+[ミューズ] lies quietly in front of Blue, wearing only a pair of panties. She looks away from Blue, perhaps embarrassed.[k]
+She was the image of a woman about to have sex with a man.[k]
+[ブルー f=02]「...That's a good mindset. Then I'm going to hold you now.」[k]
+[テオ f=12]「Blue, wait...!」[k]
+[ブルー f=02]「[テオ], you watch over there.」[k]
+@cl
+Blue shouted sharply at me to stop, grabbed [ミューズ]'s shoulder, and pushed her down onto the bed.[k]
+[textoff]
+@out
+
+@bg f=0044
+@mu f=darkside
+[texton w=0]
+∗lick∗[k]
+[ミューズ v=vg283 f=37]「Ah...!」[k]
+Blue crawls his tongue over [ミューズ]'s body.[k]
+With a soft touch and a sticky tongue, he skillfully caressed her small breasts.[k]
+[ブルー f=02]「Kuku, you're shaking, you're so cute.」[k]
+[ミューズ f=38]「...」[k]
+When Blue stimulates the nipples with her tongue, [ミューズ]'s expression turns sad for a moment.[k]
+Gradually her breath became louder and her cheeks turned slightly red.[k]
+[ブルー f=02]「You don't seem to be satisfied. Now, this one...」[k]
+[ミューズ v=vg284 f=37]「Mmm... Ha...!」[k]
+Blue's hand quickly stroked [ミューズ]'s crotch![k]
+A troubled sigh escapes her pretty mouth.[k]
+[ミューズ] is... starting to feel Blue's caress...![k]
+[ミューズ v=vg285 f=37]「An... ahh... Aaaaahhh...! Aaahhh...!」[k]
+[ブルー f=02]「Kuku, looks like you're starting to feel it.」[k]
+Blue crawls his hand insistently over her panties.[k]
+[ミューズ] wriggles her hips in a frustrated, sensual pose.[k]
+[ブルー f=02]「Well, it's about time...」[k]
+[ミューズ v=vg286 f=65]「Ah...!」[k]
+Blue deftly slid [ミューズ]'s panties off her legs![k]
+At the same time, Blue also pulls down his pants and takes out his growing penis.[k]
+[ブルー f=02]「Well, it's about time...」[k]
+Blue lightly opens [ミューズ]'s slender legs to reveal a soaked hidden garden.[k]
+And then, a strong erect penis encroaching on it.[k]
+[if exp='o.ミューズ.sexCount.blue == 0']
+	Are you really going to do it? Are you really going to violate [ミューズ]?[k]
+	[テオ]「Blue, please don't! That's just...」[k]
+	[ブルー f=05]「Shut up. Just shut up and watch.」[k]
+	I pleaded with Blue, but he didn't seem to be listening. As expected, Blue wouldn't listen to what I had to say.[k]
+[endif]
+[ブルー f=02]「Let's go in.」[k]
+[ミューズ f=38]「...!」[k]
+Blue pushed the tip against [ミューズ]'s entrance and thrust his body forward![k]
+[textoff]
+
+@bgf chara=ミューズ f=event38 p0=hair p1=01 p2=04
+[texton w=2]
+∗slip∗[k]
+[ミューズ v=vg287]「Ahh...!」[k]
+Blue's glans is easily swallowed by [ミューズ]'s wet vagina! Then...[k]
+∗slurp...∗[k]
+[ミューズ v=vg288]「Ah... ah... ah...!」[k]
+The meat pole slips inside. It enters with a lewd squelching sound.[k]
+As [ミューズ]'s soft labia were stretched to their limit, Blue's large penis was swallowed deeper and deeper.[k]
+[ブルー]「Kuku, I got it deep inside.」[k]
+[ミューズ v=vg289]「Ahhhhh...!」[k]
+Blue stops moving. Blue's huge penis has gone deep inside [ミューズ].[k]
+@bg chara=ミューズ f=event38 p0=hair p1=01 p2=02
+[ミューズ v=vg290]「Ugh... Oww...」[k]
+[ブルー]「My dick is so big, it might be hard for you.」[k]
+[ブルー]「But I'm not going to show you any mercy. It's your job to make me feel good. You'll feel better in no time.」[k]
+@bg chara=ミューズ f=event38 p0=hair p1=02 p2=04
+∗Slurp slurp slurp∗[k]
+Blue begins a thrusting slowly. [ミューズ] frowns and endures the act.[k]
+Their mucous membranes rubbed against each other. In the quiet room, only disgusting wet noises echoed.[k]
+∗Slurp slurp slurp∗[k]
+[ミューズ v=vg291]「Oh... Blue...!」[k]
+[ブルー]「You feel so good inside. You're so tight, it feels really good.」[k]
+[ブルー]「Hey, [テオ]! This woman's pussy is the best! I love this pussy! Thanks for finding me a girl with such a nice pussy!」[k]
+[テオ]「...What?!」[k]
+Don't just say pussy, pussy...! Don't humiliate [ミューズ] any more...![k]
+[ミューズ v=vg292]「Hmm... Haa... Aaah... !」[k]
+[ブルー]「Even if's painful, you're still feeling it. Okay, let's pick up the pace.」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg293]「Ah... Ah... Stop... Ugh... Ahhh...!」[k]
+[ミューズ] writhes in agony. Blue doesn't care, but continues fucking her nonchalantly with a lecherous smile on his face.[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ブルー]「Fuu... This feels really good... I think I'm going to cum early.」[k]
+[ミューズ v=vg294]「Ah... Ah... No... Stop... Ah...!」[k]
+[ブルー]「I can't get enough of this...! I'm going to have to take the first shot now!」[k]
+∗slurp slurp slurp slurp slurp slurp slurp!∗[k]
+@bg chara=ミューズ f=event38 p0=hair p1=02 p2=03
+[ミューズ v=vg295]「Anh, ah, ah, ah, ah, ahhhh...!」[k]
+[ブルー]「Damn it! I'm going to do it!」[k]
+∗sluuurp!∗[k]
+[ミューズ v=vg296]「Ahhhh!」[k]
+[ブルー]「Ugh!」[k]
+@flash
+@bgf chara=ミューズ f=event38 p0=hair p1=01 p2=03
+∗spurt!∗[k]
+Blue thrust deep into [ミューズ] and then stopped moving![k]
+[ミューズ v=vg297]「Ahh... nooooo...!」[k]
+[ブルー]「Ugh... It's still coming out...!」[k]
+∗spurt! spurt!∗[k]
+Blue shook his hips several times with his penis still inside [ミューズ], as if to release the remaining liquid.[k]
+[ブルー]「Phew... I feel so much better now.」[k]
+[ミューズ]「...」[k]
+[テオ]「[ミューズ]...」[k]
+[ミューズ] was ejaculated inside. She lay helplessly on the bed, exposing her defiled naked body.[k]
+She just stared blankly into space...[k]
+[textoff]
+@out
+@w05
+@recordsex guy=ブルー sex=1 orgasm=0 acts=乳首責め,クリ責め,正常位
+[hoteloff]
+
+
+;◇ブルーイベント02
+*blue_02
+@saveon
+@call storage="stay.ks" target=*kick_out_by_blue
+@jump target=*_blue_02_freemode cond='game.isFreeMode'
+@jump target=*_blue_02_case1 cond='game.curChara.inSameRoom(o.テオ)'
+@jump target=*_blue_02_case2
+
+;＜主人公とヒロインが同室だった場合＞
+*_blue_02_case1
+
+; 宿屋の一室
+@fg c=ミューズ e=通常 f=10 b
+@bg f=0001
+@mu f=worry
+[texton w=1]
+[テオ e=通常 f=02]「[ミューズ], good to see you tonight!」[k]
+[ミューズ v=vg298 f=10]「Yes...」[k]
+[ミューズ] seems to be feeling down.[k]
+Well, Blue did assault her the other day...![k]
+@se f=door1
+∗slam∗[k]
+@cl b
+@fg l=ミューズ e=通常 f=54 b
+@fg r=ブルー e=通常 f=02
+[ブルー f=02]「Hey.」[k]
+[テオ f=12]「Blue...!」[k]
+Suddenly, Blue came into our room. What on earth was he doing...[k]
+@fg r=ブルー f=01
+[ブルー f=01]「Hey, [ミューズ]. You're gonna have to deal with me again.」[k]
+@fg l=ミューズ f=64
+[ミューズ f=64]「...!」[k]
+[テオ f=09]「Blue...!」[k]
+Like last time, Blue intends to force [ミューズ] to be his partner for the night.[k]
+@jump target=*_blue_02_common
+;  → 共通ルート２へ
+
+
+;＜主人公とヒロインが別室でブルーがヒロインのいる部屋に入った場合＞
+*_blue_02_case2
+
+; 宿屋の廊下
+@bg f=0002
+@fg c=ブルー e=通常 f=06
+@w05
+@cl
+@w05
+[texton w=0]
+[テオ e=通常 f=05]「Ah...!」[k]
+Just now I saw Blue enter [ミューズ]'s room.[k]
+No way, you're going after [ミューズ] now...?![k]
+[テオ f=09]「...!」[k]
+I was curious and decided to go to [ミューズ]'s room.[k]
+[textoff]
+@out
+@se f=door1
+@fg l=ミューズ e=通常 f=29 b
+@fg r=ブルー e=通常 f=06 b
+@bgf f=0001
+@mu f=worry
+[texton w=1]
+[テオ f=05]「Blue!」[k]
+@fg l=ミューズ f=54
+[ミューズ f=54]「...!」[k]
+@fg r=ブルー f=05
+[ブルー f=05]「What are you doing here?」[k]
+[テオ f=12]「What does Blue want from [ミューズ]?」[k]
+@fg r=ブルー f=52
+[ブルー f=52]「Huh...」[k]
+@fg r=ブルー f=01
+[ブルー f=01]「It's obvious. I came here to screw this girl.」[k]
+@fg l=ミューズ f=64
+[ミューズ f=64]「...!」[k]
+[テオ f=09]「Blue...!」[k]
+Like last time, Blue intends to force [ミューズ] to be his partner for the night.[k]
+@jump target=*_blue_02_common
+;  → 共通ルート２へ
+
+
+;＜共通ルート２＞
+*_blue_02_common
+[ブルー f=01]「It was pretty good, your pussy. Let's do it again.」[k]
+@fg l=ミューズ f=65
+[ミューズ v=vg299 f=65]「N-no...!」[k]
+[ミューズ] is frightened by Blue's attitude.[k]
+[テオ f=12]「Hey! Blue! [ミューズ] doesn't like it! Please, don't do something awful again!」[k]
+@fg r=ブルー f=05
+[ブルー f=05]「Hey! Do you even know where you stand?!」[k]
+[テオ f=10]「I understand that, but...!」[k]
+[ブルー f=05]「Just fuck me, [ミューズ]! Now, get your ass in bed!」[k]
+@fg l=ミューズ f=37
+[ミューズ v=vg300 f=37]「Aaaah...!」[k]
+@clf
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+Blue pushes me away, grabs [ミューズ]'s arm, and pushes her down on the bed![k]
+[テオ f=12]「Hey, wait a minute, Blue!」[k]
+@fg c=ブルー e=上半身裸 f=08
+[ブルー f=08]「Hey! You know what happens if you get in my way!」[k]
+[テオ f=09]「...What?!」[k]
+Blue glares at me. I realize that I can't go against him.[k]
+Damn...! How can I stop this tyranny...?![k]
+@fg c=ブルー f=02
+[ブルー f=02]「Well, let's do it. You were pretty good, so I'm looking forward to it.」[k]
+@cl
+[ミューズ f=65]「... ∗shiver∗」[k]
+Blue straddled the frightened [ミューズ].[k]
+[textoff]
+@out
+
+@bg chara=ミューズ f=event38 p0=hair p1=02 p2=03
+[texton w=2]
+∗sluurp sluurp sluurp∗[k]
+[ミューズ v=vg301]「Mmm... Ugh... Hiaaah... !」[k]
+[ブルー]「Kuku, this tightness is exquisite.」[k]
+Blue relentlessly unleashes his meaty rod into [ミューズ]'s soaking wet honey pot.[k]
+As expected, [ミューズ] is not as sore as last time, but Blue's oversized penis still seems to give her a certain amount of pain.[k]
+She was writhing in agony and desperately trying to bear Blue's thrusting.[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg302]「Ah... Ahhhh... No... Stop...」[k]
+The male organ, swollen to its limit, slithers in and out of [ミューズ].[k]
+Every time the strong penis emerges from her vagina, it made a disgusting sound.[k]
+His rod was glistening wet. It was evidence that inside [ミューズ] was overflowing with embarrassing juices.[k]
+[ミューズ]... She's so wet like that after Blue fucked her...![k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg303]「Ah... Ah... Stop... Stop... Ahhh!」[k]
+[ミューズ] wiggles her hips in an irresistible manner as Blue thrusts into her with all her might.[k]
+Maybe she just didn't want to move, but the gesture was very erotic.[k]
+Blue's eyes glaze over with excitement at the sight of [ミューズ].[k]
+[ブルー]「Kuku, I think you're starting to feel it. I'm going to give you a real taste of my cock!」[k]
+∗squish squish squish squish squish squish!∗[k]
+[ミューズ v=vg304]「An... I'm sorry... Ah... Ah... No... Blue...!」[k]
+Blue shaking his hips roughly! [ミューズ]'s body is shaken violently![k]
+[ミューズ] writhed and moaned enthusiastically, her small breasts bouncing.[k]
+[ミューズ v=vg305]「Ah, ah, ah, ah, ah, Blue... Blue...!」[k]
+[ブルー]「Ugh... It's tight...!」[k]
+∗spurt!∗[k]
+[ミューズ v=vg306]「Hiaaaaaah...!」[k]
+[ブルー]「I can't wait! I'm going to let it all out at once!」[k]
+∗spurt! spurt!∗[k]
+[ミューズ v=vg307]「Oh... Blue...」[k]
+Blue climaxed and the nightmare sex is over...[k]
+[textoff]
+@out
+@w05
+
+@fg c=ブルー e=汗だく f=02 b
+@bg f=0001
+[texton w=1]
+[ブルー f=02]「Phew, that felt good. I'm satisfied.」[k]
+[ミューズ e=汗だく f=51]「...」[k]
+[テオ f=10]「...」[k]
+Blue sighs contentedly as he excess semen dribbles from the tip.[k]
+[ブルー f=02]「Hey, [テオ], I'll tell you something good.」[k]
+[テオ f=12]「What...?」[k]
+@fg c=ブルー f=01
+[ブルー f=01]「This one came during sex just now.」[k]
+[テオ f=12]「...!」[k]
+@fg c=ブルー f=03
+[ブルー f=03]「My dick made her cum. She's got an innocent face, but it looks like she already knows how good a cock can be! Wahahahaha!」[k]
+[ミューズ f=66]「...」[k]
+[テオ f=09]「Damn...!」[k]
+I was listening to Blue's throaty laugh while biting my lip...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーイベント03
+*blue_03
+
+; 宿屋の一室
+@saveon
+@se f=door1
+@bg f=0001
+@mu f=worry
+[texton w=0]
+[ミューズ v=vg308 e=汗だく f=37]「Huh... ah... ah... ah... ahh... Blue... ahh... Ahhh...!」[k]
+[ミューズ] moans as Blue pokes her. She can no longer resist the pleasure of sex with him.[k]
+Another woman has become captivated by Blue.[k]
+[ミューズ v=vg309 f=38]「Oh... So much... All the way in... I'm... I'm going crazy... Ahh..!」[k]
+[ブルー e=汗だく f=01]「Hehe, you've become so dependent on me that you can't live without me! Hahahaha!」[k]
+Blue smiled triumphantly.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルーイベント04
+*blue_04
+
+; 朝のロビー
+@saveon
+@bg f=0003
+@w05
+[texton w=1]
+[テオ f=05]「Huh...?」[k]
+We're about to leave, but Blue and [ミューズ] aren't here yet.[k]
+[テオ f=06]「They're late... What's going on...?」[k]
+@fg c=ミューズ f=30 e=中立の胸当て,ひものパンツ,革の手袋,サンダル
+[ミューズ v=vg310 f=30]「G-good morning...」[k]
+; ↑ おずおずと
+[テオ f=12]「[ミューズ]...!」[k]
+Suddenly, [ミューズ] appeared.[k]
+That's a pretty revealing outfit... Why are you dressed like that...?[k]
+@mu f=anxiety
+@fg r=ブルー e=通常 f=02 left=745
+[ブルー e=通常 f=02]「Ah, you like it?」[k]
+[テオ f=12]「Blue!」[k]
+Then Blue came up behind her. Was this his doing?![k]
+[ブルー f=94]「I made her dress like that. I like looking at women's asses.」[k]
+[テオ f=10]「Blue...!」[k]
+What on earth...! Come to think of it, Riselle was dressed like this too...[k]
+[ブルー f=02]「Still, what a nice view. A woman with her butt exposed.」[k]
+[ミューズ f=66]「...」[k]
+[ブルー f=02]「You've got a pretty big butt. Even though you're small.」[k]
+[ミューズ f=66]「... (Kyaa)」[k]
+[ブルー f=02]「Show it to the others, too. Here you go.」[k]
+@image layer=3 page=back storage=&'"1401_" + o.ミューズ.color' left=250 top=50
+@eval exp='tf.temp = o.ミューズ.equip.leg !== void ? o.ミューズ.equip.leg.img : "leg"'
+@pimage layer=3 page=back storage=&'"gno1ex_" + tf.temp' dx=21 dy=596
+@trans method=crossfade time=500
+@wt
+[ミューズ v=vg311 f=65]「Ah...!」[k]
+Blue turned [ミューズ] around so that we could see behind her.[k]
+[ミューズ f=65]「... (Kyaa)」[k]
+[ブルー f=02]「Kukukuku...」[k]
+[ミューズ]'s butt was bare. Her face contorts with embarrassment. I couldn't help but look away.[k]
+Blue... How could you embarrass [ミューズ] like that...?![k]
+However, no one can stop him. None of us can go against Blue.[k]
+@fg c=ミューズ f=38
+[ブルー f=01]「Well, it's about time to go. [ミューズ], show everyone outside your big ass, hahahaha!」[k]
+[テオ f=09]「...」[k]
+I felt anger toward Blue boiling up inside me.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ブルー編２・妻としてブルーとの宿泊を求められる
+
+;◇ブルー人妻イベント01・結婚後、妻としてブルーとの宿泊を求められた最初の夜
+*married_01
+
+; 宿屋の一室
+@call storage="main12.scn" target=*revive_4
+@bgf f=0001
+@mu f=evil
+@se f=door1
+[texton w=1]
+∗slam∗[k]
+@fg l=ミューズ e=通常 f=10 b
+@fg r=ブルー f=02
+[ミューズ f=10]「...」[k]
+The door to the room has been locked... My husband can't come to help me...[k]
+I'm going to be penetrated by Blue... I'm so sorry...[k]
+@fg r=ブルー e=裸 f=02
+[ブルー f=02]「Well, let's fuck, [ミューズ].」[k]
+@fg l=ミューズ f=30
+[ミューズ f=30]「...!」[k]
+Blue quickly takes off his clothes, leaving him naked.[k]
+Blue's strong chest... And his penis which is large even before getting erect...[k]
+[ブルー f=01]「What? You're worried about my dick?」[k]
+[ミューズ v=vg312 f=29]「No... That's not it...」[k]
+[ブルー f=02]「Come on, take it off quickly. You can't run away, you know?」[k]
+[ミューズ v=vg313 f=30]「Y-yes... I'll undress...」[k]
+@fg l=ミューズ e=赤いパンツ f=30
+I took off my robe, leaving just my underwear.[k]
+[ブルー f=02]「Wow, you're wearing some pretty dirty underwear. Is this [テオ]'s hobby?」[k]
+[ミューズ f=30]「...」[k]
+I was wearing naughty underwear today, trying to get my husband excited.[k]
+I never thought Blue would see it...[k]
+@fg r=ブルー e=裸・勃起 f=01
+[ブルー f=01]「Damn, looking at you in your dirty clothes, I'm already getting hard!」[k]
+@fg l=ミューズ f=32
+[ミューズ f=32]「...!」[k]
+Blue's penis is erect...![k]
+It was much larger than my husband's, to the point of being frightening. It was standing up so powerfully.[k]
+How... huge...[k]
+If he entered me with that cock... I...![k]
+@fg l=ミューズ f=52
+[ミューズ v=vg314 f=52]「Huh...」[k]
+[ブルー f=02]「Hmm? Are you getting excited too?」[k]
+I sighed involuntarily. I'm feeling so horny looking at Blue's penis...[k]
+∗sluurp∗[k]
+@fg l=ミューズ f=37
+[ミューズ v=vg315 f=37]「Ahh...!」[k]
+@fg r=ブルー f=01
+[ブルー f=01]「Oh, come on, your panties are already damp.」[k]
+∗slurp slurp slurp slurp∗[k]
+@fg l=ミューズ f=38
+[ミューズ v=vg316 f=38]「Ah... Ah... No... Stop...!」[k]
+Blue is playing with my crotch. My underwear becomes damp.[k]
+[ミューズ v=vg317 f=39]「Ha... Ha... Please... Stop...」[k]
+@fg r=ブルー f=02
+[ブルー f=02]「You're already dripping wet. You are one dirty wife. [テオ]'s developing you, huh?」[k]
+@fg l=ミューズ f=48
+[ミューズ f=48]「... ∗sob∗」[k]
+Embarrassing...! I'm so embarrassed...! If my husband saw me like this...![k]
+[ブルー f=02]「I feel like I can barely hold it in any longer. Let me in, [ミューズ].」[k]
+Blue takes off my soaking wet panties and pushes me down on the bed.[k]
+[ブルー f=02]「...Let's get it in.」[k]
+[textoff]
+@out
+@w05
+
+@bgf chara=ミューズ f=event14 p1=hair p2=04
+@mu f=adult
+@se f=kucha
+@quake time=500 hmax=10 vmax=10
+[texton w=2]
+∗squelch!∗[k]
+[ミューズ v=vg318]「Haaaaa...!」[k]
+Blue's penis invaded me all at once![k]
+It's a very big penis, but it slips easily into me.[k]
+[ブルー]「Oh, I'm in. I'm in.」[k]
+[ミューズ v=vg319]「Ahhh... Blue...」[k]
+[ブルー]「That's soooo slippery. How excited were you?!」[k]
+[ミューズ v=vg320]「No... Please don't say that...」[k]
+[ブルー]「Well, I'm going to live up to your expectations. I'll fuck you hard!」[k]
+@bg chara=ミューズ f=event14 p1=hair p2=05
+∗Slurp, slurp, slurp, slurp∗[k]
+[ミューズ v=vg321]「Ah... Ah... Ah... Ah...」[k]
+Blue started thrusting fully into me with his huge penis![k]
+Feeling... good...![k]
+I shouldn't feel this way... I know that, but...[k]
+It still feels good...! Ahh! A big penis feels so good...! Aahhh...![k]
+[ミューズ v=vg322]「Ahhh... Ahhh... Blue... Aaagh... Aahhh...!」[k]
+It's so long... and it's hitting me so hard...[k]
+Good... Better than my husband's...![k]
+∗Slurp, slurp, slurp, slurp∗[k]
+[ミューズ v=vg323]「Ah... Ah... I... I can't... anymore...!」[k]
+[ブルー]「What the hell? Are you cumming already? Oh, man, I can't help it.」[k]
+∗slurp slurp slurp slurp slurp slurp!∗[k]
+[ミューズ v=vg324]「Ah, ah, ah, ah, ah, ah, ah!」[k]
+I'm... I'm cumming...![k]
+[ブルー]「I'm cumming too! Ugh!」[k]
+∗spurt! spurt!∗[k]
+[ミューズ v=vg325]「Oh... No... Inside... Oh!」[k]
+[ブルー]「I can't stop now! I'm going to let it out inside of you!」[k]
+@flash
+@flash
+∗spurt! spurt!∗[k]
+[ミューズ v=vg326]「Ahhh... Nooooo...」[k]
+@bgf chara=ミューズ f=event14 p1=hair p2=06
+Ahh... Blue's hot penis is inside me...![k]
+He let it out... He let out so much sperm inside me...![k]
+[ミューズ v=vg327]「Ahh ahh ahh ahh ahh...」[k]
+[ブルー]「I'm sorry, I just let it go inside you. I forgot you're married.」[k]
+[ミューズ]「...」[k]
+[ブルー]「Well, if you do have a child, please raise it nicely with [テオ]! Wahahahaha!」[k]
+[ミューズ]「...」[k]
+Blue is so irresponsible. Once again, I was reminded what a terrible person he is.[k]
+But I had sex with such a terrible person and felt so good...[k]
+[ミューズ]「...」[k]
+My heart was filled with apologies to my husband...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント02・２日目
+*married_02
+
+; 宿屋の一室
+@saveon
+@fg c=ミューズ e=通常 f=30 b
+@bg f=0001
+@mu f=evil
+[texton w=1]
+[ミューズ f=30]「...」[k]
+I'm going to be held by Blue... Just like last time.[k]
+That big, hot penis will be inside me again...![k]
+[ミューズ v=vg328 f=39]「Ahh...!」[k]
+I can't... I'm getting nervous... I'm so nervous...[k]
+@se f=door1
+∗slam∗[k]
+@cl b
+@fg l=ミューズ f=54 b
+@fg r=ブルー e=通常 f=02
+[ブルー f=02]「Yo, [ミューズ].」[k]
+@fg l=ミューズ f=29
+[ミューズ f=29]「...」[k]
+Blue is here. Tonight, it starts again...[k]
+@fg r=ブルー e=上半身裸 f=02
+[ブルー f=94]「I'm gonna love you today, kukukuku.」[k]
+[ミューズ f=30]「...」[k]
+[ブルー f=01]「I'm gonna fuck you right now. Take off your clothes now.」[k]
+[ミューズ v=vg329 f=29]「Y-yes...」[k]
+@fg l=ミューズ e=パンツ f=30
+I take off my robe and expose my body to Blue.[k]
+[ブルー f=01]「That's a good mindset. Now, let's get to work...」[k]
+@fg l=ミューズ f=54 left=400 b
+@fg r=ブルー f=01 left=500
+Blue hugs me from behind. And then...[k]
+∗sluurp∗[k]
+@fg l=ミューズ f=37
+[ミューズ v=vg330 f=37]「Ahh...!」[k]
+A pleasant sensation ran through my lower body! Blue suddenly started touching my crotch.[k]
+[ブルー f=01]「Come on, I haven't even done anything yet, and your panties are already soggy.」[k]
+@fg l=ミューズ f=30
+[ミューズ f=30]「... (Kyaaaa)」[k]
+[ブルー f=02]「I guess that means we're all set. All right, let's get to it. Get in bed.」[k]
+[textoff]
+@out
+@w05
+
+@bgf chara=ミューズ f=event14 p1=hair p2=05
+@mu f=adult
+[texton w=2]
+[ミューズ v=vg331]「Ahhh... Ahhh... Blue...」[k]
+[ブルー]「Kuku, you're getting all worked up, [ミューズ].」[k]
+I know it's wrong, but...[k]
+I can't stop... I can't stop feeling so good...![k]
+Sex was such a good feeling...?[k]
+[ブルー]「I wonder what [テオ] will think when he finds out that you got so wild with my cock?」[k]
+[ミューズ v=vg332]「No... Don't mention my husband... Aaah!」[k]
+[ブルー]「I'll make it more disturbing, oho!」[k]
+Blue slams his hips down hard![k]
+[ミューズ v=vg333]「Haah... Haah... I'm... I'm... going to... cum...!」[k]
+My mind went blank and I climaxed for the second time today.[k]
+[ブルー]「What, did you cum already? Is my cock that good?」[k]
+[ミューズ]「...」[k]
+[ブルー]「Or is it because you're a horny little slut? Kukukukuku!」[k]
+Because I'm horny...?[k]
+Maybe so... But...[k]
+I can't cum this much when I have sex with my husband. But with Blue, I can cum so easily.[k]
+I can't believe that someone who is not my husband feels better... I could never say such a thing to him.[k]
+I'm sorry, dear... I'm supposed to love you... I'm so sorry...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント03・３日目
+*married_03
+
+; 宿屋の廊下
+@saveon
+@bg f=0002
+@mu f=worry
+[texton w=1]
+[テオ e=通常 f=06]「...」[k]
+I was called to Blue's room by Blue.[k]
+[ミューズ] is also in this room... [ミューズ] who is forced to deal with Blue every night...[k]
+[テオ f=05]「Blue, it's me.」[k]
+I call through the door.[k]
+[ブルー e=裸 f=02]「Oh, come on in.」[k]
+I opened the door and entered his room.[k]
+[textoff]
+@out
+@w05
+
+; 宿屋の一室
+@bgf chara=ミューズ f=event14 p0=hair p2=02
+@mu f=darkside
+[texton w=2]
+[ミューズ v=vg334]「Ahhh... ahh... ah... ah...」[k]
+[テオ]「...!」[k]
+To my surprise, Blue was in the middle of having sex with [ミューズ].[k]
+I can't believe you called me for this... Are you trying to show off?![k]
+[ミューズ]「...! (Ah!)」[k]
+[ミューズ v=vg335]「Dear... What are you doing here?!」[k]
+[テオ]「[ミューズ]...」[k]
+[ブルー]「Oh, there you are, [テオ]. Hold on a second. Because we're almost done.」[k]
+Blue continues to fuck [ミューズ], regardless of my presence. She can't resist the pleasure of his penis, and she starts moaning again.[k]
+[ミューズ v=vg336]「Ah... Ah... Don't look... Aaaah!」[k]
+∗shudder!∗[k]
+[ミューズ]'s whole body convulses! In sync, Blue thrusts deep into her![k]
+@flash
+@bgf chara=ミューズ f=event14 p0=hair p2=03
+[ブルー]「Ugh!」[k]
+[ミューズ v=vg337]「Ahhhhhhh... Nooooo...」[k]
+With a gasp of pleasure from my beloved wife, they both came...[k]
+[textoff]
+@out
+@w05
+
+@bg f=0001
+[texton w=1]
+[ミューズ v=vg338 e=汗だく f=39]「Haa, haa...」[k]
+@fg c=ブルー e=汗だく f=02
+[ブルー f=01]「Phew, that felt good. How does it feel to watch your wife get fucked by another man?」[k]
+[ミューズ f=30]「...」[k]
+[ミューズ] stands next to Blue apologetically. Blue is smiling infuriatingly.[k]
+[テオ f=12]「...What the hell do you want?! I'm leaving!」[k]
+[ブルー f=02]「Well, wait a minute. I called you here today because I have something to say.」[k]
+[テオ f=05]「Something to say...?」[k]
+Blue picks up something from beside the bed.[k]
+[テオ f=05]「...?」[k]
+It was a mysterious object that looked like two thin, flat metal rings assembled together.[k]
+[ブルー f=02]「Hey, [ミューズ], stand over there for a moment.」[k]
+[ミューズ f=30]「...」[k]
+@cl b
+@fg l=ブルー f=02 b
+@fg r=ミューズ e=汗だく f=54
+[ミューズ] obeys Blue's instructions and raises her sweat-covered body.[k]
+Then Blue reached between [ミューズ]'s legs.[k]
+[ミューズ v=vg339 f=31]「Ah...!」[k]
+[ブルー f=94]「Kukukuku...」[k]
+@fg r=ミューズ e=鋼鉄の貞操帯 f=54
+To my surprise, Blue attached it through [ミューズ]'s legs and around her crotch as if she were wearing panties![k]
+@fg r=ミューズ f=30
+[ブルー f=01]「You know what a chastity belt is? If it's on, a woman can't have sex with a man.」[k]
+[テオ f=12]「N-no way...!」[k]
+I understood what the belt meant. As long as [ミューズ] wears it, no one can have sexual intercourse with her.[k]
+But why would Blue put something like that on her?[k]
+[ブルー f=02]「Okay, let's lock up.」[k]
+@cl l
+@se f=kacha
+Blue locked the padlock attached to the chastity belt.[k]
+@fg l=ブルー f=02
+[ブルー f=02]「I'll take this key.」[k]
+@fg l=ブルー f=15
+[ブルー f=15]「From now on, I won't let anyone have sex with [ミューズ] without my permission. Even if it's you.」[k]
+@fg r=ミューズ f=64
+[ミューズ f=64]「...!」[k]
+[テオ f=12]「What the...!」[k]
+@fg l=ブルー f=02
+[ブルー f=02]「I called you here today to tell you that. [ミューズ] is mine. You understand, [テオ]?」[k]
+[テオ f=11]「Don't be ridiculous! I'm her husband! [ミューズ] isn't yours!」[k]
+[ブルー f=02]「You don't get it. While I'm in this party, this chick's body is mine. That's what we agreed on.」[k]
+[ブルー f=01]「So it's up to me what I do with her. I have the right to decide what to do with your wife. Aren't I right?」[k]
+@fg r=ミューズ f=29
+[ミューズ f=29]「...」[k]
+[テオ f=09]「Damn...!」[k]
+My guts are churning, but can't say anything back...![k]
+[ブルー f=02]「That's all I had to say. If you understand, leave.」[k]
+[テオ f=10]「Damn...!」[k]
+[ミューズ v=vg340 f=29]「Dear...」[k]
+[ミューズ] looked at me with concern. My shoulders shook with frustration, but I had no choice but to retreat...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ブルー人妻イベント04・４日目以降
+*married_04
+
+; 宿屋の一室
+@saveon
+@bgf chara=ミューズ f=event14 p1=hair p2=05
+@mu f=evil
+[texton w=2]
+[ミューズ v=vg341]「Ah... Ah... Ah... Ah...」[k]
+[ブルー]「You're looking pretty horny today, [ミューズ]. Is my cock that good?」[k]
+[ミューズ v=vg342]「Ohhh... That's good... More... More cock... Ahhhhh..!」[k]
+[ブルー]「I wonder what my husband would think if he heard what I just said?」[k]
+Today, I'm giving my body to Blue again. I know, it's wrong, but I can't resist this pleasure.[k]
+I'm sorry. It's the deal. I'm trying to protect everyone... I'm sorry..![k]
+I was drunk on sex with Blue again tonight, making excuses in my mind.[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+;■ホテルイベント・主人公と同室
+
+; ラブホで売春組織が暗躍している
+; 主人公たちはラブホに一般のカップルのふりをして潜入し事件を解決する
+
+;◇主人公ホテルイベント・夜
+*hotel_theo_1
+
+; ラブホテルの一室
+@saveon
+@mu f=affair
+@se f=door1
+@bgf f=0004
+@wait time=1000
+@fg l=テオ f=10 b
+@fg r=ミューズ f=05
+[texton w=1]
+[テオ f=10]「...」[k]
+[ミューズ f=05]「...」[k]
+After checking in, I went into a love hotel room with [ミューズ].[k]
+Pink walls and carpet. A heart-shaped double bed. You couldn't mistake it for anything other than a love hotel.[k]
+[テオ f=10]「...」[k]
+Ugh... This makes me nervous...[k]
+Even though we are only staying as a couple for the sake of appearances, I still feel conscious when I am alone with a girl in a place like this... I'm nervous...[k]
+[ミューズ f=05]「... ∗fidget∗」[k]
+Meanwhile, [ミューズ] is scurrying around, as if the love hotel is a rarity.[k]
+Maybe you don't quite understand the significance of this room.[k]
+@fgf l=テオ f=13
+[テオ f=13]「What are you going to do? Do you want to take a bath first? Or do you want to go to bed like this?」[k]
+Even though the bath is separated by a screen, it's still in the same room. If someone wanted to, they could watch the bathing process.[k]
+[テオ f=14]「If you want to take a bath, shall I go outside until you finish?」[k]
+[ミューズ v=vg343 f=05]「No... You don't have to go that far...」[k]
+@se f=door1
+@fgf l=テオ f=05
+[従業員]「Excuse me. Excuse me.」[k]
+[テオ f=05]「Aaa...」[k]
+Suddenly, an employee suddenly entered the room unannounced.[k]
+[従業員]「We offer a free laundry service. Please put your clothes in this basket. We will wash them and return them to you by tomorrow morning.」[k]
+[ミューズ f=06]「...」[k]
+A laundry service...?[k]
+It may be convenient, but we brought weapons and other items with us in case something happened. I'd rather not leave our belongings with others.[k]
+[テオ f=05]「Uh... That's fine...」[k]
+[従業員]「We are sorry, but this service is mandatory for all guests staying at this hotel.」[k]
+[テオ f=05]「What...?」[k]
+You're saying laundry service is mandatory? What on earth is going on?[k]
+[従業員 f=01]「You see, we have had problems in the past with guests staying at this hotel, including vandalism and murder...」[k]
+[従業員 f=01]「To prevent any problems, we ask our customers to leave all their luggage, including what they are wearing.」[k]
+[テオ f=06]「I see...」[k]
+[従業員]「In return, we will wash the clothes you leave with us. Thank you very much for your cooperation.」[k]
+[テオ f=06]「...」[k]
+If that's the case, we have no choice but to accept...[k]
+We're here to conduct an undercover investigation of this hotel. I'm a little reluctant to check in all our luggage...[k]
+However, disobeying the employees will be regarded with suspicion. It would be counterproductive to be refused accommodation.[k]
+[テオ f=05]「Okay, I'll leave my clothes and luggage with you.」[k]
+[ミューズ f=05]「... ∗nod∗」[k]
+[従業員]「Thank you for your cooperation! Please them in this basket. Please wear this instead.」[k]
+[textoff]
+@out
+@w1
+@bg f=0004 b
+@fg l=テオ e=バスタオル f=26 b
+@fg r=ミューズ e=バスタオル f=25
+[texton]
+[テオ f=26]「... (Kyaa)」[k]
+[ミューズ f=25]「...」[k]
+After depositing all of our clothes, [ミューズ] and I were only clad in towels.[k]
+This was all the employee offered us to wear.[k]
+[テオ f=25]「Um... You didn't have anything else to wear?」[k]
+[従業員]「Sorry, we wanted to provide bathrobes, but unfortunately we are out of stock...」[k]
+[テオ f=26]「Oh no...」[k]
+[従業員]「...Isn't it fine? Given what you are both here for, after all.」[k]
+The employee then smiles a little condescendingly.[k]
+[テオ f=26]「...」[k]
+...This is one of those places where if you stand out too much, people may become suspicious. Ostensibly, [ミューズ] and I are just an ordinary couple who came to stay at a love hotel.[k]
+[テオ f=26]「I understand. Please take care of the laundry.」[k]
+[従業員]「Well, enjoy yourselves.」[k]
+@se f=door1
+∗slam∗[k]
+[テオ f=26]「...」[k]
+[ミューズ f=25]「...」[k]
+We were left in this room wearing only towels...[k]
+Alone with a woman, this is indeed embarrassing...[k]
+[ミューズ f=25]「...」[k]
+[ミューズ] is surprisingly calm about it. Isn't she embarrassed by this situation?[k]
+[テオ f=25]「Are you okay? Dressed like that, with just the two of us.」[k]
+@fg r=ミューズ f=22
+[ミューズ v=vg344 f=22]「Yes... It's okay... With you... I feel at ease...」[k]
+Saying so, [ミューズ] gives a carefree smile.[k]
+@fg l=テオ f=21
+[テオ f=21]「I-I see. That's okay then.」[k]
+At any rate, I'm glad to see that she isn't alarmed. Now I just have to be careful not to lose my reason.[k]
+[textoff]
+@fa
+@out
+@w05
+@jump storage="main11.scn" target=*hotel_2
+
+
+;◇主人公ホテルイベント・朝
+*hotel_theo_2
+
+; ラブホテルの一室・朝
+@bg f=9999
+@bg f=0064 t=2000
+@mu f=peace
+[texton w=1]
+[テオ e=バスタオル f=06]「...」[k]
+It's morning...?[k]
+I wake up on a pink bed. Come to think of it, I slept at a love hotel last night...[k]
+[テオ f=25]「...! (Ah!)」[k]
+I remember! [ミューズ] is sleeping next to me, wearing just a towel...![k]
+[テオ f=05]「What...?」[k]
+I feel something on my arm. I feel warmth. Could this be?[k]
+[ミューズ e=バスタオル f=19]「... ∗zzz∗」[k]
+[テオ f=29]「[ミューズ]...!」[k]
+To my surprise, [ミューズ] was asleep, clinging to my arm.[k]
+She's a little disheveled in her towel, her small breasts pressed against my arm, and she's making cute sleepy noises.[k]
+[テオ f=22]「[ミューズ]...」[k]
+[ミューズ v=vg345 f=53]「Hmm... Cap...tain?」[k]
+[テオ f=29]「Ah...!」[k]
+That's when [ミューズ] woke up.[k]
+[ミューズ f=54]「...! (Ah!)」[k]
+@fg c=ミューズ e=バスタオル・はだけ f=30
+[ミューズ v=vg346 f=30]「I-I'm sorry... Captain...」[k]
+[ミューズ] rushes to get up and away from me.[k]
+[テオ f=12]「Ah...!」[k]
+Then I noticed that [ミューズ]'s towel had come off, revealing her small breasts![k]
+@fgf c=ミューズ f=58
+[ミューズ f=58]「...! (Ah!)」[k]
+@fg c=ミューズ e=バスタオル f=30
+[ミューズ f=30]「... (Kyaaaaaaaa!)」[k]
+[ミューズ] also noticed and hurriedly pulled up her towel to cover her breasts.[k]
+@fgf c=ミューズ f=30
+[ミューズ v=vg347 f=30]「Did... Did you see...?」[k]
+[テオ f=10]「Sorry... I just...」[k]
+[ミューズ f=30]「... (Kyaa)」[k]
+[テオ f=12]「I'm so sorry! But I looked away quickly, so I don't remember it anymore.」[k]
+@fgf c=ミューズ f=25
+[ミューズ f=25]「...」[k]
+@fgf c=ミューズ f=70
+[ミューズ v=vg348 f=70]「It's okay... I don't mind if you see me...」[k]
+[テオ f=05]「Eh?」[k]
+@se f=door1
+@fgf c=ミューズ f=05
+[従業員]「Good morning. The clothes we received yesterday have been washed and brought to you.」[k]
+Suddenly, a hotel employee brought the clothes and luggage I had left behind yesterday.[k]
+[テオ f=13]「Huh, looks like our clothes are here, so let's get dressed and check out quickly.」[k]
+[textoff]
+@out
+@w05
+@bg f=0003
+[texton w=1]
+[ミューズ] and I got dressed and headed to the hotel lobby.[k]
+@fg c=ミューズ e=現在の装備 f=68
+[ミューズ v=vg349 f=68]「Love hotels are kind of funny...」[k]
+[テオ e=現在の装備 f=13]「Oh, yeah, maybe so, ahaha.」[k]
+[ミューズ] doesn't seem to be particularly bothered by the fact that I saw her breasts earlier. She walks with a gentle smile on her face, leaning her body a little closer to me.[k]
+[テオ f=06]「...」[k]
+On the other hand, I've been thinking about what [ミューズ] said to me earlier.[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+@eval exp='o.ミューズ.strip.theo = "パンツ"'
+@jump storage="main11.scn" target=*hotel_4
+
+
+
+;■ホテルイベント・マックスと同室
+
+;◇マックスホテルイベント・夜
+*hotel_max_1
+
+; ラブホテルの一室
+@mu f=bad
+@se f=door1
+@bgf f=0004
+@fg l=マックス f=01 b
+@fg r=ミューズ f=30
+[texton w=1]
+[マックス f=01]「Oooooh this is a room that looks like it would be a great place to have sex!」[k]
+[ミューズ f=30]「...」[k]
+[マックス f=03]「Have you ever been in a love hotel? ...I mean, I guess not. It's pretty interesting, isn't it?」[k]
+[ミューズ v=vg350 f=30]「I... I don't know...」[k]
+[マックス f=01]「What is it? Are you nervous? Don't worry!」[k]
+[ミューズ f=30]「...」[k]
+[マックス f=03]「Go take a bath. I'll wait for you over here.」[k]
+[ミューズ v=vg351 f=29]「Y-yes...」[k]
+@cl r
+[ミューズ] moves behind the screen, takes off her clothes and gently places them where they won't get wet.[k]
+@fgf l=マックス f=15
+[マックス f=15]（Hmph... That [ミューズ], she's so cute, she doesn't even know what I'm talking about.）[k]
+[マックス f=15]（Actually, I've been to this hotel before! A few times when I bought hookers in Sapphire City.）[k]
+[マックス f=04]（Well, I wonder what [ミューズ] is doing now...?）[k]
+@cl
+[マックス] moves in front of the polished-glass screen that separates the bath from the living room, and reaches for a small button on the edge.[k]
+[マックス f=15]（Actually, this polished glass can be magically made transparent by pressing this button～!）[k]
+[マックス f=15]（And you can only see it from this side! Well, I'm going to have sex with her after this anyway, but it's nice to enjoy the feeling of peeping!）[k]
+[マックス] presses the button. Then [―――][k]
+[マックス f=21]（Wow! I can see it!）[k]
+[textoff]
+
+@bg chara=ミューズ f=event27 p0=01 p1=hair p2=01
+[texton w=2]
+[マックス]（Oooooh this is amazing! You can see her boobs and pussy!）[k]
+[マックス]（[ミューズ] is so carefree in the shower... She doesn't know I'm watching everything...）[k]
+[マックス]（Ugh...! My dick is getting hard right away! Ohhh, I want to fuck [ミューズ] so bad～!）[k]
+[マックス]（Well, I guess I'll just sit back and watch until the bath is over.）[k]
+[textoff]
+@out
+
+@bgf f=0004 b
+@fg l=マックス e=バスタオル,勃起 f=03
+@w05
+@fg r=ミューズ e=バスタオル＆汗だく f=30
+[texton w=1]
+[ミューズ v=vg352 f=30]「I'm done...」[k]
+@fg l=マックス f=03
+[マックス f=03]「Oh! Well, I guess I'll take a bath next!」[k]
+[ミューズ v=vg353 f=29]「Oh, um...」[k]
+@fg l=マックス f=02
+[マックス f=02]「Hmm? Yes, [ミューズ]?」[k]
+[ミューズ v=vg354 f=30]「My clothes... Where did they go...?」[k]
+[マックス f=03]「Yeah, an employee came by earlier and took them away. They're going to wash them and return them tomorrow.」[k]
+@fg r=ミューズ f=57
+[ミューズ v=vg355 f=57]「Ehh...! That's not good...」[k]
+@fg l=マックス f=15
+[マックス f=15]「It can't be helped. That's the rule of this hotel. What, are you embarrassed?」[k]
+@fg r=ミューズ f=30
+[ミューズ v=vg356 f=30]「Of course I'm embarrassed...」[k]
+[マックス f=03]「Don't worry, you'll get used to it! Well, I'm going to take a bath too!」[k]
+@cl l
+[ミューズ f=30]「...」[k]
+[ミューズ f=30]（I can't believe I'm alone with [マックス] wearing just a towel... Scary...）[k]
+@fg r=ミューズ f=25
+[ミューズ f=25]「...?」[k]
+@fg r=ミューズ f=58
+[ミューズ f=58]（The polished glass screen is transparent! Why?）[k]
+[ミューズ f=58]（When I looked earlier, it definitely wasn't transparent...! But now I can clearly see [マックス] on the other side of the glass...!）[k]
+@fg r=ミューズ f=57
+[ミューズ f=57]（...So that means I was seen naked by [マックス] earlier!）[k]
+[ミューズ f=57]（Oh no...! [マックス]'s penis is getting bigger...!）[k]
+[ミューズ f=57]（He must have seen me naked and got excited...!）[k]
+@fg r=ミューズ f=38
+[ミューズ v=vg357 f=38]「N-no...!」[k]
+[ミューズ f=38]（I want to escape...! But if I run away, I'll cause trouble for everyone...）[k]
+[ミューズ f=38]（Oh... What should I do...? What am I going to do?）[k]
+[textoff]
+@out
+@w05
+
+@bg f=0004 b
+@fg l=マックス e=バスタオル＆汗だく・勃起 f=03 b
+@fg r=ミューズ e=バスタオル f=30
+[texton w=1]
+[マックス f=03]「Ahhhh, that felt good!」[k]
+[ミューズ f=30]「...」[k]
+@fg l=マックス f=01
+[マックス f=01]「Hmm? What's the matter, [ミューズ]? Did you see a ghost?」[k]
+[ミューズ v=vg358 f=30]「It's not like that...」[k]
+[マックス f=01]「You're kinda odd.」[k]
+@fg l=マックス f=03
+[マックス f=03]「Anyway, let's get started! I can't wait any more!」[k]
+@fg r=ミューズ f=25
+[ミューズ v=vg359 f=25]「Eh? What?」[k]
+@fg l=マックス f=03 left=550 index=1900
+[マックス f=03]「It's obvious, right?!」[k]
+@mu f=action
+@se f=cloth
+@flash t=200
+@fgf r=ミューズ e=裸 f=58
+Ah![k]
+@fg r=ミューズ e=裸,手ブラ f=37
+[ミューズ v=vg360 f=37]「Kya!」[k]
+[マックス] suddenly ripped off [ミューズ]'s towel![k]
+[ミューズ]'s naked body is exposed in front of [マックス]![k]
+[ミューズ v=vg361 f=57]「Hey, what are you doing, [マックス]?」[k]
+@fg l=マックス e=裸・勃起 f=15 fix
+[マックス f=15]「Come on, this is a love hotel. Of course we're going to have sex.」[k]
+Saying that, [マックス] also took off his towel and exposed his erect penis.[k]
+[ミューズ v=vg362 f=57]「N-no, I don't want to!」[k]
+[マックス f=22]「We've come this far, so that's not going to happen. I'm at the end of my patience. Come on, let me fuck you.」[k]
+[textoff]
+@cl b
+
+@bgf chara=ミューズ f=event11 p0=hair p2=01 p3=06
+@se f=dosa
+@quake time=500 hmax=5 vmax=20
+[texton w=2]
+[ミューズ v=vg363]「Aah!」[k]
+[ミューズ] was suddenly pushed down on the bed by [マックス]![k]
+[マックス]「Hehe! Tiny but pointy, slutty nipples!」[k]
+[ミューズ v=vg364]「No... Stop it, [マックス]...」[k]
+[マックス]「Hey, we're going to spend the night in this room, both of us naked. We've got no choice but to fuck each other, right?」[k]
+[ミューズ]「...」[k]
+[マックス]「I'll show you what I'm talking about. Let's have some fun tonight, huh?」[k]
+[マックス] then gropes [ミューズ]'s slippery crotch![k]
+@bgf chara=ミューズ f=event11 p0=hair p2=01 p3=04
+[ミューズ v=vg365]「Ahhh...! Nooo...!」[k]
+[マックス]「See, doesn't it feel good?」[k]
+[ミューズ v=vg366]「Ah... No... Not there... Ah...!」[k]
+[マックス] deftly moves his fingers along [ミューズ]'s vertical strip, stimulating her.[k]
+[ミューズ v=vg367]「Ahhh... ahh... No... [マックス]...!」[k]
+[マックス]「Ohhhh, you're getting wet. You're feeling it, [ミューズ].」[k]
+[ミューズ]「... (Kyaa)」[k]
+[マックス]「Then I'll do something even better for you.」[k]
+[マックス] covers [ミューズ]. He bares his hardened big dick and brings it close to [ミューズ]'s hole.[k]
+[ミューズ v=vg368]「No...! Please don't do that...!」[k]
+[ミューズ] fails to hold [マックス] back with her hands as he comes at her.[k]
+[マックス]「Here, let me put it in... Get your hands off me...」[k]
+[ミューズ v=vg369]「No... Nooo...!」[k]
+[マックス]「What the hell, all that's left is insertion! Why do you refuse to go that far?」[k]
+@bgf chara=ミューズ f=event11 p0=hair p2=01 p3=06
+[ミューズ v=vg370]「Because... Because... ∗sob∗」[k]
+[ミューズ] is in tears. But despite that, [マックス] persists.[k]
+[マックス]「What is it? Is there another guy you like?」[k]
+[ミューズ]「...」[k]
+[マックス]「Even if you do, everyone has sex with each other. Don't take it too seriously. It's just something that feels good, right?」[k]
+[ミューズ]「... ∗sob∗」[k]
+[マックス]「Come on, you've got to be ready for this. When a man and a woman get this far, there's nothing left to do but fuck to the end.」[k]
+[ミューズ]「...」[k]
+[マックス]「What? Let me in, [ミューズ]. Cock feels good, okay?」[k]
+[ミューズ]「...」[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+@jump storage="main11.scn" target=*hotel_3
+
+;◇マックスホテルイベント・朝
+*hotel_max_2
+
+; ラブホテルの一室・朝
+@bg chara=ミューズ f=event19 p2=hair p3=03
+@mu f=adult
+[texton w=2]
+[ミューズ v=vg371]「Ah... Ah... Ah... Ah...」[k]
+[マックス]「Phew... It feels super good. Your pussy is so good, [ミューズ].」[k]
+[ミューズ v=vg372]「Huh... Haaah... [マックス]... ahhh...! Ohh...!」[k]
+Last night, [マックス] went to sleep after having fucked [ミューズ] a lot. In the morning, he woke up and asked for it again.[k]
+This is already the fifth time they have had sex since last night. However, [マックス]'s sexual desire knows no bounds and he continues to devour [ミューズ]'s vagina.[k]
+[マックス]「Ha-ha-ha... How's that? You're starting to feel better, aren't you, [ミューズ]?」[k]
+[ミューズ v=vg373]「I don't know... [マックス] in my vagina is... It's too big... Ohhhhh...!」[k]
+∗sluuurp!∗[k]
+[ミューズ v=vg374]「Ahhh...! Ahh! [マックス]... No... Ahh..!」[k]
+[マックス]'s big dick was thrust deep into her, and [ミューズ] gasped and moaned in a voice that sounded like a scream.[k]
+[マックス]「Phew... Sex is good. After all, a man and a woman should enjoy each other's bodies like this.」[k]
+[ミューズ v=vg375]「Phew...」[k]
+[マックス]「Now, it is time to ejaculate the first shot of the morning!」[k]
+∗thrust thrust thrust!∗[k]
+[ミューズ v=vg376]「Ahh... [マックス]...!」[k]
+[マックス] thrusts intently! Meanwhile, [ミューズ] was also climbing to her climax.[k]
+[ミューズ]'s sexual senses are heightened by the hot cock stirring her honey pot![k]
+[ミューズ v=vg377]「Ahhh... Ahhh... [マックス]... I'm cumming...!」[k]
+[マックス]「I'm gonna cum too! Ahhhhh!」[k]
+∗spuurt!∗ ∗spuurt!∗[k]
+[マックス] pulled out his penis in a panic after starting to shoot.[k]
+[マックス]'s generous amount of semen flew vigorously and landed on [ミューズ]'s pale naked body.[k]
+[ミューズ v=vg378]「Phew...」[k]
+[マックス]「Pheeeeeew that felt good. I feel refreshed.」[k]
+[マックス] lay on his back on the bed, looking completely satisfied.[k]
+[ミューズ]「...」[k]
+[ミューズ] looked at [マックス] silently with slightly resentful eyes...[k]
+[textoff]
+@fa
+@out
+@w05
+@return cond='f.replayMode'
+
+; マックス関連イベント消滅
+@delevent name=ミューズ num=20
+@delevent name=ミューズ num=21
+@delevent name=ミューズ num=22
+@delevent name=ミューズ num=23
+@eval exp='o.ミューズ.strip.max = "汗だく"'
+@recordsex guy=マックス sex=5 orgasm=1 date=&'game.date - 1'
+@recordsex guy=マックス sex=2 orgasm=1
+@eval exp='o.ミューズ.moveHeart(o.マックス, 1)'
+
+@jump storage="main11.scn" target=*hotel_5
+
+
+
+;■不倫イベント
+
+;◇マックス不倫イベント
+*adultery_max
+
+; 宿屋の一室
+@saveon
+@bg f=0001 b
+@fg l=ミューズ e=通常 f=26 b
+@fg r=マックス e=通常 f=01
+@mu f=affair
+[texton w=1]
+[ミューズ f=26]「...」[k]
+[マックス f=01]「Hey, [ミューズ]. What's up? Aren't you with [テオ] today?」[k]
+[ミューズ f=26]「...」[k]
+[マックス f=03]「Still, I never imagined that you'd become [テオ]'s wife. How are things going with your husband?」[k]
+[ミューズ f=26]「...」[k]
+[マックス f=15]「By the way, do you have sex with [テオ] every night?」[k]
+[ミューズ f=71]「...!」[k]
+@fg l=ミューズ f=30
+[ミューズ f=30]「... (Kyaa)」[k]
+[マックス f=15]「Oh, you're blushing! That's right... Right after getting married, you're in the mood for it!」[k]
+[ミューズ f=30]「... (Kyaa)」[k]
+[マックス f=03]「That means you're already enjoying sex, I guess～! That's great, I'm jealous!」[k]
+[ミューズ f=30]「...」[k]
+[マックス f=01]「Huh? What's wrong? Why do you suddenly look so gloomy?」[k]
+[ミューズ f=30]「...」[k]
+[マックス f=01]「You look like you're troubled. If you want, I'll listen to your problems!」[k]
+[ミューズ f=26]「...」[k]
+@fg l=ミューズ f=25
+[ミューズ v=vg379 f=25]「...Are you good at sex?」[k]
+@fg r=マックス f=23
+[マックス f=23]「Hey, what's with the sudden question? I never expected you to ask me something like that. [ミューズ], did you become interested in it after you started having sex with your husband?」[k]
+[ミューズ f=26]「...」[k]
+@fg r=マックス f=67
+[マックス f=67]「...Well, I don't know if I'm good at it or not, but most of the women I've been with say they enjoyed it.」[k]
+[ミューズ v=vg380 f=25]「Is that so...」[k]
+[ミューズ f=25]「...」[k]
+@fg r=マックス f=15
+[マックス f=15]「Oh? You look interested. Would you like to try it?」[k]
+[ミューズ f=25]「...」[k]
+[textoff]
+@out
+@w05
+
+@bgf chara=ミューズ f=event19 p2=hair p3=03
+@mu f=action
+[texton w=2]
+[ミューズ v=vg381]「Ahhh... ahh... ah... ah...!」[k]
+[マックス]「What a mess! Is it that good?」[k]
+[ミューズ v=vg382]「Yes... It's good... Sex with [マックス]... It's good... Ahhh...!」[k]
+[マックス]「That's great! Then I'll make you feel even better! Here we go!」[k]
+[textoff]
+@out
+@w05
+
+@bg f=0045
+@mu f=affair
+[texton w=0]
+[ミューズ e=裸 f=30]「...」[k]
+[マックス e=裸 f=01]「What's wrong, [ミューズ]? You look gloomy.」[k]
+[ミューズ v=vg383 f=30]「...I regret what I did...」[k]
+[マックス f=01]「But hey, it felt good, right?」[k]
+[ミューズ f=94]「...」[k]
+[マックス f=03]「You're a woman, [ミューズ], so it can't be helped! Sex is definitely better when it feels good!」[k]
+[ミューズ v=vg384 f=94]「Umm... Don't tell my husband about this...」[k]
+[マックス f=03]「I know that! Of course, I'll never tell [テオ]! Oh, I'm such a sinful man!」[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+;◇ライナス不倫イベント
+*adultery_linus
+
+; 宿屋の一室
+@saveon
+@bg f=0001
+@mu f=affair
+[texton w=0]
+[ミューズ v=vg385 e=汗だく f=37]「Haan... Linus... I'm cumming...!」[k]
+[ライナス e=裸 f=02]「Oh? Did you cum again? It seems like you had a lot built up, [ミューズ].」[k]
+[ミューズ v=vg386 f=38]「Ah... More... Give me more... Mmm!」[k]
+[ライナス f=03]「[ミューズ] is such a slutty wife. Bad girls need to be punished! Here we go!」[k]
+Surprisingly, [ミューズ] engaged in an extramarital affair with Linus after becoming dissatisfied with her sex life with [テオ].[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+
+
+
+
+
+
+
+;■フリーモード
+
+
+*_blue_01_freemode
+
+; 宿屋の一室
+@bg f=0001
+@fg l=ミューズ e=通常 f=30 b
+@fg r=ブルー e=通常 f=05
+@mu f=anxiety
+[texton w=1]
+Blue and [ミューズ] are alone in the room.[k]
+Blue's sharp gaze left [ミューズ] unable to move.[k]
+[ミューズ f=30]「...」[k]
+[ブルー f=05]「You, you're going to be my partner today.」[k]
+Blue asks [ミューズ] to have sex with him, and she freezes in fear.[k]
+[ブルー f=05]「Quickly, take off your clothes.」[k]
+@fg l=ミューズ f=65 b
+@fg r=ブルー e=上半身裸 f=02 left=500
+With that, Blue took off his shirt and approached [ミューズ].[k]
+[ミューズ v=vg281 f=65]「N-no...」[k]
+[ブルー f=02]「You're a fine woman. You should be able to handle a guy like me.」[k]
+@fg l=ミューズ f=66
+[ミューズ f=66]「...」[k]
+@fg r=ブルー f=05 fix
+[ブルー f=05]「You haven't forgotten your promise to me, have you?」[k]
+[ミューズ f=66]「...」[k]
+@fg r=ブルー f=02 fix
+[ブルー f=02]「If you get it, hurry up and let me do it.」[k]
+[ミューズ f=66]「... ∗shiver∗」[k]
+[ブルー f=02]「I'll take it off.」[k]
+[ミューズ v=vg282 f=65]「Aaa...」[k]
+@fg l=ミューズ e=白いブラ,白いパンツ f=66
+Blue puts his hand on [ミューズ]'s clothes and slowly undresses her.[k]
+@fg l=ミューズ e=白いパンツ f=66
+[ミューズ] does not resist. Her chest is exposed, her panties are revealed, and her clothes are pulled off her legs.[k]
+[ミューズ f=66]「...」[k]
+[ミューズ] lies quietly in front of Blue, wearing only a pair of panties. She looks away from Blue, perhaps embarrassed.[k]
+She was the image of a woman about to have sex with a man.[k]
+[ブルー f=02]「...That's a good mindset. Then I'm going to hold you now.」[k]
+@cl
+Blue grabbed [ミューズ] by the shoulders and pushed her down onto the bed.[k]
+[textoff]
+@out
+
+@bg f=0044
+@mu f=darkside
+[texton w=0]
+∗lick∗[k]
+[ミューズ v=vg283 f=37]「Ah...!」[k]
+Blue crawls his tongue over [ミューズ]'s body.[k]
+With a soft touch and a sticky tongue, he skillfully caressed her small breasts.[k]
+[ブルー f=02]「Kuku, you're shaking, you're so cute.」[k]
+[ミューズ f=38]「...」[k]
+When Blue stimulates the nipples with her tongue, [ミューズ]'s expression turns sad for a moment.[k]
+Gradually her breath became louder and her cheeks turned slightly red.[k]
+[ブルー f=02]「You don't seem to be satisfied. Now, this one...」[k]
+[ミューズ v=vg284 f=37]「Mmm... Ha...!」[k]
+Blue's hand quickly stroked [ミューズ]'s crotch![k]
+A troubled sigh escapes her pretty mouth.[k]
+[ミューズ v=vg285 f=37]「An... ahh... Aaaaahhh...! Aaahhh...!」[k]
+[ブルー f=02]「Kuku, looks like you're starting to feel it.」[k]
+Blue crawls his hand insistently over her panties.[k]
+[ミューズ] wriggles her hips in a frustrated, sensual pose.[k]
+[ブルー f=02]「Well, it's about time...」[k]
+[ミューズ v=vg286 f=65]「Ah...!」[k]
+Blue deftly slid [ミューズ]'s panties off her legs![k]
+At the same time, Blue also pulls down his pants and takes out his growing penis.[k]
+[ブルー f=02]「Well, it's about time...」[k]
+Blue lightly opens [ミューズ]'s slender legs to reveal a soaked hidden garden.[k]
+And then, a strong erect penis encroaching on it.[k]
+[ブルー f=02]「Let's go in.」[k]
+[ミューズ f=38]「...!」[k]
+Blue pushed the tip against [ミューズ]'s entrance and thrust his body forward![k]
+[textoff]
+
+@bgf chara=ミューズ f=event38 p0=hair p1=01 p2=04
+[texton w=2]
+∗slip∗[k]
+[ミューズ v=vg287]「Ahh...!」[k]
+Blue's glans is easily swallowed by [ミューズ]'s wet vagina! Then...[k]
+∗slurp...∗[k]
+[ミューズ v=vg288]「Ah... ah... ah...!」[k]
+The meat pole slips inside. It enters with a lewd squelching sound.[k]
+As [ミューズ]'s soft labia were stretched to their limit, Blue's large penis was swallowed deeper and deeper.[k]
+[ブルー]「Kuku, I got it deep inside.」[k]
+[ミューズ v=vg289]「Ahhhhh...!」[k]
+Blue stops moving. Blue's huge penis has gone deep inside [ミューズ].[k]
+@bg chara=ミューズ f=event38 p0=hair p1=01 p2=02
+[ミューズ v=vg290]「Ugh... Oww...」[k]
+[ブルー]「My dick is so big, it might be hard for you.」[k]
+[ブルー]「But I'm not going to show you any mercy. It's your job to make me feel good. You'll feel better in no time.」[k]
+@bg chara=ミューズ f=event38 p0=hair p1=02 p2=04
+∗Slurp slurp slurp∗[k]
+Blue begins a thrusting slowly. [ミューズ] frowns and endures the act.[k]
+Their mucous membranes rubbed against each other. In the quiet room, only disgusting wet noises echoed.[k]
+∗Slurp slurp slurp∗[k]
+[ミューズ v=vg291]「Oh... Blue...!」[k]
+[ブルー]「You feel so good inside. You're so tight, it feels really good.」[k]
+[ミューズ v=vg292]「Hmm... Haa... Aaah... !」[k]
+[ブルー]「Even if's painful, you're still feeling it. Okay, let's pick up the pace.」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg293]「Ah... Ah... Stop... Ugh... Ahhh...!」[k]
+[ミューズ] writhes in agony. Blue doesn't care, but continues fucking her nonchalantly with a lecherous smile on his face.[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ブルー]「Fuu... This feels really good... I think I'm going to cum early.」[k]
+[ミューズ v=vg294]「Ah... Ah... No... Stop... Ah...!」[k]
+[ブルー]「I can't get enough of this...! I'm going to have to take the first shot now!」[k]
+∗slurp slurp slurp slurp slurp slurp slurp!∗[k]
+@bg chara=ミューズ f=event38 p0=hair p1=02 p2=03
+[ミューズ v=vg295]「Anh, ah, ah, ah, ah, ahhhh...!」[k]
+[ブルー]「Damn it! I'm going to do it!」[k]
+∗sluuurp!∗[k]
+[ミューズ v=vg296]「Ahhhh!」[k]
+[ブルー]「Ugh!」[k]
+@flash
+@bgf chara=ミューズ f=event38 p0=hair p1=01 p2=03
+∗spurt!∗[k]
+Blue thrust deep into [ミューズ] and then stopped moving![k]
+[ミューズ v=vg297]「Ahh... nooooo...!」[k]
+[ブルー]「Ugh... It's still coming out...!」[k]
+∗spurt! spurt!∗[k]
+Blue shook his hips several times with his penis still inside [ミューズ], as if to release the remaining liquid.[k]
+[ブルー]「Phew... I feel so much better now.」[k]
+[ミューズ]「...」[k]
+[ミューズ] was ejaculated inside. She lay helplessly on the bed, exposing her defiled naked body.[k]
+She just stared blankly into space...[k]
+[textoff]
+@out
+@w05
+@recordsex guy=ブルー sex=1 orgasm=0 acts=乳首責め,クリ責め,正常位
+[hoteloff]
+
+
+
+
+*_blue_02_freemode
+
+; 宿屋の一室
+@fg l=ミューズ e=通常 f=64 b
+@fg r=ブルー e=通常 f=02 b
+@bgf f=0001
+@mu f=worry
+[texton w=1]
+[ミューズ f=64]「...!」[k]
+[ブルー f=02]「Kukukuku...」[k]
+Blue, now alone with [ミューズ], stared down at her, licking his lips.[k]
+Like last time, Blue intends to force [ミューズ] to be his partner for the night.[k]
+[ブルー f=01]「It was pretty good, your pussy. Let's do it again.」[k]
+@fg l=ミューズ f=65
+[ミューズ v=vg299 f=65]「N-no...!」[k]
+[ミューズ] is frightened by Blue's attitude.[k]
+[ブルー f=05]「Just fuck me, [ミューズ]! Now, get your ass in bed!」[k]
+@fg l=ミューズ f=37
+[ミューズ v=vg300 f=37]「Aaaah...!」[k]
+@clf
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+Blue grabs [ミューズ]'s arm and pushes her down onto the bed![k]
+@fg c=ブルー f=02
+[ブルー f=02]「Well, let's do it. You were pretty good, so I'm looking forward to it.」[k]
+@cl
+[ミューズ f=65]「... ∗shiver∗」[k]
+Blue straddled the frightened [ミューズ].[k]
+[textoff]
+@out
+
+@bg chara=ミューズ f=event38 p0=hair p1=02 p2=03
+[texton w=2]
+∗sluurp sluurp sluurp∗[k]
+[ミューズ v=vg301]「Mmm... Ugh... Hiaaah... !」[k]
+[ブルー]「Kuku, this tightness is exquisite.」[k]
+Blue relentlessly unleashes his meaty rod into [ミューズ]'s soaking wet honey pot.[k]
+As expected, [ミューズ] is not as sore as last time, but Blue's oversized penis still seems to give her a certain amount of pain.[k]
+She was writhing in agony and desperately trying to bear Blue's thrusting.[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg302]「Ah... Ahhhh... No... Stop...」[k]
+The male organ, swollen to its limit, slithers in and out of [ミューズ].[k]
+Every time the strong penis emerges from her vagina, it made a disgusting sound.[k]
+His rod was glistening wet. It was evidence that inside [ミューズ] was overflowing with embarrassing juices.[k]
+[ミューズ]... She's so wet like that after Blue fucked her...![k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[ミューズ v=vg303]「Ah... Ah... Stop... Stop... Ahhh!」[k]
+[ミューズ] wiggles her hips in an irresistible manner as Blue thrusts into her with all her might.[k]
+Despite her reluctance, the motion was incredibly erotic.[k]
+Blue's eyes glaze over with excitement at the sight of [ミューズ].[k]
+[ブルー]「Kuku, I think you're starting to feel it. I'm going to give you a real taste of my cock!」[k]
+∗squish squish squish squish squish squish!∗[k]
+[ミューズ v=vg304]「An... I'm sorry... Ah... Ah... No... Blue...!」[k]
+Blue shaking his hips roughly! [ミューズ]'s body is shaken violently![k]
+[ミューズ] writhed and moaned enthusiastically, her small breasts bouncing.[k]
+[ミューズ v=vg305]「Ah, ah, ah, ah, ah, Blue... Blue...!」[k]
+[ブルー]「Ugh... It's tight...!」[k]
+∗spurt!∗[k]
+[ミューズ v=vg306]「Hiaaaaaah...!」[k]
+[ブルー]「I can't wait! I'm going to let it all out at once!」[k]
+∗spurt! spurt!∗[k]
+[ミューズ v=vg307]「Oh... Blue...」[k]
+Blue climaxed and the nightmare sex is over...[k]
+[textoff]
+@out
+@w05
+
+@fg c=ブルー e=汗だく f=02 b
+@bg f=0001
+[texton w=1]
+[ブルー f=02]「Phew, that felt good. I'm satisfied.」[k]
+[ミューズ e=汗だく f=51]「...」[k]
+Blue sighs contentedly as he excess semen dribbles from the tip.[k]
+@fg c=ブルー f=01
+[ブルー f=01]「You came during sex just now, didn't you?」[k]
+[ミューズ f=66]「...!」[k]
+@fg c=ブルー f=03
+[ブルー f=03]「My dick made her cum. She's got an innocent face, but it looks like she already knows how good a cock can be! Wahahahaha!」[k]
+[ミューズ f=66]「...」[k]
+[ミューズ] listened to Blue's hearty laughter with her lips clenched...[k]
+[textoff]
+@out
+@w05
+[hoteloff]
+
+
+
+
+; 終わり

@@ -1,0 +1,368 @@
+﻿; 温泉
+
+name = 温泉・浴場
+insideName = Bathhouse
+lower = 温泉・岩場
+level = 24
+bgm = beach
+isOutdoor = true
+shadow = dark
+sky = cloudy
+effect = PE_steam
+antiWarp = true
+
+; 画像パーツ
+━ = rock
+ᆖ = wood
+－ = wood
+‥ = soil
+　 = soil
+❖ = soil
+⏃ = woods
+△ = rock
+☆ = pond
+／ = door
+⑊ = door
+☗ = gate
+︻ = panel
+Ⓒ = ladderd
+⑴ = bulletin
+
+; 移動ポイント
+(A) = map:温泉・脱衣所, x:1, y:0, way:n, symbol:exit, ask:Are you going back to the changing room?
+(B) = map:温泉・脱衣所, x:14, y:0, way:n, symbol:exit, ask:Are you going back to the changing room?
+(C) = map:温泉・洞窟Ｂ１, lift:down
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  
+  	ᆖᆖ⑊ᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖ┳ᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖᆖ⑊ᆖᆖ
+18	⏃⏃Ⓐ　①　①　　　　　②ⅼ☆☆　　　　　　　　　　　　Ⓑ⏃⏃
+  	⏃⏃　　　☆☆☆☆☆☆☆　ⅼ☆☆　　　　　　　　　　　　　⏃⏃
+17	⏃⏃①　　☆☆☆☆☆☆☆③ⅼ☆☆　　　　　　　　　　　　　⏃⏃
+  	⏃⏃　☆☆☆☆☆☆☆☆☆　ⅼ☆☆☆☆☆☆☆☆☆☆　　　　　⏃⏃
+16	⏃⏃①☆☆☆☆☆☆☆☆☆　ⅼ☆☆☆☆☆☆☆☆☆☆　　　　　⏃⏃
+  	⏃⏃　☆☆△△△△△☆☆　ⅼ☆☆☆☆☆△△△☆☆☆☆　　　⏃⏃
+15	⏃⏃　☆☆△△△△△☆☆④ⅼ☆☆☆☆　△△△☆☆☆☆　　　⏃⏃
+  	⏃⏃　☆☆△△	△△☆☆　ⅼ☆☆☆△△△△△☆☆☆☆　　　⏃⏃
+14	⏃⏃⑧☆☆△△△△△☆☆⑤ⅼ☆☆　△△△☆☆☆☆　　　　　⏃⏃
+  	⏃⏃　☆☆△△△△△☆☆　ⅼ☆☆☆△△△☆☆☆☆　　　　　⏃⏃
+13	⏃⏃⑧☆☆△△△☆☆☆☆⑥ⅼ☆☆☆☆☆☆☆☆☆☆　　　　　⏃⏃
+  	⏃⏃　☆☆△△△☆☆☆☆　ⅼ☆☆☆☆☆☆☆☆☆☆　　　　　⏃⏃
+12	⏃⏃　☆☆☆☆☆☆☆⑧　　ⅼ　☆☆☆　☆☆☆☆☆　　　　　⏃⏃
+  	⏃⏃　☆☆☆☆☆☆⏃⏃⏃⏃ⅼ⏃⏃⏃⏃⏃⏃☆☆☆☆　　　　　⏃⏃
+11	⏃⏃　　　☆☆☆☆⏃⏃⏃⏃ⅼ⏃⏃⏃⏃⏃⏃　☆☆☆　　　　　⏃⏃
+  	⏃⏃　　　☆☆☆☆⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃☆☆☆☆　　　　　⏃⏃
+10	⏃⏃　　　☆☆☆☆⏃⏃⏃⑨⏆⏆⏆　⏃⏃⏃☆☆☆☆　　　　　⏃⏃
+  	⏃⏃　　　☆☆☆☆⏃⏃⏃　⏃⏃⏃　⏃⏃⏃☆☆☆☆☆☆　　　⏃⏃
+ 9	⏃⏃　　　　⑦　⑦⏆⏆⏆　⏃⏃⏃　⏃⏃⏃☆☆☆☆☆☆　　　⏃⏃
+  	⏃⏃　　　　　　　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃☆☆☆☆　　　⏃⏃
+ 8┃⏃⏃　　　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃Ⓒ⏃⏃⏃⏃⏃☆☆　　　　　⏃⏃
+  ┃⏃⏃			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃
+ 7┃											⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃
+  ┃											⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃
+ 6┃																				　　　　　　　⏃⏃	❖
+  ┃																			⏃⏃⏃　　　　　⏃⏃
+ 5┃																			⏃⏃⏃　　　　　⏃⏃	❖
+  ┃																			⏃⏃⏃　　　　　⏃⏃
+ 4┃																				　　　　　　　⏃⏃	❖
+  ┛																			⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+ 3																				⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  
+ 2
+  
+ 1
+  
+ 0			❖																									❖
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+for(var y = 8; y <= 18; y++)
+{
+	for(var x = 2; x <= 12; x++)
+	{
+		if(pos[x][y].f.icon != 8) continue;
+		pos[x][y].f.icon = 9;
+		pos[x][y].f.info = "温泉";
+	}
+}
+pos[2][14].event = pos[2][13].event = pos[4][13].event = pos[4][12].event = 8;
+
+function isPeepingChara(keyName)
+{
+	if(! game.party.members.has(o.マックス)) return false;
+	if(! game.party.status.has(o.透視)) return false;
+	for(var i = 0; i < game.waitingMembers.count; i++)
+	{
+		var chr = game.waitingMembers[i];
+		if(chr.keyName != keyName) continue;
+		game.curChara = chr;
+		return true;
+	}
+	return false;
+}
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) game.party.minimumRecovery();
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = []
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.members.has(o.マックス) && (party.isUsableMagic(o.ミスティックアイ) || party.hasItem(o.パールリング))
+
+@delevent
+@wait time=500
+[texton]
+[テオ f=01]「Wow... That hot spring looks so relaxing. I want to forget about work and soak in it slowly.」[k]
+[if exp='o.マックス.isUsableMagic(o.ミスティックアイ) || o.マックス.findItem(o.パールリング) !== void']
+	[マックス f=22]「Hehehehe... then let's get started... ♪」[k]
+	[テオ f=05]「Hey, what are you trying to do, Max?」[k]
+	[マックス f=22]「Isn't it obvious? I'll use my clairvoyance magic to peek into the women's bath next door.」[k]
+	[テオ f=11]「No, you can't do that!」[k]
+	[マックス f=33]「I'm just going to take a peek. I'll stop after I've seen everything.」[k]
+	[テオ f=10]「No way! As a leader, I can't allow that!」[k]
+	[マックス f=33]「Don't be so strict. It's fine, it's not like anyone will find out. Just let it slide, okay?」[k]
+	[テオ f=11]「No means no! If you use magic, I'll drag you out of here!」[k]
+	[マックス f=04]「Actually, I have an [b]Action Booster[/b] item.」[k]
+	[テオ f=05]「Eh?」[k]
+	[マックス f=04]「If you let it slide, I'll give it to you. How about it?」[k]
+[else]
+	[マックス f=32]「Hey, [テオ].」[k]
+	[テオ]「What is it?」[k]
+	[マックス f=03]「Want to see? Next door.」[k]
+	[テオ f=05]「Do you mean the women's bath next door? That's impossible. Men aren't allowed in the women's bath.」[k]
+	[マックス f=04]「No, that's not it... You know, there's that magic that lets you see through walls...」[k]
+	[テオ f=11]「No, you can't do that!」[k]
+	[マックス f=33]「Please! Just a little! Just show me a little bit!」[k]
+	[テオ f=10]「No way! As a leader, I can't allow that!」[k]
+	[マックス f=33]「Don't be so stingy. It's fine, it's not like anyone will find out. Use your clairvoyance magic, okay?」[k]
+	[テオ f=11]「If I say no, that means no!」[k]
+	[マックス f=04]「Actually, I have an [b]Action Booster[/b] item.」[k]
+	[テオ f=05]「Eh?」[k]
+	[マックス f=04]「If you show me, I'll give it to you. How about it?」[k]
+[endif]
+[テオ f=12]「...」[k]
+[マックス f=04]「You want the item too, don't you? I'll stop peeping after this! Okay? Is that okay?」[k]
+[テオ f=10]「...」[k]
+[if exp='! game.party.status.has(o.透視) && o.マックス.isUsableMagic(o.ミスティックアイ)']
+	I definitely want the item... Besides, since he can use clairvoyance magic, even if I stop him here, he'll probably peek anyway...[k]
+	[テオ f=12]「...Okay. Just a little bit, though.」[k]
+	[マックス f=03]「Thank you very much! Now, let's get started.」[k]
+	[textoff]
+	@call storage="anime.ks" target=&'o.ミスティックアイ.anime'
+	@eval exp='game.party.setStatus(o.透視)'
+	@wait time=500
+	[texton]
+	[b][nw]Max used [emb exp='o.ミスティックアイ.displayName']![r]
+	He can see through walls now![/b][/nw][k]
+[endif]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] WAY == "e" && party.status.has(o.透視) && party.members.has(o.マックス)
+
+@delevent
+[texton w=1]
+[マックス f=21]「Ooooh! I see it!」[k]
+[textoff]
+@call target=*_has_peeped_all
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] WAY == "e" && party.status.has(o.透視) && party.members.has(o.マックス) && waitingMembers.has(o.サンドラ)
+
+@delevent
+[texton w=1]
+[if exp='o.サンドラ.sexCount.max > 0']
+	[マックス f=22]「Hey, it's Sandra! Looking at her again, she really has a great body!」[k]
+	[テオ f=12]「Hey, Max, take it easy...」[k]
+	[マックス f=22]「I want to enjoy that sexy body again, hehehe...」[k]
+	[テオ f=10]「...」[k]
+[else]
+	[マックス f=22]「Hey, it's Sandra! Her body always looks so great!」[k]
+	[テオ f=12]「Hey, I feel bad for Sandra... Don't stare too much...」[k]
+	[マックス f=22]「I'm going to burn Sandra's sexy body into my memory! Hehehe...」[k]
+	[テオ f=10]「S-stop it...」[k]
+[endif]
+[textoff]
+@call target=*_has_peeped_all
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] WAY == "e" && game.map.isPeepingChara("ミューズ")
+
+@delevent
+@wait time=1000
+@bg chara=ミューズ f=event27 p0=01 p1=hair p2=01
+@eval exp='game.gameVisible = false'
+[texton w=2]
+[マックス f=32]「Hey, [ミューズ], your boobs and ass are completely exposed!」[k]
+[マックス f=36]「She's so absorbed in washing her hair that she doesn't even consider anyone is watching her...」[k]
+[テオ]「...」[k]
+[textoff]
+@out
+@eval exp='game.gameVisible = true'
+@layopt layer=0 visible=false
+@call target=*_has_peeped_all
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] WAY == "e" && (game.map.isPeepingChara("クレア") || game.map.isPeepingChara("マルエット"))
+
+@delevent
+@wait time=1000
+@eval exp='sf["picevent96"] = true'
+[if exp='game.map.isPeepingChara("クレア")']
+	@bg f=event30 chara=クレア p2=01 p3=hair
+	[c]
+[endif]
+@bg f=event30 p0=&'game.map.isPeepingChara("マルエット") ? o.マルエット.color : void' p1=&'game.map.isPeepingChara("クレア") ? "01" : void'
+@eval exp='game.gameVisible = false'
+[texton w=2]
+[if exp='game.map.isPeepingChara("クレア")']
+	[マックス f=22]「Oh, is that [クレア]? She's got a nice ass!」[k]
+	[テオ f=12]「Hey... Don't stare so much...」[k]
+	[マックス f=36]「I want to grab that lewd ass and thrust into it from behind[if exp='o.クレア.sexCount.max > 0'] again[endif]! Hehehe...」[k]
+	[テオ f=10]「...」[k]
+[endif]
+[if exp='game.map.isPeepingChara("マルエット")']
+	[マックス f=22]「Hey, [マルエット]! Your pussy is showing!」[k]
+	[テオ f=10]「So don't look too much...」[k]
+	[if exp='o.マルエット.sexCount.max > 0']
+		[マックス f=36]「That smooth pussy feels so good... Just thinking about it makes my dick hard!」[k]
+	[else]
+		[マックス f=36]「I wonder what it would be like to stick it in that smooth pussy... Just imagining it makes my dick hard!」[k]
+	[endif]
+	[テオ f=10]「...」[k]
+[endif]
+[textoff]
+@out
+@eval exp='game.gameVisible = true'
+@layopt layer=0 visible=false
+@call target=*_has_peeped_all
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] WAY == "e" && (game.map.isPeepingChara("リム") || game.map.isPeepingChara("フレデリカ"))
+
+@delevent
+@wait time=1000
+@eval exp='sf["picevent95"] = true'
+@bg f=event26 p0=&'game.map.isPeepingChara("フレデリカ") ? o.フレデリカ.color : void' p1=&'game.map.isPeepingChara("リム") ? o.リム.color : void'
+@eval exp='game.gameVisible = false'
+[texton w=2]
+[if exp='game.map.isPeepingChara("フレデリカ")']
+	[if exp='o.フレデリカ.sexCount.max > 0']
+		[マックス f=21]「[フレデリカ]'s boobs are really big! The feel of them when you squeeze them is the best!」[k]
+		[テオ f=10]「...」[k]
+	[else]
+		[マックス f=21]「Oh my god! [フレデリカ], your boobs are huge!」[k]
+		[テオ f=10]「Hey, don't shout so loud...」[k]
+	[endif]
+[endif]
+[if exp='game.map.isPeepingChara("リム")']
+	[if exp='o.リム.sexCount.max > 0']
+		[マックス f=21]「[リム] has nice tits... They're super sensitive and sexy!」[k]
+	[else]
+		[マックス f=21]「[リム]'s got some nice tits... I want to squeeze them right now!」[k]
+	[endif]
+	[テオ f=10]「...」[k]
+[endif]
+[textoff]
+@out
+@eval exp='game.gameVisible = true'
+@layopt layer=0 visible=false
+@call target=*_has_peeped_all
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_has_peeped_all
+
+@return cond='game.map.events.has(2)'
+@return cond='game.map.events.has(3) && game.waitingMembers.has(o.サンドラ)'
+@return cond='game.map.events.has(4)'
+@return cond='game.map.events.has(5)'
+@return cond='game.map.events.has(6)'
+
+@wait time=500
+@walk turn=n
+[texton w=0]
+[マックス f=22]「Uhehehe, I can't stand it. They all have such sexy bodies.」[k]
+[テオ]「Hey, Max, that's enough now...」[k]
+[マックス]「Oh, right! I almost forgot what you said!」[k]
+[マックス f=03]「Wow, I really enjoyed it! I'm completely satisfied! I won't forget this favor, [テオ]!」[k]
+[テオ]「...」[k]
+[マックス f=01]「That's right, I promised you an item. Here it is!」[k]
+[textoff]
+@getitem item=行動力増加袋 message="I got an <y>Action Booster<w> from Max!"
+
+@return
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+@delevent
+@addevent num=8
+@addevent num=9
+@wait time=500
+[if exp='WAY != "w"']
+	@walk turn=w
+	@wait time=500
+[endif]
+@jump storage="others02.scn" target=*spa_1
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] true
+
+@delevent
+@eval exp='tf.i = 0'
+*_blush_loop
+@eval exp='game.curChara = game.party.members[tf.i]'
+@fg c=キャラ e=汗だく f=40
+[texton w=1]
+[キャラ]「...」[k]
+@eval exp='tf.i ++'
+@jump target=*_blush_loop cond='tf.i < game.party.members.count'
+@cl
+[texton w=0]
+Exposed to the curious eyes of the men, [キャラ] [if exp='game.party.members.count >= 2']and the others run[else]runs[endif] through the men's bath.[k]
+[name n="Male Bather"]「Hey! Sis, you've got a nice ass!」[k]
+[name n="Male Bather"]「Running around naked in the men's bath... What a [if exp='game.party.members.count >= 2']bunch of dirty women[else]dirty woman[endif]!」[k]
+[name n="Male Bather"]「Hehe, your ears are bright red! How cute!」[k]
+@eval exp='game.curChara = game.party.members[0]'
+[キャラ f=38]「...」[k]
+The male customers teased [if exp='game.party.members.count >= 2']them[else]her[endif]. Still, there was no choice but to run naked through the bathhouse, enduring the embarrassment.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] true
+
+@delevent
+@delevent num=8
+@delevent map=温泉・脱衣所 num=11
+@jump storage="others02.scn" target=*spa_2
+
+[eventoff]
+;-------------------------------------------------------------------------------

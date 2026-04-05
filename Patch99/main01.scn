@@ -1,0 +1,292 @@
+﻿; スタート～森の中の廃屋攻略
+
+
+
+;■プロローグ１・赤いネックレス探索
+
+;◇イベント01・森の中の廃屋へ潜入
+*cottage_1
+
+@saveon
+@wait time=800
+[texton w=0]
+[テオ f=05]「Is this the place we need to investigate...?」[k]
+[マックス f=01]「It's where the client said the bandits were lurking!」[k]
+I was standing at the entrance of an abandoned house with my friend Max.[k]
+We received a request in town and came to this abandoned house to accomplish it.[k]
+The quest is to retrieve the client's precious [b]red necklace[/b].[k]
+It was stolen by the bandits who have gone to ground here.[k]
+To be honest, the reward isn't great, but since we accepted it, we're obliged to complete the request.[k]
+As new adventurers, we have no future unless we start off with trivial work.[k]
+[テオ f=06]「It's so quiet...」[k]
+[マックス f=10]「Please don't let strong monsters appear.」[k]
+[textoff]
+@call target=*tutorial_1
+@wait time=200
+[texton w=0]
+[マックス f=01]「According to our information, the bandits are lurking on the [b]2nd floor[/b].」[k]
+[テオ f=06]「I see.」[k]
+[マックス f=01]「Let's go, [テオ]. The sooner we get rid of them, the sooner we can go back to town.」[k]
+[textoff]
+[eventoff]
+
+
+;◇チュートリアル・ダンジョン移動
+*tutorial_1
+
+@question title="Would you like to hear the exploration tutorial?"
+@return cond='! tf.result'
+
+[texton w=1]
+Dungeons are navigated in 3D view.[r]
+Use a mouse, keyboard, or gamepad to move.[k]
+Move with up and down, and turn with left and right.[r]
+Use the Home / End keys or the 5th and 6th buttons on the gamepad to move horizontally (by default).[k]
+@image layer=0 storage=tutorial01 left=0 top=0 opacity=255 visible=true
+When using the mouse, first move the cursor over the[r]dungeon screen.[r]
+The [b]cursor changes[/b] depending on the position of the mouse, so left-click to move / turn.[k]
+@image layer=0 storage=tutorial02 left=450 top=310 opacity=255 visible=true
+You can also display the [b]operation board[/b] on the screen. You can set this in the [b]System Settings[/b] menu.[k]
+@layopt layer=0 visible=false left=0 top=0
+The menu is displayed by [b]right-clicking[/b], pressing[r]the [b]ESC key[/b], or the [b]second button[/b] on a gamepad.[r]On it you can do various things such as saving and checking status.[k]
+Anywhere you walk is recorded on the [b]map[/b].[r]
+Make sure to check the map frequently so you don't get lost.[k]
+[textoff]
+@return
+
+
+;◇チュートリアル・戦闘解説
+*tutorial_2
+
+@wait time=500
+[texton]
+[if exp='! game.isFreeMode']
+	[マックス f=12]「Ahhh! Wow, enemies!」[k]
+	[マックス f=28]「[テオ]! Let's give them a kicking!」[k]
+	[テオ f=06]「Understood.」[k]
+[endif]
+[nw][b]About battle[r]
+Combat is menu based.[r]
+Select a command, then a target.[r]
+You win when all enemies are defeated.[k]
+[nw][b]You can select targets with the keyboard or mouse.[r]
+Note that if a monster is hard to click on, you can [b red]turn the mouse wheel[b] to temporarily hide monsters in front of it.[k]
+[textoff]
+@wait time=300
+[beventoff]
+
+
+;◇チュートリアル・アイテム画面解説
+*tutorial_3
+
+@question title="View item screen tutorial?" cancel=true
+[eventoff cond='! tf.result']
+
+@bg f=tutorial03
+[c]
+[texton w=1 top=400]
+The item screen is where you can interact with items.[r]
+Here you can use, move, and equip items.[r]
+The left is the [b]equipment area[/b], and the right is[r]the item [b]storage area[/b].[r]
+The [b]party area[/b] below is used for handing items.[k]
+All operations are done by drag and drop or using the[r]keyboard.[r]
+You can move an item to any location by dragging and[r]dropping[/b] with the mouse.[k]
+If you use the keyboard, grab the item with the [b]Enter[r]button[/b], move it with the direction keys, and press the[r][b]Enter button[/b] again to place it.[k]
+[textoff]
+
+@bg f=tutorial04
+[c]
+[texton w=1]
+If you drop an item into the equipment area on the left,[r]the character will [b]equip it[/b], if possible.[r]
+If you grab the equipment that the character is wearing, you can take it off.[k]
+If you drop an item in the party area below, you will [b]hand it to that character[/b] unless their storage area is full.
+ [k]
+[textoff]
+
+@bg f=tutorial05
+[c]
+[texton w=1]
+Each item will show a menu if you right-click [b]with[r]the mouse[/b] or press the [b]option button[/b] (by default, the[r]space key or the third button on the gamepad).[r]
+Use / delete items here.[r]
+It also shows details about the item.[k]
+This performs the same operation using an item in[r]battle would.[r]
+You can also use an item by double-clicking the [b]left[r]mouse button[/b].[k]
+You can collect items from treasure chests, repair items,[r]and appraise them, so please master this item screen.[k]
+[textoff]
+@out
+@w05
+
+@gameon
+[texton w=0]
+If you're unsure, try dragging and dropping stuff onto characters.[r]I think you'll be able to work it out.[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント02・捕まったマリアとリーゼル
+*cottage_2
+
+; 廃屋の一室
+@wait time=500
+@fg l=thief_blue_fight1 left=192 b
+@fg a=リーゼル e=ローブ・後ろ手 left=374 f=18 b
+@fg c=マリア e=後ろ手 left=640 f=07 b
+@fg r=thief_green_fight1 left=780
+@wait time=500
+[texton w=1]
+[？？？ v=vl001 key=リーゼル f=18 buf=9]「Eek...!」[k]
+[？？？ v=va001 key=マリア f=07 buf=10]「Hey! Let go!」[k]
+[男 f=thief_green_01]「These women... they seem to be adventurers. Did someone send you here?」[k]
+[男 f=thief_blue_01]「Well, since you've wandered into our hideout, we can't just let you leave!」[k]
+[テオ f=05]「...!」[k]
+When I looked into the room, there were several rough looking men in the corner.[k]
+The men surround two girls, who'd been tied up.[k]
+What are they doing? Are they-?[k]
+[少女 key=マリア v=va002 f=07 buf=10]「You guys are bandits! Bothering the townsfolk is unforgivable!」[k]
+@fg a=リーゼル left=374 f=09
+[少女 key=リーゼル v=vl002 f=09 buf=9]「Maria...」[k]
+; ↑ 心細そうに
+[盗賊 f=thief_blue_01]「...Cheeky woman. She seems to need to understand her position.」[k]
+With that said, one man put his hand on the one called Maria's shirt.[k]
+@se f=tear
+@flash on
+@fgf c=マリア e="上半身裸・後ろ手" left=640 f=51
+@flash off=500
+∗rrrippp!∗[k]
+[マックス e=現在の装備 f=21]「Oh...!」[k]
+The thief ripped off Maria's shirt by force![k]
+Her plump breasts bounce out![k]
+@fgf c=マリア left=640 f=37
+[マリア v=va003 f=37]「Kyaa!」[k]
+@fg a=リーゼル left=374 f=11
+[少女 key=リーゼル v=vl003 f=11 buf=9]「Maria!」[k]
+[盗賊 f=thief_blue_01]「Oh wow! You've got great tits, huh?」[k]
+@fgf c=マリア left=640 f=28
+[マリア v=va004 f=28]「Damn you...!」[k]
+The men's eyes all turn to Maria's bare breasts. Her face turns bright red and she glares tearfully at the men.[k]
+[盗賊 f=thief_blue_01]「Those boobs make committing another crime seem tempting.」[k]
+@fg a=リーゼル left=374 f=09
+[少女 key=リーゼル v=vl004 f=09 buf=9]「Stop... don't do anything terrible to Maria...」[k]
+[盗賊 f=thief_green_01]「Oh, I'll also love you a lot later.」[k]
+With that said, a man reaches for the other girl, and strokes his hand over her clothes.[k]
+@fg a=リーゼル left=374 f=17
+[少女 key=リーゼル v=vl005 f=17 buf=9]「N-no...」[k]
+[マリア v=va005 f=28]「Stop! Don't touch Riselle!」[k]
+[盗賊 f=thief_blue_01]「You still don't get it. You're in no position to tell us anything.」[k]
+[盗賊 f=thief_green_01]「Oh yeah, there's two pussies to share now! You're gonna be fucked and panting together!」[k]
+@fg a=リーゼル left=374 f=09
+[リーゼル f=09]「...!」[k]
+[マリア v=va006 f=28]「Damn...! Who would... with guys like you!」[k]
+[テオ f=06]「...!」[k]
+Maria struggles desperately to escape her restraints. But with her arms tied behind her back, she can't do anything.[k]
+On the other hand, the girl named Riselle just shook with fear.[k]
+At this rate, both of them will be raped by these men.[k]
+@cl b
+@fg c=テオ f=05
+[テオ f=05]「Oi! Let them go!」[k]
+[盗賊 f=thief_blue_02]「...!」[k]
+[盗賊 f=thief_green_02]「Huh? Who are you guys?」[k]
+I jump into the room. The men's eyes immediately turned to me.[k]
+[リーゼル f=05]「...!」[k]
+[マリア v=va007 f=51]「What...? Help came...?」[k]
+@fg r=マックス f=12
+[マックス f=12]「Hey [テオ]... Is that sensible? There's more of them than us, right?」[k]
+Max entered the room with this anxious question.[k]
+[テオ f=05]「I've got to help them. Max, fight with me.」[k]
+@fg r=マックス f=09
+[マックス f=09]「...I dunno about this, but okay.」[k]
+@cl b
+@fg c=thief_blue_fight2 b
+@fg l=thief_blue_fight2 b
+@fg r=thief_green_fight2
+[盗賊 f=thief_green_02]「What, you bastards feeling pumped up?」[k]
+All the men surrounding Maria turn round.[k]
+Weapons in hand, they approach me and Max.[k]
+[盗賊 f=thief_blue_02]「Dumb wannabe heroes. We'll cut you apart!」[k]
+@clf
+[textoff]
+
+; 盗賊たちと戦闘
+@monster pos=1 name=ローグ
+@monster pos=2 name=ローグ
+@monster pos=3 name=ハイウェイマン
+@monster pos=4 name=ローグ
+@monster pos=5 name=ローグ
+@callbattle bgm=boss escape=false gameover=true
+@eval exp='game.party.minimumRecovery()'
+
+; 戦闘に勝利
+[texton w=0]
+[盗賊 f=thief_blue_02]「These guys are pretty strong! Time for a quick retreat!」[k]
+We were able to win the battle with the bandits. Perhaps realizing they were outmatched, they fled all at once.[k]
+[マックス f=09]「Phew, I was pretty worried there, but we managed to win.」[k]
+[テオ f=05]「I have to help them.」[k]
+First I'll cut Maria's restraints.[k]
+[マックス f=01]「Are you hurt?」[k]
+[マリア v=va008 f=10]「No, I'm okay...」[k]
+[マックス f=22]「A-anyway, you've got big tits, huh?」[k]
+[マリア v=va009 f=27]「Hey! Don't look! Pervert!」[k]
+[テオ f=05]「Are you okay too?」[k]
+[リーゼル v=vl006 f=26]「Y-yeah...」[k]
+Next is Riselle. Her body was still quivering with fear.[k]
+...Not only is she quiet, she's also thin and delicate. Why is this girl working as an adventurer?[k]
+Anyway... up close, she's quite pretty...[k]
+[テオ f=02]「Okay, the rope's untied.」[k]
+[リーゼル v=vl007 f=26]「T-thank you...」[k]
+[テオ f=25]「...！ ∗badump∗」[k]
+Riselle's trembling eyes hold my own.[k]
+...My heart beat faster. Of course, she's just thanking me for helping her.[k]
+[textoff]
+@fg c=マリア e="通常" left=378 f=02 b
+@fg r=リーゼル e="ローブ,革のブーツ" left=640 f=26
+[texton w=1]
+[マリア v=va010 f=02]「You guys are pretty strong, you really helped out.」[k]
+Maria, who changed into a replacement shirt, thanks us.[k]
+[マックス f=03]「What a mess!」[k]
+[テオ f=05]「By the way, why are you here?」[k]
+[マリア v=va011 f=02]「Oh, we were asked to recover a red necklace that was stolen from a tavern in Bravetown.」[k]
+[マックス f=05]「Isn't that the same as our quest?!」[k]
+[マリア v=va012 f=14]「I found the whereabouts of the thieves, but then I messed up.」[k]
+Maria says, sticking out her tongue.[k]
+[テオ f=05]「So you were caught...」[k]
+[マリア v=va013 f=02]「Hey, you guys came here because of the same request, right?」[k]
+[テオ f=06]「Ah, yeah...」[k]
+[マリア v=va014 f=02]「The thieves showed the necklace off earlier, so it should be over there?」[k]
+[テオ f=05]「I see! Okay, I'll look for it... But is that okay? You both had the same request.」[k]
+[マリア v=va015 f=02]「...We ended up needing to be rescued, so you can have it. We'll fail our request, but I'm grateful we can return safely. That's fine right, Riselle?」[k]
+[リーゼル f=26]「...∗nod∗」[k]
+[テオ f=01]「Thank you. Then please be patient while I find the necklace.」[k]
+[textoff]
+@cl
+[eventoff]
+
+
+;◇イベント03・ネックレス発見
+*cottage_3
+
+; 廃屋の一室
+[texton]
+[マックス f=01]「Hey, [テオ]. Isn't this the necklace that the client wanted?」[k]
+[テオ f=02]「Probably.」[k]
+[textoff]
+@fg c=マリア left=378 f=02 b
+@fg r=リーゼル e="ローブ" left=640 f=26
+[texton w=1]
+[マリア v=va016 f=02]「It looks like you found what you're looking for. Well then, let's go, Riselle.」[k]
+[リーゼル v=vl008 f=26]「Y-yeah...」[k]
+[マックス f=09]「Yes, let's go.」[k]
+[マリア v=va017 f=01]「See ya! Thanks for your help, you guys!」[k]
+[textoff]
+@cl
+[texton w=0]
+Maria and Riselle left.[k]
+[テオ f=06]「...」[k]
+A two girl party...[k]
+While female adventurers aren't uncommon, having a party of just two young girls seems dangerous.[k]
+Maria looked the adventuring type, but timid Riselle was the complete opposite.[k]
+I'm a little worried... Are they really going to carry on working as adventurers?[k]
+[マックス f=33]「That Maria was a cute dwarf. You should have invited her to join our party!」[k]
+[テオ f=02]「Now we've finished the job, let's go back to town.」[k]
+[マックス f=01]「Right, feels like we've been here forever.」[k]
+[textoff]
+[eventoff]

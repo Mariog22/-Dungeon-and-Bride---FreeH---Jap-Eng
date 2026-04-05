@@ -1,0 +1,1274 @@
+﻿// enemy.tjs
+// 敵パーティー・自動戦闘アルゴリズムを管理
+
+
+//----------------------------------------------------------------------------------------
+class MonsterLegion extends BoardLayer
+{
+	// モンスター軍団を表しモンスターたちを管理するクラス
+
+	var members = [];	// 全メンバー
+	var group0 = [];	// 敵の１グループ
+	var group1 = [];	//    〃
+	var group2 = [];	//    〃
+	var reservedMonsters = [];	// 指定モンスター
+	var adjustments = [];	// モンスターのスペック一時調整データ
+	var maxMembers = 21;	// 登場する敵の最大数。グループの人数の３倍
+	var maxGroupMembers = 7;	// １列の最大数
+	var center = 450;	// 中央を示す値
+	var bottom = 630;	// 最下段の基準高さ
+	var pitch = 140;	// １モンスターあたりの横幅（配置によって変動）
+	var shiftCenter = [0, 0, 0];		// 中央をずらす時はこの値に数値を入れる
+	var namePlate;	// モンスター名表示板
+	var vanishAnim;	// 消滅アニメ
+	var vanishAnimL;	// 消滅アニメ・大
+
+	// 縮小率一覧（アニメで使用）
+	var imgSizeRatio = [1, 0.975, 0.95, 0.925, 0.9, 0.88, 0.86, 0.84, 0.82];
+
+	function MonsterLegion(par, master)
+	{
+		super.BoardLayer(...);
+		name = "モンスター管理レイヤー";
+		members.name = "モンスター軍団";
+		targetLayers = members;
+		adjustX = 1;
+		adjustY = 100000;	// 縦横の差を十分に付けることでカーソルが斜めに移動しなくなる
+		hitThreshold = 255;
+		setSize(900, 600);
+
+		// モンスターとして振る舞う空のオブジェクトを作成
+		// 戦闘開始時にモンスターデータを取り込んで画面に登場する
+		for(var i = 0; i < maxMembers; i++)
+		{
+			members[i] = new MonsterObject(this, master, i);
+			members[i].team = this;
+		}
+
+		// グループを初期化
+		group0.curIndex = group1.curIndex = group2.curIndex = 0;
+		group0.transparent = group1.transparent = group2.transparent = false;
+		group0.name = "敵グループ０";
+		group1.name = "敵グループ１";
+		group2.name = "敵グループ２";
+
+		// モンスター名表示板を作成
+		namePlate = new DecoLayer(this);
+		namePlate.font.height = 24;
+		namePlate.absolute = 10000;
+
+		// 消滅アニメを読み込み（モンスターレイヤ側でコピーして使う）
+		vanishAnim = new EffectLayer(this);
+		vanishAnim.loadImages(%[storage: "BE_vanish"]);
+		vanishAnim.setSizeToImageSize();
+
+		vanishAnimL = new EffectLayer(this);
+		vanishAnimL.loadImages(%[storage: "BE_vanishl"]);
+		vanishAnimL.setSizeToImageSize();
+	}
+
+	function finalize()
+	{
+		for(var i = 0; i < members.count; i++) invalidate members[i];
+		invalidate namePlate;
+		super.finalize(...);
+	}
+
+	function popupName(monster)
+	{
+		// 指定したモンスター名を表示する
+		var color = 0x80FF80;
+		if(monster.group.depth == 1) color = 0xFFE080;
+		else if(monster.group.depth == 2) color = 0xFFA0A0;
+		with(namePlate)
+		{
+			.setSize(font.getTextWidth(monster.displayName) + 16, 30);
+			.setPos(monster.left + (monster.width - .width) \ 2, monster.top + monster.height \ 2 - 20);
+			.fillRect(0, 0, .width, .height, 0xFFFFFFFF);
+			.fillRect(2, 2, .width - 4, .height - 4, 0x80000000);
+			.drawText(8, 3, monster.displayName, color,,, 2048, 0x000000, 3);
+			.visible = true;
+		}
+	}
+
+	function eraseName()
+	{
+		// モンスター名を消す
+		namePlate.visible = false;
+	}
+
+	function showThroughHiddenRow(upper)
+	{
+		// 手前の列を半透明にして後ろを選択しやすくする
+		if(getNumExist(1) == 0) return;
+		if(upper)
+		{
+			if(getGroupVisibility(getGroup(0))) setGroupVisibility(getGroup(0), false);
+			else if(getNumExist(2) > 0 && getGroupVisibility(getGroup(1))) setGroupVisibility(getGroup(1), false);
+		}
+		else
+		{
+			if(! getGroupVisibility(getGroup(1))) setGroupVisibility(getGroup(1), true);
+			else if(! getGroupVisibility(getGroup(0))) setGroupVisibility(getGroup(0), true);
+		}
+	}
+
+	function setGroupVisibility(grp, visibility)
+	{
+		// 列のモンスターたちを半透明と選択状態を設定する
+		if(getGroupVisibility(grp) == visibility) return;
+		for(var i = 0; i < grp.count; i++)
+		{
+			grp[i].opacity = visibility ? 255 : 64;
+			grp[i].hitType = visibility ? htMask : htProvince;
+		}
+	}
+
+	function getGroupVisibility(grp)
+	{
+		// 列の半透明と選択状態を得る
+		return grp[0].hitType == htMask;
+	}
+
+	function resetGroupVisibility()
+	{
+		// すべての列のモンスターたちを半透明と選択状態を初期化する
+		setGroupVisibility(group0, true);
+		setGroupVisibility(group1, true);
+		setGroupVisibility(group2, true);
+	}
+
+	function getMonstersList()
+	{
+		// モンスターのリストを得る
+		var list = reservedMonsters;
+		if(list.count == 0) list = getRandomMonstersList(master.map.maxGroups);
+		reservedMonsters = [];	// 固定モンスターはここで出し終わったので初期化
+		if(list.count == 0) System.inform("出せるモンスターが１匹もいません");
+		return list;
+	}
+
+	function isFriendly(list)
+	{
+		// モンスターたちが友好的かどうかを返す
+		if(master.inEventBattle || game.inDuelBattle) return false;
+		var score = 0, num = 0;
+		for(var i = 0; i < list.count; i++)
+		{
+			if(list[i] === void) continue;
+			if(list[i].brave == 100) return false;
+			num ++;
+			score += list[i].brave;
+			score += cap(list[i].level - master.party.members.draw().level, 2, -2);
+		}
+		dm("友好スコア：" + (score \ num) + "   判定値 " + (score \ num + 300) / 400);
+		return random > (score \ num + 300) / 400;
+	}
+
+	function getRandomMonstersList(maxLines = 3)
+	{
+		// ランダムモンスターのリストを得る
+		// maxLines : 最大列数。マップによって変わる
+
+		var rate = 0.1;	// 最大数に達せず１列が終了する確率
+		var arr = [];		// モンスターリスト
+		var first, second;	// １列に登場させるモンスターの種類。２種まで
+		var maxLength;	// １列の最大出現数
+		shiftCenter = [0, 0, 0];
+
+		for(var ln = 0; ln < 4; ln++)
+		{
+			// １列分のモンスターを出し終わった後
+			// １列の総数が 4 or 6 だったら見た目が悪いので列の中心を調整する
+			// なお、この調整を行うために、この for 文は１回多くループさせる
+			// （下に終了判定があるのですぐに終わる）
+			if(ln != 0 && first.size == 0 && second.size == 0)
+			{
+				var n = (ln - 1) * maxGroupMembers;
+				// 総数が 4
+				if(arr[n + 4] !== void && arr[n + 5] === void && arr[n + 3] !== void)
+				{
+					shiftCenter[ln - 1] = pitch \ 2;
+				}
+				else if(arr[n + 2] !== void && arr[n + 1] === void && arr[n + 3] !== void)
+				{
+					shiftCenter[ln - 1] = -pitch \ 2;
+				}
+				// 総数が 6
+				else if(arr[n + 0] !== void && arr[n + 6] === void)
+				{
+					shiftCenter[ln - 1] = pitch \ 2;
+				}
+				else if(arr[n + 0] === void && arr[n + 6] !== void)
+				{
+					shiftCenter[ln - 1] = -pitch \ 2;
+				}
+			}
+
+			// 終了判定
+			if(ln == maxLines || (ln > 0 && random < 0.5)) break;
+			if(ln == 1 && ! master.map.isCurFieldDeep()) break;
+
+			// 登場させるモンスターを２種まで選ぶ
+			first = getAnyMonster(ln == 0 ? 3 : 1);	// １列目は全種、２列目以降はサイズ１以下のみ許容する
+			if(first === void)
+			{
+				// マップにサイズ１以上の中・大型モンスターしか設定されてない時に
+				// ２列目以降のモンスターを出現させようとするケース
+				break;
+			}
+			if(first.size == 3)
+			{
+				// 超大型サイズを引いたら１体だけ出して終わり
+				arr[3] = first;
+				break;
+			}
+			// ２つ目の種を選ぶ。50%の確率で１列が全部同じ種類になる
+			second = random < 1 / master.map.monsters.count ? first : getAnyMonster(ln == 0 ? 2 : 1);
+
+			// 最大出現数の確定
+			if(first == second) maxLength = first.maxNum;
+			else maxLength = first.maxNum + second.maxNum;
+
+			// 一列ごとに７匹ずつ並べる    ln : 列番号   d : 位置番号のオフセット
+			var d = ln * maxGroupMembers;
+
+			// １匹目（中央）
+			arr[3 + d] = first.size == 0 && first.maxNum <= 2 ? second : first;
+			if(first == second && (maxLength == 1 || random < rate)) continue;
+
+			// ２匹目（左２）
+			arr[1 + d] = first;
+			if(maxLength == 2 || random < rate)
+			{
+				arr[1 + d] <-> arr[2 + d];	// 見た目調整のため左右に均等に配置
+				arr[3 + d] <-> arr[4 + d];	//   〃
+				continue;
+			}
+
+			// ３匹目（右２）
+			arr[5 + d] = second;
+			if(maxLength == 3 || random < rate) continue;
+
+			// ４匹目（左１）
+			if(arr[3 + d].size == 0 && arr[1 + d].size == 0 && (first.maxNum >= 2 || arr[3 + d].maxNum >= 4))
+			{
+				arr[2 + d] = first.maxNum >= 2 ? first : arr[3 + d];
+				if(maxLength == 4 || random < rate)
+				{
+					if(arr[5 + d].size == 0) arr[5 + d] <-> arr[4 + d];	// 見た目調整のため連続させる
+					continue;
+				}
+			}
+
+			// ５匹目（右１）
+			if(arr[3 + d].size == 0 && arr[5 + d].size == 0 && (second.maxNum >= 3 || arr[3 + d].maxNum >= 4))
+			{
+				arr[4 + d] = second.maxNum >= 3 ? second : arr[3 + d];
+				if(maxLength == 5 || random < rate)
+				{
+					if(arr[2 + d] === void && arr[1 + d].size == 0) arr[1 + d] <-> arr[2 + d];	// 見た目調整
+					continue;
+				}
+			}
+
+			// 横に壁があったら１列を５匹までにする
+			if(! master.map.isCurFieldWide()) continue;
+
+			// ６匹目（左３）
+			if(arr[1 + d].size == 0 && first.maxNum >= 4)
+			{
+				arr[0 + d] = first;
+				if(maxLength == 6 || random < rate) continue;
+			}
+
+			// ７匹目（右３）
+			if(arr[5 + d].size == 0 && second.maxNum >= 4)
+			{
+				arr[6 + d] = second;
+			}
+		}
+
+		return arr;
+	}
+
+	function callNewMonster(monsterData, num)
+	{
+		// 指定したモンスターを新たに呼び出す
+		var membersList = [];
+		var spaceNums = getEmptySpaces(monsterData.size);
+		for(var i = 0; i < spaceNums.count; i++)
+		{
+			putMonster(monsterData, spaceNums[i]);
+			members[spaceNums[i]].visible = false;
+			membersList.add(members[spaceNums[i]]);
+			num --;
+			if(num == 0) break;
+		}
+		return membersList;
+	}
+
+	function getEmptySpaces(size = 0)
+	{
+		// モンスターを呼び出せるスペースの一覧を返す
+		var arr = [];
+		var wide = master.map.isCurFieldWide();
+		for(var i = 0; i < members.count; i++)
+		{
+			if(! members[i].dead) continue;
+			if(! wide && (i % 7== 0 || i % 7 == 6)) continue;
+			if(shiftCenter[i \ 7] < 0 && i % 7 == 0) continue;
+			if(shiftCenter[i \ 7] > 0 && i % 7 == 6) continue;
+			if(size == 0)
+			{
+				if(i % 7 != 0 && ! members[i - 1].dead && members[i - 1].size >= 1) continue;
+				if(i % 7 != 6 && ! members[i + 1].dead && members[i + 1].size >= 1) continue;
+			}
+			if(size == 1 || size == 2)
+			{
+				if(i % 2 == 0) continue;
+				if(! members[i - 1].dead || ! members[i + 1].dead) continue;
+			}
+			arr.add(i);
+		}
+		return arr;
+	}
+
+	function getAnyMonster(allowedSize)
+	{
+		// 登場させるモンスターを無作為に一匹得る
+		// allowedSize : 許可サイズ。これより小さいサイズまでなら出していい
+		var arr = [];
+		for(var i = 0; i < master.map.monsters.count; i++)
+		{
+			var monster = master.map.monsters[i];
+			if(monster.size > allowedSize) continue;
+			var floor = master.map.getFloorInfo();
+			if(floor.type == "water")
+			{
+				if(! monster.skill.has(o.浮遊) && ! monster.skill.has(o.潜水)) continue;
+			}
+			arr.add(monster);
+		}
+		return arr.draw();
+	}
+
+	function disappear()
+	{
+		// モンスター軍団を消す
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].dead = true;
+			members[i].isNaked = 0;
+			members[i].invincible = false;
+		}
+		visible = false;	// 盤面も消去する
+		reservedMonsters = [];	// 予約されたモンスターを消去
+	}
+
+	function putMonsters(list)
+	{
+		// モンスター軍団を登場させる
+
+		// 盤面を表示
+		visible = true;
+		resetPos();	// 高さをダンジョン画面に合わせる
+
+		// 列を初期化
+		group0.clear();
+		group1.clear();
+		group2.clear();
+		group0.depth = 0;
+		group1.depth = 1;
+		group2.depth = 2;
+
+		// 画面に並べる
+		// フォーカス順の都合で、番号が若いほど重ね合わせ順が下に来るようにする
+		for(var i = 0; i < maxMembers; i++)
+		{
+			var grp = getGroup(i \ maxGroupMembers);
+			grp.add(members[i]);
+			members[i].group = grp;
+		}
+
+		// モンスターの画像とデータを読み込む
+		for(var i = 0; i < list.count; i++)
+		{
+			// モンスターを読み込み＆配置＆一部調整
+			if(list[i] !== void) putMonster(list[i], i);
+			if(adjustments[i] !== void) members[i].adjustSpec(adjustments[i]);
+		}
+		adjustments = [];	// 調整データを空に
+	}
+
+	function adjustSpec(elm)
+	{
+		// 指定された値にモンスターのスペックを一時的に調整する
+		// イベントバトル等で用いる
+		var dic = %[];
+		(Dictionary.assign incontextof dic)(elm);
+		adjustments[dic.pos] = dic;
+	}
+
+	function resetPos()
+	{
+		// 位置をリセットする。ビューに位置を合わせる
+		setPos(master.view.left, master.view == master.townView ? -40 : master.view.top);
+	}
+
+	function putMonster(monsterData, i)
+	{
+		// モンスターを１匹登場させる
+		members[i].loadData(monsterData, i, getStrecthRatio(members[i].group.depth));
+		members[i].resetPos();
+		members[i].updateLife();
+	}
+
+	function getStrecthRatio(depth)
+	{
+		// 所属グループの位置からモンスターの表示倍率を返す
+		return imgSizeRatio[depth * 4];
+	}
+
+	function setMonsterPos(i, ratio)
+	{
+		// モンスターを規定の位置に配置
+		members[i].left = int(center + shiftCenter[i \ 7] + (200 * ratio + pitch - 200)
+			 * (i % maxGroupMembers - maxGroupMembers \ 2)) - members[i].width \ 2;
+		members[i].top = int(bottom - 400 + ratio * 400) - members[i].height;
+	}
+
+	function groupMoving(animCount, far)
+	{
+		// モンスターを前後に移動させる
+		// far = false で ０列 <-> １列 の交換
+		// far = true  で １列 <-> ２列 の交換
+
+		var cnt;
+		for(var i = 0; i < maxMembers; i++)
+		{
+			if(members[i].dead) continue;
+
+			// 列によりアニメ番号を決定
+			if(members[i].group.depth == 0)
+			{
+				if(far) continue;
+				cnt = animCount;
+			}
+			else if(members[i].group.depth == 2)
+			{
+				if(! far) continue;
+				cnt = 8 - animCount;
+			}
+			else
+			{
+				if(far) cnt = 4 + animCount;
+				else cnt = 4 - animCount;
+			}
+
+			// 表示
+			members[i].stretchMonster(imgSizeRatio[cnt]);
+			setMonsterPos(i, imgSizeRatio[cnt]);
+
+			// 重ね合わせ順を入れ替える
+			if(cnt == 2) members[i].absolute += 200 * members[i].group.depth - 100;
+			else if(cnt == 6) members[i].absolute += 200 * members[i].group.depth - 300;
+		}
+	}
+
+	function exchangeGroupPosInfo(far)
+	{
+		// グループの位置情報を入れ替える。移動が終わったら呼び出す
+		var offset = maxGroupMembers * far;
+		members[offset].group.depth <-> members[offset + maxGroupMembers].group.depth;
+		for(var i = 0; i < maxGroupMembers; i++)
+		{
+			members[i + offset] <-> members[i + offset + maxGroupMembers];
+		}
+		if(far) shiftCenter[1] <-> shiftCenter[2];
+		else shiftCenter[0] <-> shiftCenter[1];
+	}
+
+	function updateLife()
+	{
+		// すべての敵の体力表示を更新する
+		for(var i = 0; i < maxMembers; i++)
+		{
+			members[i].updateLife();
+		}
+	}
+
+	function getDeltaX(self, target)
+	{
+		// 四隅のモンスターからのキー操作が感覚とずれるので少しだけ補正する
+		var sx = self.left + self.width \ 2;
+		var tx = target.left + target.width \ 2;
+		var sh = (bottom - self.top - self.height) \ 2;
+		var th = (bottom - target.top - target.height) \ 2;
+		sx += (sx - center) \ (pitch - sh) * sh;
+		tx += (tx - center) \ (pitch - th) * th;
+		return tx - sx;
+	}
+
+	function getDeltaY(self, target)
+	{
+		// ここでは足下を基準とする
+		return (target.top + target.height) - (self.top + self.height);
+	}
+
+	function setPartyActions()
+	{
+		// 敵の行動を決定する
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].actionFixed = false;
+		}
+		for(var i = 0; i < members.count; i++)
+		{
+			if(! members[i].actionFixed) members[i].setAction();
+		}
+	}
+
+	function getGroup(depth)
+	{
+		// 列の位置から列グループを得る
+		return depth == group0.depth ? group0 : (depth == group1.depth ? group1 : group2);
+	}
+
+	function getNumExist(depth)
+	{
+		// 稼働不能になっていない全メンバーの数を返す
+		// 引数に数値を入れるとその位置のグループでの結果を返す
+		var num = 0;
+		var arr = depth === void ? members : getGroup(depth);
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(! arr[i].knockOut) num ++;
+		}
+		return num;
+	}
+
+	function getNumSameMonster(monster)
+	{
+		// 同種のモンスターを数える
+		var num = 0;
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].knockOut) continue;
+			if(members[i].data == monster.data) num ++;
+		}
+		dm(monster.name + "の数  " + num);
+		return num;
+	}
+
+	function disableUnreachableEnemy(reach)
+	{
+		// 攻撃が届かないモンスターを非選択状態にする
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].selectable = (! members[i].dead && members[i].group.depth <= reach);
+		}
+	}
+
+	function hasPatient(stat)
+	{
+		// 指定のステータス異常をもったメンバーがいるかどうかを返す
+		for(var i = 0; i < members.count; i++)
+		{
+			var one = members[i];
+			if(one.status.has(stat)) return true;
+		}
+	}
+
+	function isUsableSkill(cmd)
+	{
+		// 指定したパッシブスキルが使えるキャラがいるかどうかを返す
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i].isUsableSkill(cmd)) return true;
+		}
+		return false;
+	}
+
+	function getMaxParamsValue(param)
+	{
+		// 指定したパラメータが最も高いメンバーの値を返す
+		var val = 0;
+		for(var i = 0; i < members.count; i++)
+		{
+			if(members[i][param] > val) val = members[i][param];
+		}
+		return val;
+	}
+
+	function getMaxSexAppeal()
+	{
+		// メンバーの中で最も高いセクシー度を返す
+		var val, max = 0;
+		for(var i = 0; i < members.count; i++)
+		{
+			val = members[i].getSexAppealOfAppearance();
+			if(val > max) max = val;
+		}
+		return max;
+	}
+
+	function setDying()
+	{
+		// メンバー全員を瀕死の状態にする（開発用）
+		for(var i = 0; i < members.count; i++)
+		{
+			members[i].life = 0;
+		}
+	}
+}
+
+
+class MonsterData
+{
+	// モンスターデータを作るクラス
+
+	var master;
+	var id;			// 表示の並び順に影響
+	var name;		// 名前
+	var img;
+	var size;
+	var maxNum;
+	var level;
+	var exp;
+	var gold;
+	var life;
+	var defense;
+	var attack;
+	var power;
+	var intellect;
+	var piety;
+	var vitality;
+	var speed;
+	var luck;
+	var destroy;
+	var brave;
+	var times;
+	var weapon;
+	var subWeapon;
+	var attrib;
+	var statusPos = [0, 0];
+	var btcmd = [];
+	var skill = [];
+	var weak = [];
+	var resist = [];
+	var block = [];
+	var detail;
+	var facePos;
+	var magicLV;
+	var formation;
+	var newAbility = [];
+	var dropTable = [0, 1, 2];
+	var sex = "男";
+	var sexy;
+	var race = "その他";
+	var job = "なし";
+	var displayName;
+
+	function MonsterData(dic, master, id)
+	{
+		// やることなし
+		this.master = master;
+		this.id   = id;
+		name      =  dic.name;
+		img       =  dic.img;
+		size      = +dic.size;
+		maxNum    = +dic.num;
+		level     = +dic.lv;
+		exp       = +dic.exp;
+		gold      = +dic.gold;
+		life      = +dic.life;
+		defense   = +dic.def;
+		power     = +dic.pow;
+		intellect = +dic.int;
+		piety     = +dic.pie;
+		vitality  = +dic.vit;
+		speed     = +dic.spd;
+		luck      = +dic.luc;
+		times     = +dic.times;
+		destroy   = +dic.des;
+		weapon    =  dic.weapon;
+		subWeapon =  dic.sub;
+		brave     = +dic.brave;
+		detail    =  dic.detail;
+		race      =  dic.race;
+		magicLV   = +dic.mLV;
+		sexy      = +dic.sexy;
+		displayName = dic.displayName;
+		if (displayName === void) {
+		    displayName = name;
+		}
+
+		attack = [+dic.attack.split("～")[0], +dic.attack.split("～")[1]];
+		facePos = strToArray(dic.facePos);
+		statusPos = strToArray(dic.statPos);
+		if(dic.attrib != 0) attrib = dic.atrb;
+		if(dic.sex != 0) sex = dic.sex;
+		if(dic.job != 0) job = dic.job;
+		if(dic.type != 0) type = dic.type;
+		if(dic.formation != 0) formation = dic.formation;
+		if(dic.weak != 0) weak = strToArray(dic.weak);
+		if(dic.resist != 0) resist = strToArray(dic.resist);
+		if(dic.block != 0) block = strToArray(dic.block);
+		if(dic.newAbility != 0) newAbility = strToArray(dic.newAbility);
+		if(dic.drop != 0) dropTable = strToArray(dic.drop);
+		btcmd = master.getObjArrayByText(dic.btcmd);
+		skill = master.getObjArrayByText(dic.skill);
+	}
+
+	function setOriginalData(obj, prefix = "e")
+	{
+		// 元々味方だったキャラのデータを設定する
+		// prefix は条件により画像を区別するための接頭辞
+		name = obj.name;
+		img = prefix + "_" + obj.model.img + "_" + obj.color;
+		life = obj.life;
+		defense = obj.defense;
+		attack = obj.attack;
+		power = obj.power;
+		intellect = obj.intellect;
+		piety = obj.piety;
+		vitality = obj.vitality;
+		speed = obj.speed;
+		luck = obj.luck;
+		times = obj.times;
+		destroy = obj.destroy;
+		race =  obj.race.name;
+		job = obj.job.name;
+		btcmd = [o.攻撃];
+		displayName = obj.displayName;
+		for(var i = obj.btcmd.count - 1; i >= 0; i--)
+		{
+			if(obj.btcmd[i].auto) btcmd.add(obj.btcmd[i]);
+			if(btcmd.count == 5) break;
+		}
+		skill = [];
+		for(var i = obj.skill.count - 1; i >= 0; i--)
+		{
+			if(obj.skill[i].auto) skill.add(obj.skill[i]);
+			if(skill.count == 5) break;
+		}
+	}
+
+	function jobDisplayName() {
+		return (job === "なし") ? "" : o[job].displayName;
+	}
+
+	function raceDisplayName() {
+		return master.getTranslation(race);
+	}
+}
+
+
+class MonsterObject extends AutoActionObject
+{
+	// 戦闘シーン上に現れるモンスター１体を表すクラス
+	// これにモンスターデータを読み込んで画面に登場させる
+
+	var vanishLayer;	// 消滅アニメ用レイヤー
+	var source;	// 元々のモンスター画像を格納するレイヤー。拡縮に用いる
+	var lifeLayer;	// ＨＰ表示
+	var size = 0;	// 画面上のサイズランク  0:小型  1:中型・爆発小  2:中型・爆発大  3:大型
+	var statusPos = [0, 0];	// ステータス表示の位置
+	var prey;	// 拘束スキル発動時の拘束対象
+	var lifePerLine = 3000;	// ＨＰ表示におけるバー１列分のＨＰ
+	var maxBarLength = 750;	// ＨＰ表示のバー１つの最大長さ
+	var boss = false;	// ボスかどうか
+	var isNaked = 0;	// 裸になっているかどうか（服破壊のフラグ）
+
+	function MonsterObject(par, master, id)
+	{
+		super.AutoActionObject(...);
+		vanishLayer = new EffectLayer(par);
+		source = new global.Layer(window, parent);
+		name = "モンスター " + id;
+
+		lifeLayer = new DecoLayer(par.parent);
+		with(lifeLayer)
+		{
+			.setSize(10, 3);
+			.absolute = -35;
+			.opacity = 160;
+			.visible = true;
+		}
+	}
+
+	function finalize()
+	{
+		invalidate vanishLayer;
+		invalidate lifeLayer;
+		invalidate source;
+		super.finalize();
+	}
+
+	function onNodeEnabled()
+	{
+		hitThreshold = 1;	// モンスターの当たり判定はここで調整する
+	}
+
+	property dead
+	{
+		setter(v)
+		{
+			visible = ! v;
+			if(v) lifeLayer.visible = false;
+		}
+		getter{ return ! visible; }
+	}
+
+	property def
+	{
+		getter
+		{
+			return getAffectedParam("defense", defense \ (1 + isNaked));
+		}
+	}
+
+	function onFocus(focused, direction)
+	{
+		if(! MOUSE_HIDDEN && ! parent.getGroupVisibility(group)) return;
+		super.onFocus(...);
+		parent.popupName(this);
+		if(System.getKeyState(BT_UP) || System.getKeyState(BT_DOWN)
+			 || System.getKeyState(BT_UP2) || System.getKeyState(BT_DOWN2))
+		{
+			parent.setGroupVisibility(parent.getGroup(0), group.depth == 0);
+			parent.setGroupVisibility(parent.getGroup(1), group.depth != 2);
+		}
+	}
+
+	function onBlur(focused)
+	{
+		super.onBlur(...);
+		parent.eraseName();
+	}
+
+	function resetPos()
+	{
+		// そのキャラの定位置に配置する
+		var ratio = parent.getStrecthRatio(group.depth);
+		parent.setMonsterPos(slot, ratio);
+		vanishLayer.left = left + (width - vanishLayer.width) \ 2;
+		vanishLayer.top = size >= 1 ? 0 : top + (height - vanishLayer.height) * 3 \ 4;
+		stretchMonster(ratio);
+		absolute = slot + 1000 - (group.depth * 100);
+	}
+
+	function loadData(dic, i, ratio)
+	{
+		// モンスターの情報や画像を読み込んで表示する
+
+		super.loadData(dic, i);	// データ読み込み
+		size = dic.size;
+		loadImages(img, ratio);
+		statusLayer.setPos(dic.statusPos[0], dic.statusPos[1]);
+		dead = false;
+		act = void;	// 仲間を呼んだ後コマンドが生きていると問題が起きるので void に
+		prey = void;
+		displayName = dic.displayName;
+		status.clear();
+		sickTime.clear();
+		updateStatus();
+
+		// サイズに合わせて消滅アニメを設定
+		vanishLayer.assign(size >= 2 ? parent.vanishAnimL : parent.vanishAnim);
+		vanishLayer.setSizeToImageSize();
+	}
+
+	function adjustSpec(dic)
+	{
+		// 入力辞書配列データに基づきモンスターのスペックを一時的に調整する
+		var key, val, params = [];
+		params.assign(dic);	// 通常の配列に assign することでキー名と値が順に並ぶ配列となる
+		for(var i = 0; i < params.count; i += 2)
+		{
+			key = params[i];
+			val = params[i + 1];
+			if(typeof val == "String" && /0-9/.test(val[0])) val = +val;
+			else if(val == "void") val = void;
+
+			// 指定されたパラメータによって一部値を修正
+			if(key == "life") maxLife = val;
+			if(key == "attack") val = [+val.split("～")[0], +val.split("～")[1]];
+			if(["btcmd", "skill"].has(key)) val = master.getObjArrayByText(val);
+			if(["weak", "resist", "block"].has(key)) val = strToArray(val);
+
+			this[key] = val;
+			dm("スペック調整 " + "monster:" + name + " " + key + ":" + val);
+		}
+		updateLife();
+	}
+
+	function setLifeBar()
+	{
+		// ＨＰ表示バーを設置する
+		lifeLayer.setSize((cap(maxLife, lifePerLine) + 1) * maxBarLength \ lifePerLine
+			, ((maxLife + 1) \ lifePerLine + 1) * 4 - 1);
+		lifeLayer.visible = true;
+		locateLifeBar();
+		updateLife();
+	}
+
+	function locateLifeBar()
+	{
+		// ＨＰ表示バーを適切な位置に配置する
+		lifeLayer.setPos(cap(left + (width - lifeLayer.width) \ 2,, 10)
+			, cap(top + parent.top + height, 560) - lifeLayer.height - 30);
+	}
+
+	function updateLife()
+	{
+		// ＨＰ表示を更新する
+		if(! lifeLayer.visible) return;
+		lifeLayer.clear();
+		var col = 0xFFC0FFC0 - group.depth * 0x00404000;
+		for(var l = life; l >= 0; l -= lifePerLine)
+		{
+			lifeLayer.fillRect(0, ((life - l) \ lifePerLine) * 4
+				, (cap(l, lifePerLine) + 1) * maxBarLength \ lifePerLine, 3, col);
+		}
+	}
+
+	function loadImages(storage, ratio)
+	{
+		// モンスター画像を読み込んでレイヤーを準備する
+		if(isNaked > 0 && Storages.isExistentStorage(storage + "_broken1.png"))
+		{
+			storage += "_broken" + isNaked + ".png";
+		}
+		source.loadImages(storage);
+		source.setSizeToImageSize();
+		callOnPaint = true;
+		darkCoverLayer.paintAll(source);
+		lightingLayer.paintAll(source);
+		flashLayer.paintAll(source);
+		stretchMonster(ratio);	// 縮小率に応じて表示
+	}
+
+	function stretchMonster(ratio = 1)
+	{
+		// モンスター画像を指定した比率で表示する
+		setSize(int(source.width * ratio), int(source.height * ratio));
+		if(ratio == 1) copyRect(0, 0, source, 0, 0, source.width, source.height);
+		else stretchCopy(0, 0, width, height, source, 0, 0, source.width, source.height, stFastLinear);
+		locateLifeBar();	// ＨＰ表示も移動
+	}
+
+	function retire(statusObj)
+	{
+		// 戦闘不能にさせられた時の処理
+		if(statusObj != o.死亡 && statusObj != o.灰) return;
+		vanished();
+		addPrizes();
+		dead = true;
+		isNaked = 0;
+		cancelAction();	// 仲間を呼んだ時にまた行動してしまうので
+		act = void;
+		sf[name] ++;	// モンスター履歴を記録（倒した回数をカウント）
+	}
+
+	function vanished()
+	{
+		// 消滅アニメ
+		vanishLayer.absolute = absolute;
+		vanishLayer.startAnim(%[seg: 3, target: "*start"]);
+			// セグメントは３を指定（通常のアニメは１、たまに２を使う）
+			// このアニメは常に終了を待たないことにするので他で３は指定しないこと
+		playSound(size >= 2 ? "bomber" : "bon");
+	}
+
+	function beStonedImage()
+	{
+		// 画像を石化状態にする
+		source.noise(128);
+		source.colorize(0, 0, 1);
+		noise(128);
+		colorize(0, 0, 1);
+	}
+
+	function beFrozenImage()
+	{
+		// 画像を凍結状態にする
+		source.doGrayScale();
+		source.adjustGamma(1, 0 ,255, 1, 64, 255, 1, 128, 255);
+		doGrayScale();
+		adjustGamma(1, 0 ,255, 1, 64, 255, 1, 128, 255);
+	}
+
+	function beSoftenImage()
+	{
+		// 画像を状態異常から元に戻す
+		source.loadImages(img);
+		stretchMonster(parent.getStrecthRatio(group.depth));
+	}
+
+	function addPrizes()
+	{
+		// 戦闘後にもらえるものを計上する
+
+		// 経験値とゴールド（宝箱を開けずに得られる分）
+		master.curExp += data.exp;
+		master.curGold += data.gold;
+
+		// 宝箱に毎回最低１つは金貨を入れる
+		if(master.treasureBox.drops.count == 0) master.treasureBox.drops.add(getCoins());
+
+		// ドロップアイテムが出たら宝箱に入れる
+		var drop = getDropItem();
+		if(drop !== void) master.treasureBox.drops.add(drop);
+
+		// 召喚モンスターになりそうならその候補に登録
+		if(master.contractableMonster === void && data.magicLV > 0 && ! o[data.name].contracted && random < 0.5)
+		{
+			master.contractableMonster = o[data.name];
+		}
+	}
+
+	function getCoins()
+	{
+		// この敵から得られる gold に応じた金貨オブジェクトを得る
+		// 現在の式だと指定値とほぼ同額(100%)の金貨が追加で得られることになる
+		var num = cap((Math.log(data.gold / 20)) / Math.log(5), 4);	// 分母の括弧内の数値を底とする gold の対数
+		return %[itemData: master.goldCoins[num], state: WHOLE];
+	}
+
+	function getDropItem()
+	{
+		// ドロップアイテムを得る
+		var item, rand = random - master.party.luck * 0.02;
+		if(rand < 0.10 && data.dropTable[2] !== void
+			 && (! isDemoVersion || ! master.hiddenDropGroups.has(data.dropTable[2])))
+		{
+			item = master.dropTables[data.dropTable[2]].draw();
+		}
+		else if(rand < 0.25 && data.dropTable[1] !== void
+			 && (! isDemoVersion || ! master.hiddenDropGroups.has(data.dropTable[1])))
+		{
+			item = master.dropTables[data.dropTable[1]].draw();
+		}
+		else if(rand < 0.40 && data.dropTable[0] !== void
+			 && (! isDemoVersion || ! master.hiddenDropGroups.has(data.dropTable[0])))
+		{
+			item = master.dropTables[data.dropTable[0]].draw();
+		}
+		else if(rand < 0.80)
+		{
+			return getCoins();
+		}
+		if(item === void) return;
+		if(master.closeItems.has(item)) return;
+
+		// ランクを元にアイテムの状態を設定
+		// ランクが低いうちは耐久力が高いものが出やすい。一定ランクを過ぎると満遍なく出る
+		// また、ランクが低いうちは未鑑定のアイテムは出づらい
+		// なお、破損すると着衣不可能な呪い装備は未破損で出すようにする（プレイヤーを騙すため）
+		var limit = item.hasBrokenState ? 1 : BROKEN + 1;	// 破損状態がないアイテムを破損させないようにする
+		if(! item.halfState && item.cursed) limit = BROKEN + 1;	// 破損すると着衣不可能な呪い装備は未破損
+		var min = cap(WHOLE - item.rank \ 5,, limit);	// ランクが５上がるごとに耐久力の下限が１下がる
+		var stat = intrandom(min, WHOLE);
+		if(random < (item.rank - 3) / 27) stat = -stat;	// 3以下だと鑑定済み、30以上だと未鑑定が必ず出る
+		return %[itemData: item, state: stat];
+	}
+
+	function cutInFigureOnBattle()
+	{
+		// バトル中の行動開始時に呼び出される
+		// 行動するモンスターを知らせるため何か演出を書くかも
+	}
+
+	function tryToBreakItem(hitScore, pow = 1)
+	{
+		// 装備の破壊を試みる
+		if(dead || status.has(o.石化) || status.has(o.凍結)) return false;
+		if(life == 0) return false;	// 死にかけのキャラにいちいち脱衣表現をさせない
+		if(! Storages.isExistentStorage(img + "_broken1.png")) return false;
+		if(isNaked == 2) return false;
+		if(isNaked == 1 && ! Storages.isExistentStorage(img + "_broken2.png")) return false;
+		if(random * 100 > hitScore * 0.3) return false;	// 耐久力も強度もないので確率を低めに設定
+		isNaked ++;
+		brokenItem = %[img: img + "_broken" + isNaked + ".png"];
+		return true;
+	}
+
+	function getSexAppealOfAppearance()
+	{
+		// セクシー度を返す。セクシー系モンスターは高くなる
+		if(dead || status.has(o.石化) || status.has(o.凍結)) return 0;	// 死んだ後も情報は残っているので
+		if(sex != "女") return 0;
+		return sexy + isNaked * 100;
+	}
+
+	function drawDamage(value)
+	{
+		numberLayer.setPos(left + (width - numberLayer.width) \ 2, top + height - 120);
+		super.drawDamage(...);
+	}
+
+	function processDamageAnim()
+	{
+		var l = thisAnimList[animCounter];
+		if(l !== void && shakeAnim) left += l;
+		super.processDamageAnim();
+	}
+}
+
+//----------------------------------------------------------------------------------------
+class AutoActionObject extends LivingObjectLayer
+{
+	// プレイヤーが操作できないキャラクターのクラス
+
+	var data;	// モンスターデータ
+	var img = "";	// 読み込まれた画像の識別名
+	var attack = [0, 0];	// 攻撃力
+	var defense = 0;	// 防御（アーマークラス）
+	var brave = 50;	// 勇敢さ
+	var times = 1;	// 攻撃回数
+	var sex = "男";	// 性別
+	var sexy = 0;	// 性的魅力
+	var race = %[];	// 種族（名前だけ）
+	var job = %[];	// 職業（名前だけ）
+	var attrib;	// 通常攻撃の持つ属性。無効化はされないがダメージ量に影響する
+
+	function AutoActionObject(par, master, id)
+	{
+		super.LivingObjectLayer(...);
+	}
+
+	function loadData(dic, i)
+	{
+		// データ読み込み
+		data = dic;
+		name = dic.name;
+		id = i;
+		img = dic.img;
+		level = dic.level;
+		life = maxLife = fluc(dic.life);
+		defense = dic.defense;
+		power = dic.power;
+		intellect = dic.intellect;
+		piety = dic.piety;
+		vitality = dic.vitality;
+		speed = dic.speed;
+		luck = dic.luck;
+		times = dic.times;
+		destroy = dic.destroy;
+		brave = dic.brave;
+		attrib = dic.attrib;
+		weapon = dic.weapon;
+		subWeapon = dic.subWeapon;
+		sex = dic.sex;
+		sexy = dic.sexy;
+		race.name = dic.race;
+		job.name = dic.job;
+		displayName = dic.displayName;
+
+		// 以下に関しては、召喚モンスター化後に変化させると元データも変わってしまうので
+		// 参照をただ代入するだけではなくコピーして使う
+		attack.assign(dic.attack);
+		btcmd.assign(dic.btcmd);
+		skill.assign(dic.skill);
+		weak.assign(dic.weak);
+		resist.assign(dic.resist);
+		block.assign(dic.block);
+	}
+
+	function getActionLength(act)
+	{
+		// 通常攻撃の長さを返す
+		if(act.reach != -1) return act.reach;
+		if(weapon == "bow" || weapon == "magic") return 3;
+		if(weapon == "cakram" || weapon == "boomerang") return 2;
+		if(weapon == "spear" || weapon == "rope" || weapon == "staff") return 1;
+		return 0;
+	}
+
+	function getWeaponAttrib()
+	{
+		// 通常攻撃の属性を返す
+		if(attrib === void) return "物理";
+		return attrib;
+	}
+
+	function getWeaponSlayers()
+	{
+		// 通常攻撃の追加ダメージが発生する種族名の一覧を返す
+		// 現状、特定の種族・職業に強いモンスターやゲストはいない
+		return [];
+	}
+
+	function getSexAppealOfAppearance()
+	{
+		// セクシー度を返す。セクシー系モンスターは高くなる
+		if(dead || status.has(o.石化)) return 0;	// 死んだ後も情報は残っているので
+		return sexy;
+	}
+
+	function isPenisNaked()
+	{
+		return false;
+	}
+
+	function setCooperators(act, target, order, onlySameSpecies = false)
+	{
+		// 共に同じ行動をするメンバーを探し条件を満たしていたら決定する
+		var arr = [];
+		for(var i = 0; i < team.members.count; i++)
+		{
+			var one = team.members[i];
+			if(one == this) continue;	// 今は自分を加えない
+			if(onlySameSpecies && one.data != data) continue;
+			if(! one.active) continue;
+			if(one.actionFixed) continue;
+			if(! one.btcmd.has(act)) continue;
+			arr.add(one);
+		}
+		if(arr.count < order - 1) return false;	// 自分の分を引いて比較
+		arr.shuffle();
+		arr.count = order - 1;
+		arr.add(this);	// 自分を追加
+		for(var i = 0; i < arr.count; i++)
+		{
+			var one = arr[i];
+			one.act = act;
+			one.target = target;
+			one.actionFixed = true;
+		}
+		return true;
+	}
+
+	function setAction()
+	{
+		// 戦闘時の行動を決定する
+
+		act = void, target = void;
+		if(! active) return;
+
+		// 可能なコマンドを列挙
+		var arr = getUsableActions();
+		if(actionFixed) return;
+
+		// 行動を決定
+		act = arr.draw();
+		if(act === void) act = o.身を守る;	// 何も出来なければ身を守る
+		if(act.range == 0) target = this;
+		if(act.range <= 0) return;
+
+		// 対象を決定
+		target = getRandomTarget(act);
+	}
+
+	function jobDisplayName() {
+		return (job.name === "なし") ? "" : o[job.name].displayName;
+	}
+
+	function raceDisplayName() {
+		return master.getTranslation(race.name);
+	}
+}
+
+//----------------------------------------------------------------------------------------

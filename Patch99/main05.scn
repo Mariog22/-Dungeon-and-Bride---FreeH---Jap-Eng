@@ -1,0 +1,1079 @@
+﻿; コボルドの砦～ゴーレム騒動・リーゼルの過去
+
+
+
+
+;■リーゼルの髪飾り
+
+;◇イベント01・店で髪飾り発見
+*comb_1
+
+; ノーラの店
+@eval exp='game.itemWin.openSpecialBuyMode()'
+@eval exp='game.itemWin.enabled = true'
+@eval exp='game.itemWin.enabled = false'
+@eval exp='game.itemWin.shopWin.setSelectingMark(game.itemWin.shopWin.buttons[1]);
+@w05
+[texton]
+[name n=Nora f=nora_00]「New items are available～! Please take a look!」[k]
+[テオ f=05]「...!」[k]
+[name f=other_01]I looked at the store's limited edition shelves and saw something familiar.[k]
+[テオ f=12]「T-that's Riselle's hair ornament...!」[k]
+[name n=Nora f=nora_01]「What? Are you interested in this hair ornament?」[k]
+[name n=Nora f=nora_03]「Hehheh, this is the most exquisite hair ornament we've had in stock recently! Quite a bargain! Hey, are you buying?」[k]
+Apparently, Murmur had sold the hair ornament she had taken from Riselle to the store.[k]
+The price tag says 200,000G. That's a high price. I wonder how much it was purchased for...[k]
+[name n=Nora f=nora_01]「This hair ornament costs 200,000G! So? You buying, sir?」[k]
+[テオ f=12]「Hey... This hair ornament is actually stolen. It's a precious memento that was stolen from one of my friends. I'd like it back.」[k]
+[name n=Nora f=nora_02]「S-s-stolen goods?!」[k]
+[name n=Nora f=nora_06]「No, you can't! This is a very valuable item that I spent a lot of money to buy! I would never give it away for free!」[k]
+[テオ f=10]「Do so, please.」[k]
+[name n=Nora f=nora_04]「No, no, absolutely not～! I don't care what you say! If you want it, you can pay me for it!」[k]
+[テオ f=10]「I'm sorry, I can't... 」[k]
+[name n=Nora f=nora_06]「If you can't pay, then you're not a customer! [r]You're hurting my business! Get out!」[k]
+[textoff]
+@outf
+@eval exp='game.itemWin.close()'
+@w05
+@mu f=&'game.map.bgm'
+@se f=door1
+@gameon
+[texton]
+We had no choice but to leave the shop.[k]
+[リーゼル v=vl076 f=10]「That was expensive... My hair ornament... 」[k]
+[テオ f=06]「...」[k]
+Riselle's shoulders slump in disappointment.[k]
+...But it's too early to give up.[k]
+This could be a good thing. There was a chance that the hair ornament would never be found again. But if it's for sale, I can buy it back.[k]
+[テオ f=05]「Hold on a second.」[k]
+[textoff]
+@outf
+@se f=door1
+[texton]
+I decided to go back to the store and ask the owner not to sell the hair ornament to another customer until I bought it.[k]
+[name n=Nora f=nora_07]「...I understand. I'll wait for you if that's what you want.」[k]
+...Just wait and see. I'll definitely buy it back someday![k]
+[textoff]
+@se f=door1
+@gameon
+[shopoff]
+
+
+;◇イベント02・髪飾りを買い取る
+*comb_2
+
+; ノーラの店
+[texton]
+[name n=Nora f=nora_00]「Thank you very much for your purchase～.[r]
+See! Buying it honestly like that was what you should have done in the first place!」[k]
+[テオ f=06]「...」[k]
+It was pricey, but I'm glad I managed to buy back Riselle's hair ornament.[k]
+...Now, how shall I give it to her? A surprise might be good.[k]
+[textoff]
+[shopoff]
+
+
+
+
+;■コボルドの砦
+
+;◇イベント01・ライナス登場
+*kobold_1
+
+; サファイアシティ
+@saveon
+@w05
+@bg f=0019
+@fg c=マックス e=通常 f=01
+[texton w=1]
+[マックス f=01]「Yo! [テオ], that you?」[k]
+[テオ f=01]「Oh, Max.」[k]
+Upon entering Sapphire City, I ran into Max for the first time in ages.[k]
+[マックス f=03]「Hey! [テオ]! You're awesome!」[k]
+[テオ f=05]「What?」[k]
+[マックス f=03]「I heard you rescued all the Seagull Village girls that monsters stole away!」[k]
+[テオ f=14]「Uh, um... 」[k]
+That was the quest we did... But how did Max hear about it?[k]
+[マックス f=03]「It caused quite a stir in Sapphire City! Young, unknown adventurers completed a difficult quest where many veterans had failed!」[k]
+[テオ f=14]「Yes, that's right...」[k]
+Well, if that's how it's being told, I'm kind of happy.[k]
+After all, this will increase the prestige of our party and make our job easier.[k]
+[テオ f=01]「How are things going with your party?」[k]
+[マックス f=01]「Yeah, we're doing great! Maria and I are doing well! We're getting a lot of experience!」[k]
+[テオ f=02]「I see. That's good.」[k]
+[リーゼル v=vl077 f=01]「So Maria is doing well...」[k]
+[マックス f=01]「See you later! You guys, do your best too!」[k]
+@cl
+Max left.[k]
+Things are going well over there. We can't afford to slack off either.[k]
+[リーゼル v=vl078 f=01]「Let's do our best too.」[k]
+[テオ f=01]「Ah!」[k]
+Recently, Riselle has been saying more positive things. That's a good sign.[k]
+Maybe things are starting to move in a good direction. Don't let this luck slip away.[k]
+[？？？]「Hey! You there!」[k]
+[テオ f=06]「？」[k]
+@mu f=trick
+@fg c=ライナス e=通常 f=52
+A man suddenly called out to me.[k]
+[男 key=ライナス f=52]「...」[k]
+[テオ f=05]「Um... is there something I can help you with?」[k]
+The man looked at me silently with hatred in his eyes.[k]
+...What? Is he trying to pick a fight with me? Did I do something to him...?[k]
+[男 key=ライナス f=52]「You're the leader of [emb exp='game.party.displayName'], right?」[k]
+[テオ f=05]「Yes, that's right...」[k]
+[男 key=ライナス f=52]「Don't get too cocky just because you finished one quest!」[k]
+[テオ f=05]「Eh?」[k]
+[男 key=ライナス f=51]「Listen, there are plenty of adventurers better than you! Don't be so smug!」[k]
+[男 key=ライナス f=51]「You got lucky, but if you take on a job like that again you'll definitely fail!」[k]
+[テオ f=06]「...」[k]
+Is he also talking about the labyrinth rescue?[k]
+I don't think we're being conceited, so... why is he ranting at us?[k]
+[男 key=ライナス f=51]「A beginner party like yours should only do the lowly chores! You've got to know your place! Understand?!」[k]
+[テオ f=06]「...」[k]
+[男 key=ライナス f=52]「...Hmph!」[k]
+@cl
+The man said all he had to say and left.[k]
+We stood there stunned by the suddenness of the event.[k]
+[   if exp='HUM'][リム v=vh014 f=05]「...What was that about?」[k]
+[elsif exp='DWA'][フレデリカ v=vd014 f=05]「...What was that about?」[k]
+[endif]
+[   if exp='SYL'][マルエット v=vs016 f=07]「What's wrong with him? He's just saying whatever he wants!」[k]
+[elsif exp='ELF'][クレア v=ve015 f=07]「What's wrong with him? He's just saying whatever he wants!」[k]
+[endif]
+[if exp='GNO'][ミューズ f=08]「... (Ugh)」[k][endif]
+[テオ f=06]「...」[k]
+Facing such strong hostility out of nowhere, I didn't know how to react. Who was that person in the first place?[k]
+[リーゼル v=vl079 f=05]「That guy... He's the leader of Hawk Wing, I think. His name is Linus.」[k]
+[テオ f=12]「What?!」[k]
+Does that mean he's Max and Maria's current leader?[k]
+[テオ f=12]「Oh, really?」[k]
+[リーゼル v=vl080 f=06]「Yeah. I've seen him a few times before... He's kind of a celebrity in Sapphire City.」[k]
+[テオ f=06]「...」[k]
+I didn't know the leader of Hawk Wing was like that. That's very different from what I imagined.[k]
+As I recall, Hawk Wing was one of the most famous parties in Sapphire City, having resolved many difficult quests.[k]
+Why did the leader do that...? Why is he so openly hostile to a new party like ours?[k]
+[textoff]
+@out
+[townoff]
+
+
+;◇イベント02・コボルド砦でライナスと会う
+*kobold_2
+
+; コボルド砦・通路
+@saveon
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+@wait time=500
+@fg c=ライナス f=11
+[texton w=1]
+[ライナス f=11]「Ah...!」[k]
+[テオ f=05]「You're Hawk Wing's...!」[k]
+To my surprise, I ran into the leader of Hawk Wing inside the fort.[k]
+@fgf c=ライナス f=28
+[ライナス f=28]「Damn... Why are you...?!」[k]
+[テオ f=06]「...」[k]
+Apparently, Hawk Wing was the party contracted to do the same job.[k]
+Linus turns his hostile gaze toward us, just as he did last time.[k]
+We might be rivals undertaking the same job, but I can't help but feel bewildered by the blatant hatred.[k]
+[ライナス f=06]「...Hey, you guys, go home now.」[k]
+[テオ f=05]「Eh?」[k]
+[ライナス f=06]「We, Hawk Wing, will do all the work this time. There's nothing for you to do.」[k]
+[テオ f=10]「I don't know what to say...」[k]
+@fgf c=ライナス f=51
+[ライナス f=51]「When newbies like you hang around, you just get in the way! Don't you understand that?!」[k]
+[テオ f=12]「Huh...!」[k]
+I'm here on official business. I don't deserve to be told that.[k]
+[テオ f=05]「I have to finish what I've been asked to do by the client. I'm sorry, but I can't leave.」[k]
+
+[   if exp='SYL'][マルエット v=vs017 f=07]「Yes! What gives you the right to say that?!」[k]
+[elsif exp='ELF'][クレア v=ve016 f=07]「Yes! What gives you the right to say that?!」[k]
+[endif]
+[   if exp='HUM'][リム v=vh015 f=07]「You have no right to say that!」[k]
+[elsif exp='DWA'][フレデリカ v=vd015 f=07]「You have no right to say that!」[k]
+[endif]
+[if exp='GNO'][ミューズ v=vg009 f=08]「We're not... We're not leaving...!」[k][endif]
+
+@fgf c=ライナス f=06
+[ライナス f=06]「...Hmph, stubborn fools.」[k]
+[ライナス f=05]「Well, do whatever you want. But if you get in our way, we won't tolerate it. Remember that.」[k]
+@cl
+After saying this, Linus walked away as if ignoring us.[k]
+[テオ f=06]「...」[k]
+
+[   if exp='ELF'][クレア v=ve017 f=07]「What the hell is wrong with him? He really pisses me off!」[k]
+[elsif exp='SYL'][マルエット v=vs018 f=07]「What the hell is wrong with him? He really pisses me off!」[k]
+[endif]
+[   if exp='DWA'][フレデリカ v=vd016 f=07]「That guy's so rude!」[k]
+[elsif exp='HUM'][リム v=vh016 f=07]「That guy's so rude!」[k]
+[endif]
+[if exp='GNO'][ミューズ f=08]「...! ∗glare∗」[k][endif]
+
+The members of our group are angered by Linus' outspokenness.[k]
+@fg c=マリア e=通常 f=13
+[マリア v=va105 f=13]「Sorry! I'm really sorry, guys!」[k]
+; ↑ 慌てた様子でライナスに替わって謝るマリア
+[テオ f=05]「...Maria!」[k]
+[リーゼル v=vl081 f=05]「Maria...」[k]
+Maria suddenly appeared. It seems she's accompanying Linus as a member of his party.[k]
+@fgf c=マリア f=14
+[マリア v=va106 f=14]「I'm sorry, our leader is a little weird! He said something unreasonable, didn't he?」[k]
+Maria tries to calm us down in a whisper.[k]
+[マリア v=va107 f=14]「...He's not doing so well at work lately, and he's a little frustrated. So I hope you can forgive him.」[k]
+@fgf c=マリア f=04
+[マリア v=va108 f=04]「I'll tell you later, so please don't hold it against me too!」[k]
+[テオ f=06]「O-okay... If you insist... 」[k]
+It wouldn't do us much good to challenge him. We shouldn't make a big deal out of it, and concentrate on completing the quest.[k]
+[ライナス f=51]「Hey! Maria! What are you doing there? Let's get the hell out of here!」[k]
+@fgf c=マリア f=03
+[マリア v=va109 f=03]「Yes, I'm coming!」[k]
+; ↑ 遠くのライナスに返事
+@fgf c=マリア f=02
+[マリア v=va110 f=02]「Well, I'll be going. See you later, Riselle!」[k]
+[リーゼル v=vl082 f=06]「U-uh, yeah. See you later.」[k]
+@se f=footstep2
+@clf
+Maria hurriedly ran to Linus. Riselle stared dumbfounded at Maria.[k]
+...Maria seems to be having a tough time.[k]
+Come to think of it, it's been a long time since I sent Maria and Max on that deployment. I wonder if they are getting paid properly?[k]
+I sent them for the high salary, but I hope she isn't overworking herself for it...[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント03・バリケードの前で立ち尽くすライナスたち
+*kobold_3
+
+; コボルド砦・詰め所の前
+@saveon
+@wait time=500'
+@walk move=e cond='game.party.curX != 2'
+@walk turn=s
+@wait time=500
+@fg l=ライナス f=28 b
+@fg r=マックス e=通常 f=09
+[texton w=1]
+[ライナス f=28]「Damn...! How do I get in...?!」[k]
+[テオ f=05]「Ah...!」[k]
+When I went upstairs, I encountered Linus and his group standing frustrated in front of the door.[k]
+[ライナス f=28]「Those kobolds... They've barricaded themselves in. What a bunch of clever little bastards.」[k]
+[テオ f=06]「...」[k]
+Apparently, that door won't open. Is that the Kobolds' base?[k]
+[ライナス f=51]「Hey, Max! Come on, open the door! You're a thief after all!」[k]
+[マックス f=09]「Even if you say that, there's nothing I can do if it's been barricaded... 」[k]
+[ライナス f=52]「Tch...!」[k]
+@cl
+[テオ f=06]「...」[k]
+If even Max can't open it... I'd better look for another route...[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント04・コボルドリーダーと戦闘
+*kobold_4
+
+; コボルド砦・詰め所
+@wait time=500
+@walk turn=w cond='WAY != "w"'
+@wait time=500 cond='WAY != "w"'
+@fg l=kobold_black left=250 top=80 b
+@fg c=kobold_red left=450 top=80 b
+@fgf r=kobold_black left=650 top=80
+[texton]
+[name n=Kobold]「Hey, who are you guys?! What are you doing here?!」[k]
+I jumped down from the roof into the room and found myself in a place packed with elite Kobolds.[k]
+[name n=Kobold]「You must be adventurers from Sapphire City! Pretty stupid of you to jump right in here though. We'll turn you into pin cushions!
+ 
+ 」[k]
+[textoff]
+@clf
+
+; コボルドリーダーたちと戦闘
+@monster pos=1 name=シニアコボルド
+@monster pos=2 name=シニアコボルド
+@monster pos=3 name=シニアコボルド
+@monster pos=4 name=シニアコボルド
+@monster pos=5 name=シニアコボルド
+@monster pos=9 name=シニアコボルド
+@monster pos=10 name=コボルドリーダー
+@monster pos=11 name=シニアコボルド
+@callbattle bgm=boss escape=false
+; 勝利
+
+@wait time=500
+@treasure item=金のヘッドバンド
+[if exp='! game.isFreeMode']
+	[texton]
+	[テオ f=01]「Okay, I got the gold headband!」[k]
+	We managed to beat Linus and the others to it. Let's take this to the client in Sapphire City.[k]
+	[textoff]
+[endif]
+@eval exp='o.コボルド退治.flag = 1'
+@addevent map=ランドン渓谷・崖上 num=12 cond='! game.isFreeMode'
+@addevent name=サファイアシティ num=4 cond='! game.isFreeMode && game.findItem(o.ムーンストーンの魔石) === void'
+[textoff]
+[eventoff]
+
+
+;◇イベント05・ホークウインド襲撃
+*kobold_5
+
+; コボルド砦の外の森の中
+@saveon
+@wait time=500 cond='WAY != "s"'
+@walk turn=s cond='WAY != "s"'
+@wait time=500
+@mu f=eerie
+@fg l=bladesman_red left=300 top=80 b
+@fg r=archer_purple left=600 top=36
+[texton w=1]
+[テオ f=05]「Ah...!」[k]
+Two female adventurers stood in front of our party.[k]
+As I recall, these girls are Linus' party members...[k]
+The girls look at us with strangely nervous faces.[k]
+[テオ f=10]「Oh, what do you want from us?」[k]
+[女性冒険者 f=archer_purple_06]「...Please give us the gold headband.」[k]
+[テオ f=05]「Eh?」[k]
+[女性冒険者 f=bladesman_red_00]「Just give us the gold headband and we won't do anything.」[k]
+[テオ f=06]「...」[k]
+...I see. So they want to steal the credit for our work. Linus must have told them to. How despicable...![k]
+[テオ f=05]「...That was the result of all of our hard work. I can't give it to you.」[k]
+[女性冒険者 f=archer_purple_06]「...Couldn't you please give it to me?」[k]
+[女性冒険者 f=bladesman_red_00]「We needn't have got rough with you if you'd complied, but I've got no choice.」[k]
+The two draw their weapons and confront us.[k]
+...It's a messy situation. I'd rather not fight if I can help it...[k]
+
+[   if exp='HUM'][リム v=vh017 f=07]「Captain! Let's fight! We can't be cowards!」[k]
+[elsif exp='DWA'][フレデリカ v=vd017 f=07]「Captain! Let's fight! We can't be cowards!」[k]
+[endif]
+[   if exp='SYL'][マルエット v=vs019 f=07]「I will fight! We have no reason to give in!」[k]
+[elsif exp='ELF'][クレア v=ve018 f=07]「I will fight! We have no reason to give in!」[k]
+[endif]
+[if exp='GNO'][ミューズ v=vg010 f=08]「Captain... I will fight...!」[k][endif]
+
+[リーゼル v=vl083 f=07]「Captain, I don't want to give in to this kind of... I'll fight...!」[k]
+[テオ f=05]「Riselle... Guys...! I'll fight...!」[k]
+Everyone is motivated. I can't possibly retreat from this.[k]
+[テオ f=05]「...All right. Let's fight, guys!」[k]
+[女性冒険者 f=archer_purple_06]「Damn...!」[k]
+[女性冒険者 f=bladesman_red_00]「You insist on fighting? Then we'll just beat you!」[k]
+[テオ f=05]「Let's go!」[k]
+[textoff]
+@clf
+
+; 女性冒険者たちと戦闘
+@eval exp='game.curTeam = o.ホーク・ウイング'
+@monster pos=2 name=グラディエイター
+@monster pos=4 name=シューター
+@anime_duel_net visible=true
+@eval exp='game.inDuelBattle = true'
+@callbattle bgm=boss escape=false gameover=true
+@anime_duel_net visible=false
+@anime_duel_sign visible=false
+@eval exp='game.party.minimumRecovery(true)'
+
+; 戦闘に勝利
+@command type=long title="<y>You <p>win<y>! What do you request from the<r>other party?"
+@select text="Take their money" target=*_demand_money
+@select text="Receive 10 items" target=*_demand_items
+@select text="Order a 90-day suspension" cmdcond='false'
+@select text="Demand rival member" cmdcond='false'
+@select text="Return a friend" cmdcond='false'
+[s]
+
+; 金銭奪取
+*_demand_money
+[texton]
+@se f=coin
+@eval exp='game.party.gold += 103400'
+[nw][b]Took 103,400G from the other party![/b][/nw][k]
+[textoff]
+@jump target=*_demand_end
+
+; アイテム奪取
+*_demand_items
+[texton]
+[nw][b]Took the other party's items![/b][/nw][k]
+@treasure item=ふっくらパン,ふっくらパン,はちみつパン,りんご,カトラス,ロングボウ,レンジャーブーツ,革の手袋,赤いブラ,赤いパンツ
+[textoff]
+; シナリオに戻る
+*_demand_end
+
+@mu f=eerie
+[texton w=0]
+[女性冒険者 f=archer_purple_05]「Eek...!」[k]
+[女性冒険者 f=bladesman_red_05]「Strong...!」[k]
+[テオ f=05]「Well, we'll be going.」[k]
+We easily fought them off. They had lost the duel, and were now sprawled on the ground, unable to move.[k]
+...They were weaker than I expected. Are these girls really members of Hawk Wing, one of the best parties in Sapphire City?[k]
+[テオ f=05]「Hey, you two.」[k]
+[女性冒険者 f=archer_purple_05]「...What?!」[k]
+[女性冒険者 f=bladesman_red_05]「Hey, what are you going to do with us?!」[k]
+[テオ f=06]「I won't do anything. But I do have a question I'd like to ask you.」[k]
+[女性冒険者 f=bladesman_red_05]「...Yes?」[k]
+[テオ f=05]「Why did you want to steal the credit for our work?」[k]
+[女性冒険者 f=archer_purple_07]「Because that's what Linus ordered.」[k]
+[テオ f=06]「...I'm sorry, but I don't think the two of you were up to the task. You weren't strong enough.」[k]
+[女性冒険者 f=archer_purple_05]「Damn...!」[k]
+[女性冒険者 f=bladesman_red_01]「It's frustrating, but you're right... We are weak.」[k]
+[テオ f=06]「I don't understand Linus' intention in sending adventurers like you to challenge us. If he really wanted to take the credit, why didn't he send stronger warriors? 」[k]
+[女性冒険者 f=archer_purple_07]「...Because we are the strongest ones, even so!」[k]
+[テオ f=05]「What...?」[k]
+[女性冒険者 f=bladesman_red_00]「Even if we're outmatched, there was no one else.」[k]
+[女性冒険者 f=bladesman_red_00]「There are only inexperienced adventurers like us in Hawk Wing now. We're not the party we used to be.」[k]
+[テオ f=05]「Hey...!」[k]
+I can't believe that Hawk Wing, renowned as a first-class party, was in such a state...[k]
+[テオ f=05]「Then why didn't Linus himself challenge us to a fight instead of sending you? There's no point in demanding a fight you can't win.」[k]
+[女性冒険者 f=archer_purple_07]「Linus is weaker than us.」[k]
+[テオ f=05]「Eh?」[k]
+[女性冒険者 f=bladesman_red_01]「He's an adventurer who can only do a little bit of alchemy magic. He'd probably be no match for you.」[k]
+[女性冒険者 f=bladesman_red_00]「Originally, Hawk Wing was a party that kept its strength through the power of money. Now it can't even sustain that... 」[k]
+[テオ f=06]「...」[k]
+[女性冒険者 f=bladesman_red_00]「In the past, Hawk Wing was a competent and excellent party, even if Linus himself wasn't such an great adventurer.」[k]
+[女性冒険者 f=bladesman_red_00]「However, we were fortunate in that he paid well and had a policy of hiring good adventurers regardless of gender, so we attracted many excellent female adventurers.」[k]
+[テオ f=06]「...」[k]
+[女性冒険者 f=bladesman_red_00]「The general perception is that men are more useful as adventurers, but there are excellent women as well!」[k]
+[女性冒険者 f=bladesman_red_00]「With more of these women in the party, Hawk Wing was able to achieve results!」[k]
+[女性冒険者 f=bladesman_red_00]「Accomplishing one difficult task after another, the party's reputation grew rapidly.」[k]
+[女性冒険者 f=bladesman_red_00]「The improved reputation attracted even better adventurers, and soon Hawk Wing became one of the best parties in the kingdom!」[k]
+[テオ f=06]「I see...」[k]
+[女性冒険者 f=bladesman_red_01]「However, Linus made a major error in judgment a few months ago.」[k]
+[テオ f=05]「What's that...?」[k]
+[女性冒険者 f=bladesman_red_00]「He changed the party code. He abused his leadership privileges and made it a party rule that female members were to serve as his bed partner!」[k]
+[テオ f=12]「What...?!」[k]
+Why add such an absurd rule to the party code...?![k]
+The party code is a set of rules that party members must follow. Each party has its own set of rules.[k]
+The party code is absolute. No matter what the circumstances, the members must obey it. Otherwise the party could be in danger of falling apart in an emergency, due to lack of control.[k]
+To maintain that control, only the leader has the privilege of setting the rules of the party.[k]
+To achieve its objectives, the group must act consistently. To do so, guiding rules must be established only by the will of one person.[k]
+The leader uses the code to create the party he or she envisions, and those who agree with it join the party as members... This is how an adventuring party should be.[k]
+However... Unfortunately, there is no shortage of leaders who abuse that privilege.[k]
+No matter how much members may disagree with the rules, they have no choice but to obey them as long as they belong to the party. Unscrupulous leaders know this and set unreasonable demands as their code.[k]
+Many adventurers who are still in a weak position, such as novice adventurers, have a hard time joining a good party. Bad leaders take advantage of that and make rules that exploit them.[k]
+...But of all things, to be forced to be a sexual partner...[r]
+It is appalling, but since he is the leader of the group, no one can prevent him from doing so.[k]
+[女性冒険者 f=bladesman_red_00]「...I also told him not to add that kind of rule, but Linus didn't listen to me.」[k]
+[女性冒険者 f=bladesman_red_00]「With the establishment of the rule, women in Hawk Wing had to submit to his sexual demands. As a result, female members who couldn't tolerate the new code quit one by one.」[k]
+[女性冒険者 f=bladesman_red_00]「The better members were the first to leave, so the only ones left were the less capable members like us... Naturally, we were no longer able to achieve the same results as before, and our party quickly lost power.」[k]
+[テオ f=06]「...」[k]
+[女性冒険者 f=bladesman_red_00]「...Adventurers who want to make a name for themselves by belonging to a prominent party still volunteer to be a part of it, so we're currently still able to maintain the appearance of a first-class party!」[k]
+[女性冒険者 f=bladesman_red_00]「However, there's no substance to it, just past achievements. In time, it will become a third-rate party in both reputation and reality.」[k]
+[テオ f=06]「...」[k]
+A party with no real ability to repeat past glories...[k]
+I couldn't tell from the original request, but Hawk Wing must have had a serious shortage of people. Now I understand why they tried to hire temporary adventurers at the bar with unbeatable rates.[k]
+[女性冒険者 f=bladesman_red_00]「Hawk Wing no longer has the power it once had. However, despite its decline, Linus was once the head of a party that enjoyed great fame... 」[k]
+[女性冒険者 f=bladesman_red_00]「He's got a lot of pride and really thinks he's special. You and your rising star party must be a great distraction for him.」[k]
+[テオ f=06]「...」[k]
+I see... So that's why he's always so hostile to us...[k]
+[女性冒険者 f=bladesman_red_01]「He's quite willing to use any means to achieve his goal. Please be careful not to provoke him too much... 」[k]
+[テオ f=02]「Okay, I'll be careful.」[k]
+[女性冒険者 f=bladesman_red_00]「So, it's time for us to go... 」[k]
+[女性冒険者 f=archer_purple_07]「Well then... 」[k]
+[テオ f=01]「Thanks for telling me about it. Take care.」[k]
+Exactly 30 minutes after the duel, the girls, now able to move, walked quietly away.[k]
+I see... I understand Linus more now.[k]
+I can't say I like it, but if he's a problematic person, there's no point feeling bad about it each time he berates me. Let's get on with our own adventure.[k]
+I'm more worried about Max and Maria, who Linus hired as temps. I hope he isn't making unreasonable demands or anything...[k]
+[textoff]
+@fa
+[eventoff bgm]
+
+
+;◇イベント06・ムーンストーンの魔石
+*kobold_6
+
+; サファイアシティ
+@jump storage="free02.scn" target=*kobold_6 cond='game.isFreeMode'
+@saveon
+@wait time=500
+[texton w=1]
+@fg c=シュバルツ f=00
+[シュバルツ f=01]「Hey, [テオ].」[k]
+I ran into Mr. Schwarz just as I was returning to town.[k]
+[テオ f=01]「Ah, Mr. Schwarz. It's been a while.」[k]
+[シュバルツ f=02]「How's the adventure going? Actually, I have something for you.」[k]
+[テオ f=05]「Something for me?」[k]
+[シュバルツ f=02]「Here. It's one of the ones you're looking for.」[k]
+[name f=other_06]Saying this, Mr. Schwarz handed me a shiny jewel.[k]
+[テオ f=12]「This is...!」[k]
+[シュバルツ f=02]「It is a Moonstone, one of the 12 magical stones. I talked to a friend of mine who gave it to me for free.」[k]
+[テオ f=05]「The Moonstone magic stone...」[k]
+[name f=other_06]It was a magic stone that emitted a white light. It radiated a different kind of brilliance and magic power than the Emerald Magic Stone.[k]
+[シュバルツ f=02]「[テオ], take it.」[k]
+[テオ f=05]「Is that okay?」[k]
+[シュバルツ f=02]「You intend to summon the god Polaris and defeat the devil, right? So of course you should have this stone.」[k]
+[テオ f=01]「Thank you, Mr. Schwarz!」[k]
+@getitem item=ムーンストーンの魔石
+[シュバルツ f=01]「Keep collecting the rest of the magic stones. Good luck, [テオ].」[k]
+[テオ f=01]「Yes!」[k]
+[シュバルツ f=02]「See you next time.」[k]
+[textoff]
+@cl
+[texton w=0]
+Alright! Now we have two magic stones![k]
+It's going quite well. There are 10 left. We still have a long way to go, but we'll do our best to collect them.[k]
+[textoff]
+[eventoff]
+
+
+
+
+;■悪魔のゴーレム騒動
+
+;◇イベント01・ゴーレムが動き出す
+*golem_1
+
+; サファイアシティ
+@wait time=500
+[texton]
+[テオ f=02]「Well, now that the quest is over, let's take a break at the inn.」[k]
+[textoff]
+@eval exp='game.view.setFocusToSpot(o.冒険者の宿)'
+@wait time=500
+@eval exp='game.party.minimumRecovery()'
+@eventsleep keepblack=true
+@wait time=2000
+[texton]
+[テオ f=05]「...Hmm?」[k]
+The town is noisy. What's going on?[k]
+[textoff]
+@wait time=500
+
+@eval exp='o.サファイアシティ.bgm = "crisis"'
+@gameon
+@mu f=crisis
+@se f=door1
+@wait time=500
+[texton]
+When I left the inn, the town's soldiers were rushing around everywhere.[k]
+[テオ f=05]「I'm sorry, what's going on?」[k]
+[name n=Townsperson]「The Golem! The Golem has moved!」[k]
+[テオ f=05]「Eh?」[k]
+[name n=Townsperson]「Did you know that [b]just outside the southeast gate of the town[/b] there is a metal golem that was immobile due to a seal?」[k]
+[name n=Townsperson]「It's starting to move! The seal has been broken and no one can stop it! Now it's trying to break down the town walls!」[k]
+[テオ f=12]「What the...!」[k]
+A golem is a giant puppet with no will of its own. It is difficult to stop even with a few strong warriors. Such a troublesome thing is on the rampage...?![k]
+If the walls are breached, the golem will enter the town. If that happens, we're in big trouble...![k]
+[textoff]
+[eventoff]
+
+
+;◇イベント02・ムールムールと戦闘
+*golem_2
+
+; ジョセフの森の広場
+@saveon
+@mu f=crisis
+@wait time=500
+@walk turn=e
+@wait time=500
+@fg c=golem_metal left=400 top=-100
+@se f=rockdrop
+@quake time=500
+@wq
+@wait time=500
+@se f=rockdrop
+@quake time=500
+@wq
+@wait time=500
+[texton]
+[テオ f=12]「This is...!」[k]
+Outside the town, there was a huge golem, its metal fists relentlessly punching the wall.[k]
+It's trying to destroy it to invade the town![k]
+The town's soldiers were attacking the golem in an attempt to stop it, but it didn't seem to be working at all.[k]
+[textoff]
+@se f=rockdrop
+@quake time=500
+@wq
+@wait time=500
+@se f=rockdrop
+@quake time=500
+@wq
+@wait time=500
+[texton]
+A Golem has no desires of its own. So if it's moving, it must be following someone's orders. Who in the world is it, and for what purpose?[k]
+@st
+[？？？ v=vm074 key=ムールムール buf=13]「Gahahahaha!」[k]
+[テオ f=10]「...!」[k]
+Suddenly, I heard a familiar voice behind me.[k]
+[textoff]
+@clf
+@wait time=500
+@walk turn=s
+@wait time=500
+@mu f=murmur
+[texton]
+[ムールムール v=vm075 f=03]「Gahahahaha! You can't even put a scratch on a metal golem, no matter how much you try～!」[k]
+[テオ f=09]「Her...!」[k]
+It's that demon yet again! Perhaps she is the golem's master...[k]
+...So, if we can do something about her, it might stop the metal golem.[k]
+[テオ f=05]「Come on, guys, let's go!」[k]
+[リーゼル f=08]「... ∗nod∗」[k]
+[textoff]
+@wait time=500
+@walk move=s
+@walk move=s
+@walk move=s
+@wait time=500
+@fg c=悪魔 f=03
+[texton w=1]
+We rushed towards Murmur.[k]
+A few soldiers who probably tried to fight Murmur were lying on the ground around her.[k]
+[ムールムール v=vm076 f=03]「Gahahahaha! More, more!」[k]
+[テオ f=07]「You again! Causing more trouble! I won't forgive you!」[k]
+@fgf c=悪魔 f=05
+[ムールムール v=vm077 f=07]「Huh? You again?! Honestly, you're so persistent!」[k]
+[テオ f=05]「I won't let you get away with it today!」[k]
+@fgf c=悪魔 f=07
+[ムールムール v=vm078 f=07]「Huh? What are you saying? That's so annoying!」[k]
+@fgf c=悪魔 f=02
+[ムールムール v=vm079 f=02]「Oh well. It's a good opportunity for me to kill you all. My power has returned to normal.」[k]
+@fgf c=悪魔 f=15
+[ムールムール v=vm080 f=15]「Let me show you the true horror of a devil... The horror of my Breath of Death!」[k]
+[テオ f=12]「Breath of Death...? What?」[k]
+[name n=Soldier]「Hey! Stop, leave it alone! That demon is too dangerous!」[k]
+The soldier who had collapsed behind me looked up and frantically called out to me.[k]
+[テオ f=05]「What do you mean?」[k]
+[name n=Soldier]「She uses terrible magic! The power of her curse will kill you all!」[k]
+[テオ f=12]「The power of her curse...?!」[k]
+Maybe that's what she meant by death breath?[k]
+I was able to repel Murmur's previous attack with my demon hunter power. However, I don't know if it can prevent that so called death breath.[k]
+[name n=Soldier]「Guys! Get out of here! We're gonna get killed!」[k]
+[ムールムール v=vm081 f=15]「Gahahaha! Too late! I've already decided that I'm going to kill you all.」[k]
+[テオ f=10]「Damn...!」[k]
+[ムールムール v=vm082 f=15]「Die! You annoying bugs!」[k]
+[textoff]
+@clf
+
+; ムールムールと戦闘
+@addevent name=戦闘 num=2
+@addevent name=戦闘 num=3
+@eval exp='game.firstStrike = "enemy"'
+@eval exp='m.悪魔.btcmd = [o.サンダー, o.死のブレス]'
+@monster pos=3 name=悪魔
+@callbattle bgm=devil gameover=true escape=false stopbgm=true
+@delevent
+@addevent num=5
+; 戦闘勝利
+@saveon
+
+[texton w=0]
+[ムールムール v=vm083 f=28]「Damn... This is impossible...! I can't believe my Breath of Death doesn't work...! Who the hell are you?!」[k]
+[ムールムール v=vm084 f=17]「Damn... Damn... Gghh!」[k]
+@se f=dosa
+@quake time=500 hmax=5 vmax=0
+Murmur spat out a lot of blood and then stopped moving.[k]
+[テオ f=05]「Did we... beat her?」[k]
+We finally defeated the demon. She died before our eyes.[k]
+[if exp='HUM'][リム v=vh018 f=03]「You did it! Captain!」[k][endif]
+[if exp='ELF'][クレア v=ve019 f=01]「You did it! You finally defeated the devil!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd018 f=03]「It's amazing～ Defeating that demon!」[k][endif]
+[if exp='GNO'][ミューズ v=vg011 f=22]「Captain... Amazing... 」[k][endif]
+[if exp='SYL'][マルエット v=vs020 f=15]「We did it! Nice work, we did it!」[k][endif]
+[リーゼル v=vl084 f=01]「Captain...!」[k]
+[テオ f=01]「Riselle... Guys...! We did it, finally!」[k]
+Our party rejoices in the great accomplishment of defeating a devil. We finally did it.[k]
+[textoff]
+@se f=rockdrop
+@quake time=500
+@wq
+@wait time=500
+@se f=rockdrop
+@quake time=500
+@wq
+@wait time=500
+@mu f=crisis
+[texton]
+[テオ f=05]「...! (Ah!)」[k]
+[textoff]
+@wait time=500
+@walk turn=n
+@wait time=500
+[texton]
+Yes, now isn't the time to bask in the afterglow of victory.[k]
+The larger problem remains. The metal golem is still continuing its attack on the city walls.[k]
+It shows no sign of stopping, even after the demon that was giving it orders ceased to breathe. Perhaps it's gone completely out of control.[k]
+During the battle with the demon, the metal golem had moved on to attacking the town gate. Maybe it decided that would be easier to destroy.[k]
+The relentless attacks were opening holes in the walls that would allow the golem to pass through, in a matter of time.[k]
+If it enters the town, people will get hurt. We have to stop it as soon as possible...![k]
+But how? Normal attacks don't work on metal golems.[k]
+[name n=Soldier]「Waaah!」[k]
+Soldiers are desperately trying to stop the metal golem, but their attacks just bounce right off.[k]
+What should we do?! Is there any way to stop it?![k]
+[textoff]
+; この時、サファイアシティ入口にはメタルゴーレムが立ち塞がっているので入れない
+; はしごもないので、南の崖も登れない
+; マロール等も使えないので、マップから出られなくなっている
+[eventoff]
+
+
+;◇イベント03・メタルゴーレムと戦闘
+*golem_3
+
+; ジョセフの森・城門前
+@saveon
+@wait time=500
+@walk turn=e cond='game.party.curX == 3'
+@walk turn=n cond='game.party.curX == 4'
+@walk turn=w cond='game.party.curX == 5'
+@wait time=500
+@fgf c=golem_metal left=400 top=-100
+@se f=rockdrop
+@quake time=500
+@wq
+@wait time=500
+@se f=rockdrop
+@quake time=500
+@wq
+@wait time=500
+[texton]
+The metal golem continues its attack on the town gates.[k]
+Sapphire City is in danger! We must stop the golem from running amok at all costs!
+ [k]
+[textoff]
+@clf
+
+; メタルゴーレムと戦闘
+@eval exp='game.party.lastWalk = "goForward"'
+@addevent name=戦闘 num=4
+@monster pos=3 name=メタルゴーレム
+@callbattle bgm=boss gameover=true stopbgm=true
+@delevent name=戦闘 num=4
+@eval exp='game.party.minimumRecovery()'
+@eval exp='game.party.clearStatusOnDungeonExit()'
+@eval exp='o.サファイアシティ.bgm = "city"'
+; 戦闘勝利
+
+[texton]
+Okay, we've defeated the metal golem![k]
+[リーゼル v=vl085 f=01]「Well done, Captain.」[k]
+[テオ f=02]「Yeah! Nice work, guys!」[k]
+Riselle's voice made me confident in my reply.[k]
+Not only did we defeat that demon, we were able to destroy the golem and save the town from crisis.[k]
+It is truly an accomplishment. We had worked hard to become full-fledged adventurers, and we had finally accomplished a great task.[k]
+[textoff]
+@out
+@wait time=500
+
+; サファイアシティ
+@eval exp='game.view.close()'
+@eval exp='game.openTownView(o.サファイアシティ)'
+@gameon
+@mu f=city
+[texton]
+[name n=Fiona f=fiona_00]「You have done very well. You saved our town.」[k]
+Princess Fiona personally invited our party to the castle and praised us for eliminating the threat.[k]
+[テオ f=02]「What stirring words. I am honored beyond measure.」[k]
+[name n=Fiona f=fiona_00]「This is my way of saying thank you. Please continue to serve Sapphire City!」[k]
+[textoff]
+@getitem gold=200000
+[texton]
+[テオ f=02]「Thank you, Princess.」[k]
+[name n=Fiona f=fiona_01]「You are the pride of Sapphire City. I am looking forward to your future activities!」[k]
+[textoff]
+
+@wait time=500
+@fg c=シュバルツ f=02
+[texton w=1]
+[シュバルツ f=01]「You did it, [テオ]. You finally finished off that devil.」[k]
+Mr. Schwarz, who had heard the rumors, came to talk to us.[k]
+[テオ f=01]「Mr. Schwarz...!」[k]
+[シュバルツ f=02]「You have proven you are worthy of your demon hunter lineage. Congratulations!」[k]
+[テオ f=02]「Thank you very much. It's an honor.」[k]
+[シュバルツ f=01]「By the way, what are you going to do now?」[k]
+[テオ f=02]「I've decided to stop searching for magic stones for the time being, but I will continue to be an adventurer of course. My goal is to become an adventurer who surpasses my father.」[k]
+[シュバルツ f=02]「I see. You can do it. Do your best. I'll be rooting for you.」[k]
+[textoff]
+@cl
+
+; 設定
+@delevent
+@delevent name=ベトリヌスの酒場 num=3
+@delevent name=冒険者の宿 num=3
+@delevent name=アイテム保管庫 num=2
+@delevent name=サファイア城 num=5
+@delevent name=公園 num=2
+@delevent name=サファイアシティ・北西門 num=2
+@delevent name=サファイアシティ・北東門 num=2
+@delevent name=サファイアシティ・南西門 num=2
+@delevent name=下水道入口 num=2
+@addevent name=サファイアシティ num=6
+@eval exp='game.lapse = true'
+@eval exp='f.talkToPolaris = 1'
+
+[eventoff]
+
+
+
+
+;■リーゼルの過去
+
+;◇イベント01・リーゼルとの会話
+*liesel_1
+
+; 宿屋・夜
+@saveon
+@bg f=0001
+@mu f=guild
+@fg c=リーゼル e=通常 f=02
+[texton w=1]
+[テオ e=通常 f=02]「Are you used to this party yet?」[k]
+[リーゼル v=vl086 f=04]「……Yeah!」[k]
+Riselle responded to my question with a carefree smile.[k]
+[リーゼル v=vl087 f=01]「To be honest, at first I was really worried about whether I would be able to get along with anyone other than Maria...」[k]
+[リーゼル v=vl088 f=04]「But I'm having fun now. You're kind, and everyone else is nice, so...」[k]
+Riselle laughed a little shyly.[k]
+[テオ f=02]「I see. That's good.」[k]
+Apparently Riselle had been bullied by her previous party, so she was probably worried about joining another.[k]
+It's good that she's doing well now. I have the other girls in the party to thank.[k]
+[リーゼル v=vl089 f=29]「H-hey, Captain...」[k]
+[テオ f=02]「Hmm?」[k]
+[リーゼル v=vl090 f=29]「I may be a hindrance right now, but I'll work hard and get stronger... so...!」[k]
+[リーゼル v=vl091 f=33]「I want to stay in this party forever... Because I love it here...」[k]
+[テオ f=05]「What...?」[k]
+[テオ f=13]「Oh, of course! I wouldn't leave you out of the party! Absolutely not!」[k]
+[リーゼル v=vl092 f=25]「Really?」[k]
+[テオ f=02]「I made a promise with Maria, so there's no way I'd do something like that. So don't worry.」[k]
+[リーゼル f=25]「...」[k]
+[リーゼル v=vl093 f=03]「Thank goodness... I'm glad...」[k]
+She smiled with relief to hear my words.[k]
+Maybe she was treated so badly in her previous party that she doesn't want to leave one where she feels safe.[k]
+Anyway, there was no way I was going to let go of Riselle, given how I feel about her.[k]
+[テオ f=10]「...」[k]
+I wonder what she thinks of me.[k]
+It seems like she trusts me to some extent, but what about as a man...?[k]
+[textoff]
+@out
+@w05
+@moveheart her=リーゼル guy=テオ num=5
+[hoteloff]
+
+
+;◇イベント02・リーゼルとの会話
+*liesel_2
+
+; 宿屋・夜
+@saveon
+@bg f=0001
+@mu f=guild
+@fg c=リーゼル e=通常 f=02
+[texton w=1]
+[テオ e=通常 f=02]「Well, it's getting late, so I'll go to bed soon.」[k]
+[リーゼル v=vl094 f=01]「That's right... Captain, I want to get changed, so could you please look away...」[k]
+[テオ f=01]「Oh, I'll go out until you finish changing.」[k]
+[リーゼル v=vl095 f=01]「It's cold outside, right? Stay there, I won't be long...」[k]
+[テオ f=25]「G-got it.」[k]
+@cl
+I turned my back to her and heard the sound of fabric rustling from behind me.[k]
+[テオ f=26]「...」[k]
+Ugh... I'm nervous... I wonder if Riselle's in her underwear right now...[k]
+@se f=door1
+∗bang!∗[k]
+[テオ f=25]「...!」[k]
+@fgf c=リーゼル e=スカートとブラのみ f=25
+[リーゼル v=vl096 f=25]「Kya!」[k]
+Suddenly, the door to the room slammed open![k]
+[name n=Men f=guy1_01]「Ahh! I drank so much!」[k]
+[name n=Men f=guy2_01]「We have to get up early tomorrow, so let's get to bed!」[k]
+To my surprise, several strangers opened the door and came inside![k]
+Behind me, Riselle was only in her bra and skirt. I quickly stood in front of the men to hide her.[k]
+[name n=Men f=guy1_01]「...Wait, what? This isn't our room.」[k]
+[name n=Men f=guy2_01]「Oops, I got the wrong room. Sorry, sorry.」[k]
+The men hurriedly try to leave the room. It seems they made a mistake. What a nuisance...[k]
+[name n=Men f=guy1_01]「I embarrassed your cute girlfriend! I'm so sorry!」[k]
+[name n=Men f=guy2_01]「Sorry to interrupt your fun!」[k]
+With that, the men light-heatedly apologized and then left.[k]
+[テオ f=26]「...」[k]
+[リーゼル f=30]「...」[k]
+...They seem to have thought Riselle and I were in a romantic relationship. I didn't mind, but she may not have liked it...[k]
+[テオ f=33]「Hahaha... do we really look that way...?」[k]
+Partly out of embarrassment, I laughed and said that to try and cover it up.[k]
+@fg c=リーゼル f=26
+[リーゼル f=26]「...」[k]
+[リーゼル v=vl097 f=25]「Hey, Captain, is there someone you like?」[k]
+[テオ f=25]「Huh?!」[k]
+[テオ f=25]「N-no, no! No one!」[k]
+@fg c=リーゼル f=05
+[リーゼル f=05]「...」[k]
+@fg c=リーゼル f=04
+[リーゼル v=vl098 f=04]「...Come on, Captain. You don't need to deny it so forcefully.」[k]
+Riselle said, laughing.[k]
+[テオ f=33]「Hahaha, that's right...」[k]
+Of course I would deny it. Because the one I like is...[k]
+[リーゼル v=vl099 f=04]「Thank goodness. You didn't have a crush on anyone.」[k]
+[テオ f=29]「What...?」[k]
+She's glad there's no woman I like...? That means...![k]
+@fg c=リーゼル f=01
+[リーゼル v=vl100 f=01]「If such a person saw this scene, they'd definitely misunderstand, right? If that happened, we'd be in trouble...」[k]
+[テオ f=13]「Eh... Ah... T-that's right! Hahaha...」[k]
+For a moment, I was excited... But of course things wouldn't go that smoothly...[k]
+@fg c=リーゼル f=33
+[リーゼル v=vl101 f=33]「Anyway, can you please turn away again? I need to get changed...」[k]
+[テオ f=25]「S-sorry!」[k]
+@cl
+I panicked and turned my back on her.[k]
+[テオ f=26]「...」[k]
+Oh no. In the confusion, I forgot her embarrassing appearance.[k]
+I'm not in a relationship with her or anything. I need to be more careful.[k]
+...[k]
+But I hope that someday that really will become the case...[k]
+[textoff]
+@out
+@w05
+@moveheart her=リーゼル guy=テオ num=5
+[hoteloff]
+
+
+;◇イベント03・リーゼルがレベル４魔法を習得
+*liesel_3
+
+; 宿屋・朝
+; レベルアップによってレベル４の魔法を覚えた直後
+@saveon
+@w05
+[texton w=0]
+[テオ e=通常 f=01]「You've already learned level 4 magic! That's amazing, Riselle!」[k]
+[リーゼル v=vl102 e=通常 f=06]「Y-yeah...」[k]
+If you can cast level 4 spells, that makes you a pretty capable mage.[k]
+Even in guilds, mages are often required to be at least level 4 in order to be scouted. In other words, it's seen as proof of a full-fledged mage.[k]
+[テオ f=02]「You really do have a talent for magic! You're definitely not useless!」[k]
+[リーゼル f=10]「...」[k]
+[テオ f=05]「Huh...? Riselle?」[k]
+She seemed a bit depressed for some reason.[k]
+It was now proven that there was no problem with her aptitude for magic, something that had been bothering her until now. It should be something to be happy about.[k]
+Even though Riselle is the quiet and reserved type, surely that should be something to celebrate...[k]
+[テオ f=05]「What's wrong? You don't seem very happy about it...」[k]
+[リーゼル f=10]「...」[k]
+[リーゼル v=vl103 f=10]「No... nothing...」[k]
+[テオ f=05]「？」[k]
+I wonder if there's something bothering her.[k]
+...[k]
+Ah! Since she reached this milestone, I'll cheer her up by giving her a spellbook as a present.[k]
+As a mage, it would be useful to her, if nothing else. I don't know how much she'll like it, but she surely won't be offended.[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント04・リーゼルに魔法書をプレゼント
+*liesel_4
+
+; 宿屋・夜
+@saveon
+@bg f=0003
+@mu f=happy
+@fg c=リーゼル e=通常 f=00
+[texton w=1]
+[リーゼル v=vl104 f=00]「Hmm? What's wrong, Captain?」[k]
+[テオ e=通常 f=02]「Ah, I have a present for you.」[k]
+I handed Riselle the [emb exp='o.ブリザード.displayName'] spell book I'd bought at the magic shop.[k]
+@fg c=リーゼル f=05
+[リーゼル v=vl105 f=05]「This is...!」[k]
+[テオ f=02]「A spell book. To commemorate learning level 4 spells. It can teach [emb exp='o.ブリザード.displayName'].」[k]
+Spell books are useful items that allow you to instantly learn magic. They're popular at magic shops.[k]
+Normally, you learn magic in a burst of random inspiration when leveling up, but by using a spell book you can get the spell you want immediately.[k]
+Although they're a little pricey, there is no doubt that they're very useful for mages.[k]
+@fg c=リーゼル f=10
+[リーゼル f=10]「...」[k]
+[テオ f=02]「[emb exp='o.ブリザード.displayName'] is by far the most useful level 4 spell, and I didn't think you'd learned it. I'm sure it will come in handy for you.」[k]
+[リーゼル f=10]「...」[k]
+@fg c=リーゼル f=09
+[リーゼル v=vl106 f=09]「A-ah, thank you, Captain...」[k]
+[テオ f=01]「Give it a try. I'd love to see you use [emb exp='o.ブリザード.displayName'].」[k]
+[リーゼル f=09]「...」[k]
+@fg c=リーゼル f=06
+[リーゼル v=vl107 f=06]「...Okay. If you say so...」[k]
+@fg c=リーゼル f=51
+Riselle places the [emb exp='o.ブリザード.displayName'] spellbook on the table in front of her and holds her hand over the cover. The magic learning ritual begins.[k]
+@se f=magic2
+@bg f=0026
+[リーゼル f=51]「...」[k]
+She quietly closed her eyes and concentrated on the spellbook.[k]
+After a while, the spellbook began to emit a faint light. Once it reaches this state, all that's left is to whisper the words to teach the spell.[k]
+[テオ f=06]「Riselle...!」[k]
+@fg c=リーゼル f=52
+[リーゼル v=vl108 f=52]「Learning!」[k]
+Riselle spoke the words! Just when I thought she'd finally mastered [emb exp='o.ブリザード.displayName']...[k]
+@st
+@se f=electric
+@flash on off t=200
+@bgf f=0003
+@fgf c=リーゼル f=17
+@shake layer=3 loop=5 time=50 length=5
+∗whuff∗[k]
+[リーゼル v=vl109 f=17]「Ah...!」[k]
+[テオ f=12]「Riselle?!」[k]
+The magical light from the spellbook suddenly disappeared, returning to its original state.[k]
+@fg c=リーゼル f=10
+[リーゼル f=10]「...」[k]
+[テオ f=12]「It failed...?! That's ridiculous...」[k]
+Could it be that the spellbook was defective? What the... It was supposed to be a special present for Riselle...![k]
+[テオ f=12]「I'm sorry, Riselle! There must be something wrong with this spellbook. I'll go to the shop right away and get a new one...」[k]
+@mu f=memory
+[リーゼル v=vl110 f=09]「That's not it! The spellbook isn't the problem... I am...」[k]
+[テオ f=05]「W-what do you mean?」[k]
+[リーゼル v=vl111 f=10]「I... just can't learn this magic... no matter what I do...」[k]
+[テオ f=05]「...If you don't mind, please explain.」[k]
+[リーゼル f=10]「...」[k]
+[リーゼル v=vl112 f=09]「Actually, I've tried to learn this magic before.」[k]
+[テオ f=12]「What?!」[k]
+[リーゼル v=vl113 f=09]「Grandma handed me a magic book and told me to memorize it as quickly as possible...」[k]
+[テオ f=05]「By grandma... are you talking about Zelma?」[k]
+The archmage who tried to give Riselle a first-rate education in magic? I guess it was part of her training to turn her into a fine mage as quickly as possible.[k]
+[リーゼル v=vl114 f=10]「But I couldn't do it. No matter how many times I tried... My grandma got really angry...」[k]
+[テオ f=06]「...」[k]
+It must be something really strange for a magician to still be unable to remember spells even after using a spellbook...[k]
+But why? Why only [emb exp='o.ブリザード.displayName']? She can use other magic spells...[k]
+[リーゼル v=vl115 f=09]「I... can't stand seeing a snowstorm...」[k]
+[テオ f=05]「Snowstorm?」[k]
+[リーゼル f=51]「...」[k]
+@fg c=リーゼル f=06
+[リーゼル v=vl116 f=06]「The day my mother died... that day, there was a terrible snowstorm outside.」[k]
+[textoff]
+@out
+@w05
+
+; 回想
+@bg f=0027
+[texton w=2]
+As a snowstorm raged, I clung to my mother as she lay in bed in a small, remote cabin.[k]
+It was very cold inside the hut. Even though I was trying to keep warm, I wasn't getting any warmer.[k]
+
+I desperately called out to her, sobbing, over and over again. Please don't die.[k]
+But she didn't answer.[k]
+A doctor and several adults were there, but they all looked resigned.[k]
+Everyone just stood there looking down at my mother without any emotion. I was the only one who was desperate.[k]
+Soon I couldn't hear her breathing. I called out to her even more frantically.[k]
+However, my mother's warm body, gradually began to get colder.[k]
+Eventually, when I realized my mother would never come back, my emotions died too.[k]
+All that was there was the noise of the blizzard outside and the freezing air...[k]
+[textoff]
+@out
+@w1
+
+; 回想から戻る
+@bg f=0003 
+@fgf c=リーゼル f=48
+[texton w=1]
+[テオ f=06]「...」[k]
+[リーゼル v=vl117 f=48]「I still remember that day vividly... So when I think of a snowstorm, I can't stay calm...」[k]
+[テオ f=05]「So that's why you couldn't learn the [emb exp='o.ブリザード.displayName'] spell.」[k]
+It appears that a mage can't learn a spell they subconsciously refuse to use.[k]
+[リーゼル v=vl118 f=47]「But I'll try my best to learn it. I don't want to cause trouble for everyone...」[k]
+[テオ f=12]「No, you don't have to force yourself! If that's the case, it can't be helped.」[k]
+[リーゼル v=vl119 f=47]「But...!」[k]
+[テオ f=02]「I'm sure everyone in the party will understand. We'll work around it.」[k]
+[リーゼル v=vl120 f=46]「Captain...」[k]
+[テオ f=02]「So don't cry, Riselle.」[k]
+[リーゼル v=vl999 f=46]「Ugh... ∗sniff∗」[k]
+@fg c=リーゼル f=41
+[リーゼル v=vl121 f=41]「...Yes! Thank you, Captain...!」[k]
+Putting on a smile, she looked so brave and yet so fleeting.[k]
+[テオ f=06]「...」[k]
+As the leader, I have to protect this girl. That feeling grew stronger in my mind.[k]
+[textoff]
+@fa
+@out
+@w05
+@moveheart her=リーゼル guy=テオ num=10
+[hoteloff]
+

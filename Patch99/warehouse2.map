@@ -1,0 +1,122 @@
+﻿; 愚者の倉庫
+
+name = 愚者の倉庫２
+insideName = Floor 2
+level = 23
+bgm = trick
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+outfield = marble
+antiWarp = true
+
+; 各パーツ
+━ = stone
+　 = marble
+☆ = soilr
+❑ = cube
+／ = door
+⧻ = fence
+☖ = arch
+☗ = gate
+︻ = panel
+
+; 移動ポイント
+(A) = map:愚者の倉庫１, x:8, y:3, way:w, symbol:exit, ask:Go to the previous floor?
+(B) = map:愚者の倉庫３, x:10, y:7, way:s, symbol:exit, ask:Go to the next floor?
+
+; 宝箱
+box[1] = 罠はない,エクストラヒールの魔法書_u,エルフの弓_u,復活の粉,金貨（特大）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  ┏━┳━━━━━━━┳━━━━━━━━━┓
+ 7┃　⧻　　　　　　　┃☆　☆　☆　☆　☆┃
+  ┃　┃　　　　　　　┃　　　　　　　　　┃
+ 6┃　┃　　❑　　　　┃☆　☆　☆　☆　☆┃
+  ┃　┃　　　　　　　┗━━━━━┓　　　┣━┓
+ 5┃　┃　　　　❑　　　❑　　　　┃①　①⧻　┃
+  ┃　┗━━━┓　　　┏━┓　　　┃　　　┃　┃
+ 4┃　　　　❶┃　　❑┃	┃　　　┃　　　┃　┃
+  ┣━━━━━┛　　　┗━┛　┏━┫　　　┃　┃
+ 3☗Ⓐ　　　　　❑　　　　　　┃	┃　　　┃　┃
+  ┗━━━┓　　　┏━━━┓　┗━┛　　　┃　┃
+ 2				┃❑　　┃			┃❑　　　　　　┃　┃
+  ┏︻━━┛　　　┗━━━┛　　　　　　　┃　┃
+ 1┃②　　　　　　　❑　　　　　❑　❑　　┃　┃
+  ┃　　　　　　　　　　　┏━┓　　　　　┃　┃
+ 0┃　　　　　　　　　　　┃	┃　　　　　┃Ⓑ┃
+  ┗━━━━━━━━━━━┛	┗━━━━━┻☗┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(1, 7, "w", events.has(1) ? "close" : "open");
+switchFence(9, 5, "e", events.has(1) ? "close" : "open");
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsPush
+
+@eventoff cond='game.map.getFloorInfo(5, 7).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(6, 7).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(7, 7).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(8, 7).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(9, 7).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(5, 6).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(6, 6).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(7, 6).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(8, 6).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(9, 6).type != "movable"'
+@delevent
+@wait time=1000
+@se f=fence
+@switchfence x=1 y=7 way=w mode=open
+@switchfence x=9 y=5 way=e mode=open
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Stones in the way should be moved to the upper left space."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Think twice before placing a stone at<r>N:2 E:11 or N:0 E:11"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+[if exp='! game.map.events.has(1)']
+	@call storage="anime.ks" target=*failed_to_reset
+	[eventoff]
+[endif]
+
+@se f=dragstone
+@eval exp='game.map.reset()'
+@wait time=800
+@warp x=1 y=3 way=e
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

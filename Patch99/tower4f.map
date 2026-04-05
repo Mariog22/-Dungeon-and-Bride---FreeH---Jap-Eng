@@ -1,0 +1,139 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔４Ｆ
+insideName = ４Ｆ
+upper = ラドミラの塔５Ｆ
+lower = ラドミラの塔３Ｆ
+level = 44
+bgm = tower
+margin = 3
+shadow = dark
+sky = forest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+　 = marble
+〰 = water
+／ = door
+〆 = key
+☖ = arch
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+⑶ = pd_rat
+
+; 敵情報
+monsters = マスターランサー,デュエリスト,アークプリースト,メイガス,ネクロマンサー,マスターアーチャー,バーグラー,マスターシャドウ,オークキング,コボルドリーダー
+
+; 宝箱
+box[1] = 精力剤,精力剤,精力剤,カマンベール,カマンベール,カマンベール
+box[2] = 罠はない,小さなボタン
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  		┏━━━┳━━━┳━━━━━━━━━┓
+ 8		┃㊦　　┃　　　〆　　　　　　　　㊤┃
+  		┃　　　┃　　　┃　　　┏━━━┳━┫
+ 7		┃　　　┃❷　　⧻　　　／敵　　┃㊤┃
+  		┃　┏━┻━━━┻━┓　┃　┏━┛　┃
+ 6		┃　┃㊤　　　　　㊦┃　┃　┃　　　┃
+  		┃　┗━┓　┏━━━┫　┗━┛　┏━┫
+ 5		┃　〰〰┃　┃　　敵／　　　　　┃㊤┃
+  		┃　〰〰┃　┃　┏━┛　┏━┓　┃　┃
+ 4		┃　〰〰┃　┃　┃　　　／敵┃　┃㊤┃
+  		┃　〰〰┃　┃　┃　┏━┛　┃　┗━┫
+ 3		┃　〰〰┃　┃❶┃　┃　　　┃　　㊤┃
+  		┃　┏━┛　┣━┛　┗━━━┻━━━┫
+ 2		┃　【②　　┃㊦　　　　　　　　　㊤┃
+  		┣／┻━┓　┗━━━━━━━━━━━┫
+ 1		┃敵　　┃　　　　　　■　　　　　㊦┃
+  		┃　　　┗━━━┳━━━┓　　　┏━┫
+ 0		┃　　　　　　　／消　⑶┃　　　／①┨
+  		┗━━━━━━━┻━━━┻━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(9, 0);
+pos[6][0].f.eraseMagic = true;
+pos[5][8].w.key = o.クリスタルの鍵;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="11Ｆ" exp='tf.result = ["ラドミラの塔11Ｆ", "up"]'
+@select text="10Ｆ" exp='tf.result = ["ラドミラの塔10Ｆ", "up"]'
+@select text="９Ｆ" exp='tf.result = ["ラドミラの塔９Ｆ", "up"]'
+@select text="７Ｆ" exp='tf.result = ["ラドミラの塔７Ｆ", "up"]'
+@select text="６Ｆ" exp='tf.result = ["ラドミラの塔６Ｆ", "up"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Feed mice their favorite food."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger || onUseEventItem
+
+[if exp='game.onObjectTrigger']
+	[texton]
+	There is a pedestal with a statue of a mouse in front of me.[k]
+	[textoff]
+	@question title="Would you like to take the statue of the mouse?"
+	[if exp='tf.result']
+		[texton]
+		The statue is firmly attached to its pedestal and does not budge.[k]
+		[textoff]
+	[endif]
+	[eventoff]
+[endif]
+
+[if exp='game.curItem == o.チーズ || game.curItem == o.カマンベール']
+	@eval exp='game.itemWin.curChara.ejectItem(game.curItem, game.itemWin.curChara.reservedGrid)'
+	@wait time=1000
+	@btmes off
+	@se f=magic2
+	@fg c=9006 left=450 top=170 t=1000
+	[texton]
+	Shockingly, the mouse statue on the pedestal began to move as if it were a living creature![k]
+	@se f=swing2
+	@changefloor pimg="pedestal"
+	@clf
+	The mouse statue jumps on the cheese just like a real mouse![r]
+	Then it returned to its original statue form and remained motionless.[k]
+	[textoff]
+	@getitem item=ネズミの彫像
+	@delevent
+[else]
+	@notice text="Nothing happened."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

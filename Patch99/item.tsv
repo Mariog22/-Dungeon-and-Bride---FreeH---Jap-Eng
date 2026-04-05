@@ -1,0 +1,7289 @@
+﻿; アイテムデータ
+
+; 装備位置 ( part ) の指定は以下の通り
+;  main    利き手。メインの武器
+;  sub     非利き手。盾、またはサブの武器
+;  chest   上半身。鎧や服
+;  waist   下半身。下半身用の鎧やスカート
+;  bust    胸。ブラ（女性のみ）
+;  hip     尻。パンツ
+;  arm     腕。小手や手袋
+;  leg     足。靴類
+;  finger  指輪
+;  pocket  アクセサリー全般（お守り、ブローチなど）
+
+; 装備画像の仕様についての説明
+;・下に来るパーツが完全に隠れる場合画像を用意しなくて良い
+;・下に来るパーツが何も着ていない時と同じである場合、裸用の画像だけ用意すれば良い
+;・下に来るパーツが上の装備の破損時と破損前で同じである場合、破損前の画像だけ用意すれば良い
+;・影が落ちる場合と何も上に着ていない場合が同じである場合、裸用の画像だけ用意すれば良い
+;・上に来るパーツが破損時と破損前で同じである場合、どちらか一方の画像だけ用意すれば良い
+; （その場合、アイテムデータの破損時と破損前両方の項目にその画像の情報を書き込むこと）
+
+name	金貨（小）
+displayName	Gold (S)
+price	20
+type	money
+img	money_20
+detail	Gold coins. More gold when taken.
+
+name	金貨（中）
+displayName	Gold (M)
+price	100
+type	money
+img	money_100
+detail	Gold coins. More gold when taken.
+
+name	金貨（大）
+displayName	Gold (L)
+price	500
+type	money
+img	money_500
+detail	Gold coins. More gold when taken.
+
+name	金貨（特大）
+displayName	Gold (XL)
+price	2500
+type	money
+img	money_2500
+detail	Gold coins. More gold when taken.
+
+name	金貨（超特大）
+displayName	Gold (XXL)
+price	12500
+type	money
+img	money_12500
+detail	Gold coins. More gold when taken.
+
+name	額指定金貨
+displayName	Gold
+price	12500
+type	fixedMoney
+img	money_12500
+detail	Gold coins. More gold when taken.
+
+name	魔法の浮き橋
+displayName	Magic Floating Bridge
+price	0
+type	other
+img	other_bridge
+event	true
+detail	Magic bridge that allows passage across one air or water tile.
+
+name	マジックラダー
+displayName	Magic Ladder
+type	other
+img	other_ladder
+event	true
+detail	Magic ladder that allows low earthen walls to be climbed.<r>Hard or high walls, or obstacles at the top prevent its use.
+
+name	時のスイッチ
+displayName	Time Switch
+type	other
+img	other_reset
+event	true
+detail	A magic switch that can turn back time on a floor in certain places.
+
+name	取消しスイッチ
+displayName	Cancel Switch
+type	other
+img	other_undo
+event	true
+detail	A magic switch that allows you to undo moving a stone, once, immediately after you do so.<r>If you move, or the stone falls, it won't work.
+
+name	つるはし
+displayName	Pickaxe
+type	other
+price	5000
+img	other_mattock
+event	true
+detail	Pickaxe left in a hut on the riverbank in the snowfield, used for mining.
+
+name	赤いネックレス
+displayName	Red Necklace
+type	other
+img	necklace_red
+event	true
+detail	Necklace with a red gemstone stolen from an old woman by bandits.
+
+name	金のヘッドバンド
+displayName	Gold Headband
+type	other
+img	other_headband
+event	true
+detail	Gold headband worn by the Kobold leader.
+
+name	くい
+displayName	Stake
+rank	30
+type	club
+img	other_pile
+event	true
+detail	A stake made of wood, often used to kill vampires.
+
+name	リーゼルの髪飾り
+displayName	Riselle's Hair Ornament
+type	other
+price	200000
+img	other_comb
+event	true
+detail	Riselle's hair ornament, a memento of her mother.<r><c>※Story mode only
+
+name	ピンクの髪留め
+displayName	Pink Hair Clip
+type	other
+price	3000
+img	other_hairband
+event	true
+detail	A cute pink hair clip to hold long hair in place.<r><c>※Story mode only
+
+name	教団のバッジ
+displayName	Cult Badge
+rank	8
+type	amulet
+price	1000
+img	amulet_star
+detail	Badge of membership worn by all members of the cult.
+
+name	貝のお守り（ジャンの所持品）
+displayName	Shell Amulet (Jean's)
+type	other
+img	amulet_shell
+event	true
+detail	A shell amulet formerly belonging to Jean, Ortena's husband. Its mystic powers have faded away.
+
+name	精霊の石
+displayName	Spirit Stone
+type	other
+img	other_element
+event	true
+detail	A stone imbued with the power of spirits. It seems to have mysterious powers.
+
+name	命の聖杯
+displayName	Holy Grail of Life
+type	other
+img	other_cup
+range	1
+toGuest	true
+event	true
+detail	A shining cup that has been passed down since ancient times by the desert people, said to have the power to perform miracles and cure all illnesses.
+
+name	記念カップ
+displayName	Commemorative Trophy
+rank	92
+price	9999900
+type	other
+img	other_trophy
+strong	100
+attrib	ワープ
+detail	A trophy rewarded for exploring all maps. Grants unlimited warping.
+
+name	銀のユニコーン
+displayName	Silver Unicorn
+type	other
+price	4700000
+img	other_unicorn
+event	true
+detail	A silver unicorn statue, famous as a work of art
+
+name	黄金の人魚像
+displayName	Gold Mermaid Statue
+type	other
+price	230000
+img	other_mermaid
+event	true
+detail	A golden mermaid statue famous as a work of art.
+
+name	黄金の短剣
+displayName	Gold Dagger
+price	1250000
+type	other
+img	other_knife
+event	true
+detail	Gold dagger entombed with the king. Not usable as a weapon.
+
+name	千里の鏡
+displayName	Mirror of 1000 Miles
+type	other
+price	500000
+img	other_mirror
+event	true
+detail	Mysterious mirror that allows you to see distant places.
+
+name	氷竜の心臓
+displayName	Ice Dragon Heart
+type	other
+img	other_ice
+event	true
+detail	The heart taken from an ice dragon. Said to have the power to freeze all things.
+
+name	砂の水晶
+displayName	Sand Crystal
+type	other
+img	other_crystal
+event	true
+detail	A crystal ball that has been passed down by the desert people, and serves as proof of their heritage.
+
+name	金のフェアリー
+displayName	Gold Fairy
+rank	30
+type	other
+price	29800
+img	other_fairy
+event	true
+detail	Small golden fairy statue. Fragile wings.
+
+name	黄金のリンゴ
+displayName	Gold Apple
+type	food
+img	other_goldapple
+event	true
+detail	The highest grade of apple, it shines like gold and is very rare due to being harvested in limited quantities.
+
+name	ロイヤルゼリー
+displayName	Royal Jelly
+type	drink
+img	other_liquid_gold
+event	true
+detail	Special honey from the queen bee. Very nutritious.
+
+name	ワームの毒液
+displayName	Worm Venom
+type	drink
+img	other_liquid_purple
+event	true
+detail	Poisonous liquid taken from the corpse of the Lord of the Desert. Poison to humans, but a very tasty drink to demons.
+
+name	古代語の辞書
+displayName	Ancient Dictionary
+type	book
+img	book_beige
+event	true
+detail	A dictionary that allows you to translate ancient languages.
+
+name	モンスター図鑑
+displayName	Monster Encyclopedia
+type	book
+img	book_black
+event	true
+detail	A guidebook of all monsters that appear in the game. Once you defeat a monster, you can view it here.
+
+name	悪魔の彫像
+displayName	Devil Statue
+type	other
+img	other_demon
+event	true
+detail	A statue of a devil.
+
+name	スライムの彫像
+displayName	Slime Statue
+type	other
+img	other_slime
+event	true
+detail	A statue of a slime.
+
+name	ネズミの彫像
+displayName	Mouse Statue
+type	other
+img	other_rat
+event	true
+detail	A statue of a mouse.
+
+name	トカゲの彫像
+displayName	Lizard Statue
+type	other
+img	other_lizard
+event	true
+detail	A statue of a lizard.
+
+name	蛇の彫像
+displayName	Snake Statue
+type	other
+img	other_snake
+event	true
+detail	A statue of a snake.
+
+name	小さなボタン
+displayName	Small Button
+type	other
+img	other_button_16
+event	true
+detail	Small square button with "16" written on it.
+
+name	エレメントプレート・土
+displayName	Earth Plate
+rank	1
+type	other
+img	other_button_earth
+event	true
+detail	A small stone tablet with a mark representing earth.<r>If all are placed on the correct pedestals, you will be able to use the Warp spell.
+
+name	エレメントプレート・水
+displayName	Water Plate
+rank	1
+type	other
+img	other_button_water
+event	true
+detail	A small stone tablet with a mark representing water.<r>If all are placed on the correct pedestals, you will be able to use the Warp spell.
+
+name	エレメントプレート・火
+displayName	Fire Plate
+rank	1
+type	other
+img	other_button_fire
+event	true
+detail	A small stone tablet with a mark representing fire.<r>If all are placed on the correct pedestals, you will be able to use the Warp spell.
+
+name	エレメントプレート・風
+displayName	Wind Plate
+rank	1
+type	other
+img	other_button_wind
+event	true
+detail	A small stone tablet with a mark representing wind.<r>If all are placed on the correct pedestals, you will be able to use the Warp spell.
+
+name	入館証
+displayName	Item Gallery Pass
+rank	1
+type	card
+img	card_pass
+event	true
+detail	If you have this, you can enter Sapphire City's Item Gallery.
+
+name	温泉チケット
+displayName	Hot Spring Ticket
+rank	11
+price	2800
+type	card
+img	card_spa
+detail	Grants entrance to Yanek Hot Springs
+
+name	５連泊券
+displayName	5 Night Coupon
+rank	27
+price	15400
+type	card
+img	card_fivedays
+detail	If someone has this in their possession, they can level up a maximum of 5 times in one inn stay.
+
+name	１０連泊券
+displayName	10 Night Coupon
+rank	21
+price	28300
+type	card
+img	card_tendays
+detail	If someone has this in their possession, they can level up a maximum of 10 times in one inn stay.
+
+name	召喚の札
+displayName	Summoner's Card
+rank	28
+price	6000
+type	card
+img	card_charm
+detail	Summons one contracted monster. The one with the highest level will be selected.
+
+name	信徒の称号・月
+displayName	Believer's Title: Moon
+rank	30
+type	card
+img	card_moon
+event	true
+detail	By collecting all the evidence of completing the cult's training, you can meet with the guru.
+
+name	信徒の称号・星
+displayName	Believer's Title: Star
+rank	30
+type	card
+img	card_star
+event	true
+detail	By collecting all the evidence of completing the cult's training, you can meet with the guru.
+
+name	信徒の称号・雲
+displayName	Believer's Title: Sky
+rank	30
+type	card
+img	card_cloud
+event	true
+detail	By collecting all the evidence of completing the cult's training, you can meet with the guru.
+
+name	信徒の称号・海
+displayName	Believer's Title: Ocean
+rank	30
+type	card
+img	card_sea
+event	true
+detail	By collecting all the evidence of completing the cult's training, you can meet with the guru.
+
+name	信徒の称号・太陽
+displayName	Believer's Title: Sun
+rank	30
+type	card
+img	card_sun
+event	true
+detail	By collecting all the evidence of completing the cult's training, you can meet with the guru.
+
+name	スターカード・剣
+displayName	Star Card: Sword
+rank	35
+type	card
+img	card_sword
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	スターカード・盾
+displayName	Star Card: Shield
+rank	35
+type	card
+img	card_shield
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	スターカード・杖
+displayName	Star Card: Cane
+rank	35
+type	card
+img	card_rod
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	スターカード・十字架
+displayName	Star Card: Cross
+rank	35
+type	card
+img	card_cross
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	スターカード・帽子
+displayName	Star Card: Hat
+rank	35
+type	card
+img	card_hat
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	スターカード・蝶
+displayName	Star Card: Butterfly
+rank	35
+type	card
+img	card_butterfly
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	スターカード・魔法陣
+displayName	Star Card: Magic Circle
+rank	35
+type	card
+img	card_hexagram
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	スターカード・杯
+displayName	Star Card: Cup
+rank	35
+type	card
+img	card_glass
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	スターカード・林檎
+displayName	Star Card: Apple
+rank	35
+type	card
+img	card_apple
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	スターカード・髑髏
+displayName	Star Card: Skull
+rank	35
+type	card
+img	card_skull
+event	true
+detail	If you collect all 10 star-patterned cards, Baywalos will sell you Starburst magic.
+
+name	銀の鍵
+displayName	Silver Key
+rank	20
+type	key
+img	key_silver
+event	true
+detail	Key made of silver. Open a door with a silver keyhole.
+
+name	金の鍵
+displayName	Gold Key
+rank	1
+price	500000
+type	key
+img	key_gold
+event	true
+detail	Key made of gold. Opens a door with gold keyhole.
+
+name	牢屋の鍵
+displayName	Cell Keys
+rank	1
+type	key
+img	key_prison
+event	true
+detail	A bunch of keys to cell doors.
+
+name	看守の鍵
+displayName	Jailer's Key
+rank	25
+type	key
+img	key_horn
+event	true
+detail	A prison guard's key that opens any door in the prison.
+
+name	鉱山の鍵
+displayName	Mine Key
+rank	31
+type	key
+img	key_ring
+event	true
+detail	Mine manager's key.
+
+name	王の鍵
+displayName	King's Key
+rank	23
+type	key
+img	key_crown
+event	true
+detail	Key that protects a king's tomb.
+
+name	吸血鬼の鍵
+displayName	Vampire Key
+rank	42
+type	key
+img	key_jewel
+event	true
+detail	Key found in a vampire's castle.
+
+name	地下の町の鍵
+displayName	Underground City Key
+rank	20
+type	key
+img	key_hexagon
+event	true
+detail	Key to the gate of an underground town.
+
+name	ワイルド・ブルの鍵
+displayName	Wild Bull Key
+rank	30
+type	key
+img	key_skull
+event	true
+detail	Key used by the members of Wild Bull.
+
+name	教団の鍵
+displayName	Faith Key
+rank	40
+type	key
+img	key_star
+event	true
+detail	The key given to a member of the cult.
+
+name	水門の鍵
+displayName	Sluice Gate Key
+rank	40
+type	key
+img	key_shell
+event	true
+detail	Key that was enshrined deep in the Water Dragon Temple.
+
+name	倉庫の鍵
+displayName	Warehouse Key
+rank	40
+type	key
+img	key_triangle
+event	true
+detail	Key to open a warehouse.
+
+name	ハートの鍵
+displayName	Heart Key
+rank	40
+type	key
+img	key_heart
+event	true
+detail	A cute heart-shaped key.
+
+name	貞操帯の鍵
+displayName	Chastity Belt Key
+rank	40
+type	key
+img	key_lozenge
+event	true
+detail	A key to remove someone's chastity belt
+
+name	クリスタルの鍵
+displayName	Crystal Key
+rank	1
+type	key
+img	key_crystal
+event	true
+detail	Crystal key.
+
+name	こじあけの鍵
+displayName	Skeleton Key
+rank	15
+price	7400
+type	key
+img	key_tool
+detail	Key to open a door that needs to be pried open. Usable even without thief skills. Consumed on use.
+
+name	宝箱の鍵
+displayName	Chest Key
+rank	29
+price	7200
+type	key
+img	key_oval
+detail	Key to open a locked black treasure chest. Consumed on use.
+
+name	魔法の錠前
+displayName	Magic Lock
+rank	15
+price	9000
+type	key
+img	key_lock
+detail	A lock with magical power that can be used to lock a room. Used by innkeepers. Consumed on use.<r><c>※Story mode only
+
+name	ギルドへの紹介状
+displayName	Guild Introduction Letter
+type	letter
+img	letter_white
+anime	*view_letter
+event	true
+detail	A letter of introduction given by Schwarz. On presentation to the guild, you can form your own party.<r><c>※Story mode only
+
+name	入城許可証
+displayName	Entry Permit
+type	letter
+img	letter_white
+anime	*view_letter
+event	true
+detail	With this permit, you can freely enter Sapphire Castle.
+
+name	精霊の台座のメモ
+displayName	Spirit Pedestal Notes
+type	letter
+img	letter_white
+anime	*view_letter
+event	true
+detail	Note written to convey some information about the spirit pedestal.
+
+name	ジャンの手紙
+displayName	Jean's Letter
+type	letter
+img	letter_white
+anime	*view_letter
+event	true
+detail	A letter from Jean, a man who disappeared in the Water Palace, to his wife Ortena.
+
+name	カルロスの手紙
+displayName	Carlos' Letter
+type	letter
+img	letter_white
+anime	*view_letter
+event	true
+detail	Letter from Carlos, a man living in Bravetown, to his brother Muñoz.
+
+name	ムニョスの手紙
+displayName	Muñoz's Letter
+type	letter
+img	letter_white
+anime	*view_letter
+event	true
+detail	A letter from Muñoz, a man who lives in the town of Dustwell, to his brother Carlos.
+
+name	朽ち果てた手記
+displayName	Decaying Memoirs
+price	2
+type	letter
+img	letter_white
+anime	*view_letter
+detail	An adventurer's note found near a corpse deep in the Forest of the Lost.
+
+name	とある冒険者のメモ
+displayName	Adventurer's Note
+price	2
+type	letter
+img	letter_white
+anime	*view_letter
+detail	A note by someone in the lower level of the Labyrinth of Trials, describing how to move the stones in one of the locations in the Labyrinth of Trials.
+
+name	魔導士ラニガンの手紙
+displayName	Mage Lanigan's Letter
+price	10
+type	letter
+img	letter_white
+anime	*view_letter
+detail	Letter written by Lanigan, a great mage, congratulating the conquerors of the Labyrinth of Trials.
+
+name	初級の書
+displayName	Beginner Job Manual
+price	100
+type	letter
+img	letter_white
+anime	*view_letter
+detail	It describes the requirements for an entry-level job.
+
+name	中級の書
+displayName	Intermediate Job Manual
+rank	3
+price	500
+type	letter
+img	letter_white
+anime	*view_letter
+detail	It describes the requirements for an intermediate level job.
+
+name	召喚士の書
+displayName	Summoner Manual
+rank	3
+price	350
+type	letter
+img	letter_white
+anime	*view_letter
+cmdParam	召喚士
+detail	It describes the requirements to become a Summoner.
+
+name	吟遊詩人の書
+displayName	Bard Manual
+rank	3
+price	350
+type	letter
+img	letter_white
+anime	*view_letter
+cmdParam	吟遊詩人
+detail	It describes the requirements to become a Bard.
+
+name	ドルイドの書
+displayName	Druid Manual
+rank	5
+price	450
+type	letter
+img	letter_white
+anime	*view_letter
+cmdParam	ドルイド
+detail	It describes the requirements to become a Druid.
+
+name	バルキリーの書
+displayName	Valkyrie Manual
+rank	5
+price	450
+type	letter
+img	letter_white
+anime	*view_letter
+cmdParam	バルキリー
+detail	It describes the requirements to become a Valkyrie.
+
+name	ソーサラーの書
+displayName	Sorcerer Manual
+rank	3
+price	600
+type	letter
+img	letter_white
+anime	*view_letter
+cmdParam	ソーサラー
+detail	It describes the requirements to become a Sorcerer.
+
+name	モンクの書
+displayName	Monk Manual
+rank	5
+price	1050
+type	letter
+img	letter_white
+anime	*view_letter
+cmdParam	モンク
+detail	It describes the requirements to become a Monk.
+
+name	曲刀兵の書
+displayName	Spellblade Manual
+rank	8
+price	780
+type	letter
+img	letter_white
+anime	*view_letter
+cmdParam	曲刀兵
+detail	It describes the requirements to become a Spellblade.
+
+name	ロードの書
+displayName	Lord Manual
+rank	12
+price	3400
+type	letter
+img	letter_white
+anime	*view_letter
+cmdParam	ロード
+detail	It describes the requirements to become a Lord.
+
+name	アサシンの書
+displayName	Assassin Manual
+rank	14
+price	5700
+type	letter
+img	letter_white
+anime	*view_letter
+cmdParam	アサシン
+detail	It describes the requirements to become an Assassin.
+
+name	魔法の砂
+displayName	Sand Material
+rank	5
+price	400
+type	material
+img	material_sand
+detail	Magic sand used to repair items. Only low rank items can be repaired.
+
+name	ミスリルの砂
+displayName	Mithril Material
+rank	10
+price	2400
+type	material
+img	material_mithril
+detail	Magic sand used to repair items. Medium rank or higher items can be repaired.
+
+name	オリハルコンの砂
+displayName	Orichalcum Material
+rank	21
+price	29500
+type	material
+img	material_orihalcon
+detail	Magic sand used to repair items. High rank items can be repaired.
+
+name	アダマンタイト鉱石
+displayName	Adamantite Ore
+rank	18
+price	17000
+type	material
+img	material_adamantite
+detail	Precious and very strong ore from caves, etc.
+
+name	ポラリスの宝珠
+displayName	Polaris Jewel
+price	20000
+type	material
+img	material_orb_red
+detail	If you get 10 of these orbs, you can request a blessing from the god Polaris with a spell.
+
+name	アウラの宝珠
+displayName	Aura Jewel
+price	20000
+type	material
+img	material_orb_blue
+detail	If you get 10 of these orbs, you can request a blessing from the god Aura with a spell.
+
+name	召喚びん
+displayName	Summon Bottle
+rank	8
+price	1000
+type	pot
+img	pot_monster
+detail	A magic bottle to contain a summoned monster. Required to form summoning contracts.
+
+name	大きな召喚びん
+displayName	Large Summon Bottle
+price	100000
+type	pot
+img	pot_bigmonster
+detail	A magic bottle to contain a LV9 summoned monster. Required for high level summoning contracts.
+
+name	経験のコイン（小）
+displayName	EXP Coin (S)
+price	3000
+type	consume
+img	consume_exp_small
+range	1
+exp	3000
+toGuest	true
+detail	Grants 3,000 EXP.
+
+name	経験のコイン（中）
+displayName	EXP Coin (M)
+price	15000
+type	consume
+img	consume_exp_middle
+range	1
+exp	15000
+toGuest	true
+detail	Grants 15,000 EXP.
+
+name	経験のコイン（大）
+displayName	EXP Coin (L)
+price	99999
+type	consume
+img	consume_exp_large
+range	1
+exp	99999
+toGuest	true
+detail	Grants 999999 EXP.
+
+name	ボム
+displayName	Bomb
+rank	1
+price	900
+type	consume
+img	consume_bomb
+anime	*set_bomb
+detail	Can destroy cracked walls and floors one block ahead.
+
+name	ハイパーボム
+displayName	Hyper Bomb
+rank	1
+price	1700
+type	consume
+img	consume_hyper
+anime	*set_bomb
+detail	Can destroy red walls one block ahead. Very dangerous.<r><p>∗Each use is recorded and will reduce the score when clearing the game. Prevents obtaining some trophies.
+
+name	けむり玉
+displayName	Smoke Ball
+rank	13
+price	4300
+type	consumes
+img	consumes_smoke
+range	0
+detail	Creates smoke to blind the enemy and safely withdraw from battle (except special battles).
+
+name	精霊の縫い糸
+displayName	Spirit Sewing Thread
+rank	11
+price	1900
+type	consumes
+img	consumes_thread
+range	1
+toGuest	true
+detail	Magical thread that can repair any clothes. Can be used to completely repair guests' equipment.
+
+name	気付けの花
+displayName	Remembrance Flower
+rank	2
+price	180
+type	consumes
+img	consumes_flower
+range	1
+toGuest	true
+detail	Flower that can serve as a restorative. Treat sleep, fear, and confused states.
+
+name	毒消しの花
+displayName	Antitoxin Flower
+rank	3
+price	200
+type	consumes
+img	consumes_bloom
+range	1
+toGuest	true
+detail	Flowers that can be used to cure poison.
+
+name	復活の粉
+displayName	Resurrection Powder
+rank	33
+price	120000
+type	consumes
+img	consumes_powder
+range	1
+toGuest	true
+detail	Miraculous powder that resurrects the dead.
+
+name	フェロモンの粉
+displayName	Pheromone Powder
+rank	37
+price	265000
+type	consumes
+img	consumes_pheromone
+range	1
+toGuest	true
+detail	Mysterious powder said to be effective in attracting the opposite sex.
+
+name	行動力増加袋
+displayName	Action Booster
+rank	50
+price	950000
+type	consumes
+img	consumes_sack
+detail	Increases maximum inn actions by 1 (Story mode only).<r>When used during battle, it temporarily increases the number of ally attacks.
+
+name	マッドウイングの羽
+displayName	Madwing Feather
+price	5000
+type	consumes
+img	consumes_harpy
+range	1
+detail	Feather from Madwing the bird monster
+
+name	フェニックスの羽
+displayName	Phoenix Feather
+price	390000
+type	consumes
+img	consumes_phoenix
+range	1
+detail	Seven-colored feather said to belong to the phoenix.
+
+name	ドライアドの霊薬
+displayName	Dryad Elixir
+price	250000
+type	consumes
+img	other_liquid_green
+range	1
+detail	A very rare medicine made from a concoction of forest spirit scales that relieves the symptoms of serious illness.
+
+name	ふっくらパン
+displayName	Bread
+rank	2
+price	120
+type	food
+img	food_bread
+range	1
+life	30
+toGuest	true
+detail	Fluffy baked bread. Recovers a little HP.
+
+name	はちみつパン
+displayName	Honey Bread
+rank	3
+price	290
+type	food
+img	food_sweetbread
+range	1
+life	100
+toGuest	true
+detail	Sweet bread with honey inside and sprinkled with sugar. Recovers a little HP.
+
+name	りんご
+displayName	Apple
+rank	5
+price	480
+type	food
+img	food_apple
+range	1
+life	160
+toGuest	true
+detail	Juicy apple, a regional specialty. Recovers HP.
+
+name	青りんご
+displayName	Green Apple
+rank	5
+price	1280
+type	food
+img	food_greenapple
+range	1
+life	340
+toGuest	true
+detail	High-grade green apple with a fresh taste. Greatly recovers HP.
+
+name	チーズ
+displayName	Cheese
+rank	10
+price	2480
+type	food
+img	food_cheese
+range	1
+life	530
+toGuest	true
+detail	Nutritious cheese, the town's specialty. Greatly recovers HP.
+
+name	カマンベール
+displayName	Camembert
+rank	14
+price	4980
+type	food
+img	food_camembert
+range	1
+life	1080
+toGuest	true
+detail	Soft and rich tasting cheese. Greatly recovers HP.
+
+name	ポーション
+displayName	Potion
+rank	7
+price	880
+type	drink
+img	drink_blue_s
+range	1
+life	240
+toGuest	true
+detail	Restores HP. Treats fear and confusion. Sedative effect.
+
+name	ハイポーション
+displayName	High Potion
+rank	14
+price	4980
+type	drink
+img	drink_blue
+range	1
+life	720
+toGuest	true
+detail	Significantly restores HP. Treats fear and confusion. Sedative effect.
+
+name	エーテル
+displayName	Ether
+rank	29
+price	79800
+type	drink
+img	drink_green_s
+range	1
+magic	1
+detail	Restores 1 MP.
+
+name	ハイエーテル
+displayName	High Ether
+rank	50
+price	980000
+type	drink
+img	drink_green
+range	1
+magic	5
+detail	Restores 5 MP.
+
+name	眠気ざまし
+displayName	Sleep Remedy
+rank	8
+price	1000
+type	drink
+img	drink_cyan_s
+range	1
+sleep	-10
+detail	Relieves fatigue by 10. Has a calming effect.
+
+name	強力眠気ざまし
+displayName	Sleep Remedy+
+rank	18
+price	18000
+type	drink
+img	drink_cyan
+range	1
+sleep	-50
+detail	Relieves fatigue by 50. Has a distracting effect.
+
+name	麻痺治療薬
+displayName	Paralysis Remedy
+rank	3
+price	550
+type	drink
+img	drink_yellow
+range	1
+toGuest	true
+detail	Cures paralysis
+
+name	石化解除薬
+displayName	Petrification Cure
+rank	9
+price	2600
+type	drink
+img	drink_white
+range	1
+toGuest	true
+detail	Treats petrification
+
+name	特効薬
+displayName	Panacea
+rank	21
+price	29800
+type	drink
+img	drink_red
+range	1
+toGuest	true
+detail	Cures all conditions and restores all HP.
+
+name	武芸の秘薬
+displayName	Strength Elixir
+rank	26
+price	50000
+type	drink
+img	drink_orange
+range	1
+power	1
+detail	Strength is increased by 1.
+
+name	知恵の秘薬
+displayName	Intelligence Elixir
+rank	26
+price	50000
+type	drink
+img	drink_orange
+range	1
+intellect	1
+detail	Intelligence is increased by 1.
+
+name	信仰心の秘薬
+displayName	Faith Elixir 
+rank	26
+price	50000
+type	drink
+img	drink_orange
+range	1
+piety	1
+detail	Faith is increased by 1.
+
+name	生命力の秘薬
+displayName	Vitality Elixir
+rank	26
+price	50000
+type	drink
+img	drink_orange
+range	1
+vitality	1
+detail	Vitality is increased by 1.
+
+name	敏捷性の秘薬
+displayName	Speed Elixir
+rank	26
+price	50000
+type	drink
+img	drink_orange
+range	1
+speed	1
+detail	Speed is increased by 1.
+
+name	運の秘薬
+displayName	Luck Elixir
+rank	26
+price	50000
+type	drink
+img	drink_orange
+range	1
+luck	1
+detail	Luck is increased by 1.
+
+name	精力剤
+displayName	Aphrodisiac Tonic
+rank	15
+price	9600
+type	drink
+img	drink_lavender
+range	1
+life	660
+heat	50
+toGuest	true
+detail	Greatly restores HP, but increases lust by 50.
+
+name	男の秘薬
+displayName	Men's Secret Medicine
+rank	25
+price	41700
+type	drink
+img	drink_pink
+range	1
+detail	For men. Increases the sexual attractiveness of the person who uses it.
+
+name	女の秘薬
+displayName	Women's Secret Medicine
+rank	23
+price	38400
+type	drink
+img	drink_pink
+range	1
+detail	For women. Increases the sexual attractiveness of the person who uses it.
+
+name	修理の巻物
+displayName	Repair Scroll
+rank	19
+price	23000
+type	scroll
+img	scroll_beige
+scene	camp
+cmdParam	リペア
+detail	Repairs broken items (use from item screen).
+
+name	鑑定の巻物
+displayName	Appraise Scroll 
+rank	19
+price	21000
+type	scroll
+img	scroll_beige
+scene	camp
+cmdParam	アナライズ
+detail	Appraises unknown items (use from item screen).
+
+name	解呪の巻物
+displayName	Destroy Curse Scroll
+rank	18
+price	19600
+type	scroll
+img	scroll_beige
+scene	camp
+cmdParam	リムーブカース
+detail	Destroys cursed items (use from item screen).
+
+name	解呪の巻物・改
+displayName	Dispel Curse Scroll
+rank	33
+price	100000
+type	scroll
+img	scroll_beige
+cmdParam	リムーブカース
+detail	Unequips cursed items without destroying them (use from item screen).
+
+name	マインドリードの巻物
+displayName	Mind Read Scroll
+rank	14
+price	6000
+type	scroll
+img	scroll_brown
+cmdParam	マインドリード
+detail	Read the minds of NPCs
+
+name	スリープの巻物
+displayName	Sleep Scroll
+rank	4
+price	400
+type	scroll
+img	scroll_brown
+cmdParam	スリープ
+
+name	フリーズの巻物
+displayName	Freeze Scroll
+rank	5
+price	600
+type	scroll
+img	scroll_brown
+cmdParam	フリーズ
+
+name	ファイアリングの巻物
+displayName	Fire Ring Scroll
+rank	9
+price	2100
+type	scroll
+img	scroll_brown
+cmdParam	ファイアリング
+
+name	ウィザードアイの巻物
+displayName	Magic Map Scroll
+rank	12
+price	3200
+type	scroll
+img	scroll_brown
+cmdParam	ウィザードアイ
+
+name	ブリザードの巻物
+displayName	Blizzard Scroll
+rank	12
+price	3200
+type	scroll
+img	scroll_brown
+cmdParam	ブリザード
+
+name	サンダーバーストの巻物
+displayName	Thunderburst Scroll
+rank	15
+price	7500
+type	scroll
+img	scroll_brown
+cmdParam	サンダーバースト
+
+name	レビテイトの巻物
+displayName	Levitate Scroll
+rank	13
+price	4500
+type	scroll
+img	scroll_brown
+cmdParam	レビテイト
+
+name	イレースマジックの巻物
+displayName	Erase Magic Scroll
+rank	15
+price	7400
+type	scroll
+img	scroll_brown
+attrib	消去
+bootTrap	true
+cmdParam	イレースマジック
+
+name	アクセラレートの巻物
+displayName	Flurry Scroll
+rank	15
+price	9800
+type	scroll
+img	scroll_brown
+cmdParam	アクセラレート
+
+name	ファイアストームの巻物
+displayName	Firestorm Scroll
+rank	15
+price	11500
+type	scroll
+img	scroll_brown
+cmdParam	ファイアストーム
+
+name	アイスブラストの巻物
+displayName	Ice Blast Scroll
+rank	18
+price	18000
+type	scroll
+img	scroll_brown
+cmdParam	アイスブラスト
+
+name	アースクエイクの巻物
+displayName	Earthquake Scroll
+rank	18
+price	19500
+type	scroll
+img	scroll_brown
+cmdParam	アースクエイク
+
+name	インフェルノの巻物
+displayName	Inferno Scroll
+rank	21
+price	31000
+type	scroll
+img	scroll_brown
+cmdParam	インフェルノ
+
+name	ワープの巻物
+displayName	Warp Scroll
+rank	25
+price	42000
+type	scroll
+img	scroll_brown
+attrib	ワープ
+bootTrap	true
+cmdParam	ワープ
+
+name	メイルシュトロームの巻物
+displayName	Maelstrom Scroll
+rank	26
+price	56000
+type	scroll
+img	scroll_brown
+cmdParam	メイルシュトローム
+
+name	ライトボールの巻物
+displayName	Light Ball Scroll
+rank	4
+price	400
+type	scroll
+img	scroll_purple
+cmdParam	ライトボール
+
+name	サイレンスの巻物
+displayName	Silence Scroll
+rank	4
+price	800
+type	scroll
+img	scroll_purple
+cmdParam	サイレンス
+
+name	マジックバリアの巻物
+displayName	Barrier Scroll
+rank	8
+price	2000
+type	scroll
+img	scroll_purple
+cmdParam	マジックバリア
+
+name	プロテクションの巻物
+displayName	Protection Scroll
+rank	14
+price	4950
+type	scroll
+img	scroll_purple
+cmdParam	プロテクション
+
+name	パワーガードの巻物
+displayName	Power Guard Scroll
+rank	14
+price	5200
+type	scroll
+img	scroll_purple
+cmdParam	パワーガード
+
+name	マルチヒールの巻物
+displayName	Multi Heal Scroll
+rank	15
+price	12500
+type	scroll
+img	scroll_purple
+cmdParam	マルチヒール
+
+name	ライトストリームの巻物
+displayName	Light Stream Scroll
+rank	17
+price	16400
+type	scroll
+img	scroll_purple
+cmdParam	ライトストリーム
+
+name	ターンデビルの巻物
+displayName	Banish Devil Scroll
+rank	16
+price	14500
+type	scroll
+img	scroll_purple
+cmdParam	ターンデビル
+
+name	デスクラウドの巻物
+displayName	Deathcloud Scroll
+rank	20
+price	24500
+type	scroll
+img	scroll_purple
+cmdParam	デスクラウド
+
+name	ディバインレイの巻物
+displayName	Divine Ray Scroll
+rank	27
+price	66000
+type	scroll
+img	scroll_purple
+cmdParam	ディバインレイ
+
+name	リターンの巻物
+displayName	Return Scroll
+rank	40
+price	64000
+type	scroll
+img	scroll_purple
+cmdParam	リターン
+
+name	グランドヒールの巻物
+displayName	Heal All Scroll
+rank	33
+price	145000
+type	scroll
+img	scroll_purple
+cmdParam	グランドヒール
+
+name	アシッドの巻物
+displayName	Acid Scroll
+rank	4
+price	400
+type	scroll
+img	scroll_beige
+cmdParam	アシッド
+
+name	メタルバレットの巻物
+displayName	Metal Bullet Scroll
+rank	8
+price	900
+type	scroll
+img	scroll_beige
+cmdParam	メタルバレット
+
+name	ジャンプの巻物
+displayName	Jump Scroll
+rank	5
+price	1200
+type	scroll
+img	scroll_beige
+bootTrap	true
+cmdParam	ジャンプ
+
+name	クイックの巻物
+displayName	Quick Scroll
+rank	8
+price	2000
+type	scroll
+img	scroll_beige
+cmdParam	クイック
+
+name	マジックウェポンの巻物
+displayName	Magic Weapon Scroll
+rank	15
+price	8800
+type	scroll
+img	scroll_beige
+cmdParam	マジックウェポン
+
+name	ミサイルシールドの巻物
+displayName	Missile Shield Scroll
+rank	12
+price	2900
+type	scroll
+img	scroll_beige
+cmdParam	ミサイルシールド
+
+name	ミスティックアイの巻物
+displayName	Mystic Eye Scroll
+rank	13
+price	4000
+type	scroll
+img	scroll_beige
+bootEvent	true
+cmdParam	ミスティックアイ
+
+name	メタルストームの巻物
+displayName	Metal Storm Scroll
+rank	16
+price	13000
+type	scroll
+img	scroll_beige
+cmdParam	メタルストーム
+
+name	ミラーウォールの巻物
+displayName	Mirror Wall Scroll
+rank	13
+price	3800
+type	scroll
+img	scroll_beige
+cmdParam	ミラーウォール
+
+name	アンロックの巻物
+displayName	Unlock Scroll
+rank	20
+price	25000
+type	scroll
+img	scroll_beige
+cmdParam	アンロック
+
+name	マジカルボートの巻物
+displayName	Magic Boat Scroll
+rank	26
+price	53500
+type	scroll
+img	scroll_beige
+cmdParam	マジカルボート
+
+name	スターバーストの巻物
+displayName	Starburst Scroll
+rank	29
+price	83000
+type	scroll
+img	scroll_beige
+cmdParam	スターバースト
+
+name	スリープの魔法書
+displayName	Sleep Spellbook
+rank	9
+price	2200
+type	book
+img	book_red
+range	1
+cmdParam	スリープ
+
+name	スカウトの魔法書
+displayName	Scout Spellbook
+rank	18
+price	19500
+type	book
+img	book_red
+range	1
+cmdParam	スカウト
+
+name	ウィザードアイの魔法書
+displayName	Magic Map Spellbook
+rank	19
+price	21500
+type	book
+img	book_red
+range	1
+cmdParam	ウィザードアイ
+
+name	ファイアリングの魔法書
+displayName	Fire Ring Spellbook
+rank	20
+price	23500
+type	book
+img	book_red
+range	1
+cmdParam	ファイアリング
+
+name	ブリザードの魔法書
+displayName	Blizzard Spellbook
+rank	22
+price	36000
+type	book
+img	book_red
+range	1
+cmdParam	ブリザード
+
+name	ミラーウォールの魔法書
+displayName	Mirror Wall Spellbook
+rank	24
+price	39500
+type	book
+img	book_red
+range	1
+cmdParam	ミラーウォール
+
+name	レビテイトの魔法書
+displayName	Levitate Spellbook
+rank	25
+price	40000
+type	book
+img	book_red
+range	1
+cmdParam	レビテイト
+
+name	マインドリードの魔法書
+displayName	Mind Read Spellbook
+rank	27
+price	62500
+type	book
+img	book_red
+range	1
+cmdParam	マインドリード
+
+name	サンダーバーストの魔法書
+displayName	Thunderburst Spellbook
+rank	27
+price	63000
+type	book
+img	book_red
+range	1
+cmdParam	サンダーバースト
+
+name	ファイアストームの魔法書
+displayName	Firestorm Spellbook
+rank	31
+price	95000
+type	book
+img	book_red
+range	1
+cmdParam	ファイアストーム
+
+name	アイスブラストの魔法書
+displayName	Ice Blast Spellbook
+rank	35
+price	186000
+type	book
+img	book_red
+range	1
+cmdParam	アイスブラスト
+
+name	メイルシュトロームの魔法書
+displayName	Maelstrom Spellbook
+rank	37
+price	280000
+type	book
+img	book_red
+range	1
+cmdParam	メイルシュトローム
+
+name	ワープの魔法書
+displayName	Warp Spellbook
+rank	42
+price	360000
+type	book
+img	book_red
+range	1
+cmdParam	ワープ
+
+name	デモニックフレアの魔法書
+displayName	Demonic Flare Spellbook
+rank	48
+price	650000
+type	book
+img	book_red
+range	1
+cmdParam	デモニックフレア
+
+name	コールポラリスの魔法書
+displayName	Call Polaris Spellbook
+rank	49
+price	752000
+type	book
+img	book_red
+range	1
+cmdParam	コールポラリス
+
+name	サイレンスの魔法書
+displayName	Silence Spellbook
+rank	15
+price	7200
+type	book
+img	book_blue
+range	1
+cmdParam	サイレンス
+
+name	トーチの魔法書
+displayName	Torch Spellbook
+rank	15
+price	12800
+type	book
+img	book_blue
+range	1
+cmdParam	トーチ
+
+name	マジックバリアの魔法書
+displayName	Barrier Spellbook
+rank	16
+price	14800
+type	book
+img	book_blue
+range	1
+cmdParam	マジックバリア
+
+name	キュアパラライズの魔法書
+displayName	Cure Paralysis Spellbook
+rank	18
+price	17800
+type	book
+img	book_blue
+range	1
+cmdParam	キュアパラライズ
+
+name	パワーヒールの魔法書
+displayName	Mega Heal Spellbook
+rank	23
+price	36500
+type	book
+img	book_blue
+range	1
+cmdParam	パワーヒール
+
+name	キュアポイズンの魔法書
+displayName	Cure Poison Spellbook
+rank	25
+price	42000
+type	book
+img	book_blue
+range	1
+cmdParam	キュアポイズン
+
+name	エクストラヒールの魔法書
+displayName	Giga Heal Spellbook
+rank	28
+price	72000
+type	book
+img	book_blue
+range	1
+cmdParam	エクストラヒール
+
+name	パワーガードの魔法書
+displayName	Power Guard Spellbook
+rank	29
+price	78000
+type	book
+img	book_blue
+range	1
+cmdParam	パワーガード
+
+name	マルチヒールの魔法書
+displayName	Multi Heal Spellbook
+rank	32
+price	97500
+type	book
+img	book_blue
+range	1
+cmdParam	マルチヒール
+
+name	レイズデッドの魔法書
+displayName	Raise Dead Spellbook
+rank	31
+price	93500
+type	book
+img	book_blue
+range	1
+cmdParam	レイズデッド
+
+name	ライトストリームの魔法書
+displayName	Light Stream Spellbook
+rank	33
+price	135000
+type	book
+img	book_blue
+range	1
+cmdParam	ライトストリーム
+
+name	リカバリーの魔法書
+displayName	Recovery Spellbook
+rank	34
+price	158000
+type	book
+img	book_blue
+range	1
+cmdParam	リカバリー
+
+name	リターンの魔法書
+displayName	Return Spellbook
+rank	42
+price	350000
+type	book
+img	book_blue
+range	1
+cmdParam	リターン
+
+name	レザレクションの魔法書
+displayName	Resurrection Spellbook
+rank	49
+price	720000
+type	book
+img	book_blue
+range	1
+cmdParam	レザレクション
+
+name	コールアウラの魔法書
+displayName	Call Aura Spellbook
+rank	49
+price	765000
+type	book
+img	book_blue
+range	1
+cmdParam	コールアウラ
+
+name	ジャンプの魔法書
+displayName	Jump Spellbook
+rank	15
+price	8600
+type	book
+img	book_yellow
+range	1
+cmdParam	ジャンプ
+
+name	ディテクトの魔法書
+displayName	Detect Spellbook
+rank	15
+price	7500
+type	book
+img	book_yellow
+range	1
+cmdParam	ディテクト
+
+name	スパークの魔法書
+displayName	Spark Spellbook
+rank	18
+price	17800
+type	book
+img	book_yellow
+range	1
+cmdParam	スパーク
+
+name	イレースマジックの魔法書
+displayName	Erase Magic Spellbook
+rank	23
+price	38000
+type	book
+img	book_yellow
+range	1
+cmdParam	イレースマジック
+
+name	ミサイルシールドの魔法書
+displayName	Missile Shield Spellbook
+rank	22
+price	36400
+type	book
+img	book_yellow
+range	1
+cmdParam	ミサイルシールド
+
+name	アナライズの魔法書
+displayName	Appraise Spellbook
+rank	28
+price	71000
+type	book
+img	book_yellow
+range	1
+cmdParam	アナライズ
+
+name	ミスティックアイの魔法書
+displayName	Mystic Eye Spellbook
+rank	27
+price	67000
+type	book
+img	book_yellow
+range	1
+cmdParam	ミスティックアイ
+
+name	マジックウェポンの魔法書
+displayName	Magic Weapon Spellbook
+rank	30
+price	88000
+type	book
+img	book_yellow
+range	1
+cmdParam	マジックウェポン
+
+name	マジカルボートの魔法書
+displayName	Magic Boat Spellbook
+rank	31
+price	96000
+type	book
+img	book_yellow
+range	1
+cmdParam	マジカルボート
+
+name	リムーブカースの魔法書
+displayName	Remove Curse Spellbook
+rank	34
+price	154000
+type	book
+img	book_yellow
+range	1
+cmdParam	リムーブカース
+
+name	アンロックの魔法書
+displayName	Unlock Spellbook
+rank	35
+price	184000
+type	book
+img	book_yellow
+range	1
+cmdParam	アンロック
+
+name	アシッドバーストの魔法書
+displayName	Acid Shower Spellbook
+rank	43
+price	395000
+type	book
+img	book_yellow
+range	1
+cmdParam	アシッドバースト
+
+name	マルチエイドの魔法書
+displayName	Multi Aid Spellbook
+rank	44
+price	425000
+type	book
+img	book_yellow
+range	1
+cmdParam	マルチエイド
+
+name	リペアの魔法書
+displayName	Repair Spellbook
+rank	44
+price	458000
+type	book
+img	book_yellow
+range	1
+cmdParam	リペア
+
+name	スターバーストの魔法書
+displayName	Starburst Spellbook
+rank	50
+price	850000
+type	book
+img	book_yellow
+range	1
+cmdParam	スターバースト
+
+name	ダガー
+displayName	Dagger
+rank	3
+price	350
+type	dagger
+part	both
+img	dagger_common
+grip	40,115
+job	戦魔盗鍛海錬狩吟ドバ召ソ曲君ア
+weight	5
+attack	2～5
+times	2
+detail	General purpose dagger.
+
+name	良い短剣
+displayName	Good Dagger
+rank	8
+price	2100
+type	dagger
+part	both
+img	dagger_good
+grip	41,115
+job	戦魔盗鍛海錬狩吟ドバ召ソ曲君ア
+weight	5
+attack	8～12
+speed	2
+times	2
+detail	Good quality dagger with a slight increase in attack power.
+
+name	悪い短剣
+displayName	Bad Dagger
+rank	16
+price	700
+type	dagger
+part	both
+img	dagger_bad
+grip	41,115
+job	戦魔盗鍛海錬狩吟ドバ召ソ曲君ア
+weight	5
+attack	1～3
+speed	-1
+special	ＳＰＨＰ回復
+skill	呪・停滞
+cursed	true
+detail	Not a good dagger. Cursed.
+
+name	盗賊の短刀
+displayName	Thieves' Dagger
+rank	17
+price	16800
+type	dagger
+part	both
+img	dagger_thieves
+grip	41,118
+job	盗
+weight	6
+attack	18～23
+speed	4
+times	2
+thief	20
+special	ＳＰ転職
+cmdParam	アサシン
+detail	A dagger dedicated to thieves. Has hidden magical powers.
+
+name	メイジマッシャー
+displayName	Mage Masher
+rank	21
+price	26500
+type	ldagger
+part	both
+img	ldagger_krisknife
+grip	41,182
+job	戦盗鍛海狩吟バ曲君ア
+weight	10
+attack	25～31
+speed	4
+times	2
+skill	沈黙
+special	ＳＰパラメータ変化
+cmdParam	Max HP:maxLife:20
+detail	Dagger to silence mages.
+
+name	スティレット
+displayName	Stiletto
+rank	24
+price	42000
+type	ldagger
+part	both
+img	ldagger_stiletto
+grip	41,187
+job	戦盗鍛海狩吟バ曲君ア
+weight	7
+attack	30～38
+times	3
+speed	4
+detail	Dagger with a sharp edge.
+
+name	破魔の短剣
+displayName	Exorcising Dagger
+rank	36
+price	236000
+type	ldagger
+part	both
+weight	10
+img	ldagger_khanjar
+grip	39,182
+job	戦盗鍛海狩吟バ曲君ア
+attack	28～37
+speed	4
+times	3
+attrib	聖
+slayer	アンデッド,幽霊
+detail	A dagger that severs evil power. Highly effective against undead and ghosts.
+
+name	アサシンダガー
+displayName	Assassin Dagger
+rank	48
+price	640000
+type	ldagger
+part	both
+img	ldagger_assassin
+grip	41,183
+job	ア
+weight	3
+attack	39～52
+times	5
+accuracy	3
+speed	4
+skill	死亡
+attrib	邪
+detail	Assassin's dagger.<r>Light but sharp.
+
+name	ショートソード
+displayName	Short Sword
+rank	3
+price	300
+type	ssword
+part	main
+img	ssword_short
+job	戦盗鍛海狩バ曲君ア
+weight	8
+grip	40,250
+attack	4～9
+speed	2
+detail	Short sword. Affordable and easy to handle.
+
+name	カトラス
+displayName	Cutlass
+rank	7
+price	1500
+type	ssword
+part	main
+img	ssword_cutlass
+grip	40,255
+job	戦盗鍛海狩バ曲君ア
+weight	13
+attack	12～17
+times	2
+speed	2
+skill	複数
+detail	Short sword used by sailors.
+
+name	グラディウス
+displayName	Gladius
+rank	9
+price	2300
+type	ssword
+part	main
+img	ssword_gladius
+grip	40,262
+job	戦盗鍛海狩バ君
+weight	12
+attack	16～23
+times	2
+defense	2
+detail	Ancient broadsword. Good with a shield.
+
+name	氷の牙
+displayName	Ice Sword
+rank	29
+price	77500
+type	ssword
+part	main
+img	ssword_ice
+grip	40,245
+job	戦鍛海バ曲君ア
+weight	13
+attack	33～44
+times	3
+speed	2
+attrib	冷
+skill	複数
+detail	A magical sword made of ice, emitting freezing air from the blade.
+
+name	疾風の剣
+displayName	Gale Sword
+rank	59
+price	2615000
+type	ssword
+part	main
+img	ssword_white
+grip	40,255
+job	戦鍛海バ曲君ア
+weight	5
+attack	36～48
+times	7
+speed	10
+skill	浮遊
+detail	A sword blessed by wind that can launch attacks with incredible speed.
+
+name	ロングソード
+displayName	Longsword
+rank	6
+price	1500
+type	sword
+part	main
+img	sword_long
+grip	40,330
+job	戦鍛バ君
+weight	15
+attack	10～17
+times	2
+detail	Common long sword
+
+name	サーベル
+displayName	Saber
+rank	14
+price	5800
+type	sword
+part	main
+img	sword_saber
+grip	45,330
+job	戦鍛海バ曲君ア
+weight	13
+attack	19～28
+times	2
+detail	Common single-edged sword. Easy to handle, even for beginners.
+
+name	フレイムソード
+displayName	Flame Sword
+rank	15
+price	10000
+type	sword
+part	main
+img	sword_flame
+grip	40,340
+job	戦鍛バ君
+weight	16
+attack	18～26
+times	2
+attrib	火
+detail	Sword containing a fire spirit. Especially effective against fire-sensitive enemies.
+
+name	シャムシール
+displayName	Scimitar
+rank	19
+price	21900
+type	sword
+part	main
+img	sword_simitar
+grip	47,315
+job	海曲
+weight	16
+attack	28～37
+times	3
+speed	2
+skill	複数
+detail	Sharp curved sword used by pirates.
+
+name	ファルシオン
+displayName	Falchion
+rank	27
+price	69800
+type	sword
+part	main
+img	sword_falchion
+grip	41,335
+job	海曲
+weight	24
+attack	32～43
+times	3
+skill	複数
+detail	Curved sword with a wide blade. High attack power.
+
+name	悪のサーベル
+displayName	Evil Saber
+rank	44
+price	424500
+type	sword
+part	main
+img	sword_broad
+grip	45,325
+alignment	悪極
+job	海曲
+weight	32
+attack	40～56
+times	3
+speed	6
+attrib	邪
+skill	複数
+detail	Only usable by evil characters, but the sharpness is guaranteed.
+
+name	魔王の剣
+displayName	Demon Sword
+rank	60
+price	2800000
+type	sword
+part	main
+img	sword_evil
+grip	42,330
+job	戦バ君
+weight	38
+attack	54～69
+times	3
+speed	7
+attrib	邪
+special	ＳＰ灰
+cursed	true
+detail	Sword that holds Satan's magic power. If you are captivated by its evil power, you cannot escape from it.
+
+name	ウィローブレード
+displayName	Willow Blade
+rank	56
+price	1950000
+type	sword
+part	main
+img	sword_willow
+grip	35,325
+job	曲
+weight	19
+attack	56～72
+times	4
+speed	10
+skill	複数
+detail	Fearsomely sharp curved sword that will cut with the slightest touch. Very light and easy to handle.
+
+name	クレイモア
+displayName	Claymore
+rank	18
+price	20000
+type	gsword
+part	main
+img	gsword_claymore
+grip	41,375
+job	戦バ君
+weight	35
+attack	24～37
+times	3
+speed	3
+detail	Double-edged cross shaped sword. Heavy but powerful.
+
+name	グレートソード
+displayName	Greatsword
+rank	24
+price	41000
+type	gsword
+part	main
+img	gsword_great
+job	戦君
+weight	48
+grip	41,407
+attack	80～92
+times	1
+speed	3
+slayer	巨人
+skill	気絶
+detail	A large wide sword. Tremendously powerful, but very heavy.
+
+name	フランベルジュ
+displayName	Flamberge
+rank	25
+price	49800
+type	gsword
+part	main
+img	gsword_flamberge
+grip	41,389
+job	戦バ君
+weight	32
+attack	32～39
+times	3
+speed	5
+detail	Large sword with corrugated blade. Very high killing power.
+
+name	退魔の剣
+displayName	Demon Slayer
+rank	33
+price	100000
+type	gsword
+part	main
+img	gsword_demon
+grip	40,410
+race	人
+sex	男
+weight	20
+attack	36～43
+times	3
+speed	5
+strong	100
+attrib	聖
+slayer	悪魔
+detail	Sacred sword handed down through generations of demon hunters. Has the power to slay demons.
+
+name	ムーンブレイド
+displayName	Moonblade
+rank	34
+price	165000
+type	gsword
+part	main
+img	gsword_shotel
+grip	42,396
+job	曲
+weight	24
+attack	36～42
+times	4
+speed	5
+slayer	獣人
+skill	複数
+detail	Mysterious curved sword that leaves a crescent-shaped afterimage when swung. Highly effective against beastkin.
+
+name	エクスカリバー
+displayName	Excalibur
+rank	53
+price	1600000
+type	gsword
+part	main
+img	gsword_excaliber
+grip	41,413
+job	戦君
+weight	28
+attack	56～72
+times	3
+speed	5
+attrib	聖
+special	ＳＰ転職
+cmdParam	ロード
+detail	A venerable holy sword that was once used by the High King. Boasts tremendous offensive power.
+
+name	エクスガリバー
+displayName	Exgulliver
+rank	68
+price	25000
+type	gsword
+part	main
+img	gsword_exgulliver
+grip	41,413
+job	戦君
+weight	30
+attack	9～13
+times	1
+speed	2
+cursed	true
+detail	Resembles the venerable holy sword once used by the High King. Not much offensive power.
+
+name	ドラゴンスレイヤー
+displayName	Dragon Slayer
+rank	55
+price	1896000
+type	gsword
+part	main
+img	gsword_dragon
+grip	41,391
+job	戦君
+weight	38
+attack	70～89
+times	3
+speed	7
+slayer	ドラゴン
+detail	Legendary sword said to be able to scar the scales of dragons.
+
+name	木の槍
+displayName	Wood Spear
+rank	3
+price	400
+type	spear
+part	main
+reach	1
+img	spear_wood
+grip	40,300
+job	戦鍛海バ君
+weight	10
+attack	6～10
+times	2
+defense	2
+speed	-1
+sound	woodbreak
+detail	A crude long spear made of wood.
+
+name	ジャベリン
+displayName	Javelin
+rank	7
+price	1450
+type	spear
+part	main
+reach	1
+img	spear_javelin
+grip	40,300
+job	戦鍛海バ君
+weight	8
+attack	8～14
+times	2
+sound	woodbreak
+detail	Lightweight spear that can be thrown.
+
+name	鉄の槍
+displayName	Steel Spear
+rank	12
+price	3200
+type	spear
+part	double
+reach	1
+img	spear_iron
+grip	40,300
+job	戦バ君
+weight	20
+attack	19～26
+times	2
+defense	4
+speed	-1
+detail	Standard long spear.
+
+name	パルチザン
+displayName	Partisan
+rank	15
+price	9200
+type	spear
+part	double
+img	spear_partisan
+grip	40,300
+job	戦バ君
+weight	18
+reach	1
+attack	28～36
+times	2
+defense	5
+speed	-1
+detail	Spear with a sharp point.
+
+name	トライデント
+displayName	Trident
+rank	19
+price	23500
+type	spear
+part	double
+img	spear_trident
+grip	40,300
+job	戦バ君
+weight	23
+reach	1
+attack	30～40
+times	3
+defense	5
+speed	-1
+attrib	雷
+detail	Spear with three-pronged shaft
+
+name	グレイブ
+displayName	Glaive
+rank	30
+price	88000
+type	spear
+part	double
+img	spear_glaive
+reach	1
+grip	40,300
+job	戦海バ曲君
+weight	19
+attack	42～54
+times	3
+defense	5
+speed	-1
+skill	複数
+detail	Spear with a single blade. Capable of not only thrusting, but also cutting.
+
+name	ハルバード
+displayName	Halberd
+rank	34
+price	170000
+type	poleax
+part	double
+reach	1
+img	poleax_halberd
+grip	80,300
+job	戦バ君
+weight	34
+attack	56～72
+times	3
+defense	7
+speed	-2
+detail	Very strong spear. Heavy, but high performance.
+
+name	聖なる槍
+displayName	Holy Spear
+rank	54
+price	1750000
+type	spear
+part	double
+reach	1
+img	spear_holy
+grip	40,300
+job	バ
+weight	28
+attack	64～84
+times	3
+defense	9
+attrib	聖
+detail	Venerable spear said to have been owned by a saint.
+
+name	ハンドアックス
+displayName	Handax
+rank	4
+price	650
+type	handax
+part	both
+img	handax_common
+grip	105,120
+job	戦鍛海バ君
+weight	10
+attack	2～12
+times	2
+speed	-1
+detail	Light and easy to handle, a hatchet which can be thrown.
+
+name	トマホーク
+displayName	Tomahawk
+rank	10
+price	2500
+type	handax
+part	both
+img	handax_tomahawk
+grip	100,115
+job	戦鍛海バ君
+weight	8
+attack	8～16
+times	2
+detail	Increased attack power hatchet. Easy to handle and throw.
+
+name	バトルアックス
+displayName	Battleaxe
+rank	13
+price	4200
+type	axe
+part	main
+img	axe_battle
+grip	78,255
+job	戦鍛海バ君
+weight	26
+attack	18～32
+times	2
+speed	-2
+slayer	巨人
+detail	Double-bladed axe specialized for warfare. High attack power, but a little difficult to use.
+
+name	グレートアックス
+displayName	Great Poleaxe
+rank	32
+price	120000
+type	poleax
+part	double
+reach	1
+img	poleax_great
+grip	81,332
+race	人ド
+job	戦バ君
+weight	52
+attack	64～96
+times	2
+defense	4
+speed	-2
+slayer	巨人
+skill	気絶
+detail	War axe with a longer handle. Hard to handle but with excellent range and attack power.
+
+name	いかずちの斧
+displayName	Lightning Axe
+rank	35
+price	195000
+type	axe
+part	main
+img	axe_lightning
+job	戦鍛海バ君
+weight	24
+grip	82,252
+attack	56～84
+times	2
+speed	-2
+attrib	雷
+slayer	巨人
+detail	An axe containing thunder magic.
+
+name	ミノタウロスの斧
+displayName	Minotaur Poleaxe
+rank	46
+price	499000
+type	poleax
+part	double
+reach	1
+img	poleax_minotaur
+grip	81,285
+job	戦
+weight	37
+attack	72～108
+times	2
+speed	-2
+defense	4
+slayer	巨人
+special	ＳＰパラメータ変化
+cmdParam	Strength:power:1
+skill	複数
+detail	War axe said to have been used by the Minotaur, boasting immense attack power.
+
+name	死の大斧
+displayName	Death Poleaxe
+rank	69
+price	760000
+type	poleax
+part	double
+reach	1
+img	poleax_death
+grip	78,285
+job	戦
+weight	46
+attack	88～122
+times	2
+defense	4
+speed	-10
+attrib	邪
+slayer	巨人
+skill	気絶
+cursed	true
+detail	Cursed battle axe said to bring death to all.
+
+name	ハンマー
+displayName	Hammer
+rank	3
+price	500
+type	hammer
+part	main
+img	hammer_common
+grip	80,190
+job	戦鍛君
+weight	15
+attack	3～15
+speed	-1
+detail	Hammer used for repair or combat.
+
+name	バトルハンマー
+displayName	Warhammer
+rank	11
+price	3000
+type	hammer
+part	main
+img	hammer_battle
+grip	80,190
+job	戦鍛君
+weight	12
+attack	12～24
+times	2
+speed	-1
+detail	Hammer used for repair or combat.
+
+name	スレッジハンマー
+displayName	Sledgehammer
+rank	18
+price	19800
+type	sledge
+part	double
+reach	1
+img	sledge_common
+grip	79,332
+race	人エド
+job	戦鍛君
+weight	50
+attack	96～144
+defense	4
+speed	-4
+slayer	巨人
+skill	気絶
+detail	A large and powerful hammer. Can also be used for repair.
+
+name	ウォーハンマー
+displayName	War Sledgehammer
+rank	23
+price	34000
+type	sledge
+part	double
+reach	1
+img	sledge_war
+grip	74,332
+job	戦鍛君
+weight	45
+attack	72～96
+times	2
+defense	4
+speed	-4
+slayer	巨人
+skill	気絶
+detail	A hammer designed for combat. Can be used for repair.
+
+name	大地の槌
+displayName	Great Sledgehammer
+rank	33
+price	150000
+type	sledge
+part	double
+reach	1
+img	sledge_great
+grip	74,332
+job	戦鍛君
+weight	48
+attack	108～132
+times	2
+defense	4
+speed	-4
+attrib	魔
+slayer	巨人
+skill	気絶
+detail	The legendary hammer that was even said to split the earth<r>can be used for restoration.
+
+name	たいまつ
+displayName	Torch
+rank	3
+price	300
+type	club
+part	main
+img	club_torch
+grip	39,255
+sound	woodbreak
+weight	4
+attack	1～2
+attrib	火
+scene	dungeon
+detail	Set it aflame to light up the surroundings. It can also be used as a weapon, if you want.
+
+name	棍棒
+displayName	Club
+rank	2
+price	100
+type	club
+part	main
+img	club_wood
+grip	39,255
+sound	woodbreak
+weight	8
+attack	2～8
+detail	Weapon made from hewn wood. Can be used by anyone.
+
+name	メイス
+displayName	Mace
+rank	5
+price	1000
+type	club
+part	main
+img	club_mace
+grip	40,265
+job	戦僧鍛司バ君
+weight	12
+attack	6～10
+times	2
+detail	Bludgeoning weapon.
+
+name	スパイククラブ
+displayName	Spike Club
+rank	10
+price	2450
+type	club
+part	main
+img	club_spike
+grip	39,255
+job	戦僧盗鍛狩吟海錬召司ドバモ曲君ア
+weight	10
+attack	15～19
+times	2
+detail	A club with metal spikes attached to its tip to increase its offensive power.
+
+name	鮮血のメイス
+displayName	Blood Club
+rank	30
+price	1400
+type	club
+part	main
+img	club_blood
+grip	40,265
+job	戦僧鍛司バ君
+weight	16
+attack	7～11
+special	ＳＰパラメータ変化,ＳＰパラメータ変化２
+cmdParam	Max HP:maxLife:-1,Vitality:vitality:1
+cursed	true
+detail	A mace stained with the blood of a previous user. Harbors a strong grudge.
+
+name	粉砕のメイス
+displayName	Steel Club
+rank	21
+price	27300
+type	club
+part	main
+img	club_steel
+grip	39,255
+job	戦僧鍛司バ君
+weight	15
+attack	29～43
+times	2
+detail	Very destructive mace made of steel.
+
+name	聖なるメイス
+displayName	Gold Club
+rank	37
+price	280000
+type	club
+part	main
+img	club_gold
+grip	39,255
+job	僧司君
+weight	20
+attack	34～46
+times	3
+attrib	聖
+detail	Mace containing holy power. Also grants magic to increase defense.
+
+name	フレイル
+displayName	Flail
+rank	5
+price	900
+type	rod
+part	main
+img	rod_flail
+grip	52,150
+job	戦僧鍛司バ君
+weight	16
+reach	1
+attack	9～17
+times	2
+speed	-2
+slayer	巨人
+detail	A weapon with a swinging tip and increased attack power.
+
+name	モーニングスター
+displayName	Morningstar
+rank	14
+price	5800
+type	rod
+part	main
+img	rod_morning
+grip	62,180
+job	戦僧鍛司バ君
+weight	19
+reach	1
+attack	16～29
+times	2
+speed	-2
+slayer	巨人
+detail	A highly offensive flail with spikes on the metal ball.
+
+name	聖者のフレイル
+displayName	Saint Rod
+rank	33
+price	145000
+type	rod
+part	main
+img	rod_saint
+grip	52,150
+job	僧司君
+weight	23
+reach	1
+attack	27～49
+times	3
+speed	-2
+attrib	聖
+slayer	巨人
+detail	Flail with holy power.
+
+name	ツインロッド
+displayName	Twin Rod
+rank	9
+price	2200
+type	rod
+part	both
+img	rod_twin
+grip	53,50
+job	モア
+weight	8
+times	3
+attack	7～12
+detail	Two sticks used in martial arts. Difficult to master.
+
+name	トリプルロッド
+displayName	Triple Rod
+rank	25
+price	47800
+type	rod
+part	both
+img	rod_triple
+grip	53,50
+job	モア
+weight	12
+reach	1
+attack	20～29
+times	3
+reach	1
+detail	A weapon consisting of three connected rods that requires a mastery of martial arts to use.
+
+name	トンファー
+displayName	Wood Tonfa
+rank	11
+price	2800
+type	tonfa
+part	both
+img	tonfa_wood
+grip	58,11
+job	モ
+weight	8
+attack	9～14
+times	3
+defense	2
+sound	woodbreak
+detail	Tonfa made of wood. Great for martial arts.
+
+name	ゴールドトンファー
+displayName	Gold Tonfa
+rank	36
+price	224000
+type	tonfa
+part	both
+img	tonfa_gold
+grip	58,11
+job	モ
+weight	10
+attack	24～38
+times	4
+defense	5
+attrib	魔
+detail	A golden tonfa that flashes with every swing.
+
+name	長い棒
+displayName	Wood Pole
+rank	6
+price	1650
+type	pole
+part	double
+reach	1
+img	pole_wood
+grip	40,280
+job	ドモ
+weight	12
+attack	12～16
+times	2
+defense	2
+sound	woodbreak
+detail	A long wooden pole. Used in martial arts.
+
+name	鉄の棒
+displayName	Steel Pole
+rank	17
+price	15900
+type	pole
+part	double
+reach	1
+img	pole_iron
+grip	40,280
+job	ドモ
+weight	24
+attack	24～29
+times	3
+defense	4
+detail	A long steel pole. Powerful but heavy.
+
+name	達人の棒
+displayName	Hex Pole
+rank	27
+price	65000
+type	pole
+part	double
+reach	1
+img	pole_hex
+grip	40,280
+sound	woodbreak
+job	ドモ
+weight	19
+attack	32～38
+times	4
+defense	4
+special	ＳＰ転職
+cmdParam	モンク
+detail	This pole used by masters has a hexagonal tip for increased attack power.
+
+name	神秘の棒
+displayName	Gold Pole
+rank	43
+price	364000
+type	pole
+part	double
+reach	1
+img	pole_gold
+grip	40,280
+job	ドモ
+weight	23
+attack	44～52
+times	4
+defense	5
+attrib	魔
+slayer	幽霊
+detail	Pole with mystical power capable of attacking spirits.
+
+name	木の杖
+displayName	Wood Wand
+rank	2
+price	100
+type	wand
+part	main
+img	wand_wood
+grip	40,250
+sound	woodbreak
+weight	5
+attack	1～4
+detail	A wand carved out of a tree branch. Better than having nothing at all.
+
+name	炎のロッド
+displayName	Red Wand
+rank	12
+price	3600
+type	wand
+part	main
+img	wand_red
+grip	40,250
+job	魔僧錬司ドソ召
+weight	4
+attack	3～6
+attrib	火
+detail	A wand that allows use of fire magic.
+
+name	アイスロッド
+displayName	Blue Wand
+rank	12
+price	3600
+type	wand
+part	main
+img	wand_blue
+grip	40,250
+job	魔僧錬司ドソ召
+weight	4
+attack	3～6
+attrib	冷
+skill	凍結
+detail	A wand that allows use of ice magic.
+
+name	サンダーロッド
+displayName	Black Wand
+rank	13
+price	5000
+type	wand
+part	main
+img	wand_black
+grip	40,250
+job	魔僧錬司ドソ召
+weight	4
+attack	4～7
+attrib	雷
+skill	麻痺
+detail	A wand that allows use of electric magic.
+
+name	ドクロの杖
+displayName	Skull Wand
+rank	16
+price	1400
+type	wand
+part	main
+img	wand_skull
+grip	40,250
+sound	woodbreak
+job	魔僧錬司ドソ召
+weight	11
+attack	8～14
+attrib	邪
+cursed	true
+detail	Creepy wand with a skull at the tip.
+
+name	いやしの杖
+displayName	Healing Wand
+rank	21
+price	25900
+type	wand
+part	main
+img	wand_oak
+grip	40,250
+sound	woodbreak
+job	魔僧錬司ドソ召
+weight	7
+attack	16～20
+detail	A wand with healing powers that can use restorative magic.
+
+name	スターロッド
+displayName	Star Wand
+rank	50
+price	940000
+type	wand
+part	main
+img	wand_star
+grip	40,250
+job	魔僧錬司ドソ召
+weight	5
+attack	24～39
+times	2
+attrib	魔
+special	ＳＰ転職
+cmdParam	ソーサラー
+detail	A wand containing the power of the stars.
+
+name	固い杖
+displayName	Tough Staff
+rank	5
+price	1200
+type	staff
+part	main
+reach	1
+img	staff_maple
+grip	37,205
+sound	woodbreak
+job	魔僧錬司ドソ召
+weight	8
+attack	8～13
+defense	4
+detail	Hard tree branch used by sorcerers to protect themselves.
+
+name	魔導士の杖
+displayName	Wizard Staff
+rank	13
+price	4400
+type	staff
+part	main
+reach	1
+img	staff_crystal
+grip	40,205
+sound	woodbreak
+job	魔錬ドソ召
+weight	12
+attack	16～21
+defense	4
+intellect	2
+attrib	魔
+detail	Popular staff among mages. It holds a little magical power.
+
+name	聖なる杖
+displayName	Holy Staff
+rank	19
+price	23000
+type	staff
+part	main
+reach	1
+img	staff_ring
+grip	40,205
+job	僧司
+weight	10
+attack	23～29
+times	2
+defense	6
+attrib	聖
+detail	A staff used by those who are ordained. Possesses holy power.
+
+name	沈黙の杖
+displayName	Silence Staff
+rank	22
+price	36500
+type	staff
+part	main
+reach	1
+img	staff_globe
+grip	40,205
+job	魔僧錬司ドソ召
+weight	10
+attack	22～30
+times	2
+defense	6
+skill	沈黙
+detail	A staff that silences opponents. Troublesome if an enemy has it.
+
+name	アルテミスの杖
+displayName	Artemis Staff
+rank	30
+price	86000
+type	staff
+part	main
+reach	1
+img	staff_moon
+grip	40,205
+job	魔僧錬司ドソ召
+weight	12
+attack	31～39
+times	2
+defense	7
+attrib	聖
+detail	A mystic staff bearing the name of a goddess. Gives great blessings.
+
+name	ねじれた杖
+displayName	Twisted Staff
+rank	32
+price	8888
+type	staff
+part	main
+reach	1
+img	staff_twist
+grip	47,205
+sound	woodbreak
+job	魔僧錬司ドソ召
+weight	13
+attack	12～16
+defense	-2
+skill	混乱
+special	ＳＰＭＰ回復,ＳＰ石化
+cursed	true
+detail	It is said that having a crooked staff makes you unhappy.
+
+name	スリング
+displayName	Sling
+rank	4
+price	700
+type	rope
+part	main
+reach	2
+img	rope_sling
+grip	58,19
+sound	tearleather
+weight	7
+attack	10～14
+speed	-2
+detail	A simple weapon for throwing stones that's usable by all jobs, but has negligible power.
+
+name	パワースリング
+displayName	Power Sling
+rank	24
+price	39500
+type	rope
+part	main
+reach	2
+img	rope_power
+grip	58,19
+sound	tearleather
+weight	10
+attack	27～34
+times	2
+speed	-2
+detail	Sling that can be used by any job. Its highly elastic material greatly increases power.
+
+name	革のムチ
+displayName	Whip
+rank	6
+price	1400
+type	rope
+part	main
+reach	1
+img	rope_whip
+grip	62,40
+sound	tearleather
+job	戦盗狩吟海召ア
+weight	10
+attack	5～10
+times	2
+speed	-2
+skill	複数
+detail	A lightweight whip made of leather. A valuable weapon that can be used to attack from the back row.
+
+name	鎖のムチ
+displayName	Chain Whip
+rank	16
+price	13200
+type	rope
+reach	1
+part	main
+img	rope_chain
+grip	54,46
+job	戦盗狩吟海召ア
+weight	23
+attack	18～33
+times	2
+speed	-4
+skill	複数
+detail	Whip made of chain. Powerful among back row weapons.
+
+name	輝く鎖のムチ
+displayName	Shining Chain Whip
+rank	32
+price	149000
+type	rope
+reach	1
+part	main
+img	rope_shine
+grip	54,46
+job	戦海召ア
+weight	24
+attack	28～42
+times	3
+speed	-4
+skill	複数
+detail	A whip made of shining chain. A powerful weapon for the back row, but only certain jobs can use it.
+
+name	調教師のムチ
+displayName	Trainer's Whip
+rank	48
+price	598000
+type	rope
+part	main
+reach	1
+img	rope_trainer
+grip	62,40
+sound	tearleather
+job	召
+weight	12
+attack	40～53
+times	3
+speed	-2
+slayer	動物
+skill	複数
+detail	Summoner exclusive whip. Deals heavy damage to animal monsters.
+
+name	吸血のムチ
+displayName	Vampire Whip
+rank	67
+price	3896000
+type	rope
+part	main
+reach	1
+img	rope_vampire
+grip	62,40
+sound	tearleather
+job	戦盗狩吟海召ア
+weight	14
+attack	48～63
+times	4
+speed	-4
+attrib	魔
+skill	呪・体力減少,複数
+special	ＳＰ灰
+cursed	true
+detail	A whip dyed bright red from sucking the user's blood. Shreds the life of the wielder.
+
+name	ブーメラン
+displayName	Wood Boomerang
+rank	9
+price	2000
+type	boomerang
+part	both
+reach	2
+img	boomerang_wood
+grip	23,120
+sound	woodbreak
+job	盗狩ア
+weight	5
+attack	16～22
+times	2
+skill	複数
+detail	Wooden stick to throw at an enemy. Throw it and it arcs back to your hand.
+
+name	鉄のブーメラン
+displayName	Steel Boomerang
+rank	15
+price	7400
+type	boomerang
+part	both
+reach	2
+img	boomerang_iron
+grip	23,120
+job	盗狩ア
+weight	12
+attack	23～34
+times	2
+skill	複数
+detail	Steel boomerang with a bladed edge for increased killing power.
+
+name	銅のチャクラム
+displayName	Bronze Chakram
+rank	26
+price	54900
+type	cakram
+part	both
+reach	3
+img	cakram_bronze
+grip	23,62
+job	ア
+weight	14
+attack	35～46
+times	2
+skill	複数
+detail	Disk-shaped projectile weapon. Slices through the enemy with a spinning blade.
+
+name	鋼のチャクラム
+displayName	Steel Chakram
+rank	42
+price	335000
+type	cakram
+part	both
+reach	3
+img	cakram_steel
+grip	23,62
+job	ア
+weight	16
+attack	47～58
+times	2
+skill	複数
+detail	Chakram made of sharp steel with tremendous cutting power.
+
+name	ショートボウ
+displayName	Shortbow
+rank	6
+price	1200
+type	bow
+part	double
+reach	2
+img	bow_wood
+grip	12,185
+sound	woodbreak
+job	戦盗狩吟海曲ア
+weight	12
+attack	8～12
+times	2
+speed	1
+detail	Bow for beginners.
+english	Short Bow
+
+name	魔法使いの弓
+displayName	Mage Bow
+rank	17
+price	15000
+type	bow
+part	double
+reach	2
+img	bow_mage
+grip	14,185
+sound	woodbreak
+job	魔錬ドソ召
+weight	8
+attack	19～25
+times	2
+speed	5
+attrib	魔
+slayer	魔法使い
+detail	A bow that is not powerful, but is designed to be usable even by mages.
+english	Mage's Yew Bow
+
+name	コンポジットボウ
+displayName	Composite Bow
+rank	19
+price	22400
+type	bow
+part	double
+reach	2
+img	bow_composite
+grip	13,185
+sound	woodbreak
+job	戦盗狩吟海曲ア
+weight	18
+attack	32～40
+times	3
+detail	A small bow, but capable of firing a long distance. Made of multiple materials.
+english	Composite Bow
+
+name	腐った弓
+displayName	Rotting Bow
+rank	22
+price	200
+type	bow
+part	double
+reach	2
+img	bow_rotting
+grip	15,185
+sound	woodbreak
+job	戦盗狩吟海曲ア
+weight	14
+attack	1～2
+speed	-5
+cursed	true
+detail	Bow made of rotten wood. Weak power and no durability.
+english	Rotting Bow
+
+name	ロングボウ
+displayName	Longbow
+rank	13
+price	4450
+type	longbow
+part	double
+reach	3
+img	longbow_wood
+grip	9,210
+sound	woodbreak
+job	狩
+weight	18
+attack	22～29
+times	2
+detail	A larger and more powerful bow. Can only be handled by a skilled archer.
+english	Long Bow
+
+name	グレートボウ
+displayName	Greatbow
+rank	22
+price	32000
+type	longbow
+part	double
+reach	3
+img	longbow_great
+grip	17,225
+sound	woodbreak
+race	人ド
+job	狩
+weight	40
+attack	88～128
+slayer	巨人
+skill	気絶
+detail	Large, heavy bow. Very powerful, but requires strength to handle.
+english	Great Bow
+
+name	エルフの弓
+displayName	Elven Longbow
+rank	23
+price	38000
+type	longbow
+part	double
+reach	3
+img	longbow_elven
+grip	17,225
+sound	woodbreak
+race	エ
+job	狩
+weight	20
+attack	42～60
+times	3
+slayer	ドワーフ
+detail	The favorite bow of elves.
+english	Elven Bow
+
+name	マジカルボウ
+displayName	Magical Bow
+rank	31
+price	95000
+type	longbow
+part	double
+reach	3
+img	longbow_magical
+grip	20,225
+sound	woodbreak
+job	狩
+weight	22
+attack	48～63
+times	3
+power	5
+attrib	魔
+detail	A bow whose arrows have magic power, which increases the accuracy.
+english	Magical Bow
+
+name	森の精の弓
+displayName	Dryad Longbow
+rank	47
+price	575000
+type	longbow
+part	double
+reach	3
+img	longbow_dryad
+grip	15,225
+sound	woodbreak
+job	狩
+weight	26
+attack	64～87
+times	4
+attrib	魔
+slayer	動物,精霊
+detail	A bow of immense power, imbued with the spirit of the forest.
+english	Bow of Dryads
+
+name	邪悪な弓
+displayName	Evil Longbow
+rank	70
+price	4600000
+type	longbow
+part	double
+reach	3
+img	longbow_evil
+grip	15,225
+sound	woodbreak
+job	狩
+alignment	悪極
+weight	28
+attack	66～99
+times	3
+attrib	邪
+skill	石化
+cursed	true
+detail	A bow cloaked in evil power. The power of the bow is tremendous, but the user is also enveloped in evil.
+english	Evil Bow
+
+name	火花のマラカス
+displayName	Spark Maraca
+rank	15
+price	8700
+type	shaker
+part	both
+exclude	arm
+img	shaker_maracas
+grip	40,100
+sound	woodbreak
+sex	女
+job	吟
+reach	3
+weight	5
+detail	Maraca that sparks when shaken. Stronger effect if two are used.
+english	Maracas of Sparkles
+
+name	氷結の鈴
+displayName	Snow Sleighbell
+rank	19
+price	22500
+type	shaker
+part	both
+exclude	arm
+img	shaker_sleighbell
+grip	40,120
+sex	女
+job	吟
+reach	3
+weight	7
+detail	Snowflakes fall when the bells chime. Stronger effect if two are used.
+english	Sleighbell of Snows
+
+name	聖なるハンドベル
+displayName	Holy Handbell
+rank	23
+price	32000
+type	shaker
+part	both
+exclude	arm
+img	shaker_handbell
+grip	40,100
+sex	女
+job	吟
+reach	3
+weight	7
+detail	Hand bell that emits holy light when rung. Stronger effect if two are used.
+english	Holy Handbell
+
+name	元気のタンバリン
+displayName	Vigor Tambourine
+rank	10
+price	2400
+type	drum
+part	double
+exclude	arm
+img	drum_tambourine
+grip	70,35
+equipIndex	950
+sound	woodbreak
+sex	女
+job	吟
+weight	9
+detail	A tambourine whose ring energizes allies.
+english	Tambourine of Cheering
+
+name	雷のドラム
+displayName	Thunder Drum
+rank	17
+price	18000
+type	drum
+part	double
+exclude	arm
+img	drum_wood
+grip	70,35
+equipIndex	950
+sound	woodbreak
+sex	女
+job	吟
+weight	13
+detail	Lightning strikes enemies when the drum is struck.
+english	Drum of Thunders
+
+name	戦いの銅鑼
+displayName	Battle Gong
+rank	25
+price	52000
+type	drum
+part	double
+exclude	arm
+img	drum_gong
+grip	75,-15
+equipIndex	900
+sex	女
+job	吟
+weight	19
+detail	The sound of this gong grants uplifting effects to allies.
+english	Gong of War
+
+name	大地のドラム
+displayName	Earth Drum
+rank	28
+price	75000
+type	drum
+part	double
+exclude	arm
+img	drum_metal
+grip	70,35
+equipIndex	950
+sound	woodbreak
+sex	女
+job	吟
+weight	13
+detail	Hitting the drum shakes the earth, damaging enemies.
+english	Drum of Earth
+
+name	眠りのハープ
+displayName	Harp of Sleep
+rank	6
+price	1250
+type	harp
+part	double
+exclude	arm
+img	harp_silver
+grip	38,45
+sex	女
+job	吟
+weight	10
+detail	A lyre whose tune can lull a row of enemies to sleep.
+english	Harp of Sleep
+
+name	いやしの竪琴
+displayName	Healing Lyre
+rank	16
+price	14200
+type	harp
+part	double
+exclude	arm
+img	harp_wood
+grip	38,45
+sound	woodbreak
+sex	女
+job	吟
+weight	12
+detail	Heals those who hear it.
+english	Harp of Healing
+
+name	狂気のハープ
+displayName	Harp of Madness
+rank	24
+price	46500
+type	harp
+part	double
+exclude	arm
+img	harp_gold
+grip	38,45
+sex	女
+job	吟
+weight	10
+detail	A lyre whose maddening tune inflicts status effects on a row of enemies.
+english	Harp of Insanity
+
+name	天使の竪琴
+displayName	Angel's Lyre
+rank	36
+price	220000
+type	harp
+part	double
+exclude	arm
+img	harp_black
+grip	38,45
+sound	woodbreak
+sex	女
+job	吟
+weight	12
+detail	Contains the power of the angel of mercy. Greatly heals all allies when played.
+english	Angel's Harp
+
+name	バックラー
+displayName	Steel Buckler
+rank	6
+price	1480
+type	buckler
+part	sub
+img	buckler_steel
+grip	80,60
+job	戦僧盗鍛海狩吟司ドバ曲君ア
+weight	5
+defense	5
+speed	2
+detail	Small, easy to handle shield.
+english	Buckler
+
+name	ブロンズバックラー
+displayName	Bronze Buckler
+rank	16
+price	14400
+type	buckler
+part	sub
+img	buckler_bronze
+grip	80,60
+job	戦僧盗鍛海狩吟司ドバ曲君ア
+weight	3
+defense	16
+speed	5
+luck	5
+resist	毒,麻痺
+detail	Lightweight buckler. Increases speed and luck, making it easier to escape.
+english	Bronze Buckler
+
+name	ゴールドバックラー
+displayName	Gold Buckler
+rank	35
+price	223000
+type	buckler
+part	sub
+img	buckler_gold
+grip	80,60
+job	戦僧盗鍛海狩吟司ドバ曲君ア
+weight	2
+defense	32
+speed	15
+block	死亡
+detail	Lightweight and easy to handle, with high defense and a significant increase in speed, allowing for god-speed movement.
+english	Gold Buckler
+
+name	スレイブバックラー
+displayName	Shackle Buckler
+rank	40
+price	32000
+type	buckler
+part	sub
+img	buckler_black
+grip	80,60
+job	戦僧盗鍛海狩吟司ドバ曲君ア
+weight	12
+defense	4
+speed	-4
+skill	呪・逃亡不能
+cursed	true
+detail	Used by a man who ran away, betraying his friends. The holder won't be able to escape.
+english	Buckler of Slaves
+
+name	木の盾
+displayName	Wooden Shield
+rank	3
+price	650
+type	round
+part	sub
+img	round_wood
+grip	120,120
+sound	woodbreak
+job	戦僧鍛海バ君
+weight	10
+defense	5
+detail	A cheap shield made of wood.
+english	Woody Shield
+
+name	アイアンシールド
+displayName	Metal Shield
+rank	12
+price	2950
+type	round
+part	sub
+img	round_iron
+grip	120,120
+job	戦僧鍛海バ君
+weight	22
+defense	12
+detail	Round metal shield. Cheap but heavy.
+english	Iron Shield
+
+name	鏡の盾
+displayName	Mirror Shield
+rank	40
+price	298000
+type	round
+part	sub
+img	round_mirror
+grip	120,120
+job	戦僧鍛海バ君
+weight	28
+defense	15
+skill	反射
+detail	Shield made from a magic mirror. Reflects all magic.
+english	Mirror Shield
+
+name	うろこの盾
+displayName	Scale Shield
+rank	15
+price	8200
+type	shield
+part	sub
+img	shield_scail
+grip	80,120
+job	戦僧鍛海バ君
+weight	13
+defense	14
+detail	Shield made with scales to increase strength.
+english	Scail Shield
+
+name	悪魔の盾
+displayName	Devil Shield
+rank	34
+price	15300
+type	shield
+part	sub
+img	shield_devil
+grip	80,120
+job	戦僧鍛海バ君
+weight	30
+defense	-5
+cursed	true
+block	聖
+special	ＳＰパラメータ変化,ＳＰパラメータ変化２,ＳＰ属性変化,ＳＰ石化
+cmdParam	HP:maxLife:10,Vitality:vitality:1,極悪
+detail	Woe to the user of a shield made with the scales of a devil.
+english	Devil Shield
+
+name	ドラゴンシールド
+displayName	Dragon Shield
+rank	33
+price	140000
+type	shield
+part	sub
+img	shield_dragon
+grip	80,120
+job	戦僧鍛海バ君
+weight	18
+defense	30
+resist	火
+detail	Shield made with dragon scales. Resistant to fire.
+english	Dragon Shield
+
+name	支えの盾
+displayName	Knight Shield
+rank	20
+price	27800
+type	shield
+part	sub
+img	shield_knight
+grip	80,120
+job	戦僧鍛海バ君
+weight	14
+defense	22
+detail	A well-made, sturdy shield with a good balance of defense and weight.
+english	Sturdy Shield
+
+name	魔法の盾
+displayName	Magic Shield
+rank	27
+price	33500
+type	shield
+part	sub
+img	shield_magic
+grip	80,120
+job	戦僧鍛海バ君
+weight	16
+defense	27
+resist	火,冷,雷,聖,邪
+detail	A shield imbued with magical power that softens magical attacks.
+english	Magical Shield
+
+name	善の盾
+displayName	Shield of Good
+rank	37
+price	265000
+type	shield
+part	sub
+img	shield_moral
+grip	80,120
+alignment	神善
+job	戦僧鍛海バ君
+weight	19
+defense	35
+resist	ドレイン
+special	ＳＰ属性変化
+cmdParam	善
+detail	A shield that can only be equipped by those who follow the path of goodness.
+english	Shield of Good
+
+name	オーガの盾
+displayName	Ogre Shield
+rank	18
+price	18000
+type	tower
+part	sub
+img	tower_ogre
+grip	80,120
+job	戦バ君
+weight	25
+defense	26
+sound	woodbreak
+detail	Shield used by ogres. A little big for a human.
+english	Orge's Shield
+
+name	タワーシールド
+displayName	Tower Shield
+rank	32
+price	200000
+type	tower
+part	sub
+img	tower_common
+grip	80,120
+job	戦バ君
+weight	40
+defense	40
+speed	-10
+detail	Large shield that can conceal the entire body and is very heavy.
+english	Tower Shield
+
+name	ローブ
+displayName	Green Robe
+rank	3
+price	600
+type	robe
+part	chest
+exclude	waist
+img	robe_green
+sdw_bust	none
+sdw_bust_b	robe_sb
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	robe_sb
+sdw_leg	robe
+sound	tear
+job	魔僧吟錬召司ドソモ
+weight	8
+defense	6
+speed	-1
+detail	Just an ordinary cheap robe. Doesn't offer much protection.
+english	Robe
+
+name	深紅のローブ
+displayName	Crimson Robe
+rank	9
+price	2320
+type	robe
+part	chest
+exclude	waist
+img	robe_red
+sdw_bust	none
+sdw_bust_b	robe_sb
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	robe_sb
+sdw_leg	robe
+sound	tear
+job	魔僧吟錬召司ドソモ
+weight	8
+defense	12
+speed	-1
+detail	A red robe popular with mages.
+english	Scarlet Robe
+
+name	聖なるローブ
+displayName	Holy Robe
+rank	21
+price	34500
+type	robe
+part	chest
+exclude	waist
+img	robe_white
+sdw_bust	none
+sdw_bust_b	robe_sb
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	robe_sb
+sdw_leg	robe
+sound	tear
+job	僧司
+weight	8
+defense	19
+speed	-1
+attrib	聖
+resist	邪
+detail	Pure white robes worn by many clergy.
+english	Sacred Robe
+
+name	呪いのローブ
+displayName	Cursed Robe
+rank	26
+price	400
+type	robe
+part	chest
+exclude	waist
+img	robe_brown
+sdw_bust	none
+sdw_bust_b	robe_sb
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	robe_sb
+sdw_leg	robe
+sound	tear
+job	魔僧吟錬召司ドソモ
+weight	20
+defense	2
+speed	-5
+skill	呪・沈黙
+cursed	true
+detail	A robe with the curse of a vindictive mage.
+english	Cursed Robe
+
+name	女神のドレス
+displayName	Goddess Dress
+rank	25
+price	56000
+type	robe
+part	chest
+exclude	waist,bust,hip
+img	robe_goddess
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	none
+sdw_leg	apron
+sound	tear
+sex	女
+job	魔僧吟錬召司ドソモ
+weight	8
+defense	10
+speed	8
+sexy	40
+skill	無効化
+detail	Dress said to have been worn by ancient gods. Has mysterious powers.
+english	Godess Robe
+
+name	巫女の衣装
+displayName	Oracle Robe
+rank	33
+price	135000
+type	robe
+part	chest
+exclude	waist,bust,hip
+img	robe_oracle
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	none
+sdw_leg	apron
+sound	tear
+sex	女
+job	魔僧吟錬召司ドソモ
+weight	3
+defense	12
+piety	10
+speed	10
+sexy	60
+skill	無効化完全
+detail	The formal attire of a priestess when she gives an oracle. Mystical power resides in it.
+english	medium Robe
+
+name	妖艶妻のシルク
+displayName	Bewitching Wife's Robe
+rank	38
+price	297000
+type	robe
+part	chest
+exclude	waist,bust,hip
+img	robe_tempt
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	none
+sound	tear
+sex	女
+marriedOnly	true
+job	魔僧吟錬召司ドソモ
+weight	2
+defense	16
+intellect	10
+piety	-10
+speed	15
+sexy	120
+skill	無効化完全,魅了
+block	魅了
+detail	A daring dress that a wife wears to impress her husband. If an unmarried person wears it, she'll look terrible.
+english	Glamourous Robe
+
+name	町娘の服
+displayName	Girls' Tunic
+rank	3
+type	tunic
+part	chest
+exclude	waist
+img	tunic_girl
+sdw_bust	none
+sdw_bust_b	none
+sdw_hip	skirt
+sdw_hip_b	robe_sb
+sdw_leg	skirt
+sound	tear
+race	人
+sex	女
+weight	5
+price	700
+defense	5
+detail	Clothes worn by human women.
+
+name	エルフの服
+displayName	Elven Tunic
+rank	3
+type	tunic
+part	chest
+exclude	waist
+img	tunic_elven
+sdw_bust	none
+sdw_bust_b	none
+sdw_hip	elven
+sdw_hip_b	robe_sb
+sound	tear
+race	エ
+sex	女
+weight	4
+price	750
+defense	6
+detail	Elf women's clothing.
+
+name	ドワーフ民族衣装
+displayName	Dwarven Tunic
+rank	3
+price	640
+type	tunic
+part	chest
+exclude	waist
+img	tunic_dwarven
+sdw_bust	none
+sdw_bust_b	none
+sdw_hip	skirt
+sdw_hip_b	skirt_sb
+sdw_leg	skirt
+sdw_leg_b	skirt_sb
+sound	tear
+race	ド
+sex	女
+weight	5
+defense	7
+detail	Dwarven ethnic garb.
+
+name	ノームのローブ
+displayName	Gnomic Tunic
+rank	3
+price	720
+race	ノ
+type	tunic
+part	chest
+exclude	waist
+img	tunic_gnoman
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	robe_sb
+sdw_leg	robe
+sound	tear
+sex	女
+weight	10
+defense	2
+detail	Gnome-specific robes
+
+name	シルフのドレス
+displayName	Sylvan Tunic
+rank	3
+price	780
+type	tunic
+part	chest
+exclude	waist
+img	tunic_sylvan
+sdw_bust	none
+sdw_bust_b	none
+sdw_hip	skirt
+sdw_hip_b	robe_sb
+sdw_leg	skirt
+sound	tear
+race	シ
+sex	女
+weight	3
+defense	6
+detail	Dress commonly worn by worn by sylphs.
+
+name	リーゼルの私服
+displayName	Riselle's Casual Clothes
+type	tunic
+part	chest
+exclude	waist
+img	tunic_liesel
+sdw_bust	none
+sdw_hip	skirt
+sdw_leg	skirt
+limited	人間Ｂ
+weight	4
+defense	4
+event	true
+strong	100
+neverRemove	This cannot be removed
+detail	Riselle's preferred clothing.
+
+name	主人公の私服
+displayName	Protagonist Clothes
+type	tunic
+part	chest
+exclude	waist,leg
+img	tunic_theo
+sdw_bust	none
+sdw_hip	none
+limited	人間Ｃ
+weight	8
+defense	8
+event	true
+strong	100
+neverRemove	This cannot be removed
+detail	Clothes favored by the protagonist.
+
+name	布の服
+displayName	Tunic
+rank	3
+price	800
+type	tunic
+part	chest
+exclude	waist
+img	tunic_green
+sdw_bust	none
+sdw_bust_b	tunic_sb
+sdw_hip	tunic
+sdw_hip_b	tunic_sb
+sdw_leg	tunic
+sdw_leg_b	tunic_sb
+sound	tear
+weight	5
+defense	4
+detail	Clothing made of fabric that is easy to move in.
+
+name	身かわしの服
+displayName	Geisha Clothes
+rank	9
+price	2400
+type	tunic
+part	chest
+exclude	waist
+img	tunic_black
+sdw_bust	none
+sdw_bust_b	tunic_sb
+sdw_hip	tunic
+sdw_hip_b	tunic_sb
+sdw_leg	tunic
+sdw_leg_b	tunic_sb
+sound	tear
+weight	4
+defense	7
+detail	Clothing for adventurers made for greater ease of movement.
+
+name	寝室のキャミソール
+displayName	Bedroom Camisole
+rank	34
+price	32400
+type	camisole
+part	chest
+exclude	waist,bust,arm,leg
+halfState	false
+img	camisole_night
+sdw_bust	none
+sdw_waist	none
+sdw_leg	none
+sound	tear
+sex	女
+marriedOnly	true
+weight	1
+defense	2
+sexy	120
+skill	魅了
+block	魅了
+detail	Sensual camisole worn by a wife to seduce her husband.
+
+name	マタニティドレス
+displayName	Maternity Dress
+rank	1
+price	1000
+type	camisole
+part	chest
+exclude	waist,bust,arm,leg
+halfState	false
+sound	tear
+img	camisole_maternity
+sdw_bust	none
+sdw_waist	none
+sdw_hip	none
+sdw_leg	none
+sex	女
+weight	5
+defense	1
+speed	-5
+detail	Dress worn by pregnant women. Roomy and loose-fitting.
+
+name	マタニティドレス　
+displayName	Maternity Dress
+rank	1
+price	1000
+type	camisole
+part	chest
+fixHand	true
+exclude	waist,bust,arm,leg
+img	camisole_bigbelly
+sdw_bust	none
+sdw_waist	none
+sdw_hip	none
+sdw_leg	none
+weight	5
+defense	1
+speed	-5
+event	true
+detail	Dress worn by pregnant women. Roomy and loose-fitting.
+
+name	レオタード
+displayName	White Leotard
+rank	12
+price	3600
+type	leotard
+part	chest
+exclude	waist,bust,hip
+img	leotard_white
+sdw_bust	none
+sdw_waist	none
+sdw_hip	none
+sound	tear
+sex	女
+weight	4
+defense	5
+sexy	50
+nakedByBreak	true
+softCrotch	true
+detail	Form-fitting bodysuit. Easy to move in due to elasticity of the fabric.
+
+name	ドルフィンスーツ
+displayName	Dolphin Swimsuit
+rank	23
+price	42600
+type	leotard
+part	chest
+exclude	waist,bust,hip
+img	leotard_black
+sdw_bust	none
+sdw_waist	none
+sdw_hip	none
+sound	tear
+sex	女
+weight	3
+defense	4
+sexy	70
+nakedByBreak	true
+softCrotch	true
+skill	潜水
+detail	Leotard made of thin and light fabric. It is said that wearing this allows you to swim like a dolphin.
+
+name	怪盗のレオタード
+displayName	Phantom Thief Leotard
+rank	33
+price	133800
+type	leotard
+part	chest
+exclude	waist,bust,hip
+img	leotard_red
+sdw_bust	none
+sdw_waist	none
+sdw_hip	none
+sound	tear
+sex	女
+job	盗狩吟海モア
+weight	1
+defense	8
+sexy	100
+nakedByBreak	true
+softCrotch	true
+detail	Ultra-thin, highly elastic leotard. Extremely well-fitting and allows for outstanding ease of movement.
+
+name	レジストスーツ
+displayName	Resist Suit
+rank	38
+price	248000
+type	leotard
+part	chest
+exclude	waist,bust,hip,leg
+img	leotard_brown
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_hip	none
+sdw_hip_b	none
+sdw_leg	none
+sound	tear
+nakedByErectAndBreak	true
+job	盗狩吟海モア
+weight	5
+defense	32
+sexy	40
+resist	冷,雷,毒
+skill	耐熱
+detail	A reinforced leotard that covers the whole body. The fabric is thin but provides high protection. It is also fire-resistant.
+
+name	暗殺者のかたびら
+displayName	Assassin's Chainmail
+rank	43
+price	380000
+type	leotard
+part	chest
+exclude	waist,bust,hip
+img	leotard_mail
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_hip	none
+sex	女
+job	ア
+weight	2
+defense	36
+sexy	100
+detail	Assassin's special suit made of strong metal threads woven together for both lightness and defense.
+
+name	黒のボンデージ
+displayName	Black Bondage
+rank	25
+price	56400
+type	leotard
+part	chest
+exclude	waist,bust,hip
+img	leotard_bondage
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_hip	none
+sex	女
+weight	12
+defense	24
+speed	-2
+sexy	40
+halfState	false
+skill	習得
+detail	Tight leather clothing. It's a bit difficult to move in, but it provides decent protection.
+
+name	服従の調教服
+displayName	Sub Training Suit
+rank	70
+price	431000
+type	leotard
+part	chest
+exclude	waist,bust,hip
+img	leotard_training
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_hip	none
+sex	女
+weight	10
+defense	11
+speed	-8
+sexy	100
+cursed	true
+halfState	false
+skill	呪・逃亡不能,呪・興奮度上昇
+special	ＳＰ転職
+cmdParam	召喚士
+detail	A restraint suit used to train female slaves. Cursed.
+
+name	魔法の革ひも
+displayName	Magic Leather Thong
+rank	64
+price	360000
+type	rope
+part	chest
+exclude	waist,bust,hip
+img	rope_thong
+sdw_bust	none
+sdw_waist	none
+sdw_hip	none
+sound	tearleather
+sex	女
+weight	1
+defense	5
+sexy	150
+cursed	true
+halfState	false
+detail	Mysterious leather thong that attaches itself by magic.
+
+name	天使のはごろも
+displayName	Angel's Wrap
+rank	41
+price	328000
+sex	女
+type	cloth
+part	chest
+exclude	waist,bust,hip
+img	cloth_flying
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	none
+sound	tear
+weight	1
+defense	6
+intellect	5
+piety	10
+speed	10
+sexy	70
+skill	浮遊
+halfState	false
+softCrotch	true
+detail	Mysterious clothes that allow you to float in the air whenever you wear them.
+
+name	バスタオル
+displayName	Bath Towel
+rank	4
+price	1000
+type	cloth
+part	chest
+exclude	waist,bust,hip
+img	cloth_bathtowel
+sdw_bust	none
+sdw_bust_b	none
+sdw_waist	none
+sdw_waist_b	none
+sdw_hip	none
+sdw_hip_b	none
+sound	tear
+weight	3
+defense	1
+speed	10
+sexy	40
+halfState	false
+detail	Ordinary bath towel used for wiping the body or wrapping around the body after bathing.
+
+name	革鎧
+displayName	Leather Armor
+rank	3
+price	650
+type	leather
+part	chest
+img	leather_brown
+sdw_bust	none
+sdw_bust_b	leather_sb
+sdw_waist	leather
+sdw_waist_b	leather
+sdw_hip	leather
+sdw_hip_b	leather
+sound	tearleather
+job	戦僧盗鍛海狩吟司ドバ曲君ア
+weight	5
+defense	8
+detail	Leather armor. Protects against some attacks.
+
+name	硬い革鎧
+displayName	Hard Leather Armor
+rank	14
+price	6450
+type	leather
+part	chest
+img	leather_black
+sdw_bust	none
+sdw_bust_b	leather_sb
+sdw_waist	leather
+sdw_waist_b	leather
+sdw_hip	leather
+sdw_hip_b	leather
+sound	tearleather
+job	戦僧盗鍛海狩吟司ドバ曲君ア
+weight	7
+defense	13
+detail	Armor made of hard leather. Slightly more defensive.
+
+name	豪華な革鎧
+displayName	Gorgeous Leather Armor
+rank	24
+price	47500
+type	leather
+part	chest
+img	leather_red
+sdw_bust	none
+sdw_bust_b	leather_sb
+sdw_waist	leather
+sdw_waist_b	leather
+sdw_hip	leather
+sdw_hip_b	leather
+sound	tearleather
+job	戦僧盗鍛海狩吟司ドバ曲君ア
+weight	5
+defense	21
+detail	Luxurious armor made of high quality leather. Not only looks flashy but also performs perfectly.
+
+name	腐った革鎧
+displayName	Rotten Leather Armor
+rank	34
+price	2780
+type	leather
+part	chest
+img	leather_green
+sdw_bust	none
+sdw_bust_b	leather_sb
+sdw_waist	leather
+sdw_waist_b	leather
+sdw_hip	leather
+sdw_hip_b	leather
+sound	tearleather
+job	戦僧盗鍛海狩吟司ドバ曲君ア
+weight	12
+defense	3
+cursed	true
+detail	Rotten, discolored, and moldy leather armor. Defense is reduced to the point of uselessness.
+
+name	鎖かたびら
+displayName	Chainmail
+rank	7
+price	1550
+type	chain
+part	chest
+exclude	waist
+img	chain_steel
+sdw_bust	none
+sdw_bust_b	chain_sb
+sdw_waist	hipplate
+sdw_waist_b	hipplate_sb
+sdw_hip	hipplate
+sdw_hip_b	hipplate_sb
+sdw_leg	hipplate
+sdw_leg_b	hipplate_sb
+job	戦僧鍛海狩バ曲君ア
+weight	20
+defense	18
+detail	Clothing made of woven metal rings provides both protection and ease of movement.
+
+name	錆びた鎖かたびら
+displayName	Rusted Chainmail
+rank	24
+price	400
+type	chain
+part	chest
+exclude	waist
+img	chain_rust
+sdw_bust	none
+sdw_bust_b	chain_sb
+sdw_waist	hipplate
+sdw_waist_b	hipplate_sb
+sdw_hip	hipplate
+sdw_hip_b	hipplate_sb
+sdw_leg	hipplate
+sdw_leg_b	hipplate_sb
+job	戦僧鍛海狩バ曲君ア
+weight	36
+defense	4
+speed	-4
+cursed	true
+detail	Rusted and brittle, this chainmail has completely lost its elasticity and cannot be taken off.
+
+name	輝く鎖かたびら
+displayName	Gold Chainmail
+rank	22
+price	38300
+type	chain
+part	chest
+exclude	waist
+img	chain_gold
+sdw_bust	none
+sdw_bust_b	chain_sb
+sdw_waist	hipplate
+sdw_waist_b	hipplate_sb
+sdw_hip	hipplate
+sdw_hip_b	hipplate_sb
+sdw_leg	hipplate
+sdw_leg_b	hipplate_sb
+job	戦僧鍛海狩バ曲君ア
+weight	20
+defense	28
+detail	Dazzling chainmail made of gold. Boasts high defensive strength.
+
+name	魔法の鎖かたびら
+displayName	Magic Chainmail
+rank	33
+price	128400
+type	chain
+part	chest
+exclude	waist
+img	chain_copper
+sdw_bust	none
+sdw_bust_b	chain_sb
+sdw_waist	hipplate
+sdw_waist_b	hipplate_sb
+sdw_hip	hipplate
+sdw_hip_b	hipplate_sb
+sdw_leg	hipplate
+sdw_leg_b	hipplate_sb
+job	戦僧鍛海狩バ曲君ア
+weight	22
+defense	39
+resist	火,冷,雷,聖,邪
+detail	Chainmail woven with magical metal, not only sturdy but also resistant to magic.
+
+name	胸当て
+displayName	Breastplate
+rank	7
+price	1600
+type	breast
+part	chest
+img	breast_steel
+sdw_bust	none
+sdw_bust_b	bustplate_sb
+sdw_waist	bustplate
+sdw_hip	bustplate
+job	戦僧鍛海バ曲君
+weight	12
+defense	11
+detail	Armor to protect the chest. Easy to move in.
+
+name	中立の胸当て
+displayName	Neutral Breastplate
+rank	20
+price	25800
+type	breast
+part	chest
+img	breast_red
+sdw_bust	none
+sdw_bust_b	bustplate_sb
+sdw_waist	bustplate
+sdw_hip	bustplate
+alignment	中
+job	戦僧鍛海バ曲君
+weight	12
+defense	23
+special	ＳＰ属性変化
+cmdParam	中立
+detail	A high performance breastplate for those of neutral alignment.
+
+name	黄金の胸当て
+displayName	Gold Breastplate
+rank	30
+price	280000
+type	breast
+part	chest
+img	breast_gold
+sdw_bust	none
+sdw_bust_b	bustplate_sb
+sdw_waist	bustplate
+sdw_hip	bustplate
+job	戦僧鍛海バ曲君
+weight	15
+defense	32
+detail	Breastplate made of gold. Price is high, but performance is also high.
+
+name	聖なる胸当て
+displayName	Holy Breastplate
+rank	44
+price	426000
+type	breast
+part	chest
+img	breast_white
+sdw_bust	none
+sdw_bust_b	bustplate_sb
+sdw_waist	bustplate
+sdw_hip	bustplate
+job	僧バ君
+weight	14
+defense	48
+attrib	聖
+resist	邪
+detail	A breastplate made for clergy. Protected by holy power.
+
+name	スケイルメイル・上
+displayName	Scale Mail (U)
+rank	8
+price	2200
+type	scale
+part	chest
+img	scale_common
+sdw_bust	scale
+sdw_bust_b	scale_sb
+sdw_waist	scale
+job	戦鍛海バ曲君
+weight	10
+defense	12
+detail	Armor made by gluing scaly boards together. Light and easy to move in.
+
+name	スケイルメイル・下
+displayName	Scale Mail (L)
+rank	8
+price	2150
+type	hipscale
+part	waist
+img	hipscale_common
+sdw_hip	scale
+sdw_hip_b	scale_sb
+sdw_leg	scale
+sdw_leg_b	scale_sb
+job	戦鍛海バ曲君
+weight	9
+defense	10
+detail	Armor made by gluing scaly boards together. Light and easy to move in.
+
+name	シルバースケイル・上
+displayName	Silver Scale (U)
+rank	19
+price	22800
+type	scale
+part	chest
+img	scale_silver
+sdw_bust	scale
+sdw_bust_b	scale_sb
+sdw_waist	scale
+job	戦鍛海バ曲君
+weight	15
+defense	24
+resist	眠り
+detail	Silver scaly armor with high defensive performance.
+
+name	シルバースケイル・下
+displayName	Silver Scale (L)
+rank	19
+price	22600
+type	hipscale
+part	waist
+img	hipscale_silver
+sdw_hip	scale
+sdw_hip_b	scale_sb
+sdw_leg	scale
+sdw_leg_b	scale_sb
+job	戦鍛海バ曲君
+weight	14
+defense	22
+resist	眠り
+detail	Silver scaly armor with high defensive performance.
+
+name	ドラゴンの鎧・上
+displayName	Dragon Armor (U)
+rank	41
+price	329000
+type	scale
+part	chest
+img	scale_dragon
+sdw_bust	scale
+sdw_bust_b	scale_sb
+sdw_waist	scale
+job	戦鍛海バ曲君
+weight	16
+defense	45
+resist	火
+detail	Armor with the blessing of fire, made of dragon scales glued together.
+
+name	ドラゴンの鎧・下
+displayName	Dragon Armor (L)
+rank	41
+price	316800
+type	hipscale
+part	waist
+img	hipscale_dragon
+sdw_hip	scale
+sdw_hip_b	scale_sb
+sdw_leg	scale
+sdw_leg_b	scale_sb
+job	戦鍛海バ曲君
+weight	14
+defense	43
+resist	火
+detail	Armor with the blessing of fire, made of dragon scales glued together.
+
+name	プレートメイル・上
+displayName	Plate Mail (U)
+rank	13
+price	4800
+type	plate
+part	chest
+img	plate_steel
+sdw_bust	none
+sdw_bust_b	bustplate_sb
+sdw_waist	bustplate
+sdw_hip	bustplate
+job	戦バ君
+weight	20
+defense	16
+detail	Steel sheet metal armor. Heavy but defensive.
+
+name	プレートメイル・下
+displayName	Plate Mail (L)
+rank	13
+price	4500
+type	hipplate
+part	waist
+img	hipplate_steel
+sdw_hip	hipplate
+sdw_hip_b	hipplate_sb
+sdw_leg	hipplate
+sdw_leg_b	hipplate_sb
+job	戦バ君
+weight	18
+defense	15
+detail	Steel sheet metal armor. Heavy but defensive.
+
+name	聖騎士の鎧・上
+displayName	Holy Knight Armor (U)
+rank	28
+price	74200
+type	plate
+part	chest
+img	plate_silver
+sdw_bust	none
+sdw_bust_b	bustplate_sb
+sdw_waist	bustplate
+sdw_hip	bustplate
+job	戦バ君
+weight	22
+defense	30
+detail	Luxurious silver armor worn by knights of high rank, with perfect performance.
+
+name	聖騎士の鎧・下
+displayName	Holy Knight Armor (L)
+rank	28
+price	74600
+type	hipplate
+part	waist
+img	hipplate_silver
+sdw_hip	hipplate
+sdw_hip_b	hipplate_sb
+sdw_leg	hipplate
+sdw_leg_b	hipplate_sb
+job	戦バ君
+weight	23
+defense	28
+detail	Luxurious silver armor worn by knights of high rank, with perfect performance.
+
+name	英雄の鎧・上
+displayName	Hero's Armor (U)
+rank	46
+price	498000
+type	plate
+part	chest
+img	plate_black
+sdw_bust	none
+sdw_bust_b	bustplate_sb
+sdw_waist	bustplate
+sdw_hip	bustplate
+job	戦バ君
+weight	25
+defense	53
+detail	Supposedly the same type of armor worn by the hero who saved the country. Outstanding defensive strength.
+
+name	英雄の鎧・下
+displayName	Hero's Armor (L)
+rank	46
+price	496000
+type	hipplate
+part	waist
+img	hipplate_black
+sdw_hip	hipplate
+sdw_hip_b	hipplate_sb
+sdw_leg	hipplate
+sdw_leg_b	hipplate_sb
+job	戦バ君
+weight	25
+defense	51
+detail	Supposedly the same type of armor worn by the hero who saved the country. Outstanding defensive strength.
+
+name	ライトアーマー・上
+displayName	Light Armor (U)
+rank	25
+price	52000
+type	braarmor
+part	chest
+exclude	bust
+img	braarmor_blue
+sdw_bust	none
+sex	女
+job	戦鍛海バ曲君
+weight	15
+defense	26
+sexy	30
+nakedByBreak	true
+detail	High-performance armor favored by female desert warriors. Contrary to its appearance, it boasts high defensive power.
+
+name	ライトアーマー・下
+displayName	Light Armor (L)
+rank	25
+price	48000
+type	pantsarmor
+part	waist
+exclude	hip
+img	pantsarmor_blue
+sdw_hip	none
+sex	女
+job	戦鍛海バ曲君
+weight	12
+defense	24
+sexy	20
+detail	Armor worn by a legendary female knight, with high defensive strength despite its appearance.
+
+name	女傑の鎧・上
+displayName	Heroine's Armor (U)
+rank	35
+price	175000
+type	braarmor
+part	chest
+exclude	bust
+img	braarmor_red
+sdw_bust	none
+sex	女
+job	戦鍛海バ曲君
+weight	10
+defense	40
+power	3
+sexy	40
+nakedByBreak	true
+detail	The armor used by a female general who was famous for her courage and daring. Extremely high performance.
+
+name	女傑の鎧・下
+displayName	Heroine's Armor (L)
+rank	35
+price	175000
+type	pantsarmor
+part	waist
+exclude	hip
+img	pantsarmor_red
+sdw_hip	none
+sex	女
+job	戦鍛海バ曲君
+weight	8
+defense	38
+power	2
+sexy	30
+detail	The armor used by a female general who was famous for her courage and daring. Extremely high performance.
+
+name	背徳の鎧・上
+displayName	Immoral Armor (U)
+rank	72
+price	5020000
+type	braarmor
+part	chest
+exclude	bust
+img	braarmor_black
+sdw_bust	none
+sex	女
+job	戦鍛海バ曲君
+weight	10
+defense	50
+sexy	150
+nakedByBreak	true
+cursed	true
+skill	呪・興奮度上昇
+detail	Cursed armor of a female warrior captivated by lust. Pinches the nipples when worn.
+
+name	背徳の鎧・下
+displayName	Immoral Armor (L)
+rank	72
+price	4896000
+type	pantsarmor
+part	waist
+exclude	hip
+img	pantsarmor_black
+sdw_hip	none
+sex	女
+job	戦鍛海バ曲君
+weight	8
+defense	48
+sexy	200
+cursed	true
+skill	呪・興奮度急上昇
+detail	Cursed armor of a female warrior captivated by lust. Has a wooden rod in the center.
+
+name	試作品の鎧
+displayName	Prototype Armor
+rank	1
+type	braarmor
+halfState	false
+part	chest
+exclude	waist,bust,hip
+img	braarmor_gray
+sdw_bust	none
+sdw_hip	none
+sex	女
+job	バ
+weight	18
+defense	99
+sexy	30
+event	true
+detail	Prototype armor made by the town blacksmith. Test in actual combat and report back.
+
+name	試作品の鎧２
+displayName	Prototype Armor 2
+rank	1
+type	braarmor
+halfState	false
+part	chest
+exclude	waist,bust,hip
+img	braarmor_gray
+sdw_bust	none
+sdw_hip	none
+sex	女
+job	バ
+weight	18
+defense	10
+sexy	30
+strong	0
+event	true
+detail	Prototype armor made by the town blacksmith after feedback from last time. Test in actual combat and report back.
+
+name	試作品の鎧３・上
+displayName	Prototype Armor 3 (U)
+rank	1
+type	braarmor
+part	chest
+exclude	bust
+img	braarmor_gold
+sdw_bust	none
+sex	女
+job	バ
+weight	10
+defense	62
+sexy	30
+nakedByBreak	true
+block	邪
+skill	呪・体力回復
+strong	100
+event	true
+detail	Prototype armor made by the town blacksmith after further feedback. Test in actual combat and report back.
+
+name	試作品の鎧３・下
+displayName	Prototype Armor 3 (L)
+rank	1
+type	pantsarmor
+part	waist
+exclude	hip
+img	pantsarmor_gold
+sdw_hip	none
+sex	女
+job	バ
+weight	8
+defense	60
+sexy	20
+block	邪
+skill	呪・体力回復
+strong	100
+event	true
+detail	Prototype armor made by the town blacksmith after further feedback. Test in actual combat and report back.
+
+name	戦女神の鎧・上
+displayName	War Goddess Armor (U)
+rank	53
+price	1640000
+type	braarmor
+part	chest
+exclude	bust
+img	braarmor_gold
+sdw_bust	none
+sex	女
+job	バ
+weight	10
+defense	62
+power	5
+sexy	30
+nakedByBreak	true
+block	邪
+skill	呪・体力回復
+special	ＳＰＨＰ回復
+detail	The strongest bikini armor with abilities apparently comparable to the goddess of war.
+
+name	戦女神の鎧・下
+displayName	War Goddess Armor (L)
+rank	53
+price	1560000
+type	pantsarmor
+part	waist
+exclude	hip
+img	pantsarmor_gold
+sdw_hip	none
+sex	女
+job	バ
+weight	8
+defense	60
+power	4
+sexy	20
+block	邪
+skill	呪・体力回復
+special	ＳＰＭＰ回復
+detail	The strongest bikini armor with abilities apparently comparable to the goddess of war.
+
+name	アマゾネスの鎧・上
+displayName	Amazon Armor (U)
+rank	31
+price	87500
+type	braarmor
+halfState	false
+part	chest
+exclude	bust
+img	braarmor_spiral
+sdw_bust	none
+sex	女
+job	戦盗鍛狩吟海ドバ曲君ア
+weight	10
+defense	34
+sexy	60
+detail	Armor worn by the legendary Amazons. Exposing, but highly protective.
+
+name	アマゾネスの鎧・下
+displayName	Amazon Armor (L)
+rank	31
+price	88000
+type	pantsarmor
+halfState	false
+part	waist
+exclude	hip
+img	pantsarmor_spiral
+sdw_hip	none
+sex	女
+job	戦盗鍛狩吟海ドバ曲君ア
+weight	10
+defense	33
+sexy	60
+detail	Armor worn by the legendary Amazons. Exposing, but highly protective.
+
+name	奴隷の鎧・上
+displayName	Slave Armor (U)
+rank	56
+price	12000
+type	braarmor
+halfState	false
+part	chest
+exclude	bust
+img	braarmor_hole
+sdw_bust	none
+sex	女
+job	戦盗鍛狩吟海ドバ曲君ア
+weight	5
+defense	12
+sexy	80
+cursed	true
+skill	呪・興奮度上昇
+detail	This shameful armor worn by female slave warriors is cursed.
+
+name	奴隷の鎧・下
+displayName	Slave Armor (L)
+rank	56
+price	12000
+type	pantsarmor
+halfState	false
+part	waist
+exclude	hip
+img	pantsarmor_hole
+sdw_hip	none
+sex	女
+job	戦盗鍛狩吟海ドバ曲君ア
+weight	5
+defense	11
+sexy	80
+cursed	true
+skill	呪・興奮度上昇
+detail	This shameful armor worn by female slave warriors is cursed.
+
+name	踊り子の服・上
+displayName	Dancer Garb (U)
+rank	15
+price	8800
+type	bra
+part	chest
+exclude	bust
+img	bra_dancer
+sdw_bust	none
+sound	tear
+sex	女
+weight	4
+defense	8
+sexy	50
+nakedByBreak	true
+block	魅了
+detail	Clothes that dancers love to wear, which are cute and easy to move in.
+
+name	踊り子の服・下
+displayName	Dancer Garb (L)
+rank	15
+price	9600
+type	pants
+part	waist
+exclude	hip,leg
+img	pants_dancer
+sdw_hip	none
+sdw_leg	none
+sound	tear
+sex	女
+weight	5
+defense	12
+sexy	50
+block	魅了
+detail	Clothes that dancers love to wear, which are cute and easy to move in.
+
+name	青いビキニ・上
+displayName	Blue Bikini (U)
+rank	12
+price	3000
+type	bra
+part	chest
+halfState	false
+exclude	bust
+img	bra_blue
+sdw_bust	none
+sound	tear
+sex	女
+weight	2
+defense	3
+speed	2
+sexy	30
+resist	冷
+detail	Standard blue bikini
+
+name	青いビキニ・下
+displayName	Blue Bikini (L)
+rank	12
+price	3200
+type	panties
+halfState	false
+part	waist
+exclude	hip
+img	panties_blue
+sdw_hip	none
+sound	tear
+sex	女
+weight	2
+defense	3
+speed	2
+sexy	40
+softCrotch	true
+resist	冷
+detail	Standard blue bikini
+
+name	魔女のビキニ・上
+displayName	Witch's Bikini (U)
+rank	26
+price	64000
+type	bra
+part	chest
+halfState	false
+exclude	bust
+img	bra_magenta
+sdw_bust	none
+sound	tear
+sex	女
+job	魔錬召ソ
+weight	2
+defense	5
+speed	2
+sexy	30
+skill	無効化
+block	石化
+detail	A cute bikini worn by witches. Mysterious power resides in it.
+
+name	魔女のビキニ・下
+displayName	Witch's Bikini (L)
+rank	26
+price	68000
+type	panties
+halfState	false
+part	waist
+exclude	hip
+img	panties_magenta
+sdw_hip	none
+sound	tear
+sex	女
+job	魔錬召ソ
+weight	2
+defense	5
+speed	2
+sexy	40
+softCrotch	true
+skill	無効化
+block	石化
+detail	A cute bikini worn by witches. Mysterious power resides in it.
+
+name	安物のビキニ・上
+displayName	Cheap Bikini (U)
+rank	45
+price	300
+type	bra
+part	chest
+halfState	false
+exclude	bust
+img	bra_sheer
+sdw_bust	none
+sound	tear
+sex	女
+weight	1
+defense	3
+speed	5
+sexy	60
+cursed	true
+detail	A cheap bikini made of poor quality cloth. The only advantage is that it is light.
+
+name	安物のビキニ・下
+displayName	Cheap Bikini (L)
+rank	45
+price	320
+type	panties
+halfState	false
+part	waist
+exclude	hip
+img	panties_sheer
+sdw_hip	none
+sound	tear
+sex	女
+weight	1
+defense	3
+speed	5
+sexy	70
+softCrotch	true
+cursed	true
+detail	A cheap bikini made of poor quality cloth. The only advantage is that it is light.
+
+name	革のビキニ・上
+displayName	Leather Bikini (U)
+rank	17
+price	15800
+type	bra
+part	chest
+halfState	false
+exclude	bust
+img	bra_pad
+sdw_bust	none
+sound	tearleather
+sex	女
+weight	4
+defense	8
+sexy	30
+detail	A durable bikini made of leather. Provides some protection.
+
+name	革のビキニ・下
+displayName	Leather Bikini (L)
+rank	17
+price	15200
+type	panties
+halfState	false
+part	waist
+exclude	hip
+img	panties_pad
+sdw_hip	none
+sound	tearleather
+sex	女
+weight	4
+defense	8
+sexy	40
+detail	A durable bikini made of leather. Provides some protection.
+
+name	人魚のブラ
+displayName	Mermaid Bra
+rank	15
+price	12000
+type	shell
+halfState	false
+part	chest
+exclude	bust
+img	bra_shell
+sdw_bust	none
+sound	tearleather
+sex	女
+weight	5
+defense	5
+sexy	60
+skill	潜水
+detail	Scallop shell bra. Allows breathing underwater.
+
+name	人魚のパンツ
+displayName	Mermaid Panties
+rank	15
+price	12500
+type	shell
+halfState	false
+part	waist
+exclude	hip
+img	panties_shell
+sdw_hip	none
+sound	tearleather
+sex	女
+weight	5
+defense	5
+sexy	80
+skill	潜水
+detail	Scallop shell panties. Allows breathing underwater.
+
+name	クラムトップス
+displayName	Clam Bra
+rank	16
+price	13800
+type	shell
+halfState	false
+part	chest
+exclude	bust
+img	bra_clam
+sdw_bust	none
+sound	tearleather
+sex	女
+weight	2
+defense	3
+sexy	80
+skill	潜水
+detail	Hamaguri clam shell bra. Allows breathing underwater.
+
+name	クラムボトムズ
+displayName	Clam Panties
+rank	16
+price	13200
+type	shell
+halfState	false
+part	waist
+exclude	hip
+img	panties_clam
+sdw_hip	none
+sound	tearleather
+sex	女
+weight	2
+defense	3
+sexy	100
+skill	潜水
+detail	Hamaguri clam shell panties. Allows breathing underwater.
+
+name	貝のネックレス
+displayName	Shell Necklace
+rank	18
+price	19500
+type	necklace
+halfState	false
+part	chest
+exclude	bust
+img	necklace_shell
+sdw_bust	none
+weight	1
+defense	1
+sexy	80
+skill	潜水
+detail	Cone shell necklace. Has spines, so handle with care. Allows breathing underwater.
+
+name	マーマンズシェル
+displayName	Merman Shell
+rank	17
+price	16000
+type	shell
+halfState	false
+part	waist
+img	pants_shell
+exclude	hip
+sdw_hip	none
+nakedByErect	true
+sex	男
+weight	8
+defense	5
+skill	潜水
+detail	Precious men's shell equipment which is completely hollow inside. Allows breathing underwater.
+
+name	シャークパンツ
+displayName	Shark Trunks
+rank	24
+price	45000
+type	panties
+halfState	false
+part	waist
+img	pants_swim
+exclude	hip
+sdw_hip	none
+sound	tear
+nakedByErect	true
+sex	男
+weight	3
+defense	4
+speed	2
+skill	潜水
+detail	Men's swimming trunks. Allows breathing underwater.
+
+name	布のスカート
+displayName	Cloth Skirt
+rank	3
+price	500
+type	skirt
+part	waist
+img	skirt_cloth
+sdw_hip	skirt
+sdw_hip_b	skirt_sb
+sdw_leg	skirt
+sdw_leg_b	skirt_sb
+sound	tear
+sex	女
+job	戦魔僧盗鍛狩吟海錬召司ドバソ曲君
+weight	5
+defense	2
+detail	A cloth skirt. Any woman can wear it, but doesn't help with defense.
+
+name	革のスカート
+displayName	Leather Skirt
+rank	10
+price	2650
+type	skirt
+part	waist
+img	skirt_brown
+sdw_hip	skirt
+sdw_hip_b	skirt_sb
+sdw_leg	skirt
+sdw_leg_b	skirt_sb
+sound	tear
+sex	女
+job	戦魔僧盗鍛狩吟海錬召司ドバソ曲君
+weight	10
+defense	11
+detail	Leather skirt. More protective than a normal skirt.
+
+name	魔女のスカート
+displayName	Witch's Skirt
+rank	15
+price	8500
+type	skirt
+part	waist
+img	skirt_black
+sdw_hip	skirt
+sdw_hip_b	skirt_sb
+sdw_leg	skirt
+sdw_leg_b	skirt_sb
+sound	tear
+sex	女
+job	魔錬召ソ
+weight	5
+defense	9
+intellect	6
+skill	無効化
+detail	A black skirt worn by witches that is imbued with magical power.
+
+name	ミニスカート
+displayName	Miniskirt
+rank	7
+price	1800
+type	skirt
+part	waist
+img	skirt_mini
+halfState	false
+sdw_hip	mini
+sdw_hip_b	mini_sb
+sdw_leg	mini
+sdw_leg_b	mini_sb
+sound	tear
+sex	女
+weight	2
+defense	1
+speed	3
+times	1
+detail	A short skirt that is light and easy to move in.
+
+name	聖なるミニ
+displayName	Holy Miniskirt
+rank	20
+price	27500
+type	skirt
+part	waist
+img	skirt_holy
+halfState	false
+sdw_hip	mini
+sdw_hip_b	mini_sb
+sdw_leg	mini
+sdw_leg_b	mini_sb
+sound	tear
+sex	女
+job	戦魔盗鍛狩吟海錬召ドバソ曲君
+weight	2
+defense	5
+speed	3
+times	1
+attrib	聖
+resist	邪
+skill	無効化
+detail	A miniskirt with holy power. Even non-priests can benefit from it.
+
+name	奴隷の前掛け
+displayName	Slave Wrap
+rank	35
+price	29500
+type	pants
+halfState	false
+part	waist
+img	pants_loincloth
+exclude	hip
+sound	tearleather
+nakedByErect	true
+weight	7
+defense	12
+sexy	100
+skill	無効化
+cursed	true
+detail	A garment that only covers the crotch, worn by slaves for sale. Cursed.
+
+name	布のズボン
+displayName	Cloth Pants
+rank	3
+price	600
+type	pants
+part	waist
+img	pants_blue
+sdw_hip	none
+sdw_hip_b	pants_sb
+sdw_leg	pants
+equipIndex	250
+sound	tear
+sex	男
+weight	5
+defense	3
+detail	Cloth men's pants. Can be worn regardless of job.
+
+name	革のズボン
+displayName	Leather Pants
+rank	10
+price	2500
+type	pants
+part	waist
+img	pants_red
+sdw_hip	none
+sdw_hip_b	pants_sb
+sdw_leg	redpants
+equipIndex	250
+sound	tear
+sex	男
+weight	10
+defense	10
+detail	Leather pants that are more durable than cloth ones.
+
+name	主人公の内ズボン
+displayName	Protagonist Pants
+type	pants
+part	waist
+img	pants_theo
+sdw_hip	none
+sdw_hip_b	none
+weight	1
+event	true
+detail	∗For events
+
+name	トランクス
+displayName	Trunks
+rank	3
+price	500
+type	shorts
+halfState	false
+part	hip
+img	shorts_trunks
+sound	tear
+sex	男
+weight	2
+defense	1
+detail	Men's underwear. Almost no function as protective gear.
+
+name	冒険者のブラ
+displayName	Adventurers' Bra
+rank	3
+price	550
+type	bra
+halfState	false
+part	bust
+img	bra_sport
+sound	tear
+sex	女
+weight	8
+defense	3
+strong	100
+detail	Adventurer's bra. Stretchable, yet strong and absolutely unbreakable.
+
+name	冒険者のパンツ
+displayName	Adventurers' Underwear
+rank	3
+price	600
+type	shorts
+halfState	false
+part	hip
+img	shorts_spats
+sound	tear
+weight	7
+defense	3
+strong	100
+detail	Adventurer's underwear. Sturdy, tear-resistant, and easy to move around in.
+
+name	白いブラ
+displayName	White Bra
+rank	4
+price	1000
+type	bra
+halfState	false
+part	bust
+img	bra_white
+sound	tear
+sex	女
+weight	2
+defense	1
+sexy	50
+detail	White bra. Common as underwear.
+
+name	白いパンツ
+displayName	White Panties
+rank	4
+price	950
+type	panties
+halfState	false
+part	hip
+img	panties_white
+sound	tear
+sex	女
+weight	2
+defense	1
+sexy	60
+softCrotch	true
+detail	White panties. Common as underwear.
+
+name	ピンクのブラ
+displayName	Pink Bra
+rank	4
+price	1000
+type	bra
+halfState	false
+part	bust
+img	bra_pink
+sound	tear
+sex	女
+weight	2
+defense	1
+sexy	50
+resist	毒
+detail	Pink bra popular with girls who like pretty things.
+
+name	ピンクのパンツ
+displayName	Pink Panties
+rank	4
+price	950
+type	panties
+halfState	false
+part	hip
+img	panties_pink
+sound	tear
+sex	女
+weight	2
+defense	1
+sexy	60
+resist	毒
+softCrotch	true
+detail	Pink panties popular with girls who like cute things.
+
+name	縞のブラ
+displayName	Striped Bra
+rank	5
+price	1200
+type	bra
+halfState	false
+part	bust
+img	bra_stripe
+sound	tear
+sex	女
+weight	2
+defense	1
+power	2
+sexy	50
+resist	眠り
+detail	Striped bra. Feels good to wear.
+
+name	縞のパンツ
+displayName	Striped Panties
+rank	5
+price	1150
+type	panties
+halfState	false
+part	hip
+img	panties_stripe
+sound	tear
+sex	女
+weight	2
+defense	1
+speed	2
+sexy	60
+softCrotch	true
+resist	眠り
+detail	Striped panties. Feels good to wear.
+
+name	粗末なブラ
+displayName	Shabby Bra
+rank	11
+price	450
+type	bra
+halfState	false
+part	bust
+img	bra_poor
+sound	tear
+sex	女
+weight	2
+defense	2
+sexy	60
+detail	A bra of crude cloth and string, used by goblins and orcs.
+
+name	粗末なパンツ
+displayName	Shabby Panties
+rank	11
+price	420
+type	panties
+halfState	false
+part	hip
+img	panties_poor
+sound	tear
+sex	女
+weight	2
+defense	2
+sexy	80
+softCrotch	true
+detail	Panties of crude cloth, used by goblins and orcs. Doesn't cover most of the buttocks.
+
+name	赤いブラ
+displayName	Red Bra
+rank	14
+price	5500
+type	bra
+halfState	false
+part	bust
+img	bra_red
+sound	tear
+sex	女
+weight	2
+defense	1
+sexy	60
+block	眠り,魅了
+detail	Sexy red adult bra. Also prevents sleep and charm.
+
+name	赤いパンツ
+displayName	Red Panties
+rank	14
+price	5800
+type	panties
+halfState	false
+part	hip
+img	panties_red
+sound	tear
+sex	女
+weight	1
+defense	1
+sexy	80
+softCrotch	true
+block	眠り,魅了
+detail	Sexy red adult panties. Also prevents sleep and charm.
+
+name	ひものブラ
+displayName	String Bra
+rank	21
+price	30500
+type	bra
+halfState	false
+part	bust
+img	bra_thong
+sound	tear
+sex	女
+weight	1
+defense	1
+speed	5
+sexy	70
+block	ドレイン
+detail	String bra designed to be worn under armor. Very easy to move in.
+
+name	ひものパンツ
+displayName	String Panties
+rank	21
+price	30200
+type	panties
+halfState	false
+part	hip
+img	panties_thong
+sound	tear
+sex	女
+weight	1
+defense	1
+speed	5
+sexy	90
+softCrotch	true
+block	ドレイン
+detail	String thong designed to be worn under armor. Very easy to move in.
+
+name	黒いブラ
+displayName	Black Bra
+rank	26
+price	53000
+type	bra
+halfState	false
+part	bust
+img	bra_black
+sound	tear
+sex	女
+weight	2
+defense	1
+sexy	60
+block	混乱,恐怖
+skill	無効化
+detail	Seductive back adult bra that helps prevent confusion and fear.
+
+name	黒いパンツ
+displayName	Black Panties
+rank	26
+price	52800
+type	panties
+halfState	false
+part	hip
+img	panties_black
+sound	tear
+sex	女
+weight	1
+defense	1
+sexy	80
+softCrotch	true
+block	混乱,恐怖
+skill	無効化
+detail	Seductive black adult panties that helps prevent confusion and fear.
+
+name	魔法のニップレス
+displayName	Magic Nipple Stickers
+rank	33
+price	3500
+type	card
+halfState	false
+part	bust
+img	bra_seal
+sound	tear
+sex	女
+weight	1
+sexy	80
+block	眠り,魅了
+detail	Small magic stickers that hide only the nipples. Automatically stick.
+
+name	魔法の前貼り
+displayName	Magic Crotch Sticker
+rank	35
+price	4000
+type	card
+halfState	false
+part	hip
+img	panties_seal
+sound	tear
+sex	女
+weight	1
+sexy	100
+softCrotch	true
+block	眠り,魅了
+detail	Magical sticker that can be used instead of underwear to cover private parts.
+
+name	鋼鉄の貞操帯
+displayName	Steel Chastity Belt
+rank	42
+price	320000
+type	pantsarmor
+halfState	false
+part	hip
+img	pantsarmor_chastity
+sex	女
+weight	6
+defense	10
+sexy	80
+block	魅了
+cursed	true
+detail	Cursed metal underwear to prevent a woman's infidelity.
+
+name	鋼鉄の貞操帯（ブルーの所持品）
+displayName	Steel Chastity Belt (Blue's)
+price	320000
+type	pantsarmor
+halfState	false
+part	hip
+img	pantsarmor_chastity
+sex	女
+weight	6
+defense	10
+sexy	80
+block	魅了
+event	true
+neverRemove	It's locked, so I can't remove it!
+detail	Cursed metal underwear to prevent a woman's infidelity.
+
+name	サンダル
+displayName	Sandals
+rank	2
+price	200
+type	sandal
+halfState	false
+part	leg
+img	sandal_rome
+equipIndex	225
+sound	tearleather
+weight	5
+job	戦魔僧盗鍛狩吟海錬召司ドバソモ曲君
+defense	1
+detail	Simple footwear. Not much better than bare feet.
+
+name	聖なるサンダル
+displayName	Holy Sandals
+rank	19
+price	25400
+type	sandal
+halfState	false
+part	leg
+img	sandal_white
+equipIndex	225
+sound	tearleather
+job	僧司君
+weight	6
+defense	5
+piety	12
+attrib	聖
+resist	邪
+detail	Sandals worn only by high priests.
+
+name	革のブーツ
+displayName	Leather Boots
+rank	5
+price	1280
+type	boots
+halfState	false
+part	leg
+img	boots_leather
+sound	tearleather
+job	戦魔僧盗鍛狩吟海錬召司ドバソモ曲君ア
+weight	10
+defense	3
+detail	Leather boots. Provides some pretection.
+
+name	レンジャーブーツ
+displayName	Ranger Boots
+rank	12
+price	3750
+type	boots
+halfState	false
+part	leg
+img	boots_green
+sound	tearleather
+job	戦盗鍛狩吟海ドバ曲君ア
+weight	12
+defense	5
+speed	2
+detail	Ranger's favorite boots. Very easy to walk in.
+
+name	隠密のブーツ
+displayName	Covert Boots
+rank	17
+price	16400
+type	boots
+halfState	false
+part	leg
+img	boots_dark
+sound	tearleather
+job	盗狩吟海ア
+weight	5
+defense	8
+speed	5
+thief	10
+detail	Boots made for spies. Very light and durable.
+
+name	鉄のブーツ
+displayName	Steel Boots
+rank	8
+price	2000
+type	boots
+halfState	false
+part	leg
+img	boots_iron
+job	戦鍛海バ曲君
+weight	20
+defense	5
+speed	-2
+detail	Steel boots. Protects the feet well, but heavy.
+
+name	銀のブーツ
+displayName	Silver Boots
+rank	20
+price	28500
+type	boots
+halfState	false
+part	leg
+img	boots_silver
+job	戦鍛海バ曲君
+weight	21
+defense	10
+speed	-2
+detail	High quality boots made of silver, but weight is a problem.
+
+name	ブラックブーツ
+displayName	Black Boots
+rank	35
+price	198000
+type	boots
+halfState	false
+part	leg
+img	boots_black
+job	戦鍛海バ曲君
+weight	18
+defense	19
+detail	High-performance boots made of special materials. Light and protective.
+
+name	革の手袋
+displayName	Leather Gloves
+rank	5
+price	1180
+type	glove
+halfState	false
+part	arm
+img	glove_leather
+sound	tearleather
+job	戦魔僧盗鍛狩海錬召司ドバソモ曲君ア
+weight	2
+defense	1
+detail	Gloves made of leather. Better than nothing at all.
+
+name	盗賊の手袋
+displayName	Thieves' Gloves
+rank	15
+price	9980
+type	glove
+halfState	false
+part	arm
+img	glove_blue
+sound	tearleather
+job	盗狩吟海ア
+weight	2
+defense	6
+thief	10
+detail	Thieves' favorite gloves. Thief skill is increased.
+
+name	聖なる手袋
+displayName	Holy Gloves
+rank	18
+price	18000
+type	glove
+halfState	false
+part	arm
+img	glove_white
+sound	tearleather
+job	僧司君
+weight	2
+defense	4
+attrib	聖
+resist	邪
+skill	無効化
+detail	Gloves worn by clergy grant a divine blessing.
+
+name	鉄の小手
+displayName	Steel Gauntlets
+rank	6
+price	1350
+type	gauntlet
+halfState	false
+part	arm
+img	gauntlet_steel
+job	戦鍛海バ曲君
+weight	7
+defense	4
+detail	Steel gloves with a reasonable degree of protection.
+
+name	銀の小手
+displayName	Silver Gauntlets
+rank	14
+price	6900
+type	gauntlet
+halfState	false
+part	arm
+img	gauntlet_silver
+job	戦鍛海バ曲君
+weight	7
+defense	7
+detail	Shining silver gloves. The best defensive performance.
+
+name	錆びた小手
+displayName	Rusted Gauntlets
+rank	31
+price	2300
+type	gauntlet
+halfState	false
+part	arm
+img	gauntlet_rust
+job	戦鍛海バ曲君
+weight	7
+defense	2
+power	-5
+cursed	true
+detail	Totally rusty gloves. Not able to move the joints well.
+
+name	達人の小手
+displayName	Masters' Gauntlets
+rank	38
+price	298000
+type	gauntlet
+halfState	false
+part	arm
+img	gauntlet_black
+job	戦鍛海バ曲君
+weight	7
+defense	10
+power	2
+times	1
+detail	The power of masters is transferred through the gloves. Can better handle weapons.
+
+name	鉄の指輪
+displayName	Iron Ring
+rank	3
+price	500
+type	ring
+part	finger
+img	ring_steel
+weight	1
+detail	Just a ring made of iron. Worth very little.
+
+name	パールリング
+displayName	Pearl Ring
+rank	27
+price	68000
+type	ring
+part	finger
+img	ring_pearl
+weight	1
+intellect	4
+detail	A ring made with a magical pearl. Using it activates clairvoyant magic.
+
+name	ブラックパール
+displayName	Black Pearl Ring
+rank	37
+price	260000
+type	ring
+part	finger
+img	ring_black
+weight	1
+skill	ブレス抑制
+detail	A ring of black pearls with strong magical powers that ward against dragon breath.
+
+name	シルバーリング
+displayName	Silver Ring
+rank	24
+price	39800
+type	ring
+part	finger
+img	ring_silver
+weight	1
+resist	邪
+luck	4
+detail	Simple silver wedding ring.
+
+name	ゴールドリング
+displayName	Gold Ring
+rank	30
+price	89000
+type	ring
+part	finger
+img	ring_gold
+weight	1
+resist	石化
+piety	4
+special	ＳＰＨＰ回復
+detail	Beautiful gold wedding ring.
+
+name	覚醒の指輪
+displayName	Ring of Awakening
+rank	15
+price	7800
+type	ring
+part	finger
+img	ring_green
+weight	1
+block	眠り,気絶
+detail	Ring which preserves consciousness. Protects against sleep and fainting.
+
+name	精神の指輪
+displayName	Spirit Ring
+rank	17
+price	15600
+type	ring
+part	finger
+img	ring_pinkgold
+weight	1
+block	混乱,魅了,恐怖
+detail	A ring that keeps the spirit sane. Protects against confusion, fascination, and fear.
+
+name	清浄の指輪
+displayName	Purity Ring
+rank	30
+price	85000
+type	ring
+part	finger
+img	ring_aqua
+weight	1
+block	毒,麻痺
+detail	Ring to keep the body clean. Protects against poison and paralysis.
+
+name	破邪の指輪
+displayName	Shielding Ring
+rank	36
+price	248000
+type	ring
+part	finger
+img	ring_platinum
+weight	1
+block	石化,ドレイン
+detail	Ring to protect against evil forces. Protects against petrification and draining.
+
+name	魔術師の指輪
+displayName	Magician's Ring
+rank	28
+price	72000
+type	ring
+part	finger
+img	ring_emerald
+weight	1
+job	魔ソ
+intellect	10
+special	ＳＰＭＰ回復
+skill	遠距離防御
+detail	A ring for mages which greatly increases their intelligence and prevents enemies from attacking at long range.
+
+name	火の精霊の指輪
+displayName	Fire Spirit Ring
+rank	36
+price	210000
+type	ring
+part	finger
+img	ring_ruby
+weight	1
+block	冷,凍結
+detail	Ring with fire spirit's blessing.
+
+name	氷の精霊の指輪
+displayName	Ice Spirit Ring
+rank	45
+price	480000
+type	ring
+part	finger
+img	ring_sapphire
+weight	1
+block	火
+skill	耐熱
+detail	Ring with ice spirit's blessing.
+
+name	回復の指輪
+displayName	Recovery Ring
+rank	51
+price	1280000
+type	ring
+part	finger
+img	ring_diamond
+weight	1
+skill	呪・体力回復
+detail	HP automatically recovers a little after walking a certain number of steps.
+
+name	沈黙の指輪
+displayName	Ring of Silence
+rank	35
+price	16000
+type	ring
+part	finger
+img	ring_topaz
+weight	1
+cursed	true
+special	ＳＰ魔法忘却
+skill	呪・沈黙
+detail	Ring to trap magicians. All magic except alchemy is sealed.
+
+name	死の指輪
+displayName	Ring of Death
+rank	60
+price	44000
+type	ring
+part	finger
+img	ring_skull
+weight	1
+cursed	true
+special	ＳＰ死亡
+skill	呪・体力減少
+detail	A ring imbued with the curse of the Grim Reaper. HP decreases little by little.
+
+name	堕天使の指輪
+displayName	Fallen Angel Ring
+rank	70
+price	660000
+type	ring
+part	finger
+img	ring_violet
+weight	1
+cursed	true
+sexy	100
+skill	呪・停滞,呪・興奮度急上昇
+detail	A ring created by a fallen angel who became a demon. It corrupts the person who wears it.
+
+name	さびついた指輪
+displayName	Rusty Ring
+rank	30
+price	100
+type	ring
+part	finger
+img	ring_rust
+weight	1
+cursed	true
+detail	The ring is completely rusted and dirty. Utterly worthless, but once you put it on, you can't take it off.
+
+name	守りの腕輪
+displayName	Bracelet of Protection
+rank	15
+price	11000
+type	ring
+part	pocket
+img	bracelet_copper
+weight	2
+defense	5
+detail	Bracelet clad in mystical power. Increases defense.
+
+name	結界の腕輪
+displayName	Bracelet of Warding
+rank	42
+price	345000
+type	ring
+part	pocket
+img	bracelet_cyan
+weight	2
+defense	2
+resist	火,冷,雷,聖,邪,毒
+detail	Bangle wrapped in a barrier. Increases resistance to magic.
+
+name	師範の腕輪
+displayName	Master's Bracelet
+rank	40
+price	323000
+type	ring
+part	pocket
+img	bracelet_gold
+weight	2
+defense	2
+times	1
+detail	A bracelet worn by a legendary martial arts master which increases the number of attacks.
+
+name	水の腕輪
+displayName	Water Bangle
+rank	1
+price	9000
+type	ring
+part	pocket
+img	bracelet_blue
+weight	2
+block	冷
+event	true
+detail	Bracelet with the blessing of water. Allows breathing underwater.
+
+name	パワーブレスレット
+displayName	Power Bracelet
+rank	1
+type	ring
+part	pocket
+img	bracelet_star
+weight	2
+power	6
+defense	2
+event	true
+detail	When equipped with this mysterious strength imbuing bracelet, you'll be able to push heavy objects.
+
+name	銀のアンク
+displayName	Silver Ankh
+rank	15
+price	9500
+type	amulet
+part	pocket
+img	amulet_ankh_silver
+weight	1
+resist	火,冷,雷
+detail	Wearing it strengthens your protection against magic.
+
+name	金のアンク
+displayName	Gold Ankh
+rank	25
+price	55000
+type	amulet
+part	pocket
+img	amulet_ankh_gold
+weight	1
+skill	無効化
+detail	When worn, there is a chance that magic will be nullified.
+
+name	闇のネックレス
+displayName	Dark Necklace
+rank	78
+price	8400000
+type	necklace
+part	pocket
+img	necklace_black
+weight	1
+skill	死のブレス
+detail	Necklace with a jet-black jewel full of evil power. When equipped, Breath of Death can be used.
+
+name	貝のお守り
+displayName	Shell Charm
+rank	18
+price	20000
+type	amulet
+part	pocket
+img	amulet_shell
+weight	1
+skill	潜水
+detail	Shell amulet with mystic powers. Allows breathing underwater
+
+name	天使のはね
+displayName	Angel Wings
+rank	48
+price	700000
+type	amulet
+part	pocket
+img	amulet_feather
+weight	1
+skill	浮遊
+detail	Mysterious feather that lets you float in the air.
+
+name	統率者のメダル
+displayName	Commander Medal
+type	amulet
+part	pocket
+img	amulet_hex
+event	true
+piety	5
+block	魅了
+detail	Proof that the bearer has special qualifications to lead a party.<r><c>※Story mode only
+
+name	学びのメダル
+displayName	Medal of Learning
+rank	70
+price	5500000
+type	amulet
+part	pocket
+img	amulet_medal_bronze
+weight	1
+strong	100
+luck	5
+skill	習得
+detail	A dream medal that increases experience points earned in battle.
+
+name	加護のメダル
+displayName	Medal of Blessing
+rank	77
+price	7200000
+type	amulet
+part	pocket
+img	amulet_medal_silver
+weight	1
+defense	99
+strong	100
+block	火,冷,雷,聖,邪,全異常
+skill	浮遊,潜水,耐熱,物理無効,無効化完全
+detail	A medal with miraculous power to protect you from everything.
+
+name	強者のメダル
+displayName	Medal of Strength
+rank	85
+price	9900000
+type	amulet
+part	pocket
+img	amulet_medal_gold
+weight	1
+strong	100
+times	10
+power	30
+speed	30
+luck	30
+skill	死亡,反撃
+detail	Miraculous medal that allows you to slaughter your enemies with overwhelming force.
+
+name	ガーネットの魔石
+displayName	Garnet Magic Stone
+type	amulet
+part	pocket
+img	amulet_garnet
+weight	1
+event	true
+block	眠り
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	アメジストの魔石
+displayName	Amethyst Magic Stone
+type	amulet
+part	pocket
+img	amulet_amethyst
+weight	1
+event	true
+block	魅了
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	アクアマリンの魔石
+displayName	Aquamarine Magic Stone
+type	amulet
+part	pocket
+img	amulet_aquamarine
+weight	1
+event	true
+block	毒
+skill	潜水
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	ダイアモンドの魔石
+displayName	Diamond Magic Stone
+type	amulet
+part	pocket
+img	amulet_diamond
+weight	1
+event	true
+block	混乱
+skill	物理無効
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	エメラルドの魔石
+displayName	Emerald Magic Stone
+type	amulet
+part	pocket
+img	amulet_emerald
+weight	1
+event	true
+block	死亡
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	ムーンストーンの魔石
+displayName	Moonstone Magic Stone
+type	amulet
+part	pocket
+img	amulet_moonstone
+weight	1
+event	true
+block	邪,ドレイン
+skill	無効化完全
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	ルビーの魔石
+displayName	Ruby Magic Stone
+type	amulet
+part	pocket
+img	amulet_ruby
+weight	1
+event	true
+block	冷,凍結
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	ペリドットの魔石
+displayName	Peridot Magic Stone
+type	amulet
+part	pocket
+img	amulet_peridot
+weight	1
+event	true
+block	麻痺
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	サファイアの魔石
+displayName	Sapphire Magic Stone
+type	amulet
+part	pocket
+img	amulet_sapphire
+weight	1
+event	true
+block	火
+skill	耐熱
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	オパールの魔石
+displayName	Opal Magic Stone
+type	amulet
+part	pocket
+img	amulet_opal
+weight	1
+event	true
+block	雷
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	トパーズの魔石
+displayName	Topaz Magic Stone
+type	amulet
+part	pocket
+img	amulet_topaz
+weight	1
+event	true
+block	石化
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	ラピスラズリの魔石
+displayName	Lapis Lazuli Magic Stone
+price	1500000
+type	amulet
+part	pocket
+img	amulet_lapislazuli
+weight	1
+event	true
+block	気絶
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+name	オブシダンの魔石
+displayName	Obsidian Magic Stone
+type	amulet
+part	pocket
+img	amulet_obsidian
+weight	1
+event	true
+block	聖
+detail	One of 12 magic stones needed to summon the god Polaris.
+
+; 以下は食事メニュー
+
+name	ローストビーフ
+displayName	Roast Beef
+type	dish
+price	1500
+weight	230
+love	1
+detail	beef
+
+name	アボカドのサラダ
+displayName	Avocado Salad
+type	dish
+price	1200
+weight	200
+love	1
+detail	vegetable
+
+name	鶏の唐揚げ（レモン汁がけ）
+displayName	Fried Chicken with Lemon
+type	dish
+price	980
+weight	240
+love	1
+detail	chickenWithLemon
+
+name	ウインナー
+displayName	Sausage
+type	dish
+price	780
+weight	180
+love	1
+detail	poke
+
+name	スモークベーコン
+displayName	Smoked Bacon
+type	dish
+price	680
+weight	150
+love	1
+detail	poke
+
+name	すね肉の煮込み
+displayName	Braised Shank
+type	dish
+price	1580
+weight	220
+love	1
+detail	beef
+
+name	ポテトフライ
+displayName	Fries
+type	dish
+price	480
+weight	160
+love	1
+detail	vegetable
+
+name	ウツボの蒲焼き
+displayName	Broiled Eel
+type	dish
+price	2260
+weight	180
+love	1
+detail	fish
+
+name	真鯛のアクアパッツァ
+displayName	Sea Bream Aquapazza
+type	dish
+price	2850
+weight	240
+love	1
+detail	fish
+
+name	サーモンのカルパッチョ
+displayName	Salmon Carpaccio
+type	dish
+price	2280
+weight	170
+love	1
+detail	fish
+
+name	ムール貝のパスタ
+displayName	Pasta with Mussels
+type	dish
+price	2500
+weight	300
+love	1
+detail	fish
+
+name	山鳥のグリル
+displayName	Grilled Wild Bird
+type	dish
+price	3300
+weight	280
+love	1
+detail	chicken
+
+name	山菜のスープ
+displayName	Wild Vegetable Soup
+type	dish
+price	1280
+weight	200
+love	1
+detail	vegetable
+
+name	山賊焼き
+displayName	Large Fried Chicken
+type	dish
+price	3580
+weight	480
+love	1
+detail	beef
+
+name	ビーフジャーキー
+displayName	Beef Jerky
+type	dish
+price	1400
+weight	250
+love	0
+detail	beef
+
+name	仔牛のシチュー
+displayName	Veal Stew
+type	dish
+price	2780
+weight	260
+love	1
+detail	beef
+
+name	豆のスープ
+displayName	Bean Soup
+type	dish
+price	580
+weight	150
+love	0
+detail	vegetable
+
+name	サーロインステーキ
+displayName	Sirloin Steak
+type	dish
+price	6500
+weight	550
+love	2
+detail	beef
+
+name	鮭のムニエル
+displayName	Salmon Meuniere
+type	dish
+price	1980
+weight	230
+love	1
+detail	fish
+
+name	海老と蟹のビスク
+displayName	Shrimp and Crab Bisque
+type	dish
+price	2480
+weight	210
+love	1
+detail	fish
+
+name	メロン
+displayName	Melon
+type	dish
+price	2480
+weight	160
+love	1
+detail	fruits
+
+name	モンブラン
+displayName	Mont Blanc
+type	dish
+price	1280
+weight	200
+love	1
+detail	cake
+
+name	ホットケーキ
+displayName	Pancakes
+type	dish
+price	1000
+weight	180
+love	0
+detail	cake
+
+name	マスカット
+displayName	Muscat Grape
+type	dish
+price	3580
+weight	180
+love	1
+detail	fruits
+
+name	オレンジのカクテル
+displayName	Orange Cocktail
+type	dish
+price	1480
+weight	100
+love	1
+detail	liquor
+
+name	クラフトビール
+displayName	Craft Beer
+type	dish
+price	1580
+weight	100
+love	1
+detail	liquor
+
+name	ココナッツリキュール
+displayName	Coconut Liqueur
+type	dish
+price	2300
+weight	100
+love	1
+detail	liquor
+
+name	山葡萄のワイン
+displayName	Wild Grape Wine
+type	dish
+price	3500
+weight	100
+love	1
+detail	liquor
+
+name	バーボン
+displayName	Bourbon
+type	dish
+price	3600
+weight	100
+love	0
+detail	liquor
+
+name	最高級シャンパン
+displayName	Finest Champagne
+type	dish
+price	100000
+weight	100
+love	6
+detail	liquor
+
+; ※魔石について
+;  ターコイズはこの世界にトルコがないのでボツ
+;  タンザナイトはこの世界にタンザニアがないのでボツ
+;  アレキサンドライトはこの世界にアレキサンダー大王がいないのでボツ
+;  トルマリンは入浴剤を思い浮かべるのでボツ
+
+; ※その他ボツにしたアイテム名
+; フランシスカはこの世界にフランスがないのでボツ
+; バーゼライトはこの世界にバーゼル（スイス）がないのでボツ
+
+; ※迷ったけどあえて採用したアイテム
+; トンファーは琉球の武器だけど見た目が面白くなるので採用
+; クラフトビールと言うと幅が広すぎるがビールに疎い人にスタイル名を見せても分からないので採用

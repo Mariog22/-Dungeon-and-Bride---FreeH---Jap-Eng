@@ -1,0 +1,129 @@
+﻿;  神の山
+
+name = 神の山４Ｆ
+insideName = ４Ｆ
+lower = 神の山３Ｆ
+level = 50
+bgm = forest
+margin = 3
+shadow = light
+sky = mistysea
+effect = BE_fog
+
+; 画像パーツ
+━ = grit
+　 = soilw
+☐ = marble
+☖ = archw
+② = human
+
+; 敵情報
+maxGroups = 2
+monsters = エンジェルナイト
+
+; 宝箱
+box[1] = 天使のはね_u,革のスカート,ライトアーマー・上,ライトアーマー・下
+box[2] = 聖なる杖_u,聖なる槍_u,聖なる胸当て_u,聖なる手袋,聖なるサンダル
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  														┏━━━━━┓
+11														┃❶　　　②┃
+  														┣━━☖━━┫
+10													　┃☐☐☐☐☐┃　
+  													　┃☐☐☐☐☐┃　
+ 9													　┃⓵☐⓵☐⓵┃　
+  													　┃☐☐☐☐☐┃　
+ 8													　┃⓵☐⓵☐⓵┃　
+  													　┗☖━☖━☖┛　
+ 7													　　　　　　　　　
+  													　　　　　　　　　
+ 6													　　　　　　　　　
+  															　　　　　
+ 5															　　　　　
+  
+ 4													◇	◇
+  
+ 3							◇	◇	◇	◇
+  		┏━━☖┓
+ 2		┃　　　┃
+  		┃　　　┃
+ 1		┃❷　　┃
+  		┗━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+for(var i = 3; i <= 6; i++) pos[i][3].f.hide = true;
+for(var i = 6; i <= 7; i++) pos[i][4].f.hide = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+[texton]
+[name n="Angel Knight" f=valkyrie_gold_04]「We will not allow anyone to set foot in our sacred land!」[k]
+The angel knights suddenly attacked![k]
+[textoff]
+@monster pos=1 name=エンジェルナイト
+@monster pos=3 name=エンジェルナイト
+@monster pos=5 name=エンジェルナイト
+@monster pos=9 name=エンジェルナイト
+@monster pos=11 name=エンジェルナイト
+@callbattle bgm=boss gameover=true
+@treasure item=天使のはごろも trap=爆弾 level=40
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove
+
+@fg c=valkyrie_gold_stand left=450 top=60
+[texton w=1]
+[name n="Angel Knight" f=valkyrie_gold_04]「I am impressed by your strength.[r]
+If it's okay with you, could I join you on your journey?」[k]
+[textoff]
+
+@question title="Hire the Angel Knight?"
+
+[if exp='! tf.result']
+	[texton]
+	[name n="Angel Knight" f=valkyrie_gold_04]「I see... I will be here, so if you change your mind, please call on me again.
+	If you change your mind, please let me know.」[k]
+	[textoff]
+	@cl
+	[eventoff]
+[endif]
+
+[texton]
+[name n="Angel Knight" f=valkyrie_gold_04]「Thank you very much![r]I look forward to working with you.」[k]
+[textoff]
+@clf
+@se f=up1
+@changefloor pimg=void
+@eval exp='game.guest.summonHiring(o.エンジェルナイト)'
+@eval exp='game.guest.opacity = 255'
+@eval exp='o.エンジェルナイト.contracted = true'
+@eval exp='tf.num = game.getNumContractedHelpers(false)'
+@eval exp='sf.numContractedHirings = tf.num' cond='tf.num > sf.numContractedHirings'
+@notice text="We hired Angel Knight!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,5125 @@
+﻿// chara.tjs
+// プレイヤーキャラクタークラス
+
+
+class CharaObject extends LivingObjectLayer
+{
+	// キャラ１体を表すクラス
+
+	var img = "";	// 読み込まれた画像の識別名
+	var color = "yellow";	// 髪の色
+	var threeSize = [90, 75, 90];	// スリーサイズ
+	var alignment = o.中立;	// 属性
+	var _mindBalance = 0;	// 気分値。属性を変化させようとする気持ちの偏りを表す
+	var model;	// 作成元の素体
+	var job;	// 職業
+	var lastMagic;	// 最後に使った魔法
+	var lastPage = "mmagic";	// 最後に開いていた魔法のカテゴリページ
+	var lastSkill;	// 前回選んだスキルコマンド
+	var lastAct;	// 前回選んだコマンド（コマンドリピート用）
+	var lastTarget;	// 前回選んでいたターゲット（コマンドリピート用）
+	var closedSkill = [];	// 個別に制限されたスキル
+
+	var regular = false;	// 固定キャラかどうか。周回プレイに備え、フリーモードでも削除できない
+	var semiRegular = false;	// 元固定キャラかどうか。ストーリーモードでもパーティーから外せる
+	var married = false;	// 結婚しているかどうか
+	var noChangeOfJob = false;	// 転職不可かどうか
+	var showBust = true;	// 乳房を見せて良いかどうか（乳首は手で隠す）
+	var showNipple = false;	// 乳首を見せて良いかどうか
+	var showCrotch = true;	// 股間を見せて良いかどうか
+	var showUnderwear = false;	// 下着を見せて良いかどうか
+	var tripEventID;	// クエスト等で一時離脱中の際にそのイベントのIDを記録しておく
+
+	// パラメータ
+	var _sleep = 0;			// 眠気
+	var _heat = 0;			// 興奮度
+	var _trust = 0;	// パーティーへの信頼度。戦闘での勝利を重ねると徐々に上がっていく
+	var stomach = 0;	// 満腹値
+	var mmagic    = [0, 0, 0, 0, 0, 0, 0, 0, 0];	// ＭＰ
+	var pmagic    = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+	var amagic    = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+	var smagic    = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+	var mmagicMax = [0, 0, 0, 0, 0, 0, 0, 0, 0];	// 最大ＭＰ
+	var pmagicMax = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+	var amagicMax = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+	var smagicMax = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+	// 所持アイテム保管
+	var bag = [];			// アイテムバッグ
+	var bagStat = [];	// その位置のアイテムの状態
+	var bagMap = [];	// アイテムバッグの配置図
+	var reservedItem;	// これから使用されるアイテム
+	var reservedGrid;	// その収納場所
+	var brokenItemStat;	// 壊れた所持アイテムの状態
+	var brokenItemEquiped;	// 壊れた所持アイテムが装備されているかどうか
+
+	// 装備アイテム
+	var equip = %[];	// 装備されている全てのアイテム
+	var equipStat = %[];	// ↑ のアイテムのステータス
+	var partNames = ["main", "sub", "chest", "waist", "arm", "leg"
+		, "bust", "hip", "finger", "pocket"];	// 各装備位置の名称。順番が重要なので変えないように
+	var brokenPartsList = [];	// すでに破壊の起こった装備部位
+
+	// フェイスウインドウ画像
+	var charaLayer;	// キャラ画像
+	var faceLayer;	// 表情画像
+	var labelLayer;	// ラベル（ギルド用）
+	var lifeLayer;	// ＨＰ表示
+	var heartLayer;	// 眠気・興奮度表示
+	var badgeLayer;	// 職業・属性
+	var weightLayer;	// 重量アイコン
+	var magicButton;	// 魔法ボタン
+	var heartEmitter;	// 興奮度表示アニメ
+	var badgeEmitter;	// 属性点滅アニメ
+	var winWidth = 168;	// 顔画像の基本幅
+	var faceWidth = 0;	// 表情画像の幅
+
+	// 立ち絵
+	var figureLayer;	// 立ち絵レイヤー
+	var clothesNamesByTag;	// ＫＡＧタグで指定された服装を示す文字列
+	var faceNumByTag = 0;	// ＫＡＧタグで指定された表情を表す番号
+
+	// 位置並べ替え用
+	var holding = false;	// ホールド中かどうかのフラグ（キーボード使用時）
+	var dragging = false;	// マウスドラッグ中か
+	var gripX;	// 掴んだ場所Ｘ
+	var gripY;	// 掴んだ場所Ｙ
+	var goalLeft = 0;	// パーティー内位置交換時の目標移動位置
+	var beforeOrder;	// 石化などにかかる前の順位
+
+	// 種族ごとに持つ宿泊イベント（条件は各種族の conditions を参照）
+	var events = [];	// 宿泊イベント
+	var booking = [0];	// 現在チェックする部屋割り条件
+	var capturers = [];	// キャラを捕らえるモンスターたち
+	var rapeStep = 0;	// モンスターによる陵辱段階
+	var flag = %[theo: 0, max: 0, linus: 0, blue: 0, alex: 0];	// イベント進行フラグ
+	var eventInfos = [];	// 他の関連するイベント情報（キャラ削除時などに使う）
+
+	// 性的パラメータ
+	var love = %[theo: 0, max: 0, linus: 0, blue: 0, alex: 0];	// 恋愛度
+	var sexCount = %[theo: 0, max: 0, linus: 0, blue: 0, alex: 0, other: 0];	// 性交回数
+	var strip = %[theo: "通常", max: "通常", linus: "通常", blue: "通常", alex: "通常"];	// 見せた姿
+	var develop = %[theo: 0, max: 0, linus: 0, blue: 0, alex: 0];	// 開発度合い
+	var guard = %[theo: 0, max: 3, linus: 4, blue: 5, alex: 5];	// 警戒度
+	var _desire = 10;	// 性欲値。負の値だと heat が上昇しなくなる
+	var _moral = 100;	// 貞淑値（恥ずかしい事を平気と感じない度合い）
+	var _expose = 0;	// 露出したい・露出しても平気な度合い。露出状態が続くと徐々に慣れる
+	var _feel = 10;	// 感じやすさ（ヒロイン用）
+	var loversCount = 0;	// 経験人数（ヒロイン用）
+	var sellCount = 0;	// 売春回数（ヒロイン用）
+	var affairCount = 0;	// 不貞行為数（ヒロイン用）
+	var pourCount = 0;	// 中出し回数（ヒロイン用）
+	var pregnant = NO_PREGNANCY;	// 妊娠の進行度（ヒロイン用）
+	var pregnantCount = 0;	// 妊娠回数（ヒロイン用）
+	var technic = 10;	// 性的なテクニック（男性用）
+	var penis = 13;	// 総合的なペニス最大性能（男性用）
+	var sexActs = [];	// 実行可能なプレイの一覧（男性用）
+	var diary = [];	// セックス記録（ヒロイン用）
+	var moved = false;	// 部屋を移動したかどうか
+	var dontMove = false;	// 移動させないフラグ
+	var moveType = "auto";	// 部屋移動の種類
+	var breakCount = 1;	// １回の盾破壊で破壊される数
+	var priorTarget;	// 部屋移動・ヒロイン攻略時に男たちが優先するターゲット
+	var sleepEmit;	// 就寝時のエフェクト
+	var heatCounter = 0;	// 興奮度上昇に間隔を設けるためのカウンター
+	var slaveTerm = 0;	// 敵に囚われた際の拘束期間
+	var firstPartnerKey;	// 初めての相手のキー名
+	var lastGuyKey;	// 最後に表示した男キャラのキー名（ヒロイン情報表示用）
+
+	function CharaObject(par, master, id)
+	{
+		super.LivingObjectLayer(...);
+		super.loadImages("charaslot_back");
+		setSizeToImageSize();
+		callOnPaint = true;
+		statusLayer.setPos(2, 36);	// ステータス表示位置を調整
+		isUserChara = true;
+		destroy = 20;
+
+		charaLayer = new KAGLayer(window, this);
+		with(charaLayer)
+		{
+			.setSize(width, height);
+			.setImageSize(winWidth * 6, height);
+			.visible = true;
+			.absolute = 5;
+			.hitThreshold = 256;
+		}
+
+		faceLayer = new global.Layer(window, charaLayer);
+		with(faceLayer)
+		{
+			.visible = true;
+			.absolute = 1;
+			.hitThreshold = 256;
+		}
+
+		figureLayer = new KAGLayer(window, master.gameBase);
+		with(figureLayer)
+		{
+			.setSize(560, 768);
+			.absolute = 1;
+			.hitThreshold = 256;
+		}
+
+		labelLayer = new DecoLayer(this);
+		with(labelLayer)
+		{
+			.loadImages("charaslot_label");
+			.setPos(0, 138);
+			.font.height = 20;
+			.absolute = 50;
+		}
+
+		lifeLayer = new DecoLayer(this);
+		with(lifeLayer)
+		{
+			.loadImages("charaslot_life");
+			.setSize(115, 27);
+			.setPos(48, 165);
+			.font.height = 22;
+			.absolute = 40;
+			.visible = true;
+		}
+
+		heartLayer = new DecoLayer(this);
+		with(heartLayer)
+		{
+			.loadImages("charaslot_mind");
+			.setSizeToImageSize();
+			.setPos(65, 191);
+			.font.height = 14;
+			.font.bold = true;
+			.absolute = 41;
+			.visible = true;
+		}
+
+		heartEmitter = new global.Layer(window, this);
+		with(heartEmitter)
+		{
+			.loadImages("PE_base_heart");
+			.setSizeToImageSize();
+			.setPos(41, 167);
+			.absolute = 46;
+		}
+
+		badgeLayer = new DecoLayer(this);
+		with(badgeLayer)
+		{
+			.setSize(36, 97);
+			.setPos(129, 2);
+			.absolute = 40;
+			.visible = true;
+		}
+
+		badgeEmitter = new global.Layer(window, this);
+		with(badgeEmitter)
+		{
+			.loadImages("PE_base_heart");
+			.setSizeToImageSize();
+			.setPos(122, 11);
+			.absolute = 46;
+		}
+
+		weightLayer = new global.Layer(window, this);
+		with(weightLayer)
+		{
+			.setSize(22, 66);
+			.setPos(143, 54);
+			.absolute = 45;
+			.visible = true;
+		}
+
+		magicButton = new QuickCommandButton(this);
+		with(magicButton)
+		{
+			.loadImages("charaslot_magic");
+			.setPos(1, 2);
+			.absolute = 55;
+			.onSelectAction = openMagicCommandByIcon;
+		}
+
+		darkCoverLayer.paintAll(this);
+		lightingLayer.paintAll(this);
+		flashLayer.paintAll(this);
+
+		for(var i = 0; i < partNames.count; i++)
+		{
+			equip[partNames[i]] = equipStat[partNames[i]] = void;	// アイテム装備箇所メンバを設定
+		}
+	}
+
+	function finalize()
+	{
+		invalidate charaLayer;
+		invalidate faceLayer;
+		invalidate figureLayer;
+		invalidate labelLayer;
+		invalidate lifeLayer;
+		invalidate heartLayer;
+		invalidate badgeLayer;
+		super.finalize();
+	}
+
+	//---------------------------------------------------------------------------
+	// プロパティ
+
+	property infoVisible
+	{
+		setter(v)
+		{
+			if(parent == master.guildWin) labelLayer.visible = v;
+			else lifeLayer.visible = statusLayer.visible = heartLayer.visible
+				 = badgeLayer.visible = heartEmitter.visible = magicButton.visible = v;
+		}
+	}
+
+	property index
+	{
+		getter{ return master.chara.find(this); }
+	}
+
+	property keyName
+	{
+		getter{ return model.keyName; }
+	}
+
+	property sex
+	{
+		getter{ return model.sex; }
+	}
+
+	property race
+	{
+		getter{ return model.race; }
+	}
+
+	property maxLife
+	{
+		setter(v){ _maxLife = cap(v, 9999); updateLife(); }
+		getter{ return cap(_maxLife + getEquipmentParam("maxLife"), 9999); }
+	}
+
+	property atk
+	{
+		getter{ return super.atk + power \ 20; }
+	}
+
+	property acu
+	{
+		getter
+		{
+			var accuracy = job.getHitPower(level) + power + getEquipmentParam("accuracy");
+			return getAffectedParam("accuracy", accuracy);
+		}
+	}
+
+	property attack
+	{
+		getter
+		{
+			if(equip.main === void)
+			{
+				// 素手
+				if(skill.has(o.格闘)) return [power \ 4, power \ 2];	// これにattackボーナス追加
+				else return [power \ 10, power \ 5];	// 元々少なかったのでこれで良し
+			}
+			if(act == o.再攻撃 && equip.sub !== void)
+			{
+				return equip.sub.getParam("attack", equipStat.sub);
+			}
+			else
+			{
+				return equip.main.getParam("attack", equipStat.main);
+			}
+		}
+	}
+
+	property times
+	{
+		getter
+		{
+			if(equip.sub !== void && act == o.再攻撃)
+			{
+				return getEquipmentParam("times", ["main"]) + int(speed * 0.05);
+			}
+			else if(equip.main === void)
+			{
+				// 素手
+				if(skill.has(o.格闘))
+				{
+					if(getTotalWeight() <= SLIGHT) return int(speed * 0.30);
+					else return int(speed * 0.17);
+				}
+				else return int(speed * 0.10);
+			}
+			else
+			{
+				return getEquipmentParam("times", ["sub"]) + int(speed * 0.05);
+			}
+		}
+	}
+
+	property weapon
+	{
+		getter{ return equip.main !== void ? equip.main.type : "punch"; }
+	}
+
+	property subWeapon
+	{
+		getter
+		{
+			if(equip.sub !== void && equip.sub.part == "both") return equip.sub.type;
+			if(equip.main === void && skill.has(o.格闘)) return "punch";
+			return void;
+		}
+	}
+
+	property defense
+	{
+		getter
+		{
+			var v = getEquipmentParam("defense");
+			if(getTotalWeight() <= SLIGHT) v += job.getPhysicalArmor(level);
+					// 総重量が極端に小さい ( SLIGHT 以下 ) なら肉体防御ボーナスを加算
+			return cap(v, 99);
+		}
+	}
+
+	property power
+	{
+		setter(v){ super.power = v; }
+		getter{ return cap(super.power + getEquipmentParam("power"), 99); }
+	}
+
+	property intellect
+	{
+		setter(v){ super.intellect = v; }
+		getter{ return cap(super.intellect + getEquipmentParam("intellect"), 99); }
+	}
+
+	property piety
+	{
+		setter(v){ super.piety = v; }
+		getter{ return cap(super.piety + getEquipmentParam("piety"), 99); }
+	}
+
+	property vitality
+	{
+		setter(v){ super.vitality = v; }
+		getter{ return cap(super.vitality + getEquipmentParam("vitality"), 99); }
+	}
+
+	property speed
+	{
+		setter(v){ super.speed = v; }
+		getter{ return cap(super.speed + getEquipmentParam("speed"), 99); }
+	}
+
+	property luck
+	{
+		setter(v){ super.luck = v; }
+		getter{ return cap(super.luck + getEquipmentParam("luck"), 99); }
+	}
+
+	property muscle
+	{
+		getter{ return cap(job.muscle + getEquipmentParam("muscle") + cap(power - 10), 999); }
+	}
+
+	property sleep
+	{
+		setter(v){ _sleep = v > 100 ? 100 : (v < 0 ? 0 : v); updateHeart(); }
+		getter{ return _sleep; }
+	}
+
+	property trust
+	{
+		setter(v){ _trust = cap(v, 100); }
+		getter{ return _trust; }
+	}
+
+	property mindBalance
+	{
+		setter(v)
+		{
+			if(alignment == o.中立) _mindBalance = 0;
+			else _mindBalance = cap(v, 20, -20);
+		}
+		getter{ return _mindBalance; }
+	}
+
+	property heat
+	{
+		setter(v)
+		{
+			if(desire == -1) return;
+			if(_heat < v && master.view != master.hotelView && master.view.visible) emitHeart(v - _heat);
+			heatCounter = 0;
+			_heat = v > master.maxHeat ? master.maxHeat : (v < 0 ? 0 : v);
+			updateHeart();
+		}
+		getter{ return _heat; }
+	}
+
+	property desire
+	{
+		setter(v){ _desire = min(v, 100); }
+		getter{ return _desire; }
+	}
+
+	property moral
+	{
+		setter(v){ _moral = max(v, 0); }
+		getter{ return _moral; }
+	}
+
+	property expose
+	{
+		setter(v)
+		{
+			if(v < 0) v = 0;
+			_expose = min(v, 100);
+		}
+		getter{ return _expose; }
+	}
+
+	property feel
+	{
+		setter(v){ _feel = min(v, 100); }
+		getter{ return _feel; }
+	}
+
+	property weak
+	{
+		getter{ return model.weak; }
+	}
+
+	property resist
+	{
+		getter{ return model.resist; }
+	}
+
+	property block
+	{
+		getter{ return model.block; }
+	}
+
+	property figureTop
+	{
+		getter{ return model.figureTop; }
+	}
+
+	property beCursed
+	{
+		getter
+		{
+			for(var i = 0; i < partNames.count; i++)
+			{
+				if(equip[partNames[i]] !== void && equip[partNames[i]].isCursed(this)) return true;
+			}
+			return false;
+		}
+	}
+
+	function getEquipmentParam(key, ignore = [])
+	{
+		// アイテムの装備状況によって加算されるパラメータを返す。各パラメータプロパティから呼ばれる
+		var v = 0;
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var part = partNames[i];
+			if(ignore.has(part)) continue;
+			if(equip[part] !== void) v += equip[part].getParam(key, equipStat[part]);
+		}
+		return v;
+	}
+
+	function getAffectedParam(key, value)
+	{
+		// 様々な条件によって変化したパラメータを返す。ここではパーティー付加効果も見る
+		value = super.getAffectedParam(key, value);
+		if(team !== void)
+		{
+			for(var i = 0; i < team.status.count; i++)
+			{
+				value = team.status[i].affectedParam(key, value);
+			}
+		}
+		return value;
+	}
+
+	function deduceDisplayName() {
+		// For the auto-created generic characters
+	    displayName = master.defaultNameTranslations[name];
+
+	    if (displayName === void) {
+	        return master.restoreName(name);
+	    }
+	    return displayName;
+	}
+
+	function jobDisplayName() {
+		return job.displayName;
+	}
+
+	function raceDisplayName() {
+		return race.displayName;
+	}
+
+	//---------------------------------------------------------------------------
+	// セーブロード
+
+	function store()
+	{
+		// スーパークラスの分
+		var dic = super.store();
+
+		// 基本
+		dic.img = img;
+		dic.color = color;
+		dic.threeSize = threeSize;
+		dic.modelName = model.name;
+		dic.jobName = job.name;
+		dic.alignmentName = alignment.name;
+		dic.mindBalance = _mindBalance;
+		dic.isHeroine = isHeroine;
+		dic.regular = regular;
+		dic.semiRegular = semiRegular;
+		dic.married = married;
+		dic.noChangeOfJob = noChangeOfJob;
+		dic.tripEventID = tripEventID;
+
+		// パラメータ
+		dic.mmagic = mmagic;
+		dic.pmagic = pmagic;
+		dic.amagic = amagic;
+		dic.smagic = smagic;
+		dic.mmagicMax = mmagicMax;
+		dic.pmagicMax = pmagicMax;
+		dic.amagicMax = amagicMax;
+		dic.smagicMax = smagicMax;
+		dic.sleep = _sleep;
+		dic.heat = _heat;
+		dic.trust = _trust;
+		dic.stomach = stomach;
+
+		// 制限スキル
+		dic.closedSkillNames = [];
+		for(var i = 0; i < closedSkill.count; i++) dic.closedSkillNames.add(closedSkill[i].name);
+
+		// 所持アイテム
+		dic.bagNames = [];
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] !== void) dic.bagNames[i] = bag[i].name;
+		}
+		dic.bagStat = bagStat;
+
+		// 装備アイテム
+		dic.equipNames = %[];
+		dic.equipStat = %[];
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var part = partNames[i];
+			dic.equipNames[part] = equip[part] === void ? void : equip[part].name;
+			dic.equipStat[part] = equipStat[part];
+		}
+
+		// 宿泊イベント
+		dic.events = events;
+		dic.booking = booking;
+		dic.flag = flag;
+		dic.moved = moved;
+		dic.dontMove = dontMove;
+		dic.moveType = moveType;
+		dic.eventInfos = eventInfos;
+		if(priorTarget !== void) dic.priorTargetID = master.chara.find(priorTarget);
+
+		// 性的パラメータ
+		dic.love = love;
+		dic.sexCount = sexCount;
+		dic.strip = strip;
+		dic.develop = develop;
+		dic.guard = guard;
+		dic.desire = _desire;
+		dic.moral = _moral;
+		dic.expose = _expose;
+		dic.feel = _feel;
+		dic.loversCount = loversCount;
+		dic.sellCount = sellCount;
+		dic.affairCount = affairCount;
+		dic.pourCount = pourCount;
+		dic.pregnant = pregnant;
+		dic.pregnantCount = pregnantCount;
+		dic.technic = technic;
+		dic.penis = penis;
+		dic.slaveTerm = slaveTerm;
+		dic.firstPartnerKey = firstPartnerKey;
+		dic.lastGuyKey = lastGuyKey;
+		dic.heatCounter = heatCounter;
+		dic.diary = diary;
+		if(sex == "男") dic.sexActs = sexActs;
+
+		// 立ち絵
+		dic.clothesNamesByTag = clothesNamesByTag;
+		dic.faceNumByTag = faceNumByTag;
+
+		// システム関係
+		dic.lastPage = lastPage;
+		if(lastAct !== void) dic.lastActName = lastAct.name;
+		dic.beforeOrder = beforeOrder;
+
+		return dic;
+	}
+
+	function restore(dic)
+	{
+		// 保存されたデータから読み出した配列には後から追加した関数が入ってないので
+		// 配列は assign を使ってコピーすること
+
+		// スーパークラスの分
+		super.restore(dic);
+
+		// 基本
+		img = dic.img;
+		color = dic.color;
+		threeSize.assign(dic.threeSize);
+		model = o[dic.modelName];
+		job = o[dic.jobName];
+		alignment = o[dic.alignmentName];
+		_mindBalance = dic.mindBalance;
+		isHeroine = dic.isHeroine;
+		regular = dic.regular;
+		semiRegular = dic.semiRegular;
+		tripEventID = dic.tripEventID;
+
+		// パラメータ
+		mmagic.assign(dic.mmagic);
+		pmagic.assign(dic.pmagic);
+		amagic.assign(dic.amagic);
+		smagic.assign(dic.smagic);
+		mmagicMax.assign(dic.mmagicMax);
+		pmagicMax.assign(dic.pmagicMax);
+		amagicMax.assign(dic.amagicMax);
+		smagicMax.assign(dic.smagicMax);
+
+		// 制限スキル
+		if(dic.closedSkillNames !== void)	// ★条件式は後で消す  3/30 12:00
+		{
+			closedSkill = [];
+			for(var i = 0; i < dic.closedSkillNames.count; i++) closedSkill.add(o[dic.closedSkillNames[i]]);
+		}
+
+		// 所持アイテム
+		bag = [];
+		bagStat = [];
+		bagMap = [];
+		for(var i = 0; i < dic.bagNames.count; i++)
+		{
+			if(dic.bagNames[i] === void || o[dic.bagNames[i]] === void) continue;
+			insertItem(o[dic.bagNames[i]], dic.bagStat[i], i, false);
+		}
+
+		// 装備アイテム
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var part = partNames[i];
+			if(dic.equipNames[part] === void || o[dic.equipNames[part]] === void) equip[part] = void;
+			else equip[part] = o[dic.equipNames[part]];
+			equipStat[part] = dic.equipStat[part];
+		}
+
+		// 再プレイ時は読み込まないもの
+		// こうすることで再プレイ時は下の値がすべて初期値を取るようになる
+		if(! master.retryMode && ! master.nextRoundMode)
+		{
+			// パラメータ
+			married = dic.married;
+			noChangeOfJob = dic.noChangeOfJob;
+			_sleep = dic.sleep;
+			_heat = dic.heat;
+			_trust = dic.trust;
+			stomach = dic.stomach;
+
+			// 宿泊イベント
+			events.assign(dic.events);
+			booking.assign(dic.booking);
+			(Dictionary.assign incontextof flag)(dic.flag);
+			moved = dic.moved;
+			dontMove = dic.dontMove;
+			moveType = dic.moveType;
+			eventInfos.assignStruct(dic.eventInfos);
+			priorTarget = dic.priorTargetID === void ? void : master.chara[dic.priorTargetID];
+
+			// 性的パラメータ
+			(Dictionary.assign incontextof love)(dic.love);
+			(Dictionary.assign incontextof sexCount)(dic.sexCount);
+			(Dictionary.assign incontextof strip)(dic.strip);
+			(Dictionary.assign incontextof develop)(dic.develop);
+			(Dictionary.assign incontextof guard)(dic.guard);
+			_desire = dic.desire;
+			_moral = dic.moral;
+			_expose = dic.expose;
+			_feel = dic.feel;
+			loversCount = dic.loversCount;
+			sellCount = dic.sellCount;
+			affairCount = dic.affairCount;
+			pourCount = dic.pourCount;
+			pregnant = dic.pregnant;
+			pregnantCount = dic.pregnantCount;
+			technic = dic.technic;
+			penis = dic.penis;
+			slaveTerm = dic.slaveTerm;
+			firstPartnerKey = dic.firstPartnerKey;
+			lastGuyKey = dic.lastGuyKey;
+			heatCounter = dic.heatCounter;
+			diary.assignStruct(dic.diary);
+			if(sex == "男" && dic.sexActs !== void) sexActs.assign(dic.sexActs);
+		}
+
+		// 立ち絵
+		clothesNamesByTag = dic.clothesNamesByTag;
+		faceNumByTag = dic.faceNumByTag;
+
+		// システム関係
+		lastPage = dic.lastPage;
+		lastAct = dic.lastActName !== void ? o[dic.lastActName] : void;
+		beforeOrder = dic.beforeOrder;
+
+		// 初期化が必要なもの
+		hitThreshold = 256;	// あとで Node を enabled にすることで判定を発生させる。初期値は無判定
+		lastTarget = target = act = reservedItem = reservedGrid = void;
+		magicButton.selectable = isMagicUser();	// 魔法ボタンを更新
+		capturers.clear();
+
+        displayName = deduceDisplayName();
+	}
+
+	//---------------------------------------------------------------------------
+	// キャラ作成・初期化・登録
+
+	function clearRelativeEvents()
+	{
+		// このキャラに関連する全体・マップイベント、イベントボタンをすべてクリアする
+		// 式があったらそれを実行する
+		for(var i = eventInfos.count - 1; i >= 0; i--)
+		{
+			var info = eventInfos[i];
+			if(info.label !== void)
+			{
+				// label に値があればイベントボタン削除
+				if(master.map.name == info.map) master.view.removeEventButton(info);
+				o[info.map].deleteEventButton(info);
+			}
+			else if(info.num !== void)
+			{
+				// num に値があれば自動発生するイベントを削除
+				if(info.name == "全般") master.events.remove(info.num);
+				else if(info.name !== void) o[info.name].events.remove(info.num);
+				else if(info.map !== void) o[info.map].events.remove(info.num);
+			}
+			else if(info.exp !== void)
+			{
+				// exp に式があれば式を実行
+				info.exp ! ;
+			}
+		}
+	}
+
+	function initialize()
+	{
+		// キャラ作成・初期化
+		// ここまでに以下の値（名前・種族・職業・６つのパラメータ）は決まっていること
+		// name, color, model, job, power, intellect, piety, vitality, speed, luck
+		level = 1;
+		exp = 0;
+		img = model.img;
+		desire = model.desire;
+		dead = false;
+		visible = enabled = false;	// 思わぬフォーカス回避のためまだ無効にしておく
+		recovery();
+		if(sex == "女")
+		{
+			isHeroine = true;
+			if (!regular) {
+				threeSize[0] = model.threeSize[0] + intrandom(-3, 3);
+				threeSize[1] = model.threeSize[1] + intrandom(-2, 2);
+				threeSize[2] = model.threeSize[2] + intrandom(-3, 3);
+			}
+		}
+		if(sex == "男") sexCount = %[self: 0];	// 男は self というメンバに書くことにする
+		events.assign(model.events);
+		booking.assign(model.booking);
+
+		displayName = deduceDisplayName();
+	}
+
+	function activate()
+	{
+		// キャラを有効化
+		makeFaces(model.face[0] - model.trim[0], model.face[1] - model.trim[1]);	// 表情作成
+		makeBustups();	// 胸像作成
+		makeOtherFaceWindowPictures();	// その他の画像を作成
+		if(status.has(o.石化)) beStonedImage();
+		if(status.has(o.凍結)) beFrozenImage();
+		createFigure(0, void, void);	// 初期の立ち絵画像を作っておく
+		enabled = selectable = true;
+		magicButton.selectable = isMagicUser();	// 魔法ボタンを更新
+	}
+
+	function transformToPartyType()
+	{
+		// パーティーでの表示に切り替える
+		parent = master.party;
+		setSize(master.party.cellWidth, master.party.cellHeight);
+		labelLayer.visible = false;
+		lifeLayer.visible = statusLayer.visible = heartLayer.visible = true;
+		magicButton.visible = true;
+		updateLife();
+		updateHeart();
+		updateStatus();
+		updateBadge();
+		updateWeightIcon();
+	}
+
+	function transformToGuildType()
+	{
+		// ギルドでの表示に切り替える
+		parent = master.guildWin;
+		setSize(master.guildWin.cellWidth, master.guildWin.cellHeight);
+		labelLayer.visible = true;
+		lifeLayer.visible = statusLayer.visible = heartLayer.visible = false;
+		magicButton.visible = false;
+		updateLabel();
+		updateBadge();
+		updateWeightIcon();
+	}
+
+	function setInitialItems()
+	{
+		// 作成したキャラに初期アイテムを持たせる
+		var items = [];
+		items.assign(model.items);
+		for(var i = 0; i < job.items.count; i++)
+		{
+			items.add(job.items[i]);
+		}
+		for(var i = 0; i < items.count; i++)
+		{
+			if(items[i].equipment) dressEquipment(items[i]);
+			else insertItem(items[i]);
+			sf[items[i].name] = true;	// アイテム履歴を記録
+		}
+	}
+
+	function inputData(key, data)
+	{
+		// 作成済みキャラデータを加工して入力する
+		if(key == "model")
+		{
+			model = o[data];
+			initialize();
+		}
+		else if(key == "threeSize")
+		{
+			this[key] = strToArray(data);
+		}
+		else if(key == "alignment")
+		{
+			alignment = o[data];
+		}
+		else if(key == "job")
+		{
+			setJob(o[data]);
+		}
+		else if(key == "life")
+		{
+			life = maxLife = data;
+		}
+		else if(key == "mmagic" || key == "pmagic" || key == "amagic" || key == "smagic")
+		{
+			this[key] = strToArray(data);
+			this[key + "Max"].assign(this[key]);
+		}
+		else if(key == "btcmd" || key == "skill")
+		{
+			this[key] = master.getObjArrayByText(data);
+		}
+		else if(key == "item")
+		{
+			var arr = master.getItemObjArrayByText(data);
+			for(var i = 0; i < arr.count; i++)
+			{
+				insertItem(arr[i].itemData, arr[i].state,, false);
+			}
+		}
+		else if(key == "equipments")
+		{
+			var arr = master.getItemObjArrayByText(data);
+			for(var i = 0; i < arr.count; i++)
+			{
+				var prt = arr[i].itemData.part;
+				if(prt == "double" || prt == "both") prt = "main";
+				equip[prt] = arr[i].itemData;
+				equipStat[prt] = arr[i].state !== void ? arr[i].state : WHOLE;
+			}
+		}
+		else if(key == "level")
+		{
+			level = data;
+			exp = getNeedExp(data);
+		}
+		else
+		{
+			this[key] = data;
+		}
+	}
+
+	function changeNameInGuild(text)
+	{
+		// ギルドで名前を変更する
+		if(name == text || text == "")
+		{
+			master.processPrev();
+			return false;
+		}
+		name = master.convertName(text);
+		displayName = text;
+		updateLabel();
+		master.guildWin.fixCharaName();
+	}
+
+	function changeColor(str)
+	{
+		// ギルドで髪色を変更する
+		color = str;
+		activate();
+		master.clearWindows();
+		master.popPrev();
+		playSound("click", 1);
+		master.guildWin.displayChara(this);
+		master.notice.open(master.processPrev);
+		master.notice.write("<y>Changed hair color");
+		master.notice.left = 350;
+		master.townView.loadPlayerSymbol();
+	}
+
+	function eraseMagicsForRepeatPlay(storyMode = false)
+	{
+		// 周回プレイ時に初期習得できない魔法を消去する
+		for(var i = btcmd.count - 1; i >= 0; i--)
+		{
+			if(btcmd[i].category == "smagic") continue;	// 召喚獣は消えないことにする
+			if(btcmd[i] == o.スターバースト) continue;	// スターバーストは消えないことにする
+			if(btcmd[i].magicLV > 0 && ! btcmd[i].getByLevelUp) btcmd.erase(i);
+		}
+
+		// 一部の召喚獣は消える（イベントとゲスト枠数の都合）
+		if(storyMode) btcmd.remove(o.ブラックドラゴン);
+	}
+
+	function ejectItemsForRepeatPlay(storyMode = false)
+	{
+		// 周回プレイ時に所持できないすべてのアイテムを削除する
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var prt = partNames[i];
+			if(equip[prt] === void) continue;
+			if(! master.isItemToDeleteForRepeatPlay(equip[prt], storyMode)) continue;
+			equip[prt] = void;
+			equipStat[prt] = void;
+		}
+		switchHandsHoldWeapon("sub", "main");	// main が消去武器だった場合持ち替え
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] === void) continue;
+			if(! master.isItemToDeleteForRepeatPlay(bag[i], storyMode)) continue;
+			ejectItem(bag[i], i, true);
+		}
+	}
+
+	function hideItemsForDemoVersion()
+	{
+		// デモ版でドロップしないすべてのアイテムを解除して未鑑定にする
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] === void) continue;
+			if(master.isItemToDropInDemoVersion(bag[i])) continue;
+			master.storeItemSomewhere(%[itemData: bag[i], state: -bagStat[i]], master.temporaryBox);
+			bag[i] = void;
+			bagStat[i] = void;
+		}
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var prt = partNames[i];
+			if(equip[prt] === void) continue;
+			if(master.isItemToDropInDemoVersion(equip[prt])) continue;
+			master.storeItemSomewhere(%[itemData: equip[prt], state: -equipStat[prt]], master.temporaryBox);
+			equip[prt] = void;
+			equipStat[prt] = void;
+		}
+		switchHandsHoldWeapon("sub", "main");	// main が解除武器だった場合持ち替え
+	}
+
+	//---------------------------------------------------------------------------
+	// 画像関連
+
+	function createFigure(faceNum, itemInfos, pose, wholeImg)
+	{
+		// 装備情報を元に立ち絵を作成する
+		var prt = master.itemWin.portrait;
+		if(itemInfos === void)
+		{
+			// アイテム情報の指定がない場合、武器とアクセサリーを除いた立ち絵を作成する
+			itemInfos = getEquipedItems(["main", "sub", "finger", "pocket"]);
+		}
+		prt.makePortrait(this, itemInfos, faceNum, pose, wholeImg, true);
+		if(wholeImg === void && ["showBust", "coverBust", "armUp"].has(pose))
+		{
+			// 全体画像が指定されておらず、ポーズ変更の情報があったらポーズ変更
+			prt.equipAndChangePose(this, pose);
+		}
+		figureLayer.setSize(prt.width, prt.height);
+		var shopVisible = master.itemWin.shopWin.visible;	// ショップにいた場合いったん左側を消す
+		if(shopVisible) master.itemWin.shopWin.visible = false;
+		figureLayer.piledCopy(0, 0, master.itemWin, 0, 0, prt.width, prt.height);
+		if(shopVisible) master.itemWin.shopWin.visible = true;	// 元に戻す
+	}
+
+	function createFigureByTag(faceNum, clothesName, forTalkerImage = false)
+	{
+		// ＫＡＧタグからの情報を元に立ち絵を作成する
+
+		// ロード時に再現させるために情報を保存
+		// 服装の指定がない場合は前回指定したものを用いる
+		// この情報はイベントが終わる度に消去され現在の装備を反映させるようになる
+		// イベントの最中に現在の装備にしたいときは「現在の装備」と指定する
+		if(faceNum !== void) faceNumByTag = +faceNum;
+		if(clothesName !== void) clothesNamesByTag = clothesName;
+
+		var clothes, wholeImg, pose, isLarge = false;
+
+		// タグ内にポーズの指定があったら
+		if(clothesNamesByTag !== void)
+		{
+			if(clothesNamesByTag.indexOf("手ブラ") != -1) pose = "coverBust";
+			if(clothesNamesByTag.indexOf("腕上げ") != -1) pose = "armUp";
+		}
+
+		// 服装情報がない or 現在の装備
+		if(clothesNamesByTag === void || clothesNamesByTag.indexOf("現在の装備") != -1)
+		{
+			createFigure(faceNumByTag,, pose);	// 現在の装備で立ち絵を作成
+			return;
+		}
+
+		// 服装の情報を設定
+		var info = model.dressInfo[clothesNamesByTag];
+		if(info === void) info = o[clothesNamesByTag];
+		if(info !== void && ! info instanceof "ItemObject")
+		{
+			// モデルごとに各服装情報が指定されているもの
+			clothes = info.clothes;
+			wholeImg = info.img;
+			if(info.pose !== void) pose = info.pose;
+			if(forTalkerImage && clothes !== void) wholeImg = void;	// 会話画像なら着衣情報を優先
+			if(! forTalkerImage && +info.large) isLarge = true;
+		}
+		else
+		{
+			clothes = clothesNamesByTag;
+		}
+
+		// 裸 or 全体画像が指定されている場合
+		if(wholeImg !== void || clothes.indexOf("裸") != -1)
+		{
+			if(isLarge)
+			{
+				// 大型イメージの場合は itemWin を使えないので別の処理を施す
+				// forTalkerImage はイメージ情報に大型が指定してあっても通常サイズを使うようにする指定で、
+				// 会話ウインドウ用の画像を作る関数から呼び出される
+				createLargeFigure(faceNumByTag, wholeImg);
+				return;
+			}
+			// 通常立ち絵を作成
+			createFigure(faceNumByTag, [], pose, wholeImg);
+			return;
+		}
+
+		// 装備アイテムが指定されている場合
+		var equipments = [];
+		var arr = clothes.split(",");
+		for(var i = 0; i < arr.count; i++)
+		{
+			var n = arr[i].indexOf("_b");
+			if(n != -1) arr[i] = arr[i].substring(0, n);
+			var item = o[arr[i]];
+			if(item === void) continue;
+			var prt = item.part;
+			if(prt == "both" || prt == "double") prt = "main";	// シナリオではそこまで厳密に装備させない
+			equipments.add(%[itemData: item, state: n != -1 ? BROKEN : WHOLE, part: prt]);
+		}
+
+		// ここまでにポーズの指定がなかったら胸は隠さない
+		//（装備状況に左右されず任意に指定できるように）
+		if(pose === void) pose = "showBust";
+
+		// 立ち絵を作成
+		createFigure(faceNumByTag, equipments, pose);
+	}
+
+	function createLargeFigure(faceNum, bodyImage)
+	{
+		// 大型の立ち絵を作成する（ＫＡＧ用）
+		var lay = new ChangableSkinLayer(master.gameBase);
+		var pos = model.lgPos;
+		figureLayer.loadImages(img + "lg_body_" + color);
+		figureLayer.setSizeToImageSize();
+		lay.loadImages(img + "lg_" + bodyImage, this);
+		figureLayer.operateRect(pos.chest[0], pos.chest[1], lay, 0, 0, lay.imageWidth, lay.imageHeight);
+		lay.loadImages(img + "lg_" + "%02d".sprintf(+faceNum), this);
+		figureLayer.operateRect(pos.face[0], pos.face[1], lay, 0, 0, lay.imageWidth, lay.imageHeight);
+		lay.visible = false;
+	}
+
+	function getTalkerImage(faceNum, clothesName)
+	{
+		// 現在の発言者画像を返す（ＫＡＧ用）
+		createFigureByTag(faceNum, clothesName, true);
+		var lay = new global.Layer(kag, master.gameBase);
+		lay.setSize(200, 200);
+		lay.operateRect(0, 0, figureLayer, model.trim[0] - master.itemWin.left - 34, model.trim[1], 200, 200);
+		return lay;
+	}
+
+	function cutInFigure(faceNum, type, x, y, pose)
+	{
+		// カットインを入れる
+		if(master.isBattlePose(pose) && ! model.hasExtraPose) pose = void;
+		createFigure(faceNum, getEquipedItems(["finger", "pocket"]), pose);
+		master.cutInFigure(figureLayer, type, x, y);
+	}
+
+	function cutInFigureOnBattle()
+	{
+		// バトル中にカットインを入れる
+		if(act === void || ! act.showCutIn) return;
+		var pose;
+		var x = 600;
+		var faceNum = FACE[getFaceName()].num;
+		if(model.hasExtraPose)
+		{
+			if(act.category == "item" && act.instrument)
+			{
+				if(act.type == "harp") pose = "play";
+				else if(act.type == "drum") pose = "beat";
+				else pose = "strike";
+			}
+			else if(act.category == "normal" || (act.category == "item" && act.part == "main"))
+			{
+				if(equip.main !== void && ["bow", "longbow"].has(equip.main.type)) pose = "shot";
+				else pose = "strike";
+			}
+			else if(act.category == "special")
+			{
+				pose = "etc";
+			}
+			else if(act.magicLV != 0)
+			{
+				pose = "cast";
+			}
+
+			if(pose !== void) x = kag.scWidth - figureLayer.width;
+		}
+		createFigure(faceNum, getEquipedItems(["finger", "pocket"]), pose);
+		master.cutInFigure(figureLayer, "alternate", x, 0, true);
+		return pose;
+	}
+
+	function getTouchableCrotchsImage()
+	{
+		// 触手が触ることができる股間だったらその画像のキー名と破損状態を返す
+		if(sex != "女") return;
+		if(equip.waist !== void)
+		{
+			if(equip.waist.softCrotch) return %[img: equip.waist.img, broken: equipStat.waist <= BROKEN];
+			else return;
+		}
+		if(equip.chest !== void)
+		{
+			if(equip.chest.softCrotch) return %[img: equip.chest.img, broken: equipStat.chest <= BROKEN];
+			else if(equip.chest.exclude.has("waist")) return;
+		}
+		if(equip.hip === void) return %[img: "hip", broken: false];
+		else if(equip.hip.softCrotch) return %[img: equip.hip.img, broken: equipStat.hip <= BROKEN];
+	}
+
+	function createGropingCutin(tentacleImageKey, extra)
+	{
+		// 触手などに触られているカットインを作成する
+		var lay = new global.Layer(window, this);
+		var temp = new global.Layer(window, this);
+		lay.loadImages("back_cutin");
+		lay.setSizeToImageSize();
+		var l, t, poseKey, imgName;
+		if(extra)
+		{
+			l = model.exPos.cutIn[0];
+			t = model.exPos.cutIn[1];
+			poseKey = "ex";
+		}
+		else
+		{
+			l = model.cutIn[0] - master.itemWin.left - master.itemWin.portrait.adjustLeft;
+			t = model.cutIn[1];
+			poseKey = "";
+		}
+		imgName = img + poseKey + "_tentacle_body_" + color;
+		if(Storages.isExistentStorage(imgName + ".png"))
+		{
+			temp.loadImages(imgName);
+			lay.operateRect(0, 0, temp, 0, 0, lay.width, lay.height);
+		}
+		var itemInfo = getTouchableCrotchsImage();
+		if(itemInfo === void) return;	// 途中で装備変更していると攻撃が失敗することがある
+		imgName = img + poseKey + "_tentacle_" + itemInfo.img;
+		if(itemInfo.broken && Storages.isExistentStorage(imgName + "_b.png")) imgName += "_b";
+		temp.loadImages(imgName);
+		lay.operateRect(0, 0, temp, 0, 0, lay.width, lay.height);
+		temp.loadImages(img + poseKey + "_tentacle_" + tentacleImageKey);
+		lay.operateRect(0, 0, temp, 0, 0, lay.width, lay.height);
+		return lay;
+	}
+
+	function makeFaces(l, t)
+	{
+		// 表情一覧作成
+
+		// 作成する表情。０番目は表情がない画像全般として扱う
+		var arr = ["ashes", "normal", "fight", "hurt", "hurt2", "happy", "sorry", "aware", "surprise"
+			, "weak", "shy", "blush", "insulted", "ecstasy", "dislike", "excite", "fever", "afraid"
+			, "confuse", "charmed", "asleep", "drunk", "stunned", "dead"];
+		var lay = new global.Layer(kag, master.gameBase);
+
+		for(var i = 0; i < arr.count; i++)
+		{
+			FACE[arr[i]].id = i;
+			if(i == 0) continue;
+			var fileName = img + "_" + "%02d".sprintf(FACE[arr[i]].num);
+			if(! Storages.isExistentStorage(fileName + ".png")) fileName = img + "_00";
+			lay.loadImages(fileName);
+			if(i == 1)
+			{
+				faceLayer.setSize(lay.imageWidth, lay.imageHeight);
+				faceLayer.setImageSize(lay.imageWidth * (arr.count + 1), lay.imageHeight);
+				faceWidth = lay.imageWidth;
+			}
+			faceLayer.copyRect(faceWidth * i, 0, lay, 0, 0, faceWidth, faceLayer.height);
+		}
+		faceLayer.setPos(l, t);	// 位置を決める
+	}
+
+	function makeBustups()
+	{
+		// フェイスウインドウ用のキャラの胸像を作成
+
+		// 準備
+		var prt = master.itemWin.portrait;
+		var prtOpened = prt.visible;
+		if(prtOpened) prt.weightLayer.visible = prt.visible = false;
+		var arr = getEquipedItems(["main", "sub", "waist", "hip", "finger", "pocket", "leg"]);
+
+		// 意識がない状態
+		prt.makePortrait(this, arr,,,, true);	// 全身画像を作る
+		prt.faceLayer.visible = false;
+		prt.equipAndChangePose(this, false);
+		var l = model.trim[0] + master.itemWin.portrait.bodyLayer.left;	// 切り出し位置
+		var t = model.trim[1];	// 切り出し位置
+		charaLayer.piledCopy(winWidth * 1, 0, master.itemWin, l, t, winWidth, 210);
+
+		// 通常
+		prt.equipAndChangePose(this, coveringBust());
+		charaLayer.piledCopy(winWidth * 0, 0, master.itemWin, l, t, winWidth, 210);
+
+		// 初期状態に戻す
+		prt.faceLayer.visible = true;
+		if(prtOpened)
+		{
+			prt.weightLayer.visible = prt.visible = true;
+			prt.makePortrait(this, getEquipedItems());	// 作り直し
+		}
+		switchFaceState();
+		return true;
+	}
+
+	function makeOtherFaceWindowPictures()
+	{
+		// フェイスウインドウ用のその他のキャラ画像を作成
+
+		// 準備
+		var prt = master.itemWin.portrait;
+		prt.makePortrait(this, [],,,, true);	// 全身画像を作る
+
+		// 潜伏
+		switchFaceState("normal");
+		var l = model.trim[0] + prt.bodyLayer.left;
+		var t = model.trim[1] - 110;	// 切り出し開始位置を上にする
+		charaLayer.piledCopy(winWidth * 2, 0, master.itemWin, l, t, winWidth, 210);
+
+		// 灰
+		var lay = new global.Layer(kag, master.gameBase);
+		lay.loadImages("image_face_ashes");
+		charaLayer.copyRect(winWidth * 5, 0, lay, 0, 0, winWidth, 210);
+	}
+
+	function switchFaceState(str)
+	{
+		// フェイスウインドウを指定した表情の画像に変化させる
+		if(str === void) str = getFaceNameByCurrentState();
+		faceLayer.imageLeft = -faceWidth * FACE[str].id;
+		charaLayer.imageLeft = -winWidth * FACE[str].body;
+		if(master.itemWin.portrait.visible)
+		{
+			master.itemWin.portrait.changeFace(this, FACE[str].num);
+			master.itemWin.partyGrids[slot].copyImage(this, true);	// パーティー欄を更新
+		}
+	}
+
+	function getFaceName()
+	{
+		// 現在の表情名を得る
+		var faceName = getFaceNameByCurrentState();
+		if(faceName == "normal" && master.inBattle) faceName = "fight";
+		return faceName;
+	}
+
+	function getFaceNameByCurrentState()
+	{
+		// 現在の状態によって変わる表情名を得る
+		var faceName = getFaceNameByShame();
+		var fn = getFaceNameByStatus();
+		if(fn !== void && FACE[fn].prior > FACE[faceName].prior) faceName = fn;
+		return faceName;
+	}
+
+	function getFaceNameByStatus()
+	{
+		// ステータスによって変わる表情の名前を得る
+		var faceName, max = 0;
+		for(var i = 0; i < status.count; i++)
+		{
+			if(status[i].face === void) continue;
+			var n = FACE[status[i].face].prior;
+			if(n <= max) continue;
+			max = n;
+			faceName = status[i].face;
+		}
+		return faceName;
+	}
+
+	function getFaceNameByShame()
+	{
+		// 恥ずかしさによって変わる表情の名前を得る
+		// getSexAppealOfAppearance は 0 ～ 200
+		// expose との差が大きいほど今の格好をより恥ずかしく感じる
+		if(sex == "女")
+		{
+			// 興奮が限界まで達している
+			if(heat >= 180) return "fever";
+
+			// 男の股間に嫌悪・興奮・羞恥したかどうか
+			var res = master.party.hasMembersNakedPenis();
+			if(res == "erected") return desire >= 50 ? "excite" :"dislike";	// 性欲が強いと興奮
+			if(res == "droop" && moral >= 20) return "blush";	// モラルが低いと気にしない
+
+			// 男の状態が普通なら自分の格好に恥ずかしがったり興奮したりする
+			var score = getSexAppealOfAppearance();
+			if(master.isPrivateScene) score -= 150;	// プライベートな場面なら気にしない
+			if(score >= 100 && expose >= 95) return "charmed";	// 露出狂
+			score -= expose;
+			if(score >= 100) return "insulted";
+			if(score >= 60) return "blush";
+			if(score >= 30) return "shy";
+			return "normal";
+		}
+		else
+		{
+			// 興奮が限界まで達している
+			if(heat >= 180) return "fever";
+
+			// 勃起してたら興奮状態
+			if(isErected()) return "excite";
+
+			// 主人公だったら少し照れる
+			if(this == master.playerChara)
+			{
+				if(! master.isPrivateScene && isHipNaked()) return "shy";
+				if(master.party.getMaxSexAppeal(this) >= 100) return "shy";
+					// 主人公はまじめに戦闘をしているのでモンスターには興奮しない
+			}
+			return "normal";
+		}
+	}
+
+	function isBustNaked()
+	{
+		// 乳房が出ているどうかを返す。女性以外は意味がないので false を返す
+		if(equip.chest !== void && equip.chest.nakedByBreak && equipStat.chest <= BROKEN) return true;
+		return sex == "女" && equip.chest === void && equip.bust === void;
+	}
+
+	function isHipNaked()
+	{
+		// 股間が出ているどうかを返す
+		return equip.waist === void && equip.hip === void
+			 && (equip.chest === void || ! equip.chest.exclude.has("waist"));
+	}
+
+	function getAppearedPanties()
+	{
+		// パンツが丸見えだったらそのパンツを返す
+		if(equip.hip === void) return;
+		if(equip.waist !== void) return;
+		if(equip.chest !== void && equip.chest.exclude.has("waist")) return;
+		return equip.hip;
+	}
+
+	function coveringBust()
+	{
+		// 胸を隠すかどうかを返す
+		if(showNipple) return false;
+		if(expose >= 100) return false;
+		if(master.isPrivateScene) return false;
+		if(! isBustNaked()) return false;
+		if(! active || status.has(o.魅了) || status.has(o.衰弱)) return false;
+		return true;
+	}
+
+	function getSexAppealOfAppearance()
+	{
+		// 見た目のセクシー度を返す  値は 0 ～ 200
+		// いろんなアイディア
+		// ・巨乳キャラはスコアが高い
+
+		if(dead || status.has(o.石化)) return 0;
+
+		if(sex == "男")
+		{
+			// 男だったら勃起した男性器の長さに比例した値を返す（一部性欲の強い女性が反応する）
+			if(isPenisNaked() != "erected") return 0;
+			return penis * 3;
+		}
+
+		var bscore = 0, hscore = 0;	// セクシー度スコア
+
+		if(isHipNaked())
+		{
+			hscore = max(hscore, 100);	// 股間が露出
+		}
+
+		if(isBustNaked())
+		{
+			if(! coveringBust()) bscore = max(bscore, 100);	// 乳首が露出
+			else bscore = max(bscore, 70);	// 手ブラ時は減点
+		}
+
+		// 各衣装のセクシー度を見る
+		if(equip["chest"] !== void)
+		{
+			bscore = max(bscore, equip["chest"].getSexyScore(equipStat["chest"]));
+		}
+		if(equip["waist"] !== void)
+		{
+			hscore = max(hscore, equip["waist"].getSexyScore(equipStat["waist"]));
+		}
+		if(equip["chest"] === void && equip["bust"] !== void)
+		{
+			bscore = max(bscore, equip["bust"].getSexyScore(equipStat["bust"]));
+		}
+		if((equip["chest"] === void || ! equip["chest"].exclude.has("waist"))
+			 && equip["waist"] === void && equip["hip"] !== void)
+		{
+			hscore = max(hscore, equip["hip"].getSexyScore(equipStat["hip"]));
+		}
+
+		return bscore + hscore;
+	}
+
+	function isErected()
+	{
+		// 男キャラが勃起しているかどうかを返す
+		if(isUserChara && clothesNamesByTag !== void)
+		{
+			if(clothesNamesByTag.indexOf("勃起") != -1) return true;
+			return false;
+		}
+		if(sex == "女" || team === void) return false;
+		if(! active || status.has(o.毒) || status.has(o.恐怖) || status.has(o.衰弱)) return false;
+		if(this == master.playerChara) return false;
+		if(desire == 0) return false;
+		if(heat >= 200) return true;	// 極端に興奮度が高かったら
+		var score = 200 - desire;	// 性欲が多いほど容易に勃起する
+		if(master.party.getMaxSexAppeal(this) >= score) return true;
+		if(master.inBattle && master.enemy.getMaxSexAppeal() >= score) return true;
+		return false;
+	}
+
+	function isSeasoned()
+	{
+		// 女キャラが経験豊富かどうかを返す
+		// 経験豊富になると画像と説明が変わる
+		var res = (getTotalSexCount() >= 100 || loversCount >= 20);
+		return res;
+	}
+
+	function isPenisNaked()
+	{
+		// 男性器が顕わになっていたらその状態を返す
+		if(sex != "男" || dead || status.has(o.石化)) return;
+		if(isHipNaked())
+		{
+			if(isErected()) return "erected";
+			else return "droop";
+		}
+		if(equip.chest !== void && equip.chest.nakedByErectAndBreak && isErected()) return "erected";
+		if(equip.chest !== void && equip.chest.exclude.has("waist")) return;
+		var eqp;
+		if(equip.waist !== void && equip.hip === void) eqp = equip.waist;
+		else if(equip.waist === void && equip.hip !== void) eqp = equip.hip;
+		else return;
+		if((eqp.nakedByErect || eqp.nakedByBreak) && isErected()) return "erected";
+	}
+
+	function getExtraSuffixChangePortrait()
+	{
+		// キャラの状態によって肖像が変化する際、読み込む画像ファイルを指定する文字列を返す
+		if(isErected()) return "_erect";
+		if(isSeasoned() || pregnantCount > 0) return "_used";
+		return "";
+	}
+
+	//---------------------------------------------------------------------------
+	// 表示関連
+
+	function updateLife()
+	{
+		// ＨＰ表示を更新する
+		if(! lifeLayer.visible) return;
+		var str = "%3d".sprintf(life) + "/" + "%3d".sprintf(maxLife);
+		var col = life / maxLife > 0.1 ? 0xFFFFFF : (life == 0 ? 0xFFA0A0 : 0xFFFF80);
+		lifeLayer.clear();
+		lifeLayer.imageTop = life / maxLife > 0.1 ? 0 : (life == 0 ? -54 : -27);	// バーの色
+		lifeLayer.drawText(110 - lifeLayer.font.getTextWidth(str), -lifeLayer.imageTop
+			, str, col,,, 2048, 0x000000, 2);
+	}
+
+	function updateHeart()
+	{
+		// 眠気・興奮度表示を更新する
+
+		if(! heartLayer.visible) return;
+		heartLayer.clear();
+		var col;	// 文字の色
+
+		// 興奮度
+		if(heat < master.heatToSex) col = 0xC0FFC0;
+		else if(heat < master.heatToMove) col = 0xFFFFFF;
+		else if(heat < master.heatToLet) col = 0xFFD0D0;
+		else if(heat < master.maxHeat) col = 0xFF9090;
+		else col = 0xFF6060;
+		heartLayer.drawText(16 + (heat < 10) * 4, 2, heat, col,,, 1024, 0x000000, 2);
+
+		// 眠気
+		if(sleep < 5) col = 0xC0FFC0;	// パーティーから外せる眠気
+		else if(sleep < 50) col = 0xFFFFFF;
+		else if(sleep < 100) col = 0xFFFF80;
+		else col = 0xFFD0A0;
+		heartLayer.drawText(75 + (sleep < 10) * 4, 2, sleep \ 1, col,,, 1024, 0x000000, 2);
+	}
+
+	function emitHeart(val, idx = slot + 3)
+	{
+		// 興奮度が変化したらそれをアニメで表示する
+		// idx はスロット０番のキャラに割り当てられたエミッター番号
+		if(! master.gameVisible) return;
+		var num = val > 4 ? 2 : 1;
+		heartEmitter.visible = true;
+		heartEmitter.loadImages("PE_base_heart");
+		particle_object.start(heartEmitter, idx, "PE_heart_mini" + num + ".pee", 0.5);
+	}
+
+	function updateStatus()
+	{
+		// 状態表示を更新
+		super.updateStatus();
+		switchFaceState();
+		var idx = status.find(o.拘束);
+		if(idx != -1)
+		{
+			statusLayer.font.face = "Tahoma";
+			statusLayer.font.height = 10;
+			statusLayer.font.bold = true;
+			var col = statusLayer.height \ 22;
+			statusLayer.drawText(idx \ col * 22 + 14, idx % col * 22 + 14
+				, capturers.count, 0xFFFFFF,,,1024, 0x000000, 2);
+		}
+	}
+
+	function updateBadge()
+	{
+		// 職業・属性表示を更新
+		if(! badgeLayer.visible) return;
+		badgeLayer.loadImages("jobs_" + job.img);
+		badgeLayer.height += 36;
+		var temp = new global.Layer(window, this);
+		temp.loadImages("icon_alignment");
+		badgeLayer.operateRect(16, 32, temp, 18 * master.alignment.find(alignment)
+			, (mindBalance \ 18 + 1) * 19, 18, 19);
+	}
+
+	function emitAlignment(good)
+	{
+		// が変化したらそれをアニメで表示する
+		if(! master.gameVisible) return;
+		if(alignment == o.中立) return false;	// 中立は放出しない
+		badgeEmitter.visible = true;
+		badgeEmitter.loadImages("PE_base_heart");
+		particle_object.start(badgeEmitter, slot + 3, "PE_mind_" + (good ? "green" : "red") + ".pee", 0.15);
+	}
+
+	function updateWeightIcon()
+	{
+		// 重量表示を更新
+		var arr = [];
+		var w = getTotalWeight();
+		var temp = new global.Layer(window, this);
+		if(w <= SLIGHT) arr.add("slight");
+		else if(w > muscle) arr.add("heavy");
+		if(isSwimming()) arr.add("swim");
+		if(isFloating(true)) arr.add("float");
+		weightLayer.clear();
+		for(var i = 0; i < arr.count; i++)
+		{
+			temp.loadImages("icon_" + arr[i]);
+			weightLayer.operateRect(0, i * 22, temp, 0, 0, 22, 22);
+		}
+		weightLayer.visible = true;
+	}
+
+	function updateLabel()
+	{
+		// ギルド一覧に表示するラベルを更新
+		if(! labelLayer.visible) return;
+		labelLayer.clear();
+		labelLayer.drawText(1, 9, displayName, 0xFFFFFF);
+		labelLayer.drawText(30, 29, job.displayName, 0xFFFF80);
+		labelLayer.drawText(32, 49, "LV " + level, 0x80FF80);
+		labelLayer.drawText(102, 49, master.sexSymbol(sex), 0x80FF80);
+		labelLayer.visible = true;
+	}
+
+	function updateByChangeEquipment(itemData)
+	{
+		// 装備の変更があった時に各種情報・表示を更新する
+		switchHandsHoldWeapon("sub", "main");
+		if(itemData === void || /chest|bust|waist|hip|arm/.test(itemData.part)) makeBustups();
+		updateLife();
+		updateWeightIcon();
+		if(master.itemWin.visible) switchFaceState();
+		else master.party.restoreFaces();
+	}
+
+	//---------------------------------------------------------------------------
+	// ステータス関連
+
+	function retire(statusObj)
+	{
+		// 戦闘不能にさせられた時の処理
+		cancelAction();
+		act = void;
+		master.party.retiredMemberToLastPos(this);
+		if(statusObj == o.死亡 || statusObj == o.灰)
+		{
+			dead = true;
+			if(! master.isFreeMode && sex == "女" && love.theo > 0) love.theo -= 1;	// 主人公への愛情が減る
+			trust -= 1;	// 信頼度が減る
+		}
+		if(statusObj == o.死亡) playSound("dosa");
+		if(statusObj == o.灰)
+		{
+			playSound("bon");
+			removeEquipmentsByForce(["main", "sub", "chest", "waist", "arm", "leg", "bust", "hip"]);
+		}
+		master.guest.rearMemberToFrontPos();
+	}
+
+	function revive(statusObj)
+	{
+		// 戦闘不能から復活する時の処理
+		master.guest.resetRearMemberPos();
+		master.party.revivedMemberToBeforePos(this);
+		dead = false;
+		if(statusObj == o.灰) makeBustups();
+	}
+
+	function checkStatusByMoving()
+	{
+		// １歩歩くごとに状態をチェックし何かあれば効果が発動したり状態が変化したりする
+
+		if(dead || status.has(o.石化)) return;
+
+		// ステータスの変化と影響
+		super.checkStatusByMoving();
+
+		// 装備アイテムによる影響
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var item = equip[partNames[i]];
+			if(item === void) continue;
+			for(var j = 0; j < item.skill.count; j++)
+			{
+				if(item.skill[j].category == "effect") item.skill[j].effectInMoving(this);
+			}
+		}
+
+		// 眠気増加
+		sleep += 0.05;
+		if(sleep >= 100) setStatus(o.眠り, true, 10);	// 眠気に伴う眠りの場合しばらく起きない
+
+		// 露出癖増減
+		if(sex == "女")
+		{
+			var sexy = getSexAppealOfAppearance();
+			if(sexy > expose) expose += 0.01;
+			else if(sexy == 0) expose -= 0.01;
+			if(heatCounter >= 50 && sexy >= 100 && expose >= 95) heat ++;	// 自分の格好に興奮する
+		}
+
+		// 興奮度
+		heatCounter ++;
+		beHeatedUpByOthers();	// 興奮度上昇
+
+		// 興奮度が高いと徐々に性欲も上がっていく
+		if(desire >= 0) desire += heat / 1000;
+	}
+
+	function checkStatusByOneTurn()
+	{
+		// １ターン行動するごとに状態をチェックし何かあれば効果が発動したり状態が変化したりする
+		if(! active || ! master.inBattle) return;
+
+		// 装備アイテムによる影響
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var item = equip[partNames[i]];
+			if(item === void) continue;
+			for(var j = 0; j < item.skill.count; j++)
+			{
+				if(item.skill[j].category == "effect") item.skill[j].effectInBattle(this);
+			}
+		}
+
+		// 眠気増加
+		sleep += 0.05;
+		if(sleep >= 100) setStatus(o.眠り, true, 10);	// 眠気に伴う眠りの場合しばらく起きない
+
+		// 興奮度
+		master.party.exciteOtherMembers(this);	// 他者の興奮度を上昇させる
+	}
+
+	function beHeatedUpByOthers()
+	{
+		// 他メンバーに影響を受けて興奮度が上がる
+		if(heatCounter < master.heatUpCycle) return;
+		var sexy = master.party.getMaxSexAppeal(this);
+		if(sexy >= 150 - desire) heat += desire \ 45 + sexy \ 50;
+	}
+
+	function getSexAppealByTarget(target)
+	{
+		// 指定した相手から本人が感じた性的魅力を返す
+		if(this == target) return 0;
+		if(this == master.playerChara && target == master.wife) return 0;	// 妻には興奮しない
+		var sexy = 0;
+		if(sex == "男" && target.sex == "女")
+		{
+			// 男性は相手の見た目に興奮する
+			// ただし、多く性行為を行った相手には（あまり）興奮しない
+			sexy = target.getSexAppealOfAppearance();
+			if(! target instanceof "SummonedObject") sexy -= target.sexCount[img];
+		}
+		if(sex == "女" && target.sex == "男")
+		{
+			// 女性で性欲が強い場合、勃起ペニスに興奮する
+			if(desire >= 50) sexy = target.getSexAppealOfAppearance();
+		}
+		return sexy;
+	}
+
+	function clearStatusOnDungeonExit()
+	{
+		// ダンジョンから出た時に一部ステータスをリセットする
+		for(var i = status.count - 1; i >= 0; i--)
+		{
+			if(status[i].eraseAtDungeonExit) removeStatus(status[i]);
+		}
+	}
+
+	function beStonedImage()
+	{
+		// 画像を石化状態にする
+		switchFaceState("surprise");
+		charaLayer.imageLeft = 0;
+		var lay = new KAGLayer(window, master.gameBase);
+		lay.setSize(winWidth, 210);
+		lay.piledCopy(0, 0, charaLayer, 0, 0, winWidth, 210);
+		lay.noise(128);
+		lay.colorize(0, 0, 1);
+		charaLayer.copyRect(winWidth * 4, 0, lay, 0, 0, winWidth, 210);
+	}
+
+	function beFrozenImage()
+	{
+		// 画像を凍結状態にする
+		switchFaceState("asleep");
+		charaLayer.imageLeft = 0;
+		var lay = new KAGLayer(window, master.gameBase);
+		lay.setSize(winWidth, 210);
+		lay.piledCopy(0, 0, charaLayer, 0, 0, winWidth, 210);
+		lay.doGrayScale();
+		lay.adjustGamma(1, 0 ,255, 1, 64, 255, 1, 128, 255);
+		charaLayer.copyRect(winWidth * 3, 0, lay, 0, 0, winWidth, 210);
+	}
+
+	function beSoftenImage()
+	{
+		// 画像を状態異常から元に戻す
+		switchFaceState();
+	}
+
+	function beRaised()
+	{
+		// 蘇生
+		var stat = status.has(o.灰) ? o.灰 : o.死亡;
+		life = maxLife \ 10 + intrandom(1, 3);
+		clearStatus();
+		revive(stat);
+		master.party.restoreFaces();	// 全員の表情を更新
+	}
+
+	function beLost()
+	{
+		// 消滅
+		visible = false;
+		master.party.removeMember(this);
+		master.chara.remove(this);
+	}
+
+	function beCaptured(enemy)
+	{
+		// 敵に拘束される
+		if(dead || status.has(o.石化) || status.has(o.凍結)) return false;
+		if(capturers.has(enemy)) return true;	// すでに自分が抑えていたらそのまま
+		if(capturers.count > 0 && capturers[0].data.img.split("_")[0] != enemy.data.img.split("_")[0])
+		{
+			return false;	// 別種のモンスターが先に抑えていたらやめる
+		}
+		setStatus(o.拘束, true);	// レジストされない
+		capturers.add(enemy);
+		enemy.prey = this;
+		enemy.setStatus(o.捕縛中, true);
+		updateStatus();
+		return true;
+	}
+
+	function beReleased(enemy)
+	{
+		// 敵の拘束から解放される
+		enemy.prey = void;
+		capturers.remove(enemy);
+		updateStatus();
+		if(capturers.count == 0) removeStatus(o.拘束);
+	}
+
+	//---------------------------------------------------------------------------
+	// 戦闘・キャンプコマンド
+
+	function openBattleCommand()
+	{
+		// コマンド入力（戦闘時）
+		master.clearWindows();
+		if(master.itemWin.visible) master.itemWin.close();
+		master.exitSelectTargetMode();
+		master.setPrev(openBattleCommand);
+		master.curChara = this;
+		act = void;	// リセット
+
+		var cmds = [];
+		var neverEscape = (master.isNeverEscapeBattle || master.inDuelBattle);
+		if(equip.main !== void && equip.main.instrument)
+		{
+			// 楽器を装備していたら演奏。ただし、先制攻撃の時は演奏できない（魔法と扱いは同じ）
+			cmds.add(%[text: "Play", func: playInstrument, color: 0xFFFFC0, cond: master.firstStrike === void]);
+		}
+		else if(status.has(o.潜伏))
+		{
+			cmds.add(%[text: "Sneak Attack", func: setAction, param: o.奇襲, color: 0xFFFFC0]);
+		}
+		else
+		{
+			cmds.add(%[text: "Attack", func: setAction, param: o.攻撃, cond: getReach(o.攻撃) >= 0]);
+		}
+		cmds.add(%[text: "Auto Attack", func: team.autoAttack, color: 0xC0FFFF]);
+		cmds.add(%[text: "Guard", func: setAction, param: o.身を守る]);
+		cmds.add(%[text: "Auto Repeat", func: team.autoRepeat, color: 0xC0FFFF]);
+		cmds.add(%[text: "Magic", func: openMagicCommand, cond: master.firstStrike === void]);
+		cmds.add(%[text: "Auto Run", func: team.autoEscape, color: 0xC0FFFF, cond: ! neverEscape]);
+		cmds.add(%[text: "Item", func: openItemCommand]);
+		cmds.add(%[text: "Random Attack", func: setAutoAttackCommand]);
+		cmds.add(%[text: "Skill", func: openSkillCommand, cond: master.firstStrike === void]);
+		cmds.add(%[text: "Repeat", func: setLastCommand]);
+		cmds.add(%[text: "Equipment", func: setAction, param: o.装備変更]);
+		cmds.add(%[text: "Swap Position", func: setAction, param: o.位置変更]);
+		cmds.add(%[text: "Run", func: setAction, param: o.逃げる, cond: ! neverEscape]);
+		if(master.inDuelBattle && ! f.neverConcede)
+		{
+			cmds.add(%[text: "Concede", func: askConcede, color: 0xFFFFC0]);
+		}
+
+		master.battleMenu.focusLastCommand = sf.rememberLastCommand;	// コマンド位置を記憶・再現
+		master.battleMenu.open(cmds, displayName);
+		cutInFigure(FACE[getFaceName()].num, "alternate", 600);	// 立ち絵カットイン
+	}
+
+	function askConcede()
+	{
+		// 敗北を認めるかどうか確認
+		master.clearWindows();
+		master.setPrev();
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: concede]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "<y>Accept defeat and end the battle?");
+	}
+
+	function concede()
+	{
+		// 敗北を認める
+		master.concedeNow = true;
+		master.clearWindows();
+		master.cutOutFigure("alternate");
+		kag.process("battle.ks", "*battle_lose");
+	}
+
+	function openItemCommand()
+	{
+		// アイテムコマンド（戦闘時）
+		master.clearWindows();
+		master.itemWin.openInventory(this, "battle");
+		if(MOUSE_HIDDEN) master.itemWin.focusToFirstItem();
+	}
+
+	function openMagicCommand()
+	{
+		// 魔法コマンド（戦闘時）
+		master.clearWindows();
+		master.exitSelectTargetMode();
+		master.setPrev(openMagicCommand);
+		var res = getMagicPermission();
+		if(res === void) res = master.map.getMagicPermission();
+		if(res !== void)
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write(res);
+			return;
+		}
+		master.magicWin.open(this);
+	}
+
+	function openMagicCommandByIcon()
+	{
+		// 魔法コマンド（移動時）
+		var res = getMagicPermission();
+		if(res === void) res = master.map.getMagicPermission();
+		if(res !== void)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write(res);
+			return;
+		}
+		master.exitTravelMode();
+		master.popPrev();
+		master.popPrev();
+		master.setPrev(master.magicWin.open);
+		master.magicWin.open(this);
+	}
+
+	function hasMagicPoint(cmd)
+	{
+		// 指定した魔法を使うのに必要なＭＰがあるかどうかを返す
+		return this[cmd.category][cmd.magicLV - 1] > 0;
+	}
+
+	function isSealedMagic()
+	{
+		// 魔法が封じられているかどうかを返す
+		if(isEquipmentsHasSkill(o.呪・沈黙)) return true;
+		return super.isSealedMagic();
+	}
+
+	function openSkillCommand()
+	{
+		// スキルコマンド
+		master.battleMenu.close();
+		master.exitSelectTargetMode();
+		master.setPrev(openSkillCommand);
+		var arr = [];
+		arr.assign(btcmd);
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var item = equip[partNames[i]];
+			if(item === void) continue;
+			for(var j = 0; j < item.skill.count; j++)
+			{
+				arr.add(item.skill[j]);	// 装備アイテムの持つスキルを加える
+			}
+		}
+		var cmds = [];
+		for(var i = 0; i < arr.count; i++)
+		{
+			var cmd = arr[i];
+			if(! ["normal", "special", "other"].has(cmd.category)) continue;
+			cmds.add(%[text: cmd.displayName, func: setAction, param: cmd, cond: cmd.cond(this)]);
+		}
+		master.battleMenu.focusLastCommand = false;	// ここのコマンド位置は保存しない
+		master.battleMenu.open(cmds, "Skills - " + displayName);
+	}
+
+	function isUsableSkill(cmd)
+	{
+		// 指定したパッシブスキルが使えるかどうかを返す
+		return active && (skill.has(cmd) || model.skill.has(cmd)
+			 || isEquipmentsHasSkill(cmd)) && cmd.cond(this);
+	}
+
+	function playInstrument()
+	{
+		// 楽器を演奏する
+		setAction(equip.main);
+		reserveUsingItem(equip.main, "main");
+	}
+
+	function setLastCommand()
+	{
+		// 自動で前回のコマンドを指定する（個別）
+		autoRepeat();
+		endCommandSetting();
+	}
+
+	function setAutoAttackCommand()
+	{
+		// 自動でターゲットを選んで攻撃するコマンドを指定する（個別）
+		autoAttack();
+		endCommandSetting();
+	}
+
+	function autoSelectCommand()
+	{
+		// 自動で任意のコマンドを選ぶ
+		HelperObject.setAction();
+	}
+
+	function autoAttack()
+	{
+		// 自動で攻撃を選ぶ（パーティークラスから呼ばれる）
+		if(! active || status.has(o.魅了)) return;
+		if(equip.main !== void && equip.main.instrument)
+		{
+			if(master.firstStrike !== void)
+			{
+				// 先制攻撃の時は楽器は演奏できない（魔法と扱いは同じ）
+				act = o.身を守る;
+				target = void;
+				return;
+			}
+			act = equip.main;
+			target = getRandomTarget(act, true);
+			if(target === void) act = o.身を守る;
+			else reserveUsingItem(equip.main, "main");
+			return;
+		}
+		else if(status.has(o.潜伏)) act = o.奇襲;
+		else act = o.攻撃;
+		if(! target instanceof "MonsterObject" || target.knockOut) target = getRandomTarget(act, true);
+		if(target === void) act = o.身を守る;
+	}
+
+	function autoRepeat()
+	{
+		// 自動で前回のコマンドを選ぶ（パーティークラスから呼ばれる）
+		if(! active || status.has(o.魅了)) return;
+		act = lastAct;	// 前回のコマンドを復帰
+		target = lastTarget;	// 前回のターゲットも復帰
+
+		// 前回のコマンドが無効 or 奇襲なら通常攻撃
+		if(act === void || act == o.奇襲)
+		{
+			return autoAttack();
+		}
+		else if(act.category == "item")
+		{
+			if(act.instrument) return autoAttack();
+			reservedGrid = findItem(act);
+			if(reservedGrid === void) return autoAttack();
+		}
+		else if(! act.auto || master.firstStrike !== void)
+		{
+			return autoAttack();
+		}
+		else if(act.magicLV > 0)
+		{
+			if(! isUsableMagic(act)) return autoAttack();
+		}
+
+		// ターゲットの再選定
+		if(act.range == 1)
+		{
+			if(target === void || target instanceof "Array" || target.knockOut)
+			{
+				target = getRandomTarget(act);
+			}
+		}
+		else if(act.range == 2)
+		{
+			if(target === void || ! target instanceof "Array"
+				 || (act.toEnemy && master.enemy.getNumExist(target.depth) == 0))
+			{
+				target = getRandomTarget(act);
+			}
+		}
+		else if(act.range == 3)
+		{
+			target = getRandomTarget(act);
+		}
+		if(target === void) act = o.身を守る;
+	}
+
+	function autoEscape()
+	{
+		// 自動で逃亡を選ぶ（パーティークラスから呼ばれる）
+		if(! active || status.has(o.魅了)) return;
+		act = o.逃げる;
+		target = this;
+	}
+
+	function setAction(cmdObj)
+	{
+		// コマンド決定・コマンドによってターゲット選択モードに入る
+		master.setPrev();	// ターゲット選択の有無に関わらず元のメニューに戻ることになるのでここで設定
+		master.party.enabled = master.guest.enabled = false;	// 不意の自動フォーカスをブロック
+		master.clearWindows();
+		target = void;	// コマンド画面以外から呼ぶこともあるのでここでリセット
+		act = cmdObj;
+		master.rowSelectMode = (act.range == 2);
+		if(act.range == -1 || ! act.cond(this)) endCommandSetting();
+		else if(act.range == 3 || act.range == 0) setTarget();
+		else enterSelectTargetMode();
+	}
+
+	function enterSelectTargetMode()
+	{
+		// ターゲット選択モード
+		master.clearWindows();
+		master.instruct(act.guide, ! act.toEnemy * 450 + 20);
+		if(act.toEnemy) master.enemy.disableUnreachableEnemy(getReach(act));
+		master.enterSelectTargetMode(setTarget, act.toEnemy, act.toGuest);
+	}
+
+	function getActionLength(act)
+	{
+		// 通常攻撃の長さを返す
+		if(act.reach != -1) return act.reach;
+		if(act == o.奇襲) return 3;
+		if(act == o.再攻撃 && equip.sub !== void) return equip.sub.w_reach;
+		else if(equip.main !== void) return equip.main.w_reach;
+		else return 0;
+	}
+
+	function getWeaponLength(secondAttackNow)
+	{
+		// 通常攻撃の長さを返す
+		if(secondAttackNow && equip.sub !== void) return equip.sub.w_reach;
+		else if(equip.main !== void) return equip.main.w_reach;
+		else return 0;
+	}
+
+	function setTarget(obj)
+	{
+		// ユーザーの選択によりターゲットを指定する。必ずここを通す
+		if(act.range == 0) target = this;
+		else if(act.range == 2) target = obj.group;
+		else if(act.range == 3) target = master.getTeam(this, ! act.toEnemy, act.toGuest);
+		else target = obj;
+		master.instruction.close();
+		master.exitSelectTargetMode();
+		endCommandSetting();
+	}
+
+	function endCommandSetting()
+	{
+		// コマンド入力が完了したらこれを呼ぶ
+
+		if(master.inBattle)
+		{
+			// 戦闘時
+			lastAct = act;
+			lastTarget = target;
+			if(btcmd.has(act) && act.magicLV <= 0) lastSkill = act;	// 前回のスキルを即使用できるようにするコマンド用
+			while(master.previewActions[-1] != openBattleCommand) master.popPrev();
+			master.inputNextBattleCommand(this);
+		}
+		else if(master.inEvent || typeof kag.conductor.waitUntil["waitChooseTarget"] != "undefined")
+		{
+			// イベント等で元のシナリオに戻りたい時はここではコマンドを実行しない
+			// @btcmd というマクロを通して実行する
+			master.curFighter = this;
+
+			// パーティーメンバーを選択させたいときは
+			// enterSelectTargetMode を実行後、以下のトリガで待つ
+			kag.trigger("waitChooseTarget");
+		}
+		else
+		{
+			// 探索時にコマンド
+			processCommand();
+		}
+	}
+
+	function processCommand()
+	{
+		// 移動モード中にアイテムや魔法を使った場合すぐに実行する
+		master.curFighter = this;
+		master.exitTravelMode();
+		kag.process("battle.ks", "*field_start");
+	}
+
+	function useResource(res)
+	{
+		// 行動に消費（アイテム、ＭＰ等）が必要な場合、消費する
+		act.useResource(res, this);
+	}
+
+	function getWeaponAttrib()
+	{
+		// 武器攻撃時の属性を返す
+		if(status.has(o.付与) || skill.has(o.付与)) return "魔";
+		if(equip.main === void)
+		{
+			// 素手での攻撃は通常は物理属性
+			// sub のみに武器を装備している事はないので有無は main だけ調べる
+			if(skill.has(o.聖拳)) return "聖";
+			return "物理";
+		}
+		if(act == o.再攻撃 && equip.sub !== void)
+		{
+			if(equip.sub.attrib === void) return "物理";
+			return equip.sub.attrib;
+		}
+		if(equip.main.attrib === void) return "物理";
+		return equip.main.attrib;
+	}
+
+	function getWeaponSlayers()
+	{
+		// 武器攻撃時の追加ダメージが発生する種族名の一覧を返す
+		if(equip.main === void) return;	// sub のみに武器を装備している事はないので有無は main だけ調べる
+		if(act == o.再攻撃 && equip.sub !== void) return equip.sub.slayer;
+		return equip.main.slayer;
+	}
+
+	function getExtraEffects(target)
+	{
+		// 通常攻撃時の追加効果を返す
+		var res = super.getExtraEffects(target);
+		var arr = [];
+		if(act == o.再攻撃 && equip.sub !== void) arr = equip.sub.getExtraEffects(this, target);
+		else if(equip.main !== void) arr = equip.main.getExtraEffects(this, target);
+		res.push(arr *);	// 配列に別の配列の要素を追加
+		return res;
+	}
+
+	function getCancelAction(enemy, inCounter)
+	{
+		// 攻撃を無効化できたらその行動を返す
+		var res = super.getCancelAction(...);
+		var enemyAct = inCounter ? o.攻撃 : enemy.act;
+		if(res !== void) return res;
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var item = equip[partNames[i]];
+			if(item === void) continue;
+			if(item.block.has(enemyAct.attrib)) return o.耐性防御;
+			for(var j = 0; j < item.skill.count; j++)
+			{
+				var skl = item.skill[j];
+				if(skl.category != "cancel") continue;
+				if(skl.isCancelSucceed(this, enemy, inCounter)) return skl;
+			}
+		}
+	}
+
+	function isCancelStatusEffect(exf)
+	{
+		// 敵の特殊効果を無効化したかどうかを返す
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var item = equip[partNames[i]];
+			if(item === void) continue;
+			if(item.block.has(exf.name)) return true;
+			if(item.resist.has(exf.name) && item.isResistStatusEffect()) return true;
+		}
+		return super.isCancelStatusEffect(exf);
+	}
+
+	function getAffectedDamage(damage, atrb, slyr = [])
+	{
+		// 様々な影響により変化したダメージを返す
+
+		// ブロックは先にチェックする
+		// ブロックは属性付き物理攻撃もダメージを大幅軽減する
+		//（魔法や特殊攻撃はここに来るまでにすでにキャンセルされている）
+		if(block.has(atrb)) return damage \ 4;
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var item = equip[partNames[i]];
+			if(item === void) continue;
+			if(item.block.has(atrb)) return damage \ 4;
+		}
+
+		// 装備やスキル、パーティーステータスで軽減できるかどうかを調べる
+		if(atrb == "火" && skill.has(o.耐熱)) return damage \ 2;
+		if(team.status.has(o.抵抗)) damage \= 2;	// 属性付き攻撃なら魔法防御で軽減
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var item = equip[partNames[i]];
+			if(item === void) continue;
+			if(atrb == "火" && item.skill.has(o.耐熱)) return damage \ 2;
+			if(item.resist.has(atrb)) return damage \ 2;
+		}
+
+		return super.getAffectedDamage(...);
+	}
+
+	function isCounterAttacking(en)
+	{
+		// カウンター攻撃ができたかどうかを返す
+		if(getTotalWeight() > muscle) return false;
+		if(isEquipmentsHasSkill(o.反撃) && isCounterAttackPossible(en)) return true;
+		return super.isCounterAttacking(en);
+	}
+
+	function isEquipmentsHasSkill(skillObj)
+	{
+		// 装備品が指定の機能を持っているかどうかを返す
+		for(var i = 0; i < partNames.count; i++)
+		{
+			if(equip[partNames[i]] === void) continue;
+			if(equip[partNames[i]].skill.has(skillObj)) return true;
+		}
+		return false;
+	}
+
+	function isContractableMonster(monsterObj)
+	{
+		// 指定した召喚モンスターと契約できるかどうかを返す
+		return skill.has(o.契約) && ! btcmd.has(monsterObj);
+	}
+
+	//---------------------------------------------------------------------------
+	// アイテムの管理・装備・売買
+
+	function insertItem(itemData, stat = WHOLE, gridID, record = true)
+	{
+		// アイテム収納情報に指定したアイテム情報を追加する
+		// アイテム収納情報に指定したアイテム情報を追加する
+		if(gridID === void)
+		{
+			gridID = master.itemWin.getAnyBagSpace(bagMap, itemData);
+		}
+		if(gridID === void)
+		{
+			dm("アイテムが置けませんでした    キャラ: " + name + "   アイテム: " + itemData.name);
+			return false;
+		}
+		bag[gridID] = itemData;
+		bagStat[gridID] = stat;
+		master.itemWin.allocateGrids(bagMap, true, itemData, gridID);
+		if(record && stat > 0) sf[itemData.name] = true;	// アイテム履歴を記録
+		return true;
+	}
+
+	function ejectItem(itemData, key, unknown)
+	{
+		// アイテム収納情報から指定したアイテム情報を削除する
+		if(key === void) key = findItem(itemData, unknown);	// 先にバッグの中から探すようになっている
+		if(key === void) return false;
+		if(typeof key == "String")
+		{
+			var res = removeEquipment(itemData, key, true);
+			if(res !== void) return false;	// 装備が外せなかった
+			updateByChangeEquipment(itemData);
+		}
+		else
+		{
+			bag[key] = void;
+			bagStat[key] = void;
+			master.itemWin.allocateGrids(bagMap, false, itemData, key);
+		}
+		return true;
+	}
+
+	function arrangeItems()
+	{
+		// アイテムを自動で整理する
+		var items = [];	//所持アイテム一覧
+		var testMap = [];	// 仮の配置マップ
+		var item, num;
+
+		// 所持アイテムをリストアップ
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] !== void) items.add(%[itemData: bag[i], state: bagStat[i]]);
+		}
+
+		// サイズが大きい順にソートする（大きい物から収めた方が入りやすいので）
+		items.sort( function(a, b)
+		{
+			return a.itemData.col * a.itemData.row > b.itemData.col * b.itemData.row;
+		} );
+
+		// テスト書き込みとチェック
+		for(var i = 0; i < items.count; i++)
+		{
+			item = items[i].itemData;
+			num = master.itemWin.getAnyBagSpace(testMap, item);
+			if(num === void) return false;	// 失敗
+			master.itemWin.allocateGrids(testMap, true, item, num);	// テスト書き込み
+		}
+
+		// 実際に収納し直す
+		bag = [];
+		bagStat = [];
+		bagMap = [];
+		for(var i = 0; i < items.count; i++)
+		{
+			item = items[i].itemData;
+			num = master.itemWin.getAnyBagSpace(bagMap, item);
+			if(num === void) System.inform("エラー：アイテムの収納処理に誤りがあります  " + item.name);
+			insertItem(item, items[i].state, num, false);
+		}
+	}
+
+	function storeItemsToStock()
+	{
+		// 倉庫画面で手持ちのすべてのアイテムを倉庫に収納する（倉庫画面用）
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] === void) continue;
+			if(master.itemBoxObj.insertItem(bag[i], bagStat[i])) ejectItem(bag[i], i, true);
+		}
+	}
+
+	function getPartNameByEquipping(part, dropLefter = false)
+	{
+		// 装備時に装備すべき部位名を返す
+		if(part == "both")
+		{
+			if(equip.main === void || equip.main.exclude.has("sub") || dropLefter) return "main";
+			else return "sub";
+		}
+		if(part == "double") return "main";
+		return part;
+	}
+
+	function getTotalWeight(newItem, newItemStat)
+	{
+		// 装備アイテムの総重量を返す
+		var w = 0;
+		var ignoredParts = [];
+		var newPart;
+		if(newItem !== void)
+		{
+			newPart = getPartNameByEquipping(newItem.part);
+			if(newItem.exclude.count > 0) ignoredParts.assign(newItem.exclude);
+			ignoredParts.add(newPart);
+			w += newItem.getWeight(newItemStat);
+		}
+		var arr = getEquipedItems(ignoredParts);
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(newItem !== void && arr[i].itemData.exclude.has(newPart)) continue;
+			w += arr[i].itemData.getWeight(arr[i].state);
+		}
+		if(status.has(o.石化)) w *= 2;
+		return w;
+	}
+
+	function dressEquipment(itemData, lastGrid, stat = WHOLE, force, dropLefter)
+	{
+		// アイテムを装備する。出来なかった時は警告文を返す
+		// 警告を出したくない時は空文字列 "" を返す
+
+		// 基本のチェック
+		if(! itemData.equipment) return "<y>This isn't equipment";
+		if(stat < 0) return "<y>Unidentified items can't be equipped";
+		if(! itemData.isEquipableIgnoreForce(this)) return "<y>" + displayName + " can't equip this item";
+		if(stat <= BROKEN && ! itemData.halfState) return "<y>This is too damaged to equip";
+
+		// 装備位置の確定
+		var prt = getPartNameByEquipping(itemData.part, dropLefter);
+
+		// 強制時には装備されることもある要素のチェック
+		if(! force)
+		{
+			if(lastGrid == master.itemWin.portrait && equip[prt] === void)
+			{
+				// 元の場所が肖像エリアだった場合すでに装備されていた訳なので元に戻すだけとする
+				//（装備制限を超えて強制的に装備されていた場合改めてチェックすると矛盾が発生する）
+				// ※外された場所に部位が both のものが装備されていることがあるのでそれは通常処理する
+				equip[prt] = itemData;
+				equipStat[prt] = stat;
+				if(prt == "main" || prt == "sub") return prt;
+				return;
+			}
+			if(knockOut) return "<y>" + displayName + " can't currently change<r>equipment";
+			if(! itemData.isEquipable(this)) return "<y>" + displayName + " can't equip this item";
+			if(muscle < getTotalWeight(itemData, stat)) return "Exceeds maximum equipment weight";
+		}
+
+		// 元の装備が外せるかすべてチェックする
+
+		// 外すアイテムと配置チェック用の仮配列を用意
+		var removals = [];	// 外す必要のあるアイテム一覧
+		var testMap = [];	// 仮の配置マップ
+		testMap.assign(bagMap);	// コピー
+		if(lastGrid !== void && lastGrid.id !== void)
+		{
+			master.itemWin.allocateGrids(testMap, false, itemData, lastGrid.id);	// 仮マップから自身を消す
+		}
+
+		// アイテムがメイン武器だった場合、先に持ち替えを試す
+		if(prt == "main" && itemData.part != "double") switchHandsHoldWeapon("main", "sub");
+
+		// 外す必要のあるアイテムをリストアップ
+
+		// リストアップ１・装備位置の装備
+		var remItem = equip[prt];
+		if(remItem !== void) removals.add(%[itemData: remItem, part: prt]);
+
+		// リストアップ２・このアイテムの同時着用制限に該当する装備
+		for(var i = 0; i < itemData.exclude.count; i++)
+		{
+			remItem = equip[itemData.exclude[i]];
+			if(remItem !== void) removals.add(%[itemData: remItem, part: itemData.exclude[i]]);
+		}
+
+		// リストアップ３・このアイテムが該当する他の同時着用制限のある装備
+		for(var i = 0; i < partNames.count; i++)
+		{
+			remItem = equip[partNames[i]];
+			if(remItem === void) continue;
+			if(remItem.exclude.has(prt)) removals.add(%[itemData: remItem, part: partNames[i]]);
+		}
+
+		// 閲覧中なら強制的に外す
+		if(master.itemWin.visible && master.itemWin.mode == "collection")
+		{
+			var remPart;	// 現在装備されている位置（アイテムの持つ装備位置情報ではないので注意）
+			for(var i = 0; i < removals.count; i++)
+			{
+				remPart = removals[i].part;
+				master.itemWin.portrait.removeAndStoreEquipment(remPart);
+				equip[remPart] = void;
+				equipStat[remPart] = void;
+			}
+			removals = [];
+		}
+
+		// 潜水中なら潜水スキル持ち装備が足らなくならないようにする
+		if(master.nowSwimming())
+		{
+			var arr = [];	// 外す予定の部位の一覧
+			for(var i = 0; i < removals.count; i++)
+			{
+				remItem = removals[i].itemData;
+				if(remItem.skill.has(o.潜水)) arr.add(remItem.part);
+			}
+			// 装備しようとしている物に潜水スキルがあったら外す予定の部位を１つ削除
+			//（数が合っていればいいので）
+			if(itemData.skill.has(o.潜水)) arr.pop();
+			if(! isSwimming(arr)) return "<y>Diving equipment can't be removed while diving";
+		}
+
+		// サイズが大きい順にソートする（大きい物から収めた方が入りやすいので）
+		removals.sort( function(a, b)
+		{
+			return a.itemData.col * a.itemData.row > b.itemData.col * b.itemData.row;
+		} );
+
+		// テスト書き込みとチェック
+		for(var i = removals.count - 1; i >= 0; i--)
+		{
+			remItem = removals[i].itemData;
+
+			if(remItem.neverRemove !== void)
+			{
+				return remItem.neverRemove;
+			}
+
+			// 既婚者は指輪を外せない
+			if(married && remItem.part == "finger")
+			{
+				return "<y>Wedding rings cannot be removed.";
+			}
+
+			if(! force && remItem.isCursed(this))
+			{
+				// 鑑定失敗による強制でない限り、呪い装備を装備してたら新規装備はできない
+				return "<y>Can't remove current equipment due<r>to curse";
+			}
+
+			if(force) continue;	// 鑑定失敗による強制なら呪いの有無だけチェックすれば良い
+			var num = master.itemWin.getAnyBagSpace(testMap, remItem);
+			if(num === void)
+			{
+				if(remItem.part == "main" && itemData.part == "both" && equip.sub === void)
+				{
+					removals.erase(i);
+					prt = "sub";
+					continue;
+				}
+				return "<y>There's nowhere to store the current<r>equipment";
+			}
+			master.itemWin.allocateGrids(testMap, true, remItem, num);	// テスト書き込み
+		}
+		// チェック終了
+
+		// 元の装備を外す
+		var dic, remPart;	// 外す装備の部位
+		while(removals.count > 0)
+		{
+			dic = removals.pop();
+			remItem = dic.itemData;
+			remPart = dic.part;
+
+			// ブラを外すことを拒否
+			if(! showBust && remPart == "bust")
+			{
+				return "<y>" + displayName + " refuses to unequip <p>" + remItem.displayName + "<y>";
+			}
+
+			// パンツを脱がすことを拒否
+			if(! showCrotch && remPart == "hip")
+			{
+				return "<y>" + displayName + " refuses to unequip <p>" + remItem.displayName + "<y>";
+			}
+
+			// ノーパン時に今外そうとしている装備が尻を覆うもので次に装備するものが尻を覆わなかったら
+			if(! showCrotch && equip["hip"] === void
+			   && prt != "waist" && itemData.exclude.find("waist") == -1)
+			{
+				if(remPart == "waist" || remItem.exclude.find("waist") != -1)
+				{
+					return model.comment["noPan"];
+				}
+			}
+
+			// ノーブラ時に今外そうとしている装備が胸を覆うもので次に装備するものが胸を覆わなかったら
+			if(! showBust && equip["bust"] === void && prt != "chest")
+			{
+				if(remPart == "chest") return model.comment["noBra"];
+			}
+
+			// 外したアイテムを収納
+			var num = master.itemWin.getAnyBagSpace(bagMap, remItem);
+			if(num === void)
+			{
+				if(! force) System.inform("エラー：アイテムの収納処理に誤りがあります  " + remItem.name);
+				master.storeItemSomewhere(%[itemData: remItem, state: equipStat[remPart]]);
+			}
+			if(master.itemWin.visible && master.itemWin.portrait.visible && master.itemWin.curChara == this)
+			{
+				master.itemWin.portrait.removeAndStoreEquipment(remPart, num);
+			}
+			else
+			{
+				insertItem(remItem, equipStat[remPart], num, false);
+			}
+
+			// 情報を消す
+			equip[remPart] = void;
+			equipStat[remPart] = void;
+		}
+
+		// ここで装備したいアイテムをやっと装備。装備情報を書き込んでおく
+		equip[prt] = itemData;
+		equipStat[prt] = stat !== void ? stat : WHOLE;
+		if(prt == "main" || prt == "sub") return prt;
+	}
+
+	function removeEquipment(itemData, part, force)
+	{
+		// 装備を外す。出来なかった時は警告文を返す
+
+		// エラー処理
+		if(equip[part] === void)
+		{
+			return "Error: An item that should not have been equipped is now equipped " + itemData.displayName;
+		}
+
+		// チェック
+		if(itemData.neverRemove !== void)
+		{
+			// この設定が入っている時は何があっても外せない
+			return itemData.neverRemove;
+		}
+
+		// 潜水中だったら
+		if(master.nowSwimming() && ! isSwimming([itemData.part]))
+		{
+			return "<y>Diving equipment can't be removed while diving";
+		}
+
+		// 既婚者は指輪を外せない
+		if(married && itemData.part == "finger")
+		{
+			return "<y>Wedding rings cannot be removed.";
+		}
+
+		if(! force)
+		{
+			if(knockOut)
+			{
+				return "<y>" + displayName + " can't currently change equipment";
+			}
+
+			// 呪われていたら
+			if(itemData.isCursed(this))
+			{
+				return "<y>Curse prevents removal.";
+			}
+
+			// ブラを外すことを拒否
+			if(! showBust && part == "bust")
+			{
+				return model.comment["bra"];
+			}
+
+			// パンツを脱がすことを拒否
+			if(! showCrotch && part == "hip")
+			{
+				return model.comment["panties"];
+			}
+
+			// パンツを脱がそうとしている時に尻を覆う物がなかったら
+			if(! showCrotch && part == "hip")
+			{
+				for(var i = 0; true; i++)
+				{
+					if(i == partNames.count) return model.comment["panties"];
+					var item = equip[partNames[i]];
+					if(item === void) continue;
+					if(partNames[i] == "waist" || item.exclude.find("waist") != -1) break;
+				}
+			}
+
+			// ノーパン時に今脱がそうとしている装備が尻を覆うものだったら
+			if(! showCrotch && equip["hip"] === void)
+			{
+				if(part == "waist" || itemData.exclude.find("waist") != -1)
+				{
+					return model.comment["noPan"];
+				}
+			}
+
+			// ブラを脱がそうとしている時に胸を覆う物がなかったら（実質 chest の装備のみ）
+			if(! showBust && part == "bust")
+			{
+				if(equip["chest"] === void) return model.comment["bra"];
+			}
+
+			// ノーブラ時に今脱がそうとしている装備が胸を覆うものだったら（実質 chest の装備のみ）
+			if(! showBust && equip["bust"] === void)
+			{
+				if(part == "chest") return model.comment["noBra"];
+			}
+		}
+
+		// 装備解除成功。装備情報を消しておく
+		equip[part] = void;
+		equipStat[part] = void;
+
+		// 右手を解除したとき左手に武器があった場合、右手に持ち替える
+		if(switchHandsHoldWeapon("sub", "main")) return "switchHand";
+	}
+
+	function switchHandsHoldWeapon(from, to)
+	{
+		// from に both 属性の武器が装備され to が空いていた場合それを to に持ち替える
+		if(equip[from] !== void && equip[to] === void && equip[from].part == "both")
+		{
+			equip[to] = equip[from];
+			equipStat[to] = equipStat[from];
+			equip[from] = void;
+			equipStat[from] = void;
+			return true;
+		}
+		return false;
+	}
+
+	function removeEquipmentsByForce(partNamesArray, notStore = false)
+	{
+		// 指定した複数の装備を強制的に外す。外した装備はどこかにしまう
+		var num = 0;
+		if(partNamesArray === void) partNamesArray = partNames;
+		for(var i = 0; i < partNamesArray.count; i++)
+		{
+			var prt = partNamesArray[i];
+			var item = equip[prt];
+			if(item === void) continue;
+			if(item.neverRemove !== void) continue;
+			if(! notStore) master.storeItemSomewhere(%[itemData: item, state: equipStat[prt]], this);
+			equip[prt] = void;
+			equipStat[prt] = void;
+			num ++;
+		}
+		updateByChangeEquipment();
+		return num;
+	}
+
+	function getEquipedItems(ignore = [])
+	{
+		// 現在装備しているアイテムの一覧を返す
+		// ignore は装備していても無視をする装備の部位名の一覧
+		var res = [];
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var part = partNames[i];
+			if(ignore.find(part) != -1) continue;
+			if(equip[part] === void) continue;
+			res.add(%[itemData: equip[part], state: equipStat[part], part: part]);
+		}
+		return res;
+	}
+
+	function findItem(itemData, unknown = false)
+	{
+		// アイテムを手持ちから探し、あった場所（装備箇所 or バッグ内での位置）を返す
+		// unknown を true にすると未鑑定品もカウントする
+		var key = bag.find(itemData);
+		if(key != -1 && (unknown || bagStat[key] > 0)) return key;
+		return findEquipedItem(itemData);	// バッグの中になかったので装備を調べる
+	}
+
+	function findEquipedItem(itemData)
+	{
+		// アイテムを装備済みアイテムの中から探し、あった装備箇所を返す
+		if(itemData.part === void) return;
+		var prt = itemData.part;
+		if(prt == "both")
+		{
+			if(equip["main"] == itemData) return "main";
+			if(equip["sub"] == itemData) return "sub";
+		}
+		else if(prt == "double")
+		{
+			if(equip["main"] == itemData) return "main";
+		}
+		else
+		{
+			if(equip[prt] == itemData) return prt;
+		}
+	}
+
+	function countItem(itemData, includeBad = false)
+	{
+		// 指定したアイテムの所持数を返す
+		// includeBad を true にすると未鑑定品や破損品もカウントする
+		var num = 0, idx = -1, prt;
+		while(true)
+		{
+			idx = bag.find(itemData, idx + 1);
+			if(idx == -1) break;
+			if(includeBad || bagStat[idx] > BROKEN) num ++;
+		}
+		prt = findEquipedItem(itemData);
+		if(prt !== void && (includeBad || equipStat[prt] > BROKEN)) num ++;
+		return num;
+	}
+
+	function isEquipedItems(itemData *)
+	{
+		// 指定したアイテムを装備しているかどうかを返す
+		// 複数指定した場合は全部装備しているかどうかを返す
+		var arr = [];
+		for(var i = 0; i < partNames.count; i++)
+		{
+			if(equip[partNames[i]] !== void) arr.add(equip[partNames[i]]);
+		}
+		for(var i = 0; i < itemData.count; i++)
+		{
+			if(! arr.has(itemData[i])) return false;
+		}
+		return true;
+	}
+
+	function hasNothing(exclude *)
+	{
+		// アイテムを一切持っていないかどうかを返す
+		// exclude に入れたアイテムは除外する
+		// exclude に部位名を入れるとそこへ装備可能なアイテムも除外する
+		for(var i = 0; i < partNames.count; i++)
+		{
+			if(equip[partNames[i]] === void) continue;
+			if(exclude.find(equip[partNames[i]]) == -1 && exclude.find(partNames[i]) == -1) return false;
+		}
+		for(var i = 0; i < bag.count; i++)
+		{
+			if(bag[i] === void) continue;
+			if(exclude.find(bag[i]) == -1 && exclude.find(bag[i].part) == -1) return false;
+		}
+		return true;
+	}
+
+	function ejectAnyItems(num = 1)
+	{
+		// アイテムをランダムに指定個数削除する
+		// イベントアイテムは削除しない
+		var arr = [], item, res = false;
+		for(var i = 0; i < bag.count; i++){ arr.add(i); }
+		arr.shuffle();	// ランダム性を持たせる
+		for(var i = 0; i < arr.count; i++)
+		{
+			item = bag[arr[i]];
+			if(item === void || item.event) continue;
+			ejectItem(item, arr[i], true);
+			num --;
+			res = true;	// １つでも減らせたら true
+			if(num == 0) return true;
+		}
+		return res;
+	}
+
+	function reserveUsingItem(itemData, belongKey)
+	{
+		// アイテムを使用予約する
+		reservedItem = itemData;
+		reservedGrid = belongKey;
+	}
+
+	function useItem(itemData, key)
+	{
+		// 指定した場所にあるアイテムを使用する
+		// ここで初めてアイテムが実際に使用・消費される
+
+		if(! itemData.isConsumed()) return;	// 消耗せずに済んだ
+
+		// 消費アイテムは一回で消える
+		if(itemData.disposable)
+		{
+			ejectItem(itemData, key);
+			return;
+		}
+
+		// 消費アイテム以外
+		if(typeof key == "String")
+		{
+			// 装備していたアイテム
+			if(equip[key].neverRemove !== void || equip[key].event) return;
+			if(equipStat[key] > 0) equipStat[key] --;
+			if(equipStat[key] == 0 || equipStat[key] == BROKEN)
+			{
+				if(! itemData.hasBrokenState || equipStat[key] == 0) ejectItem(itemData, key);
+				brokenItem = itemData;
+				brokenItemStat = equipStat[key];
+				brokenItemEquiped = (key != "finger" && key != "pocket");
+				if(master.inBattle) brokenPartsList.add(key);
+			}
+		}
+		else
+		{
+			// 装備してないアイテム
+			if(bagStat[key] > 0) bagStat[key] --;
+			if(bagStat[key] == 0 || bagStat[key] == BROKEN)
+			{
+				if(! itemData.hasBrokenState || bagStat[key] == 0) ejectItem(itemData, key);
+				brokenItem = itemData;
+				brokenItemStat = bagStat[key];
+				brokenItemEquiped = false;
+			}
+		}
+	}
+
+	function addParam(param, value)
+	{
+		// 指定したパラメータ名と値に従ってパラメータを変動させ飛び出す数字を返す
+		// コマンドやアイテムを使用した際などに用いる
+
+		// 魔力増減
+		// 全ての系統が等しく増減する
+		if(param == "magic")
+		{
+			for(var i = 0; i < mmagic.count; i++)
+			{
+				mmagic[i] = cap(mmagic[i] + value, mmagicMax[i]);
+				pmagic[i] = cap(pmagic[i] + value, pmagicMax[i]);
+				amagic[i] = cap(amagic[i] + value, amagicMax[i]);
+				smagic[i] = cap(smagic[i] + value, smagicMax[i]);
+			}
+			return "0,0xF080F0," + value;
+		}
+
+		// 魔力最大値増減
+		// 全ての系統が等しく増減する
+		if(param == "maxMagic")
+		{
+			for(var i = 0; i < mmagic.count; i++)
+			{
+				if(isMagicCategoryValid("mmagic")) mmagicMax[i] = cap(mmagicMax[i] + value, 9);
+				if(isMagicCategoryValid("pmagic")) pmagicMax[i] = cap(pmagicMax[i] + value, 9);
+				if(isMagicCategoryValid("amagic")) amagicMax[i] = cap(amagicMax[i] + value, 9);
+				if(isMagicCategoryValid("smagic")) smagicMax[i] = cap(smagicMax[i] + value, 9);
+				mmagic[i] = cap(mmagic[i], mmagicMax[i]);
+				pmagic[i] = cap(pmagic[i], pmagicMax[i]);
+				amagic[i] = cap(amagic[i], amagicMax[i]);
+				smagic[i] = cap(smagic[i], smagicMax[i]);
+			}
+			return "0,0xF080F0," + value;
+		}
+
+		return super.addParam(param, value);
+	}
+
+	function tryToBreakItem(hitScore, pow = 1)
+	{
+		// 装備の破壊を試みて破壊されたら brokenItem にそれを保存する
+
+		if(brokenItem !== void) return false;	// 一度にいくつも壊れない
+		if(master.nowSwimming()) return false;	// 潜水中は破壊が発生しない
+		if(dead || status.has(o.石化) || status.has(o.凍結)) return false;
+
+		var parts = ["main", "sub", "arm", "leg", "chest", "waist"];	// 破壊対象部位候補
+		if(equip["chest"] === void)
+		{
+			parts.add("bust");
+		}
+		if(equip["waist"] === void && equip["chest"] === void && equip["bust"] === void)
+		{
+			parts.add("hip");	// 股間は身体を覆うものの中で一番最後
+		}
+		parts.shuffle();	// どこから壊されるかはランダム
+		dm("破壊対象部位候補   " + parts.join(","));
+
+		for(var i = 0; i < parts.count; i++)
+		{
+			var prt = parts[i];
+			var item = equip[prt];	// 対象の装備
+			if(item === void) continue;	// 装備がない
+			if(item.strong == 100 || item.neverRemove !== void || item.event) continue;	// 破壊できない装備
+			if(brokenPartsList.has(prt)) continue;	// すでに１戦闘中に破壊が起こった箇所はもう破損しない
+			if(random > hitScore / item.strong) continue;	// 破損が起こらなかった
+
+			// 耐久力の低下発生
+			var str = equipStat[prt];	// 耐久力
+			var res = ((str > BROKEN && str - pow <= BROKEN) || str <= pow);	// 今破壊が起きたか
+			if(res)
+			{
+				// 破壊発生なら破壊前の像を準備
+				createFigure(FACE[getFaceName()].num, getEquipedItems(["finger", "pocket"]));
+			}
+			equipStat[prt] -= pow;	// 耐久度を減らす
+			if(! res) break;	// 今回は破壊が起きなかった
+
+			// 破壊発生
+			brokenItem = item;	// 演出用にいま破壊されたアイテムを一時記憶
+			if(equipStat[prt] <= 0 || ! item.halfState)
+			{
+				// 耐久度が０になったら完全破壊されて消える
+				// 半壊でも破壊画像が用意されてないものは勝手に装備が外れる
+				if(equipStat[prt] > 0)
+				{
+					master.storeItemSomewhere(%[itemData: equip[prt], state: equipStat[prt]], this);	// 収納
+				}
+				equip[prt] = void;	// 外れる
+				equipStat[prt] = void;
+			}
+			else if(master.inBattle)
+			{
+				// 半壊状態で残った装備に関してはその装備箇所を記録
+				// １回の戦闘で消滅まで行かないようにする
+				brokenPartsList.add(prt);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	function getBrokenItemPos()
+	{
+		// 攻撃によって壊れたアイテムがあった場合その中心位置を返す
+		if(brokenItem.part == "main" || brokenItem.part == "double")
+		{
+			if(coveringBust()) return model.hideMain;
+			else return model.main;
+		}
+		if(brokenItem.part == "sub")
+		{
+			if(coveringBust()) return model.hideSub;
+			else return model.sub;
+		}
+		if(brokenItem.part == "both")
+		{
+			if(coveringBust()) return model.bust;
+			else return model.hip;
+		}
+		var lay = new global.Layer(kag, kag._primaryLayer);
+		var imgFile = img + "_" + brokenItem.img + (brokenItem.part == "arm" ? "_up" : "");
+		if(! Storages.isExistentStorage(imgFile)) return [210, 384];	// マックスの装備制限変更時対策
+		lay.loadImages(imgFile);
+		return [model[brokenItem.part][0] + lay.imageWidth \ 2 - master.itemWin.left
+			, model[brokenItem.part][1] + lay.imageHeight \ 2];
+	}
+
+	function reduceEquipmentsLives(partNamesArray, pow = 1)
+	{
+		// 指定した部位の装備の耐久力を一律で減らす
+		// 耐久力が０になったら消滅させる（一部コマンド用）
+		if(partNamesArray === void) partNamesArray = partNames;
+		for(var i = 0; i < partNamesArray.count; i++)
+		{
+			var prt = partNamesArray[i];
+			var item = equip[prt];
+			if(item === void) continue;
+			if(item.strong == 100 || item.neverRemove !== void || item.event) continue;
+			if(equipStat[prt] <= BROKEN) equip[prt] = equipStat[prt] = void;	// 消滅
+			else equipStat[prt] -= BROKEN;
+		}
+	}
+
+	function hasRemovableEquipment(part, includeMen = false)
+	{
+		// 指定部位に脱がせそうな装備を着け、かつそれを脱がせる状態かどうかを返す
+		if(knockOut) return false;
+		if(! includeMen && sex == "男") return false;
+		if(master.nowSwimming()) return false;	// 潜水中は発生しない
+		if(avoidingTrap) return false;	// 罠を回避した
+		if(equip[part] === void) return false;
+		if(equip[part].neverRemove !== void || equip[part].event) return false;
+		return true;
+	}
+
+	function beStolenEquipment(part)
+	{
+		// 指定部位に着けている装備が盗まれる
+		if(master.inBattle)
+		{
+			// 戦闘中に盗まれた場合、勝利後の宝箱に入っている
+			master.treasureBox.drops.add(%[itemData: equip[part], state: equipStat[part]]);
+		}
+		equip[part] = equipStat[part] = void;
+		updateByChangeEquipment();
+	}
+
+	function storeAllItemsInOthers(prior, partNamesArray, forced = true)
+	{
+		// 装備・所持しているアイテムをすべて他のパーティーメンバーか倉庫に保管する
+		if(partNamesArray === void) partNamesArray = partNames;
+		for(var i = 0; i < partNamesArray.count; i++)
+		{
+			var prt = partNamesArray[i];
+			var item = equip[prt];
+			if(item === void) continue;
+			if(! forced && item.neverRemove !== void) continue;
+			if(! forced && married && prt == "finger") continue;
+			master.storeItemSomewhere(%[itemData: item, state: equipStat[prt]], prior, this);
+			equip[prt] = void;
+			equipStat[prt] = void;
+		}
+		for(var i = 0; i < bag.count; i++)
+		{
+			var item = bag[i];
+			if(item === void) continue;
+			master.storeItemSomewhere(%[itemData: item, state: bagStat[i]], prior, this);
+		}
+		bag = [];
+		bagStat = [];
+		bagMap = [];
+	}
+
+	function removeAllCursedItems(saveItem)
+	{
+		// 呪われた装備をすべて外す
+		var done = false;
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var prt = partNames[i];
+			var item = equip[prt];
+			if(item === void) continue;
+			if(! item.isCursed(this) || item.neverRemove !== void) continue;
+			if(master.nowSwimming() && item.skill.has(o.潜水)) continue;	// 潜水中に潜水具の呪いは解けない
+			if(saveItem) master.storeItemSomewhere(%[itemData: item, state: equipStat[prt]], this);
+			equip[prt] = void;
+			equipStat[prt] = void;
+			done = true;
+		}
+		if(done) updateByChangeEquipment();
+		return done;
+	}
+
+	function maintenanceItems(num = 99, repairOnly = false, indentifyOnly = false)
+	{
+		// 所持しているアイテムを複数修理・鑑定する
+		var done = false;
+		if(! indentifyOnly)
+		{
+			for(var i = 0; i < partNames.count; i++)
+			{
+				if(num == 0) break;
+				var item = equip[partNames[i]];
+				if(item === void) continue;
+				var stat = equipStat[partNames[i]];
+				if(stat > BROKEN) continue;	// 何もする必要がない
+				equipStat[partNames[i]] = WHOLE;
+				done = true;
+				num --;
+			}
+		}
+		for(var i = 0; i < bagStat.count; i++)
+		{
+			if(num == 0) break;
+			if(bagStat[i] === void) continue;
+			var stat = bagStat[i];
+			if(stat > BROKEN) continue;	// 何もする必要がない
+			if(repairOnly && stat < 0) continue;
+			if(indentifyOnly && stat > 0) continue;
+			bagStat[i] = indentifyOnly ? -stat : WHOLE;
+			done = true;
+			num --;
+		}
+		if(done)
+		{
+			makeBustups();
+			updateWeightIcon();
+		}
+		return done;
+	}
+
+	function releaseSpecialPower(itemData, part)
+	{
+		// スペシャルパワーを解放する
+		createFigure(FACE[getFaceName()].num, getEquipedItems(["finger", "pocket"]));
+		master.curItem = brokenItem = itemData;
+		brokenItemStat = 0;
+		brokenItemEquiped = true;
+		equip[part] = void;
+		equipStat[part] = void;
+		setAction(itemData.getSpecialPower());
+	}
+
+	//---------------------------------------------------------------------------
+	// レイヤーの管理・操作等
+
+	function faceWindowMove(moveSpeed)
+	{
+		// パーティー内位置交換時にこのフェイスウインドウを移動する
+		// party クラスから呼ばれる
+		if(dragging) return false;
+		if(goalLeft == left) return false;
+		if(goalLeft > left)
+		{
+			left += moveSpeed;
+			if(left < goalLeft) return true;	// 継続
+		}
+		else
+		{
+			left -= moveSpeed;
+			if(left > goalLeft) return true;	// 継続
+		}
+		left = goalLeft;
+		return false;	// 終了
+	}
+
+	function resetPos()
+	{
+		// そのキャラの定位置に配置する（パーティーレイヤー上のみ）
+		setPos(slot * (width + parent.spacing), ! holding * parent.sortingMargin);
+		absolute = slot + (holding || dragging) * 100;
+	}
+
+	function holdLayer(hold)
+	{
+		holding = hold;
+		parent.holdingMarker = holding ? this : void;
+		top += holding ? -parent.sortingMargin : parent.sortingMargin;
+		absolute += holding ? 100 : -100;
+	}
+
+	function onMouseEnter()
+	{
+		if(master.onSelectAction == master.openWindowByFaceClick) lightingLayer.visible = true;
+		else super.onMouseEnter();
+	}
+
+	function onMouseLeave()
+	{
+		if(master.onSelectAction == master.openWindowByFaceClick) lightingLayer.visible = false;
+		else super.onMouseLeave();
+	}
+
+	function onMouseDown(x, y, button, shift)
+	{
+		if(master.onSelectAction == master.holdCharaObjectLayer && button == mbLeft)
+		{
+			dragging = true;
+			absolute += 10000000;
+			gripX = cursorX;
+			gripY = cursorY;
+			return;
+		}
+		super.onMouseDown(...);
+	}
+
+	function onMouseMove(x, y, shift)
+	{
+		if(parent.holdingMarker !== void) parent.holdingMarker.holdLayer(false);
+		if(dragging)
+		{
+			left = cap(parent.cursorX - gripX, parent.width - width);
+			top = cap(parent.cursorY - gripY, parent.height - height);
+			var idx = parent.getAreaUnderMouse(this);
+			if(idx == slot) return;
+			parent.arrangeMember(this, idx);
+			return;
+		}
+		super.onMouseMove(...);
+	}
+
+	function onMouseUp(x, y, button, shift)
+	{
+		if(dragging && button == mbLeft)
+		{
+			dragging = false;
+			absolute -= 10000000;
+			parent.updateFormation();
+			return;
+		}
+		super.onMouseUp(...);
+	}
+
+	function onKeyDown(key, shift, process=true)
+	{
+		if(holding)
+		{
+			if(key == BT_OK || key == BT_CANCEL || key == BT_OK2 || key == BT_CANCEL2) holdLayer(false);
+			else if(key == BT_LEFT || key == BT_LEFT2) parent.arrangeMember(this, slot - 1);
+			else if(key == BT_RIGHT || key == BT_RIGHT2) parent.arrangeMember(this, slot + 1);
+			else super.onKeyDown(...);
+		}
+		else if(kag.focusedLayerIsNull)
+		{
+			return;	// フォーカス null 時のキーイベント二重送信問題対策
+		}
+		else super.onKeyDown(...);
+	}
+
+	function damageAnim(value, color = 0xFFFFFF)
+	{
+		super.damageAnim(...);
+		if(+value > 0)
+		{
+			var key = coveringBust() ? "hurt" : "hurt2";
+			if(FACE[key].prior > FACE[getFaceName()].prior) switchFaceState(key);
+		}
+	}
+
+	function drawDamage(value)
+	{
+		numberLayer.setPos(left + (width - numberLayer.width) \ 2, parent.top + top + height - 50);
+		super.drawDamage(...);
+	}
+
+	function processDamageAnim()
+	{
+		var l = thisAnimList[animCounter];
+		if(l !== void && shakeAnim) charaLayer.left += l;
+		super.processDamageAnim();
+		if(! animTimer.enabled && ! master.itemWin.visible) switchFaceState();	// 顔を元に戻す
+	}
+
+	//---------------------------------------------------------------------------
+	// 転職
+
+	function setJob(jobObj, initialize = false)
+	{
+		// 職に就けるときに呼び出す。initialize が false だと能力そのまま
+		job = jobObj;
+		skill.assign(job.skill);
+		if(initialize)
+		{
+			btcmd.assign(job.btcmd);
+			maxLife += getIncreaseOfLife() + 5;	// 初期値としては厳しすぎるので少し追加
+		}
+		else
+		{
+			for(var i = btcmd.count - 1; i >= 0; i--)
+			{
+				if(btcmd[i].magicLV <= 0) btcmd.erase(i);	// 魔法以外は忘れる
+			}
+			for(var i = 0; i < job.btcmd.count; i++)
+			{
+				btcmd.push2(job.btcmd[i]);	// 初期コマンドを追加
+			}
+		}
+		if(isMagicCategoryValid("mmagic") && mmagicMax[0] == 0) mmagicMax[0] = intrandom(2, 3);
+		if(isMagicCategoryValid("pmagic") && pmagicMax[0] == 0) pmagicMax[0] = intrandom(2, 3);
+		if(isMagicCategoryValid("amagic") && amagicMax[0] == 0) amagicMax[0] = intrandom(2, 3);
+		if(isMagicCategoryValid("smagic") && smagicMax[0] == 0) smagicMax[0] = intrandom(1, 2);
+		recovery();	// 全回復。矛盾を生じさせないためＨＰ・ＭＰを初期化する
+		updateBadge();
+		updateLabel();
+		updateWeightIcon();
+		if(! job.appeared) job.appeared = true;	// ギルド以外で発見
+	}
+
+	function selectJob()
+	{
+		// 転職先を選ぶ
+		master.clearWindows();
+		master.setPrev(selectJob);
+		if(dead)
+		{
+			playSound("buzzer");
+			master.notice.open();
+			master.notice.write("<c>" + displayName + "<y> isn't ready to change jobs.");
+			return;
+		}
+		var arr = getJobsMeetRequirement();
+		if(arr.count == 0)
+		{
+			playSound("buzzer");
+			master.notice.open(master.processPrev);
+			master.notice.write("<c>" + displayName + "<y> has no applicable jobs");
+			return;
+		}
+		master.guildWin.displayChara(this);
+		master.guildWin.changeJobBoard.open(arr, confirmChangeJob);
+		master.guildWin.detailBoard.open();
+		master.instruct("<w>Which job should <y>" + displayName + "<w> change to?", 205);
+	}
+
+	function confirmChangeJob(jobObj)
+	{
+		// 本当に転職するか確認する
+		master.clearWindows();
+		master.setPrev();
+		var cmds = [];
+		cmds.add(%[text: "Yes", func: changeJob, param: jobObj]);
+		cmds.add(%[text: "No", func: master.processPrev]);
+		master.yesNoWin.open(cmds, "Become a <p>" + jobObj.displayName + "<y>?");
+		master.yesNoWin.left = 350;
+	}
+
+	function changeJob(jobObj)
+	{
+		// 転職する
+
+		// レベルに応じて連泊チケットを入手する
+		var str = getSerialLevelUpTicket();
+
+		// 初期値に戻す。パラメータは職業 or 種族の高い方の最低値まで下がる
+		level = 1;
+		exp = 0;
+		_power = jobObj.power > 0 ? jobObj.power : model.power;
+		_intellect = jobObj.intellect > 0 ? jobObj.intellect : model.intellect;
+		_piety = jobObj.piety > 0 ? jobObj.piety : model.piety;
+		_vitality = jobObj.vitality > 0 ? jobObj.vitality : model.vitality;
+		_speed = jobObj.speed > 0 ? jobObj.speed : model.speed;
+		_luck = jobObj.luck > 0 ? jobObj.luck : model.luck;
+
+		// 転職
+		setJob(jobObj);
+
+		// 装備品を回収
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var prt = partNames[i];
+			// if(prt == "finger") continue;	// 指輪は外れない
+			var item = equip[prt];
+			if(item === void) continue;
+			if(item.isEquipable(this)) continue;	// 引き続き装備できるものはそのまま
+			master.storeItemSomewhere(%[itemData: item, state: equipStat[prt]], this);
+			equip[prt] = void;
+			equipStat[prt] = void;
+		}
+		updateByChangeEquipment();
+
+		// リピートコマンドをリセット
+		lastAct = lastTarget = void;
+
+		// 表示
+		master.clearWindows();
+		magicButton.selectable = isMagicUser();	// 魔法ボタンを更新
+		kag.bgm.pause();
+		playSound("up2");
+		master.notice.open(master.guildWin.returnFromChangeJob,, 3000);
+		master.notice.write("<c>" + displayName + "<w> became a <p>" + jobObj.displayName + "<w>!<r>" + str);
+		master.notice.left = 350;
+	}
+
+	function getJobsMeetRequirement()
+	{
+		// 条件を満たしている転職先をすべて返す
+		var arr = master.charaEdit.getJobsMeetRequirement(this);
+		arr.remove(job);	// 現在の自分の職業は除外
+		for(var i = arr.count - 1; i >= 0; i--)
+		{
+			// 素体によってはなれない職業があるのでそれを除外
+			if(model.job.indexOf(arr[i].uniKey) == -1) arr.erase(i);
+		}
+		return arr;
+	}
+
+	function getSerialLevelUpTicket()
+	{
+		// レベルに応じて連泊チケットを入手する
+		if(level >= 30)
+		{
+			master.storeItemSomewhere(%[itemData: o.１０連泊券, state: WHOLE], this);
+			master.storeItemSomewhere(%[itemData: o.１０連泊券, state: WHOLE], this);
+			return "I received two <y>10 Night Coupons<w> from the guild!";
+		}
+		else if(level >= 20)
+		{
+			master.storeItemSomewhere(%[itemData: o.１０連泊券, state: WHOLE], this);
+			return "I received a <y>10 Night Coupon<w> from the guild!";
+		}
+		else if(level >= 10)
+		{
+			master.storeItemSomewhere(%[itemData: o.５連泊券, state: WHOLE], this);
+			return "I received a <y>5 Night Coupon<w> from the guild!";
+		}
+	}
+
+	//---------------------------------------------------------------------------
+	// レベルアップ
+
+	function getIncreaseOfLife()
+	{
+		// このキャラに適当なＨＰの増加量を返す
+		var limit = cap(level * 15, 9999);	// レベルごとの上限。職業は関係ない
+		var d = fluc(job.lifeUp + vitality \ 6, 0.2);	// 上昇量を職業と生命力の値から算出
+		if(maxLife + d >= limit) d = limit - maxLife;
+		if(d < 1) d = 1;
+		return d;
+	}
+
+	function levelUp()
+	{
+		// レベルアップする
+
+		var increase = 90;	// 基本値（素体の能力値）から上昇させられる範囲
+		var rate = 0.5;	// １度のレベルアップで上昇する確率
+		var dic = %[];	// 表示用の情報を書き込む辞書配列
+		dic.param = [];	// 上昇した能力値の情報
+		dic.magic = [];	// 覚えた魔法の情報
+		dic.ability;	// 覚えたコマンド・スキルの情報
+
+		// レベル増加
+		level ++;
+		if(level > sf.mostLevelOfCharas) sf.mostLevelOfCharas = level;	// 記録
+
+		// ＨＰと能力値
+		if(_maxLife < 9999)
+		{
+			var l = getIncreaseOfLife();
+			maxLife = _maxLife + l;
+			life = maxLife;
+			dic.param[0] = "+" + l;
+		}
+
+		if(_power < model.power + increase && random < rate)
+		{
+			_power ++;
+			dic.param[1] = "+1";
+		}
+
+		if(_intellect < model.intellect + increase && random < rate)
+		{
+			_intellect ++;
+			dic.param[2] = "+1";
+		}
+
+		if(_piety < model.piety + increase && random < rate)
+		{
+			_piety ++;
+			dic.param[3] = "+1";
+		}
+
+		if(_vitality < model.vitality + increase && random < rate)
+		{
+			_vitality ++;
+			dic.param[4] = "+1";
+		}
+
+		if(_speed < model.speed + increase && random < rate)
+		{
+			_speed ++;
+			dic.param[5] = "+1";
+		}
+
+		if(_luck < model.luck + increase && random < rate)
+		{
+			_luck ++;
+			dic.param[6] = "+1";
+		}
+
+		// 新しいコマンド or スキル
+		var newAbilities = job.getNewAbility(level);
+		for(var i = 0; i < newAbilities.count; i++)
+		{
+			if(closedSkill.has(newAbilities[i])) continue;	// 個別に制限されたものを除外
+			if(! learnSkill(newAbilities[i])) continue;
+			dic.ability = newAbilities[i].displayName;
+			break;
+		}
+
+		// 新しい魔法をリストアップ
+		// intellect or piety が低すぎると覚えられない
+		// 各パラメータが11で LV2魔法まで  30でLV9魔法を習得
+		var maxLVbyInt = _intellect \ 3 - 1;
+		var maxLVbyPie = _piety \ 3 - 1;
+		var newSpells = job.getNewMagic(level);
+
+		// 覚えられないものを除外する
+		for(var i = newSpells.count - 1; i >= 0; i--)
+		{
+			if(btcmd.has(newSpells[i]))
+			{
+				newSpells.erase(i);	// 習得済みを除外
+			}
+			else if(closedSkill.has(newSpells[i]))
+			{
+				newSpells.erase(i);	// 個別に制限されたものを除外
+			}
+			else if(newSpells[i].category == "mmagic" || newSpells[i].category == "amagic")
+			{
+				if(newSpells[i].magicLV > maxLVbyInt) newSpells.erase(i);	// int が規定に達していない
+			}
+			else if(newSpells[i].category == "pmagic" || newSpells[i].category == "smagic")
+			{
+				if(newSpells[i].magicLV > maxLVbyPie) newSpells.erase(i);	// pie が規定に達していない
+			}
+		}
+
+		// 習得
+		newSpells.shuffle();
+		for(var i = 0; i < newSpells.count; i++)
+		{
+			if(i == 4) break;	// 一度に覚えるのは最大４つまで
+			if (learnSkill(newSpells[i])) {
+				dic.magic.add(newSpells[i].displayName);
+			}
+		}
+
+		// ＭＰ（全体増加分）
+		// intellect or piety が 8 なら MP4   12 なら MP5 まで上昇   28 で MP9 に達する
+		var maxMPbyInt = cap(_intellect \ 4 + 2, 9);
+		var maxMPbyPie = cap(_piety \ 4 + 2, 9);
+		var scores = job.getAvailableMagicLevel(level);
+		for(var i = 0; i < mmagicMax.count; i++)
+		{
+			if(mmagicMax[i] > 0 && mmagicMax[i] < maxMPbyInt && i < scores.mmagic) mmagicMax[i] ++;
+			if(pmagicMax[i] > 0 && pmagicMax[i] < maxMPbyPie && i < scores.pmagic) pmagicMax[i] ++;
+			if(amagicMax[i] > 0 && amagicMax[i] < maxMPbyInt && i < scores.amagic) amagicMax[i] ++;
+			if(smagicMax[i] > 0 && smagicMax[i] < maxMPbyPie && i < scores.smagic) smagicMax[i] ++;
+		}
+
+		// ＭＰを回復
+		mmagic.assign(mmagicMax);
+		pmagic.assign(pmagicMax);
+		amagic.assign(amagicMax);
+		smagic.assign(smagicMax);
+
+		return dic;
+	}
+
+	function levelDown()
+	{
+		// レベルダウンする
+
+		var rate = 0.5;	// １度のレベルダウンで減少する確率
+
+		// レベル減少
+		level --;
+
+		// ＨＰと能力値
+		if(_maxLife > 1)
+		{
+			maxLife = cap(_maxLife - getIncreaseOfLife(),, 1);
+			if(life > maxLife) life = maxLife;
+		}
+		if(_power     > 1 && random < rate) _power --;
+		if(_intellect > 1 && random < rate) _intellect --;
+		if(_piety     > 1 && random < rate) _piety --;
+		if(_vitality  > 1 && random < rate) _vitality --;
+		if(_speed     > 1 && random < rate) _speed --;
+		if(_luck      > 1 && random < rate) _luck --;
+
+		// ＭＰ
+		for(var i = 0; i < mmagicMax.count; i++)
+		{
+			if(mmagicMax[i] > 1) mmagic[i] = cap(mmagic[i], --mmagicMax[i]);
+			if(pmagicMax[i] > 1) pmagic[i] = cap(pmagic[i], --pmagicMax[i]);
+			if(amagicMax[i] > 1) amagic[i] = cap(amagic[i], --amagicMax[i]);
+			if(smagicMax[i] > 1) smagic[i] = cap(smagic[i], --smagicMax[i]);
+		}
+	}
+
+	function learnSkill(obj)
+	{
+		// 新たなコマンド・スキル・魔法を習得する
+
+		// 習得済みなら覚えない
+		if(btcmd.has(obj) || skill.has(obj)) return false;
+
+		// より上位の機能があったら覚えない
+		if(btcmd.has(obj.superior) || skill.has(obj.superior)) return false;
+
+		// 習得
+		if(["passive", "cancel", "status"].has(obj.category)) skill.push2(obj);	// スキル
+		else btcmd.push2(obj);	// コマンド・魔法
+
+		// より下位の機能があったらその機能は削除する
+		if(obj.inferior !== void)
+		{
+			skill.remove(obj.inferior);
+			btcmd.remove(obj.inferior);
+		}
+
+		// 魔法習得時
+		if(obj.magicLV > 0)
+		{
+			// 新規魔法取得時に得られるＭＰ
+			if(this[obj.category + "Max"][obj.magicLV - 1] < 9)
+			{
+				this[obj.category + "Max"][obj.magicLV - 1] ++;
+				this[obj.category][obj.magicLV - 1] ++;
+			}
+			magicButton.selectable = isMagicUser();	// 魔法ボタンを更新
+			sf.numLearnedMagics = master.getNumLearnedMagics();	// 記録
+		}
+
+		return true;
+	}
+
+	function levelUpToTheLast()
+	{
+		// 現在の経験値で可能な限りレベルアップする
+		var res = false;
+		while(isLevelUp())
+		{
+			res = true;
+			levelUp();
+		}
+		return res;
+	}
+
+	function isLevelUp()
+	{
+		// レベルアップできるかどうか返す
+		if(dead) return false;
+		if(isDemoVersion && level >= master.levelCapOnDemo) return false;
+		return exp >= getNeedExp(level + 1);
+	}
+
+	function getReachableLevel()
+	{
+		// 現在の経験値で到達可能なレベルを返す
+		var lv = 1;
+		while(exp >= getNeedExp(lv + 1)) lv ++;
+		if(isDemoVersion && lv > master.levelCapOnDemo) lv = master.levelCapOnDemo;
+		return lv;
+	}
+
+	function getNeedExp(lv)
+	{
+		// レベルアップに必要な経験値を返す
+		if(lv <= 1) return 0;
+		if(lv <= 15) return getNeedExp(lv - 1) + int(Math.pow(1.5, lv - 2) * job.expRate * 400);
+		return getNeedExp(lv - 1) + int(Math.pow(1.5, 13 + lv / 20) * job.expRate * 400);
+	}
+
+	function isAbleToGetExp()
+	{
+		// 経験値を得る資格があるかどうかを返す
+		return ! dead && ! isEquipmentsHasSkill(o.呪・停滞);
+	}
+
+	function getExtraExp(baseExp)
+	{
+		// 追加で入る経験値を返す
+		if(isEquipmentsHasSkill(o.習得)) return int(baseExp * 0.4);
+		return 0;
+	}
+
+	//---------------------------------------------------------------------------
+	// 各種コマンド
+
+	function recovery()
+	{
+		// 全回復・一部ステータスを解消
+		life = maxLife;
+		mmagic.assign(mmagicMax);
+		pmagic.assign(pmagicMax);
+		amagic.assign(amagicMax);
+		smagic.assign(smagicMax);
+		removeStatus(o.毒);
+		removeStatus(o.酩酊);
+		removeStatus(o.衰弱);
+		removeStatus(o.恐怖);
+	}
+
+	function goToSleep(sleepInStable)
+	{
+		// 宿屋で寝る
+		if(knockOut) return;
+		changeLoveToHero(sleepInStable);	// 主人公への好感度の変動
+		stomach = 0;	// 腹が減る
+		sleep = 0;	// 眠気解消
+		if(! sleepInStable) recovery();	// 馬小屋以外なら全回復
+		switchFaceState();	// 表情を更新
+	}
+
+	function changeLoveToHero(sleepInStable)
+	{
+		// 主人公への好感度を変化させる
+		if(! master.isFreeMode || sex != "女") return;
+		if(knockOut) love.theo -= 5;	// 戦闘不能状態をそのままにした
+		if(beCursed) love.theo -= 1;	// 呪い装備をそのままにした
+		if(sleepInStable) love.theo -= 1;	// 馬小屋に泊まらせた
+		if(love.theo < 0) love.theo = 0;
+	}
+
+	function tryRaising()
+	{
+		// 蘇生のチャレンジ
+		if(status.has(o.灰)) return true;	// すでに灰だったら確実に蘇生
+		if(! o.灰.cond(this)) return true;	// 灰になる条件を満たしていなかったら確実に蘇生
+		var score = 80 + vitality \ 5 + master.party.luck * 2;
+		dm("蘇生に挑戦しています...  " + score);
+		return random * 100 < score;
+	}
+
+	function speak(msg)
+	{
+		// ポップアップにセリフを表示する
+		if(msg === void) return;
+		master.wordsBase.open();
+		master.wordsBase.popUpMessage(slot, msg);
+	}
+
+	function avoidTrap()
+	{
+		// 罠を回避する
+		// ( (運 - 5) * 2% + 回避スキル * 50% ) の確率で回避
+		var score = cap(luck - 5) * 0.02 + isUsableSkill(o.回避) * 0.5;
+		dm("罠回避スコア : " + score);
+		if(! active) avoidingTrap = false;
+		else if(random < score) avoidingTrap = true;
+		else avoidingTrap = false;
+		if(avoidingTrap) switchFaceState("hiding");
+		return avoidingTrap;
+	}
+
+	function askHaveDinner()
+	{
+		// 食事をとるかどうか尋ねる
+		if(stomach < 500) return true;	// 満腹ではない
+		master.onGameBreak(true);
+		master.curChara = this;
+		kag.process("speech.ks", "*fullness_" + keyName);
+		return false;
+	}
+
+	function orderFood(food)
+	{
+		// 酒場で食事を注文
+		playSound("coin", 1);
+		master.party.gold -= food.price;
+		stomach += food.weight;
+		master.curItem = food;
+		var num = master.eatenDishes.push2(food.name);	// 一部クエスト用
+		if(num > sf.numEatenDishes) sf.numEatenDishes = num;	// 記録
+
+		// 好き嫌いに応じて好感度が変動
+		if(master.isFreeMode)
+		{
+			if(model.favoriteFood == food.detail) trust ++;
+			else if(model.dislikedFood == food.detail) trust --;
+		}
+		else if(sex == "女")
+		{
+			if(model.favoriteFood == food.detail) moveHeart(master.playerChara, food.love);
+			else if(model.dislikedFood == food.detail) moveHeart(master.playerChara, -food.love);
+		}
+
+		// 会話へ
+		master.notice.open(talkAtDinner);
+		master.notice.write("Ordered " + food.displayName);
+	}
+
+	function talkAtDinner()
+	{
+		// 食事会話
+		master.onGameBreak(true);
+		master.curChara = this;
+		kag.process("speech.ks", "*dinner_" + keyName);
+	}
+
+	function donate(churchObj)
+	{
+		// 教会で寄付をする。寄付した教会により気分値が変動する
+		mindBalance += churchObj.alignment == "good" ? 10 : -10;
+		emitAlignment(churchObj.alignment == "good");
+		updateBadge();
+	}
+
+	function tryChangeMind(better)
+	{
+		// 気分値を変動させ属性変化を試みる
+		mindBalance += (better ? 1 : -1) * intrandom(1, 2);
+		var res = (abs(mindBalance) >= 20 && shiftAlignment(mindBalance > 0));
+		emitAlignment(mindBalance > 0);
+		updateBadge();
+		return res;
+	}
+
+	function shiftAlignment(better)
+	{
+		// 属性を１つ隣のものに変化させる
+		if(alignment == o.中立) return false;	// 中立は変化しない
+		var idx = master.alignment.find(alignment) + (better ? -1 : 1);
+		if(idx < 0 || idx > 4) return false;
+		if(idx == 2) idx += (better ? -1 : 1);	// 中立にはならない
+		alignment = master.alignment[idx];
+		mindBalance = 0;
+		return true;
+	}
+
+	function getCurePrice(algn)
+	{
+		// 寺院での治療に必要な金額を得る
+		var price = HelperObject.getCurePrice(algn);
+		var a = 1 + alignment.value * 0.1;	// 0.8 ～ 1.2
+		if(algn == "good") a = 2 - a;
+		return int(a * price);
+	}
+
+	function getThiefSkill()
+	{
+		// 盗賊技能（解錠・罠解除・盗む）を返す
+		return fluc(job.thief + speed \ 2 + luck \ 3 + getEquipmentParam("thief"), 0.1);
+	}
+
+	function getScoutSkill()
+	{
+		// 探索技能を返す
+		return int((job.thief \ 10 + skill.has(o.探索) * 10) * (level / 10 + 1));
+	}
+
+	function getCommentOnAwaking(rank)
+	{
+		// ダンジョンの仕掛けに気付いたらそのコメントを返す
+		var score = getScoutSkill();
+		dm("探知   " + score);
+		if(score > intrandom(rank - 10, rank + 10))
+		{
+			return model.comment["awake"].draw();
+		}
+	}
+
+	function getOpinionOfTrap(treasureBox, useCalfo)
+	{
+		// 宝箱の罠の識別を試み、思ったことを返す
+		if(useCalfo)
+		{
+			// カルフォを使う。たまに間違える時もある
+			if(random < 0.98) return treasureBox.trap.displayName;
+			else return master.getRandomTrapAnswer().displayName;
+		}
+		else
+		{
+			dm("盗賊スキル  " + name + " : " +getThiefSkill());
+			dm("アイテム平均レベル  " + treasureBox.level);
+			if(random < (getThiefSkill() - treasureBox.level) / 100)
+			{
+				// 正解。ちょっとだけ自信がないときもある
+				return treasureBox.trap.displayName + (random < 0.3 ? "?" : "");
+			}
+			else if(random < 0.5)
+			{
+				// 第２の候補を答える
+				return master.getSecondTrapAnswer().displayName + (random < 0.5 ? "？" : "");
+			}
+			else if(random < 0.8)
+			{
+				// 適当に答えている
+				return master.getRandomTrapAnswer().displayName + (random < 0.7 ? "?" : "");
+			}
+			else
+			{
+				// 全然分からない
+				return "？？？";
+			}
+		}
+	}
+
+	function tryRemoveTrap(treasureBox)
+	{
+		// 宝箱の罠を解除に挑戦しその結果を返す
+		var score = getThiefSkill() - treasureBox.level;
+		dm("罠解除   " + score);
+		return random * 100 < score;
+	}
+
+	function tryPickDoor()
+	{
+		// 扉をこじあけに挑戦しその結果を返す
+		var score = getThiefSkill();
+		var wall = master.map.getWallInfo();
+		var keyLevel = wall.level * master.map.level;
+		dm("こじあけ鍵解除    扉レベル: " + keyLevel + "  解除者スコア: " + score);
+		if(score < keyLevel) return false;
+		master.map.unlockDoor();
+		return true;
+	}
+
+	function excuseForFailure()
+	{
+		// メンバーに罠の被害に遭わせたことを謝る
+		switchFaceState("sorry");
+		speak(model.comment["sorry"]);
+	}
+
+	function getItemKnowledge()
+	{
+		// 鑑定スキルを返す
+		return job.knowledge + (intellect - 10) * 2;
+	}
+
+	function tryRepairItem(itemData, stat)
+	{
+		// アイテムの修理に挑戦し、失敗したらメッセージを返す
+		if(itemData.rank == -1)
+		{
+			return "<y>This item cannot be repaired.";
+		}
+		if(! skill.has(o.修理))
+		{
+			return "<p>" + displayName + "<y> doesn't have repair skills.";
+		}
+		if(itemData.getNeededRepairingSkill() > getCraftSkill())
+		{
+			return "<p>" + displayName + "<y> can't repair this";
+		}
+		if(! team.useHammers())
+		{
+			return "<y>Repair requires <p>hammer<y> weapon";
+		}
+		if(itemData.rank >= 40)
+		{
+			if(team.ejectItem(o.オリハルコンの砂)) return;
+			return "<y>Repair requires <p>hammer<y> weapon and <p>Orichalcum<y>";
+		}
+		if(itemData.rank >= 20)
+		{
+			if(team.ejectItem(o.ミスリルの砂) || team.ejectItem(o.オリハルコンの砂)) return;
+			return "<y>Repair requires <p>hammer<y> weapon and<r><p>Mithril, or Orichalcum<y>";
+		}
+		if(team.ejectItem(o.魔法の砂) || team.ejectItem(o.ミスリルの砂) || team.ejectItem(o.オリハルコンの砂))
+		{
+			return;
+		}
+		return "<y>Repair requires <p>hammer<y> weapon and<r>"
+			 + "<p>Sand, Mithril, or Orichalcum<y>.";
+	}
+
+	function getCraftSkill()
+	{
+		// 修理スキルを返す
+		var score = job.craft + (power - 10) + (speed - 10);
+		dm("修理スキル   " + score);
+		return score;
+	}
+
+	function isFloating(personal = false)
+	{
+		// 浮遊しているかどうかを返す
+		if(! personal && master.party.status.has(o.浮遊)) return true;
+		if(isEquipmentsHasSkill(o.浮遊)) return true;
+		return super.isFloating();
+	}
+
+	function isSwimming(ignoredParts)
+	{
+		// 泳げるかどうかを返す 引数に部位名のリストを入れるとそこを除外して判定する
+		if(super.isUsableSkill(o.潜水)) return true;
+		var swimSuits = 0;	// 水着の数
+		for(var i = 0; i < partNames.count; i++)
+		{
+			if(ignoredParts !== void && ignoredParts.has(partNames[i])) continue;
+			var item = equip[partNames[i]];
+			if(item !== void && item.skill.has(o.潜水)) swimSuits ++;
+			if(swimSuits == 2) return true;
+		}
+		return false;
+	}
+
+	function isProofAgainstFire()
+	{
+		// 地形の熱に耐えられるかどうかを返す。火の攻撃もある程度和らげる
+		if(skill.has(o.耐熱)) return true;
+		if(block.has("火")) return true;
+		for(var i = 0; i < partNames.count; i++)
+		{
+			var item = equip[partNames[i]];
+			if(item === void) continue;
+			if(item.skill.has(o.耐熱)) return true;
+			if(item.block.has("火")) return true;
+		}
+		return false;
+	}
+
+	function isReflectingAttack(enemyAct)
+	{
+		// 	敵の魔法・魔力系攻撃を反射したかどうかを返す
+		if(isEquipmentsHasSkill(o.反射) && enemyAct.magicLV != 0 && enemyAct.attrib != "物理") return true;
+		return super.isReflectingAttack(enemyAct);
+	}
+
+	function isCategoryMaster(category)
+	{
+		// ある特定のカテゴリ（魔法など）のコマンドをすべて習得しているかどうかを返す
+		for(var i = 0; i < category.count; i++)
+		{
+			if(! btcmd.has(category[i])) return false;
+		}
+		return true;
+	}
+
+	//---------------------------------------------------------------------------
+	// 宿泊イベント・ヒロイン関連
+
+	function checkEvent(checkOnly = false)
+	{
+		// 宿泊時・ヒロインごとのイベントをチェックし、あれば実行する
+		master.curChara = this;
+		for(var i = 0; i < events.count; i++)
+		{
+			var num = events[i];
+			dm("キャライベントを調べる   " + keyName + " No." + num);
+			if(! (model.conditions[num] !)) continue;
+			if(checkOnly)
+			{
+				dm("キャライベント発生予告   " + keyName + " No." + num);
+				return true;
+			}
+			master.onGameBreak();
+			kag.process("hevent.ks", "*event_" + keyName + "_" + num);
+			dm("キャライベント発生   " + keyName + " No." + num);
+			events.erase(i);	// 一度発生したイベントは後ろに回す
+			events.add(num);	//     〃
+			master.curEventObj = this;
+			master.curEventNum = num;
+			return true;
+		}
+		return false;
+	}
+
+	function isSlave(team)
+	{
+		// どこかのチームの奴隷であるかどうかを返す
+		if(team !== void) return team.slaves.has(this);
+		else return master.rivals.has(master.findChara(this));
+	}
+
+	function inHideout(team, eventNum)
+	{
+		// 囚われている敵のマップ上のアジトで奴隷イベントに登場しうるかどうかを返す
+		if(master.hour != "day") return false;
+		if(isPregnant()) return false;
+		if(! master.rivals.has(master.findChara(this))) return false;
+		if(master.curEventNum != eventNum) return false;
+		return true;
+	}
+
+	function changeRoom(room)
+	{
+		// 部屋を変更する
+		var mark = master.hotelView.getMarkerFromChara(this);
+		master.hotelView.changeRoom(mark, room);
+	}
+
+	function changeRoomByAnime(room)
+	{
+		// 部屋を変更する（アニメ付き）
+		master.hotelView.moveToOtherRoom(this, room);
+	}
+
+	function getRoom()
+	{
+		// このキャラのいる部屋を得る
+		var mk = master.hotelView.getMarkerFromChara(this);
+		if(mk === void) return;
+		return mk.belong;
+	}
+
+	function stayAlone()
+	{
+		// 部屋で一人で泊まっているかどうかを返す
+		return getRoom().visMarkers.count == 1;
+	}
+
+	function inSameRoom(charaObj)
+	{
+		// このキャラのいる部屋に指定のメンバーがいるかどうかを返す
+		if(charaObj === void) return false;
+		var myRoom = getRoom();
+		if(myRoom === void) return false;
+		var targetCharaMarker = master.hotelView.getMarkerFromChara(charaObj);
+		return myRoom.visMarkers.has(targetCharaMarker);
+	}
+
+	function inSameRoomOnly(charaObj)
+	{
+		// このキャラのいる部屋に指定のメンバーのみがいるかどうかを返す
+		var myRoom = getRoom();
+		if(myRoom === void) return false;
+		if(myRoom.visMarkers.count > 2) return false;
+		return inSameRoom(charaObj);
+	}
+
+	function inSameRoomWithGuy()
+	{
+		// このキャラのいる部屋に主人公以外の男がいるかどうかを返す
+		var arr = getRoomMates();
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(arr[i] != master.playerChara && arr[i].sex == "男") return true;
+		}
+	}
+
+	function inSameRoomWithHeroine()
+	{
+		// このキャラのいる部屋にヒロインキャラがいるかどうかを返す
+		var arr = getRoomMates();
+		for(var i = 0; i < arr.count; i++)
+		{
+			if(arr[i].isHeroine) return true;
+		}
+	}
+
+	function getRoomMates()
+	{
+		// このキャラのいる部屋の他のルームメイトたちを得る
+		var myRoom = getRoom();
+		var arr = [];
+		for(var i = 0; i < myRoom.visMarkers.count; i++)
+		{
+			if(myRoom.visMarkers[i] === void) continue;
+			if(myRoom.visMarkers[i].charaRef === void) continue;
+			dm(myRoom.visMarkers[i].charaRef.name);
+			if(myRoom.visMarkers[i].charaRef != this) arr.add(myRoom.visMarkers[i].charaRef);
+		}
+		return arr;
+	}
+
+	function getOpponentOfQuarrel()
+	{
+		// 現在、ケンカ中の相手を返す
+		var num = master.quarreling.find(this);
+		if(num == -1) return;
+		return master.quarreling[num ^ 1];
+	}
+
+	function feelJealous()
+	{
+		// 現在、誰かに嫉妬を感じているかどうかを返す
+		if(! likePlayerChara()) return;	// もう主人公のことは気にしていない
+		var her = master.getPlayersFavoriteHeroine();	// 主人公のひいきキャラ
+		if(her == this || her === void) return false;	// ひいきがいないか、それが自分なら嫉妬しない
+		return master.playerChara.inSameRoomOnly(her);	// ひいきキャラが主人公と同室なら嫉妬発生
+	}
+
+	function likePlayerChara()
+	{
+		// 現在、主人公のことが好きかどうかを返す
+		if(pregnantCount > 0) return false;	// 妊娠済みならもう気にしない
+		if(getTotalSexCount(true) >= 30) return false;	// 他の男とやりまくっていたらもう気にしない
+		for(var i = 0; i < master.lovers.count; i++)
+		{
+			if(master.lovers[i] == master.playerChara) continue;
+			if(isFallen(master.lovers[i])) return false;	// 他の男に開発されていたらもう気にしない
+			dm("好感度   " + master.lovers[i].name + "  " + love[master.lovers[i].img]);
+			if(love[master.lovers[i].img] >= love[master.playerChara.img]) return false;
+				// 他の男が好きだったら今は気にしない
+		}
+		return true;
+	}
+
+	function isNovice()
+	{
+		// 現在、加入新人期間かどうかを返す
+		return trust < 20;
+	}
+
+	function isFallen(guy)
+	{
+		// 指定した男の虜になっているかどうかを返す
+		return develop[guy.img] >= 50;
+	}
+
+	function getCaptiveHeroines()
+	{
+		// この男の虜になっているヒロインたちをすべて返す
+		// 虜になっているヒロインは勝手に部屋を予約してプレイヤーの部屋割りを妨害したりする
+		var res = [];
+		for(var i = 0; i < master.party.allMembers.count; i++)
+		{
+			var her = master.party.allMembers[i];
+			if(! her.isHeroine && ! her.isHiring) continue;
+			if(her.isFallen(this)) res.add(her);
+		}
+		res.shuffle();
+		return res;
+	}
+
+	function isHeartBeating()
+	{
+		// 現在、キャラが興奮状態かどうかを返す
+		if(master.isFreeMode || this == master.playerChara) return false;
+		if(sex == "男") return heat >= master.heatToMove;
+		else return heat >= master.heatToLet;
+	}
+
+	function getInnMarkerFace()
+	{
+		// 宿泊時アイコンの表情を示す文字列を得る
+		if(master.isFreeMode || this == master.playerChara) return;
+		if(isHeartBeating()) return "_heat";	// 性的興奮
+		if(isHeroine && love.theo >= 20) return "_love";	// 主人公への愛情
+		if(sex == "男" && heat < master.heatToSex) return "_cool";	// やる気がない
+	}
+
+	function checkReservation(checkOnly = false)
+	{
+		// 部屋割りに問題がないかチェックし、あればセリフを返す
+		master.curChara = this;
+		for(var i = 0; i < booking.count; i++)
+		{
+			if(! (model.bookingExp[booking[i]] !)) continue;
+			if(checkOnly) return true;
+			master.onGameBreak();
+			kag.process("stay.ks", "*booking_" + keyName + "_" + booking[i]);
+			kag.skipToPage();	// ただの警告なので一気に表示する
+			return true;
+		}
+	}
+
+	function moveHeart(guy, heartNum)
+	{
+		// ヒロインの好意を表すハートを変動させる
+		var maxHearts = 100;
+		heartNum = min(maxHearts - love[guy.img], heartNum);
+		if(love[guy.img] + heartNum < 0) heartNum = -love[guy.img];
+		var sum = 0;
+		for(var i = 0; i < master.lovers.count; i++)
+		{
+			sum += love[master.lovers[i].img];
+		}
+		var over = sum + heartNum - maxHearts;
+		love[guy.img] += heartNum;
+		if(over <= 0) return;
+		var idx = intrandom(0, master.lovers.count - 1);
+		while(over > 0)
+		{
+			idx ++;
+			if(idx == master.lovers.count) idx = 0;
+			var other = master.lovers[idx];
+			if(other == guy) continue;
+			if(love[other.img] == 0) continue;
+			love[other.img] --;
+			over --;
+		}
+	}
+
+	function releaseHeart()
+	{
+		// 指定したヒロインから愛情のハートを放出する（アニメ）
+		var mark = master.hotelView.getMarkerFromChara(this);
+		mark.releaseHeart();
+	}
+
+	function setMagicalLockToMyRoom()
+	{
+		// このキャラがいる部屋に魔法の錠前をかける
+		var myRoom = getRoom();
+		myRoom.setMagicalLock();
+		master.party.ejectItem(o.魔法の錠前);
+	}
+
+	function wantToSexWithHeroine(her)
+	{
+		// 男が指定した相手と行為に及びたいと思っているかどうかを返す
+
+		dm("やりたいかどうかチェック  " + name + " > " + her.name);
+
+		// 相手に拒絶されている
+		if(her.guard[img] == -1)
+		{
+			dm("相手に拒絶されている   " + her.name);
+			return false;
+		}
+
+		// 女が加入直後
+		if(her.isNovice())
+		{
+			dm("女が加入直後   " + her.name);
+			return false;
+		}
+
+		// 男の興奮度が指定値以下なら誘うこと自体を行わない
+		if(heat < master.heatToSex)
+		{
+			dm("男にその気が無い : " + her.name + " <- " + name);
+			return false;
+		}
+
+		// 相手を開発完了していたらもう興味なし
+		if(her.isHeroine && her.develop[img] == 100)
+		{
+			dm("開発完了済み : " + her.name + " <- " + name);
+			return false;
+		}
+
+		// 一定回数行為を行っていなければまだ飽きていない
+		if(her.sexCount[img] < 30) return true;	// 寝取り男たちは割とすぐ飽きる
+
+		// 興奮が極端に高ければまだやる気がある
+		// 飽きたからといって女とヤっていないとすぐに興奮度がたまり誰でもいいからやろうとする
+		if(heat >= 50) return true;
+
+		// 相手の好感度が落ち気味だったら回復のためにまた求める
+		if(her.love[img] < 20) return true;
+
+		dm("相手に飽きている : " + her.name + " <- " + name);
+		return false;
+	}
+
+	function wantToAdultery(guy)
+	{
+		// 主人公の妻が浮気したいと思っているかどうかを返す
+
+		if(! married || guy.sex != "男" || guy == master.playerChara) return false;
+
+		dm("浮気したいかどうかチェック  " + name + " > " + guy.name);
+
+		if(love.theo >= master.loveToAdultery)
+		{
+			dm("まだ夫への愛情がある : " + name);
+			return false;
+		}
+
+		if(heat < master.heatToLet)
+		{
+			dm("そこまで欲求不満ではない : " + name);
+			return false;
+		}
+
+		return true;
+	}
+
+	function moving()
+	{
+		// 部屋割りの状況などを見た上で男たちが移動する
+		var myRoom = getRoom();
+
+		dm("移動検討開始   " + name);
+
+		if(dontMove)
+		{
+			// 動かない指定がしてあったら動かない
+			// dontMove は SUNSET のイベントで指定する
+			dm("動かない指定があった   " + name);
+			return false;
+		}
+
+		if(heat < master.heatToMove)
+		{
+			// 興奮度がしきい値以下
+			dm("動きたくなるほど興奮していない   " + name);
+			return false;
+		}
+
+		// 相手候補をリストアップ
+		var targets = [];	// 移動先候補
+		for(var i = 0; i < master.party.allMembers.count; i++)
+		{
+			var her = master.party.allMembers[i];
+			if(her.sex != "女") continue;
+
+			// 男がその相手と行為に及びたいと思っていない
+			if(! wantToSexWithHeroine(her)) continue;
+
+			// 行為に及びたいと思っていて
+			// 最初から同じ部屋で２人きりなら移動せず即その女に決定
+			if(inSameRoomOnly(her))
+			{
+				dm("最初から同じ部屋に２人きり   " + her.name);
+				return false;
+			}
+
+			// ヒロイン以外とは移動してまでやりたいとは思わない
+			if(! her.isHeroine)
+			{
+				dm("ヒロイン以外とは移動してまでやりたいとは思わない   " + her.name);
+				continue;
+			}
+
+			// すでに何度もやった相手なら移動してまでやりたいとは思わない
+			if(her.sexCount[img] >= 20)
+			{
+				dm("もう必死に追いかけない   " + her.name);
+				continue;
+			}
+
+			dm("移動先候補に追加した  " + her.name);
+			targets.add(her);	// 移動先候補に追加
+		}
+
+		if(targets.count == 0 && priorTarget === void)
+		{
+			dm("移動先がなかった  " + name);
+			return false;	// 候補がいなかった
+		}
+
+		// このままだと先頭に近いキャラばかりが選ばれるので並び替える
+		targets.shuffle();	// 毎回同じになるのを避けるためいったんシャッフルする
+		if(moveType == "forced")
+		{
+			targets.sort( function(a, b)
+			{
+				return a.love.theo > b.love.theo;	// 主人公が可愛がっているキャラを攻める
+			} incontextof this );
+			dm("優先順位（強制）：" + targets.values("name").join(","));
+		}
+		else
+		{
+			targets.sort( function(a, b)
+			{
+				return a.guard[img] < b.guard[img];	// 攻略が進んでいるキャラから集中的に攻める
+			} incontextof this );
+			dm("優先順位：" + targets.values("name").join(","));
+		}
+
+		// 目当てのキャラがすでに決まっているなら候補リストの先頭に追加
+		if(priorTarget !== void)
+		{
+			dm("すでに目当てのキャラがいる  " + priorTarget.name);
+			targets.remove(priorTarget);
+			targets.unshift(priorTarget);
+		}
+
+		// 移動開始
+		for(var i = 0; i < targets.count; i++)
+		{
+			var her = targets[i];
+			var herRoom = her.getRoom();
+			if(herRoom === void) continue;
+
+			if(herRoom.lock)
+			{
+				// 部屋に鍵がかかっていた
+				dm("部屋に鍵がかかっていた   " + her.name);
+				continue;
+			}
+
+			if(moveType == "forced" && (! her.inSameRoomWithGuy() || herRoom.visMarkers.count >= 3))
+			{
+				// 強制移動可の男キャラなら、有無を言わせずヒロインの部屋に入る
+				// ただし他の寝取り男がヒロインと２人きりでいたら行かない（そいつの寝取りを邪魔させないため）
+				dm("強制移動する   " + name);
+				changeRoomByAnime(herRoom);	// 移動する。これを実行した瞬間に部屋情報が移動している
+				priorTarget = her;
+				moved = true;
+				return true;
+			}
+
+			// 女が一人きりなら男はそっちに向かう
+			if(her.stayAlone())
+			{
+				dm("一人きりだから移動する   " + her.name);
+				changeRoomByAnime(herRoom);	// 移動する。これを実行した瞬間に部屋情報が移動している
+				moved = true;
+				return true;
+			}
+
+			// 目当ての女が一人きりではなかったのでここからルームメイトの調査をする
+			var res = true;	// ルームメイトの囲い込みに成功しているかどうか
+			var mates = her.getRoomMates();
+			var fallens = [];	// 陥落済み（あとで移動させるため記録しておく）
+			for(var i = 0; i < mates.count; i++)
+			{
+				if(mates[i] == this) continue;
+				if(mates[i].isFallen(this))
+				{
+					fallens.add(mates[i]);
+					continue;
+				}
+				dm("他のメンバーがいたので断念   " + her.name);
+				res = false;	// 自分の息のかかっていないメンバーが一人でもいたら不成立
+				break;
+			}
+			if(! res) continue;
+
+			// ルームメイトの囲い込みに成功しているなら彼女たちを他へ移動させる
+			for(var i = 0; i < fallens.count; i++)
+			{
+				dm("息のかかった女が移動する   " + fallens[i].name);
+				if(herRoom == myRoom)
+				{
+					// すでに男と３人以上で同じ部屋に一緒にいたらルームメイトたちが席を外す
+					fallens[i].changeRoomByAnime(game.hotelView.getRoomFromRoomName("ラウンジ"));
+				}
+				else
+				{
+					// 男が違う部屋なら、ルームメイトが男の部屋へ
+					fallens[i].changeRoomByAnime(myRoom);
+				}
+				fallens[i].moved = true;
+			}
+
+			if(myRoom != herRoom)
+			{
+				// 上で移動したルームメイトの代わりに自分（男）が女の部屋に行く
+				dm("息のかかった女の代わりに男が移動する   " + name);
+				changeRoomByAnime(herRoom);
+				moved = true;
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	function chaseGuy()
+	{
+		// ヒロインの方から男の部屋に移動する
+
+		if(dontMove) return false;	// 動かない指定がされていたら移動しない
+		if(moved) return false;	// すでに男の指示で動いていたらもう移動しない
+
+		for(var i = 0; i < master.lovers.count; i++)
+		{
+			var guy = master.lovers[i];
+			if(! master.party.allMembers.has(guy)) continue;
+
+			// 何か理由があって男が外出している・部屋を指定できない
+			if(guy.getRoom() === void) continue;
+
+			// 主人公が結婚してたら行かない
+			if(guy.married) continue;
+
+			// 男の室内に他に誰かいるなら動かない（それが自分だったら単に移動しないだけ）
+			if(! guy.stayAlone()) continue;
+
+			var res = false;	// この相手の部屋に行きたいかどうか
+
+			// すごく好きならお目当ての相手に向かって動く
+			if(love[guy.img] >= 50) res = true;
+
+			// ヒロイン結婚後で、浮気する状態だったら浮気相手に向かって動く
+			if(wantToAdultery(guy)) res = true;
+
+			if(! res) continue;	// この男はスルー
+
+			// 行く
+			dm("女が自主的に移動する   " + name + " > " + guy.name);
+			changeRoomByAnime(guy.getRoom());
+			moved = true;
+			return true;
+		}
+		return false;
+	}
+
+	function increaseHeroinesHeat()
+	{
+		// 同室のヒロインがいたらその興奮度を上げる
+		// 浸食度が進むなら盾破壊アニメを行う
+
+		// 男の性的技量と男の興奮度の一部を加算した値だけヒロインの興奮度を上昇させる
+		// 男の性的技量はセックステクだけでなく女を口説く技量や様々なアイテム使用も含めた総合値
+		// 初期値のほかにイベントの進展などで上がっていく
+
+		var mates = getRoomMates();
+		if(moveType != "forced" && mates.count >= 2) return false;	// ３人以上なら何もできない
+		var her = priorTarget;
+		if(her === void)
+		{
+			mates.shuffle();
+			for(var i = 0; i < mates.count; i++)
+			{
+				if(! mates[i].isHeroine) continue;	// ヒロイン以外にはやらない
+				if(! wantToSexWithHeroine(mates[i])) continue;	// やる気がない
+				her = mates[i];
+				break;
+			}
+		}
+		if(her === void) return false;
+
+		// ヒロインの興奮度を上昇させた
+		var add = cap(technic * 3 + heat \ 10, 200);	// 上昇量。テクニックと興奮度で決まる
+		var breakCount = her.getBreakCount(this, add);	// 上昇量に基づき盾破壊が起き、破壊回数を得る
+		her.guard[img] -= breakCount;	// 盾破壊
+		her.changeHeatByAnime(add, breakCount);	// 興奮度上昇。盾破壊が起きるなら破壊アニメ
+		priorTarget = her;	// 上昇させたヒロインとイベントが一致する必要があるのでここでも優先キャラ設定
+		return true;
+	}
+
+	function changeHeatByAnime(add, breakCount = 0)
+	{
+		// 興奮度を増減させる（アニメ付き）
+		// breaking を指定するとカウンターの終わりに盾破壊アニメが起きる
+		var res = cap(heat + add, master.maxHeat);	// 最終的な興奮度の値を確定
+		var mark = master.hotelView.getMarkerFromChara(this);
+		mark.startHeatCounter(heat, res, breakCount);	// カウンター開始
+		heat = res;	// 興奮度パラメータに書き込み
+	}
+
+	function getBreakCount(guy, add)
+	{
+		// 盾（浸食度をあらわす値）が何枚破壊されるかを返す
+		if(guard[guy.img] == 0) return 0;	// すでに全て破壊済み
+		if(heat + add < master.heatToLet) return 0;	// 追加の興奮度があっても段階が進むには至らない
+		var num = guy.breakCount;	// 破壊数を得る。キャラによって異なる
+		if(married && guy != master.playerChara) num = 5;	// 浮気の場合はすべて破壊
+		return cap(num, guard[guy.img]);	// 破壊数を返す
+	}
+
+	function beSeducedEarly(guy, forced = false)
+	{
+		// 散策中に指定した男と行為に及ぶ会話が発生するかどうかを返す（女性専用）
+
+		// 同じ部屋で２人きりでなければ行為に及ばない
+		if(! inSameRoomOnly(guy)) return false;
+
+		// 男が指定した相手と行為に及びたいと思っているかどうかを調べる
+		if(! guy.wantToSexWithHeroine(this)) return false;
+
+		// 女の開発度が規定値を満たしていなかったら女が拒絶して何も起こらない（強制された場合除く）
+		if(! forced && develop[guy.img] < 20) return false;
+
+		// 条件を満たしていれば会話が変化
+		return true;
+	}
+
+	function seduceAnyGirlEarly(forced = false)
+	{
+		// 散策中に誰かしら女と行為に及ぶ会話が発生するかどうかを返す（男性専用）
+
+		// 同室キャラを調べる
+		var arr = getRoomMates();
+		if(arr.count != 1) return false;
+		if(arr[0].sex == "男") return false;
+
+		// 条件を満たしていれば会話が変化
+		return arr[0].beSeducedEarly(this, forced);
+	}
+
+	function beSeduced(guy, forced = false)
+	{
+		// 深夜、男に口説かれるイベントが起きるかどうかを返す
+
+		if(! guy isvalid) return false;
+
+		// 口説かれるのは真夜中（早朝）だけ
+		if(! MIDNIGHT) return false;
+
+		// 同じ部屋で２人きりでなければ口説かれない（強制された場合除く）
+		if(! forced && ! inSameRoomOnly(guy)) return false;
+
+		// 主人公なら主人公が好きか結婚してればイベント発生
+		if(guy == master.playerChara && (likePlayerChara() || married)) return true;
+
+		// 強制でも同じ部屋にいなければ口説かれない
+		if(forced && ! inSameRoom(guy)) return false;
+
+		// 強制でも優先キャラが他に指定されていたら口説かれない
+		if(forced && guy.priorTarget !== void && guy.priorTarget != this) return false;
+
+		// 男が指定した相手と行為に及びたいと思っているかどうかを調べる
+		if(! guy.wantToSexWithHeroine(this)) return false;
+
+		// 女の興奮度が規定値を満たしていなかったら女が拒絶して何も起こらない
+		if(! forced && heat < master.heatToLet)
+		{
+			dm("女が拒絶 : " + name + " <- " + guy.name);
+			return false;
+		}
+
+		// 条件を満たしていれば口説きイベント発生
+		dm("口説きイベント発生 : " + name + " <- " + guy.name);
+		return true;
+	}
+
+	function getEmitter()
+	{
+		// 宿イベントをチェックし、個別のエミッターがあればその名前を返す
+		master.curChara = this;
+		for(var i = 0; i < events.count; i++)
+		{
+			var num = events[i];
+			if(model.conditions[num] !) return model.emitters[num];
+		}
+	}
+
+	function intrude(her)
+	{
+		// 現在、指定した女性に他に男がいても、部屋に押し入ってちょっかいを出せるかどうかを返す
+		if(! master.party.allMembers.has(this)) return false;	// そもそも自分がパーティーにいない
+		if(! wantToSexWithHeroine(her)) return false;	// 邪魔したいと思っていない
+		for(var i = 0; i < master.party.allMembers.count; i++)
+		{
+			var one = master.party.allMembers[i];
+			if(one == her || one.sex != "女") continue;
+			if(one.beSeduced(this)) return false;	// 他の女性にかまけている
+			return true;
+		}
+		return false;
+	}
+
+	function addSexRecordAndChangeHeart(rec)
+	{
+		// 性行為の記録を日記データに追加し、パラメータを変動させる
+		diary.add(rec);
+		changeSexualParamBySex(rec);
+	}
+
+	function getSexRecord(guy, customSexNum, customOrgasmNum, customActs, customDate)
+	{
+		// 一晩分の性行為の記録を作成する
+		var rec = %[];
+
+		// 日付 任意指定も可能
+		rec.date = customDate !== void ? +customDate : master.date;
+
+		// 相手の男
+		rec.guyKey = guy.keyName;
+
+		// セックス回数
+		if(customSexNum !== void)
+		{
+			// 任意に指定
+			rec.sexCount = +customSexNum;
+		}
+		else
+		{
+			// 興奮度により自動で決まる
+			rec.sexCount = cap((heat + guy.heat) \ 40 + 1, 5);
+		}
+
+		// イった回数
+		if(customOrgasmNum !== void)
+		{
+			// 任意に指定
+			rec.orgasmCount = +customOrgasmNum;
+		}
+		else
+		{
+			for(var i = 0; i < rec.sexCount; i++)
+			{
+				var score = feel + guy.technic + guy.penis * 5;
+				dm("セックススコア   " + score);
+				if(random * 300 < score) rec.orgasmCount ++;
+			}
+		}
+
+		// 行為の種類
+		if(customActs !== void)
+		{
+			// 任意に指定
+			rec.acts = customActs.split(",");
+		}
+		else
+		{
+			// リストから自動選択
+			rec.acts = guy.getPlayList(this);
+		}
+
+		// 満足度
+		rec.satisfy = cap((rec.orgasmCount + 1) \ 2 + (guy.technic > 30) + (guy.penis > 16), 5);
+
+		return rec;
+	}
+
+	function getPlayList(girl)
+	{
+		// 行った性行為の文字列の一覧を返す
+		var arr = [];
+		arr.assign(sexActs);
+		if(arr.count == 0) return arr;
+		var l = min(3 + technic \ 10, arr.length - girl.moral \ 10);
+		if(arr.count > l) arr.count = l;
+		arr.shuffle();
+		return arr;
+	}
+
+	function changeSexualParamBySex(rec)
+	{
+		// 性行為の内容によってヒロインの性的パラメータを変動させる
+		var guy = o[rec.guyKey];
+		var mob = (! guy instanceof "CharaObject" && ! guy instanceof "GuestObject");
+
+		// 興奮度
+		heat -= rec.satisfy * master.coolBySex;	// 興奮度解消
+		if(! mob) guy.heat -= rec.sexCount * master.coolBySex;	// 男も興奮度解消
+
+		// 貞淑度
+		if(rec.sexCount >= 2) moral = cap(moral - 1);	// 徐々に下がる
+
+		// 感じやすさ
+		if(rec.satisfy >= 3) feel = cap(feel + rec.satisfy - 2, 100);
+
+		// Ｈ回数と経験人数
+		if(rec.sexCount > 0)
+		{
+			if(getTotalSexCount() == 0) firstPartnerKey = rec.guyKey;	// 初体験なら相手を記録
+
+			if(mob)
+			{
+				if(guy != o.アイテム) loversCount ++;	// 経験人数が増える
+				sexCount["other"] += rec.sexCount;	// Ｈ回数を加算
+			}
+			else
+			{
+				if(sexCount[guy.img] == 0)
+				{
+					loversCount ++;	// 経験人数が増える
+					guy.loversCount ++;	// 男側の経験人数も増える
+				}
+				sexCount[guy.img] += rec.sexCount;	// Ｈ回数を加算
+				guy.sexCount.self += rec.sexCount;	// 男側もＨ回数を加算
+			}
+		}
+
+		// 中出し回数（一応結婚後はマックスとライナスは避妊する）
+		if(guy != o.モンスター && guy != o.アイテム && (! married || guy.moral == 0 || guy == master.playerChara))
+		{
+			pourCount += intrandom(cap(rec.sexCount - 2), rec.sexCount);
+		}
+
+		// 浮気回数
+		if(married && guy != o.アイテム && guy != master.playerChara) affairCount ++;
+
+		if(mob) return;	// モブ男はここまで
+
+		// 開発度加算
+		var dev = (guy.technic + guy.penis) \ 20;
+		develop[guy.img] = cap(develop[guy.img] + dev, 100);
+		dm("開発度  " + dev);
+
+		// 好感度
+		if(isUserChara) moveHeart(guy, rec.satisfy);	// 満足すればその分好感度が上がる
+		if(rec.orgasmCount == 0) love[guy.img] = cap(love[guy.img] - 3);	// 一度もイけないと好感度が下がる
+
+		// テクニック
+		if(rec.orgasmCount > 0 && guy.technic < 100) guy.technic += 2;	// イかせたらテクニックは２上昇
+		else guy.technic += 1;	// テクニックは最低でも１上がる
+	}
+
+	function getOrgasmCount(guy, sexCount)
+	{
+		// 指定の回数の行為でヒロインが何回イケるかを返す
+		var score, num = 0;
+		score = guy.technic + guy.penis + desire + feel;
+		dm("行為のスコア  " + score);
+		for(var i = 0; i < sexCount; i++)
+		{
+			if(score / 200 > random2(score + i + master.date)) num ++;
+		}
+//		if(master.playerChara.equip.finger == o.堕天使の指輪
+//			 && master.wife !== void && master.wife.equip.finger == o.堕天使の指輪) num ++;
+		return num;
+	}
+
+	function processPregnancy(day = 1)
+	{
+		// ヒロインたちの妊娠状態を進行させる（妊娠していなければ何もしない）
+		if(pregnant < 0) return;	// そもそも妊娠してない
+		pregnant += day;	// 妊娠度が進行
+		if(! isPregnant() && ! isNursing()) pregnant = NO_PREGNANCY;	// 復帰
+	}
+
+	function isPregnant()
+	{
+		// 現在、キャラが妊娠状態かどうかを返す
+		return pregnant >= 0 && pregnant < 25;
+	}
+
+	function isBigBelly()
+	{
+		// 現在、キャラがボテ腹かどうかを返す。見た目に影響する
+		return pregnant >= 10 && pregnant < 25;
+	}
+
+	function isNursing()
+	{
+		// 現在、キャラが出産直後・育休中かどうかを返す
+		return pregnant >= 25 && pregnant <= 30;
+	}
+
+	function getTotalSexCount(ignoreHero = false)
+	{
+		// ヒロインの総セックス回数を返す
+		// ignoreHero == true だと主人公以外の男との総セックス回数を返す
+		if(sex == "男") return 0;
+		var num = 0;
+		var arr = [];
+		arr.assign(sexCount);
+		for(var i = 1; i < arr.count; i+=2)
+		{
+			if(typeof arr[i] != "Integer") continue;
+			if(ignoreHero && master.playerChara !== void && arr[i - 1] == master.playerChara.img) continue;
+			num += arr[i];
+		}
+		return num;
+	}
+
+	function getSexCountAWeek()
+	{
+		// ヒロインの１週間あたりのセックス回数を返す
+		var num = 0;
+		for(var i = diary.count - 1; i >= 0; i--)
+		{
+			if(master.date - diary[i].date >= 7) break;
+			num += diary[i].sexCount;
+		}
+		dm("１週間あたりのセックス回数   " + num);
+		return num;
+	}
+
+	//---------------------------------------------------------------------------
+}

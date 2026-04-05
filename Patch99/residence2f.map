@@ -1,0 +1,183 @@
+﻿; 伯爵の屋敷
+
+name = 伯爵の屋敷２Ｆ
+insideName = ２Ｆ
+lower = 伯爵の屋敷１Ｆ
+level = 44
+bgm = bad
+margin = 3
+shadow = dark
+sky = forest
+roof = wood
+
+; パーツ画像
+━ = plaster
+　 = wood
+／ = door
+∫ = pick
+︻ = panel
+㊦ = ladderd
+⑶ = barrel
+⑷ = barrel
+⑸ = barrel
+⑹ = barrel
+⑦ = human
+⑧ = human
+
+; 敵情報
+maxGroups = 2
+monsters = ローグ,ハイウェイマン,ブッシュワッカー
+traps = 石つぶて,毒針,しびれ針
+
+; 宝箱
+box[1] = ５連泊券,レオタード_u,こじあけの鍵,精神の指輪,魔法の錠前,ボム
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  ┏━━━━━┳━┳━━━━━━━┓
+ 4┃　　　　　／　┃⑶　⑷　⑸　⑹┃
+  ┃　　　　　┃　┃　　　　　　　┃
+ 3┃❶　⑦　　┃　┃　　　　　　　┃
+  ┣━━━━━┫　┃　　　　　　　┃
+ 2┃⑧　　　　┃　／　　　　　　　┃
+  ┃　　　　　┃　┃　　　　　　　┃
+ 1┃　　　　　∫　┃　　　　　　　┃
+  ┣━━━━━┻━┻━━︻━／━━┫
+ 0┃㊦　　　　　　　　　①　②　　┃
+  ┗━━━━━━━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[6][0].n.click = true;
+pos[6][0].n.type = "wall";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Exchange"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger || WAY == "n"
+
+[if exp='! game.onObjectTrigger']
+	@notice text="A voice comes from behind the door. <y>If you want to enter the room, knock on the door!"
+	@eval exp='game.setTouchableObject()'
+	@eval exp='tf.knockCount = 0'
+	[eventoff]
+[endif]
+
+@se f=beat
+@eval exp='tf.knockCount ++'
+@eval exp='game.setTouchableObject()'
+@eval exp='game.view.enabled = true'
+@eval exp='kag.keyDownHook.add(game.touchObjectHook)'
+[if exp='tf.knockCount >= 14']
+	@eval exp='tf.knockCount = 0'
+	@eval exp='game.view.enabled = false'
+	@eval exp='kag.keyDownHook.remove(game.touchObjectHook)'
+	@wait time=200
+	@notice text="<y>Shut up! Don't knock without a reason. Are you really one of us?!" wait=1000
+	[eventoff]
+[endif]
+@wait time=1500
+@eval exp='game.view.enabled = false'
+@eval exp='kag.keyDownHook.remove(game.touchObjectHook)'
+[if exp='tf.knockCount != 7']
+	@eval exp='tf.knockCount = 0'
+	@notice text="<y>Wrong knock! Are you really one of us?"
+	[eventoff]
+[endif]
+
+; 成功
+@notice text="<y>All right! Get in!"
+@changewall x=6 y=0 way=n type=door click=false
+@walk move=n
+@wait time=500
+@fg l=thief_red left=250 top=80 b
+@fg c=thief_red left=450 top=80 b
+@fgf r=thief_red left=650 top=80
+[texton]
+[name n="Black Market"]「Who the hell are you?! You're not one of us!」[k]
+[name n="Black Market"]「Outsiders aren't allowed in! Hey, you bastards! Get 'em!」[k]
+[textoff]
+@clf
+@monster pos=1 name=ブッシュワッカー
+@monster pos=2 name=ブッシュワッカー
+@monster pos=3 name=ブッシュワッカー
+@monster pos=4 name=ブッシュワッカー
+@monster pos=5 name=ブッシュワッカー
+@monster pos=8 name=ブッシュワッカー
+@monster pos=9 name=ブッシュワッカー
+@monster pos=10 name=ブッシュワッカー
+@monster pos=11 name=ブッシュワッカー
+@monster pos=12 name=ブッシュワッカー
+@callbattle escape=false
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.setStatus(o.毒, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> is poisoned!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+*event_5
+;[exp] onObjectTrigger
+*event_6
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+@jump storage=&'o.伯爵の屋敷１Ｆ.mapFile' target=*event_1
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] true
+
+@delevent
+@wait time=500
+[texton w=0]
+[name n=Count f=earl_00]「W-what are you guys doing?」[k]
+The Count was hiding in the back room! We took him into custody.
+ [k]
+@se f=period
+Afterwards, evidence of human trafficking was seized from the room, and the Count and his men turned over to the security forces. That should put an end to the case.
+ [k]
+[textoff]
+@changefloor pimg=void
+@eval exp='o.人身売買の証拠をつかめ.flag = 1'
+
+[eventoff]
+;-------------------------------------------------------------------------------

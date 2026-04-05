@@ -1,0 +1,335 @@
+﻿;  ◆デールコインの森◆
+
+name = デールコインの森
+insideName = Lost Forest
+level = 4
+bgm = garden
+isOutdoor = true
+shadow = dark
+sky = forest
+outfield = soil
+roof = stone
+blank = rock
+
+; 画像パーツ
+━ = stone
+－ = wood
+　 = soil
+❖ = soil
+⏃ = woods
+△ = rock
+／ = door
+∮ = silver
+☗ = gate
+︻ = panel
+⑴ = bulletin
+⑻ = trash
+⑼ = trash
+⑽ = trash
+⑾ = trash
+⑿ = trash
+⒀ = br_maxhp
+⒁ = empty
+⒂ = empty
+
+; 敵情報
+maxGroups = 2
+monsters = ポイズンスライム,フェアリー,ジャイアントバット,巨大ぐも,スケルトン
+traps = 毒針,毒ガス,酸スプレー,しびれ針,魔力吸収,爆弾,スモーク
+
+; 移動ポイント
+(A) = map:サファイアシティ, enter:サファイアシティ・北西門, ask:Enter town?
+(B) = map:ポラリスの神殿, x:3, y:0, way:n, symbol:cave, ask:Go to the dungeon?
+(C) = x:15, y:11, stealth:true
+(D) = x:8, y:15, stealth:true
+
+; 宝箱
+box[1] = トマホーク,ツインロッド,レンジャーブーツ,硬い革鎧,金貨（小）,曲刀兵の書
+box[2] = 胸当て,ジャンプの巻物,ジャンプの巻物,金貨（大）
+box[3] = 鍵付き宝箱,エレメントプレート・土,エレメントプレート・水,エレメントプレート・火,エレメントプレート・風,精霊の台座のメモ
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26
+  
+23	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃
+22	⏃⏃　　　　　　敵　　　⒀⏃⏃	⏃⏃　　　　　　△　　　⑴　　⏃⏃	⏃⏃　　　　　　❶⏃⏃	⏃⏃　　　⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃　　　　　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃	⏃⏃　　　　　　　⏃⏃	⏃⏃　　　⏃⏃
+21	⏃⏃　⏃⏃⏃⏃⏃　　　　⒁⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃	⏃⏃敵　　　　　　⏃⏃	⏃⏃敵　　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃					⏃⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⏃
+20	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃					⏃⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⏃
+  	⏃⏃　⏃⏃											⏃⏃　⏃⏃							⏃⏃　⏃⏃	⏃⏃　⏃⏃							⏃⏃　⏃⏃
+19	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃
+18	⏃⏃　　　　　　　　　　　　　　　　　⏃⏃⏃　　　⏃⏃	⏃⏃　⏃⏃	⏃⏃　　　　　　　　　　　　　　　⏃⏃
+  	⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃	⏃⏃　⏃⏃	⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+17	⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　敵⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃　⏃⏃											⏃⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃							⏃⏃　⏃⏃
+16	⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　　　　　　　　　　　⏃⏃							⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃							⏃⏃　⏃⏃
+15	⏃⏃　⏃⏃⏃　⏃⏃⏃　　　　　　　　　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃			⑥			⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃					⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃︻－∮－－⏃⏃⏃　⏃⏃
+14	⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　　③　③　Ⓓ　②⏃⏃	⏃⏃⑤　　　　⏃⏃⏃　⏃⏃
+  					⏃⏃　⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃　　　　　⏃⏃⏃　⏃⏃
+13	⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃　　　　❸⏃⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+12	⏃⏃　　　　　⏃⏃⏃③　Ⓒ　②⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃④　　　　　　⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃			⏃⏃　⏃⏃
+11	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⒂⏃⏃⏃　⏃⏃	⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+10	⏃⏃　⏃⏃	⏃⏃　　　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　　　　　　　　　　　⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃　　　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+ 9	⏃⏃　⏃⏃	⏃⏃敵　　⏃⏃⏃　⏃⏃⏃　　　　　⏃⏃⏃　　⑿⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+ 8	⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　　⑾⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　　　　　　　　　　　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃	⏃⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+ 7	⏃⏃　⏃⏃	⏃⏃　　　　　　　⏃⏃⏃　⏃⏃	⏃⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃	⏃⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃			⏃⏃　⏃⏃
+ 6	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃	⏃⏃　　　　　　　　　⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃
+ 5	⏃⏃　　　　　　　　　⏃⏃⏃　⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⑽⏃⏃⏃⏃⏃　⏃⏃⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃	⏃⏃　⏃⏃
+ 4	⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⑦　　　⑻　　　　⏃⏃⏃　　　　　⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃　　　　　　　⏃⏃⏃⏃⏃　　　　　⏃⏃	⏃⏃　⏃⏃
+ 3	⏃⏃　　　　　⏃⏃⏃　　　　　⏃⏃⏃　　　　　　　⏃⏃⏃⑦　　　　　⑼⏃⏃⏃⏃⏃　　　　　⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃	⏃⏃　⏃⏃
+ 2	⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　　　⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　　　　　⏃⏃	⏃⏃　⏃⏃
+ 1	⏃⏃　　　　　　　　　⏃⏃⏃　　　　　　　　　　　　　　　　　　　　❷⏃⏃	⏃⏃　　Ⓑ　　⏃⏃	⏃⏃Ⓐ⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	━━━━☗━━━━	━━☗━━
+ 0	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setHouse(22, 15);
+pos[21][14].n.img = pos[22][14].n.img = "wood";
+pos[6][12].f.icon = pos[17][14].f.icon = void;
+pos[24][10].f.noCount = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+[texton]
+[b]Lost Forest ahead, do not enter![/b]
+ [k]
+[textoff]
+@wait time=500 cond='WAY != "w"'
+@walk turn=w cond='WAY != "w"'
+[texton]
+Someone has placed a large rock at the entrance of the path, as if they don't want anyone to enter.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove
+
+@changefloor x=6 y=12 warp=void pimg=void
+@changefloor x=17 y=14 warp=void pimg=void
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] party.lastIsMove
+
+@changefloor x=6 y=12 warp=C
+@changefloor x=17 y=14 warp=D
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@delevent
+@changefloor x=24 y=10 type=floor
+@changewall x=23 y=10 way=e type=space secret=path
+@changewall x=25 y=10 way=w type=space secret=path
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="Forest Magic"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@shop name=森の魔法屋
+@walk turn=s move=s
+[texton]
+[name n=Shopkeeper f=witch_other_01]「Come again.」[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+@delevent
+@wait time=500 cond='WAY != "e"'
+@walk turn=e cond='WAY != "e"'
+@wait time=500
+[texton]
+Human belongings and what appears to be white bones are scattered on the ground. They probably belong to someone who ran out of strength trying to leave the forest.
+ [k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@trash item=朽ち果てた手記
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_9
+;[exp] onObjectTrigger
+*event_11
+;[exp] onObjectTrigger
+
+@trash monster=ゾンビ,グール
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_10
+;[exp] onObjectTrigger
+
+@trash item=入館証
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_12
+;[exp] onObjectTrigger
+
+@trash item=ジャンプの巻物
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_13
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("maxLife", 5)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP permanently increased by 5!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_14
+;[exp] onObjectTrigger
+*event_15
+;[exp] onObjectTrigger
+
+@delevent
+[texton]
+There's an item hidden inside the barrel![k]
+[textoff]
+@getitem item=ジャンプの巻物
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*_set_plate_on_monument
+; 台座にエレメントプレートをセットする
+
+@btmes off
+[if exp='f[tf.temp] !== void']
+	@image layer=4 left=304 top=112 visible=true storage=&'"slot_" + o[f[tf.temp]].img.substr(13)'
+	[texton w=5]
+	[if exp='game.onUseEventItem']
+		@wait time=50
+		[nw]It's a spirit pedestal. The slot already has a [emb exp='o[f[tf.temp]].displayName'] in it.[/nw][k]
+	[else]
+		[nw]It's a spirit pedestal. [emb exp='o[f[tf.temp]].displayName'] is inserted into the slot.[/nw][k]
+	[endif]
+	[textoff]
+	@question title="Do you want to remove it?" cond='! game.warpSpellEnabled'
+	[if exp='tf.result']
+		@playse storage=switch1
+		@image layer=4 left=304 top=112 visible=true storage="slot_empty"
+		[texton]
+		[nw]Removed [emb exp='f[tf.temp]'] from the slot![/nw][k]
+		[textoff]
+		@getitem item=&'f[tf.temp]'
+		@eval exp='f[tf.temp] = void'
+	[endif]
+	@layopt layer=4 left=0 top=0 visible=false
+	[eventoff]
+[endif]
+
+[if exp='! game.onUseEventItem']
+	@image layer=4 left=304 top=112 visible=true storage="slot_empty"
+	[texton w=5]
+	[nw]There is a pedestal. On it is written [b]Spirit Pedestal[/b].[/nw][k]
+	[nw]There is a slot on the top that suggests something should be placed in it.[/nw][k]
+	[textoff]
+	@layopt layer=4 left=0 top=0 visible=false
+	[eventoff]
+[endif]
+
+@eval exp='f[tf.temp] = game.curItem.name'
+@image layer=4 left=304 top=112 visible=true storage="slot_empty"
+@wait time=100
+@playse storage=switch1
+@image layer=4 left=304 top=112 visible=true storage=&'"slot_" + game.curItem.img.substr(13)'
+[texton w=5]
+[nw]I inserted [emb exp='game.curItem.displayName'] into the slot![/nw][k]
+[textoff]
+@layopt layer=4 left=0 top=0 visible=false
+@eval exp='game.party.ejectItem(game.curItem)'
+
+@jump target=*_failed_to_set cond='f.northSlotOnMonument != "エレメントプレート・風"'
+@jump target=*_failed_to_set cond='f.southSlotOnMonument != "エレメントプレート・土"'
+@jump target=*_failed_to_set cond='f.eastSlotOnMonument != "エレメントプレート・水"'
+@jump target=*_failed_to_set cond='f.westSlotOnMonument != "エレメントプレート・火"'
+
+@wait time=1000
+@se f=shakin4
+@image layer=e0 mode=psdodge5 opacity=0 storage=screen_white visible=true
+@move layer=e0 time=500 path=,,96
+@wm
+@wait time=2000
+@move layer=e0 time=500 path=,,0
+@wm
+@wait time=500
+[texton]
+[nw]Suddenly, the pedestal emitted a glow, which then subsided.[/nw][k]
+[textoff]
+@se f=period
+@notice text=&'"<y>The " + o.ワープ.displayName + " spell can now be used!"'
+@eval exp='game.warpSpellEnabled = true'
+
+[eventoff]
+;------------------------------------------------------------------------------
+*_failed_to_set
+
+[eventoff cond='f.northSlotOnMonument === void']
+[eventoff cond='f.southSlotOnMonument === void']
+[eventoff cond='f.eastSlotOnMonument === void']
+[eventoff cond='f.westSlotOnMonument === void']
+
+@wait time=1000
+[texton]
+[nw]I put the four plates into the pedestal but nothing happened. Is something wrong?[/nw][k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------

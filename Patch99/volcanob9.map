@@ -1,0 +1,135 @@
+﻿; 火山島
+
+name = 火山島Ｂ９
+insideName = Ｂ９
+upper = 火山島Ｂ８
+level = 47
+bgm = volcano
+roof = hot
+shadow = dark
+sky = black
+blank = rock
+outfield = soilr
+effect = PE_steam
+
+; 各パーツ
+━ = soilr
+― = soilr
+－ = soil
+　 = soilr
+◇ = soil
+♨ = lava
+♜ = upstair
+︻ = panel
+Ⓑ = warp
+
+; 移動ポイント
+(A) = map:火山島Ｂ８, x:0, y:2, symbol:upstair, ask:There are stairs leading up. Would you like to climb the stairs?
+(B) = map:火山島１Ｆ, x:16, y:8
+
+; 宝箱
+box[1] = フレイムソード,炎のロッド,火花のマラカス,氷の精霊の指輪_u
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+  				┏━━━━━━━━━━━━━━━━━━━━━━━━━┓
+11				┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+  				┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+10				┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+  				┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+ 9				┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨③♨♨♨♨┃
+  ┏－－－┫♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+ 8ⅼ◇◇◇｜♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+  ⅼ◇┏－┫♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+ 7ⅼ◇ⅼ	┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+  ⅼ◇ⅼ	┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+ 6ⅼ◇ⅼ	┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+  ⅼ◇ⅼ	┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+ 5ⅼ❶ⅼ	┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+  ┗－┛	┃♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨♨┃
+ 4				┃♨♨♨♨♨♨♨♨♨♨♨♨②♨♨♨♨♨♨♨♨♨♨♨♨┃
+  				┃♨♨♨♨♨♨♨♨♨♨♨♨　♨♨♨♨♨♨♨♨♨♨♨♨┃
+ 3				┃♨♨♨♨♨♨♨♨♨♨♨♨　♨♨♨♨♨♨♨♨♨♨♨♨┃
+  				┃♨♨♨♨♨♨♨♨♨♨♨♨　♨♨♨♨♨♨♨♨♨♨♨♨┃
+ 2				┃　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  ┏♜┓	┃　　　　　　　　　　　　　　　　　　　　　　　　　┃
+ 1┃Ⓐ┃	┃　　　　　　　　　　　　　　　　　　　　　　　　　┃
+  ┃　┗━┛　　　　　　　　　　　　　　　　　　　　　　　　　┃
+ 0┃　　　　　　　　　　　　　　　　　　　　　　　　　　①　Ⓑ┃
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━︼━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[12][9].f.img = "lava";
+pos[1][8].e.img = "soil";
+pos[0][5].f.img = "soil";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="← Way back"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@se f=roar
+@wait time=1000
+[texton]
+[？？？]「I won't give you the magic stone...」[k]
+[textoff]
+@se f=roar
+@fg c=dragon_red left=450 top=-90
+@w05
+[texton]
+Along with an eerie, resonant voice, a bright red dragon appeared before me![k]
+[name n="Fire Dragon" f=dragon_01]「I will never hand over the Sapphire Magic Stone... The magic stone of ice is the most troublesome thing for us beings of fire...
+ [k]
+[name n="Fire Dragon" f=dragon_01]「That is why I buried the magic stone beneath this scorching lava... so that its power would never be wielded again.」[k]
+[name n="Fire Dragon" f=dragon_01]「Adventurers... Perish here by my flames...!」[k]
+[textoff]
+@clf
+@monster pos=3 name=ファイアドラゴン
+@callbattle bgm=dragon gameover=true escape=false
+
+@delevent
+@flash on=1000
+@eval exp='game.map.effect = void'
+@eval exp='game.map.roof = "stone"'
+@eval exp='tf.temp = %[type: "floor", img: "soild", trap: void]'
+@eval exp='game.map.changeFloorsOfWideArea(tf.temp, 2, 3, 14, 11)'
+@changefloor x=12 y=9 img=soil
+@changefloor x=8 y=4 img=soilr
+@changefloor x=8 y=3 img=soilr
+@flash off=1000
+@wait time=1000
+[texton]
+When we defeated the Fire Dragon, the lava that spread out before our eyes disappeared![k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] inSearching
+
+@delevent
+@getitem item=サファイアの魔石
+
+[eventoff]
+;===============================================================================

@@ -1,0 +1,130 @@
+﻿; 鉱山
+
+name = 鉱山Ｂ２
+insideName = Ｂ２
+upper = 鉱山Ｂ１
+lower = 鉱山Ｂ３
+level = 44
+bgm = anxiety
+margin = 1
+roof = stone
+shadow = dark
+sky = black
+outfield = soil
+blank = rock
+
+; パーツ画像
+━ = soil
+　 = soil
+〰 = water
+／ = door
+〆 = key
+☖ = arch
+⧻ = fence
+︻ = mineral
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+Ⓐ = ladderu
+
+; 敵情報
+maxGroups = 2
+monsters = バンパイアバット,デーモンインプ
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  ┏━━︻┳━━━━━━━━━━━━━┳━┓
+ 7┃　　④┃　　　　　　　　　　　　　┃㊦┃
+  ┃　　　┃　┏〆━━┳━━━━━┓　┃　┃
+ 6┃敵　　┃　┃　　　┃　　　　　┃㊤┃　┃
+  ┣／┳━┛　┃　　　┃　　　┏／┻━┫　┃
+ 5┃　┃㊦　　┃　　　┃　　　┃⑤　　┃　┃
+  ┃　┣━━━┫　┏／╋／┳━┫　　　┃　┃
+ 4┃　┃　　■┃　┃①┃②┃　┃　　⑤／　┃
+  ┃　┃　　■┃　┗／╋／┛　┣━━━┻━┫
+ 3┃　┃　　■┃　　　┃　　　┃　　　　㊦┃
+  ┃　┣／━━┛　　　┃　　　┃　　　　　┃
+ 2┃　┃　　　　　　　┃　　　←　　　　　┃
+  ┃　┗━━━━━━━┛　　　┗━━━┓　┃
+ 1┃　　　　　　　　　　　　　　　　㊤┃③┃
+  ┗━━━━━━━━━━━━━━━━━┻︼┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[3][7].s.key = o.鉱山の鍵;
+pos[3][6].n.key = o.鉱山の鍵;
+pos[4][4].f = %[type: "air", trap: "air"];
+pos[5][4].f = %[type: "air", trap: "air", pimg: "rope1"];
+pos[4][4].f.noCount = true;
+pos[5][4].f.noCount = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(o.鉱山のインプ軍団.flag == 1) monsters = [m.バンパイアバット];
+if(! loading) events.push2(5);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command type=mini title="Which button will you press?" cancel=true
+@select text="Ｂ１" exp='tf.result = ["鉱山Ｂ１", "鉱山Ｂ５", "up"]'
+@select text="Ｂ３" exp='tf.result = ["鉱山Ｂ３", "鉱山Ｂ３", "down"]'
+@select text="Ｂ４" exp='tf.result = ["鉱山Ｂ４", "鉱山Ｂ２", "down"]'
+@select text="Ｂ５" exp='tf.result = ["鉱山Ｂ５", "鉱山Ｂ１", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+@call storage="mineb1.map" target=*change_lift cond='tf.result !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@command type=mini title="Which button will you press?" cancel=true
+@select text="Ｂ１" exp='tf.result = ["鉱山Ｂ５", "鉱山Ｂ１", "up"]'
+@select text="Ｂ３" exp='tf.result = ["鉱山Ｂ３", "鉱山Ｂ３", "down"]'
+@select text="Ｂ４" exp='tf.result = ["鉱山Ｂ２", "鉱山Ｂ４", "down"]'
+@select text="Ｂ５" exp='tf.result = ["鉱山Ｂ１", "鉱山Ｂ５", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+@call storage="mineb1.map" target=*change_lift cond='tf.result !== void'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger || onUseEventItem
+*event_4
+;[exp] onObjectTrigger || onUseEventItem
+
+[if exp='game.onUseEventItem && game.curItem == o.つるはし']
+	@delevent
+	@changewall himg=void click=false
+	@getitem item=ミスリルの砂
+[else]
+	@notice text="Grains of ore sparkle and shine in the clay wall in front of me."
+[endif]
+
+[eventoff]
+;------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,300 @@
+﻿; 湿地帯
+
+name = モイーズ湿地帯・果樹園
+insideName = Orchard
+lower = モイーズ湿地帯・地下
+level = 15
+bgm = forest
+isOutdoor = true
+shadow = dark
+sky = cloudy
+outfield = soil
+blank = rock
+
+; 画像パーツ
+━ = soil
+　 = soil
+☒ = soil
+⏃ = woods
+〰 = pond
+⑴ = bulletin
+
+; 敵情報
+maxGroups = 2
+monsters = 猛毒ヘビ,猛毒ぐも,殺人バチ,ピクシー
+traps = 石つぶて,毒針,毒ガス,しびれ針,爆弾,魔力吸収,酸スプレー,スモーク
+
+; 移動ポイント
+(A) = map:パワーの森, x:13, y:0, way:n, symbol:movev, ask:Go to the next map?
+(B) = map:モイーズ湿地帯・西の沼地, x:13 ,y:19, way:s, symbol:movev, ask:Go to the next map?
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+  																											▲
+39	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃					⏃⏃Ⓐ⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃					⏃⏃　⏃⏃
+38	⏃⏃　　⑤　　　　⏆⏆⏆　　③　　⏃⏃⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃　　　⏃⏃⏃　⏃⏃⏃　⏃⏃⏃⏃			⏃⏃　⏃⏃
+37	⏃⏃⑤⏃⏃⏃⑤　　⏃⏃⏃③⏃⏃⏃③　　⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃　　　⏃⏃			⏃⏃　⏃⏃
+36	⏃⏃　　⑤　　⏃⏃⏃⏃⏃　　③　②　　⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　　⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃
+35	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　　③　②⏃⏃⏃②⏃⏃			⏃⏃　⏃⏃
+  					⏃⏃⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　⏃⏃			⏃⏃　⏃⏃
+34			⏃⏃⏃⏃　　④　③⏃⏃⏃③　②　　⏃⏃			⏃⏃　⏃⏃
+  			⏃⏃⏃⏃　⏃⏃⏃　⏃⏃⏃　　　　　⏃⏃			⏃⏃　⏃⏃
+33	⏃⏃⏃⏃　　④⏃⏃⏃④　③　②　　　　⏃⏃			⏃⏃　⏃⏃
+  	⏃⏃⏃⏃　　　⏃⏃⏃　　　⏃⏃⏃　　　⏃⏃			⏃⏃　⏃⏃
+32	⏃⏃　　④　　　④　②　②⏃⏃⏃②　　⏃⏃⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃　　　⏃⏃⏃　⏃⏃⏃　　　⏃⏃⏃⏃	⏃⏃　⏃⏃
+31	⏃⏃④⏃⏃⏃④　②⏃⏃⏃②　②　②　　　　⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃　　　⏃⏃⏃　　　⏃⏃⏃　　　⏃⏃	⏃⏃　⏃⏃
+30	⏃⏃　　④　③　　　②　②　②⏃⏃⏃②　　⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　　　⏃⏃⏃　　　⏃⏃⏃　⏃⏃⏃　　　⏃⏃⏃⏃⏃　⏃⏃
+29	⏃⏃　　③⏃⏃⏃③　②⏃⏃⏃②　②　　　　　　　　　　⏃⏃
+  	⏃⏃　　　⏃⏃⏃　　　⏃⏃⏃　　　　　　　　　⏃⏃⏃⏃⏃⏃
+28	⏃⏃　　　　③　　　②　②　　　⑴　　　　　　⏃⏃⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃　　　⏃⏃⏃　　　　　　　　　⏃⏃⏃⏃
+27	⏃⏃　⏃⏃⏃　　②⏃⏃⏃②　②　　　　　　⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃　　　⏃⏃⏃　⏃⏃⏃　　　⏃⏃⏃⏃
+26	⏃⏃　⏃⏃⏃　　　　②　②⏃⏃⏃②　　⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃　　　　　⏃⏃⏃　　　⏃⏃
+25	⏃⏃　⏃⏃⏃⏃⏃　　　　　　②　　　　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃
+24	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃　　　　　　　⏃⏃
+  	⏃⏃　⏃⏃					⏃⏃　　　⏃⏃⏃⏃⏃⏃
+23	⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　　　⏃⏃⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃⏃⏃
+22	⏃⏃　　⑥　　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+  	⏃⏃　⏆⏆⏆　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃
+21	⏃⏃⑥⏆☒⏆⑥⏃⏃	⏃⏃　　　　　　　　　　　　　　　⏃⏃
+  	⏃⏃　⏆⏆⏆　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+20	⏃⏃　　⑥　　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃															⏃⏃　⏃⏃
+19	⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+  											⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+18			⏃⏃⏃⏃⏃	⏃⏃⏃⏃　　　　　　④　　⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃⏃⏃⏃	⏃⏃⏃⏃　　　　　⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃
+17			⏃⏃☒⏃⏃	⏃⏃　　④　　　④⏃⏃⏃④⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃　　　⏃⏃⏃　⏃⏃	⏃⏃　⏃⏃
+16			⏃⏃　⏃⏃	⏃⏃④⏃⏃⏃④　③　④　　⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃　⏃⏃⏃　　　⏃⏃	⏃⏃　⏃⏃
+15			⏃⏃　⏃⏃	⏃⏃　　④　③⏃⏃⏃③　　⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃　⏃⏃	⏃⏃　　　　　⏃⏃⏃　　　⏃⏃	⏃⏃　⏃⏃
+14			⏃⏃　⏃⏃	⏃⏃　　　　②　③　　　　⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃　⏃⏃	⏃⏃　　　⏃⏃⏃　　　⏃⏃⏃⏃	⏃⏃　⏃⏃
+13			⏃⏃　⏃⏃	⏃⏃　　②⏃⏃⏃②　　⏃⏃⏃⏃	⏃⏃　⏃⏃
+  			⏃⏃　⏃⏃	⏃⏃⏃⏃　⏃⏃⏃　　　⏃⏃			⏃⏃　⏃⏃
+12			⏃⏃　⏃⏃	⏃⏃⏃⏃　　②　　　　⏃⏃			⏃⏃　⏃⏃
+  			⏃⏃　⏃⏃			⏃⏃　　　　　　　⏃⏃			⏃⏃　⏃⏃
+11			⏃⏃　⏃⏃			⏃⏃　　　　⑴　　⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+  			⏃⏃　⏃⏃			⏃⏃⏃⏃　　　　　⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+10			⏃⏃　⏃⏃			⏃⏃⏃⏃　　　　　　　　　　　　　⏃⏃
+  			⏃⏃　⏃⏃					⏃⏃〰〰〰〰〰〰〰〰　⏃⏃⏃⏃⏃⏃
+ 9	⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃〰〰〰〰〰〰〰〰　⏃⏃⏃⏃⏃⏃
+  	⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃
+ 8	⏃⏃　　　　　　　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃　⏃⏃									⏃⏃　⏃⏃⏃⏃⏃⏃
+ 7	⏃⏃　⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　　　　　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃　⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃　⏃⏃
+ 6	⏃⏃　⏃⏃	⏃⏃　　　　　　　　　⏃⏃	⏃⏃⏃⏃⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃					⏃⏃　⏃⏃
+ 5	⏃⏃　⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃					⏃⏃⏃⏃⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+ 4	⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　　　　⑧　　　　⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃　⏃⏃⏃⏃⏃⏃	⏃⏃　　　　　　　　　⏃⏃	⏃⏃　⏃⏃
+ 3	⏃⏃　　⑥　　⏃⏃	⏃⏃　　⑧　⑦　⑧　　⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃　⏆⏆⏆　⏃⏃	⏃⏃　　　⏃⏃⏃　　　⏃⏃	⏃⏃　⏃⏃
+ 2	⏃⏃⑥⏆☒⏆⑥⏃⏃	⏃⏃⑧　⑦⏃⏃⏃⑦　⑧⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃　⏆⏆⏆　⏃⏃	⏃⏃　　　⏃⏃⏃　　　⏃⏃	⏃⏃　⏃⏃
+ 1	⏃⏃　　⑥　　⏃⏃	⏃⏃　　⑧　⑦　⑧　　⏃⏃	⏃⏃　⏃⏃
+  	⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃　⏃⏃
+ 0	⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃⏃	⏃⏃Ⓑ⏃⏃
+  																											▲
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[2][2].f.pimg = "woods";
+pos[2][21].f.pimg = "woods";
+pos[8][2].f.noCount = true;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(f.applesOnTree === void) f.applesOnTree = [
+		"7,32","5,31","8,30","6,29","5,27","7,26","7,13"
+];if(f.greenApplesOnTree === void) f.greenApplesOnTree = [
+		"7,36","6,34","3,29","4,17","8,15"
+];if(f.waspsOnTree === void) f.waspsOnTree = [
+		"4,33","2,31","9,17","6,16"
+];
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Don't pick from the orchard without permission."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] inSearching
+
+@eval exp='tf.temp = game.map.getPosRelatively()'
+[if exp='f.applesOnTree.find(tf.temp.x + "," + tf.temp.y) != -1']
+	@eval exp='f.applesOnTree.remove(tf.temp.x + "," + tf.temp.y)'
+	@getitem item=りんご
+[else]
+	@wait time=200
+	@popup text="Nothing found."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] inSearching
+
+@eval exp='tf.temp = game.map.getPosRelatively()'
+[if exp='f.greenApplesOnTree.find(tf.temp.x + "," + tf.temp.y) != -1']
+	@eval exp='f.greenApplesOnTree.remove(tf.temp.x + "," + tf.temp.y)'
+	@getitem item=青りんご
+[else]
+	@wait time=200
+	@popup text="Nothing found."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] inSearching
+
+@eval exp='tf.temp = game.map.getPosRelatively()'
+[if exp='f.waspsOnTree.find(tf.temp.x + "," + tf.temp.y) != -1']
+	@notice text="<y>A swarm of bees is attacking!"
+	@monster pos=0 name=殺人バチ
+	@monster pos=1 name=殺人バチ
+	@monster pos=2 name=殺人バチ
+	@monster pos=3 name=殺人バチ
+	@monster pos=4 name=殺人バチ
+	@monster pos=5 name=殺人バチ
+	@monster pos=6 name=殺人バチ
+	@monster pos=7 name=殺人バチ
+	@monster pos=8 name=殺人バチ
+	@monster pos=9 name=殺人バチ
+	@monster pos=10 name=殺人バチ
+	@monster pos=11 name=殺人バチ
+	@monster pos=12 name=殺人バチ
+	@monster pos=13 name=殺人バチ
+	@callbattle gameover=true
+	@eval exp='tf.temp = game.map.getPosRelatively()'
+	@eval exp='f.waspsOnTree.remove(tf.temp.x + "," + tf.temp.y)'
+[else]
+	@wait time=200
+	@popup text="Nothing found."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] inSearching
+
+@eval exp='tf.temp = game.map.getPosRelatively()'
+[if exp='tf.temp.x == 2 && tf.temp.y == 37']
+	@delevent
+	@getitem item=黄金のリンゴ
+	@eval exp='o.黄金のリンゴを届けてくれ.flag = 1'
+[else]
+	@wait time=200
+	@popup text="Nothing found."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] inSearching
+
+@eval exp='tf.temp = game.map.getPosRelatively()'
+[if exp='tf.temp.x == 2 && (tf.temp.y == 2 || tf.temp.y == 21) ']
+	@notice text="I can see a space beyond the branches."
+[else]
+	@wait time=200
+	@popup text="Nothing found."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] inSearching
+
+@eval exp='tf.temp = game.map.getPosRelatively()'
+[if exp='tf.temp.x == 8 && tf.temp.y == 2']
+	[texton]
+	Upon closer inspection, there is a huge bee's nest at the base of the tree. [r]
+	It seems that a large number of killer bees are coming from here.[k]
+	If we destroy the nest in some way, we may be able to get rid of the killer bees.[k]
+	[textoff]
+[else]
+	@wait time=200
+	@popup text="Nothing found."
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onBombObject
+
+@eval exp='tf.temp = game.map.getPosRelatively()'
+[if exp='game.map.pos[tf.temp.x][tf.temp.y].event == 7']
+	@btmes off
+	@changefloor x=8 y=2 type=floor pimg=void
+	@wait time=1000
+	@eval exp='game.updateView()'
+	@anime_fadeout layer=e5
+	@wait time=500
+	[texton]
+	The bomb completely destroyed the giant beehive and the tree![k]
+	The angry bees, whose nest had been destroyed, attacked all at once![k]
+	[textoff]
+	@monster pos=0 name=ロイヤルホーネット
+	@monster pos=1 name=ロイヤルホーネット
+	@monster pos=2 name=ロイヤルホーネット
+	@monster pos=3 name=ロイヤルホーネット
+	@monster pos=4 name=ロイヤルホーネット
+	@monster pos=5 name=ロイヤルホーネット
+	@monster pos=6 name=ロイヤルホーネット
+	@monster pos=7 name=ロイヤルホーネット
+	@monster pos=8 name=ロイヤルホーネット
+	@monster pos=9 name=ロイヤルホーネット
+	@monster pos=10 name=ロイヤルホーネット
+	@monster pos=11 name=ロイヤルホーネット
+	@monster pos=12 name=ロイヤルホーネット
+	@monster pos=13 name=ロイヤルホーネット
+	@callbattle bgm=boss gameover=true escape=false
+	@treasure	item=ロイヤルゼリー
+	[texton]
+	The destruction of the nest caused a sharp decline in the number of bees flying around the area. This should make the orchard safe.
+	 [k]
+	[textoff]
+	@delevent
+	@eval exp='o.殺人バチの根絶.flag = 1'
+	@eval exp='o.モイーズ湿地帯・地下.battleRate = 0'
+[else]
+	@btmes show
+	@wait time=500
+	@anime_fadeout layer=e5
+	[r]But it didn't work!
+	@wait time=700
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

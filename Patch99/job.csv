@@ -1,0 +1,19 @@
+﻿name	uniKey	img	expRate	lifeUp	acRate	hitRate	pow	int	pie	vit	spd	luc	alignment	sex	muscle	thief	knowledge	craft	magic	btcmd	skill	newAbility	items	detail	displayName	
+戦士	戦	fighter	1.03	9	0	0.34	11						神聖,善,中立,悪,極悪		115	0	0	0				カウンター:20	ショートソード	Combat expert<r>Can use most equipment<r>Fast HP growth	Fighter
+魔法使い	魔	mage	1.09	5	0	0.2		11					神聖,善,中立,悪,極悪		45	10	0	0	魔A	ファイア			木の杖	Master of spirit magic<r>High attack power	Mage
+僧侶	僧	priest	1.06	7	0	0.2			11				神聖,善,悪,極悪		80	0	0	0	僧A	浄化,ヒール			棍棒	Master of holy magic<r>Heals the party	Priest
+盗賊	盗	thief	1.00	6	0	0.2					10	12	中立,悪,極悪		65	90	0	0		隠れる	回避	探索:4,警戒:15	ダガー	Nimble support job<r>Unlocks doors and chests	Thief
+鍛冶屋	鍛	smith	1.07	8	0	0.34	10			10			神聖,善,中立,悪		120	20	20	20			修理	ためる:6,鑑定:14	ハンマー	Warrior with repair skills<r>Skilled with blunt weapons	Smith
+狩人	狩	hunter	1.12	7	0	0.34	10				12	8	善,中立,悪,極悪		75	70	0	0	召B	スライム	探索,回避	毒矢:6,火矢:12,警戒:18	ショートボウ	Bow expert<r>Can summon but not<r>form contracts <r>Can use Search ability	Hunter
+吟遊詩人	吟	bard	1.07	6	0	0.2		11			11	11	神聖,善,中立	女	65	60	0	0	魔B		探索	キック:6,召喚の歌:12	眠りのハープ	Can play instruments<r>Has thief skills and spirit magic	Bard
+海賊	海	pirate	1.05	9	0	0.34	12			12		10	悪,極悪		125	60	0	0				反撃:16	ハンドアックス	Seafaring axe and curved sword expert<r>High HP growth<r>Can use disarm<r>skills	Pirate
+錬金術師	錬	alchemist	1.10	5	0	0.2		13				10	善,中立,悪		55	20	35	10	錬A	アシッド	鑑定,修理		木の杖	Master of alchemy<r>Various useful spells<r>Can appraise and<r>repair items	Alchemist
+召喚士	召	summoner	1.08	7	0	0.2			13			13	神聖,善,中立,悪		60	0	0	0	召A	スライム,偵察	契約	憑依術:8,一列攻撃:12	革のムチ,召喚びん	The only job that can form contracts with monsters<r>Can analyze monsters	Summoner
+司教	司	bishop	1.17	6	0	0.2		15	15				神聖,極悪		75	0	45	0	魔C,僧C	浄化,ファイア,ヒール	鑑定		棍棒	A high priest who has mastered spirit and holy magic <r>Can appraise items	Bishop
+ドルイド	ド	druid	1.14	7	0	0.2		12	12	12			中立,悪,極悪		85	40	0	0	僧C,錬C	ヒール,アシッド		探索:7	長い棒	Forest dwelling priest and<r>alchemist<r>High strength<r>Can use Search ability	Druid
+バルキリー	バ	valkyrie	1.15	8	0	0.34	12		11	11			中立	女	100	0	0	0	僧B				木の槍	Female knight with<r>spear expertise<r>Can use holy magic	Valkyrie
+ソーサラー	ソ	sorcerer	1.16	5	0	0.2		15					中立,悪		40	0	25	0	魔C,錬C	ファイア,アシッド	鑑定		木の杖	A master of magic who can freely use spirit and<r>alchemy magic <r>Can appraise items	Sorcerer
+モンク	モ	monk	1.18	8	1.00	0.34	13		11	13	15		神聖,善		90	0	0	0	僧B	ためる,カウンター	回避,格闘	気絶:8,反撃:12,聖拳:20	長い棒	A priest who has<r>mastered fighting<r>Can use holy magic	Monk
+曲刀兵	曲	bladesman	1.16	8	0	0.34	13	12	10	13	10		神聖,善,中立		85	0	0	0	魔B			死亡:8,一列攻撃:10	カトラス	Master of the curved<r>sword<r>High attack<r>Can use spirit magic	Spellblade
+ロード	君	load	1.22	9	0	0.34	15	8	13	15	10	9	神聖		120	0	0	0	僧B	かばう		浄化:4,全員かばう:9	ショートソード	A high ranking knight<r>with great defense<r>Can use holy magic	Lord
+アサシン	ア	assassin	1.24	7	1.00	0.34	14	14	11	14	15	15	極悪		60	70	0	0	錬B	隠れる	死亡,回避	格闘:8,一列攻撃:15,警戒:22	ダガー	High instant kill rate.<r>Can disarm traps and use alchemy magic.	Assassin

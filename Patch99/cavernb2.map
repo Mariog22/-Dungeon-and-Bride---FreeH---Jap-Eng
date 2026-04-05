@@ -1,0 +1,265 @@
+﻿; 大洞窟
+
+
+name = 大洞窟Ｂ２
+insideName = Ｂ２
+upper = 大洞窟Ｂ１
+lower = 大洞窟Ｂ３
+level = 23
+bgm = cave
+margin = 1
+isOutdoor = true
+shadow = dark
+sky = black
+roof = stone
+outfield = soil
+blank = rock
+
+; 各パーツ
+━ = soil_h
+‥ = soil
+　 = soil
+☐ = soil
+〰 = water
+❖ = water
+△ = rock
+❑ = cube
+／ = door
+☖ = arch
+☗ = gate
+⧻ = fence
+﹃ = ladder
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+⑵ = bulletin
+⑶ = bulletin
+⑷ = trash
+⑸ = trash
+⒎ = barrel
+⒏ = br_hp
+⑼ = barrel
+⑽ = br_hp
+
+; 敵情報
+monsters = トロール,モンストラスバット
+traps = 毒ガス,しびれ針,淫魔の触手,酸スプレー,ラミアの瞳,爆弾
+
+; 移動ポイント
+(A) = map:大洞窟Ｂ１, stealth:true
+(B) = map:大洞窟Ｂ３, stealth:true
+
+; 宝箱
+box[1] = 女神のドレス_u
+box[2] = ライトアーマー・下_u,スカウトの魔法書,金貨（中）
+box[3] = ライトアーマー・上_u,召喚びん,ジャンプの巻物,経験のコイン（中）,リターンの巻物_u
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  
+  		┏━━━━━━━━━━━━━━━━━━━━━━━┓			┏━━━━━━━━━━━┓
+38		┃　　　　　　　　　　　　　　　　　　　　⑬　⑬┃			┃❷　　　　　　　　　　┃
+  ┏━┛　┏━━━━━━━━━━━━━━━━━┓　　　┃			┗━━━━━━━━━┓　┗━┓
+37┃　　⑭┃																	┃　　⑬┃													┃　　　┃
+  ┃　　　┃																	┗━┓　┃	┏━━━━━┓					┃　　　┃
+36┃　　⑭┃																			┃　┃	┃⒏☐⒎☐➌┃					┃敵　　┃
+  ┗━┓　┗━━━━━━━━━┓									┃　┃	┃☐☐☐☐☐┃			┏━┛　┏━┛
+35		┃　　　　　　　　　　　┃									┃　┃	┃☐☐⓺☐☐┃			┃　　　┃
+  		┗━━━━━━━━━┓　┃	┏━━━┓			┃　┃	┃☐☐☐☐☐┃			┃　┏━┛
+34												┃　┃	┃　〰〰┃			┃　┃	┃☐☐⓺☐☐┃			┃　┃
+  		┏━━━━━┓			┃　┗━┛　〰〰┃			┃　┃	┗━┓☐┏━┛			┃　┃
+33		┃⑽　　　　┃			┃　　　　敵〰〰┃			┃　┃			┃☐┃					┃　┃
+  		┃　　　　　┃			┃　┏━┓　〰〰┃			┃　┗━━━┻☖┻━━━━━┛　┃	┏━┓
+32		┃⑼　　　敵┃			┃　┃	┃　〰〰┃			┃⑪　　　　　　　　　　　　　　┃	┃⑷┃
+  		┗━━━┓　┃			┃　┃	┗━━━┛			┃　　　　　　　┏━━━━━━━┛	┃　┃
+31						┃　┃			┃　┃									┃⑪　　　　　　┃									┃　┃
+  						┃　┃			┃　┃									┃　　　　　┏━┛			┏━━━┓	┃　┃
+30						┃　┃			┃　┃									┃　　　　　┃					┃　　　┃	┃　┃
+  						┃　┃			┃　┃									┗━┓　　　┗━━━━━┛　　　┃	┃　┃
+29						┃　┃			┃　┃											┃　　　　　　　　　　敵　　┃	┃　┃
+  				┏━┛　┗━┓	┃　┃			┏━━━━━━━┛　　　　　　　┏━━━━━┛	┃　┃
+28				┃　　　　　┃	┃　┃			┃〰〰敵　　　　　　　⑪　　　　┃							┃　┃
+  		┏━┛　　　　　┗━┛　┃			┃〰〰　┏━━━┓　　　　　┏━┛					┏━┛　┃
+27		┃　　　　　　⑫　⑫　　┃			┃〰〰　┃			┃　　⑪　　┃							┃　　　┃
+  		┃　　　　　　　　　┏━┛			┗━━━┛			┗━┓　┏━┛			┏━━━┛　　　┃
+26		┃　　　　　　　　　┃															┃　┃					┃　　　　敵　　┃
+  ┏━┛　　　┏━━━━━┛															┃　┃					┃　┏━━━━━┛
+25┃　　⑫　⑫┃																					┃　┃					┃　┃
+  ┃　┏━━━┛									┏━━━━━━━━━━━┛　┗━━━━━┛　┗━┓
+24┃　┃													┃　　敵　　　　　　　　　　　　　　　　　　　　┃
+  ┃　┃													┃　　　┏━━━━━━━━━━━━━━━━━┓　┃
+23┃　┃													┃⑸　　┃																	┃　┃
+  ┃　┃													┗━━━┛																	┃　┃
+22┃　┃																																			┃　┃
+  ┃　┃									┏━━━━━━━━━━━━━━━━━━━┳━━━┓	┃　┃
+21┃　┃									┃　　　　　　　　　　　　　　　　　　　』			┃	┃　┃
+  ┃　┃									┃　　　　　　　　　　　　　　　　　　　：			┃	┃　┃
+20┃　┃									┃　　　　　　　　　　　　　　　　　　　：			┃	┃　┃		❖┃
+  ┃　┃									┃　　　┏━━━━━━━━━━━━━━━┫			┃	┃　┗━┓	┃
+19┃　┃									┃　　　┃															┃			┃	┃　　⑶┃❖┃
+  ┃　┃									┃　　　┃																					┃　　　┗☗┫
+18┃　┃									┃　　　┃																					┃　　　　≪┃
+  ┃　┗━━━━━┓			┃　　　┃																					┃　　　　∧┃
+17┃　　　　　　Ⓐ┃			┃　　　┃																					┃　　　　∧┃
+  ┗━━━━━┓　┃			┃　　　┃					┏━━━━━━━━━┳━━━┳━┛　　　　∧┃
+16						┃Ⓐ┃			┃　　　┃					┃　　　　　　　　　☖☐☐☐☖　　　　　　∧┃
+  						┃	┃			┃　　　┃					┃　┏━━━━━━━┻━━━┻━━━━━┓∧┃
+15						┃	┃			┃Ⓑ　Ⓑ┃					┃　┃																	┃∧┃
+  						┃	┃			┃　　　┃					┃　┃																	┃∧┃
+14						┃	┃			┃Ⓑ　Ⓑ┃					┃　┃																	┃∧┃
+  						┃	┃		━┛			┃	┏━━━┛　┗━━━━━┓											┃∧┃
+13						┃	┃							┃	┃　　　　　　　　　　　┃	┃			┃					┃∧┃
+  											━━━━━┛	┃　　　　　　　　　　　┗━┫			┃					┃∧┃
+12																		┃　　　　　　　　　　　　　：			┃					┃∧┃
+  															━━━┫　　　　　　　　　　　　　：			┃					┃∧┃
+11																		：△　　　　　　　　　　　△：			┃					┃∧┃
+  																		：　　　　　　　　　　　　　┣━━━┛					┃∧┃
+10				┃					┃							『　　　　　　　　　　　　　┃									┃∧┃
+  ┏━━━┛					┃					┏━┫　　　　　　　　　　　　　┃							┏━┛∧┃
+ 9┃									┃							┃　　　　　　　　　　　　　┃							┃　　∧┃
+  ┣‥‥‥‥‥‥‥‥‥┫							┗━━━━━━━━━━━━━┛					┏━┛　　∧┃
+ 8┃　　　　△　　　　┃																											┃⑵　　　∧┃
+  ┃　　　　　　　　　┃																											┃　　　　∧┃
+ 7┃　　　　　　　　　┃																											┃　　　　∧┃
+  ┃　　　　　　　　　┃											┏━━━━━━━━━━━━━━━┫　　　　∧┃
+ 6┃　　　　　　　　　┃											┃☐☐☐☐☐☐☐☐☐☐☐☐☐☐☐☖　　　　∧┃
+  ┃　　　　　　　　　┗━┓									┃☐┏━━━━━━━━━━━━━┻━━━┳☗┫
+ 5┃　　　　△　　　　　　┃									┃☐┃																	┃❖┃
+  ┣‥‥‥‥‥┓　　　　　┃									┃☐┃
+ 4┃					：　　　　　┃									┃☐┃
+  ┗━━━┓	：　　　　　┣━━━━━━━━━┛☐┣━━━━━━━┓
+ 3				┃	：　　　　　☖☐☐☐☐☐☐☐☐☐☐☐⧻☐☐➊☐☐☐☐┃
+  				┃	：　　　　　┣━━━━━━━━━━━┫☐☐☐☐☐☐☐┃
+ 2				┃	：　　　　　┃											┃⓵☐☐☐☐☐☐┃
+  			━┛	：　　　　　┃											┗┷━━━━━━┛
+ 1						『　　　　　┃
+  			━━━┻━━━━━┛
+ 0
+  
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[3][16].f.noCount = pos[6][14].f.noCount = pos[7][14].f.noCount = true;
+pos[3][1].w.img = pos[9][10].w.img = pos[15][21].e.img = "soil";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(11, 12, 13, 14);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=12 y=3 way=w mode=open
+@wait time=800
+@notice text="I heard a door open behind me!"
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Beware of rapids"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="☆Danger☆ Ahead lies the habitat of trolls."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+*event_5
+;[exp] onObjectTrigger
+
+@trash gold=1000 monster=大ねずみ,バンパイアラット,猛毒ぐも
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@fg l=headless_brown left=250 top=54 b
+@fg c=headless_brown left=450 top=54 b
+@fgf r=headless_brown left=650 top=54
+[texton]
+[name n=Troll]「Gwooo!」[k]
+There were a bunch of trolls hanging out inside! [r]
+When the trolls spotted us, they attacked all at once, their eyes bloodshot![k]
+[textoff]
+@clf
+
+@monster pos=0 name=トロール
+@monster pos=1 name=トロール
+@monster pos=2 name=トロール
+@monster pos=3 name=トロール
+@monster pos=4 name=トロール
+@monster pos=5 name=トロール
+@monster pos=6 name=トロール
+@monster pos=7 name=エリートトロール
+@monster pos=8 name=エリートトロール
+@monster pos=9 name=エリートトロール
+@monster pos=10 name=エリートトロール
+@monster pos=11 name=エリートトロール
+@monster pos=12 name=エリートトロール
+@monster pos=13 name=エリートトロール
+@callbattle bgm=boss gameover=true
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+*event_9
+;[exp] onObjectTrigger
+
+@barrel anime=*barrel_poison
+@eval exp='game.curTarget.heat += 10'
+@eval exp='game.curTarget.setStatus(o.酩酊, true)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> got drunk!"'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+*event_10
+;[exp] onObjectTrigger
+
+@barrel
+@damage v=&'game.curTarget.addParam("life", 200)'
+@notice text=&'"<p>" + game.curTarget.displayName + "<w> had HP restored!"'
+
+[eventoff]
+;------------------------------------------------------------------------------
+*event_11
+;[exp] true
+*event_12
+;[exp] true
+*event_13
+;[exp] true
+*event_14
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;------------------------------------------------------------------------------

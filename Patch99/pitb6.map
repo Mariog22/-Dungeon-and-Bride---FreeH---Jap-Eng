@@ -1,0 +1,88 @@
+﻿; 縦穴
+
+name = 縦穴Ｂ６
+insideName = Ｂ６
+upper = 縦穴Ｂ５
+level = 6
+bgm = evil
+margin = 1
+shadow = dark
+sky = black
+blank = rock
+
+; パーツ画像
+━ = soil_h
+‥ = soil
+　 = sand
+
+; 敵情報
+maxGroups = 2
+monsters = 砂ぐも,ブラックウィドウ
+
+[map]
+;----------------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6  
+  
+ 7	❖
+  ┏━━━┳━━━┳━┳━━━┓
+ 6┃			┃			：　┃			┃
+  ┣━━━┫	┏‥┛　┗━━━┫
+ 5┃　　　：	：　　　　　　　┃
+  ┣━━━┻━┻━━━┓　┏━┫
+ 4┃									┃　┃	┃
+  ┣━━━┳━┓			┃　┗━┫
+ 3┃　　　：	┃			┃　　②┃
+  ┣━┳‥╋━╋━┓	┃　　　┃
+ 2┃	┃	┃	┃	┃	┃①　①┃
+  ┣━┛	┣━┻‥┻━╋━━━┫
+ 1┃			：　　　　　┃			┃
+  ┣━━━┫　┏━┓　┃			┃
+ 0┃			┃　┃	┃　┃			┃
+  ┗━━━┻━┻━┻━┻━━━┛
+;    0   1   2   3   4   5   6  
+;----------------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] ! o.クイーンスパイダー.contracted
+
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+@wait time=500
+[texton]
+[リーダー f=05]「...!」[k]
+Suddenly, I sensed a sharp killing intent. Something is there![k]
+[textoff]
+@eval exp='game.party.lastWalk = "goBackward"'
+@monster pos=3 name=クイーンスパイダー
+@callbattle bgm=boss gameover=true
+@delevent
+@changefloor x=6 y=3 pimg=human
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove && ! o.クイーンスパイダー.contracted
+
+@eval exp='game.contractableMonster = o.クイーンスパイダー'
+@call storage="battle.ks" target=*contract_monster
+[if exp='o.クイーンスパイダー.contracted']
+	@delevent
+	@changefloor x=6 y=3 pimg=void
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------

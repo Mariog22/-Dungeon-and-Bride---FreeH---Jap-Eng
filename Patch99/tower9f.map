@@ -1,0 +1,137 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔９Ｆ
+insideName = ９Ｆ
+upper = ラドミラの塔10Ｆ
+lower = ラドミラの塔８Ｆ
+level = 54
+bgm = tower
+margin = 3
+shadow = dark
+sky = dawnforest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+― = stone
+… = half
+　 = marble
+☐ = marble
+毒 = poison
+／ = door
+☁ = smoke
+☖ = arch
+⧻ = fence
+﹃ = ladder
+︻ = panel
+┯ = button
+㊤ = ladderu
+㊦ = ladderd
+Ⓐ = warp
+
+; 敵情報
+monsters = エキドナ,セイレーン,マッドウイング,見習いサキュバス,サキュバス,エルダーサキュバス,オークキング,コボルドリーダー,サイクロプス
+
+; 移動ポイント
+(A) = x:8, y:3
+(B) = x:8, y:5
+(C) = x:8, y:6
+(D) = x:8, y:2
+(E) = x:2, y:3
+(F) = x:9, y:4
+
+; 宝箱
+box[1] = 運の秘薬,鑑定の巻物,レザレクションの魔法書_u,寝室のキャミソール_u,経験のコイン（小）
+box[2] = ハンドアックス,木の槍,金貨（小）
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  
+  		┏━━━┳━┳━━━┳━┳︻━━┳…┓
+ 8		┃　　　／㊤／敵　　┃❷→④　　┃☐￤
+  		┃　　　┃　┃　　　┃　┃　　　┃☐￤
+ 7		【⑤　　┃　┃　　　┃　┃　　　／☐￤
+  		┣━━━┫☝┗━━━┛☝┗━━━┫☐￤
+ 6		┃Ⓓ　　｜　　　　　　　　　　　┃☐
+  		┣━━━┻━━━━━━━━━━━┫☐
+ 5		┃Ⓒ　回　回　毒　毒　毒　　　　┃☐
+  		┣━━☟━☟━☟━☟━☟━☟━☟┫☐
+ 4		┃❶　Ⓐ　　　　　　　　　　　　／☐
+  		┣…………　━━━━━━━━━━┫☐
+ 3		┃㊤　　　Ⓕ　Ⓑ☁☁☁☁☁　　　【⓷
+  		┣━━━━☝━☝━☝━━━━━━┫☐
+ 2		┃Ⓔ　　　♻　♻　♻☁☁☁　　　┃☐
+  		┣━━━━☟━☟━☟━━━━━━┻／┓
+ 1		┃　　　　　　　　　　　　　　　　　┃
+  		┣☖━━━━━━┳┯━━━━━━┳━┫
+ 0		┃　　　　㊦　　⧻②　　　　　　／①┨
+  		┗━━━━━━━┻━━━━━━━┻━┛
+;    0   1   2   3   4   5   6   7   8   9  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(9, 0);
+pos[9][1].e.img = "stone";
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="11Ｆ" exp='tf.result = ["ラドミラの塔11Ｆ", "up"]'
+@select text="10Ｆ" exp='tf.result = ["ラドミラの塔10Ｆ", "up"]'
+@select text="７Ｆ" exp='tf.result = ["ラドミラの塔７Ｆ", "down"]'
+@select text="６Ｆ" exp='tf.result = ["ラドミラの塔６Ｆ", "down"]'
+@select text="４Ｆ" exp='tf.result = ["ラドミラの塔４Ｆ", "down"]'
+@select text="No" exp='tf.result = void'
+[ask]
+[if exp='tf.result !== void']
+	@elevator map=&'tf.result[0]' lift=&'tf.result[1]'
+[endif]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=5 y=0 way=w mode=open
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Corridor of Change"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] onObjectTrigger
+
+@notice text="In the Corridor of Change, you should continue moving westward."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] onObjectTrigger
+
+@notice text="In the Corridor of Change, you must continue westward without deviation and never lose your way."
+
+[eventoff]
+;-------------------------------------------------------------------------------

@@ -1,0 +1,1635 @@
+﻿; 各種クエストシナリオ＆婚約・悪魔２度目の退治まで
+
+
+
+
+;■ラブホ売春組織壊滅クエスト
+
+; ラブホで売春組織が暗躍している
+; 主人公たちはラブホに一般のカップルのふりをして潜入し事件を解決する
+
+;◇イベント01・ホテルに宿泊
+*hotel_1
+
+; ☆フリーモード
+@jump storage="free02.scn" target=*hotel_1 cond='game.isFreeMode'
+
+; ホテルの前
+@saveon
+@bg f=0037
+@w05
+[texton w=1]
+[テオ f=06]「Here...」[k]
+We arrived in front of Hotel Queen. Is prostitution taking place here?[k]
+@fg c=サンドラ f=01
+[サンドラ v=vn043 f=01]「Hey, Captain. I have a suggestion.」[k]
+[テオ f=05]「What is it, Sandra?」[k]
+[サンドラ v=vn044 f=01]「Actually, I used to work at this hotel.」[k]
+[テオ f=05]「Really?!」[k]
+[サンドラ v=vn045 f=02]「Yes. So I know the layout of this hotel well.」[k]
+[サンドラ v=vn046 f=01]「I'll go in first and investigate things. Then we can come up with a plan. What do you think?」[k]
+[テオ f=02]「Sure. Thank you, Sandra.」[k]
+
+; 雇用キャラが同行していたら
+@eval exp='game.curChara = game.guest.getHiring()'
+[if exp='game.curChara !== void']
+	[サンドラ v=vn047 f=01]「Well then, um... Hey, you, would you mind coming with me? I need another person to help me check out the hotel.」[k]
+	With that, Sandra called out to [雇用キャラ].[k]
+	[if exp='[o.スナイパー, o.マスターアーチャー, o.ミスティック, o.メイガス].has(game.curChara)']
+		[雇用キャラ f=01]「Sure. That's no problem at all.」[k]
+	[else]
+		[雇用キャラ f=00]「Yes, if I can be of any help.」[k]
+	[endif]
+	@eval exp='game.guest.removeMember(game.curChara)'
+	[サンドラ v=vn048 f=02]「Thank you. Well then, I'll borrow this one.」[k]
+[endif]
+@eval exp='game.guest.removeMember(o.サンドラ)'
+[サンドラ v=vn049 f=01]「Everyone else, wait until I give you further instructions.」[k]
+[テオ f=02]「Yes, Sandra.」[k]
+[textoff]
+@out
+@w05
+
+@bg f=0038
+[texton]
+A few hours later, Sandra returned.[k]
+[テオ f=05]「How was it, Sandra?」[k]
+@fg c=サンドラ f=06
+[サンドラ v=vn050 f=06]「Hmm... I couldn't find any useful information. It looks like it's going to take a little longer.」[k]
+[テオ f=06]「Okay...」[k]
+[サンドラ v=vn051 f=05]「But there's no doubt that large-scale prostitution is taking place at this inn. Hey, everyone, how about staying at this hotel?」[k]
+[テオ f=12]「W-what?! Are you really suggesting staying here?!」[k]
+@fg c=サンドラ f=01
+[サンドラ v=vn052 f=01]「By staying here for the night, we could narrow down our options, and you could look for any clues in the guest rooms. That's not too much to ask, is it?」[k]
+[テオ f=10]「I-I get it...」[k]
+[サンドラ v=vn053 f=01]「Then it's settled. Please make a reservation right away. Thank you.」[k]
+[サンドラ v=vn054 f=01]「I'm sure you understand, but you'll have to pretend to be normal couples, and not interact with other pairs. Otherwise, people will get suspicious. I'm counting on you.」[k]
+[サンドラ v=vn055 f=01]「Oh, yes, I'll give you the accommodation fee.」[k]
+[textoff]
+@se f=coin
+@getitem gold=10000
+
+; パーティーが６人でライナスがいなかったら
+[if exp='game.party.members.count == 6 && ! game.guest.members.has(o.ライナス)']
+	@eval exp='game.curChara = game.party.getMostHeartsHeroine(o.テオ, true)'
+	@fg c=サンドラ f=05
+	[texton]
+	[サンドラ v=vn056 f=05]「Oh, wait a minute.」[k]
+	[キャラ f=05]「？」[k]
+	[サンドラ v=vn057 f=01]「There is one more girl than boys, so we need to make couples. You wait here.」[k]
+	[キャラ f=05]「I understand.」[k]
+	On Sandra's instructions, [キャラ] was put on standby.[k]
+	[textoff]
+	@se f=period
+	@eval exp='game.removeMemberTemporary(game.curChara)'
+	@notice text=&'"<y>" + game.curChara.displayName + " left the party."'
+[endif]
+
+; パーティーが５人以下 or ライナスがいない時に４人以下だったら
+[if exp='game.party.members.count <= 4 + game.guest.members.has(o.ライナス)']
+	@cl
+	@fg c=ブルー e=通常 f=19
+	[texton]
+	[ブルー f=19]「Ugh... This is a hassle. I'm not going. You guys do it yourselves.」[k]
+	[テオ f=06]「...」[k]
+	In that sort of mood, Blue won't listen to anything anyone says. Oh well, I guess we'll just have to do it without him.[k]
+	[textoff]
+	@clf
+	@se f=period
+	@eval exp='game.removeMemberTemporary(o.ブルー)'
+	@notice text="<y>Blue left the party."
+[endif]
+
+; パーティーが４人でライナスがいたら
+[if exp='game.party.members.count == 4 && game.guest.members.has(o.ライナス)']
+	@fg c=ライナス e=通常 f=05
+	[texton]
+	[ライナス f=05]「I'm not going either. Call me when you're done.」[k]
+	[マックス f=05]「Damn, what a selfish guy.」[k]
+	[textoff]
+	@clf
+	@se f=period
+	@eval exp='game.removeMemberTemporary(o.ライナス)'
+	@notice text="<y>Linus left the party."
+[endif]
+
+; 予約画面へ
+@out
+@gameon
+;-----------------------------------------------------------------------------------------
+[iscript]
+// game.party.minimumRecovery();
+game.elapse(1);	// 次の日にしておく
+game.playersRoommates = [];
+o.ホテル・クイーン.events.push2(1);
+f.inLoveHotelQuest = true;
+game.exitTravelMode();
+game.innActionCount = 0;
+game.openHotelView(o.ホテル・クイーン);
+game.hotelView.exitButton.visible = false;
+game.hotelView.sleepNowButton.visible = false;
+game.hotelView.reserveRoom(, game.hotelView.getRoomFromRoomName("従業員通路"));
+game.hotelView.checkEarlyEvent();
+[endscript]
+;-----------------------------------------------------------------------------------------
+[s]
+; この後、メンバーがペアを組んでホテルに潜入
+; 夜の主人公と宿泊したキャラのイベントが発生
+;  → 各ヒロインのホテルイベントシナリオへ（主人公と宿泊・夜）
+
+
+;◇イベント02・マックスと宿泊・夜
+*hotel_2
+; 夜のマックスと宿泊したキャラのイベント
+; マックスとすでに１回でも経験済みなら発生しない
+@eval exp='game.curChara = o.マックス.getRoomMates()[0]'
+@jump target=*hotel_1 cond='game.curChara === void'
+@jump target=*hotel_3_skip cond='game.curChara !== void && game.curChara.sexCount.max > 0'
+@wait time=1000
+[texton]
+At the same time, in another room...[k]
+[textoff]
+
+;  → 各ヒロインのホテルイベントシナリオへ
+@jump storage="heroine01b.scn" target=*hotel_max_1 cond='game.curChara == o.リム'
+@jump storage="heroine02b.scn" target=*hotel_max_1 cond='game.curChara == o.クレア'
+@jump storage="heroine03b.scn" target=*hotel_max_1 cond='game.curChara == o.フレデリカ'
+@jump storage="heroine04b.scn" target=*hotel_max_1 cond='game.curChara == o.ミューズ'
+@jump storage="heroine05b.scn" target=*hotel_max_1 cond='game.curChara == o.マルエット'
+
+
+*hotel_3_skip
+@bgf f=0004
+[texton]
+At the same time, in another room, Max was thoroughly enjoying himself with [キャラ]...[k]
+[textoff]
+@out
+@w05
+@jump target=*hotel_3
+
+
+;◇イベント03・主人公と宿泊・朝
+*hotel_3
+; 就寝時の演出（Ｈ記録はシナリオ上で行われる）
+@addevent name=テオ num=0
+@addevent name=テオ num=2
+@addevent name=マックス num=0
+@addevent name=ライナス num=0 cond='game.guest.members.has(o.ライナス)'
+@addevent name=ブルー num=0 cond='game.guest.members.has(o.ブルー)'
+@eval exp='game.hotelView.sleepButton.visible = false'
+@gameon fade
+@wait time=1000
+@stopbgm
+@playse buf=2 storage=goodnight
+@image layer=0 storage=0000 visible=true opacity=0 cond='! game.hotelView.sleepNow'
+@move layer=0 time=2000 path=,,255
+@wait time=1500
+@eval exp='game.instruct("Sleeping...", 630)'
+@eval exp='game.hotelView.startSleepingEffect()'
+@wait time=2000
+@eval exp='game.instruction.close()'
+@eval exp='game.hotelView.clearHotelView()'
+@wait time=2000
+
+; 翌朝の主人公と宿泊したキャラのイベント
+;  → 各ヒロインのホテルイベントシナリオへ
+@eval exp='game.curChara = o.テオ.getRoomMates()[0]'
+@jump storage="main11.scn" target=*hotel_4 cond='game.curChara.married'
+@jump storage="heroine01b.scn" target=*hotel_theo_2 cond='game.curChara == o.リム'
+@jump storage="heroine02b.scn" target=*hotel_theo_2 cond='game.curChara == o.クレア'
+@jump storage="heroine03b.scn" target=*hotel_theo_2 cond='game.curChara == o.フレデリカ'
+@jump storage="heroine04b.scn" target=*hotel_theo_2 cond='game.curChara == o.ミューズ'
+@jump storage="heroine05b.scn" target=*hotel_theo_2 cond='game.curChara == o.マルエット'
+
+;◇イベント04・マックスと宿泊・朝
+*hotel_4
+
+; 翌朝のマックスと宿泊したキャラのイベント
+; マックスとすでに１回でも経験済みなら発生しない
+@eval exp='game.curChara = o.マックス.getRoomMates()[0]'
+@jump target=*hotel_5 cond='game.curChara.sexCount.max > 0'
+@wait time=1000
+[texton]
+At the same time, in another room...[k]
+[textoff]
+
+;  → 各ヒロインのホテルイベントシナリオへ
+@eval exp='game.curChara = o.マックス.getRoomMates()[0]'
+@jump storage="heroine01b.scn" target=*hotel_max_2 cond='game.curChara == o.リム'
+@jump storage="heroine02b.scn" target=*hotel_max_2 cond='game.curChara == o.クレア'
+@jump storage="heroine03b.scn" target=*hotel_max_2 cond='game.curChara == o.フレデリカ'
+@jump storage="heroine04b.scn" target=*hotel_max_2 cond='game.curChara == o.ミューズ'
+@jump storage="heroine05b.scn" target=*hotel_max_2 cond='game.curChara == o.マルエット'
+
+
+;◇イベント05・ホテルに再宿泊
+*hotel_5
+
+; 翌朝・ホテルのロビー
+@eval exp='game.curChara = o.テオ.getRoomMates()[0]'
+@wait time=1000
+@bg f=0037
+@mu f=guild
+[texton w=1]
+After checking out of the hotel, we waited outside for Sandra to return.[k]
+@fg c=サンドラ f=01
+[サンドラ v=vn058 f=01]「Sorry for the wait.」[k]
+[テオ e=現在の装備 f=01]「Sandra!」[k]
+Sandra came back. She's as carefree as ever.[k]
+[サンドラ v=vn059 f=01]「How was it? Did you have fun last night?」[k]
+[キャラ e=現在の装備 f=25]「... (Kyaa)」[k]
+[テオ f=33]「U-umm, well...」[k]
+Apparently, Sandra thinks we had a relationship.[k]
+[テオ f=05]「More importantly, how did yesterday's undercover investigation go?」[k]
+@fg c=サンドラ f=07
+[サンドラ v=vn060 f=07]「Yes, I finally caught the enemy red-handed!」[k]
+[テオ f=05]「Really?!」[k]
+[サンドラ v=vn061 f=08]「That hotel has a secret passageway underground for members only, and they arrange prostitution there. If we catch them in the act, we can expose the reality of prostitution.」[k]
+[サンドラ v=vn062 f=07]「Let's sneak in there tonight. Once you're ready for battle, meet us all in front of the hotel again. Okay?」[k]
+[テオ f=05]「Understood.」[k]
+[textoff]
+@out
+@w1
+
+; 夕方・ホテル前
+@bg f=0038
+[texton w=1]
+That evening.[k]
+Our party gathered again near the hotel and devised a plan centered around Sandra.[k]
+@fg c=サンドラ f=08
+[サンドラ v=vn063 f=08]「The secret passage can only be accessed from inside the hotel, so tonight, just like yesterday, pretend to be a normal couple when you check in, and then wait in your room.」[k]
+[サンドラ v=vn064 f=08]「Meet at the designated place at midnight. Got it?」[k]
+[テオ f=06]「Understood.」[k]
+[textoff]
+@out
+@w05
+
+; ホテル内
+[texton w=0]
+Sandra infiltrated the hotel again. The rest of us paired up like yesterday and checked in the same way.[k]
+Then, I stayed in my room and waited for the meeting time to come.[k]
+[textoff]
+@fa
+
+[iscript]
+game.hour = "night";
+o.ライナス.events.remove(0);
+game.hotelView.openRoamingMap(o.ホテル・クイーン);
+game.hotelView.sleepButton.visible = false;
+game.innActionCount = 1;
+for(var i = 0; i < game.hotelView.visMarkers.count; i++)
+{
+	if(! game.hotelView.visMarkers[i].visible) continue;
+	game.hotelView.visMarkers[i].selectable = false;
+}
+game.hotelView.getRoomFromRoomName("従業員通路").clear();
+[endscript]
+
+@addeventbtn map=ホテル・クイーン label=隠し通路_1 name=隠し通路 img=sandra x=900 y=200
+[hoteloff]
+
+
+;◇イベント06・夜のホテルの隠し通路へ
+*hotel_6
+
+; ☆フリーモード
+@jump storage="free02.scn" target=*hotel_6 cond='game.isFreeMode'
+
+; 夜のホテルの隠し通路
+@saveon
+@bg f=0040
+@fg c=サンドラ e=戦闘 f=02
+[texton w=1]
+[サンドラ v=vn065 f=02]「Here you are.」[k]
+@fgf c=サンドラ f=05
+[サンドラ v=vn066 f=05]「Well, let's get started... Hey, where's Max? He doesn't seem to be here yet.」[k]
+@eval exp='game.curChara = o.マックス.getRoomMates()[0]'
+[キャラ] isn't here either... I'm sure she was in the same room as Max.[k]
+[if exp='game.guest.members.has(o.ライナス)']
+	[ライナス e=バスタオル f=08]「Damn... What's he dawdling for?」[k]
+[endif]
+[テオ e=バスタオル f=06]「...」[k]
+Max and [キャラ] are slow... What are they doing...?[k]
+@cl b
+@fg l=マックス e=バスタオル＆汗だく f=24 b
+@fg r=キャラ e=バスタオル＆汗だく f=98
+[マックス f=24]「Sorry, sorry, I'm late!」[k]
+Just then, Max and [キャラ] arrived, panting for breath.[k]
+[マックス f=24]「[キャラ] and I got a bit carried away with excitement! Before I knew it, it had gone over time!」[k]
+
+; マックスと同室だったヒロインのセリフ
+[   if exp='isHUM']
+	@fg r=リム f=69
+	[リム v=vh075 f=69]「It's wasn't exciting! I said just once, but Max kept pestering me...」[k]
+[elsif exp='isELF']
+	@fg r=クレア f=53
+	[クレア v=ve076 f=53]「I wasn't excited! It's because you keep asking me!」[k]
+[elsif exp='isDWA']
+	@fg r=フレデリカ f=63
+	[フレデリカ v=vd075 f=63]「It wasn't exciting... I've said many times that I want to end it...」[k]
+[elsif exp='isGNO']
+	@fg r=ミューズ f=93
+	[ミューズ v=vg064 f=93]「It wasn't exciting... I said let's go early...」[k]
+[elsif exp='isSYL']
+	@fg r=マルエット f=59
+	[マルエット v=vs077 f=59]「It wasn't exciting! You're the one who wouldn't stop!」[k]
+[endif]
+[テオ f=06]「...」[k]
+So you were having sex with [キャラ]... Damn it, Max...[k]
+; ライナスのＨ記録
+[if exp='game.guest.members.has(o.ライナス)']
+	@eval exp='game.curChara = o.ライナス.getRoomMates()[0]'
+	[if exp='game.curChara !== void']
+		[if exp='game.curChara.sexCount.linus > 0']
+			; ライナスと経験済みなら回数が増える
+			@recordsex guy=ライナス sex=1 orgasm=1 acts=手こき,クリ責め,バック date=&'game.date - 1'
+			@recordsex guy=ライナス sex=1 orgasm=1 acts=フェラチオ,手マン,バック
+			@cl
+			@fg l=ライナス e=バスタオル f=08 b
+			@fg r=キャラ e=バスタオル f=40
+			[ライナス f=08]「Tch. You should have finished messing around with her earlier. We're late because you didn't hurry up.」[k]
+			[テオ f=10]「...」[k]
+			Linus has also had sex with [キャラ] after all...[k]
+		[else]
+			; ライナスと経験なしなら何もされない
+			@cl
+			@fg l=ライナス e=バスタオル f=08 b
+			@fg r=キャラ e=バスタオル f=05
+			[ライナス f=08]「Hey! What are you doing messing around with girls? This trip was supposed to be for a mission!」[k]
+			[マックス f=15]「What? Didn't you get to play with [キャラ]? Huh?」[k]
+			[ライナス f=54]「That's not it! I could have done it, but I deliberately didn't! Don't misunderstand!」[k]
+			[テオ f=05]「...」[k]
+			Did Linus really do nothing?[k]
+		[endif]
+	[endif]
+[endif]
+; ブルーのＨ記録
+[if exp='game.guest.members.has(o.ブルー)']
+	@eval exp='game.curChara = o.ブルー.getRoomMates()[0]'
+	[if exp='game.curChara !== void']
+		@cl
+		@fg l=ブルー e=バスタオル f=06 b
+		@fg r=キャラ e=バスタオル f=40
+		[ブルー e=バスタオル f=06]「...」[k]
+		[テオ f=06]「...」[k]
+		...Naturally, Blue must have had sex with [キャラ]. There's no way he wouldn't have.[k]
+		[if exp='game.curChara.sexCount.blue > 0']
+			; すでにブルーと経験済みなら回数が増える
+			@recordsex guy=ブルー sex=3 orgasm=3 acts=乳揉み,騎乗位,松葉崩し date=&'game.date - 1'
+			@recordsex guy=ブルー sex=3 orgasm=3 acts=ディープキス,バック,６９
+		[elsif exp='game.curChara == o.マルエット']
+			; ブルーと経験なしで相手がシルフなら本番なし
+			@recordsex guy=ブルー sex=0 orgasm=0 acts=手こき,フェラチオ date=&'game.date - 1'
+			@recordsex guy=ブルー sex=0 orgasm=0 acts=手こき,フェラチオ
+		[else]
+			; ブルーと経験なしで相手がシルフ以外の種族なら計２回だけ
+			@recordsex guy=ブルー sex=1 orgasm=0 acts=乳揉み,フェラチオ,正常位 date=&'game.date - 1'
+			@recordsex guy=ブルー sex=1 orgasm=1 acts=乳首吸い,クリ責め,正常位
+		[endif]
+	[endif]
+[endif]
+; ライナスがいたらもう１度会話
+[if exp='game.guest.members.has(o.ライナス)']
+	@cl
+	@fg l=マックス e=バスタオル f=03 b
+	@fg r=ライナス e=バスタオル f=08
+	[マックス f=03]「Sorry! I like to take my time. You must always cum early.」[k]
+	[ライナス f=08]「What did you say, bastard...!」[k]
+[endif]
+
+@cl
+@fg c=サンドラ f=53
+[サンドラ v=vn067 f=53]「Yes, yes, don't raise your voice! It'll be trouble if we get caught. Let's hurry up and go.」[k]
+[テオ f=02]「Yes, Sandra. Okay, everyone, let's go!」[k]
+[textoff]
+@out
+;-------------------------------------------------------------------------------
+; 設定
+[iscript]
+// 全員にバスタオルを装着
+for(var i = 0; i < game.party.members.count; i++)
+{
+	var one = game.party.members[i];
+	one.storeAllItemsInOthers(game.temporaryBox,, false);
+	if(one.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）)
+		one.dressEquipment(o.マタニティドレス,,, true);
+	else
+		one.dressEquipment(o.バスタオル,,, true);
+	one.makeBustups();
+}
+if(game.guest.members.has(o.ブルー))
+{
+	o.ブルー.equipLife = G_TOWELF;
+	o.ブルー.makeBustups();
+}
+if(game.guest.members.has(o.ライナス))
+{
+	o.ライナス.equipLife = G_TOWELF;
+	o.ライナス.makeBustups();
+}
+// ホテル地下へ
+game.hour = "day";	// ダンジョン用の時刻に
+game.guest.entry(o.サンドラ);	// サンドラ加入
+game.inEvent = false;
+game.townView.close();
+game.loadDungeonAtBackGround(%[map:"ホテルの地下Ｂ１", x:11, y:3, way:"s"]);
+
+[endscript]
+;-------------------------------------------------------------------------------
+[eventoff]
+
+;◇イベント07・組織幹部と戦闘
+*hotel_7
+
+; ☆フリーモード
+@jump storage="free02.scn" target=*hotel_7 cond='game.isFreeMode'
+
+; ホテル内・敵事務所
+@wait time=500
+@fg l=thief_red left=340 top=80 b
+@fgf r=thief_red left=560 top=80
+[texton w=1]
+[name n="Organization Executive"]「W-who the hell are you?」[k]
+When I entered the room, there were a large number of girls and several men who appeared to be senior members of the organization hanging around.[k]
+[サンドラ v=vn068 f=07]「I know you're making money by forcing lots of girls into prostitution! I'll turn you over to the security guards, so just give up and let them arrest you!」[k]
+[name n="Organization Executive"]「What the hell?」[k]
+[name n="Organization Executive"]「You idiots! Who would get caught by you guys? Hey, you bastards! Take them down!」[k]
+[textoff]
+@clf
+
+; 組織幹部と戦闘
+@monster pos=1 name=ハイウェイマン
+@monster pos=2 name=ハイウェイマン
+@monster pos=3 name=ハイウェイマン
+@monster pos=4 name=ハイウェイマン
+@monster pos=5 name=ハイウェイマン
+@monster pos=9 name=ブッシュワッカー
+@monster pos=10 name=バーグラー
+@monster pos=11 name=ブッシュワッカー
+@callbattle bgm=boss escape=false gameover=true
+; 勝利
+
+@wait time=500
+[texton w=0]
+After defeating the members of the organization, we managed to[r]capture them all. We handed them over to the security guards who arrived later.[k]
+[サンドラ v=vn069 f=01]「Leave the rest to the security guards, and let's go outside.」[k]
+[textoff]
+@out t=1000
+@wait time=500
+
+
+
+; ホテルの外
+@bg f=0039
+[texton w=0]
+We handed over the captured members of the organization to the town guards and left the hotel.[k]
+The girls who had been forced into prostitution were all freed, and the case was provisionally settled.[k]
+[警備隊長]「Thanks to you guys, I was able to destroy the organization. Thank you so much.」[k]
+[テオ f=02]「I'm glad I could help you.」[k]
+[警備隊長]「Please accept your reward. If anything else comes up, I'll count on you again.」[k]
+[サンドラ v=vn070 f=01]「Thank you for your help this time. Let's go on another adventure together when we have the chance.」[k]
+[textoff]
+@eval exp='o.売春組織の実体を暴け.exp += f.rescuedGirls * 10000'
+@eval exp='o.売春組織の実体を暴け.gold += f.rescuedGirls * 5000'
+@complete name=売春組織の実体を暴け
+@eval exp='f.inLoveHotelQuest = false'
+@eval exp='game.restoreMembers()'
+@eval exp='o.ホテル・クイーン.events = [6]'
+@delevent name=テオ num=0
+@delevent name=テオ num=2
+@delevent name=マックス num=0
+@delevent name=ライナス num=0
+@eval exp='game.enterTown(o.サファイアシティ, o.ホテル・クイーン, true)'
+[eventoff]
+
+
+
+
+;■教団壊滅クエスト
+
+;◇イベント・教祖たち一派と戦闘
+*fortress
+
+;☆フリーモード
+@jump storage="free02.scn" target=*fortress cond='game.isFreeMode'
+@saveon
+@bg f=event100 p0=02
+@mu f=anxiety
+@w05
+[texton w=2]
+[マリア v=va221 e=裸 f=37]「Ah... Ah... Ah... Ah...」[k]
+[name n=Guru]「Hmm, what a wonderful vagina. This feels very good.」[k]
+This was the audience chamber. It was a place where the founder of this religious cult would receive visitors, and also a room where he indulged in pleasure.[k]
+In the center was his throne. Surrounding it were a dozen or so women who appeared to be his attendants. They were all naked.[k]
+And on the floor in the center of the room, Maria lay naked on her back.[k]
+She was being raped by the half-naked cult leader.[k]
+Her voluptuous breasts were exposed. Her panties had been removed, and she was being penetrated by the man's thick penis.[k]
+Maria does not resist. Perhaps her consciousness is clouded, as she stares blankly into space with glazed eyes.[k]
+She spread her legs languidly and silently accepted the man's actions.[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[マリア v=va222 f=37]「Ah... Ah... Ah... Ah...」[k]
+Lewd wet noises echo throughout the spacious room. Maria just lies there like a dead fish, but her crotch seems to be wet.[k]
+With his eyes fixed on her figure, the man in the robe continued to thrust his flabby waist forward.[k]
+In sync with that movement, Maria's breasts shook violently.[k]
+[name n=Guru]「These huge breasts are irresistible. They're incredibly powerful. Her nipples are hard and pointed, how sensual!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+@bg f=event100 p0=01
+[マリア v=va223 f=37]「Ahh... Ahhh...」[k]
+Maria must be feeling something, as her moans have taken on a sweet tone.[k]
+With her face flushed and breathing heavily, she continues to take the man's thrusts.[k]
+@bg f=event100 p0=03
+[マリア v=va224 f=37]「Aah, aah...」[k]
+When the man thrust into Maria roughly, she couldn't help but writhe her hips.[k]
+As she is relentlessly attacked deep inside her vagina, Maria is close to climax.[k]
+[name n=Guru]「Ugh! I can't hold it in any longer! I'm going to let it out!」[k]
+@flash t=200
+@w05
+@flash t=200
+∗spuurt! spuurt!∗[k]
+[マリア v=va225 f=37]「Ah...!」[k]
+The man came while still inside Maria's vagina. He couldn't help but shoot his sperm inside her.[k]
+[マリア v=va226 f=37]「Haaaah... hmmmm...!」[k]
+@flash on=1000 t=500 off=500
+Maria's pleasure also reached its peak, and she climaxed while squeezing the man's penis.[k]
+@bg f=event100 p0=04
+[マリア v=va227 f=37]「Ahhhhhh...」[k]
+[name n=Guru]「Phew... This is the first time I've ever gotten so horny. This was an unexpected bonus.」[k]
+[name n=Guru]「Daughter, you will become my follower. And you will continue to serve me sexually. Do you understand?」[k]
+@bg f=event100 p0=02
+[マリア v=va228 f=39]「...Yes.」[k]
+With a vacant look in her eyes, Maria nodded quietly.[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+@gameon
+[texton w=1]
+[テオ f=07]「Maria!」[k]
+We threw open the door and stormed into the audience chamber![k]
+[テオ f=12]「T-this is...!」[k]
+It was a large hall, and there were a dozen or so naked women standing around the edges of the room.[k]
+In the center was a man dressed in a magnificent robe. Surprisingly, Maria was there too.[k]
+What's more, Maria was naked and being raped by the man in the robe.[k]
+[マックス f=11]「Mariaaaa!」[k]
+[name n=Guru f=rich_00]「What's going on? Has someone arrived?」[k]
+When Max shouted, the man noticed us and hurriedly stood up.[k]
+[name n=Guru f=rich_00]「W-who are all of you?」[k]
+[マリア e=裸 f=98]「...」[k]
+The arrest warrant issued by the Sapphire City Guard we received from the guild is presented to the panicked cult leader.[k]
+[テオ f=05]「You're the leader of this cult, aren't you? We've got you surrounded. Come along quietly!」[k]
+[name n=Guru f=rich_00]「Adventurers...! You bastards from Sapphire City are interfering with my plans! Everyone! Gather around!」[k]
+When the guru gave the order, all the naked female followers around us grabbed their weapons and stood before us![k]
+[name n=Guru f=rich_00]「I will not let mere adventurers destroy my sect! Expel this infidel, my devout followers!」[k]
+[テオ f=05]「You're determined to resist, aren't you... Everyone! Get ready for battle!」[k]
+[マックス f=27]「How dare you do that to my Maria?! I'll never forgive you for this!」[k]
+The cult leader and his followers attacked us![k]
+[textoff]
+@clf
+; 教祖たち一派と戦闘
+@monster pos=1 naked=2 name=デュエリスト
+@monster pos=2 naked=2 name=デュエリスト
+@monster pos=3 naked=2 name=デュエリスト
+@monster pos=4 naked=2 name=デュエリスト
+@monster pos=5 naked=2 name=デュエリスト
+@monster pos=8 naked=2 name=マスターランサー
+@monster pos=10 naked=2 name=マスターランサー
+@monster pos=12 naked=2 name=マスターランサー
+@monster pos=16 naked=2 name=メイガス
+@monster pos=17 name=教祖
+@monster pos=18 naked=2 name=メイガス
+@callbattle bgm=boss gameover=true
+; 勝利
+[texton w=0]
+[name n=Guru f=rich_00]「Damn you...!」[k]
+[テオ f=01]「Alright! We defeated the cult leader!」[k]
+We defeated the cult leader and took him into custody.[k]
+[textoff]
+@out
+@w05
+; マリアを助け出した
+@gameon
+@fg c=マリア e=通常 f=14
+[texton w=1]
+[マリア v=va229 f=14]「I made a big mistake... If you all hadn't come, I wonder what would have happened...」[k]
+It turned out that Maria had also accepted that request and infiltrated the cult's facility ahead of us.[k]
+However, she was captured by the enemy and hypnotized by the cult leader. That is why she was unable to resist.[k]
+I managed to get the cult leader to tell me how to break the hypnosis, and was able to bring Maria back to her senses.[k]
+@fgf c=マリア f=01
+[マリア v=va230 f=01]「That cult leader seems to have lured young people with sweet talk and brainwashed them with hypnosis to become his followers. But now we can bring everyone back to their senses.」[k]
+[テオ f=02]「This issue has now been resolved.」[k]
+We then handed the guru over to the guards from Sapphire City who followed behind us, and left the cult facility.[k]
+[textoff]
+@clf
+@se f=period
+@notice text="<y>We destroyed the cult!"
+@eval exp='o.教団を壊滅させろ.flag = 2'
+@recordsex her=マリア guy=教祖 sex=2 orgasm=2 acts=乳揉み,パイズリ,正常位
+[eventoff]
+
+
+
+;■死者の沼 631
+
+; 死霊の森の奥にある『死者の沼』に入り込んでしまうイベント
+; 普通の方法では出ることができない
+
+;◇イベント01・小悪魔が話しかけてくる
+*pond_1
+
+; 死者の沼・歩行中
+@fg l=imp_green top=-40 b
+@fg r=imp_green top=-40
+[texton w=0]
+[name n="Little Devil" f=imp_00]「Hehehehe, another human has wandered into the swamp of the dead!」[k]
+[name n="Little Devil" f=imp_00]「Hahahaha, you pitiful humans!」[k]
+Two little devils flew overhead.[k]
+The little devils are looking down at us with wicked smiles on their faces. They're ready for battle![k]
+[name n="Little Devil" f=imp_00]「Don't be so impatient.」[k]
+[name n="Little Devil" f=imp_00]「That's right. No matter how hard you struggle, you'll eventually become prey for us demons.」[k]
+What is he talking about? Acting as if it's our destiny to become prey to demons...[k]
+[name n="Little Devil" f=imp_00]「The Swamp of the Dead was originally part of our world. The so-called demon realm. But that realm became twisted in space and connected to the human world here.」[k]
+[name n="Little Devil" f=imp_00]「That's why humans sometimes wander in here, just like you guys.」[k]
+[name n="Little Devil" f=imp_00]「But there's no way you can go back to where you came from. Time and space have been warped, and the connections between spaces have been completely destroyed! Hehehehe!」[k]
+[name n="Little Devil" f=imp_00]「So, these people wander around here, get toyed around with by us for our amusement, and finally end up being eaten! Hahahaha!」[k]
+[name n="Little Devil" f=imp_00]「Well, do your best! Good luck! Hehehe!」[k]
+[textoff]
+@cl
+[texton w=0]
+The demons said what they wanted to say and flew away somewhere.[k]
+This could be a big problem...[k]
+But we can't give up hope yet. Let's try to find a way out for now.[k]
+[textoff]
+[eventoff]
+
+;◇イベント02・囚われた少女たち
+*pond_2
+@jump storage="free02.scn" target=*pond_2 cond='game.isFreeMode'
+@saveon
+[texton w=0]
+I can hear monsters talking nearby![k]
+Looking around, I discovered a large number of monsters gathered in an open area![k]
+[textoff]
+@mu f=darkside
+@bg f=event104 p0=01
+[texton w=2]
+[少女]「Haah... haah... ugh...」[k]
+[悪魔]「Gufufu, human pussy feels so good.」[k]
+[少女]「Ahh... ahh... ahhhh!」[k]
+[テオ f=12]「This is...!」[k]
+We beheld a very frightening scene![k]
+Two naked girls were surrounded by a crowd of demons, and a gruesome rape was taking place.[k]
+[悪魔]「Uhehehe, I can't stand it!」[k]
+∗smack smack smack!∗[k]
+[少女]「Ahh... ahh... ahhh...!」[k]
+The devil grabs the girl's white, soft butt and thrusts his hips forward with force![k]
+The devil's erect penis is not only large, but also grotesquely gnarled.[k]
+That hideous penis is violently thrust into the girl's soft wet hole.[k]
+[少女]「Aaah, stop... ahh... ahh...!」[k]
+Slimy, lewd sounds echoes throughout the air.[k]
+The girl lets out something between a moan and a scream. She feels pain and fear, but she also feels pleasure.[k]
+[少女]「Ah... ah... stop... ahh!」[k]
+The two girls with their small bodies take the devil's hard rods.[k]
+This act puts a great strain on their bodies and seemed extremely painful and difficult.[k]
+At the same time, however, intercourse with the devil felt very good.[k]
+Despite their desire to reject the devil, their pleasure continued to intensify.[k]
+[悪魔]「Kuku, doesn't that feel good?」[k]
+∗sluurp!∗[k]
+[少女]「Ahh... stop... aaaahhh!」[k]
+The devil's long penis is deeply thrust into the depths of her vagina![k]
+The tip of his penis hit her most sensitive spot, and the girl climaxed in an instant.[k]
+[少女]「Mmm... I'm cumming...!」[k]
+One of the girls, unable to resist the mounting pleasure, finally climaxed.[k]
+[少女]「Ahh, ahh, ahh, ahh, I can't take it anymore...!」[k]
+The other girl also couldn't stand the pleasure, tossing her hair and moaning and writhing lasciviously.[k]
+[悪魔]「Muhooooo! Here it comes!」[k]
+@flash t=200
+@bgf f=event104 p0=02
+∗spurt!∗[k]
+[少女]「Ahhhh...!」[k]
+The devil released his evil fluid into the girl![k]
+It was already his tenth ejaculation of the day, but his momentum hasn't slowed down at all and he pours it into her vagina. His stamina is incomparable to that of human men.[k]
+[悪魔]「Grrrr! I'm going to cum too!」[k]
+@flash t=200
+@bgf f=event104 p0=03
+∗spurt! spurt! spurt!∗[k]
+[少女]「Ah, nooooo... stop it already...」[k]
+The other devil also ejaculated inside her. It was a merciless vaginal ejaculation. The fear of pregnancy crossed the girl's mind.[k]
+Male demons are eager to mate with human women.[k]
+One reason is that sex with human women feels good, but the biggest reason is that mating is possible.[k]
+Male demons can make human women give birth to their children. As living creatures, it is only natural that they want to increase their offspring.[k]
+Most of the children born grow up to be demons. And, like their fathers, they come to prey on human women.[k]
+[textoff]
+@out
+@return cond='f.replayMode'
+@gameon
+[texton w=0]
+The gruesome scene makes you want to look away. In this isolated world, women who wander in are subjected to such treatment.[k]
+[悪魔 f=devil_01]「Huh? More humans?」[k]
+[悪魔 f=devil_01]「Hehehe, new prey has arrived!」[k]
+The demons have noticed us![k]
+@fg l=devil_blue top=-20 b
+@fg r=devil_blue top=-20
+[悪魔 f=devil_01]「It's a woman! A new woman! I want to fuck her now!」[k]
+[悪魔 f=devil_01]「I'm starting to get hungry. Let's kill those men and eat them.」[k]
+They lick their lips as they approach us.[k]
+We are surrounded and have no way out. It seems we have no choice but to fight.[k]
+[textoff]
+@clf
+; 悪魔たちと戦闘
+@monster pos=1  name=マウンテンデビル
+@monster pos=3  name=マウンテンデビル
+@monster pos=5  name=マウンテンデビル
+@monster pos=9  name=マウンテンデビル
+@monster pos=11  name=マウンテンデビル
+@callbattle escape=false bgm=boss gameover=true
+; 勝利
+@wait time=500
+@fg l=valkyrie_yellow_default b
+@fg r=archer_purple_default
+[texton w=1]
+[少女 f=valkyrie_yellow_06]「Thank you for helping us.」[k]
+The girls who were freed from the demons approach us. They don't appear to have any serious injuries.[k]
+[少女 f=archer_purple_07]「We are adventurers. While exploring the Dead Forest with a party of five, we ended up lost here.」[k]
+[少女 f=valkyrie_yellow_06]「The other members were killed, and the two of us were being used as entertainment for the demons. If you hadn't helped us, we would have been tortured and killed by the demons eventually.」[k]
+[テオ f=06]「Is that so... My sympathies...」[k]
+[テオ f=02]「But at least you two were saved. Let's work together to find a way out of here.」[k]
+[少女 f=archer_purple_07]「...I don't think that's possible.」[k]
+[テオ f=05]「Why?」[k]
+[少女 f=valkyrie_yellow_01]「We searched high and low for the exit with our party. But no matter how hard we looked, we couldn't find it. Eventually, we ran out of strength and were captured by the demons.」[k]
+[テオ f=06]「...」[k]
+[少女 f=valkyrie_yellow_06]「...I'm sorry to let you down after you helped us, but now that you've come to the Swamp of the Dead, it's over for you too.」[k]
+[少女 f=archer_purple_07]「There's no hope for us. We're destined to rot away here, toyed with by devils...」[k]
+[テオ f=05]「Don't give up! There must be a way to save ourselves!」[k]
+[少女 f=archer_purple_08]「...!」[k]
+[少女 f=valkyrie_yellow_01]「[テオ]...」[k]
+[テオ f=05]「Anyway, we're going to find a way out of here. You guys are returning to our world with us.」[k]
+[少女 f=archer_purple_07]「...」[k]
+[テオ f=05]「Let's go. You guys just stay behind us while we fight.」[k]
+[少女 f=archer_purple_07]「...」[k]
+[少女 f=valkyrie_yellow_06]「I understand. I will follow you.」[k]
+[テオ f=02]「Good. Let's go together then!」[k]
+[textoff]
+@clf
+@se f=period
+@notice text="The girls decided to follow the party!"
+[eventoff]
+
+
+;◇イベント03・死者の沼から脱出
+*pond_3
+
+; 死霊の森・死者の沼から帰還した直後
+@jump storage="free02.scn" target=*pond_3 cond='game.isFreeMode'
+@wait time=1000
+[texton w=0]
+[テオ f=05]「This is... where we came from.」[k]
+We finally escaped from the demon realm. We're back in the human world![k]
+[textoff]
+@wait time=500
+@fg l=valkyrie_yellow_default b
+@fg r=archer_purple_default
+[texton w=1]
+[少女 f=valkyrie_yellow_06]「Thank you very much. Thanks to you, we were able to return home.」[k]
+[テオ f=02]「I'm glad you didn't give up.」[k]
+[少女 f=archer_purple_01]「Yes!」[k]
+[少女 f=valkyrie_yellow_06]「We can manage from here. Thank you so much for helping us.」[k]
+[少女 f=archer_purple_01]「Umm, this is a thank you gift.」[k]
+[textoff]
+@getitem item=ルビーの魔石
+[texton]
+[テオ f=05]「This is the Ruby Magic Stone...! You guys had it.」[k]
+[少女 f=archer_purple_01]「Please make use of this magic stone. I will never forget your kindness. Well then, we'll be going now...」[k]
+[textoff]
+@cl
+@se f=period
+@notice text="We parted with the girls."
+[eventoff]
+
+
+
+
+;■全てを見通せる鏡
+
+; 『千里の鏡』という見たい場所を覗き見できるアイテムを回収するクエスト
+; 依頼人がスケベな目的で使おうとする
+
+;◇イベント01・千里の鏡を使用
+*mirror_1
+
+; ☆フリーモード
+@jump storage="free02.scn" target=*mirror_1 cond='game.isFreeMode'
+
+; アイテム画面から千里の鏡を使用直後
+@out
+@bg f=9008
+@w05
+[texton w=1]
+When I touched the crystal on the top frame of the Mirror of 1000 Miles, the mirror surface suddenly brightened, and something else was reflected in it.[k]
+[テオ f=05]「This is...」[k]
+What appears to be text is reflected in the mirror.[k]
+[テオ f=06]「Is this... perhaps an explanation of how to use this mirror?」[k]
+The description stated that this mirror could reflect any distant location, and that the only places that could be viewed were those that the mirror had been taken to and "registered".[k]
+[テオ f=06]「So even though it can be viewed anywhere, you have to go somewhere in advance to be able to do so?」[k]
+Looking further at the mirror, there was already some information about places that have been registered by someone. The mechanism is such that when you touch them, the places you want to see are displayed.[k]
+I decided to try touching one of them.[k]
+[textoff]
+@out
+@bg f=event91
+@w1
+[texton w=1]
+[テオ f=12]「This is...!」[k]
+[マックス f=21]「Ooh!」[k]
+Surprisingly, a location that appears to be a bathroom was reflected in the mirror![k]
+What's more... there was a naked woman there. Could this be the bar mistress from the tavern in Limestone Town?[k]
+[テオ f=10]「...」[k]
+On the screen, the naked mistress is seen washing her body, unaware that she is being watched.[k]
+It was a view from quite close up, and I could clearly see her body.[k]
+Her voluptuous breasts were clearly visible, right down to their bright red tips, and her large butt too, right down to the crack. Even though she was being seen like this, she continued to expose her body with a hopelessly carefree attitude.[k]
+[テオ f=10]「...」[k]
+What kind of a place did the previous owner register?! I can't let anyone see this any more.[k]
+Fortunately, it seems that the location registration information can be "deleted". Once deleted, it will no longer be possible to view this bathroom.[k]
+
+[if exp='HUM']
+	[リム v=vh076 f=07]「What is this? Let's delete this registration!」[k]
+[endif]
+[if exp='ELF']
+	[クレア v=ve077 f=08]「What was someone thinking?! Let's delete this registration.」[k]
+[endif]
+[if exp='DWA']
+	[フレデリカ v=vd076 f=09]「There are some terrible places registered... Let's delete these registrations.」[k]
+[endif]
+[if exp='GNO']
+	[ミューズ v=vg065 f=08]「It's terrible to register a place like this... I think it should be deleted...!」[k]
+[endif]
+[if exp='SYL']
+	[マルエット v=vs078 f=07]「What a pervert the previous owner was! This registration should be deleted!」[k]
+[endif]
+[if exp='LIS']
+	[リーゼル v=vl411 f=06]「That's a terrible place to register... You should delete it.」[k]
+[endif]
+
+[テオ f=06]「...」[k]
+The women express their anger in unison. They are absolutely right.[k]
+[textoff]
+@gameon
+[texton w=0]
+The previous owner's registration information was then deleted from the Mirror of 1000 Miles. Now it can be handed over to the client with peace of mind.[k]
+[textoff]
+@se f=period
+@eval exp='o.全てを見通せる鏡.flag = 1'
+@return
+
+
+;◇イベント02・鏡を見ずに渡した場合
+*mirror_2
+
+; 依頼人に会う
+[texton]
+[name n=Hawkwaros f=waroth_00]「Oh! This is it! You found it! I am deeply grateful to you all.」[k]
+[name n=Hawkwaros f=waroth_00]「Well, let's try it right away... Hmm? This is...」[k]
+[name n=Hawkwaros f=waroth_00]「...Could it be that this mirror only works after going to the location directly and registering it with the mirror? What is this...」[k]
+[name n=Hawkwaros f=waroth_00]「Huh? There's information left behind that seems to have been registered by the previous owner! Let's see...」[k]
+[name n=Hawkwaros f=waroth_00]「C-could this be a bathroom? If so...」[k]
+[name n=Hawkwaros f=waroth_00]「Oh my! Is that Chloe from the tavern?!」[k]
+[name n=Hawkwaros f=waroth_00]「Wow, amazing... This is incredible... Kehhehheh, the previous owner must have loved it too ♪」[k]
+I don't know what Hawkwaros is looking at, but he seems to be having a lot of fun.[k]
+[name n=Hawkwaros f=waroth_00]「...Oh, I forgot about you guys. This is better than I expected. As promised, here's your reward in gold coins, plus some extra items.」[k]
+[name n=Hawkwaros f=waroth_00]「Thank you so much this time. I will never forget this kindness, hohoho ♪」[k]
+[textoff]
+@eval exp='game.party.ejectItem(o.千里の鏡)'
+@complete name=全てを見通せる鏡
+@treasure item=復活の粉
+[baroff]
+
+
+;◇イベント03・鏡を見ている場合
+*mirror_3
+
+; 依頼人に会う
+[texton]
+[name n=Hawkwaros f=waroth_00]「Oh! This is it! You found it! I am deeply grateful to you all.」[k]
+[name n=Hawkwaros f=waroth_00]「Well, let's try it right away... Hmm? This is...」[k]
+[name n=Hawkwaros f=waroth_00]「...Could it be that this mirror only works after going to the location directly and registering it with the mirror? What is this...」[k]
+[name n=Hawkwaros f=waroth_00]「The registration information has been completely deleted... This wasn't what I expected... The world isn't so easy.」[k]
+[name n=Hawkwaros f=waroth_00]「Well, that's fine. I appreciate you fulfilling the request. Please accept the promised reward.」[k]
+[textoff]
+@eval exp='game.party.ejectItem(o.千里の鏡)'
+@complete name=全てを見通せる鏡
+[baroff]
+
+
+
+
+;■浮気調査
+
+; 依頼人に妻の浮気調査を頼まれるクエスト
+; 妻の居る場所に何度か訪れるとイベント発生
+
+;◇イベント01・依頼を受ける
+*barn_1
+
+; マルティナの酒場
+[texton]
+[依頼人 f=grosjean_00]「Oh, hello... Are you the one who accepted my request? My name is Grojean. I am a knight.」[k]
+[name n=Grosjean f=grosjean_00]「As the title suggests, I would like you to investigate whether my wife Eleanor is having an affair.」[k]
+[name n=Grosjean f=grosjean_00]「My wife is a very cute younger wife, and we've been married for two years... I thought we were getting along well, but lately my wife's attitude has been strange.」[k]
+[name n=Grosjean f=grosjean_00]「Suspicious, I pretended to go to work and secretly observed my wife at home.」[k]
+[name n=Grosjean f=grosjean_00]「...Then, I saw my wife entering a shed in a field near our house with a man I didn't know!」[k]
+[name n=Grosjean f=grosjean_00]「I confronted my wife... She said that he was just helping out in the fields. She said she loved me and would never betray me.」[k]
+[name n=Grosjean f=grosjean_00]「It's true that my wife is very devoted and fulfills her role as a wife properly. She treats me more kindly than before... So I want to trust her.」[k]
+[name n=Grosjean f=grosjean_00]「...But I just can't shake this uneasy feeling! For some reason, I can't calm down!」[k]
+[name n=Grosjean f=grosjean_00]「So I decided to thoroughly investigate my wife. If nothing came of it, I would finally be able to rest easy.」[k]
+[name n=Grosjean f=grosjean_00]「Adventurers, would you please investigate my wife? Once you have thoroughly investigated her, I think I can accept the results, whatever they may be.」[k]
+[name n=Grosjean f=grosjean_00]「...I know it's a selfish request. I don't want to doubt my beloved wife either. But as things stand, I don't have the confidence to continue living with her...」[k]
+[name n=Grosjean f=grosjean_00]「My wife usually works in the fields near our home. The fields are located northwest of Emile Plain, just outside the south gate of this town. Thank you very much.」[k]
+[name n=Grosjean f=grosjean_00]「I don't think you can judge the situation after just one visit, so please observe the situation for a few days and report back to me with the results.」[k]
+[textoff]
+[baroff]
+
+
+;◇イベント02・浮気現場を押さえる
+*barn_2
+; 畑のそばの小屋
+@w05
+[texton]
+I peeked inside the hut. There I saw...[k]
+[textoff]
+@out
+*_replay_barn_2
+@bg f=0000
+@bg f=event90
+@mu f=trick
+[texton w=2]
+[name n=Eleanor]「Ahh... Pat... it's the best... ahaaaah...!」[k]
+There, Eleanor was passionately making love to a man who was not her husband.[k]
+She wrapped her legs around the man and swayed her hips lasciviously, drenched in sweat.[k]
+[男]「Hehe, it's hot again today, Eleanor.」[k]
+[name n=Eleanor]「Because... your cock... I've been waiting for it... Haaaan!」[k]
+[男]「Is that okay? You have a husband, right?」[k]
+[name n=Eleanor]「It's okay... Ahhh! Because, I... I can't be satisfied with anyone but you! ...Ahhh!」[k]
+[男]「You're a bad woman, Eleanor.」[k]
+[name n=Eleanor]「My husband won't be home for a while... Let's do it a lot today... Ah! Ah! Aah!」[k]
+With the sound of their juices sloshing around, the two of them devour each other's bodies with unbridled lust.[k]
+With an ecstatic expression on her face, this wife sought another man's penis with single-minded devotion, and she no longer had any love for her husband...[k]
+[textoff]
+@out
+@return cond='f.replayMode'
+@gameon
+@mu f=trip
+[texton]
+In the end, her husband's hopes were in vain. Grosjean's wife Eleanor was having an affair.[k]
+While her husband was away, she brought a man into the shed on her property, locked the door from the inside, and indulged in an affair.[k]
+Although the result will be painful for the client, we must convey this fact. For now, the investigation is complete.[k]
+[textoff]
+@se f=period
+@eval exp='o.妻の浮気調査.flag = 1'
+[eventoff]
+
+;◇イベント03・依頼人に報告
+*barn_3
+
+; マルティナの酒場
+[texton]
+I returned to the tavern and reported the results of my investigation to the client.[k]
+[name n=Grosjean f=grosjean_00]「Is that so... So my wife was cheating on me after all...」[k]
+[name n=Grosjean f=grosjean_00]「To be honest, I am shocked, but that's clearly how things are... I will have to consider divorcing my wife. I am grateful for your efforts this time.」[k]
+The client looked completely dejected. There were no words of comfort left to say.[k]
+@se f=door1
+[name n=Eleanor f=elenor_02]「Oh, it's you. What are you doing here? I thought you were away on a knight expedition and wouldn't be back for a while?」[k]
+[name n=Grosjean f=grosjean_01]「Eleanor! Where have you been all this time?」[k]
+[name n=Eleanor f=elenor_01]「What's wrong? I was just doing my usual farm work.」[k]
+[name n=Grosjean f=grosjean_01]「Don't play dumb...! I know you're cheating on me with another man!」[k]
+[name n=Eleanor f=elenor_01]「What are you talking about? I only love you.」[k]
+[name n=Grosjean f=grosjean_01]「I know everything! I know what you're doing in that shed!」[k]
+[name n=Eleanor f=elenor_03]「...Oh, you knew about it. Well, then there's no point in saying anything else.」[k]
+[name n=Grosjean f=grosjean_00]「Guh...! You finally confessed!」[k]
+[name n=Eleanor f=elenor_02]「...It's your fault. You're rarely home because of your work with the knights, and even when you do come home... I don't know how to put it, but you're so indifferent, you never satisfy me.」[k]
+[name n=Eleanor f=elenor_01]「In that respect, Pat is wonderful... He's energetic, youthful, and passionate... He's completely different from you. He's there for me whenever I need him...」[k]
+[name n=Grosjean f=grosjean_01]「Guh... How indecent! I'm divorcing you!」[k]
+[マルティナ f=02]「What's wrong with you two? Don't make a scene in my bar.」[k]
+[name n=Eleanor f=elenor_02]「Ah... Martina.」[k]
+[マルティナ f=02]「What happened? Eleanor, please tell me.」[k]
+[name n=Grosjean f=grosjean_01]「This woman was cheating on me behind my back!」[k]
+[name n=Eleanor f=elenor_02]「Sure, I cheated, but it's his fault in the first place. He neglected me, and he's weak down there, so he can't satisfy me at all...」[k]
+[マルティナ f=01]「...Eleanor, you're such a hopeless case. I lost my husband a few years ago, so I understand your frustration, but even so, cheating is not right.」[k]
+[name n=Grosjean f=grosjean_01]「Divorce! Divorce! I will never forgive you!」[k]
+It seems that this situation won't be easily resolved. It's not my place to get involved in other people's problems, so I'd better leave.[k]
+[textoff]
+@complete name=妻の浮気調査
+[baroff]
+
+
+
+
+;■ワイルド・ブルの洞窟
+
+*nest
+
+; ワイルド・ブルの洞窟
+@wait time=500
+[texton]
+[少女 f=bladesman_red_03]「Ahhh... ahh... ah... ah...」[k]
+[盗賊 f=thief_black_03]「Phew... It's nice and tight. This is quite a gem.」[k]
+[盗賊 f=thief_green_04]「Hey! Your mouth is idle! Keep sucking without stopping!」[k]
+[リーダー f=05]「This is...!」[k]
+A naked girl was on all fours, being raped from behind and in front by two men who appeared to be members of Wild Bull.[k]
+The girl appears to be an ordinary person who has no connection to adventure or battle. At least, she does not appear to be a member of Wild Bull.[k]
+Recently, there have been frequent incidents of travelers going missing on the nearby highway. Could this girl also be one of them?[k]
+[少女 f=bladesman_red_03]「Ha ha... Please forgive me... Let me go home...!」[k]
+[盗賊 f=thief_green_04]「Huh? Go home? There's no way I'm allowing that!」[k]
+[盗賊 f=thief_black_03]「You're going to work as a prostitute at the brothel we run! Give up on going home!」[k]
+[少女 f=bladesman_red_03]「No way... That's terrible... I absolutely don't want to be a prostitute... Aaaahhh!」[k]
+[盗賊 f=thief_green_04]「Your job now is to learn the techniques to please a man! Come on, suck his cock with more enthusiasm!」[k]
+[少女 f=bladesman_red_03]「Stop... please stop... Ahhh!」[k]
+[リーダー f=05]「...!」[k]
+This cannot be ignored.[k]
+[if exp='game.isFreeMode']
+	We called for her immediate release.[k]
+[else]
+	[テオ f=05]「Hey! Let her go!」[k]
+[endif]
+[盗賊 f=thief_black_04]「What the hell?! How did you get in here?」[k]
+[盗賊 f=thief_green_03]「What? An adventurer? Huh, you think you're some kind of hero of justice, but by coming here to Wild Bull's base, you're obviously just a reckless fool.」[k]
+[盗賊 f=thief_black_04]「Hey! You guys! Let's beat up these stupid adventurers!」[k]
+@se f=footstep2
+Hearing the commotion, Wild Bull members gathered in the room in large numbers.[k]
+...It seems like there's no choice but to fight.[k]
+[textoff]
+@monster pos=0 name=ブッシュワッカー
+@monster pos=1 name=ブッシュワッカー
+@monster pos=2 name=ブッシュワッカー
+@monster pos=3 name=ブッシュワッカー
+@monster pos=4 name=ブッシュワッカー
+@monster pos=5 name=ブッシュワッカー
+@monster pos=6 name=ブッシュワッカー
+@monster pos=7 name=バーグラー
+@monster pos=8 name=バーグラー
+@monster pos=9 name=バーグラー
+@monster pos=10 name=バーグラー
+@monster pos=11 name=バーグラー
+@monster pos=12 name=バーグラー
+@monster pos=13 name=バーグラー
+@monster pos=16 name=バーグラー
+@monster pos=17 name=バーグラー
+@monster pos=18 name=バーグラー
+@callbattle bgm=boss gameover=true escape=false
+@eval exp='game.party.minimumRecovery()'
+
+[texton]
+[if exp='game.isFreeMode']
+	We defeated the Wild Bull members and rescued the girl who was being attacked.[k]
+[else]
+	It was surprisingly easy. Maybe we've grown so much that we're now too strong for enemies like this.[k]
+	[テオ f=02]「It's okay now. Come on, let's get out of here while we can.」[k]
+[endif]
+[少女  f=bladesman_red_02]「Thank you very much. I will never forget your kindness. This is a small token of my gratitude.」[k]
+[textoff]
+@getitem item=ポラリスの宝珠
+[eventoff]
+
+
+
+;■悪魔２度目の討伐
+
+; 各ヒロインの婚約イベントの翌日のイベント
+; ムールムールが現れ、彼女を倒すとヒロインと結婚する
+; ヒロインの誰かと婚約したらその翌日に発生
+
+;◇イベント01・トロール討伐クエスト受領
+*troll_1
+
+; レベルアップ
+@eval exp='game.hour = "day"'
+@eval exp='game.hotelView.checkLevelUp()'
+[waittrig name="finishLevelUpInEvent"]
+
+; どこかの町の宿屋
+; 主人公がヒロインと婚約した直後の早朝
+@saveon
+@w2
+@bg f=9999
+@bg f=0001 t=2000
+[texton]
+Next morning.[k]
+I recall last night's proposal and become lost in thought.[k]
+[テオ e=通常 f=06]「...」[k]
+Yesterday, I finally got engaged to my wife...[k]
+She happily agreed to marry me, and my heart was filled with joy and relief.[k]
+...I had been anxious. What if she'd turned me down?[k]
+Anyway, now all that's left is to get married to my wife.[k]
+...For marriage, you have to have a wedding ceremony at a [b]church[/b], having prepared two [b]wedding rings[/b] that are exactly the same.[k]
+And above all, we need to resolve the issue with the demon Murmur and sever our ties with Blue.[k]
+We can't let Blue get involved in our married life, and anyway, with Murmur potentially attacking at any moment, this is no time to be thinking about marriage.[k]
+It's been tough, but I want to get married as soon as possible for her sake. It would be cruel to keep her waiting.[k]
+[テオ f=06]「...」[k]
+Murmur hasn't been sighted since our last encounter.[k]
+There's no doubt that she's somewhere in this world, but she hasn't approached us again.[k]
+It is precisely because we do not know when we she'll attack that we are working with Blue.[k]
+In other words, as long as that devil is somewhere in this world, I cannot leave Blue.[k]
+[テオ f=06]「...」[k]
+With the power to exorcise demons, it is possible to defeat Murmur. I have defeated her once before, so it is definitely possible.[k]
+All that's left is to find out where she is.[k]
+@se f=knock
+∗knock knock!∗[k]
+[サンドラ v=vn071 e=通常 f=07]「Captain! Are you awake?」[k]
+[テオ f=01]「Oh, Sandra... Yes, I'm awake.」[k]
+[textoff]
+@se f=door1
+@fg c=サンドラ f=08
+[texton w=1]
+When I replied, Sandra hurried into my bedroom, looking a little flustered.[k]
+[テオ f=05]「Is there something wrong?」[k]
+[サンドラ v=vn072 f=07]「Hey, check out this quest!」[k]
+Saying that, Sandra shows me what appears to be a flyer she brought with her.[k]
+It was a copy of a quest notice from a tavern. I read through it.[k]
+[テオ f=06]「...」[k]
+The request stated that a troop of trolls was attacking human settlements.[k]
+Apparently, the trolls who lived in the cave settlement have emerged from the cave in large numbers and are attacking the surrounding towns and villages one after another.[k]
+The request suggests that the security forces alone cannot handle the situation, so they want adventurers to lend a hand. In other words, they are encouraging adventurers to participate in the troll extermination operation.[k]
+[テオ f=06]「A group of trolls running amok... Maybe we should join in too.」[k]
+[サンドラ v=vn073 f=07]「That's not all! Read the rest too!」[k]
+[テオ f=05]「Y-yes...」[k]
+Reading further, there was information about a certain person who was leading the trolls.[k]
+[テオ f=05]「...A little devil girl is leading the trolls...?」[k]
+So the trolls have a leader. That makes sense, since alone, trolls are too stupid to systematically search for and attack villages.[k]
+But... this little devil girl, could it be...?![k]
+[サンドラ v=vn074 f=08]「Hey, surely it's that girl?」[k]
+[テオ f=06]「...」[k]
+A little devil girl who would do something like this could surely only be...[k]
+[テオ f=05]「...I'll ask the party to join me on this quest! Will you come with us, Sandra?」[k]
+@fg c=サンドラ f=01
+[サンドラ v=vn075 f=01]「Yes, of course!」[k]
+[テオ f=10]「So, um... Blue too...」[k]
+[サンドラ v=vn076 f=01]「I understand! Without Blue, we can't defend against Miredy's terrifying attacks! Don't worry. I'll bring him along!」[k]
+[textoff]
+@out
+
+; 酒場
+@bg f=0012 b
+@fg l=ブルー e=通常 f=06 b
+@fg r=サンドラ e=戦闘 f=01
+[texton]
+[ブルー f=06]「Tsk... What a pain.」[k]
+[サンドラ v=vn077 f=07]「Don't say that! We can't just ignore the devil's evil schemes!」[k]
+[テオ f=10]「I'm sorry, Blue.」[k]
+[ブルー f=08]「...Tch.」[k]
+With the high possibility of the devil Murmur being present, we cannot afford not to rely on Blue. Without him, we cannot defend against fatal breath attacks.[k]
+[テオ f=06]「...」[k]
+According to the request, the troll extermination team will gather in Bravetown.[k]
+First, let's head for Bravetown. We must hurry to prevent further damage.[k]
+[textoff]
+@clf
+[hoteloff leave]
+
+
+;◇イベント02・ブレイブタウンに到着
+*troll_2
+
+; ブレイブタウンの広場
+@w05
+[texton]
+When we arrived in Bravetown, a large number of adventurers had gathered in the town square.[k]
+At the center was the captain of the Sapphire City Guard. It seemed that she was organizing the troll extermination squad there.[k]
+[テオ f=06]「Okay, let's go too.」[k]
+We call out to the guard captain.[k]
+[警備隊長 f=00]「Hey, it's you guys. Are you going to join us in hunting down the trolls?」[k]
+[テオ f=02]「Yes, I intend to.」[k]
+[警備隊長 f=02]「I see! I'm grateful that I can rely on you guys.」[k]
+[テオ f=05]「Where are the trolls now?」[k]
+[警備隊長 f=01]「Hmm. According to reconnaissance reports, trolls are roaming the [b]Emile Plains Road[/b] just south of this town.」[k]
+[警備隊長 f=03]「If things continue like this, Bravetown will be attacked. Let's stop them before that happens!」[k]
+[テオ f=06]「I understand!」[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント03・ムールムール＆トロールたちと戦闘
+*troll_3
+
+; エミール平原
+; ムールムールがモンスターを率いて進撃中
+@saveon
+@w05
+[texton]
+[テオ f=05]「That's...!」[k]
+I could see a large group of trolls gathering ahead. And her...[k]
+[textoff]
+@out
+@w1
+
+@eval exp='game.changePosition(%[x:9, y:28, way:"s"], true)'
+@gameon fade
+@mu f=murmur
+@fg c=ムールムール f=03
+[texton w=1]
+[ムールムール v=vm186 f=03]「Hey, trolls! How are your dicks doing?」[k]
+; ↑ アイドルがファンに向かってステージ上から呼びかける風に
+[name n=Troll f=troll_00]「Gooooooooooo!」[k]
+@fg c=ムールムール f=15
+[ムールムール v=vm187 f=15]「Remember? We're gonna enslave the men and make them work, so try and capture them rather than kill them! You can do whatever you want with the women!」[k]
+[name n=Troll f=troll_00]「Gooooooooooo!」[k]
+[ムールムール v=vm188 f=15]「Come on, today you can go wild as much as you want! Destroy that town!」[k]
+[テオ f=07]「I won't let that happen!」[k]
+@fg c=ムールムール f=06
+[ムールムール v=vm189 f=06]「Huh? Who is it?」[k]
+@fg c=ムールムール f=07
+[ムールムール v=vm190 f=07]「What?! You again! Seriously, you're so annoying! You're super annoying!」[k]
+[テオ f=07]「I won't let you do whatever you want in our world! I'll definitely foil your plans!」[k]
+[ムールムール v=vm191 f=07]「What? What are you talking about so arrogantly? There's no way you can beat me!」[k]
+@fg c=ムールムール f=15
+[ムールムール v=vm192 f=15]「I told you before that you no longer have the power to stop my breath, right?」[k]
+[ムールムール v=vm193 f=15]「In other words, you came out here just to have me kill you! Don't you get it? Are you stupid?」[k]
+[テオ f=06]「...」[k]
+Certainly, if things remained as they were, Murmur would be correct.[k]
+But... now we have Blue.[k]
+@fg c=ムールムール f=52
+[ムールムール v=vm194 f=52]「...Huh?」[k]
+Suddenly, Murmur noticed Blue's presence.[k]
+@fg c=ムールムール f=03
+[ムールムール v=vm195 f=03]「Oh hey, it's Blue! Long time no see! It's me! I look different, but it's Miredy!」[k]
+[ブルー f=06]「...」[k]
+@fg c=ムールムール f=52
+[ムールムール v=vm196 f=52]「What, are you seriously hanging out with these guys now?」[k]
+[ブルー f=06]「...Is that bad?」[k]
+@fg c=ムールムール f=03
+[ムールムール v=vm197 f=03]「Seriously? Didn't you guys used to hate each other? That's hilarious!」[k]
+[ブルー f=06]「...」[k]
+@fg c=ムールムール f=15
+[ムールムール v=vm198 f=15]「Well, whatever! I'm going to kill everyone anyway! Your dick felt really good, but I'm going to kill you anyway...」[k]
+@image layer=6 storage=screen_deepblackfull top=0 left=0
+@anime_fadein layer=6
+[テオ f=05]「...Incoming!」[k]
+Murmur puffed out her cheeks. It was a sign that her breath of death was coming.[k]
+At this point, I have no choice but to trust Blue. I brace myself while praying.[k]
+[ムールムール v=vm199 f=15]「Take this! Breath of Death!」[k]
+[textoff]
+@playse storage=howling
+@image layer=7 storage=PE_base_full visible=true
+@layopt layer=7 top=0 left=0
+@startemit layer=7 storage=PE_smoke_red2 time=-1
+@wait time=2000
+[texton]
+[テオ f=10]「...!」[k]
+Murmur unleashed her deadly breath![k]
+Unlike last time, the amount of breath released has completely returned to normal. If we take that head-on, we will undoubtedly be wiped out.[k]
+However...[k]
+[ブルー f=06]「...」[k]
+@fg c=ムールムール f=03
+[ムールムール v=vm200 f=03]「Gahahahaha! Die, dieeeee!」[k]
+[textoff]
+
+; バリア出現
+@se f=shakin4
+@layopt layer=6 visible=false
+@clearemit layer=7
+@image layer=9 storage=9999 visible=true opacity=0
+@move layer=9 time=1000 path=,,255
+@layopt layer=4 visible=false
+@layopt layer=4 page=back visible=false
+@wait time=1000
+@layopt layer=9 visible=false opacity=255
+@eval exp='tf.weaponImage = "cyan"'
+@image layer=e3 storage=BE_barrier
+@layopt layer=e3 left=0 top=408 visible=true
+@wait time=500
+@playse storage=kira2 buf=2
+@anime layer=e3
+@wait time=1000
+@blink layer=e3 time=20 loop=3
+
+[texton]
+∗shing!∗[k]
+@fg c=ムールムール f=12
+[ムールムール f=12]「...!」[k]
+[ブルー f=06]「...」[k]
+[テオ f=13]「We did it...!」[k]
+[textoff]
+
+; バリア演出
+@image layer=9 storage=BE_barrier_light visible=false
+@image layer=7 storage=BE_barrier_big visible=true opacity=0
+@move layer=7 time=1000 path=,,255
+@anime layer=9
+@wait time=1200
+
+; ブルーの発したバリアで死のブレスを防ぎきった
+[texton]
+The light barrier emitted from Blue blocked all of the fatal breath.[k]
+[textoff]
+@move layer=7 time=1000 path=,,0
+@wm
+@stopanime layer=9
+@fg c=ムールムール f=11
+[texton]
+[ムールムール v=vm201 f=11]「What? What happened? What the hell happened?」[k]
+The devil's fatal breath was completely blocked by Blue's exorcism power.[k]
+@fg c=ムールムール f=27
+[ムールムール v=vm202 f=27]「What?! Seriously?! Why, why?! I thought I took all your power!」[k]
+[テオ f=06]「...」[k]
+Murmur is confused. She didn't expect her breath to be blocked, and she's quite flustered.[k]
+@fg c=ムールムール f=51
+[ムールムール f=51]「...！ ∗glance∗」[k]
+[ブルー f=06]「...」[k]
+Suddenly, Murmur's eyes darted to Blue.[k]
+@fg c=ムールムール f=06
+[ムールムール f=06]「...」[k]
+[ブルー f=06]「...」[k]
+[ムールムール v=vm203 f=06]「...It's you.」[k]
+; ↑ 冷静な口調に変わる
+[ブルー f=06]「...Hmph.」[k]
+It seems that Murmur has realized that Blue is the source of the power.[k]
+Murmur glares at Blue with contempt, biting her lip.[k]
+@fg c=ムールムール f=07
+[ムールムール v=vm204 f=07]「Why do you have that power, of all people? I was with you for ages, but I didn't notice it at all!」[k]
+@fg c=ムールムール f=53
+[ムールムール v=vm205 f=53]「Ugh, how annoying! Seriously, this is so, so, annoying! What the hell is wrong with you humans?」[k]
+@fg c=ムールムール f=08
+[ムールムール v=vm206 f=08]「Don't get cocky just because you blocked the breath of death. Don't underestimate a devil!」[k]
+[テオ f=10]「...!」[k]
+The horror of Murmur is not limited to her deadly breath. She is a high-ranking demon, with strength is beyond compare.[k]
+If we don't win this battle, everything will be wasted. We'll definitely defeat her![k]
+[textoff]
+@clf
+
+; ムールムール＆トロールたちと戦闘
+@monster pos=0  name=トロール
+@monster pos=1  name=トロール
+@monster pos=2  name=トロール
+@monster pos=4  name=トロール
+@monster pos=5  name=トロール
+@monster pos=6  name=トロール
+@monster pos=7  name=トロール
+@monster pos=8  name=エリートトロール
+@monster pos=9  name=エリートトロール
+@monster pos=10 name=悪魔
+@monster pos=11 name=エリートトロール
+@monster pos=12 name=エリートトロール
+@callbattle escape=false bgm=devil stopbgm=true
+; 戦闘に勝利
+
+[texton w=0]
+[ムールムール v=vm207 f=17]「Guaaaaahh!」[k]
+[テオ f=13]「We did it!」[k]
+We defeated all the trolls and dealt the final blow to Murmur![k]
+[ムールムール v=vm208 f=28]「Damn it...」[k]
+@fgf c=サンドラ f=07
+[texton w=1]
+[サンドラ v=vn078 f=07]「Come forth, hellfire!」[k]
+; ↑ 魔法を発動するかけ声
+[textoff]
+@clf
+@eval exp='var startTick = System.getTickCount()'
+@eval exp='System.doCompact()'
+@image layer=e0 storage=screen_deepred visible=true
+@image layer=e2 storage=BE_inferno3 clipwidth=900 clipheight=540 mode=addalpha
+@layopt layer=e2 left=0 top=60 visible=true
+@playse storage=fire1
+@anime layer=e2
+@anime_fadein layer=e0,e2
+@image layer=e1 storage=8004 visible=true left=300 top=60
+@wait time=1800
+[texton]
+[ムールムール v=vm209 f=17]「Gyaah!」[k]
+While Murmur was unable to move, Sandra cast the [emb exp='o.ファイアストーム.displayName'] spell![k]
+[ムールムール v=vm210 f=17]「Waaaaah!」[k]
+[textoff]
+@move layer=e1 time=2000 path=,,0
+@wait time=2000
+@layopt layer=e1 left=0 top=0 visible=false opacity=255
+[texton]
+Murmur, burned by magical flames, writhes in agony in the inferno, gradually losing her physical form.[k]
+[textoff]
+@move layer=e0 time=1000 path=,,0
+@move layer=e2 time=1000 path=,,0
+@wait time=1100
+@freeimage layer=e2
+@image layer=e0 storage=PE_base_view mode=psdodge5
+@layopt layer=e0 left=0 top=0 visible=true opacity=255
+@startemit layer=e0 storage=PE_powder6 time=1000
+@wait time=3000
+@clearemit layer=e0
+[texton w=0]
+Eventually... her entire body turned to ash and crumbled away without a trace.[k]
+[テオ f=12]「Did we do it...?」[k]
+All that remained was ash. It was blown away by the wind and scattered into the mist.[k]
+And then she disappeared completely from this world. This time, we had finally destroyed the devil Murmur.[k]
+[サンドラ v=vn079 f=02]「...Looks like it's over.」[k]
+[マックス f=03]「Yeaaaah!」[k]
+Max lets out a cry of joy! We defeated that detestable devil![k]
+This time, we destroyed her physical form. She will never return. I have finally put an end to this battle.[k]
+
+[if exp='HUM && game.curChara != game.wife'][リム v=vh077 f=03]「You did it! Captain!」[k][endif]
+[if exp='ELF && game.curChara != game.wife'][クレア v=ve078 f=01]「Good job, Captain!」[k][endif]
+[if exp='DWA && game.curChara != game.wife'][フレデリカ v=vd077 f=03]「You did it～!」[k][endif]
+[if exp='GNO && game.curChara != game.wife'][ミューズ f=02]「... ∗smile∗」[k][endif]
+[if exp='SYL && game.curChara != game.wife'][マルエット v=vs079 f=15]「Serves you right! This is our power!」[k][endif]
+
+[テオ f=13]「Everyone...!」[k]
+Everyone in the party expresses their joy.[k]
+Their expressions were filled with joy and freshness.[k]
+[textoff]
+
+; ※ドワーフだけここの会話をスキップ
+@jump target=*_skip_dwarf_a cond='game.wife.model == o.ドワーフＡ'
+
+@eval exp='game.curChara = game.wife'
+@fg c=ヒロイン e=&'game.wife.isHipNaked() ? "バスタオル" : "現在の装備"' f=22
+[texton w=1]
+
+; 婚約者のヒロインが静かに話しかけてくる
+[   if exp='isHUM'][リム v=vh078 f=22]「Captain...」[k]
+[elsif exp='isELF'][クレア v=ve079 f=22]「Captain...」[k]
+[elsif exp='isGNO'][ミューズ v=vg066 f=22]「Captain...」[k]
+[elsif exp='isSYL'][マルエット v=vs080 f=22]「Captain...」[k]
+[endif]
+
+[テオ f=05]「[ヒロイン]...!」[k]
+With sparkling eyes, [ヒロイン] approaches me.[k]
+I am moved as I watch my fiancée's smile.[k]
+We finally achieved our goal...! We accomplished our goal of defeating the devil Murmur...![k]
+
+[   if exp='isHUM'][リム v=vh079 f=22]「Captain, now we can...」[k]
+[elsif exp='isELF'][クレア v=ve080 f=22]「Captain, now we can...」[k]
+[elsif exp='isGNO'][ミューズ v=vg067 f=22]「Captain, now we can...」[k]
+[elsif exp='isSYL'][マルエット v=vs081 f=22]「Captain, now we can...」[k]
+[endif]
+
+[テオ f=02]「...Yes, we're going to be together.」[k]
+That's right, once we defeat Murmur, we'll get married. That's what we decided together.[k]
+The time has finally come to fulfill our promise.[k]
+[textoff]
+
+; スキップ終了
+*_skip_dwarf_a
+@out
+@w1
+
+; ブレイブタウンに戻る
+@eval exp='game.view.close()'
+@eval exp='game.openTownView(o.ブレイブタウン)'
+@gameon
+@fg l=ブルー e=通常 f=06 b
+@fg r=サンドラ f=01
+[texton w=1]
+[サンドラ v=vn080 f=01]「This is where we part ways. Captain.」[k]
+[テオ f=02]「Thank you very much for everything. It's thanks to you that I have been able to make it this far.」[k]
+[サンドラ v=vn081 f=03]「It was fun. Let's go on another adventure together if we get the chance.」[k]
+[テオ f=01]「Yes!」[k]
+[ブルー f=06]「...」[k]
+[テオ f=06]「Blue...」[k]
+[ブルー f=06]「...」[k]
+Blue is still the worst kind of person. I feel angry that the gods would give such a person the power to exorcise demons.[k]
+...However, it is true that Blue helped us defeat Murmur. He is a truly unpleasant individual, but he kept his word at the very least.[k]
+[テオ f=06]「I would like to express my gratitude for keeping our agreement. There is no doubt that it was thanks to you that we were able to defeat the devil.」[k]
+[ブルー f=01]「Hmph... I got what I wanted, so I have no complaints.」[k]
+[テオ f=06]「We've been through a lot together, but I'm grateful. This is goodbye. I hope that from now on, you will walk the path of a proper adventurer.」[k]
+[ブルー f=05]「Don't talk so condescendingly. I'll carry on doing whatever I want.」[k]
+[サンドラ v=vn082 f=01]「See you later.」[k]
+@cl
+Blue left with Sandra.[k]
+[textoff]
+
+@se f=period
+@eval exp='game.guest.removeMember(o.ブルー)'
+@eval exp='game.guest.removeMember(o.サンドラ)'
+@notice text="<y>Blue and Sandra left the party."
+
+[texton w=0]
+[マックス f=09]「Phew, we finally got rid of Blue. Just having him around makes me nervous～」[k]
+Max says with a look of relief on his face. Everyone else in the party also looks relieved.[k]
+In any case, this is a turning point. With this, our party's activities will return to normal.[k]
+We don't have to worry about the devil or Blue anymore.[k]
+
+;-----------------------------------------------------------------------------------------
+; ここで今まで通り過ぎた場所の状態をまとめて更新する
+
+; 元に戻す
+@delevent
+@delevent name=マルティナの酒場 num=8
+@delevent name=ホテル琥珀 num=2
+@delevent name=自宅 num=3
+@delevent name=ブルーのアジト num=2
+@delevent name=ブレイブタウン・北門 num=1
+@delevent name=森の中の廃屋入口 num=4
+@delevent name=町外れの遺跡入口 num=2
+@eval exp='o.エミール平原.antiWarp = false'
+@changefloor map=エミール平原 x=10 y=38 type=floor pimg=void
+@changefloor map=エミール平原 x=14 y=31 type=floor pimg=void
+@changefloor map=エミール平原 x=18 y=33 type=floor pimg=void
+
+; その他
+@eval exp='f.talkToPolaris = 3'
+;-----------------------------------------------------------------------------------------
+
+;  → ドワーフだけ別イベントへ
+@jump storage="heroine03b.scn" target=*theo_14 cond='game.wife.model == o.ドワーフＡ'
+
+; 以下、ドワーフ以外のシナリオ
+[テオ f=06]「...」[k]
+And with that, my wife and I can get married without any worries.[k]
+I was thinking about the new life that was about to begin.[k]
+[textoff]
+@out
+@w05
+
+@gameon
+@w05
+[texton]
+Well, first we have to hold the ceremony.[k]
+[nw]First, prepare [b]wedding rings[/b]. We'll need [b]two rings of the same type[/b]. Then, go to [b]a church[/b] and hold the wedding ceremony.[/nw][k]
+[textoff]
+
+[eventoff bgm]
+
+
+
+
+
+
+
+
+
+
+;◇主人公ホテルイベント・結婚後
+*hotel_wife_1
+
+; ラブホテルの一室
+@saveon
+@mu f=affair
+@se f=door1
+@bgf f=0004
+@wait time=1000
+@fg l=テオ f=10 b
+@fg r=ヒロイン f=05
+[texton w=1]
+[テオ f=06]「...」[k]
+[ヒロイン f=05]「...」[k]
+After checking in, I entered a room at the love hotel with [ヒロイン].[k]
+Pink walls and carpet. A heart-shaped double bed. You couldn't mistake it for anything other than a love hotel.[k]
+@se f=door1
+@fgf l=テオ f=05
+[従業員]「Excuse me, excuse me.」[k]
+[テオ f=05]「Aaa...」[k]
+Suddenly, an employee suddenly entered the room unannounced.[k]
+[従業員]「We offer a free laundry service. Please put your clothes in this basket. We will wash them and return them to you by tomorrow morning.」[k]
+[ヒロイン f=06]「...」[k]
+A laundry service...?[k]
+It may be convenient, but we brought weapons and other items with us in case something happened. I'd rather not leave our belongings with others.[k]
+[テオ f=05]「Uh... That's fine...」[k]
+[従業員]「We are sorry, but this service is mandatory for all guests staying at this hotel.」[k]
+[テオ f=05]「What...?」[k]
+You're saying laundry service is mandatory? What on earth is going on?[k]
+[従業員 f=01]「You see, we have had problems in the past with guests staying at this hotel, including vandalism and murder...」[k]
+[従業員 f=01]「To prevent any problems, we ask our customers to leave all their luggage, including what they are wearing.」[k]
+[テオ f=06]「I see...」[k]
+[従業員]「In return, we will wash the clothes you leave with us. Thank you very much for your cooperation.」[k]
+[テオ f=06]「...」[k]
+If that's the case, we have no choice but to accept...[k]
+We're here to conduct an undercover investigation of this hotel. I'm a little reluctant to check in all our luggage...[k]
+However, disobeying the employees will be regarded with suspicion. It would be counterproductive to be refused accommodation.[k]
+[テオ f=05]「Okay, I'll leave my clothes and luggage with you.」[k]
+[従業員]「Thank you for your cooperation! Please them in this basket. Please wear this instead.」[k]
+[textoff]
+@out
+@w1
+@bg f=0004 b
+@fg l=テオ e=バスタオル f=26 b
+@fg r=ヒロイン e=バスタオル f=25
+[texton]
+[テオ f=10]「...」[k]
+[ヒロイン f=25]「...」[k]
+After depositing all of our clothes, [ヒロイン] and I were only clad in towels.[k]
+This was all the employee offered us to wear.[k]
+[テオ f=25]「Um... You didn't have anything else to wear?」[k]
+[従業員]「Sorry, we wanted to provide bathrobes, but unfortunately we are out of stock...」[k]
+[テオ f=26]「Oh no...」[k]
+[従業員]「...Isn't it fine? Given what you are both here for, after all.」[k]
+The employee then smiles a little condescendingly.[k]
+[テオ f=26]「...」[k]
+...This is one of those places where if you stand out too much, people may become suspicious. Ostensibly, [ヒロイン] and I are just an ordinary couple who came to stay at a love hotel.[k]
+[テオ f=26]「I understand. Please take care of the laundry.」[k]
+[従業員]「Well, enjoy yourselves.」[k]
+@se f=door1
+∗slam∗[k]
+[テオ f=10]「...」[k]
+[ヒロイン f=25]「...」[k]
+Going to a love hotel with my wife feels... kind of strange.[k]
+[テオ f=02]「...Should we just go about our day as usual, [ヒロイン]?」[k]
+[textoff]
+@out
+@w05
+[texton]
+[if exp='game.wife.equip.hip == o.鋼鉄の貞操帯（ブルーの所持品）']
+	After that, [ヒロイン] and I quietly spent a night alone together for the first time in ages.[k]
+	I would have liked to have sex with her, but since she was wearing Blue's chastity belt, I had no choice but to give up.[k]
+[else]
+	After that, [ヒロイン] and I sought each other's bodies as usual.[k]
+	Perhaps it was the lewd atmosphere of the love hotel that made our sex more exciting than usual.[k]
+	@eval exp='game.curChara = game.wife'
+	@recordsex guy=テオ sex=&'intrandom(2, 3)' orgasm=&'intrandom(1, 3)'
+[endif]
+[textoff]
+@fa
+@w05
+@jump storage="main11.scn" target=*hotel_2
+

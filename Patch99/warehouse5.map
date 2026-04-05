@@ -1,0 +1,128 @@
+﻿; 愚者の倉庫
+
+name = 愚者の倉庫５
+insideName = Floor 5
+level = 23
+bgm = trick
+shadow = dark
+sky = black
+roof = stone
+blank = rock
+antiWarp = true
+
+; 各パーツ
+━ = stone
+　 = marble
+☆ = soilr
+❑ = cube
+⧻ = fence
+☖ = arch
+☗ = gate
+︻ = panel
+
+; 移動ポイント
+(A) = map:愚者の倉庫４, x:4, y:0, way:n, symbol:exit, ask:Go to the previous floor?
+(B) = map:愚者の倉庫６, x:0, y:10, way:e, symbol:exit, ask:Go to the next floor?
+
+; 宝箱
+box[1] = 罠はない,グレートソード,修理の巻物,アウラの宝珠,アウラの宝珠
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  
+  ┏━━━━━━━━☗┓	┏━━━━━━━┳━┓
+10┃　　　　　　　　Ⓐ┃	┃　　　　　　　┃Ⓑ☗
+  ┃　　　　　　　　　┃	┃　　　　　　　┃　┃
+ 9┃　　　　　　　　　┃	┃❑　❑　　　❑┃　┃
+  ┣☖━━┳━━⧻━━╋━┛　　　　　　　┃　┃
+ 8┃　　②】　　❶　　┃　　　　　　❑　　┃　┃
+  ┃　　　┃　　　　　┃　┏━━━━━┓　┃　┃
+ 7┃　　❑┃　　　　　┃　┃					┃　┃　┃
+  ┃　　　┗━━⧻━━┛　┗━━━┓	┃　┃　┃
+ 6┃　　❑　　　　　❑　　　　　　┃	┃　┃　┃
+  ┃　┏━┓　　　┏━┓　┏━┓　┃	┃　┃　┃
+ 5┃　┃	┃　　❑┃	┃　┃	┃　┃	┃　⧻　┃
+  ┃　┗━┛　　　┗━┛　┗━┛　┃	┃　┃　┃
+ 4┃　　❑　　　❑　　　　　　　　┃	┃①┃　┃
+  ┃　┏━┓　┏━━━━━━━┳━┻━┛　┃　┃
+ 3┃　┃	┃　┃							┃☆　☆　☆┃　┃
+  ┃　┗━┛　┗━━━━━┓	┃　　　　　┃　┃
+ 2┃　　❑　　　　　　　　┃	┃☆　☆　☆┃　┃
+  ┣☖┓　　　　　　　　　┗━┛　　　　　┗━┫
+ 1┃　┃　　❑　　　　　　　①　☆　☆　☆　　┃
+  ┃　┗━━━━━━━━━┓　　　　　　　　　┃
+ 0┃　　　　　　　　　　③】　　☆　☆　☆　　┃
+  ┗━━━━━━━━━━━┻━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+switchFence(9, 5, "e", events.has(1) ? "close" : "open");
+switchFence(3, 6, "n", events.has(1) ? "close" : "open");
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] party.lastIsPush
+
+@eventoff cond='game.map.getFloorInfo(7, 3).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(7, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(7, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(7, 0).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(8, 3).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(8, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(8, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(8, 0).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(9, 3).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(9, 2).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(9, 1).type != "movable"'
+@eventoff cond='game.map.getFloorInfo(9, 0).type != "movable"'
+@delevent
+@wait time=1000
+@se f=fence
+@switchfence x=9 y=5 way=e mode=open
+@switchfence x=3 y=6 way=n mode=open
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="Keep the passageway clear and don't block it until the last minute."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="Each stone can only go through one of the two entrances. You should decide in advance which ones to store last."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*reset_floor
+
+[if exp='! game.map.events.has(1)']
+	@call storage="anime.ks" target=*failed_to_reset
+	[eventoff]
+[endif]
+
+@se f=dragstone
+@eval exp='game.map.reset()'
+@wait time=800
+@warp x=0 y=9 way=s
+@notice text="All the stones on the floor have returned to their original positions. You were warped back to near the entrance!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

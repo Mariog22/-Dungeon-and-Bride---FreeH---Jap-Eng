@@ -1,0 +1,931 @@
+﻿; 施設データ
+
+name	王立ギルド
+kind	guild
+displayName	Royal Guild
+members	リム,クレア,フレデリカ,ミューズ,マルエット
+maxMembers	12
+
+name	冒険者ギルド
+kind	guild
+displayName	Adventurers' Guild
+members	ソーニャ,マリアンヌ
+maxMembers	10
+
+name	海岸ギルド
+kind	guild
+displayName	Coastal Guild
+members	シャロン
+maxMembers	8
+
+name	雪の町のギルド
+kind	guild
+displayName	Snow Town Guild
+members	テーミス,リーゼロッテ
+maxMembers	8
+
+name	達人のギルド
+kind	guild
+displayName	Guild of Masters
+members	コメット
+maxMembers	8
+
+name	待合所
+kind	guild
+displayName	Waiting Room
+maxMembers	12
+isWaitingRoom	true
+
+name	ベトリヌスの酒場
+kind	bar
+displayName	Vetrinus Tavern
+img	bar_common
+bgm	bar
+peopleAround	true
+quest	ポラリス神殿を守ってほしい
+quest	墓参り
+foods	ローストビーフ,アボカドのサラダ,鶏の唐揚げ（レモン汁がけ）,メロン,オレンジのカクテル
+
+name	かもめ亭
+kind	bar
+displayName	Gull's Nest
+img	bar_common
+bgm	bar
+peopleAround	true
+quest	さらわれた少女たちの救出
+quest	モデル募集
+quest	怪鳥マッドウイングの羽
+foods	ウツボの蒲焼き,真鯛のアクアパッツァ,サーモンのカルパッチョ,ムール貝のパスタ,ココナッツリキュール
+
+name	マルティナの酒場
+kind	bar
+displayName	Martina Tavern
+img	bar_common
+bgm	bar
+peopleAround	true
+quest	赤いネックレスを探してほしい
+foods	ウインナー,スモークベーコン,すね肉の煮込み,ポテトフライ,クラフトビール
+
+name	山小屋パブ
+kind	bar
+displayName	Mountain Hut Pub
+img	bar_common
+bgm	bar
+peopleAround	true
+quest	つるはしを取ってきてくれ
+quest	鉱山のインプ軍団
+quest	アダマンタイト採集
+foods	山鳥のグリル,山菜のスープ,山賊焼き,モンブラン,山葡萄のワイン
+
+name	大洞窟バル
+kind	bar
+displayName	Grand Cave Bar
+img	bar_common
+bgm	bar
+peopleAround	true
+quest	古代の宝物庫
+quest	鎧のテスター募集
+quest	サキュバスに会いたい
+foods	サーロインステーキ,鮭のムニエル,海老と蟹のビスク,マスカット,最高級シャンパン
+
+name	町営食堂
+kind	bar
+displayName	Town Cafeteria
+img	bar_common
+bgm	bar
+peopleAround	true
+quest	砂漠の主を退治してほしい
+quest	奇跡の聖杯
+quest	金のフェアリーを探して！
+quest	貞操帯の鍵を探して下さい
+foods	ビーフジャーキー,仔牛のシチュー,豆のスープ,ホットケーキ,バーボン
+
+name	冒険者の宿
+kind	inn
+displayName	Adventurers' Inn
+innType	normal
+img	inn_worker
+rounge	name:ラウンジ, x:560, y:400, col:4, displayName:Lounge
+guestRoom	name:エコノミールーム, x:825, y:15, bed:2, price:800, displayName:Economy
+guestRoom	name:大部屋, x:553, y:15, bed:4, price:800, col:2, displayName:Large
+guestRoom	name:ロイヤルスイート, x:210, y:15, bed:2, price:3500, col:2, displayName:Royal
+guestRoom	name:スイートルーム, x:210, y:298, bed:2, price:2400, col:2, displayName:Suite
+guestRoom	name:簡易寝台, x:210, y:515, bed:1, price:300, displayName:Simple
+stable	name:馬小屋, x:45, y:5, bed:1, price:0, displayName:Stable
+exitBtn	x:660, y:682
+
+name	ホテル・クイーン
+kind	inn
+displayName	Hotel Queen
+innType	lovehotel
+img	inn_queen
+rounge	name:ラウンジ, x:450, y:314, col:3, displayName:Lounge
+guestRoom	name:１号室, x:651, y:30, bed:2, price:1100, col:2, displayName:Room 1
+guestRoom	name:２号室, x:439, y:30, bed:2, price:1000, col:2, displayName:Room 2
+guestRoom	name:３号室, x:227, y:30, bed:2, price:1200, col:2, displayName:Room 3
+guestRoom	name:４号室, x:15, y:30, bed:2, price:1200, col:2, displayName:Room 4
+guestRoom	name:５号室, x:235, y:380, bed:2, price:1500, col:2, displayName:Room 5
+guestRoom	name:６号室, x:15, y:380, bed:2, price:1500, col:2, displayName:Room 6
+stable	name:従業員通路, x:888, y:10, bed:1, price:0, displayName:Passage
+exitBtn	x:675, y:680
+
+name	ホテル琥珀
+kind	inn
+displayName	Hotel Amber
+innType	normal
+img	inn_amber
+rounge	name:ラウンジ, x:60, y:260, col:4, displayName:Lounge
+guestRoom	name:簡易寝台1, x:150, y:50, bed:1, price:150, displayName:Bunk 1
+guestRoom	name:簡易寝台2, x:320, y:50, bed:1, price:150, displayName:Bunk 2
+guestRoom	name:エコノミールーム1, x:600, y:50, bed:2, price:800, col:1, displayName:Economy 1
+guestRoom	name:エコノミールーム2, x:780, y:50, bed:2, price:800, col:1, displayName:Economy 2
+guestRoom	name:簡易寝台3, x:500, y:360, bed:1, price:150, displayName:Bunk 3
+guestRoom	name:大部屋, x:700, y:360, bed:3, price:300, col:3, displayName:Large
+stable	name:馬小屋, x:400, y:550, bed:1, price:0, col:4, displayName:Stable
+exitBtn	x:270, y:600
+
+name	潮風のペンション
+kind	inn
+displayName	Seabreeze Inn
+innType	normal
+img	inn_seaside
+rounge	name:ラウンジ, x:670, y:300, col:3, displayName:Lounge
+guestRoom	name:真珠の間, x:320, y:15, bed:2, price:1400, displayName:Pearl
+guestRoom	name:珊瑚の間, x:320, y:320, bed:2, price:1000, displayName:Coral
+guestRoom	name:海月の間, x:480, y:15, bed:2, price:800, displayName:Moon
+guestRoom	name:椰子の間, x:480, y:320, bed:2, price:1100, displayName:Palm
+guestRoom	name:入江の間, x:635, y:15, bed:1, price:300, col:1, displayName:Bay
+guestRoom	name:潮騒の間, x:767, y:15, bed:3, price:1200, col:2, displayName:Hearth
+stable	name:物置, x:30, y:20, bed:1, price:0, col:2, displayName:Storeroom
+exitBtn	x:580, y:650
+
+name	雪の宿
+kind	inn
+displayName	Snowy House
+innType	normal
+img	inn_snow
+rounge	name:ラウンジ, x:350, y:240, col:4, displayName:Lounge
+guestRoom	name:梅の間, x:623, y:  5, bed:2, price:1200, col:1, displayName:Plum
+guestRoom	name:杉の間, x:485, y:  5, bed:1, price:300, displayName:Cedar
+guestRoom	name:檜の間, x:347, y:  5, bed:1, price:300, displayName:Cypress
+guestRoom	name:松の間, x:190, y:  5, bed:2, price:1400, col:1, displayName:Pine
+guestRoom	name:竹の間, x: 30, y:  5, bed:2, price:800, col:1, displayName:Bamboo
+guestRoom	name:柳の間, x:190, y:320, bed:1, price:1000, displayName:Willow
+guestRoom	name:柊の間, x: 30, y:320, bed:1, price:1100, displayName:Holly
+stable	name:薪小屋, x:788, y: 20, bed:1, price:0, col:2, displayName:Woodshed
+exitBtn	x:640, y:640
+
+name	大洞窟ホテル
+kind	inn
+displayName	Great Cave Hotel
+innType	normal
+img	inn_cavern
+rounge	name:ラウンジ, x:45, y:20, col:4, displayName:Lounge
+guestRoom	name:１号室, x:468, y: 30, bed:1, price:2000, displayName:Room 1
+guestRoom	name:２号室, x:600, y: 30, bed:1, price:2000, displayName:Room 2
+guestRoom	name:３号室, x:732, y: 30, bed:1, price:2000, displayName:Room 3
+guestRoom	name:４号室, x:864, y: 30, bed:1, price:2000, displayName:Room 4
+guestRoom	name:５号室, x: 45, y:380, bed:1, price:2000, displayName:Room 5
+guestRoom	name:６号室, x:177, y:380, bed:1, price:2000, displayName:Room 6
+guestRoom	name:７号室, x:309, y:380, bed:1, price:2000, displayName:Room 7
+guestRoom	name:８号室, x:441, y:380, bed:1, price:2000, displayName:Room 8
+guestRoom	name:９号室, x:573, y:380, bed:2, price:4000, displayName:Room 9
+stable	name:資材置場, x:880, y:360, bed:1, price:0, displayName:Storage
+exitBtn	x:760, y:540
+
+name	簡易宿泊所
+kind	inn
+displayName	Simple Lodging
+innType	normal
+img	inn_hostel
+rounge	name:ラウンジ, x:308, y:240, col:4, displayName:Lounge
+guestRoom	name:１号室, x: 41, y: 15, bed:1, price:500, displayName:Room 1
+guestRoom	name:２号室, x:179, y: 15, bed:1, price:500, displayName:Room 2
+guestRoom	name:３号室, x:317, y: 15, bed:1, price:500, displayName:Room 3
+guestRoom	name:４号室, x:455, y: 15, bed:1, price:500, displayName:Room 4
+guestRoom	name:５号室, x:593, y: 15, bed:1, price:500, displayName:Room 5
+guestRoom	name:６号室, x:731, y: 15, bed:1, price:500, displayName:Room 6
+guestRoom	name:７号室, x:869, y: 15, bed:1, price:500, displayName:Room 7
+guestRoom	name:大部屋, x: 60, y:270, bed:3, price:1500, col:2, displayName:Large
+stable	name:ラクダ小屋, x:800, y:430, bed:1, price:0, col:2, displayName:Camel Barn
+exitBtn	x:400, y:640
+
+name	マリオン武器工房
+kind	shop
+displayName	Marion Weapons Workshop
+icon	house_weapon
+img	shop_marion
+welcome	This is a weapon store. We have the most advanced weapons in the world.
+thanks	Thanks. You got a great deal.
+paid	Yes, I paid a lot for it, so be grateful.
+repaired	I fixed it... well, that's what I do.
+identified	There's no item that I don't know.
+uncursed	I've broken the curse.
+itemSeg	6,2,30
+shopItem	バトルハンマー,フレイル,,,,,良い短剣,トマホーク,ロングソード,ロングボウ,鉄の槍,固い杖
+spItemSeg	3,1,30
+specialItem	アイスロッド,バトルアックス,フランベルジュ
+
+name	海の男の武器店
+kind	shop
+displayName	Seaman Weapon Shop
+icon	house_weapon
+img	shop_bull
+welcome	This is a weapon store for men of the sea!
+thanks	Thanks!
+paid	There you go! The payment!
+repaired	Now we're back in business!
+identified	Here's the appraisal!
+uncursed	The curse is lifted!
+itemSeg	5,1,30
+shopItem	カトラス,サーベル,木の槍,ジャベリン,鉄の槍
+spItemSeg	3,1,30
+specialItem	シャムシール,パルチザン,トライデント
+
+name	剣の店リーネ
+kind	shop
+displayName	Sword Shop Leane
+icon	house_weapon
+img	shop_leane
+welcome	We specialize in swords, so if it's swords you're after, we've got you covered.
+thanks	Thank you, please use it carefully.
+paid	Here you go.
+repaired	It's fixed now, so take good care of it.
+identified	I've appraised it.
+uncursed	Rest assured, the curse has been lifted.
+itemSeg	5,1,80
+shopItem	良い短剣,ロングソード,グラディウス,カトラス,サーベル
+spItemSeg	3,1,80
+specialItem	スティレット,シャムシール,クレイモア
+
+name	ハンターズウェポン
+kind	shop
+displayName	Hunters' Weapons
+icon	house_weapon
+img	shop_keith
+welcome	Good weapons here at Hunter's weapon shop!
+thanks	Thank you.
+paid	This is the price.
+repaired	It's as good as new.
+identified	This is what it looks like.
+uncursed	Rest assured. The curse is gone.
+itemSeg	6,1,50
+shopItem	ショートボウ,ロングボウ,ロングボウ,コンポジットボウ,コンポジットボウ,魔法使いの弓
+spItemSeg	3,1,30
+specialItem	エルフの弓,魔導士の杖,ブーメラン
+
+name	砂漠の戦士の店
+kind	shop
+displayName	Desert Warrior Store
+icon	house_weapon
+img	shop_carla
+welcome	Oh, hello there, guest.
+thanks	Yes, hi.
+paid	I'll leave the money here.
+repaired	I fixed it for you.
+identified	I wrote down the results of the appraisal there.
+uncursed	The curse is lifted, and you can go home now.
+itemSeg	5,1,80
+shopItem	スティレット,カトラス,サーベル,シャムシール,ファルシオン
+spItemSeg	3,1,30
+specialItem	クレイモア,グレイブ,グレートアックス
+
+name	鎧屋ドミンゴ
+kind	shop
+displayName	Domingo Armorer
+icon	house_armor
+img	shop_lizard
+welcome	I'm Domingo, and I'm your man when it comes to armor.
+thanks	Thanks. Good deal.
+paid	Here you go.
+repaired	It's fixed. Don't break it again.
+identified	Didn't you understand it was like that?
+uncursed	It's okay now. What a disaster.
+itemSeg	3,2,30
+shopItem	革のブーツ,硬い革鎧,,鉄の小手,バックラー,鎖かたびら
+spItemSeg	3,2,30
+specialItem	鉄のブーツ,プレートメイル・上,,深紅のローブ,プレートメイル・下,輝く鎖かたびら
+
+name	マーメイドビューティ
+kind	shop
+displayName	Mermaid Beauty
+icon	house_armor
+img	shop_mermaid
+welcome	We specialize in mermaid fashion.
+thanks	Thank you.
+paid	Here's your money.
+repaired	Yes, it's fixed.
+identified	Here's the appraisal result.
+uncursed	The curse has been lifted.
+itemSeg	3,2,50
+shopItem	青いビキニ・上,魔女のビキニ・上,スケイルメイル・上,青いビキニ・下,魔女のビキニ・下,スケイルメイル・下
+spItemSeg	2,2,100
+specialItem	人魚のブラ,人魚のパンツ,マーマンズシェル
+
+name	アイザック防具店
+kind	shop
+displayName	Isaac Armor Store
+icon	house_armor
+img	shop_isaac
+welcome	This is an armor store. Take your time and look around.
+thanks	Thank you and see you soon.
+paid	Thank you. Please accept my payment.
+repaired	I fixed it, so it should work fine now.
+identified	See how it turned out? Ask me anything else you want.
+uncursed	Rest assured, the curse has been lifted.
+itemSeg	3,2,70
+shopItem	ブロンズバックラー,身かわしの服,硬い革鎧,胸当て,レンジャーブーツ,鉄の小手
+spItemSeg	3,1,150
+specialItem	銀の小手,銀のブーツ,支えの盾
+
+name	兵士の鎧屋
+kind	shop
+displayName	Soldier Armor Shop
+icon	house_armor
+img	shop_mameluke
+welcome	This is an armor store. Prepare well.
+thanks	Appreciate it.
+paid	This is the price.
+repaired	Repaired.
+identified	Appraisal finished.
+uncursed	The curse has disappeared.
+itemSeg	3,6,30
+shopItem	,,,ブロンズバックラー,,鉄の小手,,豪華な革鎧,,革のスカート,,,,,,深紅のローブ,胸当て,輝く鎖かたびら
+spItemSeg	2,2,50
+specialItem	シルバースケイル・上,,シルバースケイル・下,オーガの盾
+
+name	世界一の道具店
+kind	shop
+displayName	World's Best Tool Store
+icon	house_tool
+img	shop_nora
+welcome	Welcome! This is the world's best tool store with the best selection and cheapest prices～!
+thanks	Come on, buy some more!
+paid	Yes, money!
+repaired	Yes, the repair is complete! Cheap, right～?!
+identified	Yes, the appraisal is over!
+uncursed	Yes, the spell is done!
+itemSeg	5,3,50
+shopItem	毒消しの花,魔法の砂,精霊の縫い糸,毒消しの花,トランクス,魔法の砂,冒険者のブラ,ふっくらパン,白いブラ,,召喚びん,冒険者のパンツ,毒消しの花,毒消しの花,たいまつ
+spItemSeg	3,3,-10
+specialItem	初級の書,召喚士の書,吟遊詩人の書,ハイポーション
+
+name	ヘルガの薬屋
+kind	shop
+displayName	Helga Pharmacy
+icon	house_tool
+img	shop_herga
+welcome	Welcome to Helga's pharmacy.
+thanks	Thank you!
+paid	Yes, this is the price.
+repaired	It's fixed.<r>This is safe.
+identified	Here's the appraisal result.
+uncursed	The curse dissipated.<r>It's okay now.
+itemSeg	4,3,50
+shopItem	ふっくらパン,ふっくらパン,魔法の砂,魔法の砂,毒消しの花,麻痺治療薬,麻痺治療薬,眠気ざまし,召喚びん,召喚びん,精霊の縫い糸,精霊の縫い糸
+spItemSeg	3,2,100
+specialItem	ミスリルの砂,石化解除薬,復活の粉,中級の書,ドルイドの書,ソーサラーの書
+
+name	ドナの道具屋
+kind	shop
+displayName	Donna's Tool Shop
+icon	house_tool
+img	shop_donna
+welcome	Welcome to Donna's Tool Shop!
+thanks	Thanks!
+paid	Yes! Here's your cash!
+repaired	Yes! Good as new!
+identified	Now you can see it too!
+uncursed	Hey, wait! You're safe now!
+itemSeg	4,3,50
+shopItem	はちみつパン,はちみつパン,ポーション,ポーション,魔法の砂,魔法の砂,麻痺治療薬,麻痺治療薬,冒険者のブラ,,革のズボン
+spItemSeg	3,2,100
+specialItem	ハイポーション,エーテル,強力眠気ざまし,特効薬,敏捷性の秘薬,復活の粉
+
+name	アイテムの店パメラ
+kind	shop
+displayName	Item Store Pamela
+icon	house_tool
+img	shop_pamella
+welcome	Welcome to Pamela's Shop!
+thanks	Thank you!
+paid	Here's your money!
+repaired	Yes, it's fixed!
+identified	I appraised it!
+uncursed	The curse is lifted, you're safe now!
+itemSeg	4,4,70
+shopItem	,,,,ボム,ボム,ハイパーボム,ハイパーボム,毒消しの花,麻痺治療薬,石化解除薬,召喚びん,魔法の砂,ミスリルの砂,ミスリルの砂,精霊の縫い糸
+spItemSeg	2,2,100
+specialItem	特効薬,復活の粉,生命力の秘薬,ロードの書
+
+name	雑貨店ハッピードッグ
+kind	shop
+displayName	Happy Dog General Store
+icon	house_tool
+img	shop_kobold
+welcome	This is the general goods store Happy Dog! We sell everything!
+thanks	Thanks! Come again!
+paid	Here's your money! Quick, put it in your wallet!
+repaired	Fixed it! Use it carefully from now on!
+identified	I got it! How'd you like it?
+uncursed	The curse is lifted! Well, it happens to everyone!
+itemSeg	4,4,70
+shopItem	,,,,ボム,ボム,ハイパーボム,ハイパーボム,青りんご,けむり玉,精霊の縫い糸,精霊の縫い糸,眠気ざまし,石化解除薬,召喚びん,ドライアドの霊薬
+spItemSeg	4,1,200
+specialItem	武芸の秘薬,知恵の秘薬,信仰心の秘薬,運の秘薬
+
+name	よろず屋マンゴー
+kind	shop
+displayName	Jack of all Trades Mango
+icon	house_tool
+img	shop_mango
+welcome	When you visit the store, a slime appears and politely welcomes you.
+thanks	He showed his gratitude by bending his round body with all his might.
+paid	He dexterously stretched out and handed you the money.
+repaired	A short time later, he brought an item from the back of the store that he had fixed.
+identified	He gently offered you a piece of paper with the results of the appraisal on it.
+uncursed	I don't know how in the world he did it, but suddenly the curse ceased and the equipment disappeared.
+itemSeg	4,3,50
+shopItem	青りんご,精霊の縫い糸,ミスリルの砂,オリハルコンの砂,眠気ざまし,ハイポーション,石化解除薬,召喚びん,レビテイトの巻物,マジカルボートの巻物,マジカルボートの巻物,リターンの巻物
+spItemSeg	3,2,100
+specialItem	金の鍵,特効薬,ハイエーテル,敏捷性の秘薬,武芸の秘薬,解呪の巻物・改
+
+name	ドロシーの魔法店
+kind	shop
+displayName	Dorothy's Magic Shop
+icon	house_magic
+img	shop_dorothy
+welcome	Welcome～! Please take your time to look around.
+thanks	Thank you～!
+paid	Thank you again～!
+repaired	Fixed～!
+identified	Yes, the appraisal!
+uncursed	The curse has been lifted! All good～!
+itemSeg	4,2,100
+shopItem	サイレンスの巻物,ブリザードの巻物,ジャンプの巻物,ジャンプの巻物,スリープの魔法書,トーチの魔法書,サイレンスの魔法書,ジャンプの魔法書
+spItemSeg	3,1,200
+specialItem	ファイアリングの魔法書,キュアパラライズの魔法書,ディテクトの魔法書
+
+name	魔法の店うみねこ
+kind	shop
+displayName	Seagull Magic Store
+icon	house_magic
+img	shop_witchb
+welcome	Welcome～ This is a magic store!
+thanks	Thanks for your time...
+paid	I really appreciate you selling it to me.
+repaired	I fixed it～ Maybe this will work?
+identified	Yes, this is what it is, probably?
+uncursed	The curse is lifted.
+itemSeg	4,2,100
+shopItem	鑑定の巻物,解呪の巻物,サイレンスの巻物,ジャンプの巻物,スカウトの魔法書,キュアパラライズの魔法書,マジックバリアの魔法書,スパークの魔法書
+spItemSeg	3,1,200
+specialItem	パワーヒールの魔法書,キュアポイズンの魔法書,マルチヒールの魔法書
+
+name	マジカル☆ウェンディ
+kind	shop
+displayName	Magical☆Wendy
+icon	house_magic
+img	shop_wendy
+welcome	Welcome to Magical Wendy!<r>Good spellbooks are available ☆
+thanks	Thank you ☆
+paid	Yes! This is right ☆
+repaired	It's fixed.<r>Please ask me again ☆
+identified	Yes, the appraisal result.<r>Please ask me again ☆
+uncursed	I broke the curse.<r>Please ask me again ☆
+itemSeg	4,2,100
+shopItem	レビテイトの巻物,レビテイトの巻物,マインドリードの巻物,イレースマジックの巻物,マインドリードの魔法書,レビテイトの魔法書,ブリザードの魔法書,イレースマジックの魔法書
+spItemSeg	3,1,200
+specialItem	サンダーバーストの魔法書,ミラーウォールの魔法書,ファイアストームの魔法書
+
+name	ホークワロスの魔法店
+kind	shop
+displayName	Hawkwaros Magic Shop
+icon	house_magic
+img	shop_hawkwaroth
+welcome	This is Hawkwaros Magic Store, so buy something from me.
+thanks	Sorry, please buy some more.
+paid	Here, your money.
+repaired	Look, I fixed it for you... Ugh, it's too much for my old body.
+identified	As you can see, I know everything.
+uncursed	The curse has been lifted!
+itemSeg	4,2,100
+shopItem	アクセラレートの巻物,アイスブラストの巻物,マジカルボートの巻物,マジカルボートの巻物,ファイアストームの魔法書,マジックウェポンの魔法書,エクストラヒールの魔法書,マジカルボートの魔法書
+spItemSeg	3,1,200
+specialItem	アイスブラストの魔法書,リムーブカースの魔法書,アシッドバーストの魔法書
+
+name	ドナの行商
+kind	shop
+displayName	Donna's Peddling
+img	shop_vendor
+welcome	Donna's selling, so buy a lot!
+thanks	Thanks!
+paid	Yes! Here's your cash!
+itemSeg	4,2,100
+shopItem	青りんご,青りんご,麻痺治療薬,石化解除薬,修理の巻物,修理の巻物,解呪の巻物,解呪の巻物
+spItemSeg	3,1,200
+specialItem	鉄のブーメラン,清浄の指輪,行動力増加袋
+noService	true
+
+name	ドナの行商２
+kind	shop
+displayName	Donna's Peddling
+img	shop_vendor
+welcome	Donna's selling, so buy a lot!
+thanks	Thanks!
+paid	Yes! Here's your cash!
+itemSeg	4,2,100
+shopItem	青りんご,毒消しの花,麻痺治療薬,石化解除薬,修理の巻物,解呪の巻物・改,マジカルボートの巻物,マジカルボートの巻物
+spItemSeg	2,1,200
+specialItem	復活の粉,マジカルボートの魔法書
+noService	true
+
+name	森の魔法屋
+kind	shop
+displayName	Forest Magic
+img	shop_witchp
+welcome	I'm surprised you came here, but since you did, why don't you buy something?
+thanks	Thank you.
+paid	Here you go, sir.
+itemSeg	4,2,100
+shopItem	修理の巻物,解呪の巻物,ウィザードアイの巻物,ワープの巻物,キュアポイズンの魔法書,ウィザードアイの魔法書,マルチヒールの魔法書,ワープの魔法書
+spItemSeg	3,1,200
+specialItem	レイズデッドの魔法書,アナライズの魔法書,ミサイルシールドの魔法書
+noService	true
+
+name	アマゾネス魔法販売
+kind	shop
+displayName	Amazoness Magic Sales
+img	shop_amazon
+welcome	Please take a look at our magic items for sale!
+thanks	Thank you.
+paid	This is the price.
+itemSeg	4,2,100
+shopItem	修理の巻物,解呪の巻物,アンロックの巻物,アンロックの巻物,ライトストリームの魔法書,リムーブカースの魔法書,マルチエイドの魔法書,アンロックの魔法書
+spItemSeg	3,1,200
+specialItem	魔術師の指輪,結界の腕輪,火の精霊の指輪
+noService	true
+
+name	スワロスの店
+kind	shop
+displayName	Swaros Store
+img	shop_swaroth
+welcome	This is Swaros' store. Please buy something to take home.
+thanks	Sorry, please buy some more.
+paid	Here, your money.
+itemSeg	4,2,100
+shopItem	マジカルボートの巻物,マジカルボートの巻物,ミスティックアイの巻物,ミスティックアイの巻物,アイスブラストの魔法書,レイズデッドの魔法書,リカバリーの魔法書,ミスティックアイの魔法書
+spItemSeg	3,1,200
+specialItem	縞のパンツ,赤いパンツ,ラピスラズリの魔石
+noService	true
+
+name	魔法店ベイワロ・スターズ
+kind	shop
+displayName	Magic Shop Baywalos Stars
+img	shop_baywaroth
+welcome	This is the magic store Baywalos Stars, so buy something from me.
+thanks	Sorry, please buy some more.
+paid	Here, your money.
+itemSeg	4,1,100
+shopItem	スターバーストの巻物,スターバーストの巻物,スターバーストの魔法書,スターバーストの魔法書
+spItemSeg	3,1,200
+specialItem	白いパンツ,ピンクのパンツ,女の秘薬
+noService	true
+
+name	大人の魔法店
+kind	shop
+displayName	Adult Magic Shop
+img	shop_succubus
+welcome	This is a magic store for adults. Want something?
+thanks	Woohoo! Thank you♪
+paid	Yes, but wouldn't it be better to pay with your body?
+itemSeg	4,2,100
+shopItem	精力剤,精力剤,ミスティックアイの巻物,鑑定の巻物,アナライズの魔法書,アシッドバーストの魔法書
+spItemSeg	2,2,80
+specialItem	男の秘薬,妖艶妻のシルク,フェロモンの粉,鋼鉄の貞操帯
+noService	true
+
+name	アウラ教会
+kind	church
+displayName	Aura Church
+img	church_good
+luck	3
+alignment	good
+cruising	true
+
+name	イーラ教団
+kind	church
+displayName	Era Cult
+img	church_bad
+luck	3
+alignment	bad
+cruising	true
+
+name	巡礼シスター
+kind	church
+displayName	Pilgrim Sister
+alignment	good
+cruising	true
+
+name	アウラ中央教会
+kind	church
+displayName	Aura Central Church
+img	church_good
+luck	4
+alignment	good
+
+name	イーラ中央寺院
+kind	church
+displayName	Era Central Temple
+img	church_bad
+luck	4
+alignment	bad
+
+name	ブレイブタウン教会
+kind	church
+displayName	Bravetown Church
+img	church_good
+luck	5
+alignment	good
+
+name	浜辺の教会
+kind	church
+displayName	Beach Church
+img	church_good
+luck	4
+alignment	good
+
+name	雪国の礼拝堂
+kind	church
+displayName	Snowy Chapel
+img	church_bad
+luck	5
+alignment	bad
+
+name	地下教会
+kind	church
+displayName	Underground Church
+img	church_bad
+luck	6
+alignment	bad
+
+name	最果ての教会
+kind	church
+displayName	Furthest Church
+img	church_good
+luck	6
+alignment	good
+
+name	アイテム保管庫
+kind	others
+displayName	Warehouse
+icon	house_warehouse
+mindRead	true
+link	倉庫
+displayLink	Warehouse
+link	一時預かり所
+displayLink	Temp. Storage
+link	説明を聞く
+displayLink	Explanation
+link	　　　
+
+name	冒険者の保管庫
+kind	others
+displayName	Adventurer's Vault
+icon	house_warehouse
+mindRead	true
+link	倉庫
+displayLink	Warehouse
+link	一時預かり所
+displayLink	Temp. Storage
+link	説明を聞く
+displayLink	Explanation
+
+name	シーサイド保管庫
+kind	others
+displayName	Seaside Storage
+icon	house_warehouse
+mindRead	true
+link	倉庫
+displayLink	Warehouse
+link	一時預かり所
+displayLink	Temp. Storage
+link	説明を聞く
+displayLink	Explanation
+
+name	銀世界の保管庫
+kind	others
+displayName	Silver World Vault
+icon	house_warehouse
+mindRead	true
+link	倉庫
+displayLink	Warehouse
+link	一時預かり所
+displayLink	Temp. Storage
+link	説明を聞く
+displayLink	Explanation
+
+name	地下の保管庫
+kind	others
+displayName	Underground Vault
+icon	house_warehouse
+mindRead	true
+link	倉庫
+displayLink	Warehouse
+link	一時預かり所
+displayLink	Temp. Storage
+link	説明を聞く
+displayLink	Explanation
+
+name	塵埃の保管庫
+kind	others
+displayName	Dust Vault
+icon	house_warehouse
+mindRead	true
+link	倉庫
+displayLink	Warehouse
+link	一時預かり所
+displayLink	Temp. Storage
+link	説明を聞く
+displayLink	Explanation
+
+name	アイテム博物館
+kind	others
+displayName	Item Gallery
+link	武器展示室
+displayLink	Weapon Gallery
+link	防具展示室
+displayLink	Armor Gallery
+link	道具展示室
+displayLink	Item Gallery
+link	説明を聞く
+displayLink	Explanation
+link	アイテム探し
+displayLink	Item Search
+
+name	闘技場
+kind	others
+displayName	Arena
+peopleAround	true
+link	エントリー
+displayLink	Enter
+link	説明を聞く
+displayLink	Explanation
+link	賞品を見る
+displayLink	View Prizes
+
+name	自宅
+kind	others
+displayName	Home
+link	休憩する
+displayLink	Rest
+
+name	サファイア城
+kind	others
+displayName	Sapphire Castle
+peopleAround	true
+mindRead	true
+link	姫と話す
+displayLink	Talk to Princess
+link	隊名変更
+displayLink	Rename Team
+link	マップ達成率
+displayLink	Map Completion %
+link	トロフィー
+displayLink	Trophies
+
+name	公園
+kind	others
+displayName	Public Park
+peopleAround	true
+link	中に入る
+displayLink	Visit
+
+name	砂浜
+kind	others
+displayName	Sandy Beach
+peopleAround	true
+link	中に入る
+displayLink	Visit
+
+name	コルトンの家
+kind	others
+displayName	Colton's House
+peopleAround	true
+link	話す
+displayLink	Talk
+
+name	ムニョスの家
+kind	others
+displayName	Muñoz's House
+peopleAround	true
+link	話す
+displayLink	Talk
+
+name	エヴァの家
+kind	others
+displayName	Eva's House
+link	話す
+displayLink	Talk
+
+name	井戸
+kind	others
+displayName	Well
+link	調べる
+displayLink	Investigate
+
+name	サファイアシティ・北西門
+kind	dungeon
+displayName	Northwest Gate
+entrance	map:デールコインの森, x:25, y:1, way:n
+
+name	サファイアシティ・北東門
+kind	dungeon
+displayName	Northeast Gate
+entrance	map:ヤネクの森・西, x:0, y:1, way:e
+
+name	サファイアシティ・南西門
+kind	dungeon
+displayName	Southwest Gate
+entrance	map:ランドン渓谷・崖上, x:24, y:79, way:s
+
+name	サファイアシティ・南東門
+kind	dungeon
+displayName	Southeast Gate
+entrance	map:ジョセフの森, x:4, y:19, way:s
+
+name	下水道入口
+kind	dungeon
+displayName	Sewer Entrance
+entrance	map:下水道・通路, x:0, y:19, way:e
+
+name	シーガルの村・北門
+kind	dungeon
+displayName	North Gate
+entrance	map:ランドン渓谷・崖上, x:29, y:0, way:n
+
+name	シーガルの村・東門
+kind	dungeon
+displayName	East Gate
+entrance	map:モイーズ湿地帯・西の沼地, x:0, y:18, way:e
+
+name	シーガルの村・南門
+kind	dungeon
+displayName	South Gate
+entrance	map:コリンズの森, x:2, y:79, way:s
+
+name	ブレイブタウン・北門
+kind	dungeon
+displayName	North Gate
+entrance	map:コリンズの森, x:39, y:1, way:w
+
+name	ブレイブタウン・西門
+kind	dungeon
+displayName	West Gate
+entrance	map:エミール平原, x:17, y:38, way:w
+
+name	森の中の廃屋入口
+kind	dungeon
+displayName	Abandoned House
+entrance	map:森の中の廃屋１Ｆ, x:7, y:0, way:n
+
+name	町外れの遺跡入口
+kind	dungeon
+displayName	Outskirts Ruins
+entrance	map:町外れの遺跡Ｂ１, x:8, y:0, way:w
+
+name	ブルーのアジト
+kind	dungeon
+displayName	Blue's Hideout
+icon	house_others
+entrance	map:ブルーのアジト１Ｆ, x:14, y:1, way:w
+
+name	ノースロップ村・北門
+kind	dungeon
+displayName	North Gate
+entrance	map:フーラ雪原・北の森, x:1, y:0, way:n
+
+name	ノースロップ村・南門
+kind	dungeon
+displayName	South Gate
+entrance	map:フーラ雪原・南の森, x:2, y:39, way:s
+
+name	地下街出口・西
+kind	dungeon
+displayName	Underground Exit West
+entrance	map:大洞窟Ｂ５, x:6, y:4, way:w
+
+name	地下街出口・東
+kind	dungeon
+displayName	Underground Exit East
+entrance	map:大洞窟Ｂ６, x:0, y:0, way:e
+
+name	ダストウェルの町・北門
+kind	dungeon
+displayName	North Gate
+entrance	map:タルハ砂漠・南, x:1, y:0, way:n
+
+name	ダストウェルの町・南門
+kind	dungeon
+displayName	South Gate
+entrance	map:死の荒野, x:0, y:29, way:s

@@ -1,0 +1,205 @@
+﻿; 町外れの遺跡
+
+name = 町外れの遺跡Ｂ１
+insideName = Ｂ１
+level = 6
+bgm = evil
+lower = 町外れの遺跡Ｂ２
+shadow = dark
+sky = black
+outfield = marble
+blank = rock
+antiWarp = true
+
+; 各種パーツ
+━ = stone_h
+　 = marble
+／ = door
+∮ = silver
+√ = gold
+㊦ = ladderd
+☗ = upstair
+宝 = box
+
+; 敵情報
+maxGroups = 1
+monsters = ポイズンスライム,ゾンビ,スケルトン,大ねずみ,ジャイアントバット
+traps = 石つぶて,毒針
+
+; 移動ポイント
+(A) = map:ブレイブタウン, enter:町外れの遺跡入口, ask:Leave the dungeon?
+
+; 宝箱
+box[1] = ふっくらパン,ふっくらパン,はちみつパン,はちみつパン,毒消しの花,毒消しの花,麻痺治療薬,麻痺治療薬
+
+[map]
+;----------------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  				┏━━━━━━━━━┓
+19				┃■■　　　　　　宝┃
+  				┃■■　　　　　　　┃
+18				┃■■宝　　　宝　宝┃
+  				┃■■　　　　　　　┃
+17				┃　　宝　⑥　宝　宝┃
+  				┃　　　　　　　　　┃
+16				┃宝　　　⑤　　　宝┃
+  				┃　　　　　　　　　┃
+15				┃　　　　⑤　　　　┃
+  				┗━━━┓　┏━━━┛
+14								┃④┃
+  								┃　┃
+13								┃④┃
+  								┃　┃
+12								┃　┃
+  								┃　┃
+11								┃　┃
+  								┃　┃
+10								┃　┃
+  								┃　┃
+ 9								┃　┃
+  								┃　┃
+ 8								┃　┃
+  								┃　┃
+ 7								┃　┃
+  								┃　┃
+ 6								┃　┃
+  ┏━━━━━━━┫　┗━━━━━━━┓
+ 5┃　　　　　　㊦┃　　　　　　　　　┃
+  ┃　┏━━━━━┻━━━┳━━━┓　┃
+ 4┃　∮　　　　　　　　　√　　　┃　┃
+  ┃　┣━━／┳━━━┓　┗━┓　┃　┃
+ 3┃　┃　　②┃　　❶┃　　　┃　┃　┃
+  ┃　┃　　　┃　　　┣／━━┫　┃　┃
+ 2┃　┃②　　┃敵　　┃敵　　┃㊦┃　┃
+  ┃　┣／━━┻／━━┫　　　┗━┫　┃
+ 1┃　┃　　　　　　　┃　　　　　／③┃
+  ┃　┗━━━━━┓　┗━━━━━┻━┫
+ 0┃　　　　　　　→　　　　　　　　Ⓐ☗
+  ┗━━━━━━━┻━━━━━━━━━┛
+;    0   1   2   3   4   5   6   7   8  
+;----------------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[8][0].event = 1;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+if(! loading) events.push2(2);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [2]
+
+;------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@delevent
+@eval exp='o.町外れの遺跡Ｂ３.noBattle = true'
+@eval exp='o.町外れの遺跡Ｂ３.antiSpell = true'
+@jump storage="main02.scn" target=*ruin_1
+
+[eventoff]
+;------------------------------------------------------------------------------
+*event_2
+;[exp] true
+
+@callbattle normal=true
+
+[eventoff]
+;------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+@delevent
+@eval exp='game.party.minimumRecovery()'
+@jump storage="main02.scn" target=*ruin_2
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@delevent
+@eval exp='game.party.minimumRecovery()'
+@jump storage="main02.scn" target=*ruin_3
+
+[eventoff]
+;------------------------------------------------------------------------------
+*event_5
+;[exp] ! game.map.events.has(6)
+
+@wait time=500 cond='WAY != "n"'
+@walk turn=n cond='WAY != "n"'
+@wait time=500
+@se f=roar
+@fgf c=dragon_black left=450 top=-90
+@wait time=500
+
+[texton]
+[name n=Dragon f=dragon_00]「Grrrrr...」[k]
+[if exp='! game.isFreeMode']
+	[テオ f=05]「That's...!」[k]
+	It's the dragon that appeared when I visited here with Blue and the others, and we barely escaped with our lives.[k]
+	...At that time, I had no choice but to run away. However, with the current party's strength, we might be able to defeat it.[k]
+[else]
+	With a terrifying roar, a black-scaled dragon appeared before us![k]
+[endif]
+[textoff]
+
+@question title="Are you up for the challenge of the dragon?"
+@clf
+[if exp='! tf.result']
+	@walk move=s
+	@walk move=s cond='game.party.curY != 14'
+	[eventoff]
+[endif]
+
+; 戦闘
+@monster pos=3 name=ブラックドラゴン
+@callbattle bgm=dragon gameover=true escape=false
+@delevent
+
+[if exp='! game.isFreeMode']
+	[texton]
+	[テオ f=01]「Yes! We defeated it! We finally beat that dragon!」[k]
+	It was a victory over an opponent I had once had no choice but to flee from. I looked back on my past memories and felt a sense of emotion.[k]
+	[textoff]
+[endif]
+
+@flash on=1000 time=1000
+@eval exp='game.map.changeFloorsOfWideArea(%[pimg: void], 3, 16, 6, 19)'
+@changefloor x=2 y=16 pimg=void
+@eval exp='game.updateView()'
+@flash off=1000
+
+[texton]
+Surprisingly, the numerous treasure chests that had been lined up throughout the room vanished like mist.[k]
+...Apparently, those illusionary treasure chests were a trap set by the dragon to lure adventurers here. It then devoured them as prey.[k]
+A truly cunning dragon. With its guile and unparalleled strength, it is truly the strongest monster.[k]
+[textoff]
+
+@addevent num=6
+@changefloor x=4 y=17 pimg=human
+@eval exp='o.遺跡の財宝.flag = 1' cond='game.isFreeMode'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] party.lastIsMove
+
+@eval exp='game.contractableMonster = o.ブラックドラゴン'
+@call storage="battle.ks" target=*contract_monster
+[if exp='o.ブラックドラゴン.contracted']
+	@delevent
+	@changefloor x=4 y=17 pimg=void
+[endif]
+
+[eventoff]
+;------------------------------------------------------------------------------

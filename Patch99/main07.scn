@@ -1,0 +1,2057 @@
+﻿; リーゼルとデート～マックス再加入まで
+
+
+
+;■リーゼルとデート
+
+;◇イベント01・公園でデート
+*liesel_1
+
+; 公園
+@saveon
+@out
+@bg f=0018
+@mu f=happy
+[texton w=1]
+We arrived at the park in Sapphire City.[k]
+I sit down on a small bench at the edge of the park. Riselle sits down next to me.[k]
+Riselle's hair flutters in the wind. It reflects the sunlight and sparkles beautifully.[k]
+@fg c=リーゼル e=通常・大 f=01
+[リーゼル v=vl195 f=01]「You know... I made a lunch box today... I wanted to eat it with you...」[k]
+Saying that, Riselle opened the lid of the small basket she had brought with her.[k]
+[テオ f=01]「Wow... That looks delicious...」[k]
+What's more, it's my favorite fried chicken. I definitely want to try it.[k]
+[リーゼル v=vl196 f=01]「You said you liked fried chicken before, right? So...」[k]
+[テオ f=01]「You remembered! I'm so happy!」[k]
+I think I made that comment quite a while ago, but Riselle remembered it clearly. Her feelings filled me with joy.[k]
+[リーゼル v=vl197 f=01]「Hey, if you'd like, please have some...」[k]
+[テオ f=01]「Ah! I'll have some! ...Delicious!」[k]
+@fg c=リーゼル f=04
+[リーゼル v=vl198 f=04]「Really? That's good...」[k]
+When I praise her, Riselle shows a slightly shy expression.[k]
+It really is delicious. I didn't know Riselle had such a talent...[k]
+[リーゼル v=vl199 f=01]「During our trip together, Maria was in charge of the heavy work, and I was in charge of cooking. As Maria tasted my food, I gradually improved...」[k]
+[テオ f=05]「I see, so that's how it is...!」[k]
+[リーゼル v=vl200 f=04]「Maria has a healthy appetite, so I enjoy cooking for her... It seems that my research on how to make food taste good has paid off...」[k]
+[テオ f=01]「Ahaha, if Maria ate as happily as that, then cooking would be more fun.」[k]
+[リーゼル v=vl201 f=03]「Hehehe...」[k]
+A peaceful atmosphere flowed between the two of them. I felt very happy at this moment when I could laugh together with Riselle.[k]
+But I was surprised. I didn't know Riselle was such a good cook.[k]
+[テオ f=06]「...」[k]
+Come to think of it, there's still so much I don't know about Riselle. As we continue to date, I need to get to know her better.[k]
+[テオ f=02]「It was delicious, Riselle. Thank you for the meal.」[k]
+@fg c=リーゼル f=01
+[リーゼル v=vl202 f=01]「You're welcome. If you like, I'll make it again...」[k]
+[テオ f=01]「Really? Then, I'll count on you again.」[k]
+Being treated kindly by my beloved girlfriend makes me even happier.[k]
+[テオ f=02]「But I'm really happy that you'd do this much for me... We've only just started dating...」[k]
+@fg c=リーゼル f=22
+[リーゼル v=vl203 f=22]「Well, you see...」[k]
+[テオ f=05]「？」[k]
+[リーゼル v=vl204 f=22]「I love you... That's why...」[k]
+[テオ f=29]「Riselle...!」[k]
+[テオ f=02]「I'm so happy to hear you say that, Riselle...」[k]
+[リーゼル v=vl205 f=21]「Really? I'm glad... I've been wanting to say this for a long time...」[k]
+[テオ f=05]「Eh?」[k]
+[リーゼル v=vl206 f=22]「When you confessed your feelings to me, I was so happy.」[k]
+[リーゼル v=vl207 f=22]「Even after parting with you and returning to the inn, every time I recalled your words, I felt happier and happier...」[k]
+[リーゼル v=vl208 f=22]「...I really like you... I'm surprised at myself... I didn't even realize my own feelings...」[k]
+[テオ f=29]「Riselle...!」[k]
+[リーゼル v=vl209 f=22]「Thank you, Captain. I'm very happy right now.」[k]
+[テオ f=05]「Riselle...」[k]
+I'm the one who's happy. There's nothing happier than having the person you love tell you they love you.[k]
+[テオ f=05]「Riselle...」[k]
+I couldn't help but feel an overwhelming love for her, and I stared at her intently.[k]
+[テオ f=29]「I love you, Riselle...」[k]
+[リーゼル v=vl210 f=26]「Captain...」[k]
+[リーゼル v=vl211 f=22]「...Yeah, me too.」[k]
+I gently placed my hand on hers as she sat next to me.[k]
+A refreshing breeze blows as the time between the two of us passes.[k]
+Feeling her warmth beside me, I wanted to stay like this forever.[k]
+[textoff]
+@fa
+@out
+@w05
+
+; 翌日
+@bg f=0003
+@mu f=city
+@fg c=リーゼル e=通常 f=01
+[texton w=1]
+Early the next morning.[k]
+[リーゼル v=vl212 f=01]「Sorry to keep you waiting, Captain.」[k]
+I met Riselle in the lobby of the inn.[k]
+I'm going on a date with her again today. We decided to go to the beach together, so it's a little further afield.[k]
+The location is the sandy beach of Seagull Village. It is a memorable place where we swam together when we first met.[k]
+[テオ f=02]「Well, let's go. Riselle, did you forget anything?」[k]
+[リーゼル v=vl213 f=01]「Don't worry. I brought my swimsuit.」[k]
+Riselle and I headed out of town together.[k]
+[textoff]
+@out
+@w05
+
+; 町の外
+@gameon
+@eval exp='game.view.close()'
+@eval exp='game.openDungeonView(%[map:"ランドン渓谷・崖上", x: 24, y: 78, way: "s"])'
+@eval exp='game.view.startExplore()'
+@eval exp='game.onGameBreak()'
+
+[texton w=0]
+[テオ]（Today, Riselle and I are going to swim on the beach in Seagull Village. Let's go quickly.）[k]
+[textoff]
+
+[eventoff]
+
+
+;◇イベント02・砂浜でデート
+*liesel_2
+
+; シーガル村の砂浜
+@saveon
+@bg f=0050
+@mu f=happy
+@fg c=リーゼル e=通常 f=01
+[texton w=1]
+[リーゼル v=vl214 f=01]「The sea... It's beautiful.」[k]
+[テオ e=通常 f=02]「Oh.」[k]
+Riselle and I came to the sea at Seagull Village.[k]
+A beautiful beach with a wide, gentle sandy shore. There are a few other beachgoers besides us.[k]
+I remember the first time I visited here with her. It's a sea of memories for me. At that time, I was desperate to escape from Blue.[k]
+Suddenly, I found myself staring at Riselle, who was dripping with water in the sunset...[k]
+[リーゼル v=vl215 f=01]「Hey, Captain. We've come all this way to the sea, so let's go swimming soon.」[k]
+[テオ f=13]「Y-yeah.」[k]
+Riselle is unusually enthusiastic. Perhaps she was really looking forward to coming to the beach?[k]
+[textoff]
+@out
+@w05
+
+@bg f=0051
+[texton w=1]
+[テオ e=冒険者のパンツ f=10]「...」[k]
+Having finished changing first, I waited alone on the sandy beach for Riselle to return.[k]
+[リーゼル v=vl216 e=青いビキニ・上,青いビキニ・下 f=01]「Captain.」[k]
+Riselle returned after changing her clothes.[k]
+[テオ f=05]「...!」[k]
+@fg c=リーゼル f=59
+Riselle was wearing that nostalgic bikini. It was the same blue bikini she had worn when she came to this beach before, matching Maria's.[k]
+[リーゼル v=vl217 f=59]「Well... How is it...?」[k]
+[テオ f=01]「It's really cute. It suits you well.」[k]
+[リーゼル f=25]「...! (Kyaa)」[k]
+[リーゼル v=vl218 f=22]「T-thank you...」[k]
+Riselle averts her eyes from me, embarrassed by my praise. She blushes and looks shy, which is very cute.[k]
+I can't take my eyes off her sexy swimsuit.[k]
+[テオ f=29]「...」[k]
+[リーゼル v=vl219 f=33]「U-umm... It's embarrassing when you stare at me like that...」[k]
+[テオ f=25]「S-sorry!」[k]
+I couldn't help but stare... Riselle is just so charming...[k]
+[テオ f=26]「Hey, Riselle.」[k]
+[リーゼル v=vl220 f=25]「...Yes?」[k]
+[テオ f=25]「Can I... kiss you...?」[k]
+@fg c=リーゼル f=25
+[リーゼル f=25]「...」[k]
+@fg c=リーゼル f=22
+[リーゼル v=vl221 f=22]「Y-yeah... that's fine...」[k]
+@cl
+After confirming that no one else was around, I grabbed her shoulders and slowly brought my face closer to hers.[k]
+And then... I stole her lips.[k]
+Riselle accepted my kiss, her body trembling slightly.[k]
+[textoff]
+@out
+@w1
+
+@bg f=0030
+[texton w=1]
+After that, we decided to play in the sea for a while.[k]
+A beach surrounded by rocks, just for the two of us. There, we play in the sea to our hearts' content.[k]
+[リーゼル v=vl222 f=03]「Ahh, the sea water feels so good... Captain, come over here too!」[k]
+Riselle floats in the shallow water, letting the waves carry her.[k]
+She seemed to be enjoying herself more than usual.[k]
+[テオ f=01]「Do you like the sea?」[k]
+[リーゼル v=vl223 f=02]「Yeah. I never went to the sea when I was a kid... It was so rare...」[k]
+I see, your hometown was deep in the mountains, so you never had the opportunity to visit.[k]
+[テオ f=02]「Well then, let's enjoy ourselves to the fullest today!」[k]
+[リーゼル v=vl224 f=04]「……Yeah!」[k]
+Riselle nodded with an innocent smile.[k]
+[リーゼル v=vl225 f=11]「Kya!」[k]
+@se f=bashan1
+Suddenly, Riselle tripped over something and fell. Splash! Water sprayed everywhere as she fell into the sea.[k]
+[テオ f=12]「Hey, are you okay?」[k]
+[textoff]
+@out
+@w05
+
+@bg f=event67 p0=02 p1=01
+[texton w=2]
+[リーゼル v=vl226]「Y-yeah...」[k]
+[テオ]「Oh...」[k]
+Riselle's bikini top... has fallen off.[k]
+Perhaps the string came undone when she fell, causing it to slip off and reveal her breasts.[k]
+Her beautiful white breasts are fully exposed, even her pink nipples. I can't help but gasp.[k]
+[リーゼル v=vl227]「What's wrong, Captain? Your face is red.」[k]
+[テオ]「Riselle... Your bikini...」[k]
+@bg f=event67 p0=02 p1=05
+[リーゼル]「...!」[k]
+Riselle realized how embarrassing she looked.[k]
+[textoff]
+
+@bgf f=0051
+[texton w=1]
+[リーゼル e=裸,手ブラ v=vl228 f=31]「Kyaa...!」[k]
+Riselle hurriedly covers her chest.[k]
+[テオ e=裸]「...」[k]
+I clearly saw Riselle's breasts. I feel sorry for her.[k]
+[リーゼル v=vl229 f=58]「You saw... right?」[k]
+[テオ]「Y-yeah...」[k]
+[リーゼル]「...」[k]
+[リーゼル v=vl230 f=55]「...W-well, I don't mind. If it's you, it's fine...」[k]
+Riselle, who blushes but gives me a bashful smile, is very endearing.[k]
+[テオ]「...!」[k]
+Seeing her like that, I felt a surge of lust rising within me.[k]
+[テオ]「Hey, Riselle, can I see again...?」[k]
+[リーゼル v=vl231 f=25]「Eh...」[k]
+@mu f=love
+[テオ]「I want to see you.」[k]
+[リーゼル f=58]「... (Kyaa)」[k]
+I decided to take a chance and go for it.[k]
+Riselle blushed and looked quite confused.[k]
+[テオ]「I guess it's no good after all...」[k]
+[リーゼル f=58]「...」[k]
+[リーゼル v=vl232 f=57]「...Yeah, okay.」[k]
+[textoff]
+@out
+
+@bg f=event67 p0=02 p1=06
+[texton w=2]
+Riselle blushed shyly and removed her hands from her breasts.[k]
+[テオ]「Riselle...!」[k]
+Riselle's white, soft-looking breasts. She shows them to me without hesitation.[k]
+She must be embarrassed, as her face is bright red. But even so, the adorable Riselle makes no attempt to cover her chest.[k]
+[リーゼル v=vl233]「Captain, your...」[k]
+[テオ]「Hmm?」[k]
+[リーゼル v=vl234]「Your thing... It's getting bigger...」[k]
+[テオ]「Ah... y-you're right...」[k]
+Riselle pointed to my crotch. Before I knew it, I had an erection, and my swimming shorts were bulging.[k]
+It's understandable. If any man saw his beloved girl like this, he would...[k]
+[テオ]「Hey, Riselle...」[k]
+[リーゼル v=vl235]「...What?」[k]
+[テオ]「Is... that okay?」[k]
+[リーゼル]「...」[k]
+[リーゼル]「...」[k]
+[リーゼル v=vl236]「U-uh, yeah... that's fine...」[k]
+So, does that mean it's okay to have sex?[k]
+I move over to Riselle and touch her body. She doesn't resist.[k]
+[テオ]「Can I... touch your breasts?」[k]
+[リーゼル]「... ∗nod∗」[k]
+With Riselle's consent, I timidly touched her breasts.[k]
+@bg f=event67 p0=02 p1=07
+[リーゼル v=vl237]「Ahh...!」[k]
+Riselle reacts with a start. Could she have sensed something?[k]
+I stroke her skin again. It's so soft...[k]
+Riselle's body stiffened and remained still as she received my caresses.[k]
+@bg f=event67 p0=02 p1=06
+[リーゼル]「... ∗badump∗」[k]
+[テオ]「Riselle, you're so cute...!」[k]
+I can't stop getting excited...! I want to go all the way with her soon...![k]
+[テオ]「Can I... take this off?」[k]
+[リーゼル]「...」[k]
+Riselle said nothing. I interpreted this as her not refusing.[k]
+@bg f=event67 p0=03 p1=06
+[リーゼル]「... ∗badump∗ ∗badump∗ ∗badump∗ ∗badump∗」[k]
+Finally, Riselle was before me, completely bare.[k]
+Her crotch was exposed right in front of my eyes. Thin hair grew above her tightly closed slit.[k]
+[テオ]「Riselle...!」[k]
+My excitement reached its peak. I also pulled down my swim shorts and exposed my erect penis.[k]
+@bg f=event67 p0=03 p1=02
+[リーゼル v=vl238]「Kyaaah...! Captain...!」[k]
+Riselle was surprised by my crotch.[k]
+[テオ]「Sorry for scaring you. But that's how men are...」[k]
+@bg f=event67 p0=03 p1=06
+[リーゼル v=vl239]「Yeah, it's okay... Carry on.」[k]
+[テオ]「Okay.」[k]
+I reached out to her skin again to continue caressing her.[k]
+@bg f=event67 p0=03 p1=08
+[リーゼル v=vl240]「Ah...!」[k]
+[テオ]「Riselle...!」[k]
+Finally... Finally, I'm going to become one with my beloved girlfriend.[k]
+[textoff]
+
+@st
+@bgf f=0051
+[texton w=1]
+∗noises nearby∗[k]
+[リーゼル e=裸 f=31]「...!」[k]
+[テオ f=25]「What, someone's here?!」[k]
+When I hurriedly turned around, I saw a group of beachgoers walking toward us on the sandy beach.[k]
+This is bad. If we carry on, they'll see us in an embarrassing situation...![k]
+[テオ f=25]「So, let's hurry up and get our swimsuits on...!」[k]
+[リーゼル v=vl241 f=32]「I-I know!」[k]
+Riselle and I hurriedly put our swimsuits back on and pretended to be calm.[k]
+The beachgoers glance at us and pass by without any particular reaction.[k]
+Safe... made it just in time.[k]
+[リーゼル e=青いビキニ・上 f=58]「... (Kyaa)」[k]
+Riselle's face turned bright red, she just looked down and said nothing.[k]
+[テオ f=12]「I'm sorry, Riselle... I embarrassed you...」[k]
+[リーゼル v=vl242 f=58]「No, I'm okay...」[k]
+[テオ f=13]「Um... I think we should head back soon.」[k]
+[リーゼル f=58]「... ∗nod∗」[k]
+I got so excited that I did that to Riselle...[k]
+We just kissed, and suddenly we were almost doing it outside? I guess I got a little too excited... I need to take things more slowly.[k]
+But...[k]
+When I said I wanted it, she accepted without hesitation. I'm happy about that.[k]
+I realized once again that this woman was the only one for me.[k]
+[textoff]
+@out
+@w05
+@return cond='f.replayMode'
+[texton]
+After spending some time together in the village, we returned to town.[k]
+Today's events made me feel strongly that Riselle and I had definitely become lovers.[k]
+[textoff]
+@w2
+
+; 翌日・町中
+@bg f=0019 b
+@mu f=guild
+@fg c=リーゼル e=通常 f=02
+[texton]
+I'm going on a date with Riselle again today.[k]
+So far, our relationship is progressing smoothly. I would like to continue deepening our relationship.[k]
+And... if possible, I want to be in a relationship with her for the rest of my life...![k]
+[テオ e=通常 f=06]「...」[k]
+Actually, there is another purpose to my life as an adventurer.[k]
+That is... to find a lifelong partner.[k]
+When I left my childhood home to embark on my journey as an adventurer, I recall the words my mother said to me as she saw me off.[k]
+"Find a wife and come back home."[k]
+Yes, as the only son of a family of demon hunters, I am strongly urged to marry and produce an heir.[k]
+Of course, I would like to get married if possible. Especially if it is with someone I love.[k]
+[テオ f=06]「...」[k]
+@fg c=リーゼル f=05
+[リーゼル v=vl243 f=05]「Hmm? What's wrong, Captain?」[k]
+[テオ f=13]「No, it's nothing...」[k]
+I want this person to be my lifelong companion...![k]
+I'm seriously considering it, but I don't know how Riselle would feel about it.[k]
+Let's ask her.[k]
+[テオ f=10]「...!」[k]
+No, no, no! We've only been dating for a week. Talking about marriage so soon would be crazy.[k]
+She probably thinks we're still in the process of getting to know each other better. I'm rushing things too much. I need to take a more patient approach...[k]
+[リーゼル v=vl244 f=05]「Captain? Something's been strange since a little while ago.」[k]
+[テオ f=13]「No, it's nothing. Sorry.」[k]
+@fg c=リーゼル f=02
+[リーゼル v=vl245 f=02]「Ha, what a strange captain.」[k]
+For now, let's not think about marriage. We just started dating. Instead, let's enjoy our relationship.[k]
+But...[k]
+[リーゼル f=02]「...」[k]
+[テオ f=06]「...」[k]
+But I hope that someday I will be able to marry this person...[k]
+[textoff]
+@fa
+@out
+@w1
+
+; 数日後・宿屋のロビー
+@bg f=0003 b
+@mu f=city
+@fg c=リーゼル e=通常 f=01
+[texton]
+A few days later.[k]
+[リーゼル v=vl246 f=01]「Hey, Captain. I heard there's going to be fireworks at Sapphire Castle tonight.」[k]
+[テオ f=02]「Yeah, I believe so.」[k]
+I met Riselle first thing in the morning, and that's how the conversation started.[k]
+That's right, today is the fireworks festival. Beautiful fireworks light up the night sky one after another, and there's no doubt that watching them with your lover will create a wonderful mood. Of course, we're going too...[k]
+@fg c=リーゼル f=22
+[リーゼル v=vl247 f=22]「So, I want to watch it with you...」[k]
+[テオ f=05]「...!」[k]
+Riselle asked me out on a date![k]
+I was planning to ask her out, but I never expected her to ask me first. Of course, I said yes without hesitation.[k]
+[テオ f=01]「Of course, let's go! Let's watch the fireworks together!」[k]
+[リーゼル v=vl248 f=04]「Yes!」[k]
+@eval exp='game.restoreMembers()'
+@cl b
+@fg l=リーゼル f=05 b
+[   if exp='SYL']
+	@fg r=マルエット e=通常 f=01
+	[マルエット v=vs033 f=01]「Hey, Captain! There's going to be fireworks at Sapphire Castle today! Shall we all go together?」[k]
+[elsif exp='HUM']
+	@fg r=リム e=通常 f=03
+	[リム v=vh031 f=03]「Captain, there's going to be fireworks at Sapphire Castle today! Let's all go together!」[k]
+[elsif exp='DWA']
+	@fg r=フレデリカ e=通常 f=04
+	[フレデリカ v=vd031 f=04]「Captain, there's going to be fireworks at Sapphire Castle today! Let's all go together!」[k]
+[elsif exp='ELF']
+	@fg r=クレア e=通常 f=01
+	[クレア v=ve032 f=01]「Hey, Captain! There's going to be fireworks at Sapphire Castle today! Shall we all go together?」[k]
+[elsif exp='GNO']
+	@fg r=ミューズ e=通常 f=02
+	[ミューズ v=vg023 f=02]「Um, Captain... I heard there's going to be fireworks at Sapphire Castle today... Would you like to go with everyone from the party?」[k]
+[endif]
+[テオ f=05]「What...?」[k]
+Suddenly, the rest of the party members who had just arrived also suggested watching the fireworks.[k]
+@fg l=リーゼル f=10
+[リーゼル f=10]「...」[k]
+[テオ f=12]「Umm... Well...」[k]
+I wanted to watch it alone with Riselle, so I wasn't keen on that idea. But I'm glad they invited me.[k]
+[テオ f=12]「Well... I appreciate the sentiment, but...」[k]
+@fg r=マックス e=通常 f=01
+[マックス f=01]「Hey, hey! Don't be so rude! [テオ] definitely wants to go with Riselle!」[k]
+Suddenly Max came to my rescue. Max, you're surprisingly thoughtful.[k]
+[if exp='SYL'][マルエット v=vs034 f=07]「Whaaaat?!」[k]
+[elsif exp='HUM'][リム v=vh032 f=09]「Whaaaat?!」[k]
+[elsif exp='DWA'][フレデリカ v=vd032 f=93]「Whaaaat?!」[k]
+[elsif exp='ELF'][クレア v=ve033 f=05]「Eh... With Riselle...?」[k]
+[elsif exp='GNO'][ミューズ v=vg024 f=05]「Eh... With Riselle...?」[k]
+[endif]
+[if exp='ELF2'][クレア２ v=ve034 e=通常 f=05]「Is that so, Captain?」[k]
+[elsif exp='SYL2'][マルエット２ v=vs035 e=通常 f=08]「Is that so, Captain?」[k]
+[elsif exp='GNO2'][ミューズ２ v=vg025 e=通常 f=05]「Is that so, Captain?」[k]
+[elsif exp='DWA2'][フレデリカ２ v=vd033 e=通常 f=10]「Is that so, Captain?」[k]
+[elsif exp='HUM2'][リム２ v=vh033 e=町娘の服 f=05]「Is that so, Captain?」[k]
+[endif]
+[テオ f=14]「U-uh, yes...」[k]
+@fg l=リーゼル f=25
+[リーゼル f=25]「...」[k]
+[if exp='HUM'][リム v=vh034 e=通常 f=13]「Well, I guess there's nothing we can do...」[k]
+[elsif exp='DWA'][フレデリカ v=vd034 e=通常 f=09]「Well, I guess there's nothing we can do...」[k]
+[elsif exp='GNO'][ミューズ v=vg026 e=通常 f=09]「Well, I guess there's nothing we can do...」[k]
+[elsif exp='SYL'][マルエット v=vs036 e=通常 f=08]「Well, that's too bad...」[k]
+[elsif exp='ELF'][クレア v=ve035 e=通常 f=06]「Well, that's too bad...」[k]
+[endif]
+Everyone backed down after listening to Max. I'm sorry, everyone.[k]
+@fg r=マックス f=03
+[マックス f=03]「All right, then I'll take care of all of you!」[k]
+@eval exp='tf.num = game.party.members.count - 1'
+*_booing
+@eval exp='game.curChara = game.party.members[tf.num]'
+[if exp='isHUM'][リム v=vh035 e=通常 f=07]「Ehh?!」[k]
+[elsif exp='isELF'][クレア v=ve036 e=通常 f=07]「Ehh?!」[k]
+[elsif exp='isSYL'][マルエット v=vs037 e=通常 f=07]「Ehh?!」[k]
+[elsif exp='isDWA'][フレデリカ v=vd035 e=通常 f=93]「Ehh?!」[k]
+[elsif exp='isGNO'][ミューズ v=vg027 e=通常 f=09]「Ehh...」[k]
+[endif]
+@eval exp='tf.num --'
+@jump target=*_booing cond='tf.num > 2'
+@eval exp='game.curChara = game.party.members[2]'
+[if exp='isDWA'][フレデリカ v=vd036 e=通常 f=10]「I don't really want to...」[k]
+[elsif exp='isHUM'][リム v=vh036 e=通常 f=08]「I don't really want to...」[k]
+[elsif exp='isELF'][クレア v=ve037 e=通常 f=08]「Not a chance...」[k]
+[elsif exp='isSYL'][マルエット v=vs038 e=通常 f=07]「No way!」[k]
+[elsif exp='isGNO'][ミューズ e=通常 f=08]「Hmph...」[k]
+[endif]
+@fg r=マックス f=27
+[マックス f=27]「What's with those reactions?! What's so bad about me?!」[k]
+[テオ f=01]「Ahahaha...」[k]
+Seeing the women's blatantly dissatisfied attitudes, Max cried out in sadness.[k]
+In any case, I'm glad that Riselle and I will be able to go alone. I'm looking forward to tonight.[k]
+[textoff]
+@out
+
+;-----------------------------------------------------------------------------------------
+[iscript]
+
+// キャラ
+for(var i = game.party.members.count - 1; i >= 0; i--)
+{
+	var one = game.party.members[i];
+	if(one != o.リーゼル && one != o.テオ) game.removeMemberTemporary(one);
+}
+game.party.removeMember(o.リーゼル);
+o.リーゼル.moveHeart(o.テオ, 20);
+
+// サファイアシティ
+o.サファイアシティ・北西門.events = [5];
+o.サファイアシティ・北東門.events = [5];
+o.サファイアシティ・南西門.events = [5];
+o.サファイアシティ・南東門.events = [3];
+o.下水道入口.events = [5];
+o.王立ギルド.events = [8];
+o.待合所.events = [5];
+o.ベトリヌスの酒場.events = [7];
+o.冒険者の宿.events = [7];
+o.マリオン武器工房.events = [0];
+o.鎧屋ドミンゴ.events = [0];
+o.世界一の道具店.events = [3];
+o.ドロシーの魔法店.events = [0];
+o.アウラ中央教会.events = [2];
+o.イーラ中央寺院.events = [2];
+o.アイテム保管庫.events = [1];
+o.サファイア城.events = [9];
+o.公園.events = [6];
+o.闘技場.events = [7];
+o.アイテム博物館.events = [0];
+o.サファイアシティ・南西門.requireMembers = true;
+
+// シーガル村
+o.海岸ギルド.events = [];
+o.潮風のペンション.events = [];
+o.かもめ亭.events.remove(1);
+o.砂浜.events = [];
+o.シーガルの村・北門.events = [];
+o.シーガルの村・東門.events = [];
+o.シーガルの村・南門.events = [];
+
+// ダンジョン
+o.ランドン渓谷・崖上.events.remove(13);
+o.ランドン渓谷・谷底.events.remove(3);
+o.ランドン渓谷・崖上.noBattle = false;
+o.ランドン渓谷・谷底.noBattle = false;
+o.ハーピーの山・中腹.noBattle = false;
+
+// その他
+game.lapse = true;
+game.view.close();
+game.openTownView(o.サファイアシティ);
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+
+@w1
+@gameon
+[texton]
+[テオ f=06]「Let's find a good spot for the two of us to watch tonight's fireworks.」[k]
+The fireworks will go off above Sapphire Castle. Let's find a spot where we can see them well.[k]
+[textoff]
+[eventoff]
+
+
+;◇イベント03・花火を見る場所が見つかる
+*liesel_3
+
+; 公園の奥の林
+@saveon
+@bg f=0031
+[texton]
+[テオ f=06]「Here...!」[k]
+I took a leisurely stroll through the park near Sapphire Castle and finally found the perfect spot.[k]
+As I went deeper into the woods at the back of the park, I came across a slightly open area.[k]
+If you look in the direction of Sapphire Castle from here... Yes! You can see the sky clearly![k]
+What's more, there are hardly any people here, and the atmosphere is perfect.[k]
+Ok, I'll bring Riselle here tonight. I'm looking forward to it.[k]
+[テオ f=05]「Ah... but...」[k]
+Come to think of it, I remember being told that outlaws have been spotted in this park at night, and to be careful...[k]
+...Well, it's fine. Even if such people did appear, with my current abilities, they shouldn't be a problem.[k]
+It's not the same as it was back then, when I was scared of Blue.[k]
+Now my focus is on Riselle, and how to make her happy.[k]
+[textoff]
+@out
+@w1
+
+; 宿屋のロビー
+@saveon
+@eval exp='game.party.entry(o.リーゼル)'
+@bg f=0003
+@fg c=リーゼル e=通常 f=01
+[texton w=1]
+When evening fell.[k]
+[リーゼル v=vl249 f=01]「Captain.」[k]
+[テオ e=通常 f=01]「Riselle!」[k]
+I meet Riselle in the lobby of the inn. We are about to start the long-awaited fireworks.[k]
+[テオ f=02]「Well, we'd better get going, Riselle.」[k]
+[リーゼル v=vl250 f=02]「……Yeah!」[k]
+[テオ f=02]「There is still time before the fireworks. Let's have dinner first.」[k]
+[textoff]
+@out
+[eventoff]
+
+
+;◇イベント04・リーゼルと酒場へ行く
+*liesel_4
+
+; 夕方・酒場
+@saveon
+@bg f=0012
+[texton w=0]
+Having reserved a table in advance, I enjoyed dinner alone with Riselle.[k]
+[リーゼル v=vl251 e=通常 f=01]「It was delicious, Captain.」[k]
+[テオ e=通常 f=02]「Then fireworks are next. It's about time they started.」[k]
+[テオ f=01]「Actually, I know a place where we can get a good view of the fireworks. Let's go there.」[k]
+[textoff]
+@eval exp='o.サファイアシティ.img = "town_sapphire_night"'
+@eval exp='game.townView.loadImages(o.サファイアシティ.img)'
+[eventoff]
+
+
+;◇イベント05・花火を見る～リーゼルを奪われる
+*liesel_5
+
+; 夜・公園の奥の林
+@saveon
+@bg f=0032
+[texton w=1]
+Riselle and I came to the back of the park west of Sapphire City.[k]
+There is a slightly open area at the end of the park's wooded area from which the Sapphire Castle can be seen clearly.[k]
+Since it's deep in the woods, no one will come and disturb our time together.[k]
+It's a secret place I had found earlier while preparing. I am so glad I was able to come here with my beloved girlfriend.[k]
+@fg c=リーゼル e=通常・大 f=13
+[リーゼル v=vl252 f=13]「It's a lonely place... It's a little scary...」[k]
+[テオ e=通常 f=02]「But we can see really well from here. Don't worry, I'm here.」[k]
+@se f=hanabi1
+∗bang!∗[k]
+Suddenly, I saw something light up behind me with a small sound.[k]
+@fg c=リーゼル f=01
+[リーゼル v=vl253 f=01]「Ah! It's started, Captain!」[k]
+[textoff]
+
+@cl b
+@bgf f=0034
+@playse buf=1 storage=hanabi2 loop=true
+@image layer=5 storage=PE_base_full visible=true left=0 top=-100
+@image layer=6 storage=PE_base_full visible=true left=0 top=-100
+@startemit layer=5 slot=0 storage=PE_hanabi1 time=200 loop=true
+@wait time=2000
+@startemit layer=6 slot=1 storage=PE_hanabi2 time=200 loop=true
+
+[texton]
+We hurriedly turned our attention back to the sky above Sapphire Castle.[k]
+Fireworks go off one after with loud popping noises and decorate the dark night sky.[k]
+[リーゼル v=vl254 f=01]「Beautiful...」[k]
+[テオ f=01]「Oh.」[k]
+I held her by the shoulders and stared at the fireworks above us.[k]
+I looked to the side and saw Riselle's profile looking up at the sky with her eyes shining, and the twinkling of fireworks illuminating her fantastically.[k]
+[textoff]
+@fadeoutse buf=1 time=500
+@out
+@clearemit layer=5
+@clearemit layer=6
+@w1
+
+@bg f=0032
+@fg c=リーゼル f=01
+[texton]
+[リーゼル v=vl255 f=01]「The fireworks finished. Shall we go back now?」[k]
+[テオ f=10]「Hey Riselle, there is something I want to tell you.」[k]
+[リーゼル v=vl256 f=01]「What?」[k]
+[テオ f=10]「Actually... I have a room reserved at a hotel for tonight.」[k]
+@mu f=love
+@fg c=リーゼル f=25
+[リーゼル v=vl257 f=25]「Eh...」[k]
+[テオ f=10]「See that five-story hotel across from the weapon store? It's pretty eye-catching.」[k]
+@fg c=リーゼル f=54
+[リーゼル v=vl258 f=54]「Y-yeah... I know it...」[k]
+It's one with a slightly fashionable atmosphere, whose audience is mainly lovers. A so-called love hotel.[k]
+Unlike the inns we usually stay at, these only have rooms for couples.[k]
+The interior seems very elaborate and the atmosphere is perfect. Rooms only contain one large bed.[k]
+I'll her to join me there... In other words, to start an adult relationship.[k]
+I thought staying there was best, as I felt uncomfortable engaging in such an act at the same place everyone else was staying. It may lead to unnecessary questions too.[k]
+The rest will be up to her... I was ready. Now it's up to Riselle.[k]
+[リーゼル v=vl259 f=54]「Umm... well...」[k]
+[テオ f=10]「I... want to go there with you tonight.」[k]
+[リーゼル f=54]「...」[k]
+[テオ f=10]「Is that okay...?」[k]
+[リーゼル f=54]「...」[k]
+[テオ f=12]「...Maybe you don't want to? Then I'll skip the hotel and go back to the inn where everyone else is...」[k]
+[リーゼル f=54]「...」[k]
+@fg c=リーゼル f=22
+[リーゼル v=vl260 f=22]「No... that's not true.」[k]
+[テオ f=05]「What...?」[k]
+She muttered it softly, with her head bowed.[k]
+[リーゼル f=22]「...」[k]
+@fg c=リーゼル f=21
+[リーゼル v=vl261 f=21]「If it's with you... I don't mind.」[k]
+[テオ f=01]「Riselle...!」[k]
+I was so happy about Riselle's feelings that I couldn't help but love her.[k]
+@clf
+@quake time=500 hmax=5 vmax=5
+[テオ f=05]「Riselle...!」[k]
+I hug and kiss her, and Riselle responded in kind.[k]
+[テオ f=06]「Riselle...」[k]
+@fg c=リーゼル f=25
+[リーゼル v=vl262 f=25]「Captain...」[k]
+Our lips part and we look at each other.[k]
+Her wet lips and moist eyes attract me intensely. I can't take my eyes off her.[k]
+Riselle, I love you.[k]
+I want to make those eyes and the warmth as I hold you all mine![k]
+[テオ f=22]「Riselle...」[k]
+@fg c=リーゼル f=22
+I took Riselle's hand.[k]
+Then she intertwines her graceful fingers with mine and squeezes them back.[k]
+[テオ f=02]「Well, let's go, Riselle.」[k]
+[リーゼル v=vl263 f=22]「...Yes.」[k]
+@cl
+I took her hand and was about to start walking when [――――][k]
+@st
+@bgf f=0000
+; ブルーの声が突然聞こえてくる
+[？？？]「Hey, you're really showing off, aren't you?」[k]
+@bgf f=0032
+[リーゼル f=05]「...!」[k]
+[テオ f=12]「Who's that?!」[k]
+Suddenly, a voice called to us from the darkness.[k]
+Then, an unfathomable fear ran through my body. I heard a voice I had heard before, an incredibly horrifying voice.[k]
+That voice! No way?![k]
+[textoff]
+@mu f=darkside
+@fg c=ブルー e=帯刀 f=02
+@w1
+[texton]
+[ブルー f=02]「...It's been a while.」[k]
+[テオ f=09]「Blue...!」[k]
+[リーゼル f=09]「...!」[k]
+Out of the darkness, Blue appeared.[k]
+He found me, after so long![k]
+[テオ f=10]「...!」[k]
+Cold sweat trickles down my forehead. I am paralyzed with fear and unable to move.[k]
+[リーゼル v=vl264 f=09]「Captain... Are you okay? You're shaking...」[k]
+[テオ f=12]「A-ah... it's okay...」[k]
+Instinctively, my whole body was shaking. I was surprised at how scared I was in front of Blue.[k]
+But this is no time to be scared. Yes, I have to protect Riselle now.[k]
+[ブルー f=02]「It was terrible to see you suddenly disappear. I searched for you for quite a while.」[k]
+[テオ f=10]「...」[k]
+Riselle was safely behind me. I faced Blue so that she does not realize my fear.[k]
+[ブルー f=01]「I never thought you'd be alive and well as an adventurer in a place like this. If you hadn't won that tournament, I'd never have found you.」[k]
+[テオ f=12]「...!」[k]
+Damn! Winning that tournament was too conspicuous...[k]
+[ブルー f=05]「You're becoming quite the man, taking your girlfriend out on a date until midnight.」[k]
+[ブルー f=05]「Things have been tough on us. Since you and Max left, we can only have a party once every two days, and we've had to downgrade the steak for dinner.」[k]
+It's crazy to have such a big party every night. Particularly one where the steaks were only the finest meat.[k]
+[ブルー f=02]「...But I'm a generous guy.」[k]
+[ブルー f=01]「Come back with me right now, and all is forgiven.」[k]
+[テオ f=10]「...」[k]
+I can't do that...! I came to this town to get away from him...![k]
+[テオ f=12]「...I refuse.」[k]
+[ブルー f=02]「...Well, you've got some guts now, haven't you?」[k]
+[テオ f=10]「...」[k]
+[ブルー f=02]「Well, I could let you off the hook for your guts.」[k]
+[テオ f=05]「What...?」[k]
+@quake time=500 hmax=5 vmax=5
+@fgf c=ブルー f=07
+[ブルー f=07]「Like hell! Who do you think you're talking to like that?」[k]
+[テオ f=09]「Damn...!」[k]
+Blue's expression turns demonic, as it always used to! I knew he wouldn't back down...![k]
+But I don't want to repeat those days. I will never go back to Blue again. I am determined not to do so.[k]
+I am not the same person I was before. Even if it's Blue confronting me.[k]
+@quake time=500 hmax=5 vmax=5
+[リーゼル v=vl265 f=17]「Aah!」[k]
+; ↑ 背後でリーゼルが捕まる
+[テオ f=12]「...!」[k]
+Suddenly, Riselle, who was behind me, was pulled away from me by someone![k]
+[テオ f=12]「Riselle!」[k]
+[textoff]
+@fg l=エリック e=通常 f=02 left=300 b
+@fg c=リーゼル e=後ろ手 f=09 b
+@fg r=ミレディ e=通常 f=02
+@w1
+[texton]
+[リーゼル v=vl266 f=09]「Captain...!」[k]
+[エリック f=01]「Hey, [テオ], I'm gonna borrow this girl for a minute.」[k]
+It was Eric who caught Riselle. Apparently, he was hiding behind us. He had come with Blue, too.[k]
+@quake time=500 hmax=10 vmax=10
+[テオ f=09]「Stop! Let go of Riselle... ugh!」[k]
+@se f=grasp
+[ブルー f=02]「Hmph.」[k]
+Just as I reached out to take Riselle back, Blue grabbed me by the arm and tightened it behind my back.[k]
+[テオ f=11]「Damn it! Let go! Blue!」[k]
+[ブルー f=01]「I'll let you go. If you change your insubordinate attitude.」[k]
+[エリック f=01]「Right. Still, you've got a great girl with you, you cheeky little [テオ].」[k]
+Saying this, Eric rubbed [リーゼル]'s face with dirty hands.[k]
+@fg c=リーゼル f=18
+[リーゼル v=vl267 f=18]「Please stop...!」[k]
+@fg r=ミレディ f=03
+[少女 v=vm085 key=ミレディ buf=13 f=03]「She's such a cute girlfriend. She's trembling! Super cute～!」[k]
+The sylph girl beside Eric sounded amused. Is she Blue's new ally?[k]
+[エリック f=02]「Hey Miredy, make this woman cry!」[k]
+@fg r=ミレディ f=15
+[ミレディ v=vm086 f=15]「Eh, this poor thing～? Well, I am good at making people cry～」[k]
+[テオ f=11]「Don't do it! Don't touch Riselle!」[k]
+[ブルー f=06]「...」[k]
+[ブルー f=02]「...Go ahead, Miredy.」[k]
+@fg r=ミレディ f=94
+[ミレディ v=vm087 f=94]「Whaaat～?! Well, if Blue says so, I guess I'll do it～!」[k]
+The girl called Miredy runs her hand on Riselle's skirt with a smirk.[k]
+[textoff]
+@se f=buchi
+@flash on
+@wait time=200
+@fgf c=リーゼル e=ブラウス・後ろ手 f=12
+@flash off
+@w05
+[texton]
+∗riiiip!∗[k]
+[リーゼル f=12]「...!」[k]
+[テオ f=11]「Riselle!」[k]
+There was the snap of a button popping, and Riselle's skirt was ripped off with all the force Miredy could muster![k]
+@fg l=エリック f=01 left=300
+[エリック f=01]「Ooh!」[k]
+@fg c=リーゼル f=17
+[リーゼル v=vl268 f=17]「Kya!」[k]
+Riselle's underwear was exposed and she let out a small shriek.[k]
+@fg r=ミレディ f=54
+[ミレディ v=vm088 f=54]「What's with this girl? Pure white panties are so gross～!」[k]
+[エリック f=01]「Ohhh, those are some innocent looking panties. I'm getting excited. Those thighs are so plump and sexy.」[k]
+@fg c=リーゼル f=47
+[リーゼル v=vl269 f=47]「Stop... don't look...」[k]
+Riselle's face turns red with embarrassment and tears well up in her eyes. She surely wants to hide her panties, but Eric pinned her arms behind her back and she can't move.[k]
+[テオ f=12]「Stop it! Don't do such cruel things to Riselle!」[k]
+[ブルー f=02]「If that's what you want, then you know what to do. Right, [テオ]?」[k]
+[テオ f=09]「Damn it!」[k]
+I used to be worked to death by Blue... I can't believe I have to return to that life... [k]
+But if I want to protect Riselle...![k]
+[リーゼル v=vl270 f=17]「Don't do it, Captain!」[k]
+[テオ f=12]「Riselle...!」[k]
+@fg c=リーゼル f=47
+[リーゼル v=vl271 f=47]「Don't listen to that person... Captain, you've worked hard to become your ideal adventurer, haven't you?」[k]
+[テオ f=12]「Riselle...」[k]
+Yes... If I go back to that life again, all my efforts to date will have been in vain.[k]
+Besides, since it's Blue... There's no guarantee he'll spare Riselle, even if I do what he says.[k]
+@fg r=ミレディ f=07
+[ミレディ v=vm089 f=07]「What's with that condescending attitude?! You're so cocky! It pisses me off!」[k]
+[textoff]
+@se f=tear
+@flash on
+@wait time=200
+@fg r=ミレディ f=15 b
+@fgf c=リーゼル e=下着・後ろ手 f=17
+@flash off
+@w05
+[texton]
+∗rrrippp!∗[k]
+[リーゼル v=vl272 f=17]「Aaaah!」[k]
+[テオ f=]「Riselle!」[k]
+Miredy ripped off Riselle's blouse with great force![k]
+@fg r=ミレディ f=15
+[ミレディ v=vm090 f=15]「Serves you right, idiot ♪」[k]
+[エリック f=01]「Oooh! Cute white bra on top too!」[k]
+@fg c=リーゼル f=48
+[リーゼル v=vl273 f=48]「No... Don't...」[k]
+@fg r=ミレディ f=14
+[ミレディ v=vm091 f=14]「This is the underwear you wear to a date? That's so funny ♪ Were you really gonna go to a love hotel wearing this gross thing? 」[k]
+[テオ f=12]「Stop! I won't let you get away with this!」[k]
+[リーゼル f=48]「... ∗sob∗」[k]
+Riselle is crying...! I can't let her be embarrassed even further...![k]
+[ブルー f=02]「Hey, your girl's crying. You sure you wanna stay obstinate?」[k]
+[テオ f=09]「Damn it!」[k]
+@fg c=リーゼル f=47
+[リーゼル v=vl274 f=47]「I can handle this much. More importantly, I want to continue adventuring with you...!」[k]
+[テオ f=12]「Riselle...」[k]
+[リーゼル v=vl275 f=47]「I want to make my dreams come true with you...! So please don't go, Captain...!」[k]
+[テオ f=12]「...」[k]
+Riselle's tearful plea struck a chord in my heart.[k]
+I want to protect her at all costs...! But what can I do in this situation?![k]
+[エリック f=01]「Ohhhhh, how brave!」[k]
+@fg r=ミレディ f=56
+[ミレディ v=vm092 f=56]「That was so funny! ♪ I laughed so much at that dramatic line that my stomach hurts!」[k]
+[エリック f=01]「But those brave lines and that pure white underwear make me so excited. She's so innocent, I really want to fuck her.」[k]
+@fg r=ミレディ f=15
+[ミレディ v=vm093 f=15]「That's great, why don't you just do it?! It sounds like a lot of fun ♪ I'll help you too ♪」[k]
+[テオ f=12]「...!」[k]
+@fg l=エリック f=02 left=300
+[エリック f=02]「Hehehehe... then...」[k]
+@fg c=リーゼル f=11
+[リーゼル f=11]「...!」[k]
+@se f=dosa
+@clf
+@quake time=500 hmax=5 vmax=20
+∗thud!∗[k]
+[テオ f=11]「Riselle!」[k]
+To my surprise, Eric and Miredy both pushed Riselle down onto to the grass and hold her there![k]
+[リーゼル v=vl276 f=17]「N-no...!」[k]
+[エリック f=07]「Hey! Hold still!」[k]
+[ミレディ v=vm094 f=56]「Ahahahaha ♪」[k]
+This is bad...! If this continues, Riselle will...![k]
+[テオ f=12]「Riselle! Do some magic!」[k]
+[リーゼル v=vl277 f=29]「I tried... But I haven't been able to use my magic for a while now...!」[k]
+I also find myself unable to cast spells. I feel like something is blocking my magical power. What the hell is going on?![k]
+[テオ f=12]「Damn it...! Hey, let go, Blue!」[k]
+[ブルー f=02]「Oh, if only you'd listen to me.」[k]
+[テオ f=09]「Damn...!」[k]
+Blue's so strong that I can't shake him off.[k]
+We are deep in a deserted park, at midnight. No one will come to help us even if I shout.[k]
+Should I pretend to obey Blue...? No, even if I did, that's no guarantee of Riselle's safety.[k]
+I can't even use magic. I left all my items at the inn except for a saber for self-defense. I didn't tell the party I was coming here.[k]
+[テオ f=09]「...Damn it!」[k]
+Is it all over...? Are they going to rape Riselle?[k]
+...[k]
+Now that this has happened, I'll have to gamble on Blue's demands.[k]
+@st
+[テオ f=12]「...! (Ah!)」[k]
+No, wait. There is still a way.[k]
+Me and Riselle, plus Blue and the others are all adventurers. We're part of adventuring parties.[k]
+And there is one rule that you absolutely must follow if you belong to an adventuring party. That is [――――][k]
+[エリック f=01]「Ghehehehe... She's a real gem... Looks like she'd be great to hold...!」[k]
+[リーゼル v=vl278 f=50]「Please... just stop...」[k]
+[ミレディ v=vm095 f=15]「Idiot, when a man has gone this far, how can he stop now, even if you tell him?」[k]
+[エリック f=02]「That's right! Okay, let's start with the boobs...」[k]
+[テオ f=12]「Stop!」[k]
+I shouted out from the bottom of my stomach, making the two who were about to rape Riselle pause.[k]
+@mu f=duel
+[リーゼル f=47]「...!」[k]
+[エリック f=07]「Shut up! What the hell, [テオ]?」[k]
+[テオ f=05]「Hey, Blue.」[k]
+[ブルー f=06]「...What?」[k]
+[テオ f=05]「I... challenge you and your party to a duel!」[k]
+[リーゼル f=45]「...!」[k]
+[ブルー f=08]「What the hell?」[k]
+Everyone's eyes widen at my declaration.[k]
+[テオ f=06]「I am the leader of a party named [emb exp='game.party.displayName'], and Riselle is one of my companions. And you're all members of an adventuring party with Blue as the leader. Am I right?」[k]
+[ブルー f=06]「...」[k]
+[ミレディ v=vm096 f=57]「Yeah? So what～?」[k]
+[エリック f=08]「...What are you trying to say?」[k]
+[テオ f=06]「A duel. When a party of adventurers is challenged, they must make a choice: accept the duel, or accept their opponent's demands and leave the scene. No exceptions.」[k]
+[ブルー f=06]「...」[k]
+[テオ f=05]「So I, as captain of [emb exp='game.party.displayName'], have just now formally challenged you to a duel. So, what do you do? Accept? Or not?」[k]
+[textoff]
+
+@se f=byun1
+@image layer=9 page=back storage=9999 visible=true left=0 top=0
+@trans method=universal rule=rule_48 time=500
+@wt
+@layopt layer=9 page=back visible=false
+@bg f=0033 b
+@wait time=200
+@trans method=universal rule=rule_48 time=500
+@wt
+@wait time=500
+
+[texton]
+[ブルー f=18]「...!」[k]
+[エリック f=11]「What?」[k]
+A transparent ward appeared around the five of us! The Duel God had accepted my application for a duel.[k]
+[テオ f=05]「So, let go of Riselle! If you go against the rules and hurt her in any way, the Duel God will erase you from the world!」[k]
+[エリック f=08]「...Tch.」[k]
+[ミレディ v=vm097 f=19]「Yes, yes, I get it.」[k]
+The two of them moved away from Riselle, who immediately got up and ran to my side.[k]
+@fg c=リーゼル e=白いブラ,白いパンツ f=44
+[リーゼル v=vl279 f=44]「Captain...!」[k]
+@se f=dosa
+@quake time=500 hmax=10 vmax=10
+@clf
+Riselle clings to me in her underwear.[k]
+[テオ f=05]「Are you okay? But we're not out of danger yet.」[k]
+[リーゼル f=42]「... ∗nod∗」[k]
+Yes, we are going to fight a duel. Since we are the ones who proposed the duel, we can't cancel it. The rest is up to Blue.[k]
+@fg c=ブルー f=06
+[ブルー f=06]「...」[k]
+[テオ f=05]「So what are you going to do? Are you going to accept the duel? Or will you walk away?」[k]
+[ブルー f=06]「...」[k]
+[ブルー f=06]「...Hmph, that's obvious.」[k]
+@fg c=ブルー f=15
+[テオ f=12]「...!」[k]
+Suddenly Blue's face was demonic, once again...![k]
+[ブルー f=15]「Fine. If you want to fight me so badly, I'll fight you.」[k]
+[ブルー f=15]「I'm gonna make you sorry you ever picked a fight with me... I'll show you hell!」[k]
+[テオ f=10]「...! ∗shiver∗」[k]
+Blue's vicious eyes gave me goosebumps. It shows that he is serious.[k]
+It brings back the horrors of the past. It's terrifying and makes me want to run away.[k]
+...But I'm a different man now![k]
+I became strong. I became strong enough that I could even win a fighting tournament.[k]
+Blue was indeed a terrifying presence, but that is in the past. I'm stronger now.[k]
+There's no way that I could lose to someone like Blue, who has left the work to others for so long and has never really improved himself.[k]
+[テオ f=05]「...Let's go, Riselle!」[k]
+[リーゼル v=vl280 f=28]「Captain... I'll do my best!」[k]
+And now I have friends I can count on.[k]
+The other members are missing, which is a concern, but the other side is only three people, which isn't too bad. I'm sure we can win![k]
+[テオ f=05]「Let's go, Blue!」[k]
+@fg c=ブルー f=07
+[ブルー f=07]「You don't know your place! I'll show you the difference in power between us!」[k]
+[textoff]
+@clf
+
+; 戦闘
+;-----------------------------------------------------------------------------------------
+[iscript]
+
+game.guest.eraseHiring();
+
+o.テオ.equip.chest = void;
+o.テオ.removeEquipment(o.トランクス, "hip");
+o.テオ.storeAllItemsInOthers(game.temporaryBox);
+o.テオ.dressEquipment(o.サーベル,,, true);
+o.テオ.dressEquipment(o.主人公の私服,,, true);
+o.テオ.dressEquipment(o.トランクス,,, true);
+o.テオ.makeBustups();
+
+o.リーゼル.equip.chest = void;
+o.リーゼル.removeEquipment(o.白いブラ, "bust");
+o.リーゼル.removeEquipment(o.白いパンツ, "hip");
+o.リーゼル.storeAllItemsInOthers(game.temporaryBox);
+o.リーゼル.dressEquipment(o.魔導士の杖);
+o.リーゼル.dressEquipment(o.白いブラ,,, true);
+o.リーゼル.dressEquipment(o.白いパンツ,,, true);
+o.リーゼル.makeBustups();
+
+m.ブルー.attack = [1, 2];
+m.ブルー.defense = 999;
+m.ブルー.destroy = 0;
+m.ブルー.skill = [];
+
+m.エリック.destroy = 0;
+m.エリック.attack = [3, 4];
+
+m.ミレディ.destroy = 0;
+m.ミレディ.attack = [3, 4];
+
+game.inDuelBattle = true;
+f.neverConcede = true;
+game.backScreen.loadImages(%[storage: "other_woods_net", visible: true]);
+game.curTeam = o.ブルー・ファミリア;
+game.bevents = [8, 9];
+game.party.setStatus(o.禁止);
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+@saveoff
+@gameon
+@monster pos=2 name=エリック
+@monster pos=4 name=ミレディ
+@monster pos=10 name=ブルー invincible=true
+@callbattle bgm=boss
+
+; 戦闘終了・必ず敗北
+@eval exp='f.neverConcede = false'
+@anime_duel_sign visible=false
+@image layer=9 page=back storage=9999 visible=true left=0 top=0
+@trans method=universal rule=rule_48 time=500
+@wt
+@layopt layer=9 page=back visible=false
+@bg f=0032 b
+@wait time=200
+@trans method=universal rule=rule_48 time=500
+@wt
+@wait time=500
+@eval exp='game.party.minimumRecovery(true)'
+@saveon
+*_replay_liesel_5
+@bg f=0032 cond='f.replayMode'
+@mu f=darkside
+@fg c=ブルー e=帯刀 f=02
+[texton w=1]
+[ブルー f=02]「Well, learned your lesson now?」[k]
+[テオ f=09]「D-damn it...!」[k]
+[ブルー f=02]「You've a long way to go before you can think about beating me. Don't ever defy me again, you weakling.」[k]
+Blue triumphantly looks down on us as we lie on the floor.[k]
+He was too strong...! I couldn't do anything against him. He really is a monster.[k]
+I thought I had closed the gap between my ability and his, but in reality, there was still a gap.[k]
+I knew he was strong from when I worked with him, but I didn't think he was this strong. I thought I could beat him.[k]
+But I was wrong. I'd only had a glimpse at what Blue could do. He wasn't showing his true strength at all.[k]
+...To be honest, I underestimated Blue. That strength was incredible...![k]
+@fg c=ブルー f=02
+[ブルー f=02]「Now that you've lost to me, you'll have to do what I say.」[k]
+[ブルー f=02]「Become my subordinate again and work for me... Well, I don't need repeat myself. Having lost the duel, you can't refuse my request to join my party.」[k]
+[テオ f=09]「Damn...!」[k]
+The winner of the duel can make several demands of the loser. One of them is to order one of its members to join their party. This is known as poaching.[k]
+The party receiving this request must give up the designated member whether they like it or not. Negotiation isn't possible.[k]
+And once the designated member joins a new party, he or she must listen unconditionally to the new leader. If they disobey that code, they will be erased from existence by the Duel God.[k]
+[エリック e=通常 f=05]「What good would it do to take him back? Wouldn't it be better to get the money? He must have a load of money from winning the tournament.」[k]
+As the breathless Eric said, under the duel rules, another demand that the winning party can make is to take all the opponent's money.[k]
+[ブルー f=02]「Huh... We can make a lot of money later.」[k]
+[ブルー f=15]「I'll never forgive anyone who defies me...! I won't be satisfied until I make this man realize once and for all that he has no freedom...!」[k]
+Blue said this with a predator's look in his eyes. His eyes were cold and brutal.[k]
+I knew he was a monster...! I should never have gone against him...![k]
+[ブルー f=02]「Now I'm going to remind you of that.」[k]
+With that said, Blue approaches Riselle, who was lying a short distance away.[k]
+What the hell are you doing? No way![k]
+[リーゼル v=vl281 e=下着 f=29]「Aaa...」[k]
+@fg c=ブルー e=上半身裸 f=02
+[ブルー f=02]「I thought she was a little brat, but she's a pretty nice woman.」[k]
+With that, he took off his shirt and straddled Riselle while in his underwear![k]
+@cl
+[リーゼル v=vl282 f=50]「St...op...」[k]
+[ミレディ v=vm098 e=通常 f=01]「Oh! Are you going to do it? Are you going to do something nasty?」[k]
+Miredy, revived and energized, starts chatting merrily.[k]
+[リーゼル v=vl283 f=49]「Ah-ahh...!」[k]
+[テオ f=09]「Ri...selle...!」[k]
+Riselle's faint screams can be heard.[k]
+I try to reach out to help Riselle, but no matter how much I want to, my body can't move.[k]
+We lost the duel. So for the next 30 minutes I'll be fatigued and barely able to move my body.[k]
+Riselle too. Since she can't move her tongue, she is unable to speak freely and can only make meaningless noises.[k]
+[ブルー f=02]「Well, let's see those boobs...」[k]
+[textoff]
+
+@bg f=event01 p0=01 p1=02
+[texton w=2]
+∗swiish!∗[k]
+[リーゼル v=vl284]「Ah...!」[k]
+[テオ]「...!」[k]
+Blue ripped off Riselle's bra with great force![k]
+Riselle's white breasts spill out.[k]
+[ブルー]「Ohh...?」[k]
+[リーゼル v=vl285]「Don't... look...」[k]
+Riselle's breasts and pink nipples are revealed to that hateful man.[k]
+Blue eyes Riselle's breasts as if licking them.[k]
+[ブルー]「They're not big, but she's got some pretty nice boobs.」[k]
+@bg f=event01 p2=01 p3=06
+[リーゼル]「... (Kyaa)」[k]
+Riselle's face turned bright red when her breasts were seen.[k]
+[ブルー]「I'll take good care of these tits.」[k]
+@bg f=event01 p2=02 p3=05
+[リーゼル v=vl286]「Ah...!」[k]
+Blue lightly fondled Riselle's breasts.[k]
+The moment her breasts are touched, Riselle's body reacts sensitively with a twitch.[k]
+[ブルー]「Kukukuku...」[k]
+Blue continued to fondle her breasts with his hands, enjoying himself.[k]
+[テオ]「Stop it...!」[k]
+It's a nightmare. Riselle's innocent breasts in that man's hands...[k]
+[リーゼル v=vl287]「Aa...h...」[k]
+[ブルー]「Hmm? Did you feel that?」[k]
+Blue smirks when he hears Riselle let out a troubled breath.[k]
+Riselle... Did you really feel that...?[k]
+With practiced hands, Blue playing with Riselle's breasts even more, clenching and kneading her nipples.[k]
+[リーゼル v=vl288]「Uh... Ah...!」[k]
+[ブルー]「Oh? Your nipples are getting hard. Are you excited?」[k]
+[リーゼル v=vl289]「N-no... I'm not...」[k]
+[ブルー]「There's no need to hide it. Look, your nipples are all hard. They're so sensitive.」[k]
+[テオ]「Ri...se...lle...!」[k]
+That can't be true...! Is she really getting horny...?![k]
+Riselle, a pure girl, is becoming a woman at the hands of Blue...[k]
+[textoff]
+
+@fg c=ミレディ f=13 b
+@bg f=0032
+[texton w=1]
+[ミレディ v=vm099 f=13]「Hey, Blue? Why don't you touch somewhere besides her boobs?」[k]
+[ブルー f=02]「Right. Well, then...」[k]
+[textoff]
+
+@cl b
+@bg f=event01 p4=02 p5=02
+[texton w=2]
+Bastard...[k]
+[リーゼル v=vl290]「Ahh...! Nooo...!」[k]
+Blue touches Riselle's crotch over her panties! Riselle suddenly let out a distressed cry.[k]
+[ブルー]「You felt it right away. It feels amazing to be touched here, hmm?」[k]
+Blue touches her crotch again. He rubs his fingers back and forth over her panties, along her slit.[k]
+[リーゼル v=vl291]「No... don't... Ahhh...!」[k]
+Riselle's face was bright red up to her ears as she panted embarrassingly.[k]
+She wriggles as she tries to endure the stimulation coming from between her legs.[k]
+@bg f=event01 p4=03 p5=01
+[リーゼル v=vl292]「Ahhh...」[k]
+[テオ]「Riselle...!」[k]
+Shockingly, Riselle spreads her legs.[k]
+In a lewd pose, she continued to wiggle her hips and receive the caresses of Blue's fingers.[k]
+That demure Riselle... making such a naughty pose due to Blue's fingers...![k]
+∗sluurp∗[k]
+[リーゼル v=vl293]「Oh...!」[k]
+[ブルー]「Oh? Are you getting wet?」[k]
+[テオ]「...!」[k]
+We all heard a disgusting wet sound...[k]
+It can't be... Blue's caresses made Riselle wet...?![k]
+[ブルー]「Kukukuku...」[k]
+[リーゼル v=vl294]「Hmm... Mmh... Ahh!」[k]
+Blue continued to caress further. More sloshy sounds were heard.[k]
+[ブルー]「Her panties are getting wetter and wetter. She can't get enough of it.」[k]
+In this immodest state, Riselle's panties become wetter and wetter.[k]
+Riselle is feeling so horny at Blue's fingertips that her vagina is dripping with naughty juices.[k]
+I don't want to believe it...! But her sexual desire is making her wet.[k]
+[ブルー]「Hey [テオ], your girlfriend's panties are soaking wet. My fingers are making them so soggy!」[k]
+[リーゼル v=vl295]「No... don't look... please...」[k]
+[テオ]「Riselle...」[k]
+Stop it, Blue... Don't humiliate her any further...![k]
+[textoff]
+
+@cl b
+@fg l=エリック f=01 b
+@fg r=ミレディ f=14 b
+@bgf f=0032
+[texton w=1]
+[エリック f=01]「Hey, [テオ], don't stare at her like that, you're embarrassing your girlfriend!」[k]
+[ミレディ v=vm100 f=14]「Hehehe, did you get excited when your girlfriend did something naughty?」[k]
+[テオ f=09]「Damn...!」[k]
+@fgf r=ミレディ f=03
+[ミレディ v=vm101 f=03]「Oh, I've got a great idea!」[k]
+@fgf r=ミレディ f=15
+[ミレディ v=vm102 f=15]「Hey, Blue, why don't we give these two what they wanted?」[k]
+[ブルー f=05]「I don't understand.」[k]
+@fgf r=ミレディ f=03
+[ミレディ v=vm103 f=03]「Let's combine their cock and pussy! A show with a virgin and a virgin having sex in front of us! How about it?」[k]
+[ブルー f=02]「Well, that sounds interesting. Okay, go ahead. I'm watching.」[k]
+[リーゼル e=裸 f=45]「...!」[k]
+[テオ f=09]「...Stop being so stupid...!」[k]
+What a bunch of vile people...! I absolutely must stop them from embarrassing Riselle like that...![k]
+@fgf r=ミレディ f=14
+[ミレディ v=vm104 f=14]「What is it? You don't like it? You wanted to fuck your girlfriend, didn't you?」[k]
+[テオ f=09]「Damn...!」[k]
+That's true, but not like this...![k]
+@fgf r=ミレディ f=16
+[ミレディ v=vm105 f=16]「Eric! Bring the girlfriend over here!」[k]
+[エリック f=02]「Got it.」[k]
+@cl l
+Eric lifts up Riselle and tries to bring her over here.[k]
+Meanwhile, Miredy turned me on my back and began to remove my outer clothes.[k]
+[テオ f=12]「S-stop it...!」[k]
+[ミレディ v=vm106 f=16]「Now, I wonder how his cock is doing?」[k]
+@cl b
+@fg c=ミレディ e=通常・大 f=16
+Miredy approaches me.[k]
+Then she started to take off my underwear as I lay there. However [――――][k]
+@fgf c=ミレディ f=61
+[ミレディ f=61]「...?!」[k]
+Miredy's expression changed the moment she saw inside my underwear![k]
+@fgf c=ミレディ f=07
+[ミレディ v=vm107 f=07]「...What the hell is this? His dick isn't even hard!」[k]
+[テオ f=09]「Ugh...」[k]
+It's no wonder. No matter how indecent Riselle may look, there was no way I could get an erection in such a situation.[k]
+[ミレディ v=vm108 f=07]「We can't do a virgin combination show with this! Screw you, you impotent bastard! This really sucks!」[k]
+Miredy is furious. But even if she vents her anger, there's nothing she can do about it.[k]
+@cl b
+@fg r=ミレディ e=通常 f=57
+[ミレディ v=vm109 f=57]「Man, this really kills my mood. Hey, what should I do with this wet girlfriend? Should I stick a stick in her?」[k]
+@fg l=エリック f=21
+[エリック f=21]「Okay, then I'll do it! Let me fuck her!」[k]
+[ミレディ v=vm110 f=58]「Eh～! You, Eric～?! It's boring watching you have sex～!」[k]
+@fgf l=エリック f=11
+[エリック f=11]「That's not true! What's so boring about my sex?」[k]
+@fgf r=ミレディ f=19
+[ミレディ v=vm111 f=19]「Your sex is so repetitive and your dick is too small. I want to see something more exciting!」[k]
+; ↑ 粗チン（そちん）
+[テオ f=10]「...」[k]
+Then, I realized something.[k]
+The paralysis in my body is slowly lifting...![k]
+While they were messing around, the paralysis applied by the Duel God was slowly being lifted, and I was able to move my limbs.[k]
+Now... I can save Riselle![k]
+[テオ f=10]「...」[k]
+I looked around, waiting for a chance to help her.[k]
+[ブルー f=06]「...」[k]
+Blue is watching their exchange from some distance away.[k]
+Eric is close to Riselle. I have to catch him off guard if I want to help her.[k]
+Miredy is standing near me. She's looking at Eric and Riselle rather than me.[k]
+[テオ f=10]「...」[k]
+Even if Miredy saw, I should be able to shake her off. She doesn't seem strong, and she's both small and light.[k]
+Now if I can just get to Riselle while Eric is distracted...![k]
+@fgf l=エリック f=21
+[エリック f=21]「Hey! Hey! Just let me fuck this woman! I'm running out of patience!」[k]
+[ミレディ v=vm112 f=19]「Oh well... Then why don't you hurry up and do it?」[k]
+[エリック f=21]「Hey, Blue! That okay?」[k]
+[ブルー f=06]「...Do what you like.」[k]
+@cl b
+@fg c=エリック f=01
+[エリック f=01]「Alright! Okay, let's do it...!」[k]
+[リーゼル v=vl296 e=白いパンツ f=47]「No... no...!」[k]
+@fg c=エリック e=下半身裸・勃起 f=01
+Eric began undressing with haste.[k]
+He unzipped and slid down his pants. He then began trying to pull the pants off both legs.[k]
+[テオ f=06]「...!」[k]
+OK, now![k]
+Now, rather than watching Riselle, Eric is preoccupied with taking off his pants. Now I can help her![k]
+[テオ f=07]「Yaaa!」[k]
+[ブルー f=18]「...!」[k]
+@fgf c=エリック f=11
+[エリック f=11]「What?」[k]
+@clf
+@se f=beat
+@flash time=100
+@quake time=500 hmax=50 vmax=10
+I leapt up and slammed myself into Eric, who was standing on one leg trying to take off his pants![k]
+[エリック f=17]「Wah!」[k]
+@se f=dosa
+Eric fell to the ground! And his pants get tangled up around his legs so he can't get up right away![k]
+[テオ f=11]「Riselle! Run for it! You should be able to move!」[k]
+[リーゼル v=vl297 f=45]「Eh...」[k]
+[テオ f=11]「Come on! I'll hold them off.」[k]
+@se f=beat
+@quake time=200 hmax=10 vmax=30
+@flash f=0000 time=200
+∗smack!∗[k]
+[テオ f=09]「Ugh!」[k]
+Suddenly, someone grabbed me from behind by the shoulders and pushed me down to the ground again![k]
+[ミレディ v=vm113 f=57]「I saw that one coming. Sorry, I can't let you do that!」[k]
+[テオ f=09]「D-damn...!」[k]
+To my surprise, it was Miredy who pushed me down. She is petite with thin arms, so where's this strength coming from?![k]
+[ミレディ v=vm114 f=58]「It's a hundred years too early for you to try and outsmart me! Don't underestimate me!」[k]
+[テオ f=09]「Ugh...!」[k]
+@se f=needle
+@flash time=100
+The next thing I knew, I felt a small prick in my neck![k]
+[ミレディ v=vm115 f=16]「If you start moving again, it will be troublesome, so stay quiet for a while!」[k]
+[テオ f=09]「D-damn it...!」[k]
+It seems that Miredy used a numbing needle on me. My body is once again paralyzed for a while.[k]
+I'm stuck again... I can't save Riselle like this...![k]
+Please, Riselle...! Please run away quickly![k]
+@fg c=リーゼル f=47
+[リーゼル v=vl298 f=47]「A-ah, Captain...!」[k]
+@fg r=エリック f=01
+[エリック f=01]「Oops! I won't let you get away, girlfriend!」[k]
+@fgf c=リーゼル f=37
+[リーゼル v=vl299 f=37]「Ah!」[k]
+@clf
+@se f=dosa
+@quake time=200 hmax=5 vmax=5
+Just as Riselle was about to get up, Eric caught her![k]
+[エリック f=01]「You can't run away! Come on, let's get some pussy!」[k]
+Eric pushed Riselle down again and reached between her legs![k]
+[リーゼル v=vl300 f=37]「Ahh... no...!」[k]
+[エリック f=01]「Look, it's so wet, isn't it? You just have to stick your dick into a pussy this wet!」[k]
+[リーゼル v=vl301 f=37]「N-noo...」[k]
+[ブルー f=06]「...」[k]
+[エリック f=02]「You can't run away, so time to prepare yourself. It's just sex, right?」[k]
+[リーゼル f=47]「... ∗sob∗」[k]
+[テオ f=12]「Riselle...!」[k]
+Riselle stops resisting. She seems to have realized that she can no longer be saved.[k]
+@fg c=エリック f=02
+[エリック f=02]「Oh, yeah, that's nice and obedient. Well, let's get to it...!」[k]
+Eric was about to straddle Riselle, when [――――][k]
+[ブルー f=05]「Wait! Eric!」[k]
+@cl b
+@fg l=エリック f=05 b
+@fg r=ブルー f=05
+Blue, who had been silently watching the situation, suddenly stood up and stopped Eric.[k]
+@fgf l=エリック f=25
+[エリック f=25]「Blue, what the?」[k]
+[ブルー f=06]「Eric, leave that woman alone.」[k]
+@fgf l=エリック f=11
+[エリック f=11]「Huuuuuh?! Why?!」[k]
+[リーゼル f=45]「...」[k]
+[テオ f=12]「Blue...?」[k]
+Surprisingly, Blue stopped Eric.[k]
+What is he planning...? Surely he won't let Riselle go...?[k]
+@fgf l=エリック f=13
+[エリック f=13]「Hey, Blue, please, just let me fuck her already. I can't take it any more.」[k]
+[ブルー f=05]「Get out of the way, Eric! Didn't you hear me?」[k]
+@fgf l=エリック f=10
+[エリック f=10]「I-I get it...」[k]
+@cl b
+@fg c=ブルー f=05
+Blue threatens Eric and he reluctantly leaves Riselle.[k]
+[ミレディ v=vm116 f=05]「Hey, what's going on? Blue!」[k]
+[ブルー f=02]「Well, I've changed my mind a bit...」[k]
+Saying this, Blue slowly pulled down his pants.[k]
+@fg c=ブルー f=94
+[ブルー f=94]「...I'll take this woman. Eric, you stay there and watch.」[k]
+[リーゼル f=12]「...!」[k]
+[テオ f=12]「W-what did you say...?」[k]
+[ミレディ v=vm117 f=94]「What is it? Blue, you want to fuck this girl now?」[k]
+[エリック f=06]「So that's it... Well, if you want to fuck her first, I guess I have no choice...」[k]
+[ブルー f=02]「... ∗glance∗」[k]
+Suddenly Blue looks at me lying down.[k]
+[テオ f=09]「Blue...!」[k]
+@fg c=ブルー e=裸・勃起 f=15
+[ブルー f=15]「I'll take your girl's first time. You can watch from right there.」[k]
+Saying this, Blue slid down his pants and underwear in one motion![k]
+Blue's powerful penis popped out from the inside![k]
+[ミレディ v=vm118 f=92]「Wow ♪ Blue's cock is amazing ♪」[k]
+; ↑ 顔を赤らめつつ嬉しそうに
+[エリック f=05]「That dick is as ridiculous as ever. I think he's gonna break her. It's too much for a virgin.」[k]
+[リーゼル f=47]「... ∗tremble∗」[k]
+[テオ f=12]「Riselle...!」[k]
+Riselle is trembling at the sight of Blue's penis. No wonder. It's as thick as her arm, swollen and rock hard.[k]
+[textoff]
+
+@cl b
+@bg f=event01 p0=02 p1=02
+[texton w=2]
+[ブルー]「Kuku... Well then, let's get to it...」[k]
+[リーゼル v=vl302]「Ahhh... Nooo...!」[k]
+Blue casually removes Riselle's panties. Her forbidden crack is revealed.[k]
+Blue then pulled her panties down one leg. Then, he made Riselle spread her legs.[k]
+@bg f=event01 p0=03 p1=04
+[リーゼル v=vl303]「Noooo...!」[k]
+@bg f=event01 p0=03 p1=02
+[ブルー]「Ooh... As expected of a virgin, she's beautiful. That's a pretty tasty looking pussy.」[k]
+[テオ]「Blue...!」[k]
+Riselle's face turns red to the ears.[k]
+Riselle's vagina was completely wet and ready to receive a man. Blue stared intently at her crotch.[k]
+[ブルー]「It's really wet. This should go in easily.」[k]
+@bg f=event01 p0=04 p1=06
+Blue then took his penis in hand and placed it at Riselle's vulva.[k]
+∗sluurp∗[k]
+@bg f=event01 p0=04 p1=04
+[リーゼル v=vl304]「Ahh... please stop...」[k]
+The moment Blue's tip hit Riselle's entrance, it made an embarrassing noise due to her juices.[k]
+[ブルー]「Well, let's have a taste.」[k]
+[テオ]「Blue... please... stop...!」[k]
+[ブルー]「Let's get it in...」[k]
+Blue kept the tip against her vagina and thrust his hips forward![k]
+With a squishing sound, the vicious penis forcibly pried open Riselle's pink vaginal hole. And then...[k]
+@bg f=event01 p0=05 p1=04
+∗suuuck!∗[k]
+[リーゼル v=vl305]「Ah...!」[k]
+[ミレディ v=vm119]「Oh～! Blue's dick is in her～!」[k]
+Blue's penis was swallowed by Riselle![k]
+[テオ]「Stop... Please stop...」[k]
+[ブルー]「This is just the start.」[k]
+Blue pushes further in![k]
+@bg f=event01 p0=06 p1=06
+∗thrust∗[k]
+[リーゼル v=vl306]「Ugh...!」[k]
+Riselle's face twitched with pain as Blue's rod went deeper and deeper inside her.[k]
+Then...[k]
+∗sluuurp!∗[k]
+[リーゼル v=vl307]「Ahhhh...!」[k]
+[テオ]「No... Riselle...」[k]
+Finally, Blue's raging penis was all the way inside Riselle. Riselle was... raped.[k]
+[ブルー]「Phew... This is good...!」[k]
+[リーゼル v=vl308]「Ugh... it hurts...」[k]
+[テオ]「Riselle...」[k]
+[ミレディ v=vm120]「Gahahaha! You're getting screwed! Suck it, idiot!」[k]
+Riselle's virginity was completely penetrated by Blue. Through him, she discovered men.[k]
+[ブルー]「[テオ], I turned your girlfriend into a woman. How do you feel about that?」[k]
+[テオ]「Damn...!」[k]
+[ブルー]「Well, the fun is just beginning. I'm going to thoroughly enjoy your girlfriend now.」[k]
+@bg f=event01 p0=08 p1=05 t=500
+@bg f=event01 p0=07 p1=05 t=500
+@bg f=event01 p0=08 p1=05 t=500
+@bg f=event01 p0=07 p1=05 t=500
+∗sluurp sluurp∗[k]
+[リーゼル v=vl309]「Stop... please... ah...」[k]
+Blue slowly began to move his hips back and forth.[k]
+Blue's pole slides in and out of the wet vagina, making a disgusting sound.[k]
+[リーゼル v=vl310]「Ah... Ah... Ah...」[k]
+[ブルー]「Phew... This is good... But it's so tight.」[k]
+@bg f=event01 p0=08 p1=05 t=500
+@bg f=event01 p0=07 p1=05 t=500
+@bg f=event01 p0=08 p1=05 t=500
+@bg f=event01 p0=07 p1=05 t=500
+∗sluurp sluurp sluurp∗[k]
+[リーゼル v=vl311]「Ugh... Stop... Aaah...!」[k]
+@bg f=event01 p0=08 p1=05 t=500
+@bg f=event01 p0=07 p1=05 t=500
+@bg f=event01 p0=08 p1=05 t=500
+@bg f=event01 p0=07 p1=05 t=500
+∗sluurp sluurp sluurp∗[k]
+[ブルー]「Damn... I can't get enough of this... Oh, man, this pussy...」[k]
+Blue is quite excited and looks unusually impatient.[k]
+[ブルー]「Oh, man...! I haven't had such a nice pussy in a long time... Woah..!」[k]
+@bg f=event01 p0=08 p1=04 t=300
+@bg f=event01 p0=07 p1=04 t=300
+@bg f=event01 p0=08 p1=04 t=300
+@bg f=event01 p0=07 p1=04 t=300
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[リーゼル v=vl312]「S-stop it! Aaaahhh!」[k]
+Ignoring Riselle's pain, Blue suddenly begins to shake his hips furiously![k]
+@bg f=event01 p0=08 p1=04 t=300
+@bg f=event01 p0=07 p1=04 t=300
+@bg f=event01 p0=08 p1=04 t=300
+@bg f=event01 p0=07 p1=04 t=300
+@bg f=event01 p0=08 p1=04 t=300
+∗slurp slurp slurp slurp slurp slurp∗[k]
+[ブルー]「Ugh!」[k]
+@flash
+@flash
+@bg f=event01 p0=06 p1=04
+∗spuurt! spuurt!∗[k]
+[リーゼル v=vl313]「Ah...!」[k]
+[ブルー]「Grrrr...!」[k]
+Blue's entire body stiffened as he thrust deeply into Riselle![k]
+No way...?![k]
+[ブルー]「Uhhh... Unbelievable...」[k]
+[ミレディ v=vm121]「What? Blue, don't tell me you already came!」[k]
+[テオ]「No way!」[k]
+[ブルー]「Sorry [テオ], I couldn't help but cum inside. Your girlfriend is so good.」[k]
+[テオ]「Blue... You...!」[k]
+It was a horrible thing to hear. Blue climaxed too quickly and ended up ejaculating inside Riselle.[k]
+[ミレディ v=vm122]「Hey, Blue! Cumming too soon is the worst. I'm seriously disappointed～!」[k]
+[ブルー]「I couldn't help it. This woman feels so good I couldn't stand it.」[k]
+[エリック]「Is she really that good? If it's Blue saying it, she must be! Ah～ I can't wait to fuck her too!」[k]
+[ブルー]「Here we go.」[k]
+@bg f=event01 p0=09 p1=02
+With a squelching sound, Blue pulled his penis out. It hadn't lost its vigor at all, and jumped up vigorously when it was pulled out.[k]
+[リーゼル]「... ∗sob∗」[k]
+Riselle is completely tainted, with tears in her eyes.[k]
+The white fluid spewed by Blue spilled from her crotch.[k]
+I'm so sorry Riselle... It's all my fault...![k]
+[textoff]
+@out
+
+@fg c=エリック f=21 b
+@bgf f=0032
+[texton w=1]
+[エリック f=21]「Well, it's my turn now...! Heh heh heh...」[k]
+@cl b
+@fg l=ブルー e=汗だく・勃起 f=06 b
+@fg r=エリック f=21
+[ブルー f=05]「Wait, Eric. I'm not done yet.」[k]
+@fgf r=エリック f=09
+[エリック f=09]「Ehhhhh?!」[k]
+@fgf l=ブルー f=94
+[ブルー f=94]「My dick still isn't calming down. I'm not satisfied yet. You wait a little longer.」[k]
+With that, Blue flaunted his penis, which was still hard and large.[k]
+[エリック f=10]「Oh, no. Damn, all right.」[k]
+@cl r
+Eric reluctantly backs down when Blue says so.[k]
+@cl b
+@fg c=ブルー f=94
+[ブルー f=94]「So, I'll be doing it again.」[k]
+[リーゼル f=61]「... ∗sob∗」[k]
+@cl
+Blue covers the lying down Riselle once again.[k]
+[ブルー f=02]「Ah, yeah.」[k]
+Blue got up again and went behind Riselle, as if he'd thought of something.[k]
+[textoff]
+@out
+
+@bg f=event71 p0=01 p1=01 p2=01
+[texton w=2]
+[リーゼル v=vl314]「Ah...!」[k]
+Blue, now lying directly behind Riselle, put her arms around her from behind and held her up by one knee.[k]
+Riselle is forced to open her legs, giving a full view of her pubic area.[k]
+@bg f=event71 p0=01 p1=01 p2=03
+[ブルー]「I'm going to fuck her again, [テオ]. I'll show you too.」[k]
+Blue is right, Riselle's juice-soaked secret place is clearly visible from here.[k]
+[テオ]「W-what are you planning to do...?」[k]
+[ブルー]「Look, can you see it clearly? Your girlfriend's pussy. And here I come...」[k]
+∗squelch!∗[k]
+@bg f=event71 p0=02 p1=05 p2=02
+[リーゼル v=vl315]「Ahhhh...!」[k]
+Blue pushes the still hard tip of his penis against Riselle's pussy from behind. And...[k]
+∗sliiip∗[k]
+[リーゼル v=vl316]「Ohhhh...」[k]
+[テオ]「...!」[k]
+Blue slowly inserted his penis into Riselle, as if to show off to me.[k]
+Blue's long, thick rod slithers into Riselle.[k]
+[リーゼル v=vl317]「Ah... Ah...」[k]
+Blue's penis then settled into Riselle's vagina up to the root.[k]
+@bg f=event71 p0=02 p1=05 p2=03
+[ブルー]「Well, I'm all the way at the back. Did you get a good look?」[k]
+[テオ]「Damn...!」[k]
+Blue smiles triumphantly with a look of triumph in his eyes.[k]
+[ブルー]「I'd feel bad for her boyfriend, if I enjoyed her alone. I'll make a special effort to show you how to have sex with her.」[k]
+[テオ]「What did you say...?!」[k]
+@bg f=event71 p0=03 p1=04 p2=02
+∗sluurp sluurp sluurp∗[k]
+[リーゼル v=vl318]「Ah... ah... ah...!」[k]
+Blue began thrusting back and forth inside Riselle with his filthy penis, showing me where they're joined![k]
+∗sluurp sluurp sluurp∗[k]
+As Blue thrusts upwards, Riselle's breasts jiggle and nasty squishy sounds are heard.[k]
+When Blue pulled his hips back, his thick meat stick slid out from inside. It was covered with Riselle's love juice and glistening.[k]
+Something that big... was inside Riselle...![k]
+[リーゼル v=vl319]「Ahh... Stop it already...!」[k]
+[ブルー]「I'll let you cum properly this time. Come on, let's have some fun.」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+@bg f=event71 p0=03 p1=05 p2=02
+[リーゼル v=vl320]「Ah... Ah... Ahh... Ahh...!」[k]
+Blue rapidly thrusts into Riselle's vagina from the side, which makes disgusting wet noises.[k]
+The pace of his thrusting is clearly faster and the movement of his penis is smooth.[k]
+[ブルー]「She's loosening up a lot. It's getting easier for me to move in.」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[リーゼル v=vl321]「Ah... ahhh... aahhh...!」[k]
+[ブルー]「...But it's a really nice pussy. If I'm not careful, I might cum right away!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[リーゼル v=vl322]「Ah... ahh... mmm...! Mmmm... mmm... ahhh...!」[k]
+Riselle's moans become more and more sensual. Her heavy breathing is very sexy.[k]
+[テオ]「Riselle...!」[k]
+It was supposed to be something she would only show me... her enchanting, seductive body... But now she's exposing it in front of Blue. Because of Blue's penis.[k]
+[ミレディ v=vm123]「What, what? Is your girlfriend getting into it too?」[k]
+[エリック]「She's moaning in agony, and I can't stand it... Ahhh! I want to do it too!」[k]
+∗sluurp sluurp sluurp sluurp∗[k]
+[リーゼル v=vl323]「Ah... Ah... Ah... Ah...」[k]
+@bg f=event71 p0=03 p1=05 p2=05
+[ブルー]「Damn...! I'm reaching my limit... I'm going to let it out!」[k]
+∗squelch!∗[k]
+[リーゼル v=vl324]「Ahhh!」[k]
+Blue thrusts deeply into Liesel with force! Then he quickly pulls out his penis![k]
+@bg f=event71 p0=04 p1=05 p2=05
+∗spurt!∗ ∗spurt!∗ ∗spurt spurt!∗[k]
+[リーゼル v=vl325]「Ahhhh...!」[k]
+Blue's semen was sprayed onto Riselle's body in large quantities! Her beautiful skin becomes covered with dirty juices.[k]
+@bg f=event71 p0=05 p1=04 p2=01
+[ブルー]「Phew... that felt good...」[k]
+[ミレディ v=vm124]「Ahahahaha! She's covered in cum! Idiot!」[k]
+[リーゼル v=vl326]「∗pant∗ ∗pant∗」[k]
+[テオ]「Riselle...」[k]
+Riselle, covered in sperm and in left in a pitiful state, realizes that she has been completely defiled.[k]
+Why... why did this happen...?![k]
+[textoff]
+@out
+
+@fg c=ブルー e=汗だく・勃起 f=14 b
+@bgf f=0032
+[texton w=1]
+[ブルー f=14]「Whew, that was good.」[k]
+After shooting plenty of sperm, Blue sighs with satisfaction.[k]
+Is the humiliation of Riselle finally over...?[k]
+[エリック f=13]「So, is it my turn now?」[k]
+[ミレディ v=vm125 f=11]「Hey, Blue! Your dick is still hard?!」[k]
+[テオ f=12]「...!」[k]
+As Miredy said, Blue still hadn't lost any vigor. It remained vigorously tall.[k]
+[ブルー f=14]「Ah, it still doesn't seem to be calming down. I've never been this excited before.」[k]
+[ミレディ v=vm126 f=59]「Seriously? I'm a little jealous.」[k]
+[エリック f=25]「That's awesome, Blue!」[k]
+[ブルー f=14]「Eric, wait a little longer. Because I'm gonna fuck this girl one more time.」[k]
+[テオ f=12]「Blue... It's about time you let Riselle go...」[k]
+[ブルー f=14]「Not really. I haven't done enough yet.」[k]
+With that, Blue covered Riselle for a third time.[k]
+[textoff]
+@out
+
+@bg f=event69 p0=02 p1=02
+[texton w=2]
+∗sluurp∗[k]
+[リーゼル v=vl327]「Ahhh...!」[k]
+This time, Blue inserted himself into Riselle in the missionary position![k]
+[ブルー]「Phew... This pussy feels really good.」[k]
+[リーゼル v=vl328]「Ah... Ah... Ah... Ah...」[k]
+Blue arches his back and powerfully thrusts his large body forward and back.[k]
+Each time, Blue's hard penis is thrust deep into Riselle, causing her to gasp.[k]
+[テオ]「Riselle...」[k]
+Riselle's voice is even more seductive ...![k]
+The paralysis had completely worn off by now, and Riselle was writhing sensuously and wiggling her hips as Blue thrust into her, moaning lasciviously.[k]
+No way... She's starting to feel good...?![k]
+∗sluurp sluurp sluurp∗[k]
+[リーゼル v=vl329]「Mmm... Ah... Ahh... Ahh...!」[k]
+[ブルー]「Kukuku, it looks like you're starting to enjoy it. I can tell by the feel of your pussy.」[k]
+[ミレディ v=vm127]「Oh wow, is it okay to fuck like that in front of your boyfriend～?」[k]
+[リーゼル v=vl330]「N-no that's not it... Ahhh!」[k]
+[テオ]「...」[k]
+She's clearly feeling good... while having sex with Blue...![k]
+@bg f=event69 p0=02 p1=01
+[リーゼル v=vl331]「Ahh... ahhh... aaaahhhh...!」[k]
+Perhaps numb from repeated sex, Riselle moans and gasps incessantly as Blue thrusts into her.[k]
+[ブルー]「It's still great... It feels amazing... This pussy...!」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[リーゼル v=vl332]「Ahhh... ahh... ah... ah...」[k]
+[ブルー]「Ahh... I can't take it... it feels too good...! I can't stand it...!」[k]
+∗slurp slurp slurp slurp slurp∗[k]
+[リーゼル v=vl333]「Ahh, aaaahhh!」[k]
+[ブルー]「I can't hold back any longer! I'm going to cum inside you again with all my might!」[k]
+[リーゼル v=vl334]「N-not inside...!」[k]
+[テオ]「S-stop it, Blue!」[k]
+∗slurp slurp slurp slurp slurp!∗[k]
+Blue, shaking his hips more wildly than ever, forgets herself and thrusts into Riselle![k]
+[ブルー]「Ooooooooooooooo!」[k]
+[テオ]「Stop it!」[k]
+∗spuuurt!∗[k]
+[リーゼル v=vl335]「Ahhhh...!」[k]
+Blue leaned back as far as he could, and with his penis still deep inside Riselle, ejaculated with all his might![k]
+[ブルー]「Aaaaahhhh...!」[k]
+Blue remains motionless, his whole body stiff.[k]
+He's probably cumming as much as he can inside her.[k]
+@bg f=event69 p0=03 p1=02
+[ブルー]「Ahh...」[k]
+After a while, Blue's semen spilled out in sloshes.[k]
+Finally, Blue's penis begins to lose its rigidity.[k]
+[リーゼル]「...」[k]
+[テオ]「Riselle...」[k]
+Riselle, covered in juices, lies limp under Blue.[k]
+Blue looked down at her with satisfaction, his eyes that of a conqueror...[k]
+[textoff]
+@out
+
+@fg l=エリック f=03 b
+@fg r=ミレディ f=05 b
+@bgf f=0032
+[texton w=1]
+[エリック f=03]「All right! Finally, it's my turn!」[k]
+[ミレディ v=vm128 f=05]「Wait a minute. I feel like someone's coming.」[k]
+Listening carefully, I can indeed hear someone approaching in a group, clattering swords and armor. Are they guards on patrol?[k]
+@fg l=エリック f=09
+[エリック f=09]「What the...! Seriously, I thought I was finally gonna get some...」[k]
+[ブルー f=05]「I guess I made too much noise. It's time for us to go.」[k]
+@fg r=ミレディ f=03
+[ミレディ v=vm129 f=03]「Yes～!」[k]
+[エリック f=10]「Oh, man... I wish I could have fucked her.」[k]
+@cl
+[ブルー f=02]「Now, before that...」[k]
+@fg c=ブルー e=上半身裸 f=02
+Blue turns her gaze toward me.[k]
+[ブルー f=02]「[テオ], your girlfriend was great.」[k]
+[テオ f=09]「Damn...!」[k]
+@fg c=ブルー f=03
+[ブルー f=03]「I'm sorry I came inside her twice! Hahahaha!」[k]
+[テオ f=09]「Blue... You...!」[k]
+@fg c=ブルー f=02
+[ブルー f=02]「Now, here's my demand to you guys who lost the duel...」[k]
+[テオ f=10]「...」[k]
+Are you taking me with you...?[k]
+[ブルー f=02]「Come on.」[k]
+@cl b
+@fg c=ブルー f=02 b
+@fg a=リーゼル left=650 e=股隠し・汗だく f=46
+Blue, for some reason, pulled on the prone, naked Riselle's arm to help her up.[k]
+[テオ f=12]「Blue! What are you doing to Riselle...」[k]
+[ブルー f=02]「I changed my mind.」[k]
+[テオ f=05]「Eh?」[k]
+[ブルー f=02]「[テオ], I'm taking this woman instead of you.」[k]
+@mu f=crisis
+[テオ f=12]「Ehhh?!」[k]
+What? You're taking Riselle with you?![k]
+@fgf c=ブルー f=94
+[ブルー f=94]「This woman was really nice. I just couldn't get enough of her. So I decided to take her home and have fun with her to my heart's content.」[k]
+[テオ f=12]「Wait, Blue! Just leave Riselle alone...!」[k]
+[ブルー f=01]「I'm officially demanding it! Duel God, add this woman to my party!」[k]
+[テオ f=12]「W-wait...!」[k]
+@se f=shakin4
+@flash
+@fg a=6002 left=608 top=50
+∗shing!∗[k]
+[name n=Riselle v=vl336 f=lise_99 buf=9]「Ah...!」[k]
+[テオ f=12]「Riselle!」[k]
+@fg a=リーゼル left=650 f=37
+Riselle's neck glowed, and a shiny golden collar appeared for a brief moment, then vanished.[k]
+It is a sign that Riselle has become the property of another party. In other words, Blue's request has been granted.[k]
+[ブルー f=01]「Hey, woman. From this day forward, you are under the command of Master Blue here. My orders are absolute. If you disobey, you will die. Got it?」[k]
+@fg a=リーゼル left=650 f=45
+[リーゼル f=45]「...」[k]
+@fg a=リーゼル left=650 f=48
+[リーゼル v=vl337 f=48]「...Yes.」[k]
+Riselle cannot refuse. She has no choice but to obey. That's how the duel rules work.[k]
+[エリック f=03]「That means I get to fuck her too! Thanks a lot, Blue!」[k]
+[ミレディ v=vm130 f=57]「Honestly, do you really want to fuck this girl that badly?」[k]
+∗clatter∗[k]
+[テオ f=12]「...!」[k]
+@fgf c=ブルー f=05
+[ブルー f=05]「Yeah, we made too much noise. Let's get out of here.」[k]
+@cl
+[エリック f=01]「Oh! Let's go back to the hideout and play with this woman!」[k]
+[ミレディ v=vm131 f=01]「See you～!」[k]
+Blue and the others walk away, taking Riselle with them.[k]
+[テオ f=12]「W-wait! Give Riselle back to me...!」[k]
+All I could do was watch, sprawled on the ground...[k]
+[textoff]
+@fa
+@out
+@w2
+@return cond='f.replayMode'
+; マックス・マリア再加入
+; 宿屋のロビー
+@mu f=worry
+@fg c=マリア e=通常 f=11 b
+@bgf f=0003
+[texton w=1]
+[マリア v=va121 f=11]「Riselle was kidnapped?」[k]
+[テオ f=10]「...」[k]
+[マリア v=va122 f=07]「Hey, what's going on?! Explain, now!」[k]
+[テオ f=10]「Actually...」[k]
+The next day, I told Maria and everyone in the party what had happened last night.[k]
+@fgf c=マリア f=05
+[マリア v=va123 f=05]「Blue is that guy you were talking about before...!」[k]
+[テオ f=10]「I'm sorry...! It was all my fault...!」[k]
+@fgf c=マリア f=10
+[マリア v=va124 f=10]「That's all on him, not you. It's not your fault...」[k]
+[テオ f=12]「No, it was my fault! It was my fault for not protecting Riselle.」[k]
+[テオ f=09]「And besides... If I hadn't gotten involved with that guy in the first place, it would never have happened... !」[k]
+@fgf c=マリア f=09
+[マリア v=va125 f=09]「You...」[k]
+[テオ f=09]「Damn it...! What should I do...?」[k]
+@fgf c=マリア f=57
+[マリア v=va126 f=57]「There's no point in feeling sorry for myself now! Instead, let's focus on helping Riselle first and foremost right now!」[k]
+[テオ f=05]「Maria...」[k]
+[テオ f=02]「Yeah, that's right.」[k]
+Maria is certainly right. Let's focus on rescuing Riselle now.[k]
+...That said, it isn't easy to regain a member who has been stolen from you through a duel.[k]
+Two hurdles must be overcome if you want to get back a member who was taken from you in a duel.[k]
+The first is to wait for a certain [b]captivity period[/b] to pass.[k]
+During this period, the other party has unconditional ownership of the co-opted member, and they can't be taken back, no matter what. If a member disobeys this rule, he or she will be erased from existence by the power of the Duel God.[k]
+The second is to beat your opponent in a duel again. This is the hardest hurdle of all.[k]
+The right to take back Riselle is only restored after the captivity period has expired, but it isn't unconditional. After that, we must defeat Blue and the others in a duel to so so.[k]
+[マックス f=11]「Blue finally found us?! Are you kidding me?!」[k]
+Max is holding his head in his hands, looking completely terrified now he knows that Blue has found us.[k]
+[マックス f=27]「Hey, [テオ]! Let's get out of here right now! They let us off the hook, so now's our only chance!」[k]
+[マリア v=va127 f=07]「What are you talking about, Max?! We have to get Riselle back! Are you really planning on abandoning her?!」[k]
+[マックス f=12]「Even if you say that, there's nothing we can do until the time's up! And afterwards...」[k]
+[マックス f=17]「Our opponent would be none other than Blue! And you were no match for him even now, right? There's no way we can win! I feel bad for her, but Riselle will just have to bear it...」[k]
+@fgf c=マリア f=11
+[マリア v=va128 f=11]「Don't say something so stupid! I'll get her back, even if I have to do it alone!」[k]
+[マックス f=25]「I understand how you feel, but if you go up against Blue, you'll lose, and this time you'll become Blue's prisoner.」[k]
+@fgf c=マリア f=10
+[マリア v=va129 f=10]「That's...」[k]
+Maria stammers. Indeed, given Blue's strength, it wouldn't be unreasonable for her to give up.[k]
+Maria, however, looked up again and said with a determined look on her face.[k]
+@fgf c=マリア f=11
+[マリア v=va130 f=11]「Still, I won't give up! I'll get Riselle back no matter how many months or years it takes! What about you guys!」[k]
+[テオ f=09]「Maria, I feel the same way. We'll get Riselle back one day. I'm sure of it!」[k]
+[マリア v=va131 f=05]「Oh...!」[k]
+@fgf c=マリア f=02
+[マリア v=va132 f=02]「...Thank you. I knew you'd say that.」[k]
+There is no way I would abandon Riselle. I love her. I have to get her back, no matter what.[k]
+@eval exp='game.restoreMembers()'
+
+[   if exp='DWA'][フレデリカ v=vd037 e=通常 f=09]「Captain...」[k]
+[elsif exp='GNO'][ミューズ v=vg028 e=通常 f=10]「Captain...」[k]
+[elsif exp='HUM'][リム v=vh037 e=通常 f=09]「Captain...」[k]
+[elsif exp='SYL'][マルエット v=vs039 e=通常 f=09]「Captain...」[k]
+[elsif exp='ELF'][クレア v=ve038 e=通常 f=10]「Captain...」[k]
+[endif]
+
+The party members look at me with concern. I turn to them.[k]
+[テオ f=06]「I have to get Riselle back.」[k]
+[テオ f=05]「...But you all have a right to choose. It's risky, so I'm not going to force you to go along. If you don't want to, you have my blessing to leave the party. 」[k]
+
+[   if exp='HUM'][リム v=vh038 f=07]「Don't be silly, Captain!」[k]
+[elsif exp='DWA'][フレデリカ v=vd038 f=07]「Don't be silly, Captain!」[k]
+[elsif exp='GNO'][ミューズ v=vg029 f=08]「What are you talking about, Captain...!」[k]
+[elsif exp='ELF'][クレア v=ve039 f=07]「Don't be ridiculous, Captain!」[k]
+[elsif exp='SYL'][マルエット v=vs040 f=07]「Don't be ridiculous, Captain!」[k]
+[endif]
+
+[テオ f=05]「[キャラ]...!」[k]
+
+[   if exp='GNO'][ミューズ v=vg030 f=08]「Riselle is part of our party... We can't abandon her...!」[k]
+[elsif exp='ELF'][クレア v=ve040 f=08]「I'm going with you. I won't abandon her.」[k]
+[elsif exp='SYL'][マルエット v=vs041 f=07]「I'm going with you! I can't abandon Riselle either!」[k]
+[elsif exp='HUM'][リム v=vh039 f=07]「Riselle is our friend! We've got to help her!」[k]
+[elsif exp='DWA'][フレデリカ v=vd039 f=07]「Riselle is our friend! We've got to help her!」[k]
+[endif]
+
+[   if exp='DWA'][フレデリカ v=vd040 f=07]「Let's get stronger and stronger and defeat that Blue!」[k]
+[elsif exp='HUM'][リム v=vh040 f=07]「Let's get stronger and stronger and defeat that Blue!」[k]
+[elsif exp='SYL'][マルエット v=vs042 f=15]「Let's defeat that Blue guy! I'm sure we can do it someday!」[k]
+[elsif exp='ELF'][クレア v=ve041 f=15]「Let's defeat this Blue person! I'm sure we can manage it.」[k]
+[elsif exp='GNO'][ミューズ v=vg031 f=08]「Let's beat that Blue... even if it takes some time...」[k]
+[endif]
+
+[テオ f=01]「Everyone...!」[k]
+@fgf c=マリア f=14
+[マリア v=va133 f=14]「Thank you, guys... I'm so happy you'd do that for Riselle...!」[k]
+[マックス f=12]「Seriously...? You guys all want to fight Blue...」[k]
+[テオ f=05]「Then it's settled. We can't do it right now, but we will definitely get Riselle back eventually!」[k]
+
+[if exp='HUM'][リム v=vh041 f=03]「Yeah!」[k][endif]
+[if exp='ELF'][クレア v=ve042 f=15]「Certainly!」[k][endif]
+[if exp='DWA'][フレデリカ v=vd041 f=03]「Let's do our best!」[k][endif]
+[if exp='GNO'][ミューズ v=vg032 f=02]「I'll do my best...!」[k][endif]
+[if exp='SYL'][マルエット v=vs043 f=15]「I'll do it!」[k][endif]
+
+@fgf c=マリア f=03
+[マリア v=va134 f=03]「Let's all do our best!」[k]
+@fgf c=マリア f=02
+[マリア v=va135 f=02]「Well, I guess this is where I say goodbye to Max. Later, bye.」[k]
+[マックス f=12]「W-w-wait a minute! Everyone!」[k]
+[マリア v=va136 f=05]「What? You don't want to fight Blue.」[k]
+[マックス f=12]「I don't want to fight... but if everyone says so, I guess I have to go along with you...」[k]
+[マリア v=va137 f=05]「If you don't want to, you don't have to force yourself to come along, okay?」[k]
+[マックス f=09]「I'll be right behind you! Please let me tag along!」[k]
+[マリア v=va138 f=02]「You should have just said so from the beginning.」[k]
+[テオ f=02]「Thanks, Max. Let's keep fighting together!」[k]
+[マックス f=09]「Oh, man... I can't help it. If it comes to this, I'll stick with you until the very end.」[k]
+[textoff]
+@st
+@se f=up3
+@notice text="<y>Maria and Max have joined the party!"
+@out
+@w2
+
+; サファイアシティの酒場
+@bg f=0012
+@mu f=anxiety
+[texton w=0]
+I decided to look for Blue first.[k]
+The purpose is to find out places he goes, and where he usually stays.[k]
+When the time comes to rescue Riselle, if we don't know where he is, we'll be in trouble.[k]
+Of course, that might not be easy to find out, but it's better than having no clue.[k]
+Also, I wanted to make sure nothing worse happens to Riselle... though it might be pointless to say that.[k]
+[テオ f=06]「...」[k]
+[マックス f=09]「Oh... I don't want to meet Blue again...」[k]
+In the meantime, Max and I go to the bar and wait for Blue and the others to arrive.[k]
+They are adventurers, after all. Nothing is possible without receiving quests at the bar. So if we wait here, we'll definitely meet them.[k]
+[テオ f=06]「...」[k]
+Are they not coming today...? Maybe I should try another day...[k]
+[ベトリヌス f=05]「Why are you hanging around in my bar?」[k]
+[テオ f=05]「Ah... The bar master...」[k]
+After a few hours of waiting for Blue in the seating area, I was approached by Vetrinus, the owner of this tavern.[k]
+[テオ f=06]「Well... I'm looking for an adventurer named Blue. I really need to meet with him...」[k]
+[ベトリヌス f=06]「Ah, those adventurers went back to the town they came from.」[k]
+[テオ f=05]「What? Really?」[k]
+[ベトリヌス f=02]「Those guys aren't qualified to take requests at this bar, so I'd never give them work. It's a matter of reputation for this bar.」[k]
+[マックス f=12]「Really? In the previous town, he was so influential...」[k]
+[ベトリヌス f=02]「Anyway, I know all about those particular adventurers. There's no way I'd let people like that work here.」[k]
+[マックス f=05]「So that's how it is. That makes sense. If they can't work as adventurers here, they'd have no choice but to leave.」[k]
+[ベトリヌス f=02]「I value trust above all else. I don't tolerate any dishonest behavior, such as subcontracting or reward skimming. Adventurers who do such things aren't welcome in my bar.」[k]
+[ベトリヌス f=00]「My tavern has become the most highly regarded in the country. But that's only due to my strict enforcement of the rules and keeping an eye out for dishonest adventurers.」[k]
+[マックス f=01]「Then Blue can't do anything here. I guess he went back home so he could make money where the restrictions are looser.」[k]
+[テオ f=06]「...」[k]
+So Blue must be in his own hideout in Bravetown...[k]
+According to the owner, there is a good chance that he will have to remain in Bravetown. If I go there, I might be able to meet Riselle.[k]
+[マックス f=01]「At any rate, we can't get Riselle back for a month no matter what we do, so we just have to focus on getting stronger for a while, right?」[k]
+[テオ f=06]「Well, yes...」[k]
+[textoff]
+@out
+@w05
+
+; 夜・宿屋
+@bg f=0001
+[texton w=0]
+That night. I remembered the fight with Blue in the park.[k]
+[テオ f=06]「...」[k]
+...Blue was strong.[k]
+I thought I'd become strong enough that I could fight Blue. But in reality, there was still a gap in power.[k]
+It was a bad situation, since not all the party were there.  But there were only three opponents even so.[k]
+In terms of numbers, it wasn't a huge disadvantage. But even if all the party was there, we probably wouldn't have won.[k]
+...Because no one can beat Blue. Even if we band together, we still can't beat him.[k]
+To be honest, I was elated after winning the tournament. I had mistakenly thought that I'd become strong enough.[k]
+And because of that hubris, I lost my precious Riselle...[k]
+[テオ f=09]「...Damn!」[k]
+I feel pathetic. Will I ever be able to beat Blue...?[k]
+[テオ f=06]「...」[k]
+...No, I mustn't think such things. I have to defeat Blue. To rescue Riselle.[k]
+I will become stronger. Everyone in the party will become stronger and next time, we will beat Blue and his friends.[k]
+[テオ f=06]「...」[k]
+However, there is one more issue, if we want to defeat Blue.[k]
+That sylph girl Miredy, who was with Blue.[k]
+Thanks to the mysterious power she invoked, neither of us could use magic. We had no choice but to face Blue in disadvantageous melee combat.[k]
+What was that phenomenon?[k]
+Unlike the [emb exp='o.サイレンス.displayName'] spell, it didn't seal the mouth of a mage. It was more like magic could no longer penetrate this area.[k]
+[textoff]
+@out
+@w1
+
+; 翌日・シュバルツの家
+@mu f=evil
+@fg c=シュバルツ f=00 b
+@bgf f=0012
+[texton w=1]
+[シュバルツ f=02]「That's Anti-Magic.」[k]
+[テオ f=05]「Anti-Magic?」[k]
+Desperate for some help, I turned to Mr. Schwarz for advice.[k]
+He told me the name of a technique I'd never heard of.[k]
+[シュバルツ f=00]「I have only met a few people who could use this technique. It's that rare.」[k]
+[シュバルツ f=00]「It prohibits magic in all the area around the caster, rendering all magic and magic items ineffective.」[k]
+[テオ f=05]「Prohibiting all magic in the area...」[k]
+[シュバルツ f=00]「Of course, doing so also neutralizes the magic of your allies. After all, you can't activate any magic within the space at all.」[k]
+[シュバルツ f=00]「However, that's isn't necessarily a problem, depending on your allies. For a physically oriented party, this can be a very effective tactic.」[k]
+[テオ f=06]「I see...」[k]
+Who would have thought such an unfair technique existed? It renders mages completely useless. It's a perfect technique for Blue, who has a superhuman body.[k]
+How on earth can we counter such a technique... Is the only way to hit hard enough to beat Blue?[k]
+[シュバルツ f=02]「Don't worry. There are ways to deal with this.」[k]
+[テオ f=05]「Really?!」[k]
+[シュバルツ f=02]「The [emb exp='o.イレースマジック.displayName'] spell.」[k]
+[テオ f=05]「[emb exp='o.イレースマジック.displayName']?」[k]
+[シュバルツ f=00]「Since you're an adventurer, you must know about magical effects.」[k]
+[シュバルツ f=00]「We can use magic to improve our defense, increase our speed, levitate our party...」[k]
+[テオ f=06]「...」[k]
+[シュバルツ f=00]「But [emb exp='o.イレースマジック.displayName'] erases all those magical effects. It's level 4 alchemy magic.」[k]
+[シュバルツ f=00]「It doesn't distinguish between friend and foe. Useful magic like party enhancement, illumination and levitation is no exception!」[k]
+[テオ f=05]「Wait a minute, Mr. Schwartz.」[k]
+[シュバルツ f=02]「Hmm? What's wrong?」[k]
+[テオ f=05]「Anti-magic neutralizes all magic in the first place, right? Then wouldn't [emb exp='o.イレースマジック.displayName'] not work either?」[k]
+[シュバルツ f=02]「You don't have to worry about that. There's an exception.」[k]
+[シュバルツ f=02]「Anti-magic only affects a given area. If used from outside that space, even it can be removed.」[k]
+[テオ f=01]「I see... So, if we use it...!」[k]
+[シュバルツ f=02]「Yes. It would counteract the anti-magic and allow you to use magic normally.」[k]
+[テオ f=05]「I understand...! Oh, but how can I obtain the [emb exp='o.イレースマジック.displayName'] spell...?」[k]
+There are two types of magic: those that can be learned naturally by leveling up, and those that require a spellbook to learn.[k]
+I know an Alchemist who can use level 9 alchemy magic, but didn't learn [emb exp='o.イレースマジック.displayName'].[k]
+In other words, I can't just wait for members to level up and be able to use it. We need to get a spellbook or scroll somewhere.[k]
+[シュバルツ f=02]「I'm pretty sure I saw [emb exp='o.イレースマジック.displayName'] spellbooks at [b]Northrop Village Magic Shop[/b].」[k]
+[テオ f=05]「Really?!」[k]
+[b]Northrop Village[/b] is a snowy northern village at the end of the Yanek Forest, just past the caves. It's a bit far, but not inaccessible.[k]
+[テオ f=01]「Understood! Thank you, Mr. Schwartz!」[k]
+[シュバルツ f=02]「Mmm. Good luck, [テオ].」[k]
+I may have seen a ray of hope. Someday, I'm sure I'll beat Blue![k]
+[textoff]
+@fa
+@out
+@w1
+
+;-----------------------------------------------------------------------------------------
+; ここで今まで通り過ぎた場所の状態をまとめて更新する
+[iscript]
+
+// キャラの設定
+game.lovers.push(o.ブルー);
+
+o.テオ.equip.chest = void;
+o.テオ.dressEquipment(o.布の服);
+o.テオ.makeBustups();
+
+o.リーゼル.strip.theo = "パンツ・幸せ";
+o.リーゼル.strip.blue = "裸";
+o.リーゼル.love.theo = 24;
+o.リーゼル.love.blue = 12;
+o.リーゼル.guard.blue = 0;
+o.リーゼル.addSexRecordAndChangeHeart(%[date: game.date, guyKey: "ブルー", sexCount: 4
+	, satisfy: 2, acts: ["正常位", "バック", "背面座位", "クリ責め"]]);
+o.ブルー・ファミリア.addSlave(o.リーゼル);
+o.リーゼル.removeEquipmentsByForce();
+o.リーゼル.dressEquipment(o.ひものブラ,,, true);
+o.リーゼル.dressEquipment(o.ひものパンツ,,, true);
+o.リーゼル.events = [3];
+
+o.マックス.exp += 20000;
+o.マックス.levelUpToTheLast();
+if(f.maxLastJob !== void) o.マックス.job = o[f.maxLastJob];
+o.マックス.events = [6];
+
+game.party.entry(o.マックス);
+game.guest.entry(o.マリア);
+game.party.recovery();
+
+// クエスト
+o.盗賊メンバー派遣の依頼.complete();
+o.ベトリヌスの酒場.quests.remove(o.盗賊メンバー派遣の依頼);
+o.ベトリヌスの酒場.quests.remove(o.コボルド退治);
+if(o.墓参り.completed) o.ベトリヌスの酒場.quests.remove(o.墓参り);
+o.ベトリヌスの酒場.quests.add(o.ワイルド・ブルのアジトを探せ);
+o.ベトリヌスの酒場.quests.add(o.スライム軍団の討伐);
+o.ベトリヌスの酒場.quests.add(o.若さを維持したい);
+
+o.かもめ亭.quests.remove(o.さらわれた少女たちの救出);
+o.かもめ亭.quests.add(o.夫の捜索);
+o.かもめ亭.quests.add(o.黄金のリンゴを届けてくれ);
+
+o.マルティナの酒場.quests.remove(o.赤いネックレスを探してほしい);
+o.マルティナの酒場.quests.remove(o.遺跡の財宝);
+o.マルティナの酒場.quests.add(o.王の短剣);
+o.マルティナの酒場.quests.add(o.黄金の人魚像を探してほしい);
+o.マルティナの酒場.quests.add(o.妻の浮気調査);
+o.マルティナの酒場.quests.add(o.兄に手紙を届けてくれ);
+
+// 町
+o.サファイアシティ・北西門.events = [];
+o.サファイアシティ・北東門.events = [];
+o.サファイアシティ・南西門.events = [];
+o.サファイアシティ・南東門.events = [];
+o.下水道入口.events = [];
+o.王立ギルド.events = [];
+o.待合所.events = [];
+o.ベトリヌスの酒場.events = [25];
+o.冒険者の宿.events = [];
+o.マリオン武器工房.events = [];
+o.鎧屋ドミンゴ.events = [];
+o.世界一の道具店.events = [];
+o.ドロシーの魔法店.events = [];
+o.アウラ中央教会.events.assign(o.浜辺の教会.events);
+o.イーラ中央寺院.events.assign(o.地下教会.events);
+o.アイテム保管庫.events = [];
+o.サファイア城.events = [];
+o.闘技場.events.remove(9);
+o.公園.events = [];
+o.アイテム博物館.events = [];
+o.マルティナの酒場.events = [7, 3];
+o.ブルーのアジト.events = [0];
+o.シーガルの村.events = [1];
+
+o.自宅.appeared = false;
+o.ブルーのアジト.appeared = true;
+o.冒険者ギルド.appeared = true;
+o.ホテル琥珀.appeared = true;
+o.冒険者の保管庫.appeared = true;
+o.ブレイブタウン・西門.appeared = true;
+
+o.森の中の廃屋入口.requireMembers = true;
+o.町外れの遺跡入口.requireMembers = true;
+
+o.サファイアシティ.img = "town_sapphire";
+game.townView.loadImages(o.サファイアシティ.img);
+
+// マップ
+o.コリンズの森.events.remove(10);
+o.町外れの遺跡Ｂ１.events.push(5);
+o.ブルーのアジト１Ｆ.events.push2(2, 4);
+
+// ライバルチーム
+o.ホーク・ウイング.boss = o.ルーファス;
+o.ホーク・ウイング.gold = 366000;
+o.ホーク・ウイング.itemsList = "";
+o.ホーク・ウイング.members = [
+	 m.ルーファス
+	,m.パイレーツ
+	,m.キャプテン
+	,m.ブッシュワッカー
+	,m.バーグラー
+	,m.アサシン
+	,m.マスターシャドウ
+	,m.ネクロマンサー
+];
+
+// その他
+game.bevents = [];
+game.closeItems.remove(o.魔法の錠前);
+game.closeItems.remove(o.レビテイトの巻物);
+game.closeItems.remove(o.リターンの巻物);
+f.safeReturnFromHeadless = false;
+game.date ++;
+game.townView.setPlayerSymbol(o.冒険者の宿);
+
+[endscript]
+;-----------------------------------------------------------------------------------------
+@gameon
+@mu f=city
+@w05
+[texton]
+[テオ f=06]「...Okay, let's go!」[k]
+The captivity period for the Blue Familia party led by Blue is [b][emb exp='o.ブルー・ファミリア.slaveTerm'] days[/b]. In other words, during that time, Riselle can't be taken back in any way.[k]
+Until then, we should try to strengthen our party while looking for [emb exp='o.イレースマジック.displayName'], so that when the time comes, we can defeat Blue and take back Riselle.[k]
+[テオ f=06]「...」[k]
+Since Blue already found me, there's no point in sneaking around now. Maybe I should visit Bravetown, which I've been avoiding for a while.
+ [k]
+[textoff]
+
+[eventoff]

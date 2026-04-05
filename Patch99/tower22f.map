@@ -1,0 +1,110 @@
+﻿; ラドミラの塔
+
+name = ラドミラの塔22Ｆ
+insideName = 22Ｆ
+upper = ラドミラの塔23Ｆ
+lower = ラドミラの塔21Ｆ
+level = 6
+bgm = tower
+margin = 3
+shadow = dark
+sky = nightforest
+roof = stone
+
+; パーツ画像
+━ = stone_h
+　 = marble
+／ = door
+︻ = panel
+㊤ = ladderu
+㊦ = ladderd
+
+; 敵情報
+monsters = ナイトインプ,インキュバス,マウンテンデビル,アビスデーモン,エリートトロール,エルダーサキュバス
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7  
+  		┏━━━━━━︻━━━━━━┓
+ 8		┃①　①　①　②　①　①　①┃
+  		┣／┳／┳／┓　┏／┳／┳／┫
+ 7		┃	┃	┃	┃　┃	┃	┃	┃
+  		┃	┃	┃	┃　┃	┃	┃	┃
+ 6		┃	┃	┃	┃㊦┃	┃	┃	┃
+  		┣／┻／┻／╋━╋／┻／┻／┫
+ 5		┃　　　　　┃	┃　　　　　┃
+  		┣━━━┓　┗━┛　┏━━━┫
+ 4		┃　　　／　　　　　┃㊤　　┃
+  		┃　　　┗━━━━━┛　　　┃
+ 3		【③　　　　　　　　　　　　┃
+  		┗━━━━━━━━━━━━━┛
+ 2
+  
+ 1
+  
+ 0
+  
+;    0   1   2   3   4   5   6   7  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+events.push2(1);
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] true
+
+@delevent
+@eval exp='tf.arr = [1, 2, 3, 5, 6, 7]'
+@eval exp='tf.arr.shuffle()'
+
+; 正解
+@changefloor x=&'tf.arr[0]' y=7 type=floor img=marble
+@changefloor x=&'tf.arr[0]' y=6 type=floor img=marble
+
+; 崩落床（レビテイトをかけていれば正解）
+@changefloor x=&'tf.arr[1]' y=7 type=floor pimg=collapse trap=collapse img=marble
+@changefloor x=&'tf.arr[1]' y=6 type=floor pimg=collapse trap=collapse img=marble
+
+; 岩（通れない）
+@changefloor x=&'tf.arr[2]' y=7 type=floor img=marble
+@changefloor x=&'tf.arr[2]' y=6 type=block img=marble pimg=rock
+
+; 落とし穴（一見正解に見えるが落ちる。宝箱が目印）
+@changefloor x=&'tf.arr[3]' y=7 type=floor img=marble trap=chute
+@changefloor x=&'tf.arr[3]' y=6 type=floor img=marble pimg=box
+
+; 穴（落ちる）
+@changefloor x=&'tf.arr[4]' y=7 type=air img=void trap=air
+@changefloor x=&'tf.arr[4]' y=6 type=air img=void trap=air
+@changefloor x=&'tf.arr[5]' y=7 type=air img=void trap=air
+@changefloor x=&'tf.arr[5]' y=6 type=air img=void trap=air
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="This floor is constantly changing. You won't know which door leads upstairs until you try it."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] onObjectTrigger
+
+@notice text="If you get stuck, take a good look at the floors you've been on."
+
+[eventoff]
+;-------------------------------------------------------------------------------

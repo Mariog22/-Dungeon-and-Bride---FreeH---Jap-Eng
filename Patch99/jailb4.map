@@ -1,0 +1,121 @@
+﻿;  ◆牢獄　Ｂ４◆
+
+name = 牢獄Ｂ４
+insideName = Ｂ４
+upper = 牢獄Ｂ３
+level = 44
+bgm = bad
+margin = 1
+roof = stone
+shadow = dark
+sky = black
+outfield = soil
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = pole
+－ = stone
+　 = marble
+／ = door
+ノ = prison
+メ = prison
+〆 = key
+┯ = button
+︻ = panel
+⑵ = bulletin
+
+; 敵情報
+maxGroups = 2
+monsters = ウインターコボルド
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8  
+  		┏－－－┳－－－┓
+ 6		ⅼ　　　ⅼ　　　ⅼ
+  		ⅼ　　　ⅼ　　　┣－┳－－－－－┓
+ 5		ⅼ　　③ⅼ　　④┃　┃　　　　　ⅼ
+  		┣━━メ┻━━メ┛　┃　　　　　ⅼ
+ 4		ⅼ　　　　　　　　　メ⑦　　　　ⅼ
+  ┏－┫　　　　　　　　　┃　　　　　ⅼ
+ 3┠①／　　　　⑵　　　⑧】　　　　　ⅼ
+  ┗－┫　　　　　　　　　┗━┳－－－┫
+ 2		ⅼ　　　　　　　　　　　メ⑥　　ⅼ
+  		┗－┳━━メ┓　　　　　┃　　　ⅼ
+ 1				ⅼ　　⑤┃　　　　　┃　　　ⅼ
+  				ⅼ　　　┣－－－－－┻－－－┛
+ 0				ⅼ　　　ⅼ
+  				┗－－－┛
+;    0   1   2   3   4   5   6   7   8  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+setElevator(0, 3);
+pos[1][3].w.img = "stone";
+
+[endmap]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 2, 3, 4, 5, 6, 7, 8]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@command title="Which button will you press?" cancel=true
+@select text="Ｂ１" exp='tf.result = ["牢獄Ｂ１", "up"]'
+@select text="Ｂ２" exp='tf.result = ["牢獄Ｂ２", "up"]'
+@select text="Ｂ３" exp='tf.result = ["牢獄Ｂ３", "up"]'
+@select text="No" exp='tf.result = []'
+[ask]
+@elevator map=&'tf.result[0]' lift=&'tf.result[1]' cond='tf.result.count > 0'
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] onObjectTrigger
+
+@notice text="<y>Strictly controlled area<r><w>Take special care when handling prisoners."
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+*event_4
+;[exp] true
+*event_5
+;[exp] true
+*event_6
+;[exp] true
+
+[if exp='f.atrociousPrisoners.count == 0']
+	@delevent
+	@jump storage="main10.scn" target=*jail_04
+[endif]
+@monster pos=3 name=&'f.atrociousPrisoners[0]'
+@callbattle
+@eval exp='f.atrociousPrisoners.shift()'
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] true
+
+@monster pos=3 name=サイクロプス
+@callbattle gameover=true
+@getitem item=チーズ
+@delevent
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@notice text="This cage is especially dangerous!"
+
+[eventoff]
+;-------------------------------------------------------------------------------

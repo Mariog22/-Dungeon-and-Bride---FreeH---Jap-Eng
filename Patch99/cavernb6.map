@@ -1,0 +1,217 @@
+﻿; 大洞窟
+
+name = 大洞窟Ｂ６
+insideName = Ｂ６
+lower = 大洞窟Ｂ７
+level = 24
+bgm = cave
+isOutdoor = true
+margin = 1
+shadow = dark
+sky = black
+roof = stone
+outfield = soil
+blank = rock
+antiWarp = true
+
+; パーツ画像
+━ = soil_h
+－ = stone
+… = half
+　 = soil
+☐ = marble
+〰 = water
+△ = rock
+／ = door
+〆 = key
+☗ = upstair
+♜ = stonegate
+⧻ = fence
+︻ = panel
+┯ = button
+㊤ = ladderl
+㊦ = ladderd
+Ⓑ = warp
+⓺ = human
+
+; 敵情報
+monsters = ローパー,ハイパーローパー,猛毒ヘビ,ナーガ,ラミア
+
+; 移動ポイント
+(A) = map:地下の町ライムストーン, enter:地下街出口・東, ask:Enter town?
+(B) = map:大洞窟Ｂ46, x:36, y:31
+
+; 宝箱
+box[1] = 鍵付き宝箱,マジカルボートの巻物,回復の指輪_u,レザレクションの魔法書_u,経験のコイン（中）,カマンベール
+
+[map]
+;---------------------------------------------------------------------------------------------------------------
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+  ┏━━━┓			┏━━━━━━━━━━━━━━━━━┓
+19┃　　　┃			┃　　　　　　　　　　　　　　　　　┃
+  ┃△△　┗━━━┛　┏━━━━━┓　┏━━━━━┓　┗━━━┓
+18┃△△敵　　　　　　┃					┃　┃					┃　　　　　┃
+  ┃△△　┏━━━┓　┃			┏━┛　┃					┃　　　　　┗━┓
+17┃　　　┃			┃　┃			┃　　敵┃					┃　　　　　　　┃
+  ┗━━━┛			┃　┃			┃　△△┃					┗━┓　　　　　┗━┓
+16								┃　┃			┃　△△┃							┃　　　　　　　┃
+  ┏━━━┓			┃　┃			┃∧┏━┛							┃　　　　　　　┗━┓
+15┃　　　┃			┃　┃			┃∧┃									┃　　　　　　　　　┃
+  ┃△△　┗━━━┛　┃			┃∧┃							┏━┛　　　　　　　　　┗━┓
+14┃△△敵　　　　　　┃			┃∧┃							┃　　　　　　　　　　　　　┃
+  ┃△△　┏━━━┓　┃			┃∧┃			┏━━━┛　　　　　　　　　　　　　┗━┓
+13┃△△　┃			┃　┃			┃∧┃			┃　　　　　　　　③　　　　　　　　　　┃
+  ┗━━━┛			┃　┃			┃∧┃	┏━┛　　　　　　　　　　　　　　　　　　　┃
+12								┃　┃			┃❶┃	┃　　　　　　　　　　③　①　　　　　　　　┃
+  		┏━━━━━┛　┃			┃　┃	┃　　　┏………………　…︼…………┓　　　┃
+11		┃　　　　　　　┃			┃　┃	┃　　　￤　　　　　　②　　　　　　￤　　　┃
+  		┃　┏━━━┓　┃			┃　┃	┃　　　￤　　　　　　　　　　　　　￤　　　┃
+10		┃　┃			┃　┃			┃　┃	┃　　　￤　　　　　　②　　　　　　￤　　　┃
+  		┃　┃			┃　┃			┃　┃	┃　　　￤　　　　　　　　　　　　　￤　　　┃
+ 9		┃　┃			┃　┃			┃　┃	┃　　　￤　　　　　　　　　　　　　￤　　　┃
+  ┏━┛　┗━┓	┃　┃			┃　┃	┃　　　￤　　　　　　　　　　　　　￤　┏━┛
+ 8┃　　敵　　┃	┃　┃			┃㊦┃	┃　　　￤　　　　　　④　　　　　　￤　┃
+  ┃　△△△　┃	┃　┃			┗━┛	┃　　　┣－－－－－－♜－－－－－－┫　┃
+ 7┃　△△△　┃	┃　┃							┃　　　ⅼ☐☐☐☐☐☐⓹☐☐☐☐☐☐ⅼ　┃
+  ┗━━━━━┛	┃　┃							┗━┓　ⅼ☐☐☐☐☐☐☐☐☐☐☐☐☐ⅼ　┃
+ 6								┃　┃									┃　ⅼ☐☐☐☐☐☐⓹☐☐☐☐☐☐ⅼ　┃
+  								┃　┗━━━━━┓			┗━╋……☐☐☐☐☐☐☐☐☐☐☐ⅼ　┃
+ 5								┃　　　　　　　┃					ⅼ☐☐☐☐☐☐☐☐☐☐☐☐☐ⅼ　┃
+  ┏━━━┓			┃　┏━━━┓　┃					ⅼ☐☐☐☐☐☐☐☐☐☐☐……╋━┛
+ 4┃Ⓑ　⑦┨			┃　┃			┃　┃					ⅼ☐☐☐☐☐☐☐☐☐☐☐☐☐ⅼ
+  ┃　　　┣━━━┛　┃			┃　┃					ⅼ☐☐☐☐☐☐☐☐☐☐☐☐☐ⅼ
+ 3┃　　　⧻　　　　　┃			┃　┃					ⅼ☐☐☐☐☐☐☐☐☐☐☐☐☐ⅼ
+  ┗━━━┻━┓　　　┃			┃　┃					┣…………☐￤☐☐☐￤☐☐☐ⅼ
+ 2						┃　　　┃			┃　┃					ⅼ⓺☐☐☐☐￤☐☐☐￤☐☐☐ⅼ
+  						┃　　　┃	┏━┛　┃					┗－－－－－┻－－－┻－－－┛
+ 1						【⑧　　┃	┃　　　┃
+  ┏━━━━━┫　　　┃	┃　　　┃
+ 0☗Ⓐ　　　　〆　　　┃	┃㊦　　┃
+  ┗━━━━━┻━━━┛	┗━━━┛
+;    0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  
+;---------------------------------------------------------------------------------------------------------------
+[correct]
+
+pos[15][12].s.img = pos[15][11].n.img = "half";
+pos[14][8].s.img = pos[14][7].n.img = "stone";
+pos[2][0].e.key = o.地下の町の鍵;
+
+[endmap]
+;-------------------------------------------------------------------------------
+; マップを開いた時に必ず実行されるスクリプト
+[initial]
+
+[endinitial]
+;===============================================================================
+;◆イベント◆
+
+; 初期発生イベント
+events = [1, 5, 6, 7, 8]
+
+;-------------------------------------------------------------------------------
+*event_1
+;[exp] onObjectTrigger
+
+@notice text="Treasure Trove"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_2
+;[exp] party.lastIsMove
+
+@delevent
+@addevent num=3
+@wait time=500 cond='WAY != "s"'
+@walk turn=s cond='WAY != "s"'
+@wait time=500 cond='game.party.curY == 9'
+@walk move=s cond='game.party.curY == 9'
+@wait time=500
+@jump storage="main09.scn" target=*treasury_1
+
+;-------------------------------------------------------------------------------
+*event_3
+;[exp] true
+
+[texton]
+[マックス]「Hey, where are you going? You're going into the treasure room, right?」[k]
+[textoff]
+@walk move=s cond='game.party.curY == 11'
+@walk move=s
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_4
+;[exp] true
+
+@delevent
+@wait time=500 cond='WAY != "s"'
+@walk turn=s cond='WAY != "s"'
+@wait time=500
+; ストーリーモード
+@jump storage="main09.scn" target=*treasury_2 cond='! game.isFreeMode'
+
+; フリーモード
+@wait time=500
+@playse storage=tremble
+@quake time=2000 hmax=5 vmax=0
+@wq
+@playse storage=rockdrop
+@changewall himg=arch type=space behind=true
+@wait time=500
+[texton]
+When I stood in front of the stone door, for some reason, it opened by itself.[k]
+[textoff]
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_5
+;[exp] true
+
+@delevent
+@delevent num=3
+@wait time=500 cond='WAY != "s"'
+@walk turn=s cond='WAY != "s"'
+@wait time=500 cond='game.party.curY == 5'
+@walk move=s cond='game.party.curY == 5'
+@wait time=500
+@walk move=s
+@wait time=1000
+@walk turn=w
+@wait time=1000
+@walk turn=s
+@walk turn=e
+@wait time=1000
+@walk turn=s
+@jump storage="main09.scn" target=*treasury_3
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_6
+;[exp] true
+
+@delevent
+@wait time=500
+@changefloor pimg=void
+@jump storage="main09.scn" target=*treasury_4
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_7
+;[exp] onObjectTrigger
+
+@delevent
+@se f=kacha
+@wait time=800
+@se f=fence
+@switchfence x=1 y=3 way=e mode=open
+@notice text="I heard a door open somewhere!"
+
+[eventoff]
+;-------------------------------------------------------------------------------
+*event_8
+;[exp] onObjectTrigger
+
+@notice text="Limestone Underground City"
+
+[eventoff]
+;-------------------------------------------------------------------------------
