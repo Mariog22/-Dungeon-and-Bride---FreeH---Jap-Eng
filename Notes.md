@@ -190,3 +190,33 @@ Conclusión:
 
 \- component.tjs
 
+
+
+\### Prueba 6
+
+Quitados:
+
+\- board.tjs
+
+\- MainWindow.tjs
+
+
+
+Resultado:
+
+\- menú principal desplazado
+
+\- save/load desplazado
+
+\- Config sigue bien
+
+
+
+Conclusión:
+
+\- board.tjs y MainWindow.tjs afectan menú principal y save/load
+
+\- no son necesarios para Config
+
+
+
